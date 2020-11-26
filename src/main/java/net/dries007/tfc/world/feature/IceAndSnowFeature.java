@@ -21,7 +21,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 {
@@ -89,7 +89,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     {
         if (seed != cachedSeed || !initialized)
         {
-            temperatureNoise = new SimplexNoise2D(seed)
+            temperatureNoise = new OpenSimplex2D(seed)
                 .octaves(2)
                 .spread(0.3f)
                 .scaled(-2, 2);

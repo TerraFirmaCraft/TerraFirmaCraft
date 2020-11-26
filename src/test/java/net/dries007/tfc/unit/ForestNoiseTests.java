@@ -24,7 +24,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.tree.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +82,7 @@ public class ForestNoiseTests
     public void testForestBaseNoise()
     {
         long seed = System.currentTimeMillis();
-        INoise2D forestBase = new SimplexNoise2D(seed).octaves(4).spread(0.002f).abs();
+        INoise2D forestBase = new OpenSimplex2D(seed).octaves(4).spread(0.002f).abs();
 
         Color darkGreen = new Color(0, 100, 0);
         Color midGreen = new Color(0, 160, 0);

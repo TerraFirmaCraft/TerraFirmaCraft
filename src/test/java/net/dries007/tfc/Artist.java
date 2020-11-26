@@ -330,16 +330,17 @@ public abstract class Artist<T, A extends Artist<T, A>>
                     sourceMinMax[1] = Math.max(sourceMinMax[1], value);
                     return value;
                 })
-                    .collect(Collectors.toList()).stream() // Block after min/max calculations
-                    .peek(loc -> {
-                        if (histogram)
-                        {
-                            final double scaled = Scales.DYNAMIC_RANGE.apply(loc.value, sourceMinMax[0], sourceMinMax[1]);
-                            distribution[MathHelper.clamp((int) (scaled * histogramBins), 0, histogramBins - 1)]++;
-                        }
-                    })
-                    .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
+                .collect(Collectors.toList()).stream() // Block after min/max calculations
+                .peek(loc -> {
+                    if (histogram)
+                    {
+                        final double scaled = Scales.DYNAMIC_RANGE.apply(loc.value, sourceMinMax[0], sourceMinMax[1]);
+                        distribution[MathHelper.clamp((int) (scaled * histogramBins), 0, histogramBins - 1)]++;
+                    }
+                })
+                .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
             );
+            LOGGER.log(LEVEL, "Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
             if (histogram)
             {
                 LOGGER.log(LEVEL, "Histogram for {}", name);

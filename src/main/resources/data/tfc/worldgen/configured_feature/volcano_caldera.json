@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "tfc:flood_fill_lake",
+          "config": {
+            "overfill": true,
+            "state": "minecraft:lava"
+          }
+        },
+        "decorator": {
+          "type": "minecraft:heightmap_world_surface",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:volcano",
+      "config": {
+        "center": true
+      }
+    }
+  }
+}

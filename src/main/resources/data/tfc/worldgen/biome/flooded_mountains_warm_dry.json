@@ -24,7 +24,7 @@
       "tfc:underwater_canyon"
     ]
   },
-  "surface_builder": "tfc:mountains",
+  "surface_builder": "tfc:mountains_and_volcanoes",
   "features": [
     [
       "tfc:erosion"
@@ -42,7 +42,10 @@
       "tfc:peat_disc"
     ],
     [],
-    [],
+    [
+      "tfc:volcano_rivulet",
+      "tfc:volcano_caldera"
+    ],
     [],
     [
       "tfc:vein/gravel",

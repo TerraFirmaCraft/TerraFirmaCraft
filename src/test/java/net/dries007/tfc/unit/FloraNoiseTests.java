@@ -22,12 +22,14 @@ import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.decorator.ClimateConfig;
 import net.dries007.tfc.world.noise.INoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Disabled
 public class FloraNoiseTests
 {
     static final Artist.Raw COLOR = Artist.raw().center(20_000);

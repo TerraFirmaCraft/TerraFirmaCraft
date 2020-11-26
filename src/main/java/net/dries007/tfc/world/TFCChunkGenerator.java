@@ -45,7 +45,7 @@ import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.CarverHelpers;
 import net.dries007.tfc.world.chunkdata.*;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.surfacebuilder.IContextSurfaceBuilder;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenerator
 {
@@ -100,13 +100,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         this.biomeCarvingHeightNoise = new HashMap<>();
 
         final SharedSeedRandom seedGenerator = new SharedSeedRandom(seed);
-        final long biomeNoiseSeed = seedGenerator.nextLong();
-
         TFCBiomes.getVariants().forEach(variant -> {
-            biomeHeightNoise.put(variant, variant.createNoiseLayer(biomeNoiseSeed));
+            biomeHeightNoise.put(variant, variant.createNoiseLayer(seed));
             if (variant instanceof CarvingBiomeVariants)
             {
-                Pair<INoise2D, INoise2D> carvingNoise = ((CarvingBiomeVariants) variant).createCarvingNoiseLayer(biomeNoiseSeed);
+                Pair<INoise2D, INoise2D> carvingNoise = ((CarvingBiomeVariants) variant).createCarvingNoiseLayer(seed);
                 biomeCarvingCenterNoise.put(variant, carvingNoise.getFirst());
                 biomeCarvingHeightNoise.put(variant, carvingNoise.getSecond());
             }
@@ -580,7 +578,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 final double noise = surfaceDepthNoise.getSurfaceNoiseValue(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
-                IContextSurfaceBuilder.applyIfPresent(biome.getGenerationSettings().getSurfaceBuilder().get(), random, chunkData, chunk, biome, posX, posZ, posY, noise, seed, settings.getDefaultBlock(), settings.getDefaultFluid(), getSeaLevel());
+                TFCSurfaceBuilders.applyIfPresent(biome.getGenerationSettings().getSurfaceBuilder().get(), random, chunkData, chunk, biome, posX, posZ, posY, noise, seed, settings.getDefaultBlock(), settings.getDefaultFluid(), getSeaLevel());
             }
         }
     }

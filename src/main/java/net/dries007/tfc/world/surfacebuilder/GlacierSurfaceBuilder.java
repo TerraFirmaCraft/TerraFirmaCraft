@@ -16,14 +16,10 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceBuilderConfig> implements IContextSurfaceBuilder<ParentedSurfaceBuilderConfig>
 {
-    public static final BlockState PACKED_ICE = Blocks.PACKED_ICE.defaultBlockState();
-    public static final BlockState SNOW_BLOCK = Blocks.SNOW_BLOCK.defaultBlockState();
-    public static final BlockState SNOW_LAYER = Blocks.SNOW.defaultBlockState();
-
     private INoise2D glacierNoise;
 
     public GlacierSurfaceBuilder(Codec<ParentedSurfaceBuilderConfig> codec)
@@ -40,6 +36,10 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
     @Override
     public void applyWithContext(ChunkData chunkData, Biome biomeIn, Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
     {
+        final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
+        final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
+        final BlockState snowLayer = Blocks.SNOW.defaultBlockState();
+
         if (startHeight <= 150) // Maximum height for glaciers to generate at
         {
             final BlockPos.Mutable pos = new BlockPos.Mutable().set(x, TFCChunkGenerator.SEA_LEVEL, z);
@@ -64,17 +64,17 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
                     pos.set(x, startHeight, z);
                     for (int i = 0; i < packedIceHeight; i++)
                     {
-                        chunkIn.setBlockState(pos, PACKED_ICE, false);
+                        chunkIn.setBlockState(pos, packedIce, false);
                         pos.move(0, 1, 0);
                     }
                     for (int i = 0; i < snowHeight; i++)
                     {
-                        chunkIn.setBlockState(pos, SNOW_BLOCK, false);
+                        chunkIn.setBlockState(pos, snowBlock, false);
                         pos.move(0, 1, 0);
                     }
                     if (snowLayers > 0)
                     {
-                        chunkIn.setBlockState(pos, SNOW_LAYER.setValue(SnowBlock.LAYERS, snowLayers), false);
+                        chunkIn.setBlockState(pos, snowLayer.setValue(SnowBlock.LAYERS, snowLayers), false);
                     }
 
                     pos.set(x, startHeight - 1, z);
@@ -89,10 +89,10 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
                             {
                                 break;
                             }
-                            chunkIn.setBlockState(pos, PACKED_ICE, false);
+                            chunkIn.setBlockState(pos, packedIce, false);
                             pos.move(0, -1, 0);
                         }
-                        TFCSurfaceBuilders.UNDERWATER.get().apply(random, chunkIn, biomeIn, x, z, pos.getY(), noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+                        TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), random, chunkIn, biomeIn, x, z, pos.getY(), noise, defaultBlock, defaultFluid, seaLevel, seed, config);
                     }
                     // Directly underneath glaciers should stay as raw rock
                     return;
@@ -101,13 +101,13 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
         }
 
         // Reached here, so we delegate to the parent
-        IContextSurfaceBuilder.applyIfPresent(config.getParent(), random, chunkData, chunkIn, biomeIn, x, z, startHeight, noise, seed, defaultBlock, defaultFluid, seaLevel);
+        TFCSurfaceBuilders.applyIfPresent(config.getParent(), random, chunkData, chunkIn, biomeIn, x, z, startHeight, noise, seed, defaultBlock, defaultFluid, seaLevel);
     }
 
     @Override
     protected void initSeed(long seed)
     {
-        glacierNoise = new SimplexNoise2D(seed + 1)
+        glacierNoise = new OpenSimplex2D(seed + 1)
             .octaves(4)
             .spread(0.02f)
             .map(x -> {

@@ -5,11 +5,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -17,7 +14,6 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
@@ -27,17 +23,15 @@ import net.dries007.tfc.common.blocks.soil.IGrassBlock;
  * It only operates within the allowed range of 3x3 chunks per the feature requirements.
  * If a potential location is unbounded within that area, the flood fill is aborted.
  */
-public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
+public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    public FloodFillLakeFeature(Codec<NoFeatureConfig> codec)
+    public FloodFillLakeFeature(Codec<FloodFillLakeConfig> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
@@ -55,16 +49,17 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
 
         // Initial placement is surface level, so start filling one block above
         final BlockPos startPos = pos.above();
-        final BlockState water = Blocks.WATER.defaultBlockState();
-        if (tryFloodFill(worldIn, startPos, box, filled, mutablePos))
+        final BlockState fill = config.getState();
+        final Fluid fluid = fill.getFluidState().getType();
+        if (floodFill(worldIn, startPos, box, filled, mutablePos, config))
         {
             // Minimum size, don't fill awkward tiny lakes
             if (filled.size() >= 20)
             {
                 for (BlockPos filledPos : filled)
                 {
-                    worldIn.setBlock(filledPos, water, 2);
-                    worldIn.getLiquidTicks().scheduleTick(filledPos, Fluids.WATER, 0);
+                    worldIn.setBlock(filledPos, fill, 2);
+                    worldIn.getLiquidTicks().scheduleTick(filledPos, fluid, 0);
 
                     // If we're at the bottom
                     mutablePos.set(filledPos).move(0, -1, 0);
@@ -85,7 +80,37 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
         return false;
     }
 
-    private boolean tryFloodFill(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos)
+    private boolean floodFill(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos, FloodFillLakeConfig config)
+    {
+        boolean result = floodFillLayer(worldIn, startPos, box, filled, mutablePos);
+        if (!result)
+        {
+            return false; // Failed the initial flood fill, exit early
+        }
+        if (!config.shouldOverfill())
+        {
+            return true; // No overfilling, result is valid, return valid
+        }
+
+        // Initial result is valid, overfill upwards
+        Set<BlockPos> nextFilled = new HashSet<>(filled);
+        startPos = startPos.above();
+        int prevSize = filled.size();
+
+        while (floodFillLayer(worldIn, startPos, box, nextFilled, mutablePos))
+        {
+            filled.addAll(nextFilled);
+            if (prevSize == filled.size())
+            {
+                // The last move upwards added no new filled area. We abort here to not endlessly advance upwards
+                return true;
+            }
+            startPos = startPos.above();
+        }
+        return true;
+    }
+
+    private boolean floodFillLayer(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos)
     {
         // First check the start position, this must be fillable
         if (!isFloodFillable(worldIn.getBlockState(startPos)))
