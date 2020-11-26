@@ -85,7 +85,7 @@ public enum Heat
             tooltip = heat.format + tooltip;
             if (ConfigTFC.Client.TOOLTIP.oreTooltipMode == OreTooltipMode.ADVANCED)
             {
-                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", temperature);
+                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", Math.round(temperature));
             }
 
         }
@@ -102,7 +102,7 @@ public enum Heat
             tooltip = heat.alternate + tooltip;
             if (ConfigTFC.Client.TOOLTIP.oreTooltipMode == OreTooltipMode.ADVANCED)
             {
-                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", temperature);
+                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", Math.round(temperature));
             }
         }
         return tooltip;
