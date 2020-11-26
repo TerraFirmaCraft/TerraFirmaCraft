@@ -30,7 +30,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             }
             else if (obj instanceof TFCFluids.FluidPair<?>)
             {
-                return ((TFCFluids.FluidPair<?>) obj).getFirst().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
+                return ((TFCFluids.FluidPair<?>) obj).getSecond().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
             }
             else
             {
