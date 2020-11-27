@@ -91,8 +91,11 @@ public class Cellular2D implements INoise2D
                 int hash = hashPrimed(seed, xPrimed, yPrimed);
                 int idx = hash & (255 << 1);
 
-                float vecX = (xi - x) + RANDOM_VECTORS_2D[idx] * cellularJitter;
-                float vecY = (yi - y) + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
+                float cellX = xi + RANDOM_VECTORS_2D[idx] * cellularJitter;
+                float cellY = yi + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
+
+                float vecX = (x - cellX);
+                float vecY = (y - cellY);
 
                 float newDistance = vecX * vecX + vecY * vecY;
 
@@ -101,8 +104,8 @@ public class Cellular2D implements INoise2D
                 {
                     distance0 = newDistance;
                     closestHash = hash;
-                    centerX = vecX + x;
-                    centerY = vecY + y;
+                    centerX = cellX;
+                    centerY = cellY;
                 }
                 yPrimed += PRIME_Y;
             }
