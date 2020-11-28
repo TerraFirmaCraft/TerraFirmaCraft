@@ -12,6 +12,7 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class EmergentPatchFeature extends Feature<BlockClusterFeatureConfig>
 {
@@ -37,7 +38,7 @@ public class EmergentPatchFeature extends Feature<BlockClusterFeatureConfig>
             BlockState state = world.getBlockState(below);
             if ((world.isEmptyBlock(above) && world.isWaterAt(mutablePos)) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(world.getFluidState(mutablePos).getType())), rand);
+                config.blockPlacer.place(world, mutablePos, blockstate, rand);
                 ++i;
             }
         }

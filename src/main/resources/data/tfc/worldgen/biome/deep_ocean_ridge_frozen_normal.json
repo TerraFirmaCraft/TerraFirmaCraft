@@ -88,7 +88,14 @@
       "tfc:calcite",
       "tfc:mega_calcite"
     ],
-    [],
+    [
+      "tfc:plant/gutweed",
+      "tfc:plant/laminaria",
+      "tfc:plant/manatee_grass",
+      "tfc:plant/sargassum",
+      "tfc:plant/star_grass",
+      "tfc:plant/turtle_grass"
+    ],
     [
       "tfc:groundcover/loose_rocks",
       "tfc:groundcover/feather",

@@ -37,7 +37,7 @@ public class RandomPatchWaterFeature extends Feature<BlockClusterFeatureConfig>
             BlockState state = world.getBlockState(below);
             if ((world.isWaterAt(mutablePos)) && state.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(world.getFluidState(mutablePos).getType())), rand);
+                config.blockPlacer.place(world, mutablePos, blockstate, rand);
                 ++i;
             }
         }
