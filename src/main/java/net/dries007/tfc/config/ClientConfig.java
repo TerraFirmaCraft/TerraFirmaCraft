@@ -18,7 +18,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ClientConfig
 {
-    public final ForgeConfigSpec.BooleanValue setTFCWorldPresetAsDefault;
     public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -26,7 +25,6 @@ public class ClientConfig
         // Standardization for translation keys
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.client." + name);
 
-        setTFCWorldPresetAsDefault = builder.apply("setTFCWorldPresetAsDefault").comment("If the TFC world preset will default to selected when creating a new world.").define("setTFCWorldPresetAsDefault", true);
         ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").comment("Should TFC forcefully skip the 'Experimental World Generation' warning screen when creating or loading a world?").define("ignoreExperimentalWorldGenWarning", true);
     }
 }

@@ -3,6 +3,7 @@ package net.dries007.tfc.world.biome;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 
 import net.minecraft.util.RegistryKey;
@@ -13,28 +14,24 @@ import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
 
-public class BiomeBuilder
+public class BiomeBuilder<V extends BiomeVariants>
 {
-    public static BiomeBuilder carving(BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory)
+    public static BiomeBuilder<CarvingBiomeVariants> carving(BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory)
     {
-        BiomeBuilder builder = new BiomeBuilder();
-        builder.parent = parent;
-        builder.carvingNoiseFactory = carvingNoiseFactory;
-        return builder;
+        return new BiomeBuilder<>(b -> new CarvingBiomeVariants(parent, carvingNoiseFactory));
     }
 
-    public static BiomeBuilder builder(LongFunction<INoise2D> noiseFactory)
+    public static BiomeBuilder<BiomeVariants> builder(LongFunction<INoise2D> noiseFactory)
     {
-        BiomeBuilder builder = new BiomeBuilder();
+        BiomeBuilder<BiomeVariants> builder = new BiomeBuilder<>(b -> new BiomeVariants(b.noiseFactory, b.smallGroup, b.largeGroup, b.salty, b.volcanic, b.volcanoFrequency, b.volcanoBasaltHeight));
         builder.noiseFactory = noiseFactory;
         return builder;
     }
 
+    private final Function<BiomeBuilder<V>, V> factory;
     private final List<BiomeDictionary.Type> dictionaryTypes;
 
-    private BiomeVariants parent;
     private LongFunction<INoise2D> noiseFactory;
-    private LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory;
     private BiomeVariants.SmallGroup smallGroup;
     private BiomeVariants.LargeGroup largeGroup;
     private boolean salty;
@@ -42,12 +39,12 @@ public class BiomeBuilder
     private int volcanoFrequency;
     private int volcanoBasaltHeight;
 
-    private BiomeBuilder()
+    private BiomeBuilder(Function<BiomeBuilder<V>, V> factory)
     {
-        parent = null;
+        this.factory = factory;
+        this.dictionaryTypes = new ArrayList<>();
+
         noiseFactory = seed -> null;
-        carvingNoiseFactory = seed -> null;
-        dictionaryTypes = new ArrayList<>();
         smallGroup = BiomeVariants.SmallGroup.BODY;
         largeGroup = BiomeVariants.LargeGroup.LAND;
         salty = false;
@@ -56,31 +53,31 @@ public class BiomeBuilder
         volcanoBasaltHeight = 0;
     }
 
-    public BiomeBuilder types(BiomeDictionary.Type... types)
+    public BiomeBuilder<V> types(BiomeDictionary.Type... types)
     {
         this.dictionaryTypes.addAll(Arrays.asList(types));
         return this;
     }
 
-    public BiomeBuilder group(BiomeVariants.SmallGroup group)
+    public BiomeBuilder<V> group(BiomeVariants.SmallGroup group)
     {
         this.smallGroup = group;
         return this;
     }
 
-    public BiomeBuilder group(BiomeVariants.LargeGroup group)
+    public BiomeBuilder<V> group(BiomeVariants.LargeGroup group)
     {
         this.largeGroup = group;
         return this;
     }
 
-    public BiomeBuilder salty()
+    public BiomeBuilder<V> salty()
     {
         this.salty = true;
         return this;
     }
 
-    public BiomeBuilder volcanoes(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight)
+    public BiomeBuilder<V> volcanoes(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight)
     {
         this.volcanic = true;
         this.volcanoFrequency = frequency;
@@ -96,13 +93,8 @@ public class BiomeBuilder
         dictionaryTypes.forEach(type -> BiomeDictionary.addTypes(biome, type));
     }
 
-    @SuppressWarnings("unchecked")
-    public <V extends BiomeVariants> V build()
+    public V build()
     {
-        if (parent != null)
-        {
-            return (V) new CarvingBiomeVariants(parent, carvingNoiseFactory);
-        }
-        return (V) new BiomeVariants(noiseFactory, smallGroup, largeGroup, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        return factory.apply(this);
     }
 }
