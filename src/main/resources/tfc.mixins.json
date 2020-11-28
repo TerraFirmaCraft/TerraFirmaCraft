@@ -25,13 +25,10 @@
     "world.gen.carver.ConfiguredCarverAccessor",
     "world.gen.feature.WorldDecoratingHelperAccessor",
     "world.gen.feature.template.TemplateAccessor",
-    "world.gen.settings.DimensionGeneratorSettingsMixin",
     "world.server.ServerWorldMixin"
   ],
   "client": [
     "client.MinecraftMixin",
-    "client.gui.screen.CreateWorldScreenMixin",
-    "client.gui.screen.WorldOptionsScreenAccessor",
     "client.multiplayer.PlayerControllerMixin",
     "client.renderer.FluidBlockRendererMixin",
     "client.renderer.FogRendererMixin",
