@@ -1,103 +1,89 @@
 package net.dries007.tfc.world.biome;
 
-import net.minecraft.util.math.BlockPos;
-
-import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.noise.*;
+import net.dries007.tfc.world.noise.Cellular2D;
+import net.dries007.tfc.world.noise.CellularNoiseType;
+import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 /**
  * Collection of noise functions used by volcanoes
- * Graphs: https://www.desmos.com/calculator/juyhjgnxxg
  */
 public final class VolcanoNoise
 {
-    private static final long SEED_MODIFIER = 24341L;
-    private static final float C1 = 9;
-    private static final float C2 = 0.05f;
-    private static final float C3 = 18;
-    private static final float D1 = -f1(C1);
-    private static final float D2 = D1 + f1(C2) - f2(C2);
+    private static final long SEED_MODIFIER = 23423123523L;
+    private static final float SEPARATION_MODIFIER = 0.0035f;
+    private static final float SIZE_MODIFIER = 0.05f;
 
-    /**
-     * @param seed The world seed
-     * @return A noise function determining the volcano's height at any given position
-     */
-    public static INoise2D height(long seed, int baseHeight, int maxHeight)
+    public static INoise2D easingNoise(long seed)
     {
-        final int seaLevel = TFCChunkGenerator.SEA_LEVEL;
-        return distance(seed).map(q -> {
-            if (q > C1)
-            {
-                return 0;
-            }
-            else if (q > C2)
-            {
-                return f1(q) + D1;
-            }
-            else
-            {
-                return f2(q) + D2;
-            }
-        }).scaled(0, 4.1f, seaLevel + baseHeight, seaLevel + maxHeight);
+        return cellNoise(seed).map(VolcanoNoise::calculateEasing);
     }
 
     /**
-     * @param seed The world seed
-     * @return A function which scales linearly from 0 to 1 based on the distance from a volcano center. This is the range that the volcano influences the surrounding terrain height.
+     * Represents a mapping from a volcano distance map (obtained via {@link VolcanoNoise#cellNoise(long)}) to a scalar value representing how close to a volcano we are, in  [0, 1].
+     *
+     * @param distance The square distance to the volcano
+     * @return A value in [0, 1], where 0 = not close to a volcano, (0, 1) = nearing a volcano, and 1 = near the center of the volcano
      */
-    public static INoise2D easing(long seed)
+    public static float calculateEasing(float distance)
     {
-        return distance(seed).map(q -> {
-            if (q > C1)
-            {
-                return 0;
-            }
-            else
-            {
-                return 1 - q / C1;
-            }
-        });
+        if (distance > SIZE_MODIFIER)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1f - distance / SIZE_MODIFIER;
+        }
     }
 
     /**
-     * @param seed The world seed
-     * @return A function which returns the nearest center position for any given location.
+     * @param distance The unscaled square distance from the volcano, roughly in [0, 1.2]
+     * @return A noise function determining the volcano's height at any given position, in the range [0, 1]
      */
-    public static ITyped2D<BlockPos> centers(long seed)
+    public static float calculateHeight(float distance)
     {
-        final Cellular2D cellNoise = new Cellular2D(seed + SEED_MODIFIER, 1.0f, CellularNoiseType.DISTANCE)
-            .spread(0.026f / C3);
-        final BlockPos.Mutable cursor = new BlockPos.Mutable();
-        return (x, z) -> {
-            cellNoise.noise(x, z);
-            cursor.setX((int) cellNoise.getCenterX());
-            cursor.setZ((int) cellNoise.getCenterY());
-            return cursor;
-        };
+        // Scale distance to [0, 1]
+        if (distance > SIZE_MODIFIER)
+        {
+            return 0;
+        }
+        else if (distance > 0)
+        {
+            distance /= SIZE_MODIFIER;
+        }
+
+        // Compute the height based on the distance
+        if (distance > 0.025f)
+        {
+            return (5f / (9f * distance + 1) - 0.5f) * 0.279173646008f;
+        }
+        else
+        {
+            float a = (distance * 9f + 0.05f);
+            return (8f * a * a + 2.97663265306f) * 0.279173646008f;
+        }
     }
 
     /**
+     * The noise affecting the distance that volcanoes use for both easing and height maps
+     *
      * @param seed The world seed
-     * @return A noise function representing the square distance from a given point to the nearest volcano
+     * @return A noise function which, when added to the distance noise from {@link VolcanoNoise#cellNoise(long)}, produces the actual distance used for further noise calculations
      */
-    private static INoise2D distance(long seed)
+    public static INoise2D distanceVariationNoise(long seed)
     {
-        return new Cellular2D(seed + SEED_MODIFIER, 1.0f, CellularNoiseType.DISTANCE)
-            .spread(0.026f / C3)
-            .scaled(-C3 * C3, C3 * C3)
-            .add(new OpenSimplex2D(seed + 1)
-                .octaves(2)
-                .scaled(-0.08f, 0.08f)
-                .spread(0.026f * 7f));
+        return new OpenSimplex2D(seed + SEED_MODIFIER * 2).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
     }
 
-    private static float f1(float x)
+    /**
+     * The base cellular noise that volcanoes use for placement
+     *
+     * @param seed The world seed
+     * @return A cellular noise function
+     */
+    public static Cellular2D cellNoise(long seed)
     {
-        return 5 / (x + 1);
-    }
-
-    private static float f2(float x)
-    {
-        return 90 * (x + 0.05f) * (x + 0.05f);
+        return new Cellular2D(seed + SEED_MODIFIER, 0.8f, CellularNoiseType.DISTANCE).spread(SEPARATION_MODIFIER);
     }
 }

@@ -28,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
  * Artist for drawing images of specific types.
  * Explicitly handles noise, types, and direct color per pixel.
  */
-@SuppressWarnings({"unchecked", "unused"})
+@SuppressWarnings({"unchecked", "unused", "UnusedReturnValue"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
     private static final Level LEVEL = Level.forName("UNITTEST", 50);

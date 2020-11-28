@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:with_glaciers",
+  "config": {
+    "parent": "tfc:volcanic_canyons"
+  }
+}

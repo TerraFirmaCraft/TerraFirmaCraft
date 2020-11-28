@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:canyons",
+  "surface_builder": "tfc:volcanic_canyons",
   "features": [
     [
       "tfc:erosion"
@@ -40,7 +40,9 @@
     [
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
-      "tfc:mossy_boulder"
+      "tfc:mossy_boulder",
+      "tfc:volcano_rivulet",
+      "tfc:volcano_caldera"
     ],
     [],
     [

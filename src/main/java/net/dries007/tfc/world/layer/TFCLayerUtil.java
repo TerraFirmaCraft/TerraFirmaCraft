@@ -44,11 +44,14 @@ public class TFCLayerUtil
     public static final int CONTINENTAL_MID = 2;
     public static final int CONTINENTAL_HIGH = 3;
     public static final int OCEAN_OCEAN_DIVERGING = 4;
-    public static final int OCEAN_OCEAN_CONVERGING = 5;
-    public static final int OCEAN_CONTINENT_DIVERGING = 6;
-    public static final int OCEAN_CONTINENT_CONVERGING = 7;
-    public static final int CONTINENT_CONTINENT_DIVERGING = 8;
-    public static final int CONTINENT_CONTINENT_CONVERGING = 9;
+    public static final int OCEAN_OCEAN_CONVERGING_LOWER = 5;
+    public static final int OCEAN_OCEAN_CONVERGING_UPPER = 6;
+    public static final int OCEAN_CONTINENT_CONVERGING_LOWER = 7;
+    public static final int OCEAN_CONTINENT_CONVERGING_UPPER = 8;
+    public static final int OCEAN_CONTINENT_DIVERGING = 9;
+    public static final int CONTINENT_CONTINENT_DIVERGING = 10;
+    public static final int CONTINENT_CONTINENT_CONVERGING = 11;
+    public static final int CONTINENTAL_SHELF = 12;
 
     /**
      * These are the int IDs that are used for layer generation
@@ -56,7 +59,7 @@ public class TFCLayerUtil
      */
     public static final int OCEAN;
     public static final int DEEP_OCEAN;
-    public static final int DEEP_OCEAN_RIDGE;
+    public static final int DEEP_OCEAN_TRENCH;
     public static final int PLAINS;
     public static final int HILLS;
     public static final int LOWLANDS;
@@ -66,25 +69,31 @@ public class TFCLayerUtil
     public static final int PLATEAU;
     public static final int OLD_MOUNTAINS;
     public static final int MOUNTAINS;
-    public static final int FLOODED_MOUNTAINS;
+    public static final int VOLCANIC_MOUNTAINS;
+    public static final int OCEANIC_MOUNTAINS;
+    public static final int VOLCANIC_OCEANIC_MOUNTAINS;
     public static final int CANYONS;
     public static final int SHORE;
     public static final int LAKE;
     public static final int RIVER;
     public static final int MOUNTAIN_RIVER;
+    public static final int VOLCANIC_MOUNTAIN_RIVER;
     public static final int OLD_MOUNTAIN_RIVER;
-    public static final int FLOODED_MOUNTAIN_RIVER;
+    public static final int OCEANIC_MOUNTAIN_RIVER;
+    public static final int VOLCANIC_OCEANIC_MOUNTAIN_RIVER;
     public static final int MOUNTAIN_LAKE;
+    public static final int VOLCANIC_MOUNTAIN_LAKE;
     public static final int OLD_MOUNTAIN_LAKE;
-    public static final int FLOODED_MOUNTAIN_LAKE;
+    public static final int OCEANIC_MOUNTAIN_LAKE;
+    public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
     public static final int PLATEAU_LAKE;
 
     /**
      * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
      */
-    public static final int LAKE_MARKER;
-    public static final int LARGE_LAKE_MARKER;
     public static final int OCEAN_OCEAN_CONVERGING_MARKER;
+    public static final int OCEAN_OCEAN_DIVERGING_MARKER;
+    public static final int LAKE_MARKER;
     public static final int RIVER_MARKER;
     public static final int NULL_MARKER;
     public static final int INLAND_MARKER;
@@ -95,7 +104,7 @@ public class TFCLayerUtil
     {
         OCEAN = register(TFCBiomes.OCEAN);
         DEEP_OCEAN = register(TFCBiomes.DEEP_OCEAN);
-        DEEP_OCEAN_RIDGE = register(TFCBiomes.DEEP_OCEAN_RIDGE);
+        DEEP_OCEAN_TRENCH = register(TFCBiomes.DEEP_OCEAN_TRENCH);
         PLAINS = register(TFCBiomes.PLAINS);
         HILLS = register(TFCBiomes.HILLS);
         LOWLANDS = register(TFCBiomes.LOWLANDS);
@@ -105,22 +114,28 @@ public class TFCLayerUtil
         PLATEAU = register(TFCBiomes.PLATEAU);
         OLD_MOUNTAINS = register(TFCBiomes.OLD_MOUNTAINS);
         MOUNTAINS = register(TFCBiomes.MOUNTAINS);
-        FLOODED_MOUNTAINS = register(TFCBiomes.FLOODED_MOUNTAINS);
+        VOLCANIC_MOUNTAINS = register(TFCBiomes.VOLCANIC_MOUNTAINS);
+        OCEANIC_MOUNTAINS = register(TFCBiomes.OCEANIC_MOUNTAINS);
+        VOLCANIC_OCEANIC_MOUNTAINS = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
         CANYONS = register(TFCBiomes.CANYONS);
         SHORE = register(TFCBiomes.SHORE);
         LAKE = register(TFCBiomes.LAKE);
         RIVER = register(TFCBiomes.RIVER);
         MOUNTAIN_RIVER = register(TFCBiomes.MOUNTAIN_RIVER);
+        VOLCANIC_MOUNTAIN_RIVER = register(TFCBiomes.VOLCANIC_MOUNTAIN_RIVER);
         OLD_MOUNTAIN_RIVER = register(TFCBiomes.OLD_MOUNTAIN_RIVER);
-        FLOODED_MOUNTAIN_RIVER = register(TFCBiomes.FLOODED_MOUNTAIN_RIVER);
+        OCEANIC_MOUNTAIN_RIVER = register(TFCBiomes.OCEANIC_MOUNTAIN_RIVER);
+        VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_RIVER);
         MOUNTAIN_LAKE = register(TFCBiomes.MOUNTAIN_LAKE);
+        VOLCANIC_MOUNTAIN_LAKE = register(TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
         OLD_MOUNTAIN_LAKE = register(TFCBiomes.OLD_MOUNTAIN_LAKE);
-        FLOODED_MOUNTAIN_LAKE = register(TFCBiomes.FLOODED_MOUNTAIN_LAKE);
+        OCEANIC_MOUNTAIN_LAKE = register(TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
+        VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
         PLATEAU_LAKE = register(TFCBiomes.PLATEAU_LAKE);
 
-        LAKE_MARKER = registerDummy();
-        LARGE_LAKE_MARKER = registerDummy();
         OCEAN_OCEAN_CONVERGING_MARKER = registerDummy();
+        OCEAN_OCEAN_DIVERGING_MARKER = registerDummy();
+        LAKE_MARKER = registerDummy();
         RIVER_MARKER = registerDummy();
         NULL_MARKER = registerDummy();
         INLAND_MARKER = registerDummy();
@@ -150,12 +165,17 @@ public class TFCLayerUtil
         IAreaFactory<LazyArea> mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
         plateArtist.draw("plate_generation", 1, plateLayer);
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
+
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
         layerArtist.draw("plate_boundary", 1, mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        layerArtist.draw("plate_boundary", 2, mainLayer);
+        mainLayer = PlateBoundaryModifierLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        layerArtist.draw("plate_boundary", 3, mainLayer);
 
         // Plates -> Biomes
         mainLayer = PlateBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
@@ -254,7 +274,7 @@ public class TFCLayerUtil
         IAreaFactory<LazyArea> mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 
@@ -306,9 +326,14 @@ public class TFCLayerUtil
         return completedLayers;
     }
 
+    public static boolean isContinental(int value)
+    {
+        return value == CONTINENTAL_LOW || value == CONTINENTAL_MID || value == CONTINENTAL_HIGH;
+    }
+
     public static boolean hasShore(int value)
     {
-        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != FLOODED_MOUNTAINS && value != LAKE;
+        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
     }
 
     public static boolean hasLake(int value)
@@ -322,13 +347,21 @@ public class TFCLayerUtil
         {
             return MOUNTAIN_LAKE;
         }
+        if (value == VOLCANIC_MOUNTAINS)
+        {
+            return VOLCANIC_MOUNTAIN_LAKE;
+        }
         if (value == OLD_MOUNTAINS)
         {
             return OLD_MOUNTAIN_LAKE;
         }
-        if (value == FLOODED_MOUNTAINS)
+        if (value == OCEANIC_MOUNTAINS)
         {
-            return FLOODED_MOUNTAIN_LAKE;
+            return OCEANIC_MOUNTAIN_LAKE;
+        }
+        if (value == VOLCANIC_OCEANIC_MOUNTAINS)
+        {
+            return VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
         }
         if (value == PLATEAU)
         {
@@ -348,35 +381,48 @@ public class TFCLayerUtil
         {
             return MOUNTAIN_RIVER;
         }
+        if (value == VOLCANIC_MOUNTAINS)
+        {
+            return VOLCANIC_MOUNTAIN_RIVER;
+        }
         if (value == OLD_MOUNTAINS)
         {
             return OLD_MOUNTAIN_RIVER;
         }
-        if (value == FLOODED_MOUNTAINS)
+        if (value == OCEANIC_MOUNTAINS)
         {
-            return FLOODED_MOUNTAIN_RIVER;
+            return OCEANIC_MOUNTAIN_RIVER;
+        }
+        if (value == VOLCANIC_OCEANIC_MOUNTAINS)
+        {
+            return VOLCANIC_OCEANIC_MOUNTAIN_RIVER;
         }
         return RIVER;
     }
 
     public static boolean isOcean(int value)
     {
-        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
+        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_TRENCH;
+    }
+
+    public static boolean isOceanOrMarker(int value)
+    {
+        return isOcean(value) || value == OCEAN_OCEAN_CONVERGING_MARKER || value == OCEAN_OCEAN_DIVERGING_MARKER;
     }
 
     public static boolean isLake(int value)
     {
-        return value == LAKE || value == FLOODED_MOUNTAIN_LAKE || value == OLD_MOUNTAIN_LAKE || value == MOUNTAIN_LAKE || value == PLATEAU_LAKE;
+        return value == LAKE || value == OCEANIC_MOUNTAIN_LAKE || value == OLD_MOUNTAIN_LAKE || value == MOUNTAIN_LAKE || value == VOLCANIC_OCEANIC_MOUNTAIN_LAKE || value == VOLCANIC_MOUNTAIN_LAKE || value == PLATEAU_LAKE;
     }
 
     public static boolean isRiver(int value)
     {
-        return value == RIVER || value == FLOODED_MOUNTAIN_RIVER || value == OLD_MOUNTAIN_RIVER || value == MOUNTAIN_RIVER;
+        return value == RIVER || value == OCEANIC_MOUNTAIN_RIVER || value == OLD_MOUNTAIN_RIVER || value == MOUNTAIN_RIVER || value == VOLCANIC_OCEANIC_MOUNTAIN_RIVER || value == VOLCANIC_MOUNTAIN_RIVER;
     }
 
     public static boolean isMountains(int value)
     {
-        return value == MOUNTAINS || value == FLOODED_MOUNTAINS || value == OLD_MOUNTAINS;
+        return value == MOUNTAINS || value == OCEANIC_MOUNTAINS || value == OLD_MOUNTAINS || value == VOLCANIC_MOUNTAINS || value == VOLCANIC_OCEANIC_MOUNTAINS;
     }
 
     public static boolean isLow(int value)

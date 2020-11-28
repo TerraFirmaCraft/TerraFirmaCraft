@@ -36,7 +36,7 @@ public class BiomeNoiseTests
     public void testOceanRidge()
     {
         long seed = System.currentTimeMillis();
-        INoise2D noise = TFCBiomes.DEEP_OCEAN_RIDGE.createNoiseLayer(seed);
+        INoise2D noise = TFCBiomes.DEEP_OCEAN_TRENCH.createNoiseLayer(seed);
 
         NOISE.center(500).size(1000);
         NOISE.draw("deep_ocean_ridge", noise);
