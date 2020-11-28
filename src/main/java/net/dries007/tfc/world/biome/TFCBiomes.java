@@ -152,7 +152,7 @@ public final class TFCBiomes
         return VARIANTS;
     }
 
-    private static <V extends BiomeVariants> V register(String baseName, BiomeBuilder builder)
+    private static <V extends BiomeVariants> V register(String baseName, BiomeBuilder<V> builder)
     {
         V variants = builder.build();
         VARIANTS.add(variants);
