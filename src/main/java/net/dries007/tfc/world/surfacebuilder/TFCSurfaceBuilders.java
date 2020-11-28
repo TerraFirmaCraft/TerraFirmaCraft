@@ -45,7 +45,7 @@ public class TFCSurfaceBuilders
     public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", UnderwaterSurfaceBuilder::new, Codecs.NOOP_SURFACE_BUILDER_CONFIG);
 
     public static final RegistryObject<GlacierSurfaceBuilder> WITH_GLACIERS = register("with_glaciers", GlacierSurfaceBuilder::new, ParentedSurfaceBuilderConfig.CODEC);
-    public static final RegistryObject<VolcanoesSurfaceBuilder> MOUNTAINS_AND_VOLCANOES = register("with_volcanoes", VolcanoesSurfaceBuilder::new, ParentedSurfaceBuilderConfig.CODEC);
+    public static final RegistryObject<VolcanoesSurfaceBuilder> WITH_VOLCANOES = register("with_volcanoes", VolcanoesSurfaceBuilder::new, ParentedSurfaceBuilderConfig.CODEC);
 
     // Used for shores - red sand = normal beach sand, sandstone = variant beach sand (pink / black)
     public static final Lazy<SurfaceBuilderConfig> RED_SAND_CONFIG = config(() -> Blocks.RED_SAND);

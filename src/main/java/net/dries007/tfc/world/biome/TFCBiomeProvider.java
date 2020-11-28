@@ -139,8 +139,6 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     @Override
     public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
-        if (true)
-            return biomeRegistry.getOrThrow(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL).getRegistryKey());
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
