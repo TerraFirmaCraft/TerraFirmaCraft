@@ -264,7 +264,7 @@ def generate(rm: ResourceManager):
     # Plants
     rm.feature(('plant', 'allium'), wg.configure_decorated(plant_feature('tfc:plant/allium[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 18, 150, 400)))
     rm.feature(('plant', 'athyrium_fern'), wg.configure_decorated(plant_feature('tfc:plant/athyrium_fern[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 128, True), decorate_chance(1), 'minecraft:square', decorate_climate(20, 30, 200, 500)))
-    rm.feature(('plant', 'barrel_cactus'), wg.configure_decorated(plant_feature('tfc:plant/barrel_cactus[age=1,stage=1,part=lower]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-6, 50, 0, 75)))
+    rm.feature(('plant', 'barrel_cactus'), wg.configure_decorated(plant_feature('tfc:plant/barrel_cactus[age=1,stage=1,part=lower]', 'tfc:tall_plant', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-6, 50, 0, 85)))
     rm.feature(('plant', 'black_orchid'), wg.configure_decorated(plant_feature('tfc:plant/black_orchid[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(30, 41, 290, 410)))
     rm.feature(('plant', 'blood_lily'), wg.configure_decorated(plant_feature('tfc:plant/blood_lily[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(33, 45, 200, 500)))
     rm.feature(('plant', 'blue_orchid'), wg.configure_decorated(plant_feature('tfc:plant/blue_orchid[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(8, 16, 250, 390)))
@@ -307,7 +307,7 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'ryegrass'), wg.configure_decorated(plant_feature('tfc:plant/ryegrass[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 20), decorate_chance(1), 'minecraft:square', decorate_climate(-10, 35, 150, 300)))
     rm.feature(('plant', 'sacred_datura'), wg.configure_decorated(plant_feature('tfc:plant/sacred_datura[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(18, 28, 75, 150)))
     rm.feature(('plant', 'sago'), wg.configure_decorated(plant_feature('tfc:plant/sago[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 10, 10), decorate_chance(4), 'minecraft:square', decorate_climate(-10, 50, 200, 500)))
-    rm.feature(('plant', 'sagebrush'), wg.configure_decorated(plant_feature('tfc:plant/sagebrush[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 50, 0, 100)))
+    rm.feature(('plant', 'sagebrush'), wg.configure_decorated(plant_feature('tfc:plant/sagebrush[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 50, 0, 120)))
     rm.feature(('plant', 'sapphire_tower'), wg.configure_decorated(plant_feature('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 'tfc:tall_plant', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(16, 39, 75, 200)))
     rm.feature(('plant', 'sargassum'), wg.configure_decorated(plant_feature('tfc:plant/sargassum[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(7), 'minecraft:square', decorate_climate(0, 25, 0, 500)))
     rm.feature(('plant', 'scutch_grass'), wg.configure_decorated(plant_feature('tfc:plant/scutch_grass[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 20), decorate_chance(1), 'minecraft:square', decorate_climate(0, 50, 150, 500)))
@@ -336,7 +336,14 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'water_lily'), wg.configure_decorated(plant_feature('tfc:plant/water_lily[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(7), 'minecraft:square', decorate_climate(-5, 38, 0, 500)))
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
-    rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {'probability': 0.5}), decorate_chance(5), 'minecraft:square', decorate_climate(20, 50, 200, 500)))
+    rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {
+        'probability': 0.2
+    }), decorate_chance(30), decorate_climate(20, 50, 300, 500, True), ('minecraft:count_noise_biased', {
+        'noise_to_count_ratio': 160,
+        'noise_factor': 80.0,
+        'noise_offset': 0.3
+    }), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    # todo: mixin to bamboo to make it not grow insanely fast / not able to insta grow
 
     # Groundcover
     sand = [wg.block_state('tfc:sand/%s' % color) for color in SAND_BLOCK_TYPES]
@@ -388,19 +395,19 @@ def generate(rm: ResourceManager):
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default', lake_features=False)
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', volcano_features=True)
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', ocean_carvers=True, volcano_features=True)
+            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean_ridge', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
-            biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False)
+            biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False, ocean_features=True)
 
             biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_carvers=True)
+            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
             biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_carvers=True)
+            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
             biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
 
 
@@ -518,7 +525,7 @@ def plant_feature(block: str, placer: str, vertical_spread: int, horizontal_spre
     feature = 'tfc:random_patch_density'
     if placer == 'tfc:water_plant':
         feature = 'tfc:water_patch'
-    if placer == 'tfc:emergent':
+    elif placer == 'tfc:emergent':
         feature = 'tfc:emergent_patch'
     return wg.configure(feature, cfg)
 
@@ -592,8 +599,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         if rain.id in ('damp', 'wet'):
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
     if ocean_features:
-        pass  # todo: ocean plants
-    else:
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES]
+    if (not ocean_features) or name == 'flooded_mountains': # need to re-add freshwater features to flooded mountains
         # Non-ocean biome, add all land based features
         if lake_features:
             features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
@@ -607,8 +614,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:ice_and_snow'] # This must go last
 
-        # todo: separate plants out better
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items()]
+        # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES]
         if volcano_features:
             features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']
 

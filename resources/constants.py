@@ -224,16 +224,16 @@ WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fi
 PLANTS: Dict[str, Plant] = {
     'allium': Plant(False, 10, 18, 150, 400, 'standard'),
     'athyrium_fern': Plant(True, 20, 30, 200, 500, 'standard'),
-    'barrel_cactus': Plant(False, -6, 50, 0, 75, 'cactus'),
+    'barrel_cactus': Plant(False, -6, 50, 0, 85, 'cactus'),
     'black_orchid': Plant(False, 30, 41, 290, 410, 'standard'),
     'blood_lily': Plant(False, 33, 45, 200, 500, 'standard'),
     'blue_orchid': Plant(False, 8, 16, 250, 390, 'standard'),
     'butterfly_milkweed': Plant(False, -40, 25, 75, 300, 'standard'),
     'calendula': Plant(False, -5, 15, 130, 300, 'standard'),
     'canna': Plant(True, 30, 50, 270, 500, 'standard'),
-    'cattail': Plant(False, -10, 50, 150, 500, 'emergent'),
+    'cattail': Plant(False, -10, 50, 150, 500, 'emergent_fresh'),
     'dandelion': Plant(False, 0, 22, 120, 400, 'standard'),
-    'duckweed': Plant(False, -34, 25, 0, 500, 'floating'),
+    'duckweed': Plant(False, -34, 25, 0, 500, 'floating_fresh'),
     'field_horsetail': Plant(False, 10, 26, 300, 500, 'standard'),
     'fountain_grass': Plant(False, -12, 40, 75, 150, 'short_grass'),
     'foxglove': Plant(False, 15, 29, 150, 300, 'tall_plant'),
@@ -246,9 +246,9 @@ PLANTS: Dict[str, Plant] = {
     'lady_fern': Plant(False, -50, 16, 200, 490, 'standard'),
     'licorice_fern': Plant(False, -15, 25, 300, 400, 'epiphyte'),
     'laminaria': Plant(False, -50, 12, 100, 500, 'water'),
-    'lotus': Plant(False, 15, 50, 0, 500, 'floating'),
-    'manatee_grass': Plant(False, 25, 50, 250, 500, 'seagrass'),
-    'marigold': Plant(False, 20, 50, 50, 390, 'emergent'),
+    'lotus': Plant(False, 15, 50, 0, 500, 'floating_fresh'),
+    'manatee_grass': Plant(False, 25, 50, 250, 500, 'grass_water'),
+    'marigold': Plant(False, 20, 50, 50, 390, 'emergent_fresh'),
     'meads_milkweed': Plant(False, -10, 14, 130, 380, 'standard'),
     'morning_glory': Plant(False, -11, 19, 300, 500, 'creeping'),
     'moss': Plant(False, -7, 28, 250, 450, 'creeping'),
@@ -258,7 +258,7 @@ PLANTS: Dict[str, Plant] = {
     'oxeye_daisy': Plant(False, 10, 40, 120, 300, 'standard'),
     'pampas_grass': Plant(True, 20, 50, 0, 200, 'tall_grass'),
     'perovskia': Plant(True, -50, 20, 0, 200, 'dry'),
-    'pistia': Plant(False, 10, 45, 0, 400, 'floating'),
+    'pistia': Plant(False, 10, 45, 0, 400, 'floating_fresh'),
     'poppy': Plant(False, -40, 36, 150, 250, 'standard'),
     'primrose': Plant(False, -34, 33, 150, 300, 'standard'),
     'pulsatilla': Plant(False, -50, 30, 50, 200, 'standard'),
@@ -266,17 +266,17 @@ PLANTS: Dict[str, Plant] = {
     'rose': Plant(True, -5, 20, 150, 300, 'tall_plant'),
     'ryegrass': Plant(False, -10, 35, 150, 300, 'short_grass'),
     'sacred_datura': Plant(False, 18, 28, 75, 150, 'standard'),
-    'sago': Plant(False, -10, 50, 200, 500, 'water'),
-    'sagebrush': Plant(False, -34, 50, 0, 100, 'dry'),
+    'sago': Plant(False, -10, 50, 200, 500, 'water_fresh'),
+    'sagebrush': Plant(False, -34, 50, 0, 120, 'dry'),
     'sapphire_tower': Plant(False, 16, 39, 75, 200, 'tall_plant'),
-    'sargassum': Plant(False, 0, 25, 0, 500, 'floating_sea'),
+    'sargassum': Plant(False, 0, 25, 0, 500, 'floating'),
     'scutch_grass': Plant(False, 0, 50, 150, 500, 'short_grass'),
     'snapdragon_pink': Plant(False, 24, 36, 150, 300, 'standard'),
     'snapdragon_red': Plant(False, 24, 36, 150, 300, 'standard'),
     'snapdragon_white': Plant(False, 24, 36, 150, 300, 'standard'),
     'snapdragon_yellow': Plant(False, 24, 36, 150, 300, 'standard'),
     'spanish_moss': Plant(False, 35, 41, 400, 500, 'hanging'),
-    'star_grass': Plant(False, -50, 50, 50, 260, 'seagrass'),
+    'star_grass': Plant(False, -50, 50, 50, 260, 'grass_water'),
     'strelitzia': Plant(False, 35, 50, 50, 300, 'standard'),
     'switchgrass': Plant(False, -29, 29, 110, 390, 'tall_grass'),
     'sword_fern': Plant(False, -40, 25, 100, 500, 'standard'),
@@ -290,17 +290,17 @@ PLANTS: Dict[str, Plant] = {
     'tulip_pink': Plant(False, -34, 0, 100, 200, 'standard'),
     'tulip_red': Plant(False, -34, 0, 100, 200, 'standard'),
     'tulip_white': Plant(False, -34, 0, 100, 200, 'standard'),
-    'turtle_grass': Plant(False, -50, 25, 240, 500, 'seagrass'),
+    'turtle_grass': Plant(False, -50, 25, 240, 500, 'grass_water'),
     'vriesea': Plant(False, 22, 31, 200, 400, 'epiphyte'),
-    'water_canna': Plant(True, 0, 36, 150, 500, 'floating'),
-    'water_lily': Plant(False, -5, 38, 0, 500, 'floating'),
-    'yucca': Plant(False, -34, 36, 0, 75, 'desert')
+    'water_canna': Plant(True, 0, 36, 150, 500, 'floating_fresh'),
+    'water_lily': Plant(False, -5, 38, 0, 500, 'floating_fresh'),
+    'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
 
-SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
+SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed', 'guano_shore']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
-WATER_BIOMES = ['mountain_river', 'old_mountain_river', 'flooded_mountain_river', 'mountain_lake', 'old_mountain_lake', 'flooded_mountain_lake', 'plateau_lake']
 GENERAL_DECORATORS = ['feather', 'flint']
+OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

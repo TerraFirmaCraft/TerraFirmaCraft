@@ -9,7 +9,7 @@ import net.minecraft.world.gen.blockplacer.BlockPlacer;
 import net.minecraft.world.gen.blockplacer.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.plant.TallSeaPlantBlock;
+import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
 
 public class EmergentPlantPlacer extends BlockPlacer
 {
@@ -18,7 +18,7 @@ public class EmergentPlantPlacer extends BlockPlacer
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
     {
-        ((TallSeaPlantBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
+        ((TallWaterPlantBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }
 
     protected BlockPlacerType<?> type() {

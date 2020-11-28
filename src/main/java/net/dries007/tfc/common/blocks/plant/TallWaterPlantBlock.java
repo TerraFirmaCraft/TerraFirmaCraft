@@ -18,25 +18,30 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
-public abstract class TallSeaPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
+public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
 {
-    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-
-    public static TallSeaPlantBlock create(IPlant plant, Properties properties)
+    public static TallWaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
-        return new TallSeaPlantBlock(properties)
+        return new TallWaterPlantBlock(properties)
         {
             @Override
             public IPlant getPlant()
             {
                 return plant;
             }
+
+            @Override
+            public FluidProperty getFluidPropertyAbstract()
+            {
+                return fluid;
+            }
         };
     }
 
-    protected TallSeaPlantBlock(Properties properties)
+    protected TallWaterPlantBlock(Properties properties)
     {
         super(properties);
+
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
     }
 
@@ -84,7 +89,7 @@ public abstract class TallSeaPlantBlock extends TFCTallGrassBlock implements IFl
     @Override
     public FluidProperty getFluidProperty()
     {
-        return FLUID;
+        return getFluidPropertyAbstract();
     }
 
     @Override
@@ -98,7 +103,12 @@ public abstract class TallSeaPlantBlock extends TFCTallGrassBlock implements IFl
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
         int age = random.nextInt(4);
-        world.setBlock(pos, defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age).setValue(getFluidProperty(), getFluidProperty().keyFor(world.getFluidState(pos).getType())), flags);
-        world.setBlock(pos.above(), defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age).setValue(getFluidProperty(), getFluidProperty().keyFor(world.getFluidState(pos.above()).getType())), flags);
+        BlockState lowerState = getStateWithFluid(defaultBlockState(), world.getFluidState(pos).getType());
+        if (lowerState.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
+            return;
+        world.setBlock(pos, lowerState.setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
+        world.setBlock(pos.above(), getStateWithFluid(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.above()).getType()), flags);
     }
+
+    public abstract FluidProperty getFluidPropertyAbstract();
 }

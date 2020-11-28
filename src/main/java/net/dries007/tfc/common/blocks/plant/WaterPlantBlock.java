@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -18,17 +19,20 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggable
 {
-    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-
-    public static WaterPlantBlock create(IPlant plant, Properties properties)
+    public static WaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
         return new WaterPlantBlock(properties)
         {
-
             @Override
             public IPlant getPlant()
             {
                 return plant;
+            }
+
+            @Override
+            public FluidProperty getFluidPropertyAbstract()
+            {
+                return fluid;
             }
         };
     }
@@ -37,7 +41,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.WATER)));
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -78,6 +82,8 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     @Override
     public FluidProperty getFluidProperty()
     {
-        return FLUID;
+        return getFluidPropertyAbstract();
     }
+
+    public abstract FluidProperty getFluidPropertyAbstract();
 }

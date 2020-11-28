@@ -9,33 +9,55 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:bamboo",
+              "type": "minecraft:decorated",
               "config": {
-                "probability": 0.5
+                "feature": {
+                  "type": "minecraft:decorated",
+                  "config": {
+                    "feature": {
+                      "type": "minecraft:bamboo",
+                      "config": {
+                        "probability": 0.2
+                      }
+                    },
+                    "decorator": {
+                      "type": "minecraft:heightmap_world_surface",
+                      "config": {}
+                    }
+                  }
+                },
+                "decorator": {
+                  "type": "minecraft:square",
+                  "config": {}
+                }
               }
             },
             "decorator": {
-              "type": "tfc:climate",
+              "type": "minecraft:count_noise_biased",
               "config": {
-                "min_temperature": 20,
-                "max_temperature": 50,
-                "min_rainfall": 200,
-                "max_rainfall": 500,
-                "needs_forest": false
+                "noise_to_count_ratio": 160,
+                "noise_factor": 80.0,
+                "noise_offset": 0.3
               }
             }
           }
         },
         "decorator": {
-          "type": "minecraft:square",
-          "config": {}
+          "type": "tfc:climate",
+          "config": {
+            "min_temperature": 20,
+            "max_temperature": 50,
+            "min_rainfall": 300,
+            "max_rainfall": 500,
+            "needs_forest": true
+          }
         }
       }
     },
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 5
+        "chance": 30
       }
     }
   }

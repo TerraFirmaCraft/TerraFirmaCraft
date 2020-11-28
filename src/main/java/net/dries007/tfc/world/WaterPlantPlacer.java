@@ -3,6 +3,7 @@ package net.dries007.tfc.world;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.blockplacer.BlockPlacer;
@@ -10,6 +11,9 @@ import net.minecraft.world.gen.blockplacer.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.plant.WaterPlantBlock;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class WaterPlantPlacer extends BlockPlacer
 {
@@ -18,10 +22,19 @@ public class WaterPlantPlacer extends BlockPlacer
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
     {
-        worldIn.setBlock(pos, state.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(pos).getType())).setValue(TFCBlockStateProperties.AGE_3, random.nextInt(4)), 2);
+        if (state.getBlock() instanceof IFluidLoggable)
+        {
+            IFluidLoggable block = (IFluidLoggable) state.getBlock();
+            BlockState setState = block.getStateWithFluid(state, worldIn.getFluidState(pos).getType());
+            if (setState.getValue(block.getFluidProperty()).getFluid() == Fluids.EMPTY)
+                return;
+            worldIn.setBlock(pos, setState.setValue(TFCBlockStateProperties.AGE_3, random.nextInt(4)), 2);
+        }
     }
 
-    protected BlockPlacerType<?> type() {
+    protected BlockPlacerType<?> type()
+    {
         return TFCBlockPlacerTypes.WATER_PLANT_PLACER.get();
     }
 }
+

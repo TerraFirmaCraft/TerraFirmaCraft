@@ -5,11 +5,14 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import java.util.function.Supplier;
+
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -22,7 +25,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
-    public static FloatingWaterPlantBlock create(IPlant plant, Properties properties)
+    public static FloatingWaterPlantBlock create(IPlant plant, Supplier<? extends Fluid> fluid, Properties properties)
     {
         return new FloatingWaterPlantBlock(properties)
         {
@@ -30,6 +33,12 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
             public IPlant getPlant()
             {
                 return plant;
+            }
+
+            @Override
+            public Fluid getFavoriteFluid()
+            {
+                return fluid.get();
             }
         };
     }
@@ -42,7 +51,8 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.below()).getMaterial() == Material.WATER;
+        BlockState belowState = worldIn.getBlockState(pos.below());
+        return (belowState.getFluidState() != Fluids.EMPTY.defaultFluidState() && belowState.getFluidState().getType() == getFavoriteFluid());
     }
 
     @Override
@@ -54,7 +64,6 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
         {
             worldIn.destroyBlock(new BlockPos(pos), true, entityIn);
         }
-
     }
 
     @Override
@@ -62,4 +71,6 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     {
         return SHAPE;
     }
+
+    public abstract Fluid getFavoriteFluid();
 }
