@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+
 public enum EdgeBiomeLayer implements ICastleTransformer
 {
     INSTANCE;
@@ -19,56 +21,45 @@ public enum EdgeBiomeLayer implements ICastleTransformer
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(west) || p.test(south) || p.test(east);
-        if (center == TFCLayerUtil.PLATEAU || center == TFCLayerUtil.BADLANDS)
+        if (center == PLATEAU || center == BADLANDS)
         {
-            if (matcher.test(i -> i == TFCLayerUtil.LOW_CANYONS || i == TFCLayerUtil.LOWLANDS))
+            if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))
             {
-                return TFCLayerUtil.CANYONS;
+                return HILLS;
             }
-            else if (matcher.test(i -> i == TFCLayerUtil.PLAINS || i == TFCLayerUtil.HILLS))
+            else if (matcher.test(i -> i == PLAINS || i == HILLS))
             {
-                return TFCLayerUtil.ROLLING_HILLS;
-            }
-            else if (matcher.test(i -> i == TFCLayerUtil.ROLLING_HILLS))
-            {
-                return TFCLayerUtil.BADLANDS;
+                return ROLLING_HILLS;
             }
         }
         else if (TFCLayerUtil.isMountains(center))
         {
             if (matcher.test(TFCLayerUtil::isLow))
             {
-                return TFCLayerUtil.ROLLING_HILLS;
+                return ROLLING_HILLS;
             }
         }
         // Inverses of above conditions
-        else if (center == TFCLayerUtil.LOWLANDS || center == TFCLayerUtil.LOW_CANYONS)
+        else if (center == LOWLANDS || center == LOW_CANYONS)
         {
-            if (matcher.test(i -> i == TFCLayerUtil.PLATEAU || i == TFCLayerUtil.BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
             {
-                return TFCLayerUtil.CANYONS;
+                return HILLS;
             }
             else if (matcher.test(TFCLayerUtil::isMountains))
             {
-                return TFCLayerUtil.ROLLING_HILLS;
+                return ROLLING_HILLS;
             }
         }
-        else if (center == TFCLayerUtil.PLAINS || center == TFCLayerUtil.HILLS)
+        else if (center == PLAINS || center == HILLS)
         {
-            if (matcher.test(i -> i == TFCLayerUtil.PLATEAU || i == TFCLayerUtil.BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
             {
-                return TFCLayerUtil.HILLS;
+                return HILLS;
             }
             else if (matcher.test(TFCLayerUtil::isMountains))
             {
-                return TFCLayerUtil.ROLLING_HILLS;
-            }
-        }
-        else if (center == TFCLayerUtil.ROLLING_HILLS)
-        {
-            if (matcher.test(i -> i == TFCLayerUtil.PLATEAU || i == TFCLayerUtil.BADLANDS))
-            {
-                return TFCLayerUtil.BADLANDS;
+                return ROLLING_HILLS;
             }
         }
         return center;

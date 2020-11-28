@@ -16,29 +16,28 @@ public class PlateGenerationLayer implements ITypedAreaTransformer0<Plate>
     private static final float PI = (float) Math.PI;
 
     private final Cellular2D plateNoise;
-    private final float plateSpread;
     private final int oceanPercent;
 
-    public PlateGenerationLayer(Cellular2D plateNoise, float plateSpread, int oceanPercent)
+    public PlateGenerationLayer(Cellular2D plateNoise, int oceanPercent)
     {
         this.plateNoise = plateNoise;
-        this.plateSpread = plateSpread;
         this.oceanPercent = oceanPercent;
     }
 
     @Override
     public Plate apply(ITypedNoiseRandom<Plate> context, int x, int z)
     {
-        plateNoise.noise(x * plateSpread, z * plateSpread);
+        plateNoise.noise(x, z);
         float centerX = plateNoise.getCenterX();
         float centerZ = plateNoise.getCenterY();
-        context.initRandom(Float.floatToRawIntBits(centerX), Float.floatToIntBits(centerZ));
+        context.initRandom(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
+        for (int j = 0; j < 10; j++) context.nextRandom(1);
         boolean oceanic = context.nextRandom(100) < oceanPercent;
-        float angle = 2 * PI * context.nextRandom(1000) / 1000f;
-        float velocity = context.nextRandom(1000) / 1000f;
-        float elevation = context.nextRandom(1000) / 1000f;
+        float angle = 2 * PI * context.nextRandom(100) / 100f;
+        float velocity = context.nextRandom(100) / 100f;
+        float elevation = context.nextRandom(100) / 100f;
         float driftX = MathHelper.cos(angle) * velocity;
         float driftZ = MathHelper.sin(angle) * velocity;
-        return new Plate(centerX / plateSpread, centerZ / plateSpread, driftX, driftZ, elevation, oceanic);
+        return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);
     }
 }

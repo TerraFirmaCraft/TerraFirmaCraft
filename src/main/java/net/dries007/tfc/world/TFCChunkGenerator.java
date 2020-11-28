@@ -322,7 +322,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         fillInitialChunkBlocks(chunk, surfaceHeightMap);
         updateInitialChunkHeightmaps(chunk, surfaceHeightMap);
         carveInitialChunkBlocks(chunk, carvingCenterMap, carvingHeightMap, airCarvingMask, liquidCarvingMask);
-        buildAccurateSurface(chunk, localBiomes, random);
+        buildAccurateSurface(world, chunk, localBiomes, random);
     }
 
     @Override
@@ -564,7 +564,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     /**
      * Builds surface, but based on a (older style) biome array as opposed to the noise based biome sampling used in vanilla
      */
-    protected void buildAccurateSurface(IChunk chunk, Biome[] accurateChunkBiomes, Random random)
+    protected void buildAccurateSurface(IWorld world, IChunk chunk, Biome[] accurateChunkBiomes, Random random)
     {
         final ChunkPos chunkPos = chunk.getPos();
         final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.EMPTY);
@@ -578,7 +578,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 final double noise = surfaceDepthNoise.getSurfaceNoiseValue(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
-                TFCSurfaceBuilders.applyIfPresent(biome.getGenerationSettings().getSurfaceBuilder().get(), random, chunkData, chunk, biome, posX, posZ, posY, noise, seed, settings.getDefaultBlock(), settings.getDefaultFluid(), getSeaLevel());
+                TFCSurfaceBuilders.applySurfaceBuilderWithContext(biome.getGenerationSettings().getSurfaceBuilder().get(), world, random, chunkData, chunk, biome, posX, posZ, posY, noise, seed, settings.getDefaultBlock(), settings.getDefaultFluid(), getSeaLevel());
             }
         }
     }

@@ -26,13 +26,24 @@ public class BiomeVariants
     private final SmallGroup smallGroup;
     private final LargeGroup largeGroup;
     private final boolean salty;
+    private final boolean volcanic;
+    private final int volcanoFrequency;
+    private final int volcanoBasaltHeight;
 
-    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup, boolean salty)
+    protected BiomeVariants(BiomeVariants parent)
+    {
+        this(parent.noiseFactory, parent.smallGroup, parent.largeGroup, parent.salty, parent.volcanic, parent.volcanoFrequency, parent.volcanoBasaltHeight);
+    }
+
+    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
         this.smallGroup = smallGroup;
         this.largeGroup = largeGroup;
         this.salty = salty;
+        this.volcanic = volcanic;
+        this.volcanoFrequency = volcanoFrequency;
+        this.volcanoBasaltHeight = volcanoBasaltHeight;
 
         extensions = new EnumMap<>(BiomeTemperature.class);
         for (BiomeTemperature temperature : BiomeTemperature.values())
@@ -54,6 +65,21 @@ public class BiomeVariants
     public boolean isSalty()
     {
         return salty;
+    }
+
+    public boolean isVolcanic()
+    {
+        return volcanic;
+    }
+
+    public float getVolcanoChance()
+    {
+        return 1f / volcanoFrequency;
+    }
+
+    public int getVolcanoBasaltHeight()
+    {
+        return volcanoBasaltHeight;
     }
 
     public INoise2D createNoiseLayer(long seed)

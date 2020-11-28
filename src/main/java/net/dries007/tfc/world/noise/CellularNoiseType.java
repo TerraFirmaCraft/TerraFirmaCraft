@@ -30,6 +30,9 @@
 
 package net.dries007.tfc.world.noise;
 
+/**
+ * Important to note: all distances are concerning square distances!
+ */
 public enum CellularNoiseType
 {
     VALUE,

@@ -139,6 +139,8 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     @Override
     public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
+        if (true)
+            return biomeRegistry.getOrThrow(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL).getRegistryKey());
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
@@ -219,7 +221,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public static final class LayerSettings
     {
         private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 45).forGetter(LayerSettings::getOceanPercent),
+            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(LayerSettings::getOceanPercent),
             Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale),
             ResourceLocation.CODEC.listOf().fieldOf("rocks").forGetter(LayerSettings::getRocks)
         ).apply(instance, LayerSettings::new));

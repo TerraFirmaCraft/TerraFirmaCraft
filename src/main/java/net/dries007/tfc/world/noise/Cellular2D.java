@@ -38,7 +38,12 @@ public class Cellular2D implements INoise2D
     private final float jitter;
     private final CellularNoiseType returnType;
 
+    // Last computed values
     private float centerX, centerY;
+    private int closestHash;
+    private float distance0, distance1;
+
+    // Modifiers
     private float frequency;
 
     public Cellular2D(long seed)
@@ -64,6 +69,11 @@ public class Cellular2D implements INoise2D
         return centerY;
     }
 
+    public float get(CellularNoiseType alternateType)
+    {
+        return alternateType.calculate(distance0, distance1, closestHash);
+    }
+
     @Override
     public float noise(float x, float y)
     {
@@ -73,9 +83,9 @@ public class Cellular2D implements INoise2D
         int xr = NoiseUtil.fastRound(x);
         int yr = NoiseUtil.fastRound(y);
 
-        float distance0 = Float.MAX_VALUE;
-        float distance1 = Float.MAX_VALUE;
-        int closestHash = 0;
+        distance0 = Float.MAX_VALUE;
+        distance1 = Float.MAX_VALUE;
+        closestHash = 0;
 
         float cellularJitter = 0.43701595f * jitter;
 

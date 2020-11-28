@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:mountains_and_volcanoes_with_glaciers",
+  "surface_builder": "tfc:mountains_with_glaciers",
   "features": [
     [
       "tfc:erosion"
@@ -39,10 +39,7 @@
       "tfc:peat_disc"
     ],
     [],
-    [
-      "tfc:volcano_rivulet",
-      "tfc:volcano_caldera"
-    ],
+    [],
     [],
     [
       "tfc:vein/gravel",

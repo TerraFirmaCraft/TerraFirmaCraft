@@ -8,6 +8,7 @@ import net.minecraft.block.SnowBlock;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 
@@ -34,7 +35,7 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
     }
 
     @Override
-    public void applyWithContext(ChunkData chunkData, Biome biomeIn, Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
+    public void applyWithContext(IWorld worldIn, ChunkData chunkData, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
     {
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
@@ -101,7 +102,7 @@ public class GlacierSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceB
         }
 
         // Reached here, so we delegate to the parent
-        TFCSurfaceBuilders.applyIfPresent(config.getParent(), random, chunkData, chunkIn, biomeIn, x, z, startHeight, noise, seed, defaultBlock, defaultFluid, seaLevel);
+        TFCSurfaceBuilders.applySurfaceBuilderWithContext(config.getParent(), worldIn, random, chunkData, chunkIn, biomeIn, x, z, startHeight, noise, seed, defaultBlock, defaultFluid, seaLevel);
     }
 
     @Override
