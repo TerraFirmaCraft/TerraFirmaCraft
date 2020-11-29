@@ -224,6 +224,7 @@ WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fi
 PLANTS: Dict[str, Plant] = {
     'allium': Plant(False, 10, 18, 150, 400, 'standard'),
     'athyrium_fern': Plant(True, 20, 30, 200, 500, 'standard'),
+    'badderlocks': Plant(False, -20, 20, 150, 500, 'emergent'),
     'barrel_cactus': Plant(False, -6, 50, 0, 85, 'cactus'),
     'black_orchid': Plant(False, 30, 41, 290, 410, 'standard'),
     'blood_lily': Plant(False, 33, 45, 200, 500, 'standard'),
