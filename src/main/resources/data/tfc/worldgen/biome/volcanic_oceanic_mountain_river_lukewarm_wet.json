@@ -1,0 +1,110 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "precipitation": "rain",
+  "category": "river",
+  "depth": 0,
+  "scale": 0,
+  "temperature": 0.75,
+  "temperature_modifier": "none",
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 4566514,
+    "water_fog_color": 267827
+  },
+  "carvers": {
+    "air": [
+      "tfc:worley_cave",
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": [
+      "tfc:underwater_cave",
+      "tfc:underwater_canyon"
+    ]
+  },
+  "surface_builder": "tfc:volcanic_mountains",
+  "features": [
+    [
+      "tfc:erosion"
+    ],
+    [
+      "tfc:underground_flood_fill_lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "tfc:vein/gravel",
+      "tfc:vein/normal_native_copper",
+      "tfc:vein/surface_native_copper",
+      "tfc:vein/normal_native_gold",
+      "tfc:vein/deep_native_gold",
+      "tfc:vein/normal_native_silver",
+      "tfc:vein/poor_native_silver",
+      "tfc:vein/normal_hematite",
+      "tfc:vein/deep_hematite",
+      "tfc:vein/normal_cassiterite",
+      "tfc:vein/surface_cassiterite",
+      "tfc:vein/normal_bismuthinite",
+      "tfc:vein/surface_bismuthinite",
+      "tfc:vein/normal_garnierite",
+      "tfc:vein/poor_garnierite",
+      "tfc:vein/normal_malachite",
+      "tfc:vein/poor_malachite",
+      "tfc:vein/normal_magnetite",
+      "tfc:vein/deep_magnetite",
+      "tfc:vein/normal_limonite",
+      "tfc:vein/deep_limonite",
+      "tfc:vein/normal_sphalerite",
+      "tfc:vein/surface_sphalerite",
+      "tfc:vein/normal_tetrahedrite",
+      "tfc:vein/surface_tetrahedrite",
+      "tfc:vein/bituminous_coal",
+      "tfc:vein/lignite",
+      "tfc:vein/kaolinite",
+      "tfc:vein/graphite",
+      "tfc:vein/cinnabar",
+      "tfc:vein/cryolite",
+      "tfc:vein/saltpeter",
+      "tfc:vein/sulfur",
+      "tfc:vein/sylvite",
+      "tfc:vein/borax",
+      "tfc:vein/gypsum",
+      "tfc:vein/lapis_lazuli",
+      "tfc:vein/halite",
+      "tfc:vein/diamond",
+      "tfc:vein/emerald"
+    ],
+    [
+      "tfc:cave_spike",
+      "tfc:large_cave_spike",
+      "tfc:underwater_cave_spike",
+      "tfc:underwater_large_cave_spike",
+      "tfc:water_spring",
+      "tfc:lava_spring",
+      "tfc:calcite",
+      "tfc:mega_calcite"
+    ],
+    [
+      "tfc:plant/gutweed",
+      "tfc:plant/laminaria",
+      "tfc:plant/manatee_grass",
+      "tfc:plant/sargassum",
+      "tfc:plant/star_grass",
+      "tfc:plant/turtle_grass"
+    ],
+    [
+      "tfc:groundcover/loose_rocks",
+      "tfc:groundcover/feather",
+      "tfc:groundcover/flint"
+    ]
+  ],
+  "starts": [],
+  "spawners": {},
+  "player_spawn_friendly": false,
+  "creature_spawn_probability": 0.5,
+  "spawn_costs": {}
+}

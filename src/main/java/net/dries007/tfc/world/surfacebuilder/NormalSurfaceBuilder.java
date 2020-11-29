@@ -20,8 +20,6 @@ import com.mojang.serialization.Codec;
 
 public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
-    private static final BlockState AIR = Blocks.AIR.defaultBlockState();
-
     public NormalSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
         super(codec);
@@ -59,7 +57,7 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     surfaceDepth = maxSurfaceDepth;
                     if (maxSurfaceDepth <= 0)
                     {
-                        topState = AIR;
+                        topState = Blocks.AIR.defaultBlockState();
                         underState = defaultBlock;
                     }
                     else if (y >= seaLevel)

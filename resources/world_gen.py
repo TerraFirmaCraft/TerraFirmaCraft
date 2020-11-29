@@ -45,7 +45,7 @@ class Decoration(IntEnum):
 
 
 def generate(rm: ResourceManager):
-    # Surface Builder Configs
+    # Surface Builder Configs - we allow lenient block state definitions, so use them
     grass_dirt_config = {
         'top_material': 'minecraft:grass_block',
         'under_material': 'minecraft:dirt'
@@ -54,10 +54,11 @@ def generate(rm: ResourceManager):
     # Surface Builders
     surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_config))
     surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_config))
+    surface_builder(rm, 'volcanic_canyons', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:canyons'}))
     surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_config))
     surface_builder(rm, 'underwater', wg.configure('tfc:underwater'))
     surface_builder(rm, 'mountains', wg.configure('tfc:mountains'))
-    surface_builder(rm, 'mountains_and_volcanoes', wg.configure('tfc:mountains_and_volcanoes'))
+    surface_builder(rm, 'volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
     surface_builder(rm, 'shore', wg.configure('tfc:shore'))
 
     # Configured Features
@@ -385,7 +386,7 @@ def generate(rm: ResourceManager):
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
             biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands', lake_features=False)
-            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True, lake_features=False)
+            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:volcanic_canyons', boulders=True, lake_features=False, volcano_features=True)
             biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True, lake_features=False)
             biome(rm, 'plains', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True)
@@ -393,9 +394,11 @@ def generate(rm: ResourceManager):
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
             biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default', lake_features=False)
-            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', volcano_features=True)
+            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True)
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', ocean_carvers=True, ocean_features=True, volcano_features=True)
+            biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean_ridge', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
@@ -403,11 +406,15 @@ def generate(rm: ResourceManager):
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False, ocean_features=True)
 
             biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'volcanic_mountain_river', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
             biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'oceanic_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, ocean_carvers=True, volcano_features=True)
             biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'volcanic_mountain_lake', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
             biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
 
 
@@ -600,7 +607,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
     if ocean_features:
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES]
-    if (not ocean_features) or name == 'flooded_mountains': # need to re-add freshwater features to flooded mountains
+    if (not ocean_features) or name in ['oceanic_mountains', 'volcanic_oceanic_mountains']:  # so that forests still generate in oceanic mountains
         # Non-ocean biome, add all land based features
         if lake_features:
             features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']

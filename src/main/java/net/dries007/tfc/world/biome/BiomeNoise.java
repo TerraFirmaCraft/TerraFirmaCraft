@@ -103,25 +103,6 @@ public final class BiomeNoise
         };
     }
 
-    public static INoise2D mountainsWithVolcanoes(long seed, int baseHeight, int scaleHeight)
-    {
-        final INoise2D mountainHeightNoise = mountains(seed, baseHeight, scaleHeight);
-        final INoise2D volcanoEasingNoise = VolcanoNoise.easing(seed);
-        final INoise2D volcanoHeightNoise = VolcanoNoise.height(seed, baseHeight, scaleHeight);
-
-        return (x, z) -> {
-            float volcanoEasing = volcanoEasingNoise.noise(x, z);
-            if (volcanoEasing == 0)
-            {
-                return mountainHeightNoise.noise(x, z);
-            }
-            else
-            {
-                return NoiseUtil.lerp(mountainHeightNoise.noise(x, z), volcanoHeightNoise.noise(x, z), volcanoEasing);
-            }
-        };
-    }
-
     /**
      * Uses domain warping to achieve a swirly hills effect
      */
@@ -155,6 +136,30 @@ public final class BiomeNoise
     public static INoise2D shore(long seed)
     {
         return new OpenSimplex2D(seed).octaves(4).spread(0.17f).scaled(TFCChunkGenerator.SEA_LEVEL, TFCChunkGenerator.SEA_LEVEL + 1.8f);
+    }
+
+    /**
+     * Adds volcanoes to a base noise height map
+     */
+    public static INoise2D addVolcanoes(long seed, INoise2D baseNoise, int frequency, int baseVolcanoHeight, int scaleVolcanoHeight)
+    {
+        final Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
+        final INoise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
+        final float volcanoChance = 1f / frequency;
+
+        return (x, z) -> {
+            final float distance = volcanoNoise.noise(x, z);
+            final float value = volcanoNoise.get(CellularNoiseType.VALUE);
+            final float baseHeight = baseNoise.noise(x, z);
+            final float t = VolcanoNoise.calculateEasing(distance);
+            if (value < volcanoChance && t > 0)
+            {
+                final float th = VolcanoNoise.calculateHeight(distance + volcanoJitterNoise.noise(x, z));
+                final float height = TFCChunkGenerator.SEA_LEVEL + baseVolcanoHeight + th * scaleVolcanoHeight;
+                return NoiseUtil.lerp(baseHeight, 0.5f * (height + NoiseUtil.fastMax(height, baseHeight)), t);
+            }
+            return baseHeight;
+        };
     }
 
     /**

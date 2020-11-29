@@ -219,7 +219,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public static final class LayerSettings
     {
         private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 45).forGetter(LayerSettings::getOceanPercent),
+            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(LayerSettings::getOceanPercent),
             Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale),
             ResourceLocation.CODEC.listOf().fieldOf("rocks").forGetter(LayerSettings::getRocks)
         ).apply(instance, LayerSettings::new));

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.LongFunction;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.RegistryKey;
@@ -25,11 +24,10 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
-import net.dries007.tfc.world.noise.INoise2D;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.world.biome.BiomeBuilder.builder;
 
 public final class TFCBiomes
 {
@@ -40,42 +38,51 @@ public final class TFCBiomes
     private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", seed -> BiomeNoise.ocean(seed, -20, -12), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN); // Ocean biome found near continents.
-    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", seed -> BiomeNoise.ocean(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_RIDGE = register("deep_ocean_ridge", seed -> BiomeNoise.oceanRidge(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN);
+    public static final BiomeVariants OCEAN = register("ocean", builder(seed -> BiomeNoise.ocean(seed, -20, -12)).salty().group(BiomeVariants.LargeGroup.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
+    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder(seed -> BiomeNoise.ocean(seed, -38, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder(seed -> BiomeNoise.oceanRidge(seed, -46, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 
     // Low biomes
-    public static final BiomeVariants PLAINS = register("plains", seed -> BiomeNoise.simple(seed, 4, 10), BiomeDictionary.Type.PLAINS); // Very flat, slightly above sea level.
-    public static final BiomeVariants HILLS = register("hills", seed -> BiomeNoise.simple(seed, -5, 16), BiomeDictionary.Type.HILLS); // Small hills, slightly above sea level.
-    public static final BiomeVariants LOWLANDS = register("lowlands", BiomeNoise::lowlands, BiomeDictionary.Type.SWAMP); // Flat, swamp-like, lots of shallow pools below sea level.
-    public static final BiomeVariants LOW_CANYONS = register("low_canyons", seed -> BiomeNoise.canyons(seed, -5, 15), BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP); // Sharp, small hills, with lots of water / snaking winding rivers.
+    public static final BiomeVariants PLAINS = register("plains", builder(seed -> BiomeNoise.simple(seed, 4, 10)).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
+    public static final BiomeVariants HILLS = register("hills", builder(seed -> BiomeNoise.simple(seed, -5, 16)).types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
+    public static final BiomeVariants LOWLANDS = register("lowlands", builder(BiomeNoise::lowlands).types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
+    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder(seed -> BiomeNoise.canyons(seed, -5, 15)).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", seed -> BiomeNoise.simple(seed, -5, 28), BiomeDictionary.Type.HILLS); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final BiomeVariants BADLANDS = register("badlands", BiomeNoise::badlands, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA); // Very high flat area with steep relief carving, similar to vanilla mesas.
-    public static final BiomeVariants PLATEAU = register("plateau", seed -> BiomeNoise.simple(seed, 20, 30), BiomeDictionary.Type.PLATEAU); // Very high area, very flat top.
-    public static final BiomeVariants CANYONS = register("canyons", seed -> BiomeNoise.canyons(seed, -7, 26), BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.HILLS); // Medium height with snake like ridges, often slightly below sea level
+    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder(seed -> BiomeNoise.simple(seed, -5, 28)).types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final BiomeVariants BADLANDS = register("badlands", builder(BiomeNoise::badlands).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariants PLATEAU = register("plateau", builder(seed -> BiomeNoise.simple(seed, 20, 30)).types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
+    public static final BiomeVariants CANYONS = register("canyons", builder(seed -> BiomeNoise.canyons(seed, 2, 32)).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
 
     // High biomes
-    public static final BiomeVariants MOUNTAINS = register("mountains", seed -> BiomeNoise.mountainsWithVolcanoes(seed, 10, 70), BiomeDictionary.Type.MOUNTAIN); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", seed -> BiomeNoise.mountainsWithVolcanoes(seed, -16, 60), true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
-    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", seed -> BiomeNoise.mountains(seed, 16, 40), BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN); // Rounded top mountains, very large hills.
+    public static final BiomeVariants MOUNTAINS = register("mountains", builder(seed -> BiomeNoise.mountains(seed, 10, 70)).types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariants VOLCANIC_MOUNTAINS = register("volcanic_mountains", builder(seed -> BiomeNoise.mountains(seed, 10, 60)).volcanoes(5, 25, 50, 40).types(BiomeDictionary.Type.MOUNTAIN)); // Volcanic mountains - slightly smaller, but with plentiful tall volcanoes
+    public static final BiomeVariants OCEANIC_MOUNTAINS = register("oceanic_mountains", builder(seed -> BiomeNoise.mountains(seed, -16, 60)).salty().types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder(seed -> BiomeNoise.mountains(seed, -24, 50)).salty().volcanoes(1, -12, 50, 20).types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
+    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder(seed -> BiomeNoise.mountains(seed, 16, 40)).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", BiomeNoise::shore, BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.BEACH); // Standard shore / beach. Material will vary based on location
+    public static final BiomeVariants SHORE = register("shore", builder(BiomeNoise::shore).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.BEACH)); // Standard shore / beach. Material will vary based on location
 
     // Water
-    public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE, false, BiomeDictionary.Type.RIVER);
-    public static final BiomeVariants RIVER = register("river", BiomeNoise::river, BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER, false, BiomeDictionary.Type.RIVER);
+    public static final BiomeVariants LAKE = register("lake", builder(BiomeNoise::lake).group(BiomeVariants.LargeGroup.LAKE).types(BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants RIVER = register("river", builder(BiomeNoise::river).group(BiomeVariants.LargeGroup.RIVER).group(BiomeVariants.SmallGroup.RIVER).types(BiomeDictionary.Type.RIVER));
 
-    // Water "Carver" Biomes
-    public static final CarvingBiomeVariants MOUNTAIN_RIVER = registerCarving("mountain_river", MOUNTAINS, BiomeNoise::riverCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants OLD_MOUNTAIN_RIVER = registerCarving("old_mountain_river", OLD_MOUNTAINS, BiomeNoise::riverCarving, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants FLOODED_MOUNTAIN_RIVER = registerCarving("flooded_mountain_river", FLOODED_MOUNTAINS, BiomeNoise::riverCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants MOUNTAIN_LAKE = registerCarving("mountain_lake", MOUNTAINS, BiomeNoise::lakeCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants OLD_MOUNTAIN_LAKE = registerCarving("old_mountain_lake", OLD_MOUNTAINS, BiomeNoise::lakeCarving, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants FLOODED_MOUNTAIN_LAKE = registerCarving("flooded_mountain_lake", FLOODED_MOUNTAINS, BiomeNoise::lakeCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER);
-    public static final CarvingBiomeVariants PLATEAU_LAKE = registerCarving("plateau_lake", PLATEAU, BiomeNoise::lakeCarving, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.RIVER);
+    // Mountain Fresh water / carving biomes
+    public static final CarvingBiomeVariants MOUNTAIN_RIVER = register("mountain_river", BiomeBuilder.carving(MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants VOLCANIC_MOUNTAIN_RIVER = register("volcanic_mountain_river", BiomeBuilder.carving(VOLCANIC_MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants OLD_MOUNTAIN_RIVER = register("old_mountain_river", BiomeBuilder.carving(OLD_MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants OCEANIC_MOUNTAIN_RIVER = register("oceanic_mountain_river", BiomeBuilder.carving(OCEANIC_MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register("volcanic_oceanic_mountain_river", BiomeBuilder.carving(VOLCANIC_OCEANIC_MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+
+    public static final CarvingBiomeVariants MOUNTAIN_LAKE = register("mountain_lake", BiomeBuilder.carving(MOUNTAINS, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants VOLCANIC_MOUNTAIN_LAKE = register("volcanic_mountain_lake", BiomeBuilder.carving(VOLCANIC_MOUNTAINS, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants OLD_MOUNTAIN_LAKE = register("old_mountain_lake", BiomeBuilder.carving(OLD_MOUNTAINS, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants OCEANIC_MOUNTAIN_LAKE = register("oceanic_mountain_lake", BiomeBuilder.carving(OCEANIC_MOUNTAINS, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register("volcanic_oceanic_mountain_lake", BiomeBuilder.carving(VOLCANIC_OCEANIC_MOUNTAINS, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final CarvingBiomeVariants PLATEAU_LAKE = register("plateau_lake", BiomeBuilder.carving(PLATEAU, BiomeNoise::lakeCarving).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.RIVER));
+
+
     private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(16); // Faster route from biome -> extension
 
     public static BiomeExtension getExtensionOrThrow(IWorld world, Biome biome)
@@ -145,7 +152,33 @@ public final class TFCBiomes
         return VARIANTS;
     }
 
-    public static void registerDefaultBiomeDictionaryTypes(RegistryKey<Biome> key, BiomeTemperature temp, BiomeRainfall rain)
+    private static <V extends BiomeVariants> V register(String baseName, BiomeBuilder<V> builder)
+    {
+        V variants = builder.build();
+        VARIANTS.add(variants);
+        for (BiomeTemperature temp : BiomeTemperature.values())
+        {
+            for (BiomeRainfall rain : BiomeRainfall.values())
+            {
+                String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
+                ResourceLocation id = new ResourceLocation(MOD_ID, name);
+                RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
+                BiomeExtension extension = new BiomeExtension(key, variants);
+
+                EXTENSIONS.put(key, extension);
+                DEFAULT_BIOME_KEYS.add(key);
+                TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
+
+                registerDefaultBiomeDictionaryTypes(key, temp, rain);
+                builder.registerTypes(key);
+
+                variants.put(temp, rain, extension);
+            }
+        }
+        return variants;
+    }
+
+    private static void registerDefaultBiomeDictionaryTypes(RegistryKey<Biome> key, BiomeTemperature temp, BiomeRainfall rain)
     {
         BiomeDictionary.addTypes(key, BiomeDictionary.Type.OVERWORLD);
         if (temp == BiomeTemperature.FROZEN)
@@ -186,58 +219,5 @@ public final class TFCBiomes
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.CONIFEROUS);
         }
-    }
-
-    private static CarvingBiomeVariants registerCarving(String baseName, BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory, BiomeDictionary.Type... types)
-    {
-        return createBiomes(new CarvingBiomeVariants(parent, carvingNoiseFactory), baseName, types);
-    }
-
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeDictionary.Type... types)
-    {
-        return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY, false, types);
-    }
-
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, boolean salty, BiomeDictionary.Type... types)
-    {
-        return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY, salty, types);
-    }
-
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, boolean salty, BiomeDictionary.Type... types)
-    {
-        return register(baseName, noiseFactory, largeGroup, BiomeVariants.SmallGroup.BODY, salty, types);
-    }
-
-    /**
-     * Registers all variants corresponding to a biome super type
-     */
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, BiomeVariants.SmallGroup smallGroup, boolean salty, BiomeDictionary.Type... types)
-    {
-        return createBiomes(new BiomeVariants(noiseFactory, smallGroup, largeGroup, salty), baseName, types);
-    }
-
-    private static <V extends BiomeVariants> V createBiomes(V variants, String baseName, BiomeDictionary.Type... types)
-    {
-        VARIANTS.add(variants);
-        for (BiomeTemperature temp : BiomeTemperature.values())
-        {
-            for (BiomeRainfall rain : BiomeRainfall.values())
-            {
-                String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
-                ResourceLocation id = new ResourceLocation(MOD_ID, name);
-                RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
-                BiomeExtension extension = new BiomeExtension(key, variants);
-
-                EXTENSIONS.put(key, extension);
-                DEFAULT_BIOME_KEYS.add(key);
-                TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
-
-                registerDefaultBiomeDictionaryTypes(key, temp, rain);
-                BiomeDictionary.addTypes(key, types);
-
-                variants.put(temp, rain, extension);
-            }
-        }
-        return variants;
     }
 }

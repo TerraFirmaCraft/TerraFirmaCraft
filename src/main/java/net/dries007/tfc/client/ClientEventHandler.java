@@ -29,7 +29,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
-import net.dries007.tfc.client.screen.TFCGeneratorTypePreset;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -50,9 +49,6 @@ public final class ClientEventHandler
     public static void clientSetup(FMLClientSetupEvent event)
     {
         LOGGER.debug("Client Setup");
-
-        // Generator Preset
-        TFCGeneratorTypePreset.setup();
 
         // Screens
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);

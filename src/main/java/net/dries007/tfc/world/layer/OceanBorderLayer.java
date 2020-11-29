@@ -8,6 +8,9 @@ package net.dries007.tfc.world.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+import static net.dries007.tfc.world.layer.TFCLayerUtil.DEEP_OCEAN;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.OCEAN;
+
 /**
  * Creates oceans on borders between land and deep ocean
  */
@@ -18,11 +21,20 @@ public enum OceanBorderLayer implements ICastleTransformer
     @Override
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
-        if (TFCLayerUtil.isOcean(center))
+        if (center == DEEP_OCEAN)
         {
-            if (!TFCLayerUtil.isOcean(north) || !TFCLayerUtil.isOcean(west) || !TFCLayerUtil.isOcean(south) || !TFCLayerUtil.isOcean(east))
+            // Add ocean to land - deep ocean borders
+            if (!TFCLayerUtil.isOceanOrMarker(north) || !TFCLayerUtil.isOceanOrMarker(west) || !TFCLayerUtil.isOceanOrMarker(south) || !TFCLayerUtil.isOceanOrMarker(east))
             {
-                return TFCLayerUtil.OCEAN;
+                return OCEAN;
+            }
+        }
+        else if (center == OCEAN)
+        {
+            // And in the reverse, in large sections of ocean, add deep ocean in fully ocean-locked area
+            if (TFCLayerUtil.isOceanOrMarker(north) && TFCLayerUtil.isOceanOrMarker(west) && TFCLayerUtil.isOceanOrMarker(east) && TFCLayerUtil.isOceanOrMarker(south))
+            {
+                return DEEP_OCEAN;
             }
         }
         return center;

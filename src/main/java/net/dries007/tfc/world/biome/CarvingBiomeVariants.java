@@ -15,7 +15,7 @@ public class CarvingBiomeVariants extends BiomeVariants
 
     public CarvingBiomeVariants(BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory)
     {
-        super(parent::createNoiseLayer, parent.getSmallGroup(), parent.getLargeGroup(), parent.isSalty());
+        super(parent);
 
         this.parent = parent;
         this.carvingNoiseFactory = carvingNoiseFactory;
