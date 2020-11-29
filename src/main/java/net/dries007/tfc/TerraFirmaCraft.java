@@ -35,6 +35,7 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.TFCBlockPlacerTypes;
 import net.dries007.tfc.world.TFCBlockStateProviderTypes;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
@@ -76,6 +77,7 @@ public final class TerraFirmaCraft
         TFCCarvers.CARVERS.register(modEventBus);
         TFCBlockStateProviderTypes.BLOCK_STATE_PROVIDER_TYPES.register(modEventBus);
         TFCBlockPlacerTypes.BLOCK_PLACER_TYPES.register(modEventBus);
+        TFCWorldType.WORLD_TYPES.register(modEventBus);
 
         // Init methods
         TFCConfig.init();
@@ -95,6 +97,7 @@ public final class TerraFirmaCraft
         ServerCalendar.setup();
         InteractionManager.setup();
         DispenserBehaviors.setup();
+        TFCWorldType.setup();
         TFCLoot.setup();
 
         // World gen registry objects

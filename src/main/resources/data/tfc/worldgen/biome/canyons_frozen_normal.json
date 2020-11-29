@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:canyons_with_glaciers",
+  "surface_builder": "tfc:volcanic_canyons_with_glaciers",
   "features": [
     [
       "tfc:erosion"
@@ -39,7 +39,9 @@
     [],
     [
       "tfc:raw_boulder",
-      "tfc:cobble_boulder"
+      "tfc:cobble_boulder",
+      "tfc:volcano_rivulet",
+      "tfc:volcano_caldera"
     ],
     [],
     [

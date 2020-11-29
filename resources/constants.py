@@ -313,6 +313,8 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
+    # Misc
+    'generator.tfc.tng': 'TerraFirmaCraft',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',

@@ -38,7 +38,12 @@ public class Cellular2D implements INoise2D
     private final float jitter;
     private final CellularNoiseType returnType;
 
+    // Last computed values
     private float centerX, centerY;
+    private int closestHash;
+    private float distance0, distance1;
+
+    // Modifiers
     private float frequency;
 
     public Cellular2D(long seed)
@@ -64,6 +69,11 @@ public class Cellular2D implements INoise2D
         return centerY;
     }
 
+    public float get(CellularNoiseType alternateType)
+    {
+        return alternateType.calculate(distance0, distance1, closestHash);
+    }
+
     @Override
     public float noise(float x, float y)
     {
@@ -73,9 +83,9 @@ public class Cellular2D implements INoise2D
         int xr = NoiseUtil.fastRound(x);
         int yr = NoiseUtil.fastRound(y);
 
-        float distance0 = Float.MAX_VALUE;
-        float distance1 = Float.MAX_VALUE;
-        int closestHash = 0;
+        distance0 = Float.MAX_VALUE;
+        distance1 = Float.MAX_VALUE;
+        closestHash = 0;
 
         float cellularJitter = 0.43701595f * jitter;
 
@@ -91,8 +101,11 @@ public class Cellular2D implements INoise2D
                 int hash = hashPrimed(seed, xPrimed, yPrimed);
                 int idx = hash & (255 << 1);
 
-                float vecX = (xi - x) + RANDOM_VECTORS_2D[idx] * cellularJitter;
-                float vecY = (yi - y) + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
+                float cellX = xi + RANDOM_VECTORS_2D[idx] * cellularJitter;
+                float cellY = yi + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
+
+                float vecX = (x - cellX);
+                float vecY = (y - cellY);
 
                 float newDistance = vecX * vecX + vecY * vecY;
 
@@ -101,8 +114,8 @@ public class Cellular2D implements INoise2D
                 {
                     distance0 = newDistance;
                     closestHash = hash;
-                    centerX = vecX + x;
-                    centerY = vecY + y;
+                    centerX = cellX;
+                    centerY = cellY;
                 }
                 yPrimed += PRIME_Y;
             }

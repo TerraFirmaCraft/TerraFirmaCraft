@@ -19,7 +19,7 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
 {
     INSTANCE;
 
-    public static final float SHEAR_THRESHOLD = 0.7f;
+    public static final float SHEAR_THRESHOLD = 0.9f;
 
     public static final float HIGH_ELEVATION = 0.66f;
     public static final float MID_ELEVATION = 0.33f;
@@ -97,11 +97,15 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
             // Converging
             if (center.isOceanic() && other.isOceanic())
             {
-                return OCEAN_OCEAN_CONVERGING;
+                return center.getElevation() > other.getElevation() ? OCEAN_OCEAN_CONVERGING_UPPER : OCEAN_OCEAN_CONVERGING_LOWER;
             }
-            else if (center.isOceanic() || other.isOceanic())
+            else if (center.isOceanic())
             {
-                return OCEAN_CONTINENT_CONVERGING;
+                return OCEAN_CONTINENT_CONVERGING_LOWER;
+            }
+            else if (other.isOceanic())
+            {
+                return OCEAN_CONTINENT_CONVERGING_UPPER;
             }
             return CONTINENT_CONTINENT_CONVERGING;
         }

@@ -21,6 +21,7 @@ public class CommonConfig
     // General
     public final ForgeConfigSpec.IntValue defaultMonthLength;
     public final ForgeConfigSpec.BooleanValue enableDevTweaks;
+    public final ForgeConfigSpec.BooleanValue setTFCWorldTypeAsDefault;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -38,6 +39,13 @@ public class CommonConfig
             " - Improves and shortens the error message for invalid recipes.",
             " - Fixes MC-190122 (Makes the 'Loaded Recipes' log message accurate)"
         ).define("enableDevTweaks", true);
+
+        setTFCWorldTypeAsDefault = builder.apply("setTFCWorldTypeAsDefault").comment(
+            "If the TFC world type (tfc:tng) should be set as the default world generation.",
+            "1. This ONLY sets the corresponding config option in Forge's config.",
+            "2. This ONLY will set the default if it was set to 'default' (or vanilla generation)",
+            "3. This DOES NOT guarantee that the world generation will be TFC, if another mod sets the default another way"
+        ).define("setTFCWorldTypeAsDefault", true);
 
         innerBuilder.pop();
     }

@@ -44,7 +44,9 @@ minecraft {
     } else {
         mappings channel: 'official', version: minecraft_version
     }
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Not needed, kept here for posterity
+    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     def testClasses = String.join(File.pathSeparator, "${mod_id}%%${sourceSets.main.output.resourcesDir}", "${mod_id}%%${sourceSets.main.output.classesDir}", "${mod_id}%%${sourceSets.test.output.resourcesDir}", "${mod_id}%%${sourceSets.test.output.classesDir}")
 
