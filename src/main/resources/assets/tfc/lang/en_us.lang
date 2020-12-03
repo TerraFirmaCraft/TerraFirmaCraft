@@ -4685,6 +4685,7 @@ death.attack.food_poison=%1$s died of food poisoning
 death.attack.plucking=%1$s died by having it's feathers plucked
 death.attack.grill=%1$s grilled themselves well-done
 death.attack.soup=%1$s made their hand into stew
+death.attack.berrybush=%1$s was pricked to death
 
 #Effects
 effectsTFC.overburdened=Overburdened
