@@ -20,7 +20,7 @@ public class MossSpreadingBlock extends Block
             BlockState targetState = world.getBlockState(targetPos);
             if (targetState.getBlock() instanceof IMossGrowingBlock)
             {
-                ((IMossGrowingBlock) targetState.getBlock()).convertToMossy(world, targetPos, targetState);
+                ((IMossGrowingBlock) targetState.getBlock()).convertToMossy(world, targetPos, targetState, true);
             }
         }
     }

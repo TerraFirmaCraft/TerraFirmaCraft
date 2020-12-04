@@ -31,7 +31,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
     protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
-
+    //todo: fire ITallPlant into the sun as it's not necessary anymore (but still used everywhere in code)
     public static TFCTallGrassBlock create(IPlant plant, Properties properties)
     {
         return new TFCTallGrassBlock(properties)
@@ -144,7 +144,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
         int age = random.nextInt(3) + 1;
-        world.setBlock(pos, defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
-        world.setBlock(pos.above(), defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
+        world.setBlock(pos, updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlock(pos.above(), updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
     }
 }

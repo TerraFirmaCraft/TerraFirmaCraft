@@ -59,7 +59,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('sea_bush_plantable_on', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)  # used by vanilla, provided for consistiency
+        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock, 'tfc:rock/hardened/%s' % rock)  # used by vanilla, provided for consistiency
         rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
 
     # Plants
@@ -79,8 +79,9 @@ def generate(rm: ResourceManager):
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('sea_bush_plantable_on', '#forge:dirt')
-    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass')
+    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
+    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

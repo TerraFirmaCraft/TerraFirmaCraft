@@ -11,5 +11,5 @@ import net.minecraft.world.World;
  */
 public interface IMossGrowingBlock
 {
-    void convertToMossy(World worldIn, BlockPos pos, BlockState state);
+    void convertToMossy(World worldIn, BlockPos pos, BlockState state, boolean needsWater);
 }

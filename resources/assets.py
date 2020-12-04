@@ -484,6 +484,7 @@ def generate(rm: ResourceManager):
             if variant != 'log':
                 rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
             rm.block_tag('tfc:' + wood + '_logs', 'tfc:wood/' + variant + '/' + wood)
+            rm.block_tag('tfc:creeping_plantable_on', 'tfc:wood/' + variant + '/' + wood)
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):

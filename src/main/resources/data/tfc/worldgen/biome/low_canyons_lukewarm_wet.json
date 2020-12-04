@@ -98,6 +98,8 @@
     [
       "tfc:forest",
       "tfc:bamboo",
+      "tfc:plant/hanging_vines",
+      "tfc:plant/hanging_vines_cave",
       "tfc:plant/allium",
       "tfc:plant/athyrium_fern",
       "tfc:plant/barrel_cactus",
@@ -109,7 +111,9 @@
       "tfc:plant/canna",
       "tfc:plant/cattail",
       "tfc:plant/dandelion",
+      "tfc:plant/dead_bush",
       "tfc:plant/duckweed",
+      "tfc:plant/eel_grass",
       "tfc:plant/field_horsetail",
       "tfc:plant/fountain_grass",
       "tfc:plant/foxglove",
@@ -154,7 +158,6 @@
       "tfc:plant/tall_fescue_grass",
       "tfc:plant/timothy_grass",
       "tfc:plant/toquilla_palm",
-      "tfc:plant/tree_fern",
       "tfc:plant/trillium",
       "tfc:plant/tropical_milkweed",
       "tfc:plant/tulip_orange",
@@ -164,7 +167,11 @@
       "tfc:plant/vriesea",
       "tfc:plant/water_canna",
       "tfc:plant/water_lily",
-      "tfc:plant/yucca"
+      "tfc:plant/yucca",
+      "tfc:plant/moss_cover",
+      "tfc:plant/reindeer_lichen_cover",
+      "tfc:plant/morning_glory_cover",
+      "tfc:plant/tree_fern"
     ],
     [
       "tfc:groundcover/loose_rocks",
