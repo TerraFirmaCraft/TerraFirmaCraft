@@ -21,9 +21,9 @@ public class MossGrowingBlock extends Block implements IMossGrowingBlock
     }
 
     @Override
-    public void convertToMossy(World worldIn, BlockPos pos, BlockState state)
+    public void convertToMossy(World worldIn, BlockPos pos, BlockState state, boolean needsWater)
     {
-        if (FluidHelpers.isSame(worldIn.getFluidState(pos.above()), Fluids.WATER))
+        if (!needsWater || FluidHelpers.isSame(worldIn.getFluidState(pos.above()), Fluids.WATER))
         {
             worldIn.setBlock(pos, mossy.get().defaultBlockState(), 3);
         }

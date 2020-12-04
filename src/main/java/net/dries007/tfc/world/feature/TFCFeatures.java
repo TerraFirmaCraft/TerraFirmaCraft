@@ -41,6 +41,8 @@ public class TFCFeatures
     public static final RegistryObject<RandomPatchDensityFeature> RANDOM_PATCH_DENSITY = register("random_patch_density", RandomPatchDensityFeature::new, BlockClusterFeatureConfig.CODEC);
     public static final RegistryObject<EmergentPatchFeature> EMERGENT_PATCH = register("emergent_patch", EmergentPatchFeature::new, BlockClusterFeatureConfig.CODEC);
     public static final RegistryObject<RandomPatchWaterFeature> WATER_PATCH = register("water_patch", RandomPatchWaterFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, DoublePlantConfig.CODEC);
+    public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, DoublePlantConfig.CODEC);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);

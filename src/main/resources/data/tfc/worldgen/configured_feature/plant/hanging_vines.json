@@ -1,0 +1,41 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:weeping_vines",
+              "config": {
+                "body": "tfc:plant/hanging_vines_plant",
+                "head": "tfc:plant/hanging_vines"
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 16,
+                "max_temperature": 50,
+                "min_rainfall": 290,
+                "max_rainfall": 500,
+                "needs_forest": true
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
+    }
+  }
+}

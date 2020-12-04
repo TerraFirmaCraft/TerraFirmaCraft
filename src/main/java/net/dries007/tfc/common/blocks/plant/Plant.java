@@ -7,17 +7,23 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.LilyPadItem;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -39,7 +45,9 @@ public enum Plant implements IPlant
     CANNA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}),
     CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     DANDELION(BlockType.STANDARD, 0.9F, new int[] {9, 9, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8}),
+    DEAD_BUSH(BlockType.DRY, 0.9F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     DUCKWEED(BlockType.FLOATING_FRESH, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    EEL_GRASS(BlockType.GRASS_WATER_FRESH, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     FIELD_HORSETAIL(BlockType.STANDARD, 0.7F, new int[] {1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1}),
     FOUNTAIN_GRASS(BlockType.SHORT_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     FOXGLOVE(BlockType.TALL_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 3, 4}),
@@ -89,7 +97,6 @@ public enum Plant implements IPlant
     TALL_FESCUE_GRASS(BlockType.TALL_GRASS, 0.5F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TIMOTHY_GRASS(BlockType.SHORT_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TOQUILLA_PALM(BlockType.TALL_GRASS, 0.4F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    TREE_FERN(BlockType.TALL_PLANT, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TRILLIUM(BlockType.STANDARD, 0.8F, new int[] {5, 5, 5, 0, 1, 2, 3, 3, 4, 4, 4, 4}),
     TROPICAL_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 0}),
     TULIP_ORANGE(BlockType.STANDARD, 0.9F, new int[] {4, 4, 5, 0, 1, 1, 2, 2, 2, 2, 3, 4}),
@@ -100,7 +107,14 @@ public enum Plant implements IPlant
     VRIESEA(BlockType.EPIPHYTE, 0.8F, new int[] {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}),
     WATER_CANNA(BlockType.FLOATING_FRESH, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}),
     WATER_LILY(BlockType.FLOATING_FRESH, 0.8F, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}),
-    YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3});
+    YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}),
+
+    //not data driven. I added an unused int array because NPE. naming convention is inherited from vanilla
+    HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+
 
     private final float speedFactor;
     private final IntegerProperty property;
@@ -119,6 +133,22 @@ public enum Plant implements IPlant
             throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
         }
         this.property = TFCBlockStateProperties.STAGES[maxStage];
+    }
+
+    private Plant transform()
+    {
+        switch (this)
+        {
+            case HANGING_VINES:
+                return HANGING_VINES_PLANT;
+            case HANGING_VINES_PLANT:
+                return HANGING_VINES;
+            case TREE_FERN:
+                return TREE_FERN_PLANT;
+            case TREE_FERN_PLANT:
+                return TREE_FERN;
+        }
+        throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
 
     public Block create()
@@ -143,6 +173,11 @@ public enum Plant implements IPlant
         return property;
     }
 
+    public boolean needsItem()
+    {
+        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID;
+    }
+
     @VisibleForTesting
     public BlockType getType()
     {
@@ -159,7 +194,10 @@ public enum Plant implements IPlant
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
-        TALL_PLANT((plant, type) -> TFCTallGrassBlock.create(plant, solid())),
+        WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN)),
+        WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
+        TWISTING_SOLID((plant, type) -> new BodyPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP)),
+        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
         //Water
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), LilyPadItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), LilyPadItem::new),
@@ -183,15 +221,35 @@ public enum Plant implements IPlant
             return solid().speedFactor(plant.speedFactor).noCollission();
         }
 
-        private final BiFunction<Plant, BlockType, ? extends PlantBlock> factory;
+        private static AbstractBlock.Properties solidTallPlant()
+        {
+            return AbstractBlock.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().instabreak().sound(SoundType.WEEPING_VINES);
+        }
+
+        private static AbstractBlock.Properties nonSolidTallPlant()
+        {
+            return solidTallPlant().noCollission();
+        }
+
+        private static VoxelShape getWeepingShape()
+        {
+            return Block.box(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+        }
+
+        private static VoxelShape getTwistingShape()
+        {
+            return Block.box(4.0D, 0.0D, 4.0D, 12.0D, 15.0D, 12.0D);
+        }
+
+        private final BiFunction<Plant, BlockType, ? extends Block> factory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
 
-        BlockType(BiFunction<Plant, BlockType, ? extends PlantBlock> factory)
+        BlockType(BiFunction<Plant, BlockType, ? extends Block> factory)
         {
             this(factory, BlockItem::new);
         }
 
-        BlockType(BiFunction<Plant, BlockType, ? extends PlantBlock> factory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        BlockType(BiFunction<Plant, BlockType, ? extends Block> factory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.factory = factory;
             this.blockItemFactory = blockItemFactory;
