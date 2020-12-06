@@ -1,0 +1,53 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:kelp",
+                  "config": {
+                    "body": "tfc:plant/winged_kelp_plant",
+                    "head": "tfc:plant/winged_kelp",
+                    "tries": 128
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:climate",
+                  "config": {
+                    "min_temperature": -10,
+                    "max_temperature": 50,
+                    "min_rainfall": 100,
+                    "max_rainfall": 500,
+                    "needs_forest": false
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:chance",
+              "config": {
+                "chance": 2
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:top_solid_heightmap",
+      "config": {}
+    }
+  }
+}

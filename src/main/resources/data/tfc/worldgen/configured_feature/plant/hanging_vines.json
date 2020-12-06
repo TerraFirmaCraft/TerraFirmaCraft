@@ -12,7 +12,8 @@
               "type": "tfc:weeping_vines",
               "config": {
                 "body": "tfc:plant/hanging_vines_plant",
-                "head": "tfc:plant/hanging_vines"
+                "head": "tfc:plant/hanging_vines",
+                "tries": 90
               }
             },
             "decorator": {

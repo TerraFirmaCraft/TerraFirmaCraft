@@ -4,10 +4,12 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.block.*;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 
 import net.minecraftforge.common.ForgeHooks;
@@ -35,6 +37,22 @@ public class TopPlantBlock extends AbstractTopPlantBlock
                 worldIn.setBlockAndUpdate(blockpos, state.cycle(AGE));
                 ForgeHooks.onCropsGrowPost(worldIn, blockpos, worldIn.getBlockState(blockpos));
             }
+        }
+    }
+
+    @Override // lifted from AbstractPlantBlock to add leaves to it
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
+        BlockPos blockpos = pos.relative(growthDirection.getOpposite());
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+        Block block = blockstate.getBlock();
+        if (!canAttachToBlock(block))
+        {
+            return false;
+        }
+        else
+        {
+            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
         }
     }
 
