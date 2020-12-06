@@ -16,9 +16,9 @@ public enum ShoreLayer implements ICastleTransformer
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
-        Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(west) || p.test(south) || p.test(east);
+        Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
         if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.hasShore(center))
         {
             if (matcher.test(TFCLayerUtil::isOcean))
