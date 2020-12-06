@@ -339,21 +339,15 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'water_lily'), wg.configure_decorated(plant_feature('tfc:plant/water_lily[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 38, 0, 500)))
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
-    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines'), 'minecraft:heightmap_world_surface', 'minecraft:square', decorate_climate(16, 50, 290, 500, True)))
-    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines'), decorate_climate(16, 50, 290, 500, True),
-                                                               ('tfc:bounded_carving_mask', {'step': 'air', 'probability': 0.003, 'max_y': 130}),
-                                                               ('minecraft:range', {'bottom_offset': 64, 'top_offset': 0, 'maximum': 130})))
-    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern'), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(15, 50, 300, 500)))
-    rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(22, 30, 400, 500, True),
-                                                               ('tfc:bounded_carving_mask', {'step': 'air', 'probability': 0.002, 'max_y': 190}), ('minecraft:range', {'bottom_offset': 64, 'top_offset': 0, 'maximum': 190})))
-    rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(19, 25, 280, 350, True),
-                                                               ('tfc:bounded_carving_mask', {'step': 'air', 'probability': 0.002, 'max_y': 190}), ('minecraft:range', {'bottom_offset': 64, 'top_offset': 0, 'maximum': 190})))
-    rm.feature(('plant', 'reindeer_lichen_cover'), wg.configure_decorated(plant_feature('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(10, 14, 380, 430, True),
-                                                               ('tfc:bounded_carving_mask', {'step': 'air', 'probability': 0.002, 'max_y': 190}), ('minecraft:range', {'bottom_offset': 64, 'top_offset': 0, 'maximum': 190})))
+    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90), 'minecraft:heightmap_world_surface', 'minecraft:square', decorate_climate(16, 50, 290, 500, True)))
+    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90), air_mask(0.003, 190), decorate_range(64, 130), decorate_climate(16, 50, 290, 500, True)))
+    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 15), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
+    rm.feature(('plant', 'winged_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 128), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-10, 50, 100, 500)))
+    rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(22, 30, 400, 500, True), air_mask(0.002, 190), decorate_range(64, 190)))
+    rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(19, 25, 280, 350, True), air_mask(0.002, 190), decorate_range(64, 190)))
+    rm.feature(('plant', 'reindeer_lichen_cover'), wg.configure_decorated(plant_feature('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(10, 14, 380, 430, True), air_mask(0.002, 190), decorate_range(64, 190)))
 
-    rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {
-        'probability': 0.2
-    }), decorate_chance(30), decorate_climate(20, 50, 300, 500, True), ('minecraft:count_noise_biased', {
+    rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {'probability': 0.2}), decorate_chance(30), decorate_climate(20, 50, 300, 500, True), ('minecraft:count_noise_biased', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3
@@ -575,12 +569,27 @@ def simple_patch_feature(block: str, vertical_spread: int, horizontal_spread: in
         feature_name = 'tfc:water_land_patch'
     return wg.configure(feature_name, cfg)
 
-def tall_feature(feature: str, state1: str, state2: str):
+def tall_feature(feature: str, state1: str, state2: str, tries: int):
     cfg = {
         'body': state1,
-        'head': state2
+        'head': state2,
+        'tries': tries
     }
     return wg.configure(feature, cfg)
+
+def decorate_range(bottom: int, top: int):
+    return ('minecraft:range', {
+        'bottom_offset': bottom,
+        'top_offset': 0,
+        'maximum': top
+    })
+
+def air_mask(probability: float, height: int):
+    return ('tfc:bounded_carving_mask', {
+        'step': 'air',
+        'probability': probability,
+        'max_y': height
+    })
 
 def decorate_climate(min_temp: float, max_temp: float, min_rain: float, max_rain: float, needs_forest: bool = False):
     return ('tfc:climate', {
@@ -628,6 +637,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
     if ocean_features:
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/winged_kelp']
     if (not ocean_features) or name in ['oceanic_mountains', 'volcanic_oceanic_mountains']:  # so that forests still generate in oceanic mountains
         # Non-ocean biome, add all land based features
         if lake_features:

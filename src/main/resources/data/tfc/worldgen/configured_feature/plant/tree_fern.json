@@ -15,13 +15,14 @@
                   "type": "tfc:twisting_vines",
                   "config": {
                     "body": "tfc:plant/tree_fern_plant",
-                    "head": "tfc:plant/tree_fern"
+                    "head": "tfc:plant/tree_fern",
+                    "tries": 15
                   }
                 },
                 "decorator": {
                   "type": "tfc:climate",
                   "config": {
-                    "min_temperature": 15,
+                    "min_temperature": 19,
                     "max_temperature": 50,
                     "min_rainfall": 300,
                     "max_rainfall": 500,

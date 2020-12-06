@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class RandomPatchWaterFeature extends Feature<BlockClusterFeatureConfig>
 {
@@ -35,7 +36,7 @@ public class RandomPatchWaterFeature extends Feature<BlockClusterFeatureConfig>
             mutablePos.setWithOffset(blockpos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
             BlockPos below = mutablePos.below();
             BlockState state = world.getBlockState(below);
-            if ((world.isWaterAt(mutablePos)) && state.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
+            if ((world.isWaterAt(mutablePos)) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable) && state.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
             {
                 config.blockPlacer.place(world, mutablePos, blockstate, rand);
                 ++i;

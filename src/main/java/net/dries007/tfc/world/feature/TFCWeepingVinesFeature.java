@@ -26,7 +26,7 @@ public class TFCWeepingVinesFeature extends Feature<DoublePlantConfig>
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
-        for (int i = 0; i < 90; i++)
+        for (int i = 0; i < config.getTries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(10) - rand.nextInt(10));
             mutablePos.move(Direction.UP);
