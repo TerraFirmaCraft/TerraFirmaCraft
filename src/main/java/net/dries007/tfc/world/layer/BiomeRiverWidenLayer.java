@@ -25,7 +25,7 @@ public enum BiomeRiverWidenLayer implements ICastleTransformer
     }
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
         // The center must be non-river and expandable
         if (center != RIVER && expansion.test(center))
