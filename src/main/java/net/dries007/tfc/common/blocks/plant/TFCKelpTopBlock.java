@@ -145,7 +145,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
