@@ -82,6 +82,9 @@ def generate(rm: ResourceManager):
     rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant')
+    rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
+    rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
+    rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

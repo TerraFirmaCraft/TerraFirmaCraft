@@ -116,7 +116,11 @@ public enum Plant implements IPlant
     TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     WINGED_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    WINGED_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    WINGED_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    LEAFY_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 
 
     private final float speedFactor;
@@ -138,6 +142,10 @@ public enum Plant implements IPlant
         this.property = TFCBlockStateProperties.STAGES[maxStage];
     }
 
+    /**
+     * This is a way for paired blocks to reference each other as suppliers
+     * @return The paired plant
+     */
     private Plant transform()
     {
         switch (this)
@@ -154,6 +162,12 @@ public enum Plant implements IPlant
                 return WINGED_KELP;
             case WINGED_KELP:
                 return WINGED_KELP_PLANT;
+            case GIANT_KELP_FLOWER:
+                return GIANT_KELP_PLANT;
+            case LEAFY_KELP:
+                return LEAFY_KELP_PLANT;
+            case LEAFY_KELP_PLANT:
+                return LEAFY_KELP;
         }
         throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
@@ -182,7 +196,7 @@ public enum Plant implements IPlant
 
     public boolean needsItem()
     {
-        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP;
+        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE;
     }
 
     @VisibleForTesting
@@ -208,6 +222,8 @@ public enum Plant implements IPlant
         //Water
         KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALTWATER)),
         KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALTWATER))),
+        KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALTWATER)),
+        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()), TFCBlockStateProperties.SALTWATER)),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), LilyPadItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), LilyPadItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALTWATER, nonSolid(plant))),
@@ -240,13 +256,18 @@ public enum Plant implements IPlant
             return solidTallPlant().noCollission().speedFactor(plant.speedFactor);
         }
 
+        private static AbstractBlock.Properties kelp(Plant plant)
+        {
+            return AbstractBlock.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+        }
+
         private static VoxelShape getBodyShape()
         {
             return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
         }
         private static VoxelShape getThinBodyShape()
         {
-            return Block.box(5.0D, 0.0D, 11.0D, 11.0D, 16.0D, 11.0D);
+            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
         }
         private static VoxelShape getWeepingShape()
         {
@@ -258,7 +279,7 @@ public enum Plant implements IPlant
         }
         private static VoxelShape getTwistingThinShape()
         {
-            return Block.box(5.0D, 0.0D, 11.0D, 11.0D, 12.0D, 11.0D);
+            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
         }
 
         private final BiFunction<Plant, BlockType, ? extends Block> factory;

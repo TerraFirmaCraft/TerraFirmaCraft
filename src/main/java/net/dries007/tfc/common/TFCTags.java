@@ -30,6 +30,9 @@ public class TFCTags
         public static final ITag.INamedTag<Block> PLANT = create("plant"); // for some decoration placement
         public static final ITag.INamedTag<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
         public static final ITag.INamedTag<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
+        public static final ITag.INamedTag<Block> KELP_TREE = create("kelp_tree");
+        public static final ITag.INamedTag<Block> KELP_FLOWER = create("kelp_flower");
+        public static final ITag.INamedTag<Block> KELP_BRANCH = create("kelp_branch");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 

@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:kelp_tree",
+              "config": {
+                "state": "tfc:plant/giant_kelp_flower"
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": -10,
+                "max_temperature": 50,
+                "min_rainfall": 100,
+                "max_rainfall": 500,
+                "needs_forest": false
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:top_solid_heightmap",
+      "config": {}
+    }
+  }
+}

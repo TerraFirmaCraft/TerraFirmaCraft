@@ -33,7 +33,7 @@ public class RandomPatchWaterFeature extends Feature<BlockClusterFeatureConfig>
 
         for (int j = 0; j < config.tries; ++j)
         {
-            mutablePos.setWithOffset(blockpos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
             BlockPos below = mutablePos.below();
             BlockState state = world.getBlockState(below);
             if ((world.isWaterAt(mutablePos)) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable) && state.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
