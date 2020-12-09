@@ -167,7 +167,8 @@
       "tfc:plant/moss_cover",
       "tfc:plant/reindeer_lichen_cover",
       "tfc:plant/morning_glory_cover",
-      "tfc:plant/tree_fern"
+      "tfc:plant/tree_fern",
+      "tfc:plant/arundo"
     ],
     [
       "tfc:groundcover/loose_rocks",

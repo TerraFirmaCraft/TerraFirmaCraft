@@ -13,7 +13,10 @@
               "config": {
                 "body": "tfc:plant/hanging_vines_plant",
                 "head": "tfc:plant/hanging_vines",
-                "tries": 90
+                "tries": 90,
+                "radius": 10,
+                "minHeight": 14,
+                "maxHeight": 22
               }
             },
             "decorator": {

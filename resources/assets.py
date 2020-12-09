@@ -538,6 +538,17 @@ def generate(rm: ResourceManager):
     # Misc Items
     rm.item_model('mortar').with_lang(lang('mortar')).with_tag('tfc:mortar')
 
+    for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
+        for block_type in ('coral', 'coral_fan', 'coral_wall_fan'):
+            for life in ('dead_', ''):
+                second_type = block_type
+                if block_type == 'coral_wall_fan' and life != 'dead_':
+                    rm.block_tag('wall_corals', ('coral', color + '_' + life + block_type))
+                    second_type = 'coral_fan'
+                rm.item_model(('coral', color + '_' + life + block_type), 'minecraft:block/' + life + color + '_' + second_type).with_lang(lang('%s %s %s', life, color, block_type))
+                if block_type == 'coral' or block_type == 'coral_fan' and life != 'dead_':
+                    rm.block_tag('corals', ('coral', color + '_' + life + block_type))
+
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:
     return {

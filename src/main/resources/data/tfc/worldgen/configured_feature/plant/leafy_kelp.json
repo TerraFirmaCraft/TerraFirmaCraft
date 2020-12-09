@@ -16,7 +16,10 @@
                   "config": {
                     "body": "tfc:plant/leafy_kelp_plant",
                     "head": "tfc:plant/leafy_kelp",
-                    "tries": 128
+                    "tries": 64,
+                    "radius": 12,
+                    "minHeight": 14,
+                    "maxHeight": 21
                   }
                 },
                 "decorator": {

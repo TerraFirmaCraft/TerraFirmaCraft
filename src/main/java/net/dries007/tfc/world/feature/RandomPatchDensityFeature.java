@@ -29,7 +29,6 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
         BlockState blockstate = config.stateProvider.getState(rand, pos);
-        BlockPos blockpos = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         ChunkData data = ChunkData.get(world, mutablePos);
@@ -43,7 +42,7 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
             mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), 0, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
             BlockPos below = mutablePos.below();
             BlockState state = world.getBlockState(below);
-            if ((world.isEmptyBlock(mutablePos) && blockstate.canSurvive(world, mutablePos) && state.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
+            if ((world.isEmptyBlock(mutablePos) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
             {
                 config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.AGE_3, rand.nextInt(4)), rand); //randomize age
                 ++i;

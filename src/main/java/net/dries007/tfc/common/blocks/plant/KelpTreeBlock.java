@@ -107,7 +107,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
-        boolean attachedVertically = !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.above()) && !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.below());
+        //boolean attachedVertically = !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.above()) && !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.below());
 
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -118,7 +118,9 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
                 {
                     return false;
                 }*/
-                //this was causing overlapping structures to break each other. should re-evaluate
+                //this might be causing overlapping structures to break each other. should re-evaluate
+                //if you study the structures ingame you'll see the algorithm precludes them from growing and then touching horizontally anyway
+                //so theoretically this should never be called anyway, I'm not sure
 
                 Block below = worldIn.getBlockState(relativePos.below()).getBlock();
                 if (below.is(TFCTags.Blocks.KELP_BRANCH) || below.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))

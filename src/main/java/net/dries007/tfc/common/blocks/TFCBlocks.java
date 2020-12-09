@@ -25,6 +25,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
+import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -138,6 +140,19 @@ public final class TFCBlocks
     public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
         register(("plant/" + plant.name()).toLowerCase(), plant::create, block -> plant.createBlockItem(block, new Item.Properties().tab(FLORA)), plant.needsItem())
     );
+
+    public static final Map<Coral.Color, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.Color.class, color ->
+        Helpers.mapOfKeys(Coral.BlockType.class, type ->
+            register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), FLORA)
+        )
+    );
+
+    public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
+        .lightLevel((state) -> 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
+    // see the registration for pickles in Blocks for how this should work (it should not light if it's not waterlogged)
+    // but since keys for FluidProperty can only be obtained by querying a fluid
+    // rather than how Waterlogged is a boolean
+    // it's not readily accessible at runtime in the way we want.
 
     // Misc
 

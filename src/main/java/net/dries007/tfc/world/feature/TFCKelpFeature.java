@@ -11,33 +11,36 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
-public class TFCKelpFeature extends Feature<DoublePlantConfig>
+public class TFCKelpFeature extends Feature<TallPlantConfig>
 {
-    public TFCKelpFeature(Codec<DoublePlantConfig> codec)
+    public TFCKelpFeature(Codec<TallPlantConfig> codec)
     {
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, DoublePlantConfig config)
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
+        int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), 0, rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
+            mutablePos.set(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, mutablePos));
             mutablePos.move(Direction.DOWN);
             if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 return false;
             mutablePos.move(Direction.UP);
             if (world.isWaterAt(mutablePos) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(17) + 1, 17, 25, getWetBlock(world, mutablePos, config.getBodyState()), getWetBlock(world, mutablePos, config.getHeadState()));
+                placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, getWetBlock(world, mutablePos, config.getBodyState()), getWetBlock(world, mutablePos, config.getHeadState()));
                 placedAny = true;
             }
         }
