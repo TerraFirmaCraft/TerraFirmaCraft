@@ -30,6 +30,7 @@ import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -81,6 +82,7 @@ public final class ClientEventHandler
 
         // Plants
         TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout())));
 
         // Fluids
         RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), RenderType.translucent());

@@ -115,6 +115,8 @@ public enum Plant implements IPlant
     HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    ARUNDO_PLANT(BlockType.TWISTING, 0.3F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    ARUNDO(BlockType.TWISTING_TOP, 0.3F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     WINGED_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     WINGED_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
@@ -168,6 +170,10 @@ public enum Plant implements IPlant
                 return LEAFY_KELP_PLANT;
             case LEAFY_KELP_PLANT:
                 return LEAFY_KELP;
+            case ARUNDO:
+                return ARUNDO_PLANT;
+            case ARUNDO_PLANT:
+                return ARUNDO;
         }
         throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
@@ -196,7 +202,7 @@ public enum Plant implements IPlant
 
     public boolean needsItem()
     {
-        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE;
+        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
     }
 
     @VisibleForTesting
@@ -217,6 +223,8 @@ public enum Plant implements IPlant
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
         WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
         WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
+        TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
+        TWISTING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
         TWISTING_SOLID((plant, type) -> new BodyPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
         TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
         //Water

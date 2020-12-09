@@ -16,7 +16,10 @@
                   "config": {
                     "body": "tfc:plant/tree_fern_plant",
                     "head": "tfc:plant/tree_fern",
-                    "tries": 15
+                    "tries": 8,
+                    "radius": 7,
+                    "minHeight": 2,
+                    "maxHeight": 6
                   }
                 },
                 "decorator": {

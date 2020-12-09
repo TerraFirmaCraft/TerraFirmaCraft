@@ -104,9 +104,10 @@
       "tfc:plant/sargassum",
       "tfc:plant/star_grass",
       "tfc:plant/turtle_grass",
+      "tfc:coral",
+      "tfc:plant/giant_kelp",
       "tfc:plant/winged_kelp",
       "tfc:plant/leafy_kelp",
-      "tfc:plant/giant_kelp",
       "tfc:forest",
       "tfc:bamboo",
       "tfc:plant/hanging_vines",
@@ -182,7 +183,8 @@
       "tfc:plant/moss_cover",
       "tfc:plant/reindeer_lichen_cover",
       "tfc:plant/morning_glory_cover",
-      "tfc:plant/tree_fern"
+      "tfc:plant/tree_fern",
+      "tfc:plant/arundo"
     ],
     [
       "tfc:groundcover/loose_rocks",

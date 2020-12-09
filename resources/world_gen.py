@@ -276,7 +276,7 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'cattail'), wg.configure_decorated(plant_feature('tfc:plant/cattail[age=1,stage=1,fluid=empty,part=lower]', 'tfc:emergent', 1, 7, 100), decorate_chance(2), 'minecraft:square', decorate_climate(-10, 50, 150, 500)))
     rm.feature(('plant', 'dandelion'), wg.configure_decorated(plant_feature('tfc:plant/dandelion[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(0, 22, 120, 400)))
     rm.feature(('plant', 'dead_bush'), wg.configure_decorated(plant_feature('tfc:plant/dead_bush[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 50, 0, 120)))
-    rm.feature(('plant', 'duckweed'), wg.configure_decorated(plant_feature('tfc:plant/duckweed[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 25, 0, 500)))
+    rm.feature(('plant', 'duckweed'), wg.configure_decorated(plant_feature('tfc:plant/duckweed[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 25, 0, 500), ('tfc:shoreline', {'radius': 9})))
     rm.feature(('plant', 'eel_grass'), wg.configure_decorated(plant_feature('tfc:plant/eel_grass[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 15, 100), decorate_chance(2), 'minecraft:square', decorate_climate(-10, 25, 200, 500)))
     rm.feature(('plant', 'field_horsetail'), wg.configure_decorated(plant_feature('tfc:plant/field_horsetail[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 26, 300, 500)))
     rm.feature(('plant', 'fountain_grass'), wg.configure_decorated(plant_feature('tfc:plant/fountain_grass[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 20), decorate_chance(1), 'minecraft:square', decorate_climate(-12, 40, 75, 150)))
@@ -290,7 +290,7 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'lady_fern'), wg.configure_decorated(plant_feature('tfc:plant/lady_fern[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-50, 16, 200, 490)))
     rm.feature(('plant', 'licorice_fern'), wg.configure_decorated(plant_feature('tfc:plant/licorice_fern[age=1,stage=1,facing=north]', 'minecraft:simple_block_placer', 6, 5), decorate_chance(5), 'minecraft:square', decorate_climate(-15, 25, 300, 400)))
     rm.feature(('plant', 'laminaria'), wg.configure_decorated(plant_feature('tfc:plant/laminaria[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 10, 10), decorate_chance(4), 'minecraft:square', decorate_climate(-50, 12, 100, 500)))
-    rm.feature(('plant', 'lotus'), wg.configure_decorated(plant_feature('tfc:plant/lotus[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(15, 50, 0, 500)))
+    rm.feature(('plant', 'lotus'), wg.configure_decorated(plant_feature('tfc:plant/lotus[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(15, 50, 0, 500), ('tfc:shoreline', {'radius': 9})))
     rm.feature(('plant', 'manatee_grass'), wg.configure_decorated(plant_feature('tfc:plant/manatee_grass[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 15, 128), decorate_chance(1), 'minecraft:square', decorate_climate(25, 50, 250, 500)))
     rm.feature(('plant', 'marigold'), wg.configure_decorated(plant_feature('tfc:plant/marigold[age=1,stage=1,fluid=empty,part=lower]', 'tfc:emergent', 1, 7, 100), decorate_chance(2), 'minecraft:square', decorate_climate(20, 50, 50, 390)))
     rm.feature(('plant', 'meads_milkweed'), wg.configure_decorated(plant_feature('tfc:plant/meads_milkweed[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-10, 14, 130, 380)))
@@ -302,7 +302,7 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'oxeye_daisy'), wg.configure_decorated(plant_feature('tfc:plant/oxeye_daisy[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 40, 120, 300)))
     rm.feature(('plant', 'pampas_grass'), wg.configure_decorated(plant_feature('tfc:plant/pampas_grass[age=1,stage=1,part=lower]', 'tfc:tall_plant', 1, 15, True), decorate_chance(1), 'minecraft:square', decorate_climate(20, 50, 0, 200)))
     rm.feature(('plant', 'perovskia'), wg.configure_decorated(plant_feature('tfc:plant/perovskia[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 128, True), decorate_chance(1), 'minecraft:square', decorate_climate(-50, 20, 0, 200)))
-    rm.feature(('plant', 'pistia'), wg.configure_decorated(plant_feature('tfc:plant/pistia[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(10, 45, 0, 400)))
+    rm.feature(('plant', 'pistia'), wg.configure_decorated(plant_feature('tfc:plant/pistia[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(10, 45, 0, 400), ('tfc:shoreline', {'radius': 9})))
     rm.feature(('plant', 'poppy'), wg.configure_decorated(plant_feature('tfc:plant/poppy[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-40, 36, 150, 250)))
     rm.feature(('plant', 'primrose'), wg.configure_decorated(plant_feature('tfc:plant/primrose[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 33, 150, 300)))
     rm.feature(('plant', 'pulsatilla'), wg.configure_decorated(plant_feature('tfc:plant/pulsatilla[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-50, 30, 50, 200)))
@@ -313,7 +313,7 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'sago'), wg.configure_decorated(plant_feature('tfc:plant/sago[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 10, 10), decorate_chance(4), 'minecraft:square', decorate_climate(-10, 50, 200, 500)))
     rm.feature(('plant', 'sagebrush'), wg.configure_decorated(plant_feature('tfc:plant/sagebrush[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 50, 0, 120)))
     rm.feature(('plant', 'sapphire_tower'), wg.configure_decorated(plant_feature('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 'tfc:tall_plant', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(16, 39, 75, 200)))
-    rm.feature(('plant', 'sargassum'), wg.configure_decorated(plant_feature('tfc:plant/sargassum[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(0, 25, 0, 500)))
+    rm.feature(('plant', 'sargassum'), wg.configure_decorated(plant_feature('tfc:plant/sargassum[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(0, 25, 0, 500), ('tfc:shoreline', {'radius': 6})))
     rm.feature(('plant', 'scutch_grass'), wg.configure_decorated(plant_feature('tfc:plant/scutch_grass[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 20), decorate_chance(1), 'minecraft:square', decorate_climate(0, 50, 150, 500)))
     rm.feature(('plant', 'snapdragon_pink'), wg.configure_decorated(plant_feature('tfc:plant/snapdragon_pink[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(24, 36, 150, 300)))
     rm.feature(('plant', 'snapdragon_red'), wg.configure_decorated(plant_feature('tfc:plant/snapdragon_red[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(24, 36, 150, 300)))
@@ -335,15 +335,16 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'tulip_white'), wg.configure_decorated(plant_feature('tfc:plant/tulip_white[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 0, 100, 200)))
     rm.feature(('plant', 'turtle_grass'), wg.configure_decorated(plant_feature('tfc:plant/turtle_grass[age=1,stage=1,fluid=empty]', 'tfc:water_plant', 1, 15, 128), decorate_chance(1), 'minecraft:square', decorate_climate(-50, 25, 240, 500)))
     rm.feature(('plant', 'vriesea'), wg.configure_decorated(plant_feature('tfc:plant/vriesea[age=1,stage=1,facing=north]', 'minecraft:simple_block_placer', 6, 5), decorate_chance(5), 'minecraft:square', decorate_climate(22, 31, 200, 400)))
-    rm.feature(('plant', 'water_canna'), wg.configure_decorated(plant_feature('tfc:plant/water_canna[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 128, True), decorate_chance(1), 'minecraft:square', decorate_climate(0, 36, 150, 500)))
-    rm.feature(('plant', 'water_lily'), wg.configure_decorated(plant_feature('tfc:plant/water_lily[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 38, 0, 500)))
+    rm.feature(('plant', 'water_canna'), wg.configure_decorated(plant_feature('tfc:plant/water_canna[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 128, True), decorate_chance(1), 'minecraft:square', decorate_climate(0, 36, 150, 500), ('tfc:shoreline', {'radius': 9})))
+    rm.feature(('plant', 'water_lily'), wg.configure_decorated(plant_feature('tfc:plant/water_lily[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 38, 0, 500), ('tfc:shoreline', {'radius': 9})))
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
-    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90), 'minecraft:heightmap_world_surface', 'minecraft:square', decorate_climate(16, 50, 290, 500, True)))
-    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90), air_mask(0.003, 190), decorate_range(64, 130), decorate_climate(16, 50, 290, 500, True)))
-    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 15), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
-    rm.feature(('plant', 'winged_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 128), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-10, 50, 100, 400)))
-    rm.feature(('plant', 'leafy_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 128), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-10, 50, 200, 500)))
+    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), 'minecraft:heightmap_world_surface', 'minecraft:square', decorate_climate(16, 50, 290, 500, True)))
+    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), air_mask(0.003, 190), decorate_range(64, 130), decorate_climate(16, 50, 290, 500, True)))
+    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
+    rm.feature(('plant', 'arundo'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(0, 50, 100, 500), ('tfc:near_water', {'radius': 6})))
+    rm.feature(('plant', 'winged_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-10, 50, 100, 400)))
+    rm.feature(('plant', 'leafy_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-10, 50, 200, 500)))
     rm.feature(('plant', 'giant_kelp'), wg.configure_decorated(wg.configure('tfc:kelp_tree', {'state': 'tfc:plant/giant_kelp_flower'}), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_climate(-10, 50, 100, 500)))
     rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(22, 30, 400, 500, True), air_mask(0.002, 190), decorate_range(64, 190)))
     rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(19, 25, 280, 350, True), air_mask(0.002, 190), decorate_range(64, 190)))
@@ -355,6 +356,12 @@ def generate(rm: ResourceManager):
         'noise_offset': 0.3
     }), 'minecraft:square', 'minecraft:heightmap_world_surface'))
     # todo: mixin to bamboo to make it not grow insanely fast / not able to insta grow
+
+    rm.feature('coral', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {'features': [wg.configure('tfc:coral_tree'), wg.configure('tfc:coral_mushroom'), wg.configure('tfc:coral_claw')]}), decorate_climate(15, 50, 200, 500), ('minecraft:count_noise_biased', {
+        "noise_to_count_ratio": 20,
+        "noise_factor": 400.0,
+        "noise_offset": 0.0
+    }), 'minecraft:square', 'minecraft:top_solid_heightmap'))
 
     # Groundcover
     sand = [wg.block_state('tfc:sand/%s' % color) for color in SAND_BLOCK_TYPES]
@@ -571,11 +578,14 @@ def simple_patch_feature(block: str, vertical_spread: int, horizontal_spread: in
         feature_name = 'tfc:water_land_patch'
     return wg.configure(feature_name, cfg)
 
-def tall_feature(feature: str, state1: str, state2: str, tries: int):
+def tall_feature(feature: str, state1: str, state2: str, tries: int, radius: int, min_height: int, max_height: int):
     cfg = {
         'body': state1,
         'head': state2,
-        'tries': tries
+        'tries': tries,
+        'radius': radius,
+        'minHeight': min_height,
+        'maxHeight': max_height
     }
     return wg.configure(feature, cfg)
 
@@ -639,7 +649,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
     if ocean_features:
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES]
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:plant/giant_kelp']
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:coral', 'tfc:plant/giant_kelp', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']
     if (not ocean_features) or name in ['oceanic_mountains', 'volcanic_oceanic_mountains']:  # so that forests still generate in oceanic mountains
         # Non-ocean biome, add all land based features
         if lake_features:
@@ -655,7 +665,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES]
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern']
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
         if volcano_features:
             features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']
 

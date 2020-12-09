@@ -16,7 +16,10 @@
                   "config": {
                     "body": "tfc:plant/winged_kelp_plant",
                     "head": "tfc:plant/winged_kelp",
-                    "tries": 128
+                    "tries": 64,
+                    "radius": 12,
+                    "minHeight": 14,
+                    "maxHeight": 21
                   }
                 },
                 "decorator": {

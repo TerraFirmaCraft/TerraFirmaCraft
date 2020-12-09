@@ -15,26 +15,27 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
-public class TFCWeepingVinesFeature extends Feature<DoublePlantConfig>
+public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
 {
-    public TFCWeepingVinesFeature(Codec<DoublePlantConfig> codec)
+    public TFCWeepingVinesFeature(Codec<TallPlantConfig> codec)
     {
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, DoublePlantConfig config)
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
+        int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.move(Direction.UP);
             BlockState aboveState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
             if ((aboveState.is(BlockTags.LEAVES) || aboveState.is(BlockTags.LOGS) || aboveState.is(BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(6) + 14, 17, 25, config.getBodyState(), config.getHeadState());
+                placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
                 placedAny = true;
             }
         }
