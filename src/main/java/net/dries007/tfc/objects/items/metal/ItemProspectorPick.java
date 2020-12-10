@@ -78,7 +78,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
-                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.FOUND, targetStack.getTranslationKey(), 0);
+                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.FOUND, targetStack);
 
                     // Increment skill
                     if (skill != null)
@@ -89,7 +89,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 else if (RANDOM.nextFloat() < falseNegativeChance)
                 {
                     // False negative
-                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null, 0);
+                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null);
                 }
                 else
                 {
@@ -97,36 +97,13 @@ public class ItemProspectorPick extends ItemMetalTool
                     if (results.isEmpty())
                     {
                         // Found nothing
-                        event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null, 0);
+                        event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null);
                     }
                     else
                     {
                         // Found something
                         ProspectResult result = (ProspectResult) results.toArray()[RANDOM.nextInt(results.size())];
-                        ProspectEvent.ResultType type;
-
-                        if (result.score < 10)
-                        {
-                            type = ProspectEvent.ResultType.TRACES;
-                        }
-                        else if (result.score < 20)
-                        {
-                            type = ProspectEvent.ResultType.SMALL;
-                        }
-                        else if (result.score < 40)
-                        {
-                            type = ProspectEvent.ResultType.MEDIUM;
-                        }
-                        else if (result.score < 80)
-                        {
-                            type = ProspectEvent.ResultType.LARGE;
-                        }
-                        else
-                        {
-                            type = ProspectEvent.ResultType.VERY_LARGE;
-                        }
-
-                        event = new ProspectEvent.Server(player, pos, type, result.ore.getTranslationKey(), result.score);
+                        event = new ProspectEvent.Server(player, pos, result.getType(), result.ore);
 
                         if (ConfigTFC.General.DEBUG.enable)
                         {
@@ -139,7 +116,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 }
 
                 MinecraftForge.EVENT_BUS.post(event);
-                PacketProspectResult packet = new PacketProspectResult(event.pos, event.type, event.ore, event.score);
+                PacketProspectResult packet = new PacketProspectResult(event.getBlockPos(), event.getResultType(), event.getVein());
                 TerraFirmaCraft.getNetwork().sendTo(packet, (EntityPlayerMP) player);
             }
             else
@@ -252,6 +229,30 @@ public class ItemProspectorPick extends ItemMetalTool
         {
             ore = itemStack;
             score = num;
+        }
+
+        public ProspectEvent.ResultType getType()
+        {
+            if (score < 10)
+            {
+                return ProspectEvent.ResultType.TRACES;
+            }
+            else if (score < 20)
+            {
+                return ProspectEvent.ResultType.SMALL;
+            }
+            else if (score < 40)
+            {
+                return ProspectEvent.ResultType.MEDIUM;
+            }
+            else if (score < 80)
+            {
+                return ProspectEvent.ResultType.LARGE;
+            }
+            else
+            {
+                return ProspectEvent.ResultType.VERY_LARGE;
+            }
         }
     }
 }
