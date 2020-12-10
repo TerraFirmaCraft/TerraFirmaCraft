@@ -211,10 +211,11 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
     @Override
     public float getMeltTemp(ItemStack stack)
     {
-       if (this.canMelt(stack)){
-           return ore.getMetal().getMeltTemp();
-       }
-       return 0f;
+        if (this.canMelt(stack))
+        {
+            return ore.getMetal().getMeltTemp();
+        }
+        return 0f;
     }
 
     @Nonnull
