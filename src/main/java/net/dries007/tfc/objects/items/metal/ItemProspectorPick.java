@@ -78,7 +78,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
-                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.FOUND, targetStack);
+                    event = new ProspectEvent.Server(player, pos, ProspectResult.Type.FOUND, targetStack);
 
                     // Increment skill
                     if (skill != null)
@@ -89,7 +89,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 else if (RANDOM.nextFloat() < falseNegativeChance)
                 {
                     // False negative
-                    event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null);
+                    event = new ProspectEvent.Server(player, pos, ProspectResult.Type.NOTHING, null);
                 }
                 else
                 {
@@ -97,7 +97,7 @@ public class ItemProspectorPick extends ItemMetalTool
                     if (results.isEmpty())
                     {
                         // Found nothing
-                        event = new ProspectEvent.Server(player, pos, ProspectEvent.ResultType.NOTHING, null);
+                        event = new ProspectEvent.Server(player, pos, ProspectResult.Type.NOTHING, null);
                     }
                     else
                     {
@@ -220,7 +220,7 @@ public class ItemProspectorPick extends ItemMetalTool
         }
     }
 
-    private static final class ProspectResult
+    public static final class ProspectResult
     {
         private final ItemStack ore;
         private double score;
@@ -231,27 +231,50 @@ public class ItemProspectorPick extends ItemMetalTool
             score = num;
         }
 
-        public ProspectEvent.ResultType getType()
+        public Type getType()
         {
             if (score < 10)
             {
-                return ProspectEvent.ResultType.TRACES;
+                return Type.TRACES;
             }
             else if (score < 20)
             {
-                return ProspectEvent.ResultType.SMALL;
+                return Type.SMALL;
             }
             else if (score < 40)
             {
-                return ProspectEvent.ResultType.MEDIUM;
+                return Type.MEDIUM;
             }
             else if (score < 80)
             {
-                return ProspectEvent.ResultType.LARGE;
+                return Type.LARGE;
             }
             else
             {
-                return ProspectEvent.ResultType.VERY_LARGE;
+                return Type.VERY_LARGE;
+            }
+        }
+
+        public enum Type
+        {
+            VERY_LARGE ("tfc.propick.found_very_large"),
+            LARGE      ("tfc.propick.found_large"),
+            MEDIUM     ("tfc.propick.found_medium"),
+            SMALL      ("tfc.propick.found_small"),
+            TRACES     ("tfc.propick.found_traces"),
+
+            FOUND      ("tfc.propick.found"),         // right click on block
+            NOTHING    ("tfc.propick.found_nothing"); // nothing interesting here
+
+            private static final Type[] VALUES = values();
+            public final String translation;
+
+            Type(String translation){
+                this.translation = translation;
+            }
+
+            public static Type valueOf(int ordinal){
+                return VALUES[ordinal];
             }
         }
     }
