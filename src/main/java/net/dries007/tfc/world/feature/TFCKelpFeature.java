@@ -16,6 +16,7 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.plant.TFCKelpTopBlock;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class TFCKelpFeature extends Feature<TallPlantConfig>
@@ -27,6 +28,8 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
 
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
+        if (!((TFCKelpTopBlock)(config.getHeadState().getBlock())).getFluidProperty().canContain(world.getBlockState(pos).getFluidState().getType()))
+            return false;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
         int radius = config.getRadius();

@@ -100,6 +100,7 @@
     ],
     [
       "tfc:groundcover/loose_rocks",
+      "tfc:groundcover/guano_cave",
       "tfc:groundcover/feather",
       "tfc:groundcover/flint"
     ]

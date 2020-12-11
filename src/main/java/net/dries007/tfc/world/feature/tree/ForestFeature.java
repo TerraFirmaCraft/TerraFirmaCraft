@@ -162,7 +162,8 @@ public class ForestFeature extends Feature<ForestConfig>
             for (int j = 0; j < tries; ++j)
             {
                 BlockState setState = random.nextInt(2) == 1 ? leafState : twigState;
-                mutablePos.setWithOffset(mutablePos, random.nextInt(11) - random.nextInt(11), random.nextInt(2) - random.nextInt(2), random.nextInt(11) - random.nextInt(11));
+                mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+                mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
                 if ((worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
                 {
                     setBlock(worldIn, mutablePos, setState

@@ -1,0 +1,57 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:cave_patch",
+              "config": {
+                "state_provider": {
+                  "type": "tfc:facing_random",
+                  "state": "tfc:groundcover/guano"
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer",
+                  "config": {}
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 15,
+                "zspread": 15,
+                "tries": 10
+              }
+            },
+            "decorator": {
+              "type": "minecraft:range",
+              "config": {
+                "bottom_offset": 10,
+                "top_offset": 0,
+                "maximum": 25
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "tfc:bounded_carving_mask",
+          "config": {
+            "step": "air",
+            "probability": 0.002,
+            "max_y": 25
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 10
+      }
+    }
+  }
+}

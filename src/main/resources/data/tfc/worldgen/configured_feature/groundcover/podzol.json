@@ -19,48 +19,7 @@
                   "type": "minecraft:simple_block_placer",
                   "config": {}
                 },
-                "whitelist": [
-                  {
-                    "Name": "tfc:grass/silt",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/sandy_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/silty_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  }
-                ],
+                "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 5,
@@ -69,12 +28,11 @@
               }
             },
             "decorator": {
-              "type": "tfc:climate",
+              "type": "tfc:climate_target",
               "config": {
-                "min_temperature": -7,
-                "max_temperature": 28,
-                "min_rainfall": 80,
-                "max_rainfall": 370,
+                "temperature": 14,
+                "rainfall": 300,
+                "spread": 6,
                 "needs_forest": true
               }
             }
@@ -89,7 +47,7 @@
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 60
+        "chance": 5
       }
     }
   }
