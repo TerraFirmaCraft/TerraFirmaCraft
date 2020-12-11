@@ -1,0 +1,348 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:cave_vegetation",
+              "config": {
+                "blocks": [
+                  {
+                    "stone": [
+                      "tfc:rock/raw/chalk"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/chalk",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/chalk",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/chert"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/chert",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/chert",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/claystone"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/claystone",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/claystone",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/conglomerate"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/conglomerate",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/conglomerate",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/dolomite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/dolomite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/dolomite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/limestone"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/limestone",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/limestone",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/shale"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/shale",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/shale",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/gneiss"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/gneiss",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/gneiss",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/marble"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/marble",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/marble",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/phyllite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/phyllite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/phyllite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/quartzite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/quartzite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/quartzite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/schist"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/schist",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/schist",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/slate"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/slate",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/slate",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/diorite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/diorite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/diorite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/gabbro"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/gabbro",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/gabbro",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/granite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/granite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/granite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/andesite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/andesite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/andesite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/basalt"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/basalt",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/basalt",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/dacite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/dacite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/dacite",
+                        "weight": 2
+                      }
+                    ]
+                  },
+                  {
+                    "stone": [
+                      "tfc:rock/raw/rhyolite"
+                    ],
+                    "ore": [
+                      {
+                        "block": "tfc:rock/mossy_cobble/rhyolite",
+                        "weight": 8
+                      },
+                      {
+                        "block": "tfc:rock/cobble/rhyolite",
+                        "weight": 2
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "decorator": {
+              "type": "minecraft:range",
+              "config": {
+                "bottom_offset": 64,
+                "top_offset": 0,
+                "maximum": 130
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "tfc:bounded_carving_mask",
+          "config": {
+            "step": "air",
+            "probability": 0.01,
+            "max_y": 130
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:climate_target",
+      "config": {
+        "temperature": 24,
+        "rainfall": 310,
+        "spread": 8,
+        "needs_forest": false
+      }
+    }
+  }
+}

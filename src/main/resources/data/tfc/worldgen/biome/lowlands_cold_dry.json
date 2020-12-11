@@ -94,6 +94,7 @@
     [
       "tfc:forest",
       "tfc:bamboo",
+      "tfc:cave_vegetation",
       "tfc:plant/hanging_vines",
       "tfc:plant/hanging_vines_cave",
       "tfc:plant/allium",
@@ -172,6 +173,7 @@
     ],
     [
       "tfc:groundcover/loose_rocks",
+      "tfc:groundcover/guano_cave",
       "tfc:groundcover/feather",
       "tfc:groundcover/flint",
       "tfc:groundcover/sticks_forest",
