@@ -118,6 +118,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         if (metal != null)
         {
             int smeltAmount = this.getSmeltAmount(stack);
+            int meltTemp = (int) this.getMeltTemp(stack);
             switch (ConfigTFC.Client.TOOLTIP.oreTooltipMode)
             {
                 case HIDE:
@@ -141,9 +142,23 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
                     }
                     else
                     {
-                        infoTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount));
+                        infoTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount), I18n.format("tfc.tooltip.melttemp", meltTemp));
                     }
                     tooltip.add(infoTotal);
+                    break;
+                case ADVANCED:
+                    // All info: "Metal: xx units / xx total"
+                    String advancedTotal;
+                    if (stack.getCount() > 1)
+                    {
+                        advancedTotal = String.format("%s: %s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.info_total", smeltAmount, smeltAmount * stack.getCount()), I18n.format("tfc.tooltip.melttemp", meltTemp));
+                    }
+                    else
+                    {
+                        advancedTotal = String.format("%s: %s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount), I18n.format("tfc.tooltip.melttemp", meltTemp));
+                    }
+                    tooltip.add(advancedTotal);
+
             }
         }
     }
@@ -191,6 +206,16 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
     public boolean canMelt(ItemStack stack)
     {
         return ore.canMelt();
+    }
+
+    @Override
+    public float getMeltTemp(ItemStack stack)
+    {
+        if (this.canMelt(stack))
+        {
+            return ore.getMetal().getMeltTemp();
+        }
+        return 0f;
     }
 
     @Nonnull
