@@ -335,7 +335,7 @@ public class TEAnvilTFC extends TEInventory
             if (fluxStack.isEmpty())
             {
                 // No flux
-                player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_no_flux"));
+                player.sendStatusMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_no_flux"), true);
                 return false;
             }
 
@@ -346,11 +346,11 @@ public class TEAnvilTFC extends TEInventory
             {
                 if (cap1 instanceof IItemHeat && cap2 instanceof IItemHeat)
                 {
-                    player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"));
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"), true);
                 }
                 else
                 {
-                    player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"));
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"), true);
                 }
                 return false;
             }
@@ -377,6 +377,10 @@ public class TEAnvilTFC extends TEInventory
 
             return true;
         }
+        
+        // For when there is both inputs but no recipe that matches
+        player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"), true);
+        
         return false;
     }
 
