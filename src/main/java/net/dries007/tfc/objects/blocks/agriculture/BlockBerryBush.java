@@ -41,6 +41,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IBerryBush;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -249,7 +250,7 @@ public class BlockBerryBush extends Block
             entityIn.motionZ *= ConfigTFC.General.MISC.berryBushMovementModifier;
             if (bush.isSpiky() && entityIn instanceof EntityLivingBase)
             {
-                entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
+                entityIn.attackEntityFrom(DamageSourcesTFC.BERRYBUSH, 1.0F);
             }
         }
     }
