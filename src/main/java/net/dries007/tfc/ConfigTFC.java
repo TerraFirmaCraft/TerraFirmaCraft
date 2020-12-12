@@ -911,14 +911,14 @@ public final class ConfigTFC
         public static final class JugCFG
         {
             @Config.Comment("Enable Shift-Right clicking of Jars to dump water out. Enabling this will not pour an actual water block onto the ground.")
-            @Config.LangKey("config." + MOD_ID + "devices.jug.dumpWaterOut")
+            @Config.LangKey("config." + MOD_ID + ".devices.jug.dumpWaterOnShiftRightClick")
             public boolean dumpWaterOnShiftRightClick = true;
         }
 
         public static final class GoldPanCFG
         {
             @Config.Comment("Cooldown ticks after panning.")
-            @Config.LangKey("config." + MOD_ID + "devices.gold_pan.cooldownTicks")
+            @Config.LangKey("config." + MOD_ID + ".devices.gold_pan.cooldownTicks")
             public int cooldownTicks = 20;
         }
 
@@ -1827,7 +1827,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:pheasanttfc", "tfc:chickentfc", "tfc:ducktfc", "tfc:rabbittfc"};
         }
 
@@ -1866,7 +1866,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:sheeptfc", "tfc:rabbittfc", "tfc:haretfc"};
         }
 
@@ -1880,7 +1880,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:deertfc", "tfc:haretfc", "tfc:rabbittfc"};
         }
 
@@ -1894,7 +1894,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:deertfc", "tfc:haretfc", "tfc:rabbittfc"};
         }
 
@@ -1908,7 +1908,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:deertfc", "tfc:haretfc", "tfc:rabbittfc"};
         }
 
@@ -1922,7 +1922,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:gazelletfc", "tfc:wildebeesttfc"};
         }
 
@@ -1936,7 +1936,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:deertfc", "tfc:boartfc"};
         }
 
@@ -1950,7 +1950,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:horsetfc", "tfc:donkeytfc", "tfc:muletfc", "tfc:turkeytfc"};
         }
 
@@ -1964,7 +1964,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:boartfc", "tfc:haretfc"};
         }
 
@@ -1978,7 +1978,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:mongoosetfc", "tfc:haretfc"};
         }
 
@@ -1992,7 +1992,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:boartfc", "tfc:haretfc"};
         }
 
@@ -2006,7 +2006,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:pheasanttfc", "tfc:rabbittfc", "tfc:haretfc"};
         }
 
@@ -2020,7 +2020,7 @@ public final class ConfigTFC
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            @Config.LangKey("config." + MOD_ID + ".animals.huntCreatures")
             public String[] huntCreatures = {"tfc:gazalletfc", "tfc:rabbittfc", "tfc:haretfc"};
         }
 
