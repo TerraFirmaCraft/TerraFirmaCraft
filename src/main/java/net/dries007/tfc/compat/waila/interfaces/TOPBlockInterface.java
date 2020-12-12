@@ -52,10 +52,13 @@ public class TOPBlockInterface implements IProbeInfoProvider, IBlockDisplayOverr
             nbt = tileEntity.writeToNBT(nbt);
         }
 
-        List<String> tooltip = internal.getTooltip(world, hitData.getPos(), nbt);
-        for (String string : tooltip)
+        if (internal.appendBody())
         {
-            info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).text(string);
+            List<String> tooltip = internal.getTooltip(world, hitData.getPos(), nbt);
+            for (String string : tooltip)
+            {
+                info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).text(string);
+            }
         }
     }
 

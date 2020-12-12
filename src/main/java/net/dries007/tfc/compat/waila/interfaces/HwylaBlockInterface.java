@@ -30,18 +30,20 @@ public class HwylaBlockInterface implements IWailaDataProvider, IWailaPlugin
         this.internal = internal;
     }
 
-
     @Override
     public void register(IWailaRegistrar registrar)
     {
         // Register providers accordingly to each implementation
         for (Class<?> clazz : internal.getLookupClass())
         {
-            registrar.registerBodyProvider(this, clazz);
             if (TileEntity.class.isAssignableFrom(clazz))
             {
                 // Register to update NBT data on all tile entities.
                 registrar.registerNBTProvider(this, clazz);
+            }
+            if (internal.appendBody())
+            {
+                registrar.registerBodyProvider(this, clazz);
             }
             if (internal.overrideTitle())
             {
@@ -78,7 +80,11 @@ public class HwylaBlockInterface implements IWailaDataProvider, IWailaPlugin
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
-        currentTooltip.addAll(internal.getTooltip(accessor.getWorld(), accessor.getPosition(), accessor.getNBTData()));
+        List<String> body = internal.getTooltip(accessor.getWorld(), accessor.getPosition(), accessor.getNBTData());
+        if (!body.isEmpty())
+        {
+            currentTooltip.addAll(internal.getTooltip(accessor.getWorld(), accessor.getPosition(), accessor.getNBTData()));
+        }
         return currentTooltip;
     }
 
