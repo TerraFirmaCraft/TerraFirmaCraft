@@ -813,6 +813,9 @@ config.tfc.client.tooltip.showNBTTooltip.tooltip=Show ItemStack NBT on the toolt
 config.tfc.client.tooltip.propickOutputToActionBar=Prospectors Pick Output to Actionbar
 config.tfc.client.tooltip.propickOutputToActionBar.tooltip=Should the prospectors pick output to the actionbar? (the space just above the hotbar)
 
+config.tfc.client.tooltip.anvilWeldOutputToActionBar=Anvil Welding Output to Actionbar
+config.tfc.client.tooltip.anvilWeldOutputToActionBar.tooltip=Should welding output to the actionbar? (the space just above the hotbar)
+
 config.tfc.client.tooltip.oreTooltipMode=Ore Tooltip Mode
 config.tfc.client.tooltip.oreTooltipMode.tooltip=Mode used on ore tooltips.
 
