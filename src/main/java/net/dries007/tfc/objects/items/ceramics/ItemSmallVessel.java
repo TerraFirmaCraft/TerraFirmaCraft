@@ -88,7 +88,7 @@ public class ItemSmallVessel extends ItemPottery
                         TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
                     case LIQUID_SOLID: 
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tfc.vessel.liquid_solid"), true);
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tfc.vessel.liquid_solid"), ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar);
                         break;
                 }
             }

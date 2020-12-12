@@ -961,6 +961,10 @@ public final class ConfigTFC
             @Config.Comment("Should welding output to the actionbar? (the space just above the hotbar)")
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.anvilWeldOutputToActionBar")
             public boolean anvilWeldOutputToActionBar = true;
+            
+            @Config.Comment("Should vessels output to the actionbar? (the space just above the hotbar)")
+            @Config.LangKey("config." + MOD_ID + ".client.tooltip.vesselOutputToActionBar")
+            public boolean vesselOutputToActionBar = true;
 
             @Config.Comment("Ore tooltip info mode.")
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.oreTooltipMode")
