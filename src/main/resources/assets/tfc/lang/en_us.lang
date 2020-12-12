@@ -181,6 +181,8 @@ tfc.tooltip.animal.product.no_wool=This %s wool has not grown up yet.
 tfc.tooltip.animal.product.no_milk=This %s is not ready to be milked.
 tfc.tooltip.animal.product.no_egg=This %s is not ready to lay eggs.
 
+## Vessel
+tfc.vessel.liquid_solid=The liquid has solidified.
 
 ## Prospecting Result Messages
 tfc.propick.found=Found

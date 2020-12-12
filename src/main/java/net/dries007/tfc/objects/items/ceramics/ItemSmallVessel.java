@@ -18,6 +18,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -86,7 +87,8 @@ public class ItemSmallVessel extends ItemPottery
                     case LIQUID_MOLTEN:
                         TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
-                    case LIQUID_SOLID:
+                    case LIQUID_SOLID: 
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tfc.vessel.liquid_solid"), true);
                         break;
                 }
             }
