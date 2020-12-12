@@ -110,6 +110,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         return meltTemp;
     }
 
+    public boolean isUsable()
+    {
+        return usable;
+    }
+    
     public int getColor()
     {
         return color;
@@ -280,7 +285,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
         public boolean hasType(Metal metal)
         {
-            if (!metal.usable)
+            if (!metal.isUsable())
             {
                 return this == ItemType.INGOT;
             }
