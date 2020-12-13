@@ -38,7 +38,8 @@ public class VeinConfig implements IFeatureConfig
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
     private final Map<Block, IWeighted<BlockState>> states;
-    @Nullable private final Indicator indicator;
+    @Nullable
+    private final Indicator indicator;
     private final int rarity;
     private final int size;
     private final float density;

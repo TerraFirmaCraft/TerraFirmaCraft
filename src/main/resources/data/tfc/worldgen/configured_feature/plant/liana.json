@@ -1,0 +1,52 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:weeping_vines",
+              "config": {
+                "body": "tfc:plant/liana_plant",
+                "head": "tfc:plant/liana",
+                "tries": 40,
+                "radius": 10,
+                "minHeight": 8,
+                "maxHeight": 16
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate_target",
+              "config": {
+                "temperature": 24,
+                "rainfall": 310,
+                "spread": 8,
+                "needs_forest": true
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:range",
+          "config": {
+            "bottom_offset": 64,
+            "top_offset": 0,
+            "maximum": 110
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:bounded_carving_mask",
+      "config": {
+        "step": "air",
+        "probability": 0.003,
+        "max_y": 110
+      }
+    }
+  }
+}

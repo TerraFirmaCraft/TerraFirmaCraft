@@ -43,7 +43,7 @@
               "config": {
                 "bottom_offset": 64,
                 "top_offset": 0,
-                "maximum": 190
+                "maximum": 130
               }
             }
           }
@@ -53,7 +53,7 @@
           "config": {
             "step": "air",
             "probability": 0.002,
-            "max_y": 190
+            "max_y": 130
           }
         }
       }
@@ -61,7 +61,7 @@
     "decorator": {
       "type": "tfc:climate_target",
       "config": {
-        "temperature": 7,
+        "temperature": 12,
         "rainfall": 300,
         "spread": 7,
         "needs_forest": true

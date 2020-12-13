@@ -42,7 +42,7 @@
               "type": "tfc:climate",
               "config": {
                 "min_temperature": -7,
-                "max_temperature": 28,
+                "max_temperature": 30,
                 "min_rainfall": 250,
                 "max_rainfall": 450,
                 "needs_forest": false

@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "tfc:vines",
+      "config": {
+        "state": "tfc:plant/ivy"
+      }
+    },
+    "decorator": {
+      "type": "tfc:climate_target",
+      "config": {
+        "temperature": 24,
+        "rainfall": 310,
+        "spread": 8,
+        "needs_forest": false
+      }
+    }
+  }
+}

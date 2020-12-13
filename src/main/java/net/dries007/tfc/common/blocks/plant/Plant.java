@@ -45,6 +45,7 @@ public enum Plant implements IPlant
     CALENDULA(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
     CANNA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}),
     CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    COONTAIL(BlockType.GRASS_WATER_FRESH, 0.7F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     DANDELION(BlockType.STANDARD, 0.9F, new int[] {9, 9, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8}),
     DEAD_BUSH(BlockType.DRY, 0.9F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     DUCKWEED(BlockType.FLOATING_FRESH, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
@@ -65,6 +66,7 @@ public enum Plant implements IPlant
     MANATEE_GRASS(BlockType.GRASS_WATER, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     MARIGOLD(BlockType.TALL_WATER_FRESH, 0.4F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     MEADS_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
+    MILFOIL(BlockType.WATER_FRESH, 0.7f, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     MORNING_GLORY(BlockType.CREEPING, 0.9F, new int[] {2, 2, 2, 0, 0, 1, 1, 1, 1, 1, 2, 2}),
     MOSS(BlockType.CREEPING, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     NASTURTIUM(BlockType.STANDARD, 0.8F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 3, 3}),
@@ -113,6 +115,8 @@ public enum Plant implements IPlant
     //not data driven. I added an unused int array because NPE. naming convention is inherited from vanilla
     HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    LIANA_PLANT(BlockType.WEEPING, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    LIANA(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     ARUNDO_PLANT(BlockType.TWISTING, 0.3F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
@@ -122,7 +126,9 @@ public enum Plant implements IPlant
     LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     LEAFY_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    IVY(BlockType.VINE, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    JUNGLE_VINES(BlockType.VINE, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 
 
     private final float speedFactor;
@@ -174,6 +180,10 @@ public enum Plant implements IPlant
                 return ARUNDO_PLANT;
             case ARUNDO_PLANT:
                 return ARUNDO;
+            case LIANA:
+                return LIANA_PLANT;
+            case LIANA_PLANT:
+                return LIANA;
         }
         throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
@@ -205,6 +215,11 @@ public enum Plant implements IPlant
         return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
     }
 
+    public boolean isLeafColored()
+    {
+        return type == BlockType.VINE;
+    }
+
     @VisibleForTesting
     public BlockType getType()
     {
@@ -221,6 +236,7 @@ public enum Plant implements IPlant
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
+        VINE((plant, type) -> new TFCVineBlock(nonSolid(plant))),
         WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
         WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
         TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),

@@ -30,6 +30,7 @@ import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -108,7 +109,10 @@ public final class ClientEventHandler
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PEAT_GRASS.get());
         // Plants
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PLANTS.values().stream().map(RegistryObject::get).toArray(Block[]::new));
+        Block[] leafyPlants = Stream.of(Plant.values()).filter(Plant::isLeafColored).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
+        Block[] grassyPlants = Stream.of(Plant.values()).filter(p -> !p.isLeafColored()).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
+        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, Wood.Default.HICKORY.getFallFoliageCoords()), leafyPlants);
+        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), grassyPlants);
 
         TFCBlocks.WOODS.forEach((key, value) -> {
             Block leaves = value.get(Wood.BlockType.LEAVES).get();

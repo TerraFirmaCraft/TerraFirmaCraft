@@ -81,7 +81,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('sea_bush_plantable_on', '#forge:dirt')
     rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
-    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant')
+    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
