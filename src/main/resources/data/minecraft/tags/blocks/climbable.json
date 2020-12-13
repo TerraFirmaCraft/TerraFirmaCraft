@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "tfc:plant/hanging_vines",
-    "tfc:plant/hanging_vines_plant"
+    "tfc:plant/hanging_vines_plant",
+    "tfc:plant/liana",
+    "tfc:plant/liana_plant"
   ]
 }

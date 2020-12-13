@@ -14,6 +14,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.feature.cave.*;
+import net.dries007.tfc.world.feature.coral.TFCCoralClawFeature;
+import net.dries007.tfc.world.feature.coral.TFCCoralMushroomFeature;
+import net.dries007.tfc.world.feature.coral.TFCCoralTreeFeature;
+import net.dries007.tfc.world.feature.plant.*;
 import net.dries007.tfc.world.feature.tree.*;
 import net.dries007.tfc.world.feature.vein.*;
 
@@ -50,6 +55,7 @@ public class TFCFeatures
     public static final RegistryObject<TFCCoralTreeFeature> CORAL_TREE = register("coral_tree", TFCCoralTreeFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<CaveVegetationFeature> CAVE_VEGETATION = register("cave_vegetation", CaveVegetationFeature::new, CaveVegetationConfig.CODEC);
     public static final RegistryObject<CavePatchFeature> CAVE_PATCH = register("cave_patch", CavePatchFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<TFCVinesFeature> VINES = register("vines", TFCVinesFeature::new, VineConfig.CODEC);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);

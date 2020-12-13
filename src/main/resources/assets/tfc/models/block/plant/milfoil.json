@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/milfoil/milfoil",
+    "particle": "tfc:block/plant/milfoil/milfoil"
+  }
+}
