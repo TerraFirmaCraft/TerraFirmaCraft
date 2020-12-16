@@ -9,33 +9,42 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "minecraft:decorated",
               "config": {
-                "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/bone"
+                "feature": {
+                  "type": "minecraft:random_patch",
+                  "config": {
+                    "state_provider": {
+                      "type": "tfc:facing_random",
+                      "state": "tfc:groundcover/bone"
+                    },
+                    "block_placer": {
+                      "type": "minecraft:simple_block_placer",
+                      "config": {}
+                    },
+                    "whitelist": [],
+                    "blacklist": [],
+                    "yspread": 1,
+                    "xspread": 15,
+                    "zspread": 15,
+                    "tries": 10
+                  }
                 },
-                "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
-                },
-                "whitelist": [],
-                "blacklist": [],
-                "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "tries": 10
+                "decorator": {
+                  "type": "tfc:climate",
+                  "config": {
+                    "min_temperature": 10,
+                    "max_temperature": 50,
+                    "min_rainfall": 0,
+                    "max_rainfall": 150,
+                    "needs_forest": false
+                  }
+                }
               }
             },
             "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": 10,
-                "max_temperature": 50,
-                "min_rainfall": 0,
-                "max_rainfall": 150,
-                "needs_forest": false
-              }
+              "type": "minecraft:heightmap_world_surface",
+              "config": {}
             }
           }
         },
@@ -48,7 +57,7 @@
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 30
+        "chance": 15
       }
     }
   }

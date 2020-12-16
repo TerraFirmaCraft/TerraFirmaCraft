@@ -48,7 +48,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         {
             if (state.getBlock() != this)
             {
-                return blockstate.is(BlockTags.SAND); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return blockstate.is(BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
             }
             return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }

@@ -8,16 +8,16 @@ package net.dries007.tfc.common.items;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
+import net.minecraft.block.Block;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Ore;
@@ -26,6 +26,7 @@ import net.dries007.tfc.common.types.RockCategory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.common.TFCItemGroup.FLORA;
 import static net.dries007.tfc.common.TFCItemGroup.MISC;
 
 /**
@@ -72,6 +73,14 @@ public final class TFCItems
     );
 
     // Misc
+
+    public static final Map<Coral.Color, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
+        register("coral/" + color.toString().toLowerCase() + "_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+    );
+    public static final Map<Coral.Color, RegistryObject<Item>> DEAD_CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
+        register("coral/" + color.toString().toLowerCase() + "_dead_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+    );
+
 
     public static final Map<HideItemType, Map<HideItemType.Size, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItemType.class, type ->
         Helpers.mapOfKeys(HideItemType.Size.class, size ->

@@ -31,7 +31,9 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
     protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
-    //todo: fire ITallPlant into the sun as it's not necessary anymore (but still used everywhere in code)
+    protected static final VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
+
     public static TFCTallGrassBlock create(IPlant plant, Properties properties)
     {
         return new TFCTallGrassBlock(properties)
@@ -125,7 +127,10 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        return getTallShape(state.getValue(AGE), world, pos);
+        Part part = state.getValue(PART);
+        if (part == Part.LOWER)
+            return PLANT_SHAPE;
+        return SHORTER_PLANT_SHAPE;
     }
 
     @Override

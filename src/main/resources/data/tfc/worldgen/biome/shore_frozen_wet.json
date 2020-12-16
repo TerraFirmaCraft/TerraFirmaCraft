@@ -95,17 +95,20 @@
       "tfc:plant/manatee_grass",
       "tfc:plant/sargassum",
       "tfc:plant/star_grass",
-      "tfc:plant/turtle_grass",
-      "tfc:coral",
-      "tfc:plant/giant_kelp",
-      "tfc:plant/winged_kelp",
-      "tfc:plant/leafy_kelp"
+      "tfc:plant/turtle_grass"
     ],
     [
       "tfc:groundcover/loose_rocks",
       "tfc:groundcover/guano_cave",
       "tfc:groundcover/feather",
-      "tfc:groundcover/flint"
+      "tfc:groundcover/flint",
+      "tfc:groundcover/driftwood",
+      "tfc:groundcover/clam",
+      "tfc:groundcover/mollusk",
+      "tfc:groundcover/mussel",
+      "tfc:groundcover/sticks_shore",
+      "tfc:groundcover/seaweed",
+      "tfc:groundcover/guano_shore"
     ]
   ],
   "starts": [],
