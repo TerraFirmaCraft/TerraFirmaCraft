@@ -15,9 +15,9 @@ public enum RiverLayer implements ICastleTransformer
 {
     INSTANCE;
 
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
-        if (center != north || center != south || center != east || center != west)
+        if (center != north || center != south || center != west || center != east)
         {
             return RIVER_MARKER;
         }
