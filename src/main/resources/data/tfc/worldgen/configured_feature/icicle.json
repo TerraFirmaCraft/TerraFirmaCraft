@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:calcite",
+                  "config": {
+                    "state": "tfc:icicle",
+                    "radius": 5,
+                    "tries": 25,
+                    "min_height": 2,
+                    "max_height": 5
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:climate",
+                  "config": {
+                    "min_temperature": -50,
+                    "max_temperature": 0,
+                    "min_rainfall": 0,
+                    "max_rainfall": 500,
+                    "needs_forest": false
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:range_biased",
+              "config": {
+                "bottom_offset": 8,
+                "top_offset": 8,
+                "maximum": 128
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:count",
+      "config": {
+        "count": 7
+      }
+    }
+  }
+}

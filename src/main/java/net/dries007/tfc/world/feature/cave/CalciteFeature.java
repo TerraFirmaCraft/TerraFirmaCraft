@@ -22,7 +22,7 @@ public class CalciteFeature extends Feature<CalciteConfig>
     @Override
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CalciteConfig config)
     {
-        final BlockState calcite = TFCBlocks.CALCITE.get().defaultBlockState();
+        final BlockState calcite = config.getState();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
 
