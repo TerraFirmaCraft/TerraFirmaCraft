@@ -16,9 +16,9 @@ public class RandomizeNeighborsLayer extends CallbackLimitLayer implements ICast
     }
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
-        if (north == center || west == center || south == center || east == center)
+        if (north == center || east == center || south == center || west == center)
         {
             // Pick a different random
             return context.nextRandom(limit);

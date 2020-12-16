@@ -19,12 +19,12 @@ public enum OceanBorderLayer implements ICastleTransformer
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
         if (center == DEEP_OCEAN)
         {
             // Add ocean to land - deep ocean borders
-            if (!TFCLayerUtil.isOceanOrMarker(north) || !TFCLayerUtil.isOceanOrMarker(west) || !TFCLayerUtil.isOceanOrMarker(south) || !TFCLayerUtil.isOceanOrMarker(east))
+            if (!TFCLayerUtil.isOceanOrMarker(north) || !TFCLayerUtil.isOceanOrMarker(east) || !TFCLayerUtil.isOceanOrMarker(south) || !TFCLayerUtil.isOceanOrMarker(west))
             {
                 return OCEAN;
             }
@@ -32,7 +32,7 @@ public enum OceanBorderLayer implements ICastleTransformer
         else if (center == OCEAN)
         {
             // And in the reverse, in large sections of ocean, add deep ocean in fully ocean-locked area
-            if (TFCLayerUtil.isOceanOrMarker(north) && TFCLayerUtil.isOceanOrMarker(west) && TFCLayerUtil.isOceanOrMarker(east) && TFCLayerUtil.isOceanOrMarker(south))
+            if (TFCLayerUtil.isOceanOrMarker(north) && TFCLayerUtil.isOceanOrMarker(east) && TFCLayerUtil.isOceanOrMarker(west) && TFCLayerUtil.isOceanOrMarker(south))
             {
                 return DEEP_OCEAN;
             }

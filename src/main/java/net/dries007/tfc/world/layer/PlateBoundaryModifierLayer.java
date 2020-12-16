@@ -13,7 +13,7 @@ public enum PlateBoundaryModifierLayer implements ICastleTransformer
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
         // Expand ocean-continent diverging boundaries - create two types of areas, continental shelf, and oceanic diverging boundary
         if (center == OCEAN_CONTINENT_DIVERGING)
@@ -21,7 +21,7 @@ public enum PlateBoundaryModifierLayer implements ICastleTransformer
             return CONTINENTAL_SHELF;
         }
 
-        if (north == OCEAN_CONTINENT_DIVERGING || west == OCEAN_CONTINENT_DIVERGING || east == OCEAN_CONTINENT_DIVERGING || south == OCEAN_CONTINENT_DIVERGING)
+        if (north == OCEAN_CONTINENT_DIVERGING || east == OCEAN_CONTINENT_DIVERGING || west == OCEAN_CONTINENT_DIVERGING || south == OCEAN_CONTINENT_DIVERGING)
         {
             if (TFCLayerUtil.isContinental(center))
             {

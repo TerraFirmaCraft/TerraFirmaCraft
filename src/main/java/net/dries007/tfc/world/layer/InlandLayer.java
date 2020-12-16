@@ -15,9 +15,9 @@ public enum InlandLayer implements ICastleTransformer
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
+    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
     {
-        if (TFCLayerUtil.isOceanOrMarker(north) || TFCLayerUtil.isOceanOrMarker(west) || TFCLayerUtil.isOceanOrMarker(south) || TFCLayerUtil.isOceanOrMarker(east))
+        if (TFCLayerUtil.isOceanOrMarker(north) || TFCLayerUtil.isOceanOrMarker(east) || TFCLayerUtil.isOceanOrMarker(south) || TFCLayerUtil.isOceanOrMarker(west))
         {
             return NULL_MARKER;
         }
