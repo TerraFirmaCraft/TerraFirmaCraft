@@ -3,6 +3,7 @@ package net.dries007.tfc.world.feature.plant;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -12,6 +13,7 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class RandomPatchWaterLandFeature extends Feature<BlockClusterFeatureConfig>
 {
@@ -20,23 +22,30 @@ public class RandomPatchWaterLandFeature extends Feature<BlockClusterFeatureConf
         super(codec);
     }
 
-    //unused: project, canReplace
+    //unused: project, canReplace, y spread
     @Override
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
-        BlockPos blockpos = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, pos);
+        BlockState state = config.stateProvider.getState(rand, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
         for (int j = 0; j < config.tries; ++j)
         {
-            mutablePos.setWithOffset(blockpos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
-            BlockPos below = mutablePos.below();
-            BlockState state = world.getBlockState(below);
-            if ((world.isEmptyBlock(mutablePos) || world.isWaterAt(mutablePos)) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
+            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            BlockState belowState = world.getBlockState(mutablePos);
+            mutablePos.move(Direction.UP);
+            boolean flag1 = world.isEmptyBlock(mutablePos);
+            boolean flag2 = world.isWaterAt(mutablePos);
+            boolean flag3 = (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState);
+            if ((world.isEmptyBlock(mutablePos) || world.isWaterAt(mutablePos)) && state.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(world.getFluidState(mutablePos).getType())), rand);
+                if (state.getBlock() instanceof IFluidLoggable)
+                {
+                    IFluidLoggable block = (IFluidLoggable) state.getBlock();
+                    state = block.getStateWithFluid(state, world.getFluidState(mutablePos).getType());
+                }
+                config.blockPlacer.place(world, mutablePos, state, rand);
                 ++i;
             }
         }

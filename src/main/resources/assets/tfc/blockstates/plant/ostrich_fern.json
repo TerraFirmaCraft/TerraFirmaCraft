@@ -2,17 +2,6 @@
   "multipart": [
     {
       "when": {
-        "part": "single",
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_single_0"
-        }
-      ]
-    },
-    {
-      "when": {
         "part": "lower",
         "stage": "0"
       },
@@ -30,17 +19,6 @@
       "apply": [
         {
           "model": "tfc:block/plant/ostrich_fern_upper_0"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "single",
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_single_1"
         }
       ]
     },
@@ -68,17 +46,6 @@
     },
     {
       "when": {
-        "part": "single",
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_single_2"
-        }
-      ]
-    },
-    {
-      "when": {
         "part": "lower",
         "stage": "2"
       },
@@ -101,17 +68,6 @@
     },
     {
       "when": {
-        "part": "single",
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_single_3"
-        }
-      ]
-    },
-    {
-      "when": {
         "part": "lower",
         "stage": "3"
       },
@@ -129,17 +85,6 @@
       "apply": [
         {
           "model": "tfc:block/plant/ostrich_fern_upper_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "single",
-        "stage": "4"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_single_4"
         }
       ]
     },

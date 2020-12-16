@@ -144,14 +144,14 @@ public final class TFCBlocks
 
     public static final Map<Coral.Color, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.Color.class, color ->
         Helpers.mapOfKeys(Coral.BlockType.class, type ->
-            register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), FLORA)
+            register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), block -> type.createBlockItem(block, new Item.Properties().tab(FLORA)), type.needsItem())
         )
     );
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
         .lightLevel((state) -> 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
     // see the registration for pickles in Blocks for how this should work (it should not light if it's not waterlogged)
-    // but since keys for FluidProperty can only be obtained by querying a fluid
+    // but since keys for FluidProperty can only be obtained by querying a fluid (even if it's Fluids.EMPTY)
     // rather than how Waterlogged is a boolean
     // it's not readily accessible at runtime in the way we want.
 

@@ -368,6 +368,9 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
     # Wood Blocks
     for wood in WOODS:
@@ -562,9 +565,11 @@ def generate(rm: ResourceManager):
                 if block_type == 'coral_wall_fan' and life != 'dead_':
                     rm.block_tag('wall_corals', ('coral', color + '_' + life + block_type))
                     second_type = 'coral_fan'
-                rm.item_model(('coral', color + '_' + life + block_type), 'minecraft:block/' + life + color + '_' + second_type).with_lang(lang('%s %s %s', life, color, block_type))
-                if block_type == 'coral' or block_type == 'coral_fan' and life != 'dead_':
-                    rm.block_tag('corals', ('coral', color + '_' + life + block_type))
+                rm.item_model(('coral', color + '_' + life + block_type), 'minecraft:block/' + life + color + '_' + second_type)
+                if block_type == 'coral' or block_type == 'coral_fan':
+                    if life != 'dead_':
+                        rm.block_tag('corals', ('coral', color + '_' + life + block_type))
+                    rm.lang('block.tfc.coral.' + color + '_' + life + block_type, lang('%s %s %s', life, color, block_type))
 
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:

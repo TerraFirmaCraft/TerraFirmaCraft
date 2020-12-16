@@ -2,78 +2,10 @@
   "multipart": [
     {
       "when": {
-        "part": "single",
-        "age": "0",
-        "stage": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shortest_0"
-      }
-    },
-    {
-      "when": {
-        "part": "single",
-        "age": "1",
-        "stage": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shortest_1"
-      }
-    },
-    {
-      "when": {
-        "part": "single",
-        "age": "2|3",
-        "stage": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shorter_1"
-      }
-    },
-    {
-      "when": {
-        "part": "single",
-        "age": "0",
-        "stage": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shortest_1"
-      }
-    },
-    {
-      "when": {
-        "part": "single",
-        "age": "1",
-        "stage": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shortest_1b"
-      }
-    },
-    {
-      "when": {
-        "part": "single",
-        "age": "2|3",
-        "stage": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_shorter_1b"
-      }
-    },
-    {
-      "when": {
         "part": "lower"
       },
       "apply": {
         "model": "tfc:block/plant/pampas_grass_lower"
-      }
-    },
-    {
-      "when": {
-        "part": "middle"
-      },
-      "apply": {
-        "model": "tfc:block/plant/pampas_grass_middle"
       }
     },
     {
