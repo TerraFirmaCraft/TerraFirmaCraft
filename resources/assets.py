@@ -366,6 +366,8 @@ def generate(rm: ResourceManager):
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    for plant in MISC_PLANT_FEATURES:
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
 
     # Wood Blocks
     for wood in WOODS:
@@ -527,13 +529,28 @@ def generate(rm: ResourceManager):
     for metal in METALS.keys():
         molten_fluid(metal)
 
-    # Calcite
+    # Calcite + Icicles
     block = rm.blockstate('calcite', variants={
         'tip=true': {'model': 'tfc:block/calcite_tip'},
         'tip=false': {'model': 'tfc:block/calcite'}
     })
     block.with_item_model()
     block.with_lang(lang('calcite'))
+
+    block = rm.blockstate('icicle', variants={
+        'tip=true': {'model': 'tfc:block/icicle_tip'},
+        'tip=false': {'model': 'tfc:block/icicle'}
+    })
+    block.with_item_model()
+    block.with_lang(lang('icicle'))
+    rm.block_model('icicle', textures={
+        '0': 'minecraft:block/ice',
+        'particle': 'minecraft:block/ice'
+    }, parent='tfc:block/calcite')
+    rm.block_model('icicle_tip', textures={
+        '0': 'minecraft:block/ice',
+        'particle': 'minecraft:block/ice'
+    }, parent='tfc:block/calcite_tip')
 
     # Misc Items
     rm.item_model('mortar').with_lang(lang('mortar')).with_tag('tfc:mortar')

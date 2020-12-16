@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "tip=true": {
+      "model": "tfc:block/icicle_tip"
+    },
+    "tip=false": {
+      "model": "tfc:block/icicle"
+    }
+  }
+}

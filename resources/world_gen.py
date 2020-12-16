@@ -114,17 +114,33 @@ def generate(rm: ResourceManager):
         rm.feature('%slarge_cave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': step, 'probability': 0.006, 'max_y': 45})))
 
     rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'state': 'tfc:calcite',
         'radius': 5,
         'tries': 20,
         'min_height': 2,
         'max_height': 5
     }), ('minecraft:count', {'count': 4}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128})))
     rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'state': 'tfc:calcite',
         'radius': 12,
         'tries': 70,
         'min_height': 3,
         'max_height': 9
     }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
+    rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'state': 'tfc:icicle',
+        'radius': 5,
+        'tries': 25,
+        'min_height': 2,
+        'max_height': 5
+    }), ('minecraft:count', {'count': 7}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(-50, 0, 0, 500)))
+    rm.feature('mega_icicle', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'state': 'tfc:icicle',
+        'radius': 12,
+        'tries': 70,
+        'min_height': 3,
+        'max_height': 11
+    }), decorate_chance(15), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 70}), decorate_climate(-50, 0, 0, 500)))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
@@ -269,6 +285,8 @@ def generate(rm: ResourceManager):
                     {'block': 'tfc:rock/cobble/%s' % rock, 'weight': 2}]
         } for rock in ROCKS.keys()]
     }), decorate_climate_target(24, 310, 8), air_mask(0.01, 130), decorate_range(64, 130)))
+
+    rm.feature('ice_cave', wg.configure_decorated(wg.configure('tfc:ice_cave'), decorate_climate(-50, 0, 0, 500), air_mask(0.05, 130), decorate_range(20, 130)))
 
     # Plants
     rm.feature(('plant', 'allium'), wg.configure_decorated(plant_feature('tfc:plant/allium[age=1,stage=1]', 'minecraft:simple_block_placer', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 18, 150, 400)))
@@ -693,7 +711,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:calcite', 'tfc:mega_calcite'],  # underground decoration
+        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:ice_cave', 'tfc:calcite', 'tfc:mega_calcite', 'tfc:icicle', 'tfc:mega_icicle'],  # underground decoration
         [],  # vegetal decoration
         ['tfc:groundcover/loose_rocks', 'tfc:groundcover/guano_cave', *['tfc:groundcover/%s' % general_item for general_item in GENERAL_DECORATORS]]  # top layer modification
     ]

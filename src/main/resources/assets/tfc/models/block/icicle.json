@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/calcite",
+  "textures": {
+    "0": "minecraft:block/ice",
+    "particle": "minecraft:block/ice"
+  }
+}

@@ -68,12 +68,12 @@ public class GlacierFeature extends Feature<NoFeatureConfig>
                 boolean inOcean = stateAt.getFluidState().getType() == Fluids.WATER && mutablePos.getY() <= chunkGenerator.getSeaLevel();
                 mutablePos.move(0, 1, 0); // Start at the top of the world surface
 
-                float maxTemperature = Climate.calculateMonthlyTemperature(z, mutablePos.getY(), data.getAverageTemp(mutablePos), 1);
-                if (maxTemperature > -4)
-                {
-                    // Summers are too warm to generate glaciers
-                    continue;
-                }
+                    float maxTemperature = Climate.calculateMonthlyTemperature(z, mutablePos.getY(), data.getAverageTemp(mutablePos), 1);
+                    if (maxTemperature > -4)
+                    {
+                        // Summers are too warm to generate glaciers
+                        continue;
+                    }
 
                 float glacierHeight = glacierNoise.noise(x, z) + MathHelper.clamp(-0.2f * maxTemperature, 0, 4);
                 if (glacierHeight < 0)

@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -67,6 +68,8 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 
     protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
     {
+        if (!raw.is(BlockTags.BASE_STONE_OVERWORLD))
+            return;
         // Build a spike starting downwards from the target block
         if (sizeWeight < 0.2f)
         {

@@ -220,6 +220,12 @@ public enum Plant implements IPlant
         return type == BlockType.VINE;
     }
 
+    public boolean needsItemColor()
+    {
+        return type == BlockType.SHORT_GRASS || type == BlockType.TALL_GRASS || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING
+            || this == HANGING_VINES || this == SAGO || this == GUTWEED;
+    }
+
     @VisibleForTesting
     public BlockType getType()
     {

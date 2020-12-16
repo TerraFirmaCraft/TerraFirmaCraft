@@ -94,8 +94,11 @@
       "tfc:underwater_large_cave_spike",
       "tfc:water_spring",
       "tfc:lava_spring",
+      "tfc:ice_cave",
       "tfc:calcite",
-      "tfc:mega_calcite"
+      "tfc:mega_calcite",
+      "tfc:icicle",
+      "tfc:mega_icicle"
     ],
     [
       "tfc:forest",

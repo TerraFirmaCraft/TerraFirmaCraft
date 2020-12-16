@@ -41,13 +41,10 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                             break;
                         }
                     }
-                    if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    BlockState generateState = config.getStateToGenerate(worldIn.getBlockState(mutablePos), rand);
+                    if (generateState != null)
                     {
-                        BlockState generateState = config.getStateToGenerate(worldIn.getBlockState(mutablePos), rand);
-                        if (generateState != null)
-                        {
-                            setBlock(worldIn, mutablePos, generateState);
-                        }
+                        setBlock(worldIn, mutablePos, generateState);
                     }
                 }
             }
