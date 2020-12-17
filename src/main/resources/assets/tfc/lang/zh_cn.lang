@@ -93,6 +93,7 @@ tfc.tooltip.oredictionaryentry=§f矿物词典名称：§7%s
 tfc.tooltip.oredictionaryentries=§f矿物词典名称：
 tfc.tooltip.metal=§f金属：§7%s
 tfc.tooltip.units=%d 单元
+tfc.tooltip.melttemp=%d℃
 tfc.tooltip.crucible_units=%d / %d 单元
 tfc.tooltip.units.total=§6合计 %d 单元
 tfc.tooltip.units.info_total=%d 单元 / §6合计 %d
@@ -164,6 +165,11 @@ tfc.tooltip.firepit_cooking_pot_servings=剩余份数：%d
 tfc.tooltip.fertilized=已受精
 tfc.tooltip.egg_hatch=将在 %d 天后孵化
 tfc.tooltip.egg_hatch_today=将在今天孵化！
+tfc.tooltip.hold_shift_for_climate_info=按住 (Shift) 查看气候信息
+tfc.tooltip.climate_info=气候信息：
+tfc.tooltip.climate_info_rainfall=降水量：%s - %s
+tfc.tooltip.climate_info_temperature=温度：%sºC - %sºC
+
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=这只%s太老了，不能给它配种。
@@ -182,6 +188,8 @@ tfc.tooltip.animal.product.no_wool=这只%s的毛还没长出来。
 tfc.tooltip.animal.product.no_milk=这只%s没做好产奶的准备。
 tfc.tooltip.animal.product.no_egg=这只%s没做好下蛋的准备。
 
+## Vessel
+tfc.vessel.liquid_solid=液体已经凝固。
 
 ## Prospecting Result Messages
 tfc.propick.found=发现
@@ -809,6 +817,12 @@ config.tfc.client.tooltip.showNBTTooltip.tooltip=启用高级提示时在提示�
 
 config.tfc.client.tooltip.propickOutputToActionBar=探矿输出到动作栏
 config.tfc.client.tooltip.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
+
+config.tfc.client.tooltip.anvilWeldOutputToActionBar=砧焊接输出到动作栏
+config.tfc.client.tooltip.anvilWeldOutputToActionBar.tooltip=焊接应该输出到动作栏吗？（快捷栏上方的空间）
+
+config.tfc.client.tooltip.vesselOutputToActionBar=小缸输出到动作栏
+config.tfc.client.tooltip.vesselOutputToActionBar.tooltip=小缸应该输出到动作栏吗？（快捷栏上方的空间）
 
 config.tfc.client.tooltip.oreTooltipMode=矿石信息模式
 config.tfc.client.tooltip.oreTooltipMode.tooltip=矿石提示信息的模式。
@@ -4684,6 +4698,7 @@ death.attack.food_poison=%1$s 死于食物中毒
 death.attack.plucking=%1$s 被拔光了毛
 death.attack.grill=%1$s 烤得烂熟
 death.attack.soup=%1$s 把自己炖了
+death.attack.berrybush=%1$s 被扎死了
 
 #Effects
 effectsTFC.overburdened=负担过重
