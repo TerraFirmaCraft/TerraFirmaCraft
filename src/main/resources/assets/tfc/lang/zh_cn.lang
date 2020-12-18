@@ -168,7 +168,7 @@ tfc.tooltip.egg_hatch_today=将在今天孵化！
 tfc.tooltip.hold_shift_for_climate_info=按住 (Shift) 查看气候信息
 tfc.tooltip.climate_info=气候信息：
 tfc.tooltip.climate_info_rainfall=降水量：%s - %s
-tfc.tooltip.climate_info_temperature=温度：%sºC - %sºC
+tfc.tooltip.climate_info_temperature=温度：%s℃ - %s℃
 
 
 ## Animal Tooltips / Messages
