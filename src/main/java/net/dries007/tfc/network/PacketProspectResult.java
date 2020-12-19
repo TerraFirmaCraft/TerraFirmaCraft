@@ -5,6 +5,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.events.ProspectEvent;
 import net.dries007.tfc.objects.items.metal.ItemProspectorPick.ProspectResult.Type;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

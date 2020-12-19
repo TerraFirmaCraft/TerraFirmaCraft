@@ -15,6 +15,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.dries007.tfc.api.events.ProspectEvent;
 import net.dries007.tfc.network.PacketProspectResult;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +36,7 @@ import net.dries007.tfc.util.skills.ProspectingSkill;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
+
 import net.minecraftforge.common.MinecraftForge;
 
 @ParametersAreNonnullByDefault
@@ -257,23 +259,25 @@ public class ItemProspectorPick extends ItemMetalTool
 
         public enum Type
         {
-            VERY_LARGE ("tfc.propick.found_very_large"),
-            LARGE      ("tfc.propick.found_large"),
-            MEDIUM     ("tfc.propick.found_medium"),
-            SMALL      ("tfc.propick.found_small"),
-            TRACES     ("tfc.propick.found_traces"),
+            VERY_LARGE("tfc.propick.found_very_large"),
+            LARGE("tfc.propick.found_large"),
+            MEDIUM("tfc.propick.found_medium"),
+            SMALL("tfc.propick.found_small"),
+            TRACES("tfc.propick.found_traces"),
 
-            FOUND      ("tfc.propick.found"),         // right click on block
-            NOTHING    ("tfc.propick.found_nothing"); // nothing interesting here
+            FOUND("tfc.propick.found"),         // right click on block
+            NOTHING("tfc.propick.found_nothing"); // nothing interesting here
 
             private static final Type[] VALUES = values();
             public final String translation;
 
-            Type(String translation){
+            Type(String translation)
+            {
                 this.translation = translation;
             }
 
-            public static Type valueOf(int ordinal){
+            public static Type valueOf(int ordinal)
+            {
                 return VALUES[ordinal];
             }
         }
