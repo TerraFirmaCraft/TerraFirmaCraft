@@ -33,6 +33,7 @@ import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.network.PacketBlockInventoryUpdate;
 import net.dries007.tfc.network.PacketSimpleMessage;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
@@ -372,11 +373,14 @@ public class TEAnvilTFC extends TEInventory
                 // Every welding result should have this capability, but don't fail if it doesn't
                 heatResult.setTemperature(resultTemperature);
             }
+
+            ItemStack remainingFlux = Helpers.consumeItem(fluxStack, 1);
             // Set stacks in slots
             inventory.setStackInSlot(SLOT_INPUT_1, result);
             inventory.setStackInSlot(SLOT_INPUT_2, ItemStack.EMPTY);
-            inventory.setStackInSlot(SLOT_FLUX, Helpers.consumeItem(fluxStack, 1));
+            inventory.setStackInSlot(SLOT_FLUX, remainingFlux);
 
+            TerraFirmaCraft.getNetwork().sendToDimension(new PacketBlockInventoryUpdate(this.getPos()).addChange(result, SLOT_INPUT_1).addChange(ItemStack.EMPTY, SLOT_INPUT_2).addChange(remainingFlux, SLOT_FLUX), player.world.provider.getDimension());
             return true;
         }
 
