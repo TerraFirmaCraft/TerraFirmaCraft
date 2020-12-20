@@ -957,14 +957,10 @@ public final class ConfigTFC
             @Config.Comment("Should the prospectors pick output to the actionbar? (the space just above the hotbar)")
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.propickOutputToActionBar")
             public boolean propickOutputToActionBar = true;
-            
-            @Config.Comment("Should welding output to the actionbar? (the space just above the hotbar)")
-            @Config.LangKey("config." + MOD_ID + ".client.tooltip.anvilWeldOutputToActionBar")
-            public boolean anvilWeldOutputToActionBar = true;
-            
-            @Config.Comment("Should vessels output to the actionbar? (the space just above the hotbar)")
-            @Config.LangKey("config." + MOD_ID + ".client.tooltip.vesselOutputToActionBar")
-            public boolean vesselOutputToActionBar = true;
+
+            @Config.Comment("Tooltips with any of the following categories will output to the actionbar (the space just above the hotbar)")
+            @Config.LangKey("config." + MOD_ID + ".client.tooltip.tooltipCategoriesOutputToActionBar")
+            public String[] tooltipCategoriesOutputToActionBar = new String[] { "anvil", "vessel", "propick" };
 
             @Config.Comment("Ore tooltip info mode.")
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.oreTooltipMode")
