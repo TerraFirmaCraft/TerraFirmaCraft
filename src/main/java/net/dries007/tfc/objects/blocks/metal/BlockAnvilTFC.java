@@ -218,7 +218,7 @@ public class BlockAnvilTFC extends Block
                     double y = pos.getY() + 0.69;
                     double z = pos.getZ() + 0.5;
                     for (int i = 0; i < RNG.nextInt(5) + 3; i++)
-                        TFCParticles.SPARK.spawn(worldIn, x + (RNG.nextFloat() - 0.5) / 7, y, z + (RNG.nextFloat() - 0.5) / 7, 6 * (RNG.nextFloat() - 0.5), 2D, 6 * (RNG.nextFloat() - 0.5), 22);
+                        TFCParticles.SPARK.sendToAllNear(worldIn, x + (RNG.nextFloat() - 0.5) / 7, y, z + (RNG.nextFloat() - 0.5) / 7, 6 * (RNG.nextFloat() - 0.5), 2D, 6 * (RNG.nextFloat() - 0.5), 22);
                     return true;
                 }
             }
