@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextComponentTranslation;
-
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -32,6 +33,7 @@ import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.network.PacketSimpleMessage;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
@@ -335,7 +337,7 @@ public class TEAnvilTFC extends TEInventory
             if (fluxStack.isEmpty())
             {
                 // No flux
-                player.sendStatusMessage(new TextComponentTranslation(MOD_ID + ".tooltip.anvil_no_flux"), ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_no_flux"), (EntityPlayerMP) player);
                 return false;
             }
 
@@ -346,11 +348,11 @@ public class TEAnvilTFC extends TEInventory
             {
                 if (cap1 instanceof IItemHeat && cap2 instanceof IItemHeat)
                 {
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"), ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar);
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_too_cold"), (EntityPlayerMP) player);
                 }
                 else
                 {
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"), ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar);
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
                 }
                 return false;
             }
@@ -377,10 +379,9 @@ public class TEAnvilTFC extends TEInventory
 
             return true;
         }
-        
+
         // For when there is both inputs but no recipe that matches
-        player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"), ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar);
-        
+        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
         return false;
     }
 
