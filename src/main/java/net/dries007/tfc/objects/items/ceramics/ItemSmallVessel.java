@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.objects.items.ceramics;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,12 +15,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -49,6 +51,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.network.PacketSimpleMessage;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
@@ -87,8 +90,8 @@ public class ItemSmallVessel extends ItemPottery
                     case LIQUID_MOLTEN:
                         TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
-                    case LIQUID_SOLID: 
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tfc.vessel.liquid_solid"), ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar);
+                    case LIQUID_SOLID:
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("vessel", MOD_ID + ".vessel.liquid_solid"), (EntityPlayerMP) playerIn);
                         break;
                 }
             }
@@ -311,9 +314,7 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
         {
-            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityItemHeat.ITEM_HEAT_CAPABILITY;
         }
 
         @Nullable
@@ -329,7 +330,7 @@ public class ItemSmallVessel extends ItemPottery
         {
             if (fluidTankProperties == null)
             {
-                fluidTankProperties = new IFluidTankProperties[] {new FluidTankPropertiesWrapper(tank)};
+                fluidTankProperties = new IFluidTankProperties[] { new FluidTankPropertiesWrapper(tank) };
             }
             return fluidTankProperties;
         }
