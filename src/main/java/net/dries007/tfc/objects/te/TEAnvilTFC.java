@@ -14,9 +14,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.StringUtils;
@@ -47,7 +50,7 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class TEAnvilTFC extends TEInventory
+public class TEAnvilTFC extends TEInventory implements ISidedInventory
 {
     public static final int WORK_MAX = 145;
 
@@ -430,5 +433,136 @@ public class TEAnvilTFC extends TEInventory
         workingProgress = 0;
         workingTarget = 0;
         steps.reset();
+    }
+
+    @Override
+    public String getName()
+    {
+        return world.getBlockState(pos).getBlock().getTranslationKey();
+    }
+
+    @Override
+    public boolean hasCustomName()
+    {
+        return false;
+    }
+
+    @Override
+    public int getSizeInventory()
+    {
+        return inventory.getSlots();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            if (!inventory.getStackInSlot(slot).isEmpty()) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index)
+    {
+        return inventory.getStackInSlot(index);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count)
+    {
+        if (count <= 0) return ItemStack.EMPTY;
+        return inventory.extractItem(index, count, false);
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        ItemStack stack = inventory.getStackInSlot(index);
+        inventory.setStackInSlot(index, ItemStack.EMPTY);
+        return stack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        inventory.setStackInSlot(index, stack);
+    }
+
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 1;
+    }
+
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player)
+    {
+        return true;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        return this.isItemValid(index, stack);
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[] {};
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    {
+        return false;
     }
 }
