@@ -131,6 +131,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketPlayerDataUpdate.Handler(), PacketPlayerDataUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketSpawnTFCParticle.Handler(), PacketSpawnTFCParticle.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketSimpleMessage.Handler(), PacketSimpleMessage.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketBlockInventoryUpdate.Handler(), PacketBlockInventoryUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         JsonConfigRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
