@@ -22,20 +22,16 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
+    private final Supplier<? extends Block> bodyBlock;
+
     public static TFCKelpTopBlock create(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
         return new TFCKelpTopBlock(properties, bodyBlock, direction, shape)
         {
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
-            }
-
-            @Override
-            public Supplier<? extends Block> getBodyBlockAbstract()
-            {
-                return bodyBlock;
             }
         };
     }
@@ -43,6 +39,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     protected TFCKelpTopBlock(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
         super(properties, bodyBlock, direction, shape);
+        this.bodyBlock = bodyBlock;
     }
 
     @Override
@@ -118,20 +115,10 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public FluidProperty getFluidProperty()
-    {
-        return getFluidPropertyAbstract();
-    }
-
-    @Override
     protected AbstractBodyPlantBlock getBodyBlock()
     {
-        return (AbstractBodyPlantBlock) getBodyBlockAbstract().get();
+        return (AbstractBodyPlantBlock) bodyBlock.get();
     }
-
-    public abstract FluidProperty getFluidPropertyAbstract();
-
-    public abstract Supplier<? extends Block> getBodyBlockAbstract();
 
     @Override
     public AbstractBlock.OffsetType getOffsetType()

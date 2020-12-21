@@ -108,7 +108,7 @@ public enum Plant implements IPlant
     WATER_LILY(BlockType.FLOATING_FRESH, 0.8F, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}),
     YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}),
 
-    //not data driven. I added an unused int array because NPE. naming convention is inherited from vanilla
+    //not data driven
     HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, null),
     HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, null),
     LIANA_PLANT(BlockType.WEEPING, 1.0F, null),

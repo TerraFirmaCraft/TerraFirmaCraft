@@ -31,7 +31,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
             }
 
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
             }
@@ -87,12 +87,6 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    public FluidProperty getFluidProperty()
-    {
-        return getFluidPropertyAbstract();
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
@@ -109,6 +103,4 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         world.setBlock(pos, lowerState.setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
         world.setBlock(pos.above(), getStateWithFluid(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.above()).getType()), flags);
     }
-
-    public abstract FluidProperty getFluidPropertyAbstract();
 }

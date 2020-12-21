@@ -1,15 +1,19 @@
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Map;
 import java.util.Random;
 
+import com.google.common.collect.Maps;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -28,7 +32,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         return new KelpTreeBlock(builder)
         {
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
             }
@@ -57,11 +61,11 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
             Block foundBlock = world.getBlockState(mutablePos).getBlock();
             if (d == Direction.DOWN)
             {
-                setState.setValue(SixWayBlock.DOWN, foundBlock.is(TFCTags.Blocks.KELP_TREE) || foundBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
+                setState.setValue(DOWN, foundBlock.is(TFCTags.Blocks.KELP_TREE) || foundBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
             }
             else
             {
-                setState.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(d), foundBlock.is(TFCTags.Blocks.KELP_TREE));
+                setState.setValue(PROPERTY_BY_DIRECTION.get(d), foundBlock.is(TFCTags.Blocks.KELP_TREE));
             }
         }
         return setState;
@@ -140,14 +144,6 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         builder.add(getFluidProperty());
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }
-
-    @Override
-    public FluidProperty getFluidProperty()
-    {
-        return getFluidPropertyAbstract();
-    }
-
-    public abstract FluidProperty getFluidPropertyAbstract();
 
     private void updateFluid(IWorld world, BlockState state, BlockPos pos)
     {
