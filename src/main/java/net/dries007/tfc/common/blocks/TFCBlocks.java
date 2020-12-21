@@ -150,10 +150,6 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
         .lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
-    // see the registration for pickles in Blocks for how this should work (it should not light if it's not waterlogged)
-    // but since keys for FluidProperty can only be obtained by querying a fluid (even if it's Fluids.EMPTY)
-    // rather than how Waterlogged is a boolean
-    // it's not readily accessible at runtime in the way we want.
 
     // Misc
 
