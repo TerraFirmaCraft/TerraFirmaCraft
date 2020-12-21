@@ -114,7 +114,7 @@ public final class ClientEventHandler
         // Plants
         Block[] leafyPlants = Stream.of(Plant.values()).filter(Plant::isLeafColored).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
         Block[] grassyPlants = Stream.of(Plant.values()).filter(p -> !p.isLeafColored()).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, Wood.Default.HICKORY.getFallFoliageCoords()), leafyPlants);
+        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, Plant.BlockType.VINE.getFallFoliageCoords()), leafyPlants);
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), grassyPlants);
 
         TFCBlocks.WOODS.forEach((key, value) -> {

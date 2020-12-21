@@ -59,11 +59,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         return null;
     }
 
-    //Dear Alcatraz; I'm not sure what this does
-    //I'm pretty sure this is where it converts the top to the body block so I'm putting the bit of extra handling here for that
-    //Basically the Abstract tall plant system believes that we're _not_ waterlogged (so that we can use our own fluid logging)
-    //It takes 'waterlogged' as a boolean in the constructor which I hardcode to being false in the superclass
-    //So I have to recreate their handling at the top level essentially
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
@@ -74,8 +69,8 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         if (facing != growthDirection || !facingState.is(this) && !facingState.is(getBodyBlock()))
         {
             //Not sure if this is necessary
-            worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), Fluids.WATER.getTickDelay(worldIn));
-            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            Fluid fluid = stateIn.getFluidState().getType();
+            worldIn.getLiquidTicks().scheduleTick(currentPos, fluid, fluid.getTickDelay(worldIn));
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block

@@ -2,10 +2,7 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SixWayBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -41,8 +38,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        registerDefaultState(stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE)
-        .setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -53,19 +49,22 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
     {
-        Block downBlock = world.getBlockState(pos.below()).getBlock();
-        Block upBlock = world.getBlockState(pos.above()).getBlock();
-        Block northBlock = world.getBlockState(pos.north()).getBlock();
-        Block eastBlock = world.getBlockState(pos.east()).getBlock();
-        Block southBlock = world.getBlockState(pos.south()).getBlock();
-        Block westBlock = world.getBlockState(pos.west()).getBlock();
-        return this.defaultBlockState()
-            .setValue(DOWN, downBlock.is(TFCTags.Blocks.KELP_TREE) || downBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-            .setValue(UP, upBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(NORTH, northBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(EAST, eastBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(SOUTH, southBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(WEST, westBlock.is(TFCTags.Blocks.KELP_TREE));
+        BlockState setState = defaultBlockState();
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        for (Direction d : Direction.values())
+        {
+            mutablePos.setWithOffset(pos, d);
+            Block foundBlock = world.getBlockState(mutablePos).getBlock();
+            if (d == Direction.DOWN)
+            {
+                setState.setValue(SixWayBlock.DOWN, foundBlock.is(TFCTags.Blocks.KELP_TREE) || foundBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
+            }
+            else
+            {
+                setState.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(d), foundBlock.is(TFCTags.Blocks.KELP_TREE));
+            }
+        }
+        return setState;
     }
 
     @Override
@@ -102,25 +101,19 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         updateFluid(worldIn, state, pos);
     }
 
+    /**
+     * {@link ChorusPlantBlock#canSurvive}
+     */
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
-        //boolean attachedVertically = !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.above()) && !KelpTreeFlowerBlock.isEmptyWaterBlock(worldIn, pos.below());
-
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
             if (worldIn.getBlockState(relativePos).getBlock().is(TFCTags.Blocks.KELP_BRANCH))
             {
-                /*if (attachedVertically)
-                {
-                    return false;
-                }*/
-                //this might be causing overlapping structures to break each other. should re-evaluate
-                //if you study the structures ingame you'll see the algorithm precludes them from growing and then touching horizontally anyway
-                //so theoretically this should never be called anyway, I'm not sure
 
                 Block below = worldIn.getBlockState(relativePos.below()).getBlock();
                 if (below.is(TFCTags.Blocks.KELP_BRANCH) || below.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))

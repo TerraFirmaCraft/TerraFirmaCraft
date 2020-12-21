@@ -75,6 +75,6 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
 
     private BlockState salty(BlockState state)
     {
-        return state.setValue(TFCBlockStateProperties.SALTWATER, TFCBlockStateProperties.SALTWATER.keyFor(TFCFluids.SALT_WATER.getSource()));
+        return state.setValue(TFCBlockStateProperties.SALT_WATER, TFCBlockStateProperties.SALT_WATER.keyFor(TFCFluids.SALT_WATER.getSource()));
     }
 }

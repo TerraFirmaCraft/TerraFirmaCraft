@@ -113,28 +113,28 @@ def generate(rm: ResourceManager):
         rm.feature('%scave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': step, 'probability': 0.09})))
         rm.feature('%slarge_cave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': step, 'probability': 0.006, 'max_y': 45})))
 
-    rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+    rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
         'radius': 5,
         'tries': 20,
         'min_height': 2,
         'max_height': 5
-    }), ('minecraft:count', {'count': 4}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128})))
-    rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+    }), ('minecraft:count', {'count': 4}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 100})))
+    rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
         'radius': 12,
         'tries': 70,
         'min_height': 3,
         'max_height': 9
     }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
-    rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:calcite', {
+    rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:icicle',
         'radius': 5,
         'tries': 25,
         'min_height': 2,
         'max_height': 5
     }), ('minecraft:count', {'count': 7}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(-50, 0, 0, 500)))
-    rm.feature('mega_icicle', wg.configure_decorated(wg.configure('tfc:calcite', {
+    rm.feature('mega_icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:icicle',
         'radius': 12,
         'tries': 70,
@@ -165,25 +165,25 @@ def generate(rm: ResourceManager):
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {
         'entries': [
-            forest_config(30, 210, 17, 32, 'tfc:wood/wood/acacia', 'tfc:wood/leaves/acacia', 'tfc:wood/twig/acacia', 'tfc:wood/fallen_leaves/acacia', 'acacia', True),
-            forest_config(60, 240, 1, 15, 'tfc:wood/wood/ash', 'tfc:wood/leaves/ash', 'tfc:wood/twig/ash', 'tfc:wood/fallen_leaves/ash', 'ash', True),
-            forest_config(350, 500, -18, 5, 'tfc:wood/wood/aspen', 'tfc:wood/leaves/aspen', 'tfc:wood/twig/aspen', 'tfc:wood/fallen_leaves/aspen', 'aspen', False),
-            forest_config(125, 310, -11, 7, 'tfc:wood/wood/birch', 'tfc:wood/leaves/birch', 'tfc:wood/twig/birch', 'tfc:wood/fallen_leaves/birch', 'birch', False),
-            forest_config(0, 180, 12, 32, 'tfc:wood/wood/blackwood', 'tfc:wood/leaves/blackwood', 'tfc:wood/twig/blackwood', 'tfc:wood/fallen_leaves/blackwood', 'blackwood', True),
-            forest_config(180, 370, -4, 17, 'tfc:wood/wood/chestnut', 'tfc:wood/leaves/chestnut', 'tfc:wood/twig/chestnut', 'tfc:wood/fallen_leaves/chestnut', 'chestnut', False),
-            forest_config(290, 500, -16, -1, 'tfc:wood/wood/douglas_fir', 'tfc:wood/leaves/douglas_fir', 'tfc:wood/twig/douglas_fir', 'tfc:wood/fallen_leaves/douglas_fir', 'douglas_fir', True),
-            forest_config(210, 400, 9, 24, 'tfc:wood/wood/hickory', 'tfc:wood/leaves/hickory', 'tfc:wood/twig/hickory', 'tfc:wood/fallen_leaves/hickory', 'hickory', True),
-            forest_config(270, 500, 17, 32, 'tfc:wood/wood/kapok', 'tfc:wood/leaves/kapok', 'tfc:wood/twig/kapok', 'tfc:wood/fallen_leaves/kapok', 'kapok', False),
-            forest_config(270, 500, -1, 15, 'tfc:wood/wood/maple', 'tfc:wood/leaves/maple', 'tfc:wood/twig/maple', 'tfc:wood/fallen_leaves/maple', 'maple',True),
-            forest_config(240, 450, -9, 11, 'tfc:wood/wood/oak', 'tfc:wood/leaves/oak', 'tfc:wood/twig/oak', 'tfc:wood/fallen_leaves/oak', 'oak', False),
-            forest_config(180, 470, 20, 32, 'tfc:wood/wood/palm', 'tfc:wood/leaves/palm', 'tfc:wood/twig/palm', 'tfc:wood/fallen_leaves/palm', 'palm',  False),
-            forest_config(60, 270, -18, -4, 'tfc:wood/wood/pine', 'tfc:wood/leaves/pine', 'tfc:wood/twig/pine', 'tfc:wood/fallen_leaves/pine', 'pine', True),
-            forest_config(140, 310, 8, 31, 'tfc:wood/wood/rosewood', 'tfc:wood/leaves/rosewood', 'tfc:wood/twig/rosewood', 'tfc:wood/fallen_leaves/rosewood', 'rosewood', False),
-            forest_config(250, 420, -14, 2, 'tfc:wood/wood/sequoia', 'tfc:wood/leaves/sequoia', 'tfc:wood/twig/sequoia', 'tfc:wood/fallen_leaves/sequoia', 'sequoia', True),
-            forest_config(110, 320, -17, 1, 'tfc:wood/wood/spruce', 'tfc:wood/leaves/spruce', 'tfc:wood/twig/spruce', 'tfc:wood/fallen_leaves/spruce', 'spruce', True),
-            forest_config(230, 480, 15, 29, 'tfc:wood/wood/sycamore', 'tfc:wood/leaves/sycamore', 'tfc:wood/twig/sycamore', 'tfc:wood/fallen_leaves/sycamore', 'sycamore', True),
-            forest_config(10, 220, -13, 9, 'tfc:wood/wood/white_cedar', 'tfc:wood/leaves/white_cedar', 'tfc:wood/twig/white_cedar', 'tfc:wood/fallen_leaves/white_cedar', 'white_cedar', True),
-            forest_config(330, 500, 11, 32, 'tfc:wood/wood/willow', 'tfc:wood/leaves/willow', 'tfc:wood/twig/willow', 'tfc:wood/fallen_leaves/willow', 'willow', True),
+            forest_config(30, 210, 17, 32, 'acacia', True),
+            forest_config(60, 240, 1, 15, 'ash', True),
+            forest_config(350, 500, -18, 5, 'aspen', False),
+            forest_config(125, 310, -11, 7, 'birch', False),
+            forest_config(0, 180, 12, 32, 'blackwood', True),
+            forest_config(180, 370, -4, 17, 'chestnut', False),
+            forest_config(290, 500, -16, -1, 'douglas_fir', True),
+            forest_config(210, 400, 9, 24, 'hickory', True),
+            forest_config(270, 500, 17, 32, 'kapok', False),
+            forest_config(270, 500, -1, 15, 'maple',True),
+            forest_config(240, 450, -9, 11, 'oak', False),
+            forest_config(180, 470, 20, 32, 'palm',  False),
+            forest_config(60, 270, -18, -4, 'pine', True),
+            forest_config(140, 310, 8, 31, 'rosewood', False),
+            forest_config(250, 420, -14, 2, 'sequoia', True),
+            forest_config(110, 320, -17, 1, 'spruce', True),
+            forest_config(230, 480, 15, 29, 'sycamore', True),
+            forest_config(10, 220, -13, 9, 'white_cedar', True),
+            forest_config(330, 500, 11, 32, 'willow', True),
         ]
     }))
 
@@ -278,6 +278,7 @@ def generate(rm: ResourceManager):
         'salt': vein_salt('gravel')
     }))
 
+    # todo: change to use cave biomes in 1.17
     rm.feature('cave_vegetation', wg.configure_decorated(wg.configure('tfc:cave_vegetation', {
         'blocks': [{
             'stone': ['tfc:rock/raw/%s' % rock],
@@ -388,8 +389,8 @@ def generate(rm: ResourceManager):
         'noise_factor': 80.0,
         'noise_offset': 0.3
     }), 'minecraft:square', 'minecraft:heightmap_world_surface'))
-    # todo: mixin to bamboo to make it not grow insanely fast / not able to insta grow
 
+    # todo: this should be a biome thing like volcanoes, probably
     rm.feature('coral', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {'features': [wg.configure('tfc:coral_tree'), wg.configure('tfc:coral_mushroom'), wg.configure('tfc:coral_claw')]}), decorate_climate_target(25, 300, 5), ('minecraft:count_noise_biased', {
         "noise_to_count_ratio": 20,
         "noise_factor": 400.0,
@@ -476,16 +477,16 @@ def surface_builder(rm: ResourceManager, name: str, surface_builder):
     }))
 
 
-def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, log: str, leaves: str, twig: str, fallen_leaves: str, tree: str, old_growth: bool):
+def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
     cfg = {
         'min_rain': min_rain,
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'log': log,
-        'leaves': leaves,
-        'twig': twig,
-        'fallen_leaves': fallen_leaves,
+        'log': 'tfc:wood/wood/%s' % tree,
+        'leaves': 'tfc:wood/leaves/%s' % tree,
+        'twig': 'tfc:wood/twig/%s' % tree,
+        'fallen_leaves': 'tfc:wood/fallen_leaves/%s' % tree,
         'normal_tree': 'tfc:tree/%s' % tree
     }
     if old_growth:

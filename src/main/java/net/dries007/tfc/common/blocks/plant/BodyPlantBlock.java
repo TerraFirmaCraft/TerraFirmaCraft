@@ -1,5 +1,6 @@
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.block.*;
@@ -9,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class BodyPlantBlock extends AbstractBodyPlantBlock
 {
@@ -20,6 +23,7 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
         this.headBlock = headBlock;
     }
 
+    @Override
     protected AbstractTopPlantBlock getHeadBlock()
     {
         return (AbstractTopPlantBlock) headBlock.get();
@@ -29,6 +33,18 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
     public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
+    }
+
+    @Override
+    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state)
+    {
+
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it

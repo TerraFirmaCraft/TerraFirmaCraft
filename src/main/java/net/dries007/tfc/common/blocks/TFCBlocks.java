@@ -73,8 +73,8 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW)).tileEntity(SnowPileTileEntity::new)), EARTH);
-    public static final RegistryObject<CalciteBlock> CALCITE = register("calcite", () -> new CalciteBlock(Properties.of(Material.GLASS).noDrops().instabreak().sound(SoundType.GLASS)));
-    public static final RegistryObject<CalciteBlock> ICICLE = register("icicle", () -> new CalciteBlock(Properties.of(Material.ICE).noDrops().instabreak().sound(SoundType.GLASS).noOcclusion()));
+    public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of(Material.GLASS).noDrops().instabreak().sound(SoundType.GLASS)));
+    public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new ThinSpikeBlock(Properties.of(Material.ICE).noDrops().instabreak().sound(SoundType.GLASS).noOcclusion()));
 
     // Ores
 
@@ -149,7 +149,7 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
-        .lightLevel((state) -> 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
+        .lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
     // see the registration for pickles in Blocks for how this should work (it should not light if it's not waterlogged)
     // but since keys for FluidProperty can only be obtained by querying a fluid (even if it's Fluids.EMPTY)
     // rather than how Waterlogged is a boolean
