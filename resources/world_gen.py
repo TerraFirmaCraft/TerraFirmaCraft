@@ -402,11 +402,13 @@ def generate(rm: ResourceManager):
     gravel = [wg.block_state('tfc:rock/gravel/%s' % rock) for rock in ROCKS.keys()]
     raw = [wg.block_state('tfc:rock/raw/%s[supported=false]' % rock) for rock in ROCKS.keys()]
     grass = [wg.block_state('tfc:grass/%s[north=false,south=false,east=false,west=false,snowy=false]' % soil) for soil in SOIL_BLOCK_VARIANTS]
-    # todo: add these to the deep oceans?
     rm.feature(('groundcover', 'driftwood'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/driftwood', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 50, 200, 500)))
     rm.feature(('groundcover', 'clam'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/clam', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-50, 22, 10, 450)))
+    rm.feature(('groundcover', 'clam_deep'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/clam', 1, 15, 10, sand + gravel), decorate_chance(10), 'minecraft:square', decorate_climate(-50, 22, 10, 450)))
     rm.feature(('groundcover', 'mollusk'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/mollusk', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 30, 150, 500)))
+    rm.feature(('groundcover', 'mollusk_deep'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/mollusk', 1, 15, 10, sand + gravel, True), decorate_chance(10), 'minecraft:square', decorate_climate(-10, 30, 150, 500)))
     rm.feature(('groundcover', 'mussel'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/mussel', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(10, 50, 100, 500)))
+    rm.feature(('groundcover', 'mussel_deep'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/mussel', 1, 15, 10, sand + gravel, True), decorate_chance(10), 'minecraft:square', decorate_climate(10, 50, 100, 500)))
     rm.feature(('groundcover', 'sticks_shore'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick', 1, 15, 25, sand + gravel, True), decorate_chance(2), 'minecraft:square', decorate_climate(-50, 50, 100, 500)))
     rm.feature(('groundcover', 'seaweed'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/seaweed', 1, 15, 10, sand + gravel, True), decorate_chance(5), 'minecraft:square', decorate_climate(-20, 50, 150, 500)))
     rm.feature(('groundcover', 'guano_shore'), wg.configure_decorated(simple_patch_feature('tfc:groundcover/guano', 1, 15, 10, raw + gravel, True), decorate_chance(40), 'minecraft:square', decorate_climate(-10, 40, 150, 500)))
@@ -726,6 +728,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             features[Decoration.VEGETAL_DECORATION] += ['tfc:coral', 'tfc:plant/giant_kelp', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']
         if name == 'shore':
             features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:groundcover/%s' % beach_item for beach_item in SHORE_DECORATORS if name == 'shore']
+        if name == 'deep_ocean':
+            features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:groundcover/%s' % shell for shell in DEEP_OCEAN_DECORATORS]
     if (not ocean_features) or name in ['oceanic_mountains', 'volcanic_oceanic_mountains']:  # so that forests still generate in oceanic mountains
         # Non-ocean biome, add all land based features
         if lake_features:
