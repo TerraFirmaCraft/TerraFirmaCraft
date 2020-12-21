@@ -48,27 +48,24 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getStateForPlacement(context.getLevel(), context.getClickedPos());
+        return getStateForPlacement(context.getLevel(), context.getClickedPos());
     }
 
     public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
     {
-        BlockState setState = defaultBlockState();
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (Direction d : Direction.values())
-        {
-            mutablePos.setWithOffset(pos, d);
-            Block foundBlock = world.getBlockState(mutablePos).getBlock();
-            if (d == Direction.DOWN)
-            {
-                setState.setValue(DOWN, foundBlock.is(TFCTags.Blocks.KELP_TREE) || foundBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
-            }
-            else
-            {
-                setState.setValue(PROPERTY_BY_DIRECTION.get(d), foundBlock.is(TFCTags.Blocks.KELP_TREE));
-            }
-        }
-        return setState;
+        Block downBlock = world.getBlockState(pos.below()).getBlock();
+        Block upBlock = world.getBlockState(pos.above()).getBlock();
+        Block northBlock = world.getBlockState(pos.north()).getBlock();
+        Block eastBlock = world.getBlockState(pos.east()).getBlock();
+        Block southBlock = world.getBlockState(pos.south()).getBlock();
+        Block westBlock = world.getBlockState(pos.west()).getBlock();
+        return defaultBlockState()
+            .setValue(DOWN, downBlock.is(TFCTags.Blocks.KELP_TREE) || downBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+            .setValue(UP, upBlock.is(TFCTags.Blocks.KELP_TREE))
+            .setValue(NORTH, northBlock.is(TFCTags.Blocks.KELP_TREE))
+            .setValue(EAST, eastBlock.is(TFCTags.Blocks.KELP_TREE))
+            .setValue(SOUTH, southBlock.is(TFCTags.Blocks.KELP_TREE))
+            .setValue(WEST, westBlock.is(TFCTags.Blocks.KELP_TREE));
     }
 
     @Override
