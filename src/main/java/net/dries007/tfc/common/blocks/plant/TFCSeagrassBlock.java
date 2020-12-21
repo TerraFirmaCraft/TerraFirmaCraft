@@ -27,7 +27,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
             }
 
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
             }

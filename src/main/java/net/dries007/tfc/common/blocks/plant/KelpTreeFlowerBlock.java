@@ -38,28 +38,24 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
     private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
+    private final Supplier<? extends Block> bodyBlock;
 
     public static KelpTreeFlowerBlock create(AbstractBlock.Properties builder, Supplier<? extends Block> plant, FluidProperty fluid)
     {
-        return new KelpTreeFlowerBlock(builder)
+        return new KelpTreeFlowerBlock(builder, plant)
         {
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
-            }
-
-            @Override
-            public Supplier<? extends Block> getBodyBlockAbstract()
-            {
-                return plant;
             }
         };
     }
 
-    protected KelpTreeFlowerBlock(AbstractBlock.Properties builder)
+    protected KelpTreeFlowerBlock(AbstractBlock.Properties builder, Supplier<? extends Block> bodyBlock)
     {
         super(builder);
+        this.bodyBlock = bodyBlock;
         registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
@@ -83,7 +79,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
-        KelpTreeBlock body = (KelpTreeBlock) getBodyBlockAbstract().get();
+        KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
         Fluid fluid = state.getValue(getFluidProperty()).getFluid();
 
         BlockPos abovePos = pos.above();
@@ -218,7 +214,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        KelpTreeBlock body = (KelpTreeBlock) getBodyBlockAbstract().get();
+        KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 
         BlockState blockstate = worldIn.getBlockState(pos.below());
         if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
@@ -330,19 +326,14 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
     private BlockState getBodyStateWithFluid(IWorld worldIn, BlockPos pos, Fluid fluid)
     {
-        KelpTreeBlock plant = (KelpTreeBlock) getBodyBlockAbstract().get();
+        KelpTreeBlock plant = (KelpTreeBlock) getBodyBlock().get();
         return plant.getStateForPlacement(worldIn, pos).setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
     }
 
-    @Override
-    public FluidProperty getFluidProperty()
+    private Supplier<? extends Block> getBodyBlock()
     {
-        return getFluidPropertyAbstract();
+        return bodyBlock;
     }
-
-    public abstract FluidProperty getFluidPropertyAbstract();
-
-    public abstract Supplier<? extends Block> getBodyBlockAbstract();
 
     @Override
     @SuppressWarnings("deprecation")

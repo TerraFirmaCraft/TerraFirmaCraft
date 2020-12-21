@@ -28,7 +28,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
             }
 
             @Override
-            public FluidProperty getFluidPropertyAbstract()
+            public FluidProperty getFluidProperty()
             {
                 return fluid;
             }
@@ -76,12 +76,4 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         return IFluidLoggable.super.getFluidState(state);
     }
-
-    @Override
-    public FluidProperty getFluidProperty()
-    {
-        return getFluidPropertyAbstract();
-    }
-
-    public abstract FluidProperty getFluidPropertyAbstract();
 }
