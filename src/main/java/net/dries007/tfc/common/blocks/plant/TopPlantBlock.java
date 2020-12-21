@@ -11,7 +11,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
-
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.config.TFCConfig;

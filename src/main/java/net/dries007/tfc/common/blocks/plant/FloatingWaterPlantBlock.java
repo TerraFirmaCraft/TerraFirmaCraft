@@ -7,8 +7,8 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.fluid.Fluid;

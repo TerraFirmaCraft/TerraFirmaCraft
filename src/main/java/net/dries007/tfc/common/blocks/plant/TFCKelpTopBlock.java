@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.common.fluids.TFCFluids;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
@@ -135,7 +134,8 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     public abstract Supplier<? extends Block> getBodyBlockAbstract();
 
     @Override
-    public AbstractBlock.OffsetType getOffsetType() {
+    public AbstractBlock.OffsetType getOffsetType()
+    {
         return AbstractBlock.OffsetType.XZ;
     }
 
