@@ -28,7 +28,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 {
     public static final IntegerProperty PICKLES = BlockStateProperties.PICKLES;
-    public static final FluidProperty FLUID = TFCBlockStateProperties.SALTWATER;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.SALT_WATER;
     protected static final VoxelShape ONE_AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 6.0D, 10.0D);
     protected static final VoxelShape TWO_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 6.0D, 13.0D);
     protected static final VoxelShape THREE_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
@@ -57,10 +57,11 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         }
     }
 
-    /*public static boolean isDead(BlockState state)
+    public static boolean isDead(BlockState state)
     {
-        return state.getValue(FLUID).getFluid() != Fluids.EMPTY;
-    }*/
+        FluidProperty property = ((TFCSeaPickleBlock)state.getBlock()).getFluidProperty();
+        return state.getValue(property) == property.keyFor(Fluids.EMPTY);
+    }
 
     @Override
     @SuppressWarnings("deprecation")

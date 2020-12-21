@@ -7,14 +7,12 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.KelpBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -28,7 +26,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCMaterials;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.calendar.Month;
 
@@ -113,22 +110,22 @@ public enum Plant implements IPlant
     YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}),
 
     //not data driven. I added an unused int array because NPE. naming convention is inherited from vanilla
-    HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    LIANA_PLANT(BlockType.WEEPING, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    LIANA(BlockType.WEEPING_TOP, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    ARUNDO_PLANT(BlockType.TWISTING, 0.3F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    ARUNDO(BlockType.TWISTING_TOP, 0.3F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    WINGED_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    WINGED_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    LEAFY_KELP(BlockType.KELP_TOP, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    IVY(BlockType.VINE, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-    JUNGLE_VINES(BlockType.VINE, 1.0F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, null),
+    HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, null),
+    LIANA_PLANT(BlockType.WEEPING, 1.0F, null),
+    LIANA(BlockType.WEEPING_TOP, 1.0F, null),
+    TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F, null),
+    TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, null),
+    ARUNDO_PLANT(BlockType.TWISTING, 0.3F, null),
+    ARUNDO(BlockType.TWISTING_TOP, 0.3F, null),
+    WINGED_KELP_PLANT(BlockType.KELP, 0.7F, null),
+    WINGED_KELP(BlockType.KELP_TOP, 0.7F, null),
+    LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, null),
+    LEAFY_KELP(BlockType.KELP_TOP, 0.7F, null),
+    GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F, null),
+    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F, null),
+    IVY(BlockType.VINE, 1.0F, null),
+    JUNGLE_VINES(BlockType.VINE, 1.0F, null);
 
 
     private final float speedFactor;
@@ -136,18 +133,25 @@ public enum Plant implements IPlant
     private final int[] stagesByMonth;
     private final BlockType type;
 
-    Plant(BlockType type, float speedFactor, int[] stagesByMonth)
+    Plant(BlockType type, float speedFactor, @Nullable int[] stagesByMonth)
     {
         this.type = type;
         this.speedFactor = speedFactor;
         this.stagesByMonth = stagesByMonth;
 
-        int maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
-        if (maxStage > TFCBlockStateProperties.STAGES.length)
+        if (stagesByMonth != null)
         {
-            throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
+            int maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
+            if (maxStage > TFCBlockStateProperties.STAGES.length)
+            {
+                throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
+            }
+            this.property = TFCBlockStateProperties.STAGES[maxStage];
         }
-        this.property = TFCBlockStateProperties.STAGES[maxStage];
+        else
+        {
+            this.property = null;
+        }
     }
 
     /**
@@ -250,18 +254,23 @@ public enum Plant implements IPlant
         TWISTING_SOLID((plant, type) -> new BodyPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
         TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
         //Water
-        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALTWATER)),
-        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALTWATER))),
-        KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALTWATER)),
-        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()), TFCBlockStateProperties.SALTWATER)),
+        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALT_WATER)),
+        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
+        KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
+        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()), TFCBlockStateProperties.SALT_WATER)),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), LilyPadItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), LilyPadItem::new),
-        TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALTWATER, nonSolid(plant))),
-        TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESHWATER, nonSolid(plant))),
-        WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALTWATER, nonSolid(plant))),
-        WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESHWATER, nonSolid(plant))),
-        GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALTWATER, nonSolid(plant))),
-        GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESHWATER, nonSolid(plant)));
+        TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
+        TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
+        WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
+        WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
+        GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
+        GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
+
+        public int getFallFoliageCoords()
+        {
+            return 200;
+        }
 
         /**
          * Default properties to avoid rewriting them out every time

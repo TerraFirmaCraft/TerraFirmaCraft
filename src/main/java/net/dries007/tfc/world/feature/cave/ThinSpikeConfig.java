@@ -8,17 +8,16 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
-import net.dries007.tfc.world.feature.plant.VineConfig;
 
-public class CalciteConfig implements IFeatureConfig
+public class ThinSpikeConfig implements IFeatureConfig
 {
-    public static final Codec<CalciteConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(CalciteConfig::getState),
-        Codec.intRange(1, 16).fieldOf("radius").forGetter(CalciteConfig::getRadius),
-        Codecs.POSITIVE_INT.fieldOf("tries").forGetter(CalciteConfig::getTries),
+    public static final Codec<ThinSpikeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(ThinSpikeConfig::getState),
+        Codec.intRange(1, 16).fieldOf("radius").forGetter(ThinSpikeConfig::getRadius),
+        Codecs.POSITIVE_INT.fieldOf("tries").forGetter(ThinSpikeConfig::getTries),
         Codec.intRange(1, 256).fieldOf("min_height").forGetter(c -> c.minHeight),
         Codec.intRange(1, 256).fieldOf("max_height").forGetter(c -> c.maxHeight)
-    ).apply(instance, CalciteConfig::new));
+    ).apply(instance, ThinSpikeConfig::new));
 
     private final BlockState state;
     private final int radius;
@@ -26,7 +25,7 @@ public class CalciteConfig implements IFeatureConfig
     private final int minHeight;
     private final int maxHeight;
 
-    public CalciteConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight)
+    public ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight)
     {
         this.state = state;
         this.radius = radius;

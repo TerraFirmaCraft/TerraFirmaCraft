@@ -54,12 +54,10 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
-        rm.block_tag('creeping_plantable_on', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:gravel', 'tfc:rock/gravel/%s' % rock)
-        rm.block_tag('sea_bush_plantable_on', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock, 'tfc:rock/hardened/%s' % rock)  # used by vanilla, provided for consistiency
+        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock, 'tfc:rock/hardened/%s' % rock)  # used by vanilla and by us
         rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
 
     # Plants
@@ -70,7 +68,6 @@ def generate(rm: ResourceManager):
 
     # Sand
     for color in SAND_BLOCK_TYPES:
-        rm.block_tag('sea_bush_plantable_on', 'tfc:sand/%s' % color)
         rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
 
     # Tags
@@ -78,8 +75,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
-    rm.block_tag('sea_bush_plantable_on', '#forge:dirt')
-    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld')
+    rm.block_tag('sea_bush_plantable_on', '#forge:dirt', '#minecraft:sand', '#forge:gravel')
+    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld', '#minecraft:logs')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')

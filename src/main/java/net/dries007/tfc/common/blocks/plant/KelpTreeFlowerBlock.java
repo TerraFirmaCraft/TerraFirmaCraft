@@ -24,11 +24,17 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.minecraftforge.common.ForgeHooks;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 
+/**
+ * Almost all methods in here are adapted from
+ * {@link net.minecraft.block.ChorusFlowerBlock}
+ */
 public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggable
 {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
@@ -85,7 +91,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         if (isEmptyWaterBlock(worldIn, abovePos) && abovePos.getY() < 256 && TFCConfig.SERVER.plantGrowthChance.get() > random.nextDouble())
         {
             int i = state.getValue(AGE);
-            if (i < 5 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, abovePos, state, true))
+            if (i < 5 && ForgeHooks.onCropsGrowPre(worldIn, abovePos, state, true))
             {
                 boolean shouldPlaceNewBody = false;
                 boolean foundGroundFurtherDown = false;
@@ -160,7 +166,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 {
                     this.placeDeadFlower(worldIn, pos);
                 }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
+                ForgeHooks.onCropsGrowPost(worldIn, pos, state);
             }
         }
     }

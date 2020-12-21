@@ -17,7 +17,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class CalciteBlock extends Block
+public class ThinSpikeBlock extends Block
 {
     public static final VoxelShape PILLAR_SHAPE = VoxelShapes.or(
         box(9.5, 0, 12.5, 11.5, 16, 14.5),
@@ -55,7 +55,7 @@ public class CalciteBlock extends Block
 
     public static final BooleanProperty TIP = TFCBlockStateProperties.TIP;
 
-    public CalciteBlock(Properties properties)
+    public ThinSpikeBlock(Properties properties)
     {
         super(properties);
 
@@ -93,7 +93,7 @@ public class CalciteBlock extends Block
     {
         BlockPos abovePos = pos.above();
         BlockState aboveState = worldIn.getBlockState(abovePos);
-        return (aboveState.getBlock() == this && !aboveState.getValue(TIP)) || aboveState.is(BlockTags.BASE_STONE_OVERWORLD) || aboveState.is(BlockTags.ICE);
+        return (aboveState.getBlock() == this && !aboveState.getValue(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
     }
 
     @Override

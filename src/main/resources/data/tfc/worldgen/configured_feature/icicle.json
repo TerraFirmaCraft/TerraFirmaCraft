@@ -12,7 +12,7 @@
               "type": "minecraft:decorated",
               "config": {
                 "feature": {
-                  "type": "tfc:calcite",
+                  "type": "tfc:thin_spike",
                   "config": {
                     "state": "tfc:icicle",
                     "radius": 5,

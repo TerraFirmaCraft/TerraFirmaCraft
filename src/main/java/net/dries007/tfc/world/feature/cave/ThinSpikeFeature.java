@@ -9,18 +9,17 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.CalciteBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 
-public class CalciteFeature extends Feature<CalciteConfig>
+public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
 {
-    public CalciteFeature(Codec<CalciteConfig> codec)
+    public ThinSpikeFeature(Codec<ThinSpikeConfig> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CalciteConfig config)
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, ThinSpikeConfig config)
     {
         final BlockState calcite = config.getState();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -48,7 +47,7 @@ public class CalciteFeature extends Feature<CalciteConfig>
         return placedAny;
     }
 
-    private void placeCalcite(ISeedReader world, BlockPos.Mutable mutablePos, BlockState calcite, Random rand, CalciteConfig config)
+    private void placeCalcite(ISeedReader world, BlockPos.Mutable mutablePos, BlockState calcite, Random rand, ThinSpikeConfig config)
     {
         final int height = config.getHeight(rand);
         for (int i = 0; i < height; i++)
@@ -58,11 +57,11 @@ public class CalciteFeature extends Feature<CalciteConfig>
             if (!world.isEmptyBlock(mutablePos))
             {
                 // Make the previous state the tip, and exit
-                setBlock(world, mutablePos.move(0, 1, 0), calcite.setValue(CalciteBlock.TIP, true));
+                setBlock(world, mutablePos.move(0, 1, 0), calcite.setValue(ThinSpikeBlock.TIP, true));
                 return;
             }
         }
         // Add the tip
-        setBlock(world, mutablePos, calcite.setValue(CalciteBlock.TIP, true));
+        setBlock(world, mutablePos, calcite.setValue(ThinSpikeBlock.TIP, true));
     }
 }
