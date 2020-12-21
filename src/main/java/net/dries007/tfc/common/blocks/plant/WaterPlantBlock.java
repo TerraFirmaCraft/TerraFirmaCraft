@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -13,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 

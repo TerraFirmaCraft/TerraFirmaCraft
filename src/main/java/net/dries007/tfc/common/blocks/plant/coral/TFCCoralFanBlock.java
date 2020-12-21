@@ -8,6 +8,9 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
+/**
+ * {@link net.minecraft.block.CoralFanBlock}
+ */
 public class TFCCoralFanBlock extends TFCAbstractCoralPlantBlock
 {
     private static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);

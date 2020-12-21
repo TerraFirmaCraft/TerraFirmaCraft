@@ -20,6 +20,9 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 
+/**
+ * {@link net.minecraft.block.CoralPlantBlock}
+ */
 public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
 {
     private final Supplier<? extends Block> deadBlock;

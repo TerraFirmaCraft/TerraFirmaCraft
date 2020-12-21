@@ -23,7 +23,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.common.TFCTags;

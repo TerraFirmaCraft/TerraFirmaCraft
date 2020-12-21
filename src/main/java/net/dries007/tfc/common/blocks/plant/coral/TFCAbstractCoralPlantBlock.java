@@ -27,6 +27,9 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
+/**
+ * {@link net.minecraft.block.AbstractCoralPlantBlock}
+ */
 public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.SALT_WATER;

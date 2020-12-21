@@ -7,7 +7,6 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
-
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -156,6 +155,7 @@ public enum Plant implements IPlant
 
     /**
      * This is a way for paired blocks to reference each other as suppliers
+     *
      * @return The paired plant
      */
     private Plant transform()
@@ -304,18 +304,22 @@ public enum Plant implements IPlant
         {
             return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
         }
+
         private static VoxelShape getThinBodyShape()
         {
             return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
         }
+
         private static VoxelShape getWeepingShape()
         {
             return Block.box(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
         }
+
         private static VoxelShape getTwistingShape()
         {
             return Block.box(4.0D, 0.0D, 4.0D, 12.0D, 15.0D, 12.0D);
         }
+
         private static VoxelShape getTwistingThinShape()
         {
             return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);

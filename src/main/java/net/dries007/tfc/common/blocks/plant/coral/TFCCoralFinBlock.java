@@ -12,6 +12,9 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+/**
+ * {@link CoralFinBlock}
+ */
 public class TFCCoralFinBlock extends TFCCoralFanBlock
 {
     private final Supplier<? extends Block> deadBlock;

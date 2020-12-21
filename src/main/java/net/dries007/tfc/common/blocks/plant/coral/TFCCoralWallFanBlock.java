@@ -17,6 +17,9 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 
+/**
+ * {@link net.minecraft.block.CoralWallFanBlock}
+ */
 public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
 {
     private final Supplier<? extends Block> deadBlock;

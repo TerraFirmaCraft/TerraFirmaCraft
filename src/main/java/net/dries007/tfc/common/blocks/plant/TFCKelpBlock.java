@@ -112,7 +112,8 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     public abstract Supplier<? extends Block> getHeadBlockAbstract();
 
     @Override
-    public AbstractBlock.OffsetType getOffsetType() {
+    public AbstractBlock.OffsetType getOffsetType()
+    {
         return AbstractBlock.OffsetType.XZ;
     }
 

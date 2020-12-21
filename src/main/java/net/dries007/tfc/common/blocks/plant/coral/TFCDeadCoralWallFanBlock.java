@@ -22,6 +22,9 @@ import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 
+/**
+ * {@link DeadCoralWallFanBlock}
+ */
 public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
 {
     public static final DirectionProperty FACING = HorizontalBlock.FACING;

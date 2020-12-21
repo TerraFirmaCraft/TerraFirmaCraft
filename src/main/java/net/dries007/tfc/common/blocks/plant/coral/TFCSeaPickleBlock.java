@@ -25,6 +25,9 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
+/**
+ * {@link net.minecraft.block.SeaPickleBlock}
+ */
 public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 {
     public static final IntegerProperty PICKLES = BlockStateProperties.PICKLES;
@@ -59,7 +62,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     public static boolean isDead(BlockState state)
     {
-        FluidProperty property = ((TFCSeaPickleBlock)state.getBlock()).getFluidProperty();
+        FluidProperty property = ((TFCSeaPickleBlock) state.getBlock()).getFluidProperty();
         return state.getValue(property) == property.keyFor(Fluids.EMPTY);
     }
 
