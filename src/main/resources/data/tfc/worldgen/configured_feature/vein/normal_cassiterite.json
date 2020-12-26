@@ -24,6 +24,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_cassiterite/diorite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/topaz/diorite"
           }
         ]
       },
@@ -43,6 +47,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_cassiterite/gabbro"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/topaz/gabbro"
           }
         ]
       },
@@ -62,6 +70,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_cassiterite/granite"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/topaz/granite"
           }
         ]
       }

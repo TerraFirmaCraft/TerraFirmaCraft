@@ -1,0 +1,54 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 120,
+    "min_y": 5,
+    "max_y": 160,
+    "size": 7,
+    "density": 0.9500000000000001,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/amethyst/andesite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/amethyst/basalt"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/amethyst/dacite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/amethyst/rhyolite"
+          }
+        ]
+      }
+    ],
+    "salt": 3136848478
+  }
+}

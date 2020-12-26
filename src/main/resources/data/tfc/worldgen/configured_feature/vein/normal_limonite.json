@@ -24,6 +24,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/chalk"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/ruby/chalk"
           }
         ]
       },
@@ -43,6 +47,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/chert"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/ruby/chert"
           }
         ]
       },
@@ -62,6 +70,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/claystone"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/ruby/claystone"
           }
         ]
       },
@@ -81,6 +93,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/conglomerate"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/ruby/conglomerate"
           }
         ]
       },
@@ -100,6 +116,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/dolomite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/ruby/dolomite"
           }
         ]
       },
@@ -119,6 +139,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/limestone"
+          },
+          {
+            "weight": 3,
+            "block": "tfc:ore/ruby/limestone"
           }
         ]
       },
@@ -138,6 +162,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/shale"
+          },
+          {
+            "weight": 3,
+            "block": "tfc:ore/ruby/shale"
           }
         ]
       }

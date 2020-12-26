@@ -6,7 +6,7 @@
     "min_y": 80,
     "max_y": 100,
     "size": 30,
-    "density": 80,
+    "density": 0.8,
     "blocks": [
       {
         "stone": [
@@ -14,7 +14,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/chalk"
+          },
+          {
+            "weight": 8,
+            "block": "tfc:ore/sylvite/chalk"
           }
         ]
       },
@@ -24,7 +29,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/chert"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/chert"
           }
         ]
       },
@@ -34,7 +44,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/claystone"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/claystone"
           }
         ]
       },
@@ -44,7 +59,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/conglomerate"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/conglomerate"
           }
         ]
       },
@@ -54,7 +74,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/dolomite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/dolomite"
           }
         ]
       },
@@ -64,7 +89,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/limestone"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/limestone"
           }
         ]
       },
@@ -74,7 +104,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/halite/shale"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/sylvite/shale"
           }
         ]
       }

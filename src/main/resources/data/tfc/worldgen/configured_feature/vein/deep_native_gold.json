@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 120,
+    "rarity": 150,
     "min_y": 5,
     "max_y": 60,
     "size": 30,
@@ -24,6 +24,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/andesite"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/andesite"
           }
         ]
       },
@@ -43,6 +47,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/basalt"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/basalt"
           }
         ]
       },
@@ -62,6 +70,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/dacite"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/dacite"
           }
         ]
       },
@@ -81,6 +93,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/rhyolite"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/rhyolite"
           }
         ]
       },
@@ -100,6 +116,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/diorite"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/diorite"
           }
         ]
       },
@@ -119,6 +139,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/gabbro"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/gabbro"
           }
         ]
       },
@@ -138,6 +162,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/granite"
+          },
+          {
+            "weight": 2,
+            "block": "tfc:ore/pyrite/granite"
           }
         ]
       }
