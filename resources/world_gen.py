@@ -198,14 +198,34 @@ def generate(rm: ResourceManager):
     for vein_name, vein in ORE_VEINS.items():
         rocks = expand_rocks(vein.rocks, vein_name)
         ore = ORES[vein.ore]  # standard ore
+        ore_cfg = []
         if ore.graded:  # graded ore vein
-            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
-                'rarity': vein.rarity,
-                'min_y': vein.min_y,
-                'max_y': vein.max_y,
-                'size': vein.size,
-                'density': vein.density * 0.01,
-                'blocks': [{
+            c_rocks = []
+            if vein.constituent is not None:
+                c_rocks = expand_rocks(vein.c_rocks, vein_name)
+
+                def get_rarity(rock: str):
+                    if rock in c_rocks:
+                        return vein.c_rarity
+                    return 0
+                ore_cfg = [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{
+                        'weight': vein.poor,
+                        'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': vein.normal,
+                        'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': vein.rich,
+                        'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': get_rarity(rock),
+                        'block': 'tfc:ore/%s/%s' % (vein.constituent, rock)
+                    }]
+                } for rock in rocks]
+            else:
+                ore_cfg = [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{
                         'weight': vein.poor,
@@ -217,7 +237,14 @@ def generate(rm: ResourceManager):
                         'weight': vein.rich,
                         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
                     }]
-                } for rock in rocks],
+                } for rock in rocks]
+            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
+                'rarity': vein.rarity,
+                'min_y': vein.min_y,
+                'max_y': vein.max_y,
+                'size': vein.size,
+                'density': vein.density * 0.01,
+                'blocks': ore_cfg,
                 'indicator': {
                     'rarity': 12,
                     'blocks': [{
@@ -227,16 +254,35 @@ def generate(rm: ResourceManager):
                 'salt': vein_salt(vein_name)
             }))
         else:  # non-graded ore vein (mineral)
+            if vein.constituent is not None:
+                c_rocks = expand_rocks(vein.c_rocks, vein_name)
+
+                def get_rarity(rock: str):
+                    if rock in c_rocks:
+                        return vein.c_rarity
+                    return 0
+                ore_cfg = [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{
+                        'weight': 100,
+                        'block': 'tfc:ore/%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': get_rarity(rock),
+                        'block': 'tfc:ore/%s/%s' % (vein.constituent, rock)
+                    }]
+                } for rock in rocks]
+            else:
+                ore_cfg = [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+                } for rock in rocks]
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
                 'rarity': vein.rarity,
                 'min_y': vein.min_y,
                 'max_y': vein.max_y,
                 'size': vein.size,
-                'density': vein.density,
-                'blocks': [{
-                    'stone': ['tfc:rock/raw/%s' % rock],
-                    'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
-                } for rock in rocks],
+                'density': vein.density * 0.01,
+                'blocks': ore_cfg,
                 'salt': vein_salt(vein_name)
             }))
 

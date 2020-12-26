@@ -4,17 +4,17 @@
   "config": {
     "rarity": 120,
     "min_y": 5,
-    "max_y": 100,
-    "size": 10,
-    "density": 60,
+    "max_y": 64,
+    "size": 14,
+    "density": 0.7000000000000001,
     "blocks": [
       {
         "stone": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/gneiss"
         ],
         "ore": [
           {
-            "block": "tfc:ore/lapis_lazuli/limestone"
+            "block": "tfc:ore/lapis_lazuli/gneiss"
           }
         ]
       },
@@ -25,6 +25,46 @@
         "ore": [
           {
             "block": "tfc:ore/lapis_lazuli/marble"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/lapis_lazuli/phyllite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/lapis_lazuli/quartzite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/lapis_lazuli/schist"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/lapis_lazuli/slate"
           }
         ]
       }

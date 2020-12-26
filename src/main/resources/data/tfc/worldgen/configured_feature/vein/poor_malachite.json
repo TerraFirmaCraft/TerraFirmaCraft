@@ -24,6 +24,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_malachite/marble"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/marble"
           }
         ]
       },
@@ -43,6 +47,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_malachite/limestone"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/gypsum/limestone"
           }
         ]
       },
@@ -62,6 +70,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_malachite/phyllite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/phyllite"
           }
         ]
       },
@@ -81,6 +93,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_malachite/chalk"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/chalk"
           }
         ]
       },
@@ -100,6 +116,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_malachite/dolomite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/dolomite"
           }
         ]
       }

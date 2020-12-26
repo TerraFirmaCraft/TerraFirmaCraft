@@ -6,7 +6,7 @@
     "min_y": 5,
     "max_y": 100,
     "size": 10,
-    "density": 60,
+    "density": 0.7000000000000001,
     "blocks": [
       {
         "stone": [
@@ -14,7 +14,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/sulfur/andesite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/andesite"
           }
         ]
       },
@@ -24,7 +29,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/sulfur/basalt"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/basalt"
           }
         ]
       },
@@ -34,7 +44,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/sulfur/dacite"
+          },
+          {
+            "weight": 0,
+            "block": "tfc:ore/gypsum/dacite"
           }
         ]
       },
@@ -44,7 +59,12 @@
         ],
         "ore": [
           {
+            "weight": 100,
             "block": "tfc:ore/sulfur/rhyolite"
+          },
+          {
+            "weight": 20,
+            "block": "tfc:ore/gypsum/rhyolite"
           }
         ]
       }
