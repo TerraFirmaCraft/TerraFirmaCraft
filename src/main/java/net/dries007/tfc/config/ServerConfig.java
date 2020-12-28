@@ -32,6 +32,8 @@ public class ServerConfig
     // Blocks - Snow
     public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
     public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
+    // Blocks - Ice
+    public final ForgeConfigSpec.BooleanValue enableIceAffectedByTemperature;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
@@ -81,6 +83,10 @@ public class ServerConfig
 
         enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
         enableSnowSlowEntities = builder.apply("enableSnowSlowEntities").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
+
+        innerBuilder.pop().push("ice");
+
+        enableIceAffectedByTemperature = builder.apply("enableIceAffectedByTemperature").comment("If ice will melt in warm temperatures on random ticks").define("enableIceAffectedByTemperature", true);
 
         innerBuilder.pop().push("plants");
 

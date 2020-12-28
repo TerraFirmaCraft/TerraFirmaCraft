@@ -320,6 +320,13 @@ def generate(rm: ResourceManager):
     snow_block_loot_table('snow_pile')
     snow_block_loot_table('minecraft:snow')
 
+    # Sea Ice
+    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
+    block.with_block_loot({
+        'entries': 'minecraft:ice',
+        'conditions': [silk_touch()]
+    })
+
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):
@@ -532,28 +539,17 @@ def generate(rm: ResourceManager):
     for metal in METALS.keys():
         molten_fluid(metal)
 
-    # Calcite + Icicles
-    block = rm.blockstate('calcite', variants={
-        'tip=true': {'model': 'tfc:block/calcite_tip'},
-        'tip=false': {'model': 'tfc:block/calcite'}
-    })
-    block.with_item_model()
-    block.with_lang(lang('calcite'))
+    # Thin Spikes: Calcite + Icicles
+    for variant, texture in (('calcite', 'tfc:block/calcite'), ('icicle', 'minecraft:block/ice')):
+        block = rm.blockstate(variant, variants={
+            'tip=true': {'model': 'tfc:block/%s_tip' % variant},
+            'tip=false': {'model': 'tfc:block/%s' % variant}
+        })
+        block.with_item_model()
+        block.with_lang(lang(variant))
 
-    block = rm.blockstate('icicle', variants={
-        'tip=true': {'model': 'tfc:block/icicle_tip'},
-        'tip=false': {'model': 'tfc:block/icicle'}
-    })
-    block.with_item_model()
-    block.with_lang(lang('icicle'))
-    rm.block_model('icicle', textures={
-        '0': 'minecraft:block/ice',
-        'particle': 'minecraft:block/ice'
-    }, parent='tfc:block/calcite')
-    rm.block_model('icicle_tip', textures={
-        '0': 'minecraft:block/ice',
-        'particle': 'minecraft:block/ice'
-    }, parent='tfc:block/calcite_tip')
+        rm.block_model(variant, textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike')
+        rm.block_model(variant + '_tip', textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike_tip')
 
     # Misc Items
     rm.item_model('mortar').with_lang(lang('mortar')).with_tag('tfc:mortar')

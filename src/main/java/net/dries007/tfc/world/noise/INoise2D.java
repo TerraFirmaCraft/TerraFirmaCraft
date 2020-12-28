@@ -161,6 +161,16 @@ public interface INoise2D
         return (x, y) -> INoise2D.this.noise(x, y) + other.noise(x, y);
     }
 
+    default INoise2D min(INoise2D other)
+    {
+        return (x, y) -> NoiseUtil.fastMin(INoise2D.this.noise(x, y), other.noise(x, y));
+    }
+
+    default INoise2D max(INoise2D other)
+    {
+        return (x, y) -> NoiseUtil.fastMax(INoise2D.this.noise(x, y), other.noise(x, y));
+    }
+
     default INoise2D map(FloatUnaryFunction mappingFunction)
     {
         return (x, y) -> mappingFunction.applyAsFloat(INoise2D.this.noise(x, y));

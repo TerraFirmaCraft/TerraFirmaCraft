@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:underwater_with_glaciers",
+  "surface_builder": "tfc:frozen_underwater",
   "features": [
     [
       "tfc:erosion"

@@ -57,15 +57,15 @@ public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                 {
                     // Reached surface. Place top state and switch to subsurface layers
                     surfaceDepth = maxSurfaceDepth;
-                    if (y >= seaLevel)
-                    {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
-                    }
-                    else
+                    if (y < seaLevel - 1)
                     {
                         // Dynamic under water material
                         topState = underState = underWaterConfig.get().getUnderwaterMaterial();
+                    }
+                    else
+                    {
+                        topState = config.getTopMaterial();
+                        underState = config.getUnderMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

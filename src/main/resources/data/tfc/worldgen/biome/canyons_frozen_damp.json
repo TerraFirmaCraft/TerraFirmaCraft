@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:volcanic_canyons_with_glaciers",
+  "surface_builder": "tfc:volcanic_canyons",
   "features": [
     [
       "tfc:erosion"

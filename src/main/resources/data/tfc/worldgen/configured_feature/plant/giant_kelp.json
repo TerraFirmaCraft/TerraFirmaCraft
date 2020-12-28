@@ -15,12 +15,13 @@
               }
             },
             "decorator": {
-              "type": "tfc:climate_target",
+              "type": "tfc:climate",
               "config": {
-                "temperature": 0,
-                "rainfall": 230,
-                "spread": 18,
-                "needs_forest": false
+                "min_temperature": -18,
+                "max_temperature": 18,
+                "min_rainfall": 0,
+                "max_rainfall": 500,
+                "fuzzy": true
               }
             }
           }

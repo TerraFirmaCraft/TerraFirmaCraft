@@ -12,6 +12,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -75,14 +76,11 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        for (Direction direction : Direction.Plane.VERTICAL)
+        BlockPos posDown = pos.below();
+        BlockState otherState = worldIn.getBlockState(posDown);
+        if (otherState.getBlock() == this)
         {
-            BlockPos otherPos = pos.relative(direction);
-            BlockState otherState = worldIn.getBlockState(otherPos);
-            if (otherState.getBlock() == this)
-            {
-                worldIn.getBlockTicks().scheduleTick(otherPos, this, 0);
-            }
+            worldIn.getBlockTicks().scheduleTick(posDown, this, 0);
         }
     }
 
@@ -93,6 +91,17 @@ public class ThinSpikeBlock extends Block
         BlockPos abovePos = pos.above();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         return (aboveState.getBlock() == this && !aboveState.getValue(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (facing == Direction.DOWN && !facingState.is(this))
+        {
+            return stateIn.setValue(TIP, true);
+        }
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override

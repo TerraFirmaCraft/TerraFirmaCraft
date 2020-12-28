@@ -60,14 +60,14 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                         topState = Blocks.AIR.defaultBlockState();
                         underState = defaultBlock;
                     }
-                    else if (y >= seaLevel)
+                    else if (y < seaLevel - 1)
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
                     else
                     {
-                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
+                        topState = config.getTopMaterial();
+                        underState = config.getUnderMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

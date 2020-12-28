@@ -8,22 +8,27 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.state.properties.BedPart;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -71,6 +76,46 @@ public final class InteractionManager
             return ActionResultType.FAIL;
         });
 
+        register(Items.SNOW, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && !player.abilities.mayBuild)
+            {
+                return ActionResultType.PASS;
+            }
+            else
+            {
+                final BlockItemUseContext blockContext = new BlockItemUseContext(context);
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final BlockState stateAt = world.getBlockState(blockContext.getClickedPos());
+                if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                {
+                    SnowPileBlock.convertToPile(world, pos, stateAt);
+                    BlockState placedState = world.getBlockState(pos);
+                    SoundType placementSound = placedState.getSoundType(world, pos, player);
+                    world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
+                    if (player == null || !player.abilities.instabuild)
+                    {
+                        stack.shrink(1);
+                    }
+
+                    ActionResultType result = ActionResultType.sidedSuccess(world.isClientSide);
+                    if (player != null && result.consumesAction())
+                    {
+                        player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
+                    }
+                    return result;
+                }
+                // Default behavior
+                Item snow = Items.SNOW;
+                if (snow instanceof BlockItem)
+                {
+                    return ((BlockItem) snow).place(blockContext);
+                }
+                return ActionResultType.FAIL;
+            }
+        });
+
         // BlockItem mechanics for vanilla items that match groundcover types
         for (GroundcoverBlockType type : GroundcoverBlockType.values())
         {
@@ -89,6 +134,11 @@ public final class InteractionManager
     public static void register(BlockItemPlacement wrapper)
     {
         ACTIONS.add(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
+    }
+
+    public static void register(Item item, OnItemUseAction action)
+    {
+        ACTIONS.add(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
     }
 
     public static void register(ITag<Item> tag, OnItemUseAction action)
