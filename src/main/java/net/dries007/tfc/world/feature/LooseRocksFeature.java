@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.Tags;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -36,29 +38,21 @@ public class LooseRocksFeature extends Feature<NoFeatureConfig>
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     private void place(ISeedReader world, BlockState state, BlockPos pos, Random rand)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (int i = 0; i < 21; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(16) - rand.nextInt(16), rand.nextInt(2) - rand.nextInt(2), rand.nextInt(16) - rand.nextInt(16));
-            if ((world.isEmptyBlock(mutablePos) || world.isWaterAt(mutablePos)) && state.canSurvive(world, mutablePos))
+
+            final BlockState stateAt = world.getBlockState(mutablePos);
+            final FluidProperty fluidProperty = TFCBlockStateProperties.WATER;
+            if ((stateAt.isAir() || fluidProperty.canContain(stateAt.getFluidState().getType())) && state.canSurvive(world, mutablePos))
             {
-                int rocks = 1;
-                final int randInt = rand.nextInt(100);
-                if (world.getBlockState(mutablePos.below()).is(Tags.Blocks.STONE))
-                    rocks += 50;
-                if (world.getBlockState(mutablePos.below()).is(Tags.Blocks.GRAVEL))
-                    rocks += 20;
-                if (randInt > 87)
-                {
-                    rocks++;
-                    if (randInt < 97)
-                        rocks++;
-                }
-                setBlock(world, mutablePos, state.setValue(TFCBlockStateProperties.COUNT_1_3, rocks)
+                setBlock(world, mutablePos, state.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2))
                     .setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(rand))
-                    .setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(world.getFluidState(mutablePos).getType())));
+                    .setValue(fluidProperty, fluidProperty.keyFor(world.getFluidState(mutablePos).getType())));
             }
         }
     }

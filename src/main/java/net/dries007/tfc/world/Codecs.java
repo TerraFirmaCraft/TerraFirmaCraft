@@ -122,13 +122,4 @@ public final class Codecs
             map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
         );
     }
-
-    /**
-     * Creates a codec for a {@link Set}, for faster contains checks.
-     * Note: by necessity this does not preserve the original order and breaks the codec contract.
-     */
-    public static <E> Codec<Set<E>> setCodec(Codec<E> elementCodec)
-    {
-        return elementCodec.listOf().xmap(HashSet::new, ArrayList::new);
-    }
 }

@@ -24,7 +24,7 @@
       "tfc:underwater_canyon"
     ]
   },
-  "surface_builder": "tfc:volcanic_mountains_with_glaciers",
+  "surface_builder": "tfc:volcanic_mountains",
   "features": [
     [
       "tfc:erosion"
@@ -37,6 +37,10 @@
       "tfc:lake"
     ],
     [
+      "tfc:iceberg_packed",
+      "tfc:iceberg_blue",
+      "tfc:iceberg_packed_rare",
+      "tfc:iceberg_blue_rare",
       "tfc:clay_disc",
       "tfc:water_clay_disc",
       "tfc:peat_disc"

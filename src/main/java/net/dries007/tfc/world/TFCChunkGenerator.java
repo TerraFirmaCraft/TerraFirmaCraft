@@ -450,12 +450,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 {
                     for (int z = 0; z < 16; z++)
                     {
-                        if (y <= surfaceHeightMap[x + 16 * z])
+                        if (y < surfaceHeightMap[x + 16 * z])
                         {
                             section.setBlockState(x, localY, z, fillerBlock, false);
                             filledAny = true;
                         }
-                        else if (y <= SEA_LEVEL)
+                        else if (y < SEA_LEVEL)
                         {
                             section.setBlockState(x, localY, z, fillerFluid, false);
                             filledAny = true;

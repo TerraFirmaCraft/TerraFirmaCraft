@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:volcanic_mountains_with_glaciers",
+  "surface_builder": "tfc:volcanic_mountains",
   "features": [
     [
       "tfc:erosion"

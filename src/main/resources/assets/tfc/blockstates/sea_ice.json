@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:with_glaciers",
-  "config": {
-    "parent": "tfc:default"
+  "variants": {
+    "": {
+      "model": "tfc:block/sea_ice"
+    }
   }
 }

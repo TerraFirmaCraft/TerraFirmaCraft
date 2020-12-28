@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "block.FallingBlockMixin",
+    "block.IceBlockMixin",
     "block.SnowBlockMixin",
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",

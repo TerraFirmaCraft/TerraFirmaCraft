@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:badlands_with_glaciers",
+  "surface_builder": "tfc:badlands",
   "features": [
     [
       "tfc:erosion"

@@ -32,7 +32,12 @@
     [
       "tfc:underground_flood_fill_lake"
     ],
-    [],
+    [
+      "tfc:iceberg_packed",
+      "tfc:iceberg_blue",
+      "tfc:iceberg_packed_rare",
+      "tfc:iceberg_blue_rare"
+    ],
     [],
     [],
     [],
@@ -111,7 +116,8 @@
       "tfc:groundcover/flint",
       "tfc:groundcover/clam_deep",
       "tfc:groundcover/mollusk_deep",
-      "tfc:groundcover/mussel_deep"
+      "tfc:groundcover/mussel_deep",
+      "tfc:ice_and_snow"
     ]
   ],
   "starts": [],

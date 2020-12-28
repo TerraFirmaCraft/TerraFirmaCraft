@@ -98,13 +98,13 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
                 {
                     // Reached surface. Place top state and switch to subsurface layers
                     surfaceDepth = maxSurfaceDepth;
-                    if (y >= seaLevel)
+                    if (y < seaLevel - 1)
                     {
-                        underState = sandLayers[y % sandLayers.length];
+                        underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
                     else
                     {
-                        underState = underWaterConfig.get().getUnderwaterMaterial();
+                        underState = sandLayers[y % sandLayers.length];
                     }
 
                     chunkIn.setBlockState(pos, underState, false);

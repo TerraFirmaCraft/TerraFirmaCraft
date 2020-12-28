@@ -47,6 +47,10 @@ public final class Climate
     public static final float MAXIMUM_RAINFALL = 500f;
     public static final float SNOW_MELT_TEMPERATURE = 4f;
     public static final float SNOW_STACKING_TEMPERATURE = -4f;
+    public static final float ICE_MELT_TEMPERATURE = -2f;
+    public static final float SEA_ICE_FREEZE_TEMPERATURE = -6f;
+    public static final float MIN_ICICLE_TEMPERATURE = -10f;
+    public static final float MAX_ICICLE_TEMPERATURE = -2f;
 
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
 

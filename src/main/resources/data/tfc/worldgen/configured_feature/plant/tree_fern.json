@@ -28,8 +28,7 @@
                     "min_temperature": 19,
                     "max_temperature": 50,
                     "min_rainfall": 300,
-                    "max_rainfall": 500,
-                    "needs_forest": false
+                    "max_rainfall": 500
                   }
                 }
               }

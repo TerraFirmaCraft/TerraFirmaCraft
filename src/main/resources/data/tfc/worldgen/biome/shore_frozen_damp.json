@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:shore_with_glaciers",
+  "surface_builder": "tfc:shore",
   "features": [
     [
       "tfc:erosion"
@@ -29,7 +29,12 @@
     [
       "tfc:underground_flood_fill_lake"
     ],
-    [],
+    [
+      "tfc:iceberg_packed",
+      "tfc:iceberg_blue",
+      "tfc:iceberg_packed_rare",
+      "tfc:iceberg_blue_rare"
+    ],
     [],
     [],
     [],
@@ -108,7 +113,8 @@
       "tfc:groundcover/mussel",
       "tfc:groundcover/sticks_shore",
       "tfc:groundcover/seaweed",
-      "tfc:groundcover/guano_shore"
+      "tfc:groundcover/guano_shore",
+      "tfc:ice_and_snow"
     ]
   ],
   "starts": [],

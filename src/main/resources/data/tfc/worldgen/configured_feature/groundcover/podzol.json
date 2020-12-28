@@ -28,12 +28,14 @@
               }
             },
             "decorator": {
-              "type": "tfc:climate_target",
+              "type": "tfc:climate",
               "config": {
-                "temperature": 14,
-                "rainfall": 300,
-                "spread": 6,
-                "needs_forest": true
+                "min_temperature": 8,
+                "max_temperature": 20,
+                "min_rainfall": 180,
+                "max_rainfall": 420,
+                "max_forest": "normal",
+                "fuzzy": true
               }
             }
           }

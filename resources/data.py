@@ -54,11 +54,14 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
-        rm.block_tag('minecraft:gravel', 'tfc:rock/gravel/%s' % rock)
-        rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
-        rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock, 'tfc:rock/hardened/%s' % rock)  # used by vanilla and by us
-        rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
+        def block(block_type: str):
+            return 'tfc:rock/%s/%s' % (block_type, rock)
+
+        rm.block_tag('forge:gravel', block('gravel'))
+        rm.block_tag('forge:stone', block('raw'), block('hardened'))
+        rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
+        rm.block_tag('tfc:breaks_when_isolated', block('raw'))  # only raw rock
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -69,6 +72,9 @@ def generate(rm: ResourceManager):
     # Sand
     for color in SAND_BLOCK_TYPES:
         rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
+
+    # Forge you dingus, use vanilla tags
+    rm.block_tag('forge:sand', '#minecraft:sand')
 
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')

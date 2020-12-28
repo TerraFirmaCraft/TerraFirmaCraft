@@ -9,27 +9,19 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:decorated",
+              "type": "tfc:iceberg",
               "config": {
-                "feature": {
-                  "type": "tfc:hanging_vines",
-                  "config": {}
-                },
-                "decorator": {
-                  "type": "tfc:climate",
-                  "config": {
-                    "min_temperature": 16,
-                    "max_temperature": 50,
-                    "min_rainfall": 290,
-                    "max_rainfall": 500,
-                    "needs_forest": true
-                  }
+                "state": {
+                  "Name": "minecraft:packed_ice",
+                  "Properties": {}
                 }
               }
             },
             "decorator": {
-              "type": "minecraft:heightmap_world_surface",
-              "config": {}
+              "type": "tfc:climate",
+              "config": {
+                "max_temperature": -23
+              }
             }
           }
         },
@@ -42,7 +34,7 @@
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 2
+        "chance": 14
       }
     }
   }
