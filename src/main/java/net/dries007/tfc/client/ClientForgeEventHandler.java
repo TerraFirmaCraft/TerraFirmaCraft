@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,7 +33,9 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
+import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -123,6 +126,10 @@ public class ClientForgeEventHandler
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new ColorCache());
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new ColorCache());
+
+            // Update cloud height
+            final float cloudHeight = TFCConfig.CLIENT.assumeTFCWorld.get() ? 210 : 160;
+            ((DimensionRenderInfoAccessor) DimensionRenderInfoAccessor.accessor$Effects().get(DimensionType.OVERWORLD_EFFECTS)).accessor$setCloudLevel(cloudHeight);
         }
     }
 
