@@ -116,8 +116,10 @@ public class ClientForgeEventHandler
     {
         if (event.getWorld() instanceof ClientWorld)
         {
+            final ClientWorld world = (ClientWorld) event.getWorld();
+
             // Add our custom tints to the color resolver caches
-            final Object2ObjectArrayMap<ColorResolver, ColorCache> colorCaches = ((ClientWorldAccessor) event.getWorld()).getTintCaches();
+            final Object2ObjectArrayMap<ColorResolver, ColorCache> colorCaches = ((ClientWorldAccessor) world).getTintCaches();
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new ColorCache());
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new ColorCache());
