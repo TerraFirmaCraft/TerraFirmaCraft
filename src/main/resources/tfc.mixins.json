@@ -35,6 +35,7 @@
     "client.renderer.FogRendererMixin",
     "client.renderer.WorldRendererMixin",
     "client.world.ClientWorldAccessor",
+    "client.world.ClientWorldInfoMixin",
     "client.world.ClientWorldMixin",
     "world.biome.BiomeColorsAccessor"
   ],
