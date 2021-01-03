@@ -17,9 +17,11 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.item.Item;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -40,6 +42,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -102,7 +105,7 @@ public final class ClientEventHandler
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
-        // Redirect vanilla water color resolver
+        // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
     }
 

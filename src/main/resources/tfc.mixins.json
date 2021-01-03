@@ -37,6 +37,7 @@
     "client.world.ClientWorldAccessor",
     "client.world.ClientWorldInfoMixin",
     "client.world.ClientWorldMixin",
+    "client.world.DimensionRenderInfoAccessor",
     "world.biome.BiomeColorsAccessor"
   ],
   "injectors": {
