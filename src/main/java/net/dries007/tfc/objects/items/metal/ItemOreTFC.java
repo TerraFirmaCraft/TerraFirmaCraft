@@ -68,9 +68,11 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             {
                 //noinspection ConstantConditions
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getMetal().getRegistryName().getPath(), grade);
+                OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade, ore.getMetal().getRegistryName().getPath());
                 if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
                 {
                     OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", "iron", grade);
+                    OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", grade, "iron");
                 }
             }
         }
