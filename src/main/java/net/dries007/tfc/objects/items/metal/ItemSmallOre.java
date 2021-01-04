@@ -59,15 +59,18 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
         {
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "ore", ore.getMetal().getRegistryName().getPath(), "small");
+            OreDictionaryHelper.register(this, "ore", "small", ore.getMetal().getRegistryName().getPath());
             if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
             {
                 OreDictionaryHelper.register(this, "ore", "iron", "small");
+                OreDictionaryHelper.register(this, "ore", "small", "iron");
             }
         }
         else
         {
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
+            OreDictionaryHelper.register(this, "ore", "small", ore.getRegistryName().getPath());
         }
     }
 
