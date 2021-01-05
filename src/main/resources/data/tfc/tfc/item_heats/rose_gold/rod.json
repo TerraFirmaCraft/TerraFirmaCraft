@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/rose_gold"
-  },
-  "heat_capacity": 0.35,
-  "forging_temperature": 576.0,
-  "welding_temperature": 768.0
-}

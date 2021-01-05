@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/silver"
-  },
-  "heat_capacity": 0.48,
-  "forging_temperature": 576.6,
-  "welding_temperature": 768.8000000000001
-}

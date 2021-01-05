@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/blue_steel"
-  },
-  "heat_capacity": 0.35,
-  "forging_temperature": 924.0,
-  "welding_temperature": 1232.0
-}

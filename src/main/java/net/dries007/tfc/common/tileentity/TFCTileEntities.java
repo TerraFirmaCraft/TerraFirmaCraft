@@ -22,6 +22,9 @@ public class TFCTileEntities
 
     public static final RegistryObject<TileEntityType<FarmlandTileEntity>> FARMLAND = register("farmland", FarmlandTileEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values());
     public static final RegistryObject<TileEntityType<SnowPileTileEntity>> SNOW_PILE = register("snow_pile", SnowPileTileEntity::new, TFCBlocks.SNOW_PILE);
+    public static final RegistryObject<TileEntityType<FirepitTileEntity>> FIREPIT = register("firepit", FirepitTileEntity::new, TFCBlocks.FIREPIT);
+    public static final RegistryObject<TileEntityType<FirepitTileEntity>> GRILL = register("grill", GrillTileEntity::new, TFCBlocks.GRILL);
+    public static final RegistryObject<TileEntityType<FirepitTileEntity>> POT = register("pot", PotTileEntity::new, TFCBlocks.POT);
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> factory, Supplier<? extends Block> block)

@@ -12,11 +12,16 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -29,6 +34,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,7 +43,9 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -45,10 +53,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.types.MetalItemManager;
-import net.dries007.tfc.common.types.MetalManager;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -234,6 +239,7 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
+        resourceManager.registerReloadListener(FuelManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
         resourceManager.registerReloadListener(HeatManager.INSTANCE);
 
@@ -394,6 +400,53 @@ public final class ForgeEventHandler
         else if (originalBlock == Blocks.BASALT)
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFireStart(StartFireEvent event)
+    {
+        World world = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        if (!world.isClientSide())
+        {
+            if (state.is(TFCBlocks.FIREPIT.get()) || state.is(TFCBlocks.POT.get()) || state.is(TFCBlocks.GRILL.get()))
+            {
+                world.setBlock(pos, state.setValue(TFCBlockStateProperties.LIT, true), 2);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onArrowHit(ProjectileImpactEvent.Arrow event)
+    {
+        if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
+        AbstractArrowEntity arrow = event.getArrow();
+        RayTraceResult result = event.getRayTraceResult();
+        if (result.getType() == RayTraceResult.Type.BLOCK && arrow.isOnFire())
+        {
+            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockPos pos = blockResult.getBlockPos();
+            World world = arrow.level;
+            TFCEventFactory.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onArrowHit(ProjectileImpactEvent.Fireball event)
+    {
+        if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
+        DamagingProjectileEntity fireball = event.getFireball();
+        RayTraceResult result = event.getRayTraceResult();
+        if (result.getType() == RayTraceResult.Type.BLOCK)
+        {
+            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockPos pos = blockResult.getBlockPos();
+            World world = fireball.level;
+            TFCEventFactory.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
 }

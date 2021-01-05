@@ -34,6 +34,7 @@ public class TFCTags
         public static final ITag.INamedTag<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
 
         public static final ITag.INamedTag<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
+        public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
 
         private static ITag.INamedTag<Block> create(String id)
         {
@@ -54,6 +55,12 @@ public class TFCTags
     public static class Items
     {
         public static final ITag.INamedTag<Item> THATCH_BED_HIDES = create("thatch_bed_hides");
+        public static final ITag.INamedTag<Item> FIREPIT_KINDLING = create("firepit_kindling");
+        public static final ITag.INamedTag<Item> FIREPIT_STICKS = create("firepit_sticks");
+        public static final ITag.INamedTag<Item> FIREPIT_LOGS = create("firepit_logs");
+        public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_DURABILITY = create("starts_fires_with_durability");
+        public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_ITEMS = create("starts_fires_with_items");
+        public static final ITag.INamedTag<Item> EXTINGUISHER = create("extinguisher");
 
         private static ITag.INamedTag<Item> create(String id)
         {

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:wrought_iron_grill"
+  },
+  "metal": "tfc:wrought_iron",
+  "amount": 100
+}

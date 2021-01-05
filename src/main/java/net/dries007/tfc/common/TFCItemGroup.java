@@ -7,6 +7,7 @@ package net.dries007.tfc.common;
 
 import java.util.function.Supplier;
 
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -33,6 +34,7 @@ public final class TFCItemGroup extends ItemGroup
     public static final ItemGroup WOOD = new TFCItemGroup("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.Default.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()));
     public static final ItemGroup FOOD = new TFCItemGroup("food", MISSING_ITEM);
     public static final ItemGroup FLORA = new TFCItemGroup("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()));
+    public static final ItemGroup DECORATIONS = new TFCItemGroup("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()));
     public static final ItemGroup MISC = new TFCItemGroup("misc", MISSING_ITEM);
 
     private final Lazy<ItemStack> iconStack;

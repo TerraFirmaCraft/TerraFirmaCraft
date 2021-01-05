@@ -36,9 +36,7 @@ import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -470,5 +468,18 @@ public final class Helpers
             }
             worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
+    }
+
+    public static double offset(Random rand)
+    {
+        return (rand.nextDouble() - rand.nextDouble()) * 0.5;
+    }
+
+    /**
+     * Used to reduce the number of parameters needed to get MC to play a simple sound
+     */
+    public static void playSound(World world, BlockPos pos, SoundEvent sound, Random rand)
+    {
+        world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
     }
 }

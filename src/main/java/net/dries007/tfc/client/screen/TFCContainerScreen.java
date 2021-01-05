@@ -13,6 +13,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.dries007.tfc.common.tileentity.TFCTileEntity;
 
 public abstract class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {

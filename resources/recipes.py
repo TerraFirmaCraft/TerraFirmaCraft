@@ -30,6 +30,13 @@ def generate(rm: ResourceManager):
         })
         return RecipeContext(rm, res)
 
+    def heat_recipe(name, item: str, result: str, count: int = 1, temperature: float = 1599) -> RecipeContext:
+        return rm.recipe(('heating', name), 'tfc:heating', {
+            'ingredient': utils.ingredient(item),
+            'result': utils.item_stack((count, result)),
+            'temperature': temperature
+        })
+
     # Rock Things
     for rock in ROCKS.keys():
 
@@ -70,3 +77,6 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/rock/%s_bricks' % rock, ['XMX', 'MXM', 'XMX'], {'X': brick, 'M': 'tag!tfc:mortar'}, (4, bricks)).with_advancement(brick)
 
         damage_shapeless('crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
+
+    heat_recipe('torch_from_stick', 'minecraft:stick', 'minecraft:torch', count=2, temperature=40)
+    heat_recipe('torch_from_stick_bunch', 'tfc:stick_bunch', 'minecraft:torch', count=18, temperature=60)

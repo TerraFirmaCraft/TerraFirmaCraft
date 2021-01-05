@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -15,6 +16,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+
+import net.dries007.tfc.common.TFCTags;
 
 public class CalciteBlock extends Block
 {
@@ -62,12 +65,23 @@ public class CalciteBlock extends Block
     }
 
     @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        boolean flag = context.getLevel().getBlockState(context.getClickedPos().above()).is(TFCTags.Blocks.SMALL_SPIKE);
+        return defaultBlockState().setValue(TIP, flag);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (!canSurvive(state, worldIn, pos))
         {
             worldIn.destroyBlock(pos, false);
+        }
+        if (blockIn.is(TFCTags.Blocks.SMALL_SPIKE))
+        {
+            worldIn.setBlock(pos, state.setValue(TIP, false), 2);
         }
     }
 

@@ -155,6 +155,11 @@ public class Metal
             return utility;
         }
 
+        public boolean hasRods()
+        {
+            return this == WROUGHT_IRON || this == GOLD || this == STEEL;
+        }
+
         public IItemTier getTier()
         {
             return Objects.requireNonNull(tier, "Tried to get non-existent tier from " + name());
@@ -272,7 +277,7 @@ public class Metal
         DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        ROD("rods", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        ROD("rods", Type.ROD, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
 
         // Tools and Tool Heads
@@ -366,7 +371,8 @@ public class Metal
         PART(Default::hasParts),
         TOOL(Default::hasTools),
         ARMOR(Default::hasArmor),
-        UTILITY(Default::hasUtilities);
+        UTILITY(Default::hasUtilities),
+        ROD(Default::hasRods);
 
         private final Predicate<Metal.Default> predicate;
 

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/tin"
-  },
-  "heat_capacity": 0.14,
-  "forging_temperature": 138.0,
-  "welding_temperature": 184.0
-}

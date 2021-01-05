@@ -13,6 +13,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -62,4 +63,5 @@ public class TFCBlockStateProperties
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
+    public static final BooleanProperty LIT = BooleanProperty.create("lit");
 }

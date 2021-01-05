@@ -10,6 +10,7 @@ Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
 OreGrade = NamedTuple('OreGrade', weight=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
+Wood = NamedTuple('Wood', temp=float, amount=int)
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -47,17 +48,17 @@ METALS: Dict[str, Metal] = {
     'bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 950),
     'brass': Metal(2, {'part'}, 0.35, 930),
     'copper': Metal(1, {'part', 'tool', 'armor', 'utility'}, 0.35, 1080),
-    'gold': Metal(1, {'part'}, 0.6, 1060),
+    'gold': Metal(1, {'part', 'rod'}, 0.6, 1060),
     'nickel': Metal(1, {'part'}, 0.48, 1453),
     'rose_gold': Metal(1, {'part'}, 0.35, 960),
     'silver': Metal(1, {'part'}, 0.48, 961),
     'tin': Metal(1, {'part'}, 0.14, 230),
     'zinc': Metal(1, {'part'}, 0.21, 420),
     'sterling_silver': Metal(1, {'part'}, 0.35, 950),
-    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535),
+    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility', 'rod'}, 0.35, 1535),
     'cast_iron': Metal(1, {'part'}, 0.35, 1535),
     'pig_iron': Metal(3, set(), 0.35, 1535),
-    'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
+    'steel': Metal(4, {'part', 'tool', 'armor', 'utility', 'rod'}, 0.35, 1540),
     'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485),
     'blue_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
     'red_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
@@ -79,7 +80,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots'),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets'),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets'),
-    'rod': MetalItem('part', 100, 'item/generated', 'forge:rods'),
+    'rod': MetalItem('rod', 100, 'item/generated', 'forge:rods'),
 
     'tuyere': MetalItem('tool', 100, 'item/generated', None),
     'pickaxe': MetalItem('tool', 100, 'item/handheld', None),
@@ -219,7 +220,27 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
-WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
+WOODS: Dict[str, Wood] = {
+    'acacia': Wood(650, 1000),
+    'ash': Wood(696, 1250),
+    'aspen': Wood(611, 1000),
+    'birch': Wood(652, 1750),
+    'blackwood': Wood(720, 1750),
+    'chestnut': Wood(651, 1500),
+    'douglas_fir': Wood(707, 1500),
+    'hickory': Wood(762, 2000),
+    'kapok': Wood(645, 1000),
+    'maple': Wood(745, 2000),
+    'oak': Wood(728, 2250),
+    'palm': Wood(730, 1250),
+    'pine': Wood(627, 1250),
+    'rosewood': Wood(640, 1500),
+    'sequoia': Wood(612, 1750),
+    'spruce': Wood(608, 1500),
+    'sycamore': Wood(653, 1750),
+    'white_cedar': Wood(625, 1500),
+    'willow': Wood(603, 1000)
+}
 
 PLANTS: Dict[str, Plant] = {
     'allium': Plant(False, -40, 33, 150, 500, 'standard'),
@@ -289,6 +310,14 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'standard')
 }
 
+SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite')
+POWDERS = ('fertilizer', 'flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
+PAIRED_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
+UNFIRED_ITEMS = ('brick', 'crucible', 'flower_pot', 'jug')
+VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -303,6 +332,13 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 DEFAULT_LANG = {
     # Misc
     'generator.tfc.tng': 'TerraFirmaCraft',
+    'death.attack.grill': '%1$s grilled themself to death',
+    'death.attack.grill.player': '%1$s grilled themselves while trying to escape %2$s',
+    'death.attack.pot': '%1$s boiled themselves into soup',
+    'death.attack.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'tfc.tile_entity.pot': 'Pot',
+    'tfc.tile_entity.grill': 'Grill',
+    'tfc.tile_entity.firepit': 'Firepit',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -313,6 +349,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.devices': 'TFC Devices',
     'itemGroup.tfc.food': 'TFC Food',
     'itemGroup.tfc.misc': 'TFC Misc',
+    'itemGroup.tfc.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
@@ -322,6 +359,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.units': '%d units',
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.fuel': 'Fuel Amount: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',

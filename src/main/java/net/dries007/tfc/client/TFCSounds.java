@@ -22,6 +22,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("rock_slide_short");
     public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("dirt_slide_short");
 
+    public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter");
+
     private static RegistryObject<SoundEvent> create(String name)
     {
         return SOUNDS.register(name, () -> new SoundEvent(Helpers.identifier(name)));

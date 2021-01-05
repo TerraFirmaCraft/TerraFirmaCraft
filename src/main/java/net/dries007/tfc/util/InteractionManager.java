@@ -8,8 +8,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.core.jmx.Server;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -22,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.TFCEventFactory;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -67,6 +72,36 @@ public final class InteractionManager
 
                     }
                 }
+            }
+            return ActionResultType.FAIL;
+        });
+
+        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
+            final PlayerEntity playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayerEntity)
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                if (!player.isCreative())
+                    stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(context.getHand()));
+                if (TFCEventFactory.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                    return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.FAIL;
+        });
+
+        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
+            final PlayerEntity playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayerEntity)
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                if (!player.isCreative())
+                    stack.shrink(1);
+                if (TFCEventFactory.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                    return ActionResultType.SUCCESS;
             }
             return ActionResultType.FAIL;
         });

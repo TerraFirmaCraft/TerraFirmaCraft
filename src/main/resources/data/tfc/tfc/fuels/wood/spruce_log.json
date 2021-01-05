@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:wood/log/spruce"
+  },
+  "amount": 1500,
+  "temperature": 608,
+  "isForgeFuel": false,
+  "isBloomeryFuel": false
+}

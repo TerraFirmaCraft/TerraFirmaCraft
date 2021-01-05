@@ -26,14 +26,15 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-import net.dries007.tfc.client.screen.CalendarScreen;
-import net.dries007.tfc.client.screen.ClimateScreen;
-import net.dries007.tfc.client.screen.NutritionScreen;
+import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.tileentity.FirepitTileEntity;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
@@ -54,6 +55,9 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
         ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+        ScreenManager.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
+        ScreenManager.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
+        ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
 
         // Render Types
 
@@ -81,6 +85,9 @@ public final class ClientEventHandler
 
         // Plants
         TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+
+        // Other
+        RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), RenderType.cutout());
 
         // Fluids
         RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), RenderType.translucent());
