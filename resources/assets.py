@@ -201,7 +201,19 @@ def generate(rm: ResourceManager):
     block.with_block_loot('tfc:peat')
     block.with_lang(lang('Peat'))
 
+    rm.blockstate('aggregate').with_block_model().with_item_model().with_block_loot('tfc:aggregate').with_lang(lang('Aggregate'))
+    rm.blockstate('fire_bricks').with_block_model().with_item_model().with_block_loot('tfc:fire_bricks').with_lang(lang('Fire Bricks'))
+    rm.blockstate('fire_clay_block').with_block_model().with_item_model().with_block_loot('tfc:fire_clay_block').with_lang(lang('Fire Clay Block'))
     rm.blockstate('thatch').with_block_model().with_item_model().with_block_loot('tfc:thatch').with_lang(lang('Thatch'))
+
+    rm.blockstate(('alabaster', 'raw', 'alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster').with_lang(lang('Alabaster'))
+    rm.blockstate(('alabaster', 'raw', 'alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster_bricks').with_lang(lang('Alabaster Bricks'))
+    rm.blockstate(('alabaster', 'raw', 'polished_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/polished_alabaster').with_lang(lang('Polished Alabaster'))
+
+    for color in COLORS:
+        rm.blockstate(('alabaster', 'stained', color + '_raw_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_raw_alabaster').with_lang(lang('%s Raw Alabaster', color))
+        rm.blockstate(('alabaster', 'stained', color + '_alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_alabaster_bricks').with_lang(lang('%s Alabaster Bricks', color))
+        rm.blockstate(('alabaster', 'stained', color + '_polished_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_polished_alabaster').with_lang(lang('%s Polished Alabaster', color))
 
     block = rm.block_model('thatch_bed').with_item_model().with_lang(lang('Thatch Bed'))
     block.with_block_loot({
@@ -214,6 +226,38 @@ def generate(rm: ResourceManager):
             block_state_property('tfc:thatch_bed', {'part': 'head'})
         ]
     })
+
+    rm.blockstate('firepit', variants={
+        'lit=true': {'model': 'tfc:block/firepit_lit'},
+        'lit=false': {'model': 'tfc:block/firepit_unlit'}
+    }).with_lang(lang('Firepit')).with_block_loot([{
+        'entries': 'tfc:powder/wood_ash',
+        'functions': [
+            loot_tables.set_count(1, 4)
+        ],
+    }]).with_item_model()
+
+    rm.blockstate_multipart('grill', [
+        ({'model': 'tfc:block/firepit_grill'}),
+        ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
+        ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
+    ]).with_lang(lang('Grill')).with_block_loot([{
+        'entries': 'tfc:powder/wood_ash',
+        'functions': [
+            loot_tables.set_count(1, 4)
+        ],
+    }, {'entries': 'tfc:wrought_iron_grill'}]).with_item_model()
+
+    rm.blockstate_multipart('pot', [
+        ({'model': 'tfc:block/firepit_pot'}),
+        ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
+        ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
+    ]).with_lang(lang('Pot')).with_block_loot([{
+        'entries': 'tfc:powder/wood_ash',
+        'functions': [
+            loot_tables.set_count(1, 4)
+        ],
+    }, {'entries': 'tfc:ceramic/pot'}]).with_item_model()
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
@@ -358,13 +402,30 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s' % (metal, metal_block)))
                 block.with_item_model()
 
-    # Gems
+    # Misc Items
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
         rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
 
+    for powder in GENERIC_POWDERS:
+        rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder))
+    for powder in POWDERS:
+        rm.item_model(('powder', powder)).with_lang(lang(powder))
+    for item in SIMPLE_ITEMS:
+        rm.item_model(item).with_lang(lang(item))
+    for pottery in PAIRED_POTTERY:
+        rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
+    for pottery in UNFIRED_ITEMS:
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
+    # todo: custom model
+    rm.item_model(('ceramic', 'jug')).with_lang(lang('Jug'))
+    for color in COLORS:
+        rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
+        rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
+
     # Wood Blocks
-    for wood in WOODS:
+    for wood in WOODS.keys():
         # Logs
         for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
             block = rm.blockstate(('wood', variant, wood), variants={
@@ -372,7 +433,10 @@ def generate(rm: ResourceManager):
                 'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
-            block.with_item_model()
+            if variant != 'log':
+                block.with_item_model()
+            else:
+                rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
             block.with_block_model({'end': end, 'side': side}, parent='block/cube_column')
@@ -382,6 +446,7 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s', wood, variant))
             if variant == 'log':
                 block.with_tag('minecraft:logs')
+        rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
@@ -529,9 +594,6 @@ def generate(rm: ResourceManager):
     })
     block.with_item_model()
     block.with_lang(lang('calcite'))
-
-    # Misc Items
-    rm.item_model('mortar').with_lang(lang('mortar')).with_tag('tfc:mortar')
 
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:

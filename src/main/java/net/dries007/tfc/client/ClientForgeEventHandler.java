@@ -31,6 +31,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
@@ -91,6 +92,10 @@ public class ClientForgeEventHandler
         {
             MetalItemManager.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+            if (event.getFlags().isAdvanced())
+            {
+                FuelManager.addTooltipInfo(stack, text);
+            }
         }
     }
 

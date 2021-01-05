@@ -20,8 +20,10 @@ public class ServerConfig
 {
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
+    public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     // Player
     public final ForgeConfigSpec.BooleanValue enableVanillaNaturalRegeneration;
+    public final ForgeConfigSpec.DoubleValue fireStarterChance;
     // Climate
     public final ForgeConfigSpec.IntValue temperatureScale;
     public final ForgeConfigSpec.IntValue rainfallScale;
@@ -59,10 +61,12 @@ public class ServerConfig
         innerBuilder.push("general");
 
         enableNetherPortals = builder.apply("enableNetherPortals").comment("Enable nether portal creation").define("enableNetherPortals", false);
+        enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
 
         innerBuilder.pop().push("player");
 
         enableVanillaNaturalRegeneration = builder.apply("enableVanillaNaturalRegeneration").comment("Enables the vanilla `naturalRegeneration` gamerule, which regenerates your health much quicker than TFC does.").define("enableVanillaNaturalRegeneration", false);
+        fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
 
         innerBuilder.pop().push("climate");
 
@@ -106,7 +110,7 @@ public class ServerConfig
         enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
 
         collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
-        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
+        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block to fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
         collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
         collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
         collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);

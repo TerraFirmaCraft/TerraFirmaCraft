@@ -13,7 +13,7 @@ def overlay_image(front_file_dir, back_file_dir, result_dir):
 
 
 def main():
-    for wood in WOODS:
+    for wood in WOODS.keys():
         overlay_image('texture_templates/bookshelf', path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_bookshelf' % wood)
         overlay_image('texture_templates/log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
         overlay_image('texture_templates/log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood)

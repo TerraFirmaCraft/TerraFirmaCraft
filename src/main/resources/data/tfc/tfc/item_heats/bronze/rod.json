@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/bronze"
-  },
-  "heat_capacity": 0.35,
-  "forging_temperature": 570.0,
-  "welding_temperature": 760.0
-}

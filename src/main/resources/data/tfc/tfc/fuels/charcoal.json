@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "minecraft:charcoal"
+  },
+  "amount": 1800,
+  "temperature": 1350,
+  "isForgeFuel": true,
+  "isBloomeryFuel": true
+}

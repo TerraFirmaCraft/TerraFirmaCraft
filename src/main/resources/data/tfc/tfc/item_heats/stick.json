@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "minecraft:stick"
+  },
+  "heat_capacity": 0.1,
+  "forging_temperature": 600.0,
+  "welding_temperature": 800.0
+}

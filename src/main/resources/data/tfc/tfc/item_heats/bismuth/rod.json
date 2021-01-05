@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/bismuth"
-  },
-  "heat_capacity": 0.14,
-  "forging_temperature": 162.0,
-  "welding_temperature": 216.0
-}
