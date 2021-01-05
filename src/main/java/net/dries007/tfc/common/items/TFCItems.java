@@ -95,6 +95,9 @@ public final class TFCItems
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
     public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
 
+    // Spawn Eggs
+    //public static final RegistryObject<SpawnEggItem> HEN_SPAWN_EGG = register("spawn_egg/hen", () -> new SpawnEggItem(TFCEntities.HEN.get(), 10592673, 16711680, (new Item.Properties()).tab(ItemGroup.TAB_MISC)));
+
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
