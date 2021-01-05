@@ -15,6 +15,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.entity.ChickenRenderer;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -90,6 +91,7 @@ public final class ClientEventHandler
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.HEN.get(), ChickenRenderer::new);
 
         // Redirect vanilla water color resolver
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

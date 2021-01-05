@@ -51,6 +51,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
 
+    // Animals
+    public final AnimalConfig animals;
+
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -111,6 +114,10 @@ public class ServerConfig
         collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
         collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
 
-        innerBuilder.pop().pop();
+
+        innerBuilder.pop().pop().push("animals");
+
+        animals = new AnimalConfig(innerBuilder);
+
     }
 }

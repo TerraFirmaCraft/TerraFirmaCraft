@@ -95,6 +95,7 @@ public final class TerraFirmaCraft
         DispenserBehaviors.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        TFCEntities.setup();
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
