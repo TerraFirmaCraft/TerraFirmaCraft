@@ -7,6 +7,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -36,7 +37,10 @@ public class DispenserBehaviors
         }
     };
 
-    public static void setup()
+    /**
+     * {@link DispenserBlock#registerBehavior(IItemProvider, IDispenseItemBehavior)} is not thread safe
+     */
+    public static void syncSetup()
     {
         // Bucket emptying
         DispenserBlock.registerBehavior(TFCItems.SALT_WATER_BUCKET.get(), BUCKET_BEHAVIOR);

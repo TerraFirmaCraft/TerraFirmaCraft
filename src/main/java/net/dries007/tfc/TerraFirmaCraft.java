@@ -96,9 +96,10 @@ public final class TerraFirmaCraft
         WorldTrackerCapability.setup();
         ServerCalendar.setup();
         InteractionManager.setup();
-        DispenserBehaviors.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+
+        event.enqueueWork(DispenserBehaviors::syncSetup);
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
