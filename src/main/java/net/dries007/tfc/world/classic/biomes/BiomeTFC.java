@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
-import net.dries007.tfc.world.classic.WorldEntitySpawnerTFC;
+import net.dries007.tfc.world.classic.spawner.WorldEntitySpawnerTFC;
 
 public class BiomeTFC extends Biome
 {
