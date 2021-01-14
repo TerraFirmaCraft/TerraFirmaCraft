@@ -430,6 +430,12 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     this.setDead();
                 }
             }
+            // Wild animals disappear after 125% lifespan
+            if (this.getFamiliarity() < 0.10F &&
+                (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
+            {
+                this.setDead();
+            }
         }
     }
 

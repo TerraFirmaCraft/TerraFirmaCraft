@@ -3,26 +3,18 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.classic;
+package net.dries007.tfc.world.classic.spawner;
 
 import java.util.*;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.storage.MapStorage;
-import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -94,8 +86,6 @@ public final class WorldEntitySpawnerTFC
     @SubscribeEvent
     public static void onLivestockRespawn(LivingSpawnEvent.SpecialSpawn event)
     {
-        // todo: Regional spawning, subdivide the server data to a region of 16x16 (subject for discussion) chunks
-        // todo: kill old livestock if wild
         World worldIn = event.getWorld();
         EntityLiving entity = (EntityLiving) event.getEntity();
 
@@ -104,14 +94,14 @@ public final class WorldEntitySpawnerTFC
         if (LIVESTOCK.containsKey(entity.getClass()))
         {
             event.setResult(Event.Result.ALLOW); // Always cancel vanilla's spawning since we take it from here
-            LivestockWorldData data = LivestockWorldData.get(worldIn);
-            long lastSpawnTick = data.getLastSpawnTick(entity);
+            AnimalRespawnWorldData data = AnimalRespawnWorldData.get(worldIn);
+            ChunkPos pos = new ChunkPos(new BlockPos(event.getX(), event.getY(), event.getZ()));
+            long lastSpawnTick = data.getLastRespawnTick(entity, pos);
             long deltaTicks = CalendarTFC.PLAYER_TIME.getTicks() - lastSpawnTick;
             long cooldown = LIVESTOCK.get(entity.getClass()).get();
             if (lastSpawnTick <= 0 || cooldown <= deltaTicks)
             {
-                System.out.println("WORKED");
-                data.setLastSpawnTick(entity, CalendarTFC.PLAYER_TIME.getTicks());
+                data.setLastRespawnTick(entity, pos, CalendarTFC.PLAYER_TIME.getTicks());
                 int centerX = (int) event.getX();
                 int centerZ = (int) event.getZ();
                 int diameterX = 16;
@@ -119,84 +109,6 @@ public final class WorldEntitySpawnerTFC
                 //noinspection ConstantConditions
                 doGroupSpawning(EntityRegistry.getEntry(entity.getClass()), worldIn, centerX, centerZ, diameterX, diameterZ, worldIn.rand);
             }
-        }
-    }
-
-    /**
-     * Saves livestock respawning data to world save
-     */
-    @ParametersAreNonnullByDefault
-    public static class LivestockWorldData extends WorldSavedData
-    {
-        private static final String NAME = MOD_ID + "_livestock";
-
-        @Nonnull
-        public static LivestockWorldData get(@Nonnull World world)
-        {
-            MapStorage mapStorage = world.getMapStorage();
-            if (mapStorage != null)
-            {
-                LivestockWorldData data = (LivestockWorldData) mapStorage.getOrLoadData(LivestockWorldData.class, NAME);
-                if (data == null)
-                {
-                    data = new LivestockWorldData(NAME);
-                    data.markDirty();
-                    mapStorage.setData(NAME, data);
-                }
-                return data;
-            }
-            throw new IllegalStateException("Unable to access livestock respawning data!");
-        }
-
-        private final Map<ResourceLocation, Long> livestock_timer;
-
-        @SuppressWarnings("unused")
-        public LivestockWorldData(String name)
-        {
-            super(name);
-            livestock_timer = new HashMap<>();
-        }
-
-        @Override
-        public void readFromNBT(NBTTagCompound nbt)
-        {
-            NBTTagList tag = nbt.getTagList("livestock", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < tag.tagCount(); i++)
-            {
-                NBTTagCompound compound = tag.getCompoundTagAt(i);
-                ResourceLocation name = new ResourceLocation(compound.getString("name"));
-                long lastSpawn = compound.getLong("last_spawn");
-                livestock_timer.put(name, lastSpawn);
-            }
-        }
-
-        @Override
-        @Nonnull
-        public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-        {
-            NBTTagList tag = new NBTTagList();
-            for (ResourceLocation livestock : livestock_timer.keySet())
-            {
-                NBTTagCompound compound = new NBTTagCompound();
-                compound.setString("name", livestock.toString());
-                compound.setLong("last_spawn", livestock_timer.get(livestock));
-                tag.appendTag(compound);
-            }
-            nbt.setTag("livestock", tag);
-            return nbt;
-        }
-
-        public long getLastSpawnTick(Entity entity)
-        {
-            ResourceLocation entityKey = EntityList.getKey(entity);
-            return livestock_timer.getOrDefault(entityKey, 0L);
-        }
-
-        public void setLastSpawnTick(Entity entity, long tick)
-        {
-            ResourceLocation entityKey = EntityList.getKey(entity);
-            livestock_timer.put(entityKey, tick);
-            this.markDirty();
         }
     }
 
