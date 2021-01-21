@@ -22,6 +22,7 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -264,7 +265,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
 
                 if (temperature > 0 || burnTemperature > 0)
                 {
-                    float targetTemperature = burnTemperature + airTicks;
+                    float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
                     if (temperature != targetTemperature)
                     {
                         float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;

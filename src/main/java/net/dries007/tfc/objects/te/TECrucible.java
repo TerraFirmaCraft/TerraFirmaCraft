@@ -32,6 +32,7 @@ import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
@@ -122,7 +123,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                     // Always heat up the item regardless if it is melting or not
                     if (cap.getTemperature() < temperature)
                     {
-                        CapabilityItemHeat.addTemp(cap);
+                        CapabilityItemHeat.addTemp(cap, temperature / 400 + 2);
                     }
                     if (cachedRecipes[i] != null)
                     {
