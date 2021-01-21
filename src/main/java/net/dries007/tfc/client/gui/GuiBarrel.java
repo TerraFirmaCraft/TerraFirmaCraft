@@ -127,14 +127,17 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
             }
 
             // Draw the text displaying both the seal date, and the recipe name
-            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 73, 0x404040);
-
+            boolean isLong = false;
             BarrelRecipe recipe = tile.getRecipe();
             if (recipe != null)
             {
                 String resultName = recipe.getResultName();
-                fontRenderer.drawString(resultName, xSize / 2 - 28, 61, 0x404040);
+                int recipeWidth = fontRenderer.getStringWidth(resultName);
+                if (recipeWidth > 80)
+                    isLong = true;
+                fontRenderer.drawString(resultName, xSize / 2 - (isLong ? recipeWidth / 2 - 6 : 28), isLong ? 73 : 61, 0x404040);
             }
+            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - (isLong ? 28 : fontRenderer.getStringWidth(tile.getSealedDate()) / 2), isLong ? 19 : 73, 0x404040);
         }
     }
 
