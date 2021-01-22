@@ -276,6 +276,16 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
         return rand.nextInt(Math.max(1, Math.min(Math.round(2.5f + ((temp - minGrowthTemp) / minGrowthTemp)), 4)));
     }
 
+    public boolean canBePotted()
+    {
+        return (isCrossModel() && !(oreDictName.isPresent() && oreDictName.get().equals("reed"))) || plantType == PlantType.CACTUS || plantType == PlantType.CREEPING || plantType == PlantType.TALL_PLANT;
+    }
+
+    public boolean isCrossModel()
+    {
+        return plantType == PlantType.STANDARD || plantType == PlantType.DRY || plantType == PlantType.DESERT || plantType == PlantType.MUSHROOM;
+    }
+
     public final EnumPlantTypeTFC getEnumPlantTypeTFC()
     {
         switch (plantType)

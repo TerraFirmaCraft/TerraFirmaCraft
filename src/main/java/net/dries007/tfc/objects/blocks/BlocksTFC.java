@@ -64,6 +64,9 @@ public final class BlocksTFC
     @GameRegistry.ObjectHolder("alabaster/raw/plain")
     public static final BlockDecorativeStone ALABASTER_RAW_PLAIN = getNull();
 
+    @GameRegistry.ObjectHolder("flower_pot")
+    public static final BlockFlowerPotTFC FLOWER_POT = getNull();
+
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
     public static final BlockPeat PEAT_GRASS = getNull();
@@ -322,6 +325,7 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "flower_pot", new BlockFlowerPotTFC(), CT_POTTERY)));
         normalItemBlocks.add(new ItemBlockPowderKeg(register(r, "powderkeg", new BlockPowderKeg(), CT_WOOD)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
@@ -672,7 +676,6 @@ public final class BlocksTFC
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
 
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
-        // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
@@ -708,6 +711,7 @@ public final class BlocksTFC
         register(TELargeVessel.class, "large_vessel");
         register(TEPowderKeg.class, "powderkeg");
         register(TESluice.class, "sluice");
+        register(TEFlowerPotTFC.class, "flower_pot");
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
