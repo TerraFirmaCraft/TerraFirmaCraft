@@ -163,6 +163,7 @@ tfc.tooltip.hold_shift_for_climate_info=Hold (Shift) for Climate Information
 tfc.tooltip.climate_info=Climate Information:
 tfc.tooltip.climate_info_rainfall=Rainfall: %s - %s
 tfc.tooltip.climate_info_temperature=Temperature: %sºC - %sºC
+tfc.tooltip.forging_in_progress=Forging in Progress
 
 
 ## Animal Tooltips / Messages
