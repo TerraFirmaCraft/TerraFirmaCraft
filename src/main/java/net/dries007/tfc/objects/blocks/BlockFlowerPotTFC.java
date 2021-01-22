@@ -33,6 +33,7 @@ import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.property.FlowerProperty;
 import net.dries007.tfc.objects.te.TEFlowerPotTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -91,7 +92,12 @@ public class BlockFlowerPotTFC extends Block
             if (te != null && te.isEmpty())
             {
                 ItemStack held = player.getHeldItem(hand);
-                IBlockState putState = tryMakePlantState(Block.getBlockFromItem(held.getItem()).getDefaultState(), true);
+                IBlockState putState = Block.getBlockFromItem(held.getItem()).getDefaultState();
+                // allow addons to skip the plant check optionally. None of our plants use this name so this statement will always return true in vanilla tfc
+                if (!OreDictionaryHelper.doesStackMatchOre(held, "canBePotted"))
+                {
+                    putState = tryMakePlantState(putState, true);
+                }
                 te.setState(putState);
                 if (!player.isCreative() && putState.getBlock() != Blocks.AIR)
                     held.shrink(1);
@@ -178,7 +184,7 @@ public class BlockFlowerPotTFC extends Block
         BlockPlantTFC plantBlock = null;
         if (state.getBlock() instanceof BlockPlantTFC)
         {
-            plantBlock = (BlockPlantTFC) state.getBlock(); // so we can use age and stage mechanics
+            plantBlock = (BlockPlantTFC) state.getBlock(); // so we can use age and stage
         }
         if (plantBlock == null || !plantBlock.getPlant().canBePotted())
         {
