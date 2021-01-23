@@ -98,9 +98,9 @@ public class TEBellows extends TEBase
                 .offset(direction, offset.getX())
                 .offset(direction.rotateY(), offset.getZ());
             Block block = world.getBlockState(posx).getBlock();
-            if (block instanceof IBellowsConsumerBlock && ((IBellowsConsumerBlock) block).canIntakeFrom(this, offset, direction))
+            if (block instanceof IBellowsConsumerBlock && ((IBellowsConsumerBlock) block).canIntakeFrom(offset, direction))
             {
-                ((IBellowsConsumerBlock) block).onAirIntake(this, world, posx, BELLOWS_AIR);
+                ((IBellowsConsumerBlock) block).onAirIntake(world, posx, BELLOWS_AIR);
                 if (world.isRemote)
                 {
                     posx = pos.offset(direction);
