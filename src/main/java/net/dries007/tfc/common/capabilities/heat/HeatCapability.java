@@ -72,7 +72,7 @@ public final class HeatCapability
      */
     public static void addTemp(IHeat instance, float modifier)
     {
-        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) TFCConfig.SERVER.itemHeatingModifier.get();
         instance.setTemperature(temp);
     }
 

@@ -11,9 +11,7 @@ import net.minecraft.world.gen.area.LazyArea;
 /**
  * Like {@link IExtendedNoiseRandom}
  */
-public interface ITypedNoiseRandom<A> extends IExtendedNoiseRandom<LazyArea>
+public interface ITypedNoiseRandom<A> extends IExtendedNoiseRandom<FastArea>
 {
-    LazyTypedArea<A> createTypedResult(ITypedPixelTransformer<A> factory);
-
-    LazyTypedArea<A> createTypedResult(ITypedPixelTransformer<A> factory, LazyTypedArea<?> area);
+    TypedArea<A> createTypedResult(ITypedPixelTransformer<A> factory);
 }

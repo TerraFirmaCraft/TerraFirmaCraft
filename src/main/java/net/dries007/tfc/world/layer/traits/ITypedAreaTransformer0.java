@@ -6,7 +6,7 @@
 package net.dries007.tfc.world.layer.traits;
 
 /**
- * Like {@link net.minecraft.world.gen.layer.traits.IAreaTransformer0}, but produces an {@link LazyTypedArea}
+ * Like {@link net.minecraft.world.gen.layer.traits.IAreaTransformer0}, but produces an {@link TypedArea}
  */
 public interface ITypedAreaTransformer0<A>
 {

@@ -37,6 +37,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -70,6 +71,7 @@ public class ClientForgeEventHandler
                 if (data.getStatus().isAtLeast(ChunkData.Status.CLIENT))
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.CLIENT))));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_type") + WHITE + I18n.get(Helpers.getEnumTranslationKey(data.getForestType())));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_properties",

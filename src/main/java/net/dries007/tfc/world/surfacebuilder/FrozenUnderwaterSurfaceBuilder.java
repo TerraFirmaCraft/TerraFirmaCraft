@@ -51,7 +51,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         double icebergMinY = 0.0D;
 
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(x, startHeight, z);
-        final float maxAnnualTemperature = Climate.calculateMonthlyTemperature(z, TFCChunkGenerator.SEA_LEVEL, chunkData.getAverageTemp(mutablePos), 1);
+        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL, chunkData.getAverageTemp(mutablePos), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
@@ -143,12 +143,6 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
                 {
                     chunkIn.setBlockState(mutablePos, topState, false);
                 }
-                //else if (y < seaLevel - 7 - normalSurfaceDepth)
-                //{
-                //    topState = Blocks.AIR.defaultBlockState();
-                //    underState = defaultBlock;
-                //    chunkIn.setBlockState(mutablePos, GRAVEL, false);
-                //}
                 else
                 {
                     chunkIn.setBlockState(mutablePos, underState, false);

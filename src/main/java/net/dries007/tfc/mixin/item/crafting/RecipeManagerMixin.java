@@ -45,6 +45,7 @@ public abstract class RecipeManagerMixin extends JsonReloadListener
 
     /**
      * This fixes a stupid vanilla bug - when it logs "Loaded X recipes", it actually logs the number of recipe types, not the number of recipes.
+     * See MC-190122
      */
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/Map;size()I"), require = 0)
     private int redirect$apply$size(Map<IRecipeType<?>, ImmutableMap.Builder<ResourceLocation, IRecipe<?>>> map)

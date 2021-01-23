@@ -21,7 +21,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     @Override
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, ThinSpikeConfig config)
     {
-        final BlockState calcite = config.getState();
+        final BlockState spike = config.getState();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
 
@@ -38,30 +38,30 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
                     break;
                 }
             }
-            if (calcite.canSurvive(world, mutablePos) && world.isEmptyBlock(mutablePos))
+            if (spike.canSurvive(world, mutablePos) && world.isEmptyBlock(mutablePos))
             {
-                placeCalcite(world, mutablePos, calcite, rand, config);
+                placeSpike(world, mutablePos, spike, rand, config);
                 placedAny = true;
             }
         }
         return placedAny;
     }
 
-    private void placeCalcite(ISeedReader world, BlockPos.Mutable mutablePos, BlockState calcite, Random rand, ThinSpikeConfig config)
+    private void placeSpike(ISeedReader world, BlockPos.Mutable mutablePos, BlockState spike, Random rand, ThinSpikeConfig config)
     {
         final int height = config.getHeight(rand);
         for (int i = 0; i < height; i++)
         {
-            setBlock(world, mutablePos, calcite);
+            setBlock(world, mutablePos, spike);
             mutablePos.move(0, -1, 0);
             if (!world.isEmptyBlock(mutablePos))
             {
                 // Make the previous state the tip, and exit
-                setBlock(world, mutablePos.move(0, 1, 0), calcite.setValue(ThinSpikeBlock.TIP, true));
+                setBlock(world, mutablePos.move(0, 1, 0), spike.setValue(ThinSpikeBlock.TIP, true));
                 return;
             }
         }
         // Add the tip
-        setBlock(world, mutablePos, calcite.setValue(ThinSpikeBlock.TIP, true));
+        setBlock(world, mutablePos, spike.setValue(ThinSpikeBlock.TIP, true));
     }
 }
