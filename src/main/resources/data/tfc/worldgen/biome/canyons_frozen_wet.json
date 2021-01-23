@@ -97,7 +97,8 @@
       "tfc:ice_cave",
       "tfc:calcite",
       "tfc:mega_calcite",
-      "tfc:icicle"
+      "tfc:icicle",
+      "tfc:underground_loose_rocks"
     ],
     [
       "tfc:forest",
@@ -185,7 +186,7 @@
       "tfc:plant/arundo"
     ],
     [
-      "tfc:groundcover/loose_rocks",
+      "tfc:surface_loose_rocks",
       "tfc:groundcover/guano_cave",
       "tfc:groundcover/feather",
       "tfc:groundcover/flint",

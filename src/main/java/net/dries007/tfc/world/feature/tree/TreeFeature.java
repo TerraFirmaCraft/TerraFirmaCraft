@@ -22,6 +22,7 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
         super(codec);
     }
 
+    @SuppressWarnings("deprecation")
     protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
     {
         BlockState stateDown = worldIn.getBlockState(pos.below());

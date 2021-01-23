@@ -15,6 +15,7 @@ import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
+import net.dries007.tfc.world.layer.traits.TypedArea;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -24,8 +25,15 @@ import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 public class TFCLayerUtilTests
 {
-    static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
-    static final Artist.Typed<IAreaFactory<? extends IArea>, Integer> AREA = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
+    // These inner lambdas could be shortened to factory.make()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
+    static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
+        final TypedArea<Plate> area = factory.make();
+        return Artist.Pixel.coerceInt(area::get);
+    });
+    static final Artist.Typed<IAreaFactory<? extends IArea>, Integer> AREA = Artist.forMap(factory -> {
+        final IArea area = factory.make();
+        return Artist.Pixel.coerceInt(area::get);
+    });
     static final Artist.Noise<IAreaFactory<? extends IArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
     static final Artist.Raw RAW = Artist.raw().size(1000);
 

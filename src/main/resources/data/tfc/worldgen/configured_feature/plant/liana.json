@@ -47,6 +47,7 @@
       "config": {
         "step": "air",
         "probability": 0.003,
+        "min_y": 0,
         "max_y": 110
       }
     }

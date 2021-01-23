@@ -83,7 +83,7 @@ public class FloraNoiseTests
                     List<Plant> possiblePlants = new ArrayList<>();
                     for (Plant p : plants)
                     {
-                        if (climateConfigs.get(p).isValid(temp, rain, ForestType.NORMAL))
+                        // todo: if (climateConfigs.get(p).isValid(temp, rain, ForestType.NORMAL))
                         {
                             possiblePlants.add(p);
                         }
