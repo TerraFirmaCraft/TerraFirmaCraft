@@ -302,11 +302,10 @@ PLANTS: Dict[str, Plant] = {
 }
 
 SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed', 'guano_shore']
-DEEP_OCEAN_DECORATORS = ['clam_deep', 'mollusk_deep', 'mussel_deep']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
-GENERAL_DECORATORS = ['feather', 'flint']
 OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

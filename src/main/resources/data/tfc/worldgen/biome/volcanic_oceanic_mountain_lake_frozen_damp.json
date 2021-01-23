@@ -39,7 +39,10 @@
       "tfc:iceberg_blue_rare"
     ],
     [],
-    [],
+    [
+      "tfc:volcano_rivulet",
+      "tfc:volcano_caldera"
+    ],
     [],
     [
       "tfc:vein/gravel",
@@ -104,16 +107,16 @@
       "tfc:plant/sargassum",
       "tfc:plant/star_grass",
       "tfc:plant/turtle_grass",
-      "tfc:coral",
       "tfc:plant/giant_kelp",
       "tfc:plant/winged_kelp",
       "tfc:plant/leafy_kelp"
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:groundcover/guano_cave",
-      "tfc:groundcover/feather",
-      "tfc:groundcover/flint",
+      "tfc:guano_cave",
+      "tfc:mussel",
+      "tfc:clam",
+      "tfc:mollusk",
       "tfc:ice_and_snow"
     ]
   ],

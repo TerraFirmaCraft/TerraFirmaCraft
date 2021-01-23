@@ -3,13 +3,13 @@
   "type": "tfc:random_tree",
   "config": {
     "structures": [
-      "tfc:sequoia/1",
-      "tfc:sequoia/2",
-      "tfc:sequoia/3",
-      "tfc:sequoia/4",
-      "tfc:sequoia/5",
-      "tfc:sequoia/6",
-      "tfc:sequoia/7"
+      "tfc:spruce/1",
+      "tfc:spruce/2",
+      "tfc:spruce/3",
+      "tfc:spruce/4",
+      "tfc:spruce/5",
+      "tfc:spruce/6",
+      "tfc:spruce/7"
     ],
     "radius": 1
   }

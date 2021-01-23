@@ -9,11 +9,11 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:water_land_patch",
+              "type": "minecraft:random_patch",
               "config": {
                 "state_provider": {
                   "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/mussel"
+                  "state": "tfc:groundcover/salt_lick"
                 },
                 "block_placer": {
                   "type": "minecraft:simple_block_placer",
@@ -21,128 +21,101 @@
                 },
                 "whitelist": [
                   {
-                    "Name": "tfc:sand/brown",
+                    "Name": "tfc:rock/raw/chalk",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/white",
+                    "Name": "tfc:rock/raw/chert",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/black",
+                    "Name": "tfc:rock/raw/claystone",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/red",
+                    "Name": "tfc:rock/raw/conglomerate",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/yellow",
+                    "Name": "tfc:rock/raw/dolomite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/green",
+                    "Name": "tfc:rock/raw/limestone",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:sand/pink",
+                    "Name": "tfc:rock/raw/shale",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/chalk",
+                    "Name": "tfc:rock/raw/gneiss",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/chert",
+                    "Name": "tfc:rock/raw/marble",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/claystone",
+                    "Name": "tfc:rock/raw/phyllite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/conglomerate",
+                    "Name": "tfc:rock/raw/quartzite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/dolomite",
+                    "Name": "tfc:rock/raw/schist",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/limestone",
+                    "Name": "tfc:rock/raw/slate",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/shale",
+                    "Name": "tfc:rock/raw/diorite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/gneiss",
+                    "Name": "tfc:rock/raw/gabbro",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/marble",
+                    "Name": "tfc:rock/raw/granite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/phyllite",
+                    "Name": "tfc:rock/raw/andesite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/quartzite",
+                    "Name": "tfc:rock/raw/basalt",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/schist",
+                    "Name": "tfc:rock/raw/dacite",
                     "Properties": {}
                   },
                   {
-                    "Name": "tfc:rock/gravel/slate",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/diorite",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/gabbro",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/granite",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/andesite",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/basalt",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/dacite",
-                    "Properties": {}
-                  },
-                  {
-                    "Name": "tfc:rock/gravel/rhyolite",
+                    "Name": "tfc:rock/raw/rhyolite",
                     "Properties": {}
                   }
                 ],
                 "blacklist": [],
                 "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "tries": 10
+                "xspread": 5,
+                "zspread": 5,
+                "tries": 100
               }
             },
             "decorator": {
               "type": "tfc:climate",
               "config": {
-                "min_temperature": 10,
-                "max_temperature": 50,
+                "min_temperature": 5,
+                "max_temperature": 33,
                 "min_rainfall": 100,
-                "max_rainfall": 500
+                "max_rainfall": 500,
+                "max_forest": "normal"
               }
             }
           }
@@ -156,7 +129,7 @@
     "decorator": {
       "type": "minecraft:chance",
       "config": {
-        "chance": 10
+        "chance": 110
       }
     }
   }
