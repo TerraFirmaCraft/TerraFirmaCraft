@@ -434,13 +434,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    public boolean canIntakeFrom(Vec3i offset, EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_LEVEL);
     }
 
     @Override
-    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
+    public void onAirIntake(World world, BlockPos pos, int airAmount)
     {
         TEFirePit teFirePit = Helpers.getTE(world, pos, TEFirePit.class);
         if (teFirePit != null)
