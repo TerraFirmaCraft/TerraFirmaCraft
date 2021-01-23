@@ -11,6 +11,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -104,5 +105,17 @@ public final class TerraFirmaCraft
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+    }
+
+    @SubscribeEvent
+    public void onConfigReloading(ModConfig.Reloading event)
+    {
+        TFCConfig.reload();
+    }
+
+    @SubscribeEvent
+    public void onConfigLoading(ModConfig.Loading event)
+    {
+        TFCConfig.reload();
     }
 }

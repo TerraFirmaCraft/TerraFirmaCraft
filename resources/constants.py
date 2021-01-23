@@ -353,6 +353,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
     'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.f3_temperature': 'Actual. Temp: %s\u00b0C',
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',

@@ -9,10 +9,10 @@ import net.minecraft.world.gen.INoiseRandom;
 
 import net.dries007.tfc.world.layer.traits.ITypedAreaTransformer1;
 import net.dries007.tfc.world.layer.traits.ITypedNoiseRandom;
-import net.dries007.tfc.world.layer.traits.LazyTypedArea;
+import net.dries007.tfc.world.layer.traits.TypedArea;
 
 /**
- * Modified version of {@link net.minecraft.world.gen.layer.ZoomLayer} for {@link LazyTypedArea}
+ * Modified version of {@link net.minecraft.world.gen.layer.ZoomLayer} for {@link TypedArea}
  */
 public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
 {
@@ -114,7 +114,7 @@ public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
     }
 
     @Override
-    public A apply(ITypedNoiseRandom<A> context, LazyTypedArea<A> area, int x, int z)
+    public A apply(ITypedNoiseRandom<A> context, TypedArea<A> area, int x, int z)
     {
         A baseValue = area.get(getParentX(x), getParentY(z));
         context.initRandom((x >> 1) << 1, (z >> 1) << 1);

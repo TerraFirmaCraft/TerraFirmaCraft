@@ -3,6 +3,7 @@ package net.dries007.tfc.unit;
 import java.awt.*;
 
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 
@@ -24,8 +25,8 @@ import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 public class TFCLayerUtilTests
 {
     static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
-    static final Artist.Typed<IAreaFactory<LazyArea>, Integer> AREA = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
-    static final Artist.Noise<IAreaFactory<LazyArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
+    static final Artist.Typed<IAreaFactory<? extends IArea>, Integer> AREA = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
+    static final Artist.Noise<IAreaFactory<? extends IArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
     static final Artist.Raw RAW = Artist.raw().size(1000);
 
     @Test
@@ -41,7 +42,7 @@ public class TFCLayerUtilTests
             PLATES.centerSized(index == 1 ? 100 : 200).draw(name + '_' + index + "_wide", instance);
         };
 
-        IArtist<IAreaFactory<LazyArea>> layerArtist = (name, index, instance) -> {
+        IArtist<IAreaFactory<? extends IArea>> layerArtist = (name, index, instance) -> {
             switch (name)
             {
                 case "plate_boundary":
@@ -97,7 +98,7 @@ public class TFCLayerUtilTests
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
         INoise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
-        LazyArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
+        IArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
 
         Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceFloat((x, z) -> {
             int value = biomeArea.get(((int) x) >> 2, ((int) z) >> 2);

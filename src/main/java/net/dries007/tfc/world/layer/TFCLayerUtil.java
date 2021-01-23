@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.world.gen.LazyAreaLayerContext;
+import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
@@ -24,8 +25,10 @@ import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
+import net.dries007.tfc.world.layer.traits.FastArea;
+import net.dries007.tfc.world.layer.traits.FastAreaContext;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
-import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
+import net.dries007.tfc.world.layer.traits.TypedAreaContext;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -146,23 +149,23 @@ public class TFCLayerUtil
         return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
     }
 
-    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings, IArtist<ITypedAreaFactory<Plate>> plateArtist, IArtist<IAreaFactory<LazyArea>> layerArtist)
+    public static IAreaFactory<FastArea> createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings, IArtist<ITypedAreaFactory<Plate>> plateArtist, IArtist<IAreaFactory<? extends IArea>> layerArtist)
     {
         final Random random = new Random(seed);
-        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
-        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+        final Supplier<TypedAreaContext<Plate>> plateContext = () -> new TypedAreaContext<>(seed, random.nextLong());
+        final Supplier<FastAreaContext> layerContext = () -> new FastAreaContext(seed, random.nextLong());
 
         final List<Long> zoomLayerSeedModifiers = new ArrayList<>();
-        final IntFunction<LazyAreaLayerContext> zoomLayerContext = i -> {
+        final IntFunction<FastAreaContext> zoomLayerContext = i -> {
             while (zoomLayerSeedModifiers.size() <= i)
             {
                 zoomLayerSeedModifiers.add(random.nextLong());
             }
-            return new LazyAreaLayerContext(25, seed, zoomLayerSeedModifiers.get(i));
+            return new FastAreaContext(seed, zoomLayerSeedModifiers.get(i));
         };
 
         ITypedAreaFactory<Plate> plateLayer;
-        IAreaFactory<LazyArea> mainLayer, riverLayer, lakeLayer;
+        IAreaFactory<FastArea> mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
         plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
@@ -264,14 +267,14 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static IAreaFactory<LazyArea> createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
+    public static IAreaFactory<FastArea> createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
         final Random random = new Random(seed);
-        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
-        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+        final Supplier<TypedAreaContext<Plate>> plateContext = () -> new TypedAreaContext<>(seed, random.nextLong());
+        final Supplier<FastAreaContext> layerContext = () -> new FastAreaContext(seed, random.nextLong());
 
         ITypedAreaFactory<Plate> plateLayer;
-        IAreaFactory<LazyArea> mainLayer;
+        IAreaFactory<FastArea> mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
         plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
@@ -286,13 +289,13 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
+    public static List<IAreaFactory<FastArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
         final Random random = new Random(seed);
-        final Supplier<LazyAreaLayerContext> contextFactory = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
-        final List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
+        final Supplier<FastAreaContext> contextFactory = () -> new FastAreaContext(seed, random.nextLong());
+        final List<IAreaFactory<FastArea>> completedLayers = new ArrayList<>(3);
 
-        IAreaFactory<LazyArea> seedLayer;
+        IAreaFactory<FastArea> seedLayer;
         int numRocks = layerSettings.getRocks().size();
 
         // Seed Areas

@@ -131,20 +131,14 @@ def generate(rm: ResourceManager):
         'min_height': 3,
         'max_height': 9
     }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
+
     rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:icicle',
-        'radius': 5,
-        'tries': 25,
+        'radius': 10,
+        'tries': 50,
         'min_height': 2,
         'max_height': 5
-    }), ('minecraft:count', {'count': 7}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(-50, 0, 0, 500)))
-    rm.feature('mega_icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
-        'state': 'tfc:icicle',
-        'radius': 12,
-        'tries': 70,
-        'min_height': 3,
-        'max_height': 11
-    }), decorate_chance(15), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 70}), decorate_climate(-50, 0, 0, 500)))
+    }), ('minecraft:count', {'count': 3}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(max_temp=-4)))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
@@ -715,7 +709,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:ice_cave', 'tfc:calcite', 'tfc:mega_calcite', 'tfc:icicle', 'tfc:mega_icicle'],  # underground decoration
+        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:ice_cave', 'tfc:calcite', 'tfc:mega_calcite', 'tfc:icicle'],  # underground decoration
         [],  # vegetal decoration
         ['tfc:groundcover/loose_rocks', 'tfc:groundcover/guano_cave', *['tfc:groundcover/%s' % general_item for general_item in GENERAL_DECORATORS]]  # top layer modification
     ]

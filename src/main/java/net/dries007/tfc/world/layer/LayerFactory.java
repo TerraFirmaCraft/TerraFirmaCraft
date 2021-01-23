@@ -8,6 +8,7 @@ import java.util.function.IntFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraftforge.common.util.Lazy;
@@ -25,12 +26,12 @@ public class LayerFactory<T>
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static LayerFactory<BiomeVariants> biomes(IAreaFactory<LazyArea> factory)
+    public static LayerFactory<BiomeVariants> biomes(IAreaFactory<? extends IArea> factory)
     {
         return new LayerFactory<>(factory, TFCLayerUtil::getFromLayerId);
     }
 
-    public static LayerFactory<Rock> rocks(IAreaFactory<LazyArea> factory, TFCBiomeProvider.LayerSettings settings)
+    public static LayerFactory<Rock> rocks(IAreaFactory<? extends IArea> factory, TFCBiomeProvider.LayerSettings settings)
     {
         // On servers, this is called earlier than resources (rocks) are loaded, for the purposes of initial / spawn chunk generation
         // So, we lazily initialize this, including identifying errors, and return the correct mapping function only once we can gaurentee it's initialized.
@@ -60,22 +61,26 @@ public class LayerFactory<T>
         return new LayerFactory<>(factory, i -> verifier.get().apply(i));
     }
 
-    public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<LazyArea> factory)
+    public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<? extends IArea> factory)
     {
         return new LayerFactory<>(factory, PlateTectonicsClassification::valueOf);
     }
 
-    private final LazyArea area;
+    /**
+     * Uses a thread local area, as the underlying area is not synchronized.
+     * This is an optimization adapted from Lithium, implementing a much better cache for the LazyArea underneath
+     */
+    private final ThreadLocal<? extends IArea> area;
     private final IntFunction<T> mappingFunction;
 
-    protected LayerFactory(IAreaFactory<LazyArea> factory, IntFunction<T> mappingFunction)
+    protected LayerFactory(IAreaFactory<? extends IArea> factory, IntFunction<T> mappingFunction)
     {
-        this.area = factory.make();
+        this.area = ThreadLocal.withInitial(factory::make);
         this.mappingFunction = mappingFunction;
     }
 
     public T get(int x, int z)
     {
-        return mappingFunction.apply(area.get(x, z));
+        return mappingFunction.apply(area.get().get(x, z));
     }
 }

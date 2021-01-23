@@ -6,9 +6,9 @@
 package net.dries007.tfc.world.layer.traits;
 
 /**
- * Like {@link net.minecraft.world.gen.area.IAreaFactory} but using {@link LazyTypedArea}
+ * Like {@link net.minecraft.world.gen.area.IAreaFactory} but using {@link TypedArea}
  */
 public interface ITypedAreaFactory<A>
 {
-    LazyTypedArea<A> make();
+    TypedArea<A> make();
 }

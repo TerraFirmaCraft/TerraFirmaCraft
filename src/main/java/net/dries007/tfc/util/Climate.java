@@ -31,7 +31,7 @@ import net.dries007.tfc.world.noise.NoiseUtil;
 public final class Climate
 {
     /**
-     * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in
+     * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in.
      */
     public static final float MINIMUM_TEMPERATURE_SCALE = -24f;
     public static final float MAXIMUM_TEMPERATURE_SCALE = 30f;
@@ -45,12 +45,17 @@ public final class Climate
      */
     public static final float MINIMUM_RAINFALL = 0f;
     public static final float MAXIMUM_RAINFALL = 500f;
+
     public static final float SNOW_MELT_TEMPERATURE = 4f;
     public static final float SNOW_STACKING_TEMPERATURE = -4f;
     public static final float ICE_MELT_TEMPERATURE = -2f;
     public static final float SEA_ICE_FREEZE_TEMPERATURE = -6f;
     public static final float MIN_ICICLE_TEMPERATURE = -10f;
     public static final float MAX_ICICLE_TEMPERATURE = -2f;
+    public static final float LAVA_LEVEL_TEMPERATURE = 15f;
+
+    public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL;
+    public static final float DEPTH_LEVEL = SEA_LEVEL * 2 / 3;
 
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
 
@@ -119,30 +124,87 @@ public final class Climate
         return (vanillaTemperature - 0.15f) / 0.0217f;
     }
 
-    public static float calculateMonthlyTemperature(int z, int y, float averageTemperature, float monthTemperatureModifier)
+    /**
+     * Calculates the average monthly temperature for a location and given month.
+     */
+    public static float calculateMonthlyAverageTemperature(int z, int y, float averageTemperature, float monthFactor)
     {
-        float temperatureScale = TFCConfig.SERVER.temperatureScale.get();
-        float monthTemperature = monthTemperatureModifier * INoise1D.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
-        float elevationTemperature = MathHelper.clamp((y - TFCChunkGenerator.SEA_LEVEL) * 0.16225f, 0, 17.822f);
-        return averageTemperature + monthTemperature - elevationTemperature;
+        float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
+        return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
     }
 
+    /**
+     * Calculates the exact temperature at a given location and time.
+     */
     public static float calculateTemperature(BlockPos pos, float averageTemperature, Calendar calendar)
     {
         return calculateTemperature(pos.getZ(), pos.getY(), averageTemperature, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
+    /**
+     * Calculates the exact temperature at a given location and time.
+     */
     public static float calculateTemperature(int z, int y, float averageTemperature, long calendarTime, long daysInMonth)
     {
-        // Start by checking the monthly / seasonal temperature
-        Month currentMonth = ICalendar.getMonthOfYear(calendarTime, daysInMonth);
-        Month nextMonth = currentMonth.next();
-        float delta = ICalendar.getFractionOfMonth(calendarTime, daysInMonth);
-        float monthFactor = NoiseUtil.lerp(currentMonth.getTemperatureModifier(), nextMonth.getTemperatureModifier(), delta);
-        float temperatureScale = TFCConfig.SERVER.temperatureScale.get();
-        float monthTemperature = monthFactor * INoise1D.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
+        // Month temperature
+        final Month currentMonth = ICalendar.getMonthOfYear(calendarTime, daysInMonth);
+        final float delta = ICalendar.getFractionOfMonth(calendarTime, daysInMonth);
+        final float monthFactor = NoiseUtil.lerp(currentMonth.getTemperatureModifier(), currentMonth.next().getTemperatureModifier(), delta);
 
-        // Next, add hourly and daily variations
+        final float monthTemperature = calculateMonthlyTemperature(z, monthFactor);
+        final float dailyTemperature = calculateDailyTemperature(calendarTime);
+
+        return adjustTemperatureByElevation(y, averageTemperature, monthTemperature, dailyTemperature);
+    }
+
+    /**
+     * Adjusts a series of temperature factors by elevation. Returns the sum temperature after adjustment.
+     */
+    private static float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature)
+    {
+        // Adjust temperature based on elevation
+        // Above sea level, temperature lowers linearly with y.
+        // Below sea level, temperature tends towards the average temperature for the area (having less influence from daily and monthly temperature)
+        // Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"
+        y = MathHelper.clamp(y, 0, 255); // Future proofing for 1.17
+        if (y > SEA_LEVEL)
+        {
+            // -1.6 C / 10 blocks above sea level
+            float elevationTemperature = MathHelper.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            return averageTemperature + monthTemperature - elevationTemperature + dailyTemperature;
+        }
+        else if (y > DEPTH_LEVEL)
+        {
+            // The influence of daily and monthly temperature is reduced as depth increases
+            float monthInfluence = (y - DEPTH_LEVEL) / (SEA_LEVEL - DEPTH_LEVEL); // Range 0 - 1
+            float dailyInfluence = MathHelper.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
+            return averageTemperature + NoiseUtil.lerp(0, monthTemperature, monthInfluence) + NoiseUtil.lerp(0, dailyTemperature, dailyInfluence);
+        }
+        else // y <= DEPTH_LEVEL
+        {
+            // At y = DEPTH_LEVEL, there will be no influence from either month or daily temperature
+            // Between this and y = 0, linearly scale average temperature towards depth temperature
+            float depthInfluence = y / DEPTH_LEVEL;
+            return NoiseUtil.lerp(LAVA_LEVEL_TEMPERATURE, averageTemperature, depthInfluence);
+        }
+    }
+
+    /**
+     * Calculates the monthly temperature for a given latitude and month modifier
+     */
+    private static float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
+    {
+        float temperatureScale = TFCConfig.SERVER.temperatureScale.get();
+        return monthTemperatureModifier * INoise1D.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
+    }
+
+    /**
+     * Calculates the daily variation temperature at a given time.
+     * Influenced by both random variation day by day, and the time of day.
+     * Range: -3.9 - 3.9
+     */
+    private static float calculateDailyTemperature(long calendarTime)
+    {
         // Hottest part of the day at 12, coldest at 0
         int hourOfDay = ICalendar.getHourOfDay(calendarTime);
         if (hourOfDay > 12)
@@ -156,14 +218,7 @@ public final class Climate
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
         long day = ICalendar.getTotalDays(calendarTime);
         RANDOM.setSeed(day);
-        float dailyTemperature = ((RANDOM.nextFloat() - RANDOM.nextFloat()) + 0.3f * hourModifier) * 3f;
-
-        // Finally, add elevation based temperature
-        // Internationally accepted average lapse time is 6.49 K / 1000 m, for the first 11 km of the atmosphere. Our temperature is scales the 110 m against 2750 m, so that gives us a change of 1.6225 / 10 blocks.
-        float elevationTemperature = MathHelper.clamp((y - TFCChunkGenerator.SEA_LEVEL) * 0.16225f, 0, 17.822f);
-
-        // Sum all different temperature values.
-        return averageTemperature + monthTemperature + dailyTemperature - elevationTemperature;
+        return ((RANDOM.nextFloat() - RANDOM.nextFloat()) + 0.3f * hourModifier) * 3f;
     }
 
     private Climate() {}
