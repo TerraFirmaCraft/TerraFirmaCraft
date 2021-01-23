@@ -27,9 +27,7 @@
       "tfc:erosion"
     ],
     [
-      "tfc:underground_flood_fill_lake",
-      "tfc:flood_fill_lake",
-      "tfc:lake"
+      "tfc:underground_flood_fill_lake"
     ],
     [
       "tfc:clay_disc",
@@ -187,14 +185,12 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:groundcover/guano_cave",
-      "tfc:groundcover/feather",
-      "tfc:groundcover/flint",
-      "tfc:groundcover/sticks_forest",
-      "tfc:groundcover/pinecone",
-      "tfc:groundcover/salt_lick",
-      "tfc:groundcover/dead_grass",
-      "tfc:groundcover/podzol",
+      "tfc:guano_cave",
+      "tfc:sticks_forest",
+      "tfc:pinecone",
+      "tfc:salt_lick",
+      "tfc:dead_grass",
+      "tfc:podzol",
       "tfc:ice_and_snow"
     ]
   ],

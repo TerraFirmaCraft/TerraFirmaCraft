@@ -22,123 +22,83 @@
                 "whitelist": [
                   {
                     "Name": "tfc:rock/raw/chalk",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/chert",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/claystone",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/conglomerate",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/dolomite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/limestone",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/shale",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/gneiss",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/marble",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/phyllite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/quartzite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/schist",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/slate",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/diorite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/gabbro",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/granite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/andesite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/basalt",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/dacite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/raw/rhyolite",
-                    "Properties": {
-                      "supported": "false"
-                    }
+                    "Properties": {}
                   },
                   {
                     "Name": "tfc:rock/gravel/chalk",

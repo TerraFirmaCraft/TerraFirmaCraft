@@ -29,12 +29,7 @@
     [
       "tfc:underground_flood_fill_lake"
     ],
-    [
-      "tfc:iceberg_packed",
-      "tfc:iceberg_blue",
-      "tfc:iceberg_packed_rare",
-      "tfc:iceberg_blue_rare"
-    ],
+    [],
     [],
     [],
     [],
@@ -104,16 +99,17 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:groundcover/guano_cave",
-      "tfc:groundcover/feather",
-      "tfc:groundcover/flint",
-      "tfc:groundcover/driftwood",
-      "tfc:groundcover/clam",
-      "tfc:groundcover/mollusk",
-      "tfc:groundcover/mussel",
-      "tfc:groundcover/sticks_shore",
-      "tfc:groundcover/seaweed",
-      "tfc:groundcover/guano_shore",
+      "tfc:guano_cave",
+      "tfc:driftwood",
+      "tfc:clam",
+      "tfc:mollusk",
+      "tfc:mussel",
+      "tfc:sticks_shore",
+      "tfc:seaweed",
+      "tfc:guano_shore",
+      "tfc:mussel",
+      "tfc:clam",
+      "tfc:mollusk",
       "tfc:ice_and_snow"
     ]
   ],

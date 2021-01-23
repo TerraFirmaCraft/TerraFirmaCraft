@@ -534,7 +534,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                         final int carvingMaskIndex = CarverHelpers.maskIndex(x, y, z);
 
                         BlockState stateAt;
-                        if (y <= SEA_LEVEL)
+                        if (y < SEA_LEVEL)
                         {
                             stateAt = caveFluid;
                             liquidCarvingMask.set(carvingMaskIndex, true);

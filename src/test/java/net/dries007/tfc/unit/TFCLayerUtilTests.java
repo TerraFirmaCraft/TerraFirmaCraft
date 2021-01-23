@@ -5,7 +5,6 @@ import java.awt.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
-import net.minecraft.world.gen.area.LazyArea;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
@@ -19,6 +18,7 @@ import net.dries007.tfc.world.layer.traits.TypedArea;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
@@ -84,9 +84,9 @@ public class TFCLayerUtilTests
                 {
                     int zoom;
                     if (index <= 2) zoom = 0;
-                    else if (index <= 4) zoom = 1;
-                    else if (index <= 6) zoom = 2;
-                    else if (index <= 9) zoom = 3;
+                    else if (index <= 5) zoom = 1;
+                    else if (index <= 7) zoom = 2;
+                    else if (index <= 10) zoom = 3;
                     else zoom = 4;
 
                     AREA.color(this::biomeColor).centerSized((1 << zoom) * 20).draw(name + '_' + index, instance);
@@ -99,6 +99,7 @@ public class TFCLayerUtilTests
     }
 
     @Test
+    @Disabled
     public void testBiomesWithVolcanoes()
     {
         long seed = System.currentTimeMillis();
@@ -185,6 +186,8 @@ public class TFCLayerUtilTests
         if (id == DEEP_OCEAN_TRENCH) return new Color(15, 40, 170);
         if (id == OCEAN_OCEAN_CONVERGING_MARKER) return new Color(160, 160, 255);
         if (id == OCEAN_OCEAN_DIVERGING_MARKER) return new Color(0, 0, 100);
+        if (id == OCEAN_REEF_MARKER) return new Color(200, 200, 0);
+        if (id == OCEAN_REEF) return new Color(200, 250, 100);
         return Color.BLACK;
     }
 

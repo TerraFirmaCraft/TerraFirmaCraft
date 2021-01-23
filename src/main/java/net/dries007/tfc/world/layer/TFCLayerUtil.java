@@ -13,10 +13,8 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import net.minecraft.util.IntIdentityHashBiMap;
-import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
-import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
@@ -61,6 +59,7 @@ public class TFCLayerUtil
      * They are mapped to {@link BiomeVariants} through the internal registry
      */
     public static final int OCEAN;
+    public static final int OCEAN_REEF;
     public static final int DEEP_OCEAN;
     public static final int DEEP_OCEAN_TRENCH;
     public static final int PLAINS;
@@ -100,12 +99,14 @@ public class TFCLayerUtil
     public static final int RIVER_MARKER;
     public static final int NULL_MARKER;
     public static final int INLAND_MARKER;
+    public static final int OCEAN_REEF_MARKER;
 
     private static final IntIdentityHashBiMap<BiomeVariants> REGISTRY = new IntIdentityHashBiMap<>(32);
 
     static
     {
         OCEAN = register(TFCBiomes.OCEAN);
+        OCEAN_REEF = register(TFCBiomes.OCEAN_REEF);
         DEEP_OCEAN = register(TFCBiomes.DEEP_OCEAN);
         DEEP_OCEAN_TRENCH = register(TFCBiomes.DEEP_OCEAN_TRENCH);
         PLAINS = register(TFCBiomes.PLAINS);
@@ -142,6 +143,7 @@ public class TFCLayerUtil
         RIVER_MARKER = registerDummy();
         NULL_MARKER = registerDummy();
         INLAND_MARKER = registerDummy();
+        OCEAN_REEF_MARKER = registerDummy();
     }
 
     public static BiomeVariants getFromLayerId(int id)
@@ -208,25 +210,27 @@ public class TFCLayerUtil
         layerArtist.draw("biomes", 3, mainLayer);
         mainLayer = ArchipelagoLayer.INSTANCE.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 4, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(1), mainLayer);
+        mainLayer = ReefBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 5, mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(1), mainLayer);
         layerArtist.draw("biomes", 6, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(2), mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 7, mainLayer);
-        mainLayer = MixLakeLayer.INSTANCE.run(layerContext.get(), mainLayer, lakeLayer);
+        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(2), mainLayer);
         layerArtist.draw("biomes", 8, mainLayer);
-        mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = MixLakeLayer.INSTANCE.run(layerContext.get(), mainLayer, lakeLayer);
         layerArtist.draw("biomes", 9, mainLayer);
+        mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        layerArtist.draw("biomes", 10, mainLayer);
 
         for (int i = 0; i < 4; i++)
         {
             mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
-            layerArtist.draw("biomes", 10 + i, mainLayer);
+            layerArtist.draw("biomes", 11 + i, mainLayer);
         }
 
         mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
-        layerArtist.draw("biomes", 14, mainLayer);
+        layerArtist.draw("biomes", 15, mainLayer);
 
         // River Setup
         final float riverScale = 1.7f;
@@ -258,11 +262,11 @@ public class TFCLayerUtil
 
         // Apply rivers
         mainLayer = MixRiverLayer.INSTANCE.run(layerContext.get(), mainLayer, riverLayer);
-        layerArtist.draw("biomes", 15, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 16, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 17, mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
+        layerArtist.draw("biomes", 18, mainLayer);
 
         return mainLayer;
     }
@@ -405,12 +409,12 @@ public class TFCLayerUtil
 
     public static boolean isOcean(int value)
     {
-        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_TRENCH;
+        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_TRENCH || value == OCEAN_REEF;
     }
 
     public static boolean isOceanOrMarker(int value)
     {
-        return isOcean(value) || value == OCEAN_OCEAN_CONVERGING_MARKER || value == OCEAN_OCEAN_DIVERGING_MARKER;
+        return isOcean(value) || value == OCEAN_OCEAN_CONVERGING_MARKER || value == OCEAN_OCEAN_DIVERGING_MARKER || value == OCEAN_REEF_MARKER;
     }
 
     public static boolean isLake(int value)

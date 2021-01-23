@@ -32,12 +32,7 @@
     [
       "tfc:underground_flood_fill_lake"
     ],
-    [
-      "tfc:iceberg_packed",
-      "tfc:iceberg_blue",
-      "tfc:iceberg_packed_rare",
-      "tfc:iceberg_blue_rare"
-    ],
+    [],
     [],
     [],
     [],
@@ -104,16 +99,16 @@
       "tfc:plant/sargassum",
       "tfc:plant/star_grass",
       "tfc:plant/turtle_grass",
-      "tfc:coral",
       "tfc:plant/giant_kelp",
       "tfc:plant/winged_kelp",
       "tfc:plant/leafy_kelp"
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:groundcover/guano_cave",
-      "tfc:groundcover/feather",
-      "tfc:groundcover/flint",
+      "tfc:guano_cave",
+      "tfc:mussel",
+      "tfc:clam",
+      "tfc:mollusk",
       "tfc:ice_and_snow"
     ]
   ],
