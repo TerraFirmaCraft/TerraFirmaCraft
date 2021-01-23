@@ -488,7 +488,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             for (int z = 0; z < 16; z++)
             {
-                final int landHeight = surfaceHeightMap[x + 16 * z];
+                final int landHeight = surfaceHeightMap[x + 16 * z] - 1;
                 if (landHeight >= SEA_LEVEL)
                 {
                     worldSurface.update(x, landHeight, z, fillerBlock);

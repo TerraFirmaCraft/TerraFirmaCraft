@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "tfc:loose_rock",
+      "config": {}
+    },
+    "decorator": {
+      "type": "tfc:bounded_carving_mask",
+      "config": {
+        "step": "air",
+        "probability": 0.05,
+        "min_y": 12,
+        "max_y": 90
+      }
+    }
+  }
+}

@@ -9,11 +9,11 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:loose_rocks",
+              "type": "tfc:loose_rock",
               "config": {}
             },
             "decorator": {
-              "type": "minecraft:top_solid_heightmap",
+              "type": "minecraft:heightmap_world_surface",
               "config": {}
             }
           }
@@ -25,9 +25,9 @@
       }
     },
     "decorator": {
-      "type": "minecraft:chance",
+      "type": "minecraft:count",
       "config": {
-        "chance": 1
+        "count": 6
       }
     }
   }
