@@ -169,6 +169,7 @@ tfc.tooltip.hold_shift_for_climate_info=按住 (Shift) 查看气候信息
 tfc.tooltip.climate_info=气候信息：
 tfc.tooltip.climate_info_rainfall=降水量：%s - %s
 tfc.tooltip.climate_info_temperature=温度：%s℃ - %s℃
+tfc.tooltip.forging_in_progress=锻造中
 
 
 ## Animal Tooltips / Messages
@@ -1331,6 +1332,7 @@ tile.tfc.ice.name=冰
 tile.tfc.sea_ice.name=海冰
 tile.tfc.nest_box.name=巢箱
 tile.tfc.powderkeg.name=火药桶
+tile.tfc.flower_pot.name=花盆
 
 ## Decoration blocks
 tile.tfc.alabaster.bricks.cyan.name=青色雪花石膏砖块
@@ -5052,6 +5054,7 @@ waila.tfc.flux_stone=助焊石
 waila.tfc.temperature=空气温度：%dºC
 waila.tfc.rainfall=降水量：%d
 waila.tfc.metal.output=含 %d 单元的 %s
+waila.tfc.quern.handstone_durability=磨盘耐久度：%d / %d
 
 # Patchouli
 tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！群峦传说简中本地化组倾情奉献。
