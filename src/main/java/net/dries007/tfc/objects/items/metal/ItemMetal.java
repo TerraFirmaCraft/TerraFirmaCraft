@@ -142,6 +142,12 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
+    @Override
+    public float getMeltTemp(ItemStack stack)
+    {
+        return metal.getMeltTemp();
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)

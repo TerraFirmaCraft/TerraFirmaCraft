@@ -24,16 +24,14 @@ public interface IBellowsConsumerBlock
     /**
      * standard handlers should check if they have been accessed by belows from a legal offset
      *
-     * @param te     bellows that query
      * @param offset that the bellows used to reach this block, NOT ROTATED accordingly!
      * @param facing direction the bellows output to
      * @return self-explanatory
      */
-    boolean canIntakeFrom(@Nonnull TEBellows te, @Nonnull Vec3i offset, @Nonnull EnumFacing facing);
+    boolean canIntakeFrom(@Nonnull Vec3i offset, @Nonnull EnumFacing facing);
 
     /**
-     * @param te        the bellows that give the air intake.
      * @param airAmount the amount of air that the bellows give. For reference, TFC bellows always give 200.
      */
-    void onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, int airAmount);
+    void onAirIntake(@Nonnull World world, @Nonnull BlockPos pos, int airAmount);
 }

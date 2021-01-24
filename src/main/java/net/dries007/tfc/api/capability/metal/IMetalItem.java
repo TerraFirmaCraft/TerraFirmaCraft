@@ -48,6 +48,10 @@ public interface IMetalItem
         return true;
     }
 
+    default float getMeltTemp(ItemStack stack)
+    {
+        return 0f;
+    }
     /**
      * Adds metal info to the item stack
      * This is only shown when advanced item tooltips is enabled
@@ -61,9 +65,11 @@ public interface IMetalItem
         Metal metal = getMetal(stack);
         if (metal != null)
         {
+            int melttemp = (int) metal.getMeltTemp();
             text.add("");
             text.add(I18n.format("tfc.tooltip.metal", I18n.format(Helpers.getTypeName(metal))));
             text.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+            text.add(I18n.format("tfc.tooltip.melttemp", melttemp));
             text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
         }
     }

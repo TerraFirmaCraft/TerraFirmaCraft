@@ -60,7 +60,14 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(CAN_FALL) ? 0 : 1;
+        if (state.getBlock() != this)
+        {
+            return 0;
+        }
+        else
+        {
+            return state.getValue(CAN_FALL) ? 0 : 1;
+        }
     }
 
     @Override

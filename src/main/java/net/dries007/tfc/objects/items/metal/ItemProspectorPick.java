@@ -13,15 +13,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.api.events.ProspectEvent;
+import net.dries007.tfc.network.PacketProspectResult;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
@@ -33,6 +36,8 @@ import net.dries007.tfc.util.skills.ProspectingSkill;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
+
+import net.minecraftforge.common.MinecraftForge;
 
 @ParametersAreNonnullByDefault
 public class ItemProspectorPick extends ItemMetalTool
@@ -58,6 +63,7 @@ public class ItemProspectorPick extends ItemMetalTool
 
             if (!worldIn.isRemote)
             {
+                ProspectEvent event;
                 float falseNegativeChance = 0.3f; //Classic value was random(100) >= (60 + rank)
                 ProspectingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.PROSPECTING);
                 if (skill != null)
@@ -74,7 +80,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found").appendText(" ").appendSibling(new TextComponentTranslation(targetStack.getTranslationKey() + ".name")), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                    event = new ProspectEvent.Server(player, pos, ProspectResult.Type.FOUND, targetStack);
 
                     // Increment skill
                     if (skill != null)
@@ -85,7 +91,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 else if (RANDOM.nextFloat() < falseNegativeChance)
                 {
                     // False negative
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                    event = new ProspectEvent.Server(player, pos, ProspectResult.Type.NOTHING, null);
                 }
                 else
                 {
@@ -93,36 +99,13 @@ public class ItemProspectorPick extends ItemMetalTool
                     if (results.isEmpty())
                     {
                         // Found nothing
-                        player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                        event = new ProspectEvent.Server(player, pos, ProspectResult.Type.NOTHING, null);
                     }
                     else
                     {
                         // Found something
                         ProspectResult result = (ProspectResult) results.toArray()[RANDOM.nextInt(results.size())];
-
-                        String translationKey;
-                        if (result.score < 10)
-                        {
-                            translationKey = "tfc.propick.found_traces";
-                        }
-                        else if (result.score < 20)
-                        {
-                            translationKey = "tfc.propick.found_small";
-                        }
-                        else if (result.score < 40)
-                        {
-                            translationKey = "tfc.propick.found_medium";
-                        }
-                        else if (result.score < 80)
-                        {
-                            translationKey = "tfc.propick.found_large";
-                        }
-                        else
-                        {
-                            translationKey = "tfc.propick.found_very_large";
-                        }
-
-                        player.sendStatusMessage(new TextComponentTranslation(translationKey).appendText(" ").appendSibling(new TextComponentTranslation(result.ore.getTranslationKey() + ".name")), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                        event = new ProspectEvent.Server(player, pos, result.getType(), result.ore);
 
                         if (ConfigTFC.General.DEBUG.enable)
                         {
@@ -133,6 +116,10 @@ public class ItemProspectorPick extends ItemMetalTool
                         }
                     }
                 }
+
+                MinecraftForge.EVENT_BUS.post(event);
+                PacketProspectResult packet = new PacketProspectResult(event.getBlockPos(), event.getResultType(), event.getVein());
+                TerraFirmaCraft.getNetwork().sendTo(packet, (EntityPlayerMP) player);
             }
             else
             {
@@ -235,7 +222,7 @@ public class ItemProspectorPick extends ItemMetalTool
         }
     }
 
-    private static final class ProspectResult
+    public static final class ProspectResult
     {
         private final ItemStack ore;
         private double score;
@@ -244,6 +231,55 @@ public class ItemProspectorPick extends ItemMetalTool
         {
             ore = itemStack;
             score = num;
+        }
+
+        public Type getType()
+        {
+            if (score < 10)
+            {
+                return Type.TRACES;
+            }
+            else if (score < 20)
+            {
+                return Type.SMALL;
+            }
+            else if (score < 40)
+            {
+                return Type.MEDIUM;
+            }
+            else if (score < 80)
+            {
+                return Type.LARGE;
+            }
+            else
+            {
+                return Type.VERY_LARGE;
+            }
+        }
+
+        public enum Type
+        {
+            VERY_LARGE("tfc.propick.found_very_large"),
+            LARGE("tfc.propick.found_large"),
+            MEDIUM("tfc.propick.found_medium"),
+            SMALL("tfc.propick.found_small"),
+            TRACES("tfc.propick.found_traces"),
+
+            FOUND("tfc.propick.found"),         // right click on block
+            NOTHING("tfc.propick.found_nothing"); // nothing interesting here
+
+            private static final Type[] VALUES = values();
+            public final String translation;
+
+            Type(String translation)
+            {
+                this.translation = translation;
+            }
+
+            public static Type valueOf(int ordinal)
+            {
+                return VALUES[ordinal];
+            }
         }
     }
 }
