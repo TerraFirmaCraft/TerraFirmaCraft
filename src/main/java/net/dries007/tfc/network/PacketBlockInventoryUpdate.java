@@ -46,7 +46,7 @@ public class PacketBlockInventoryUpdate implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
+        pos = BlockPos.fromLong(buf.readLong());
         int entryCount = buf.readInt();
         for (int i = 0; i < entryCount; i++)
         {
@@ -59,9 +59,7 @@ public class PacketBlockInventoryUpdate implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(pos.getX());
-        buf.writeInt(pos.getY());
-        buf.writeInt(pos.getZ());
+        buf.writeLong(pos.toLong());
         buf.writeInt(changes.size());
         for (Entry<Integer, ItemStack> entry : changes.entrySet())
         {
