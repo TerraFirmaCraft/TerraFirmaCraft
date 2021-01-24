@@ -38,9 +38,8 @@ public class CTHeating
         ItemStack istack = ((ItemStack) input.getInternal());
         ItemStack ostack = ((ItemStack) output.getInternal());
         IItemHeat icap = istack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        IItemHeat ocap = ostack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (icap == null || ocap == null)
-            throw new IllegalStateException("Input and output must have heating capabilities!");
+        if (icap == null)
+            throw new IllegalStateException("Input must have heating capabilities!");
         HeatRecipe recipe = new HeatRecipeSimple(IIngredient.of(istack), ostack, transformTemp, maxTemp, Metal.Tier.TIER_I).setRegistryName(registryName);
         CraftTweakerAPI.apply(new IAction()
         {

@@ -48,6 +48,7 @@ public class ItemMetalTool extends ItemMetal
     private final int areaOfEffect;
     private final float attackSpeed;
     private float efficiency;
+    private boolean canDisableShield;
 
     public ItemMetalTool(Metal metal, Metal.ItemType type)
     {
@@ -70,6 +71,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.75f;
                 areaOfEffect = 1;
                 attackSpeed = -2.8f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHOVEL:
@@ -78,6 +80,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.875f;
                 areaOfEffect = 1;
                 attackSpeed = -3f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case AXE:
@@ -86,6 +89,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1.5f;
                 areaOfEffect = 1;
                 attackSpeed = -3f;
+                canDisableShield = true;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case HOE:
@@ -94,6 +98,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.875f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case CHISEL:
@@ -102,6 +107,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.27f;
                 areaOfEffect = 1;
                 attackSpeed = -1.5f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case SAW:
@@ -111,6 +117,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case PROPICK:
@@ -118,6 +125,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
                 attackSpeed = -2.8f;
+                canDisableShield = false;
                 setMaxDamage(material.getMaxUses() / 3);
                 efficiency = material.getEfficiency() * 0.5F;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
@@ -129,6 +137,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 2f;
                 areaOfEffect = 2;
                 attackSpeed = -3.2f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHEARS:
@@ -138,6 +147,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.2f;
                 areaOfEffect = 1;
                 attackSpeed = -2.8f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case KNIFE:
@@ -146,6 +156,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.54f;
                 areaOfEffect = 1;
                 attackSpeed = -1.5f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case HAMMER:
@@ -154,6 +165,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1f;
                 areaOfEffect = 1;
                 attackSpeed = -3f;
+                canDisableShield = true;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case SWORD:
@@ -161,6 +173,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1f;
                 areaOfEffect = 1;
                 attackSpeed = -2.4f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case MACE:
@@ -168,6 +181,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 1.3f;
                 areaOfEffect = 1;
                 attackSpeed = -2.8f;
+                canDisableShield = true;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case JAVELIN:
@@ -175,6 +189,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.7f;
                 areaOfEffect = 1;
                 attackSpeed = -1.8f;
+                canDisableShield = false;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHIELD:
@@ -182,6 +197,7 @@ public class ItemMetalTool extends ItemMetal
                 typeDamage = 0.1f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
+                canDisableShield = false;
                 break;
             default:
                 throw new IllegalArgumentException("Tool from non tool type.");
@@ -260,6 +276,12 @@ public class ItemMetalTool extends ItemMetal
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
+    {
+        return this.canDisableShield;
     }
 
     @Override
