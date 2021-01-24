@@ -89,7 +89,8 @@
       "tfc:calcite",
       "tfc:mega_calcite",
       "tfc:icicle",
-      "tfc:underground_loose_rocks"
+      "tfc:underground_loose_rocks",
+      "tfc:underground_guano"
     ],
     [
       "tfc:plant/badderlocks",
@@ -105,7 +106,6 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:guano_cave",
       "tfc:mussel",
       "tfc:clam",
       "tfc:mollusk",

@@ -24,15 +24,12 @@ public class BoundedCarvingMaskDecorator extends Placement<BoundedCarvingMaskCon
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step);
-        return IntStream.range(0, carvingMask.length())
-            .filter(i -> {
-                final int y = (i >> 8);
-                return carvingMask.get(i) && y >= config.minY && y <= config.maxY && rand.nextFloat() < config.probability;
-            })
+        return IntStream.range(config.minY << 8, config.maxY << 8)
+            .filter(i -> carvingMask.get(i) && rand.nextFloat() < config.probability)
             .mapToObj(i -> {
-                int x = i & 15;
-                int z = i >> 4 & 15;
-                int y = i >> 8;
+                final int x = i & 15;
+                final int z = i >> 4 & 15;
+                final int y = i >> 8;
                 return new BlockPos(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
             });
     }

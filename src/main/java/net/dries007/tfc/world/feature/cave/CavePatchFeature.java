@@ -22,28 +22,21 @@ public class CavePatchFeature extends Feature<BlockClusterFeatureConfig>
     @Override
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
-        int i = 0;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (int j = 0; j < config.tries; ++j)
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        boolean placedAny = false;
+        for (int i = 0; i < config.tries; ++i)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), 0, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
-            for (int k = 0; k < 7; k++)
-            {
-                mutablePos.move(0, -1, 0);
-                if (!world.isEmptyBlock(mutablePos))
-                {
-                    break;
-                }
-            }
-            BlockState belowState = world.getBlockState(mutablePos);
+            mutablePos.setWithOffset(pos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            final BlockState belowState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
-            if (world.isEmptyBlock(mutablePos) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            final BlockState state = config.stateProvider.getState(rand, mutablePos);
+
+            if (world.isEmptyBlock(mutablePos) && state.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate, rand); //randomize age
-                ++i;
+                config.blockPlacer.place(world, mutablePos, state, rand);
+                placedAny = true;
             }
         }
-        return i > 0;
+        return placedAny;
     }
 }

@@ -1,4 +1,4 @@
-package net.dries007.tfc.world;
+package net.dries007.tfc.world.placer;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import net.dries007.tfc.common.blocks.plant.TFCTallGrassBlock;
 
 public class TallPlantPlacer extends BlockPlacer
 {
-    public static final Codec<TallPlantPlacer> CODEC = Codec.unit(TallPlantPlacer::new);
+    public static final Codec<TallPlantPlacer> CODEC = Codec.unit(new TallPlantPlacer());
 
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
@@ -22,6 +22,6 @@ public class TallPlantPlacer extends BlockPlacer
     }
 
     protected BlockPlacerType<?> type() {
-        return TFCBlockPlacerTypes.TALL_PLANT_PLACER.get();
+        return TFCBlockPlacers.TALL_PLANT.get();
     }
 }

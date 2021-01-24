@@ -1,4 +1,4 @@
-package net.dries007.tfc.world;
+package net.dries007.tfc.world.placer;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
 
 public class EmergentPlantPlacer extends BlockPlacer
 {
-    public static final Codec<EmergentPlantPlacer> CODEC = Codec.unit(EmergentPlantPlacer::new);
+    public static final Codec<EmergentPlantPlacer> CODEC = Codec.unit(new EmergentPlantPlacer());
 
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
@@ -22,6 +22,6 @@ public class EmergentPlantPlacer extends BlockPlacer
     }
 
     protected BlockPlacerType<?> type() {
-        return TFCBlockPlacerTypes.EMERGENT_PLANT_PLACER.get();
+        return TFCBlockPlacers.EMERGENT_PLANT.get();
     }
 }
