@@ -374,13 +374,12 @@ public class TEAnvilTFC extends TEInventory
                 heatResult.setTemperature(resultTemperature);
             }
 
-            ItemStack remainingFlux = Helpers.consumeItem(fluxStack, 1);
             // Set stacks in slots
             inventory.setStackInSlot(SLOT_INPUT_1, result);
             inventory.setStackInSlot(SLOT_INPUT_2, ItemStack.EMPTY);
-            inventory.setStackInSlot(SLOT_FLUX, remainingFlux);
+            inventory.setStackInSlot(SLOT_FLUX, Helpers.consumeItem(fluxStack, 1));
+            markForSync();
 
-            TerraFirmaCraft.getNetwork().sendToDimension(new PacketBlockInventoryUpdate(this.getPos()).addChange(result, SLOT_INPUT_1).addChange(ItemStack.EMPTY, SLOT_INPUT_2).addChange(remainingFlux, SLOT_FLUX), player.world.provider.getDimension());
             return true;
         }
 
