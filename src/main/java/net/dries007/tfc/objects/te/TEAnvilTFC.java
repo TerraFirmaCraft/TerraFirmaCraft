@@ -34,6 +34,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
@@ -337,7 +338,7 @@ public class TEAnvilTFC extends TEInventory
             if (fluxStack.isEmpty())
             {
                 // No flux
-                TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_no_flux"), (EntityPlayerMP) player);
+                TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANVIL, MOD_ID + ".tooltip.anvil_no_flux"), (EntityPlayerMP) player);
                 return false;
             }
 
@@ -348,11 +349,11 @@ public class TEAnvilTFC extends TEInventory
             {
                 if (cap1 instanceof IItemHeat && cap2 instanceof IItemHeat)
                 {
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_too_cold"), (EntityPlayerMP) player);
+                    TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANVIL, MOD_ID + ".tooltip.anvil_too_cold"), (EntityPlayerMP) player);
                 }
                 else
                 {
-                    TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
+                    TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANVIL, MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
                 }
                 return false;
             }
@@ -384,7 +385,7 @@ public class TEAnvilTFC extends TEInventory
         }
 
         // For when there is both inputs but no recipe that matches
-        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("anvil", MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
+        TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANVIL, MOD_ID + ".tooltip.anvil_not_weldable"), (EntityPlayerMP) player);
         return false;
     }
 
