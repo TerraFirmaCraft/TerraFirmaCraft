@@ -412,8 +412,6 @@ def generate(rm: ResourceManager):
 
     rm.feature('sticks_shore', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick', 1, 15, 25, sand + gravel, True), decorate_chance(2), 'minecraft:square', decorate_climate(-50, 50, 100, 500)))
     rm.feature('seaweed', wg.configure_decorated(simple_patch_feature('tfc:groundcover/seaweed', 1, 15, 10, sand + gravel, True), decorate_chance(5), 'minecraft:square', decorate_climate(-20, 50, 150, 500)))
-    rm.feature('guano_shore', wg.configure_decorated(simple_patch_feature('tfc:groundcover/guano', 1, 15, 10, raw + gravel, True), decorate_chance(40), 'minecraft:square', decorate_climate(-10, 40, 150, 500)))
-    rm.feature('guano_cave', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano', 1, 15, 10), decorate_chance(10), decorate_carving_mask(0.002, 0, 25), decorate_range(10, 25)))
 
     # Forest Only
     rm.feature('sticks_forest', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick', 1, 15, 20), decorate_chance(3), 'minecraft:square', decorate_climate(-20, 50, 70, 500, True)))
@@ -424,7 +422,10 @@ def generate(rm: ResourceManager):
 
     # Loose Rocks - Both Surface + Underground
     rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', 'minecraft:top_solid_heightmap'))
+
+    # Underground decoration
     rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, 12, 90)))
+    rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano', 5, 5, 60, placer='tfc:underground'), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
 
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
@@ -613,27 +614,22 @@ def simple_patch_feature(block: str, vertical_spread: int, horizontal_spread: in
     return wg.configure(feature_name, cfg)
 
 
-def cave_patch_feature(block: str, vertical_spread: int, horizontal_spread: int, count: int = None, whitelist: List = None) -> Dict[str, Any]:
-    cfg = {
+def cave_patch_feature(block: str, vertical_spread: int, horizontal_spread: int, count: Optional[int] = None, placer: Union[Dict[str, Any], str] = 'minecraft:simple_block_placer') -> Dict[str, Any]:
+    if isinstance(placer, str):
+        placer = wg.configure(placer)
+    return wg.configure('tfc:cave_patch', utils.del_none({
         'state_provider': {
             'type': 'tfc:facing_random',
             'state': block
         },
-        'block_placer': {
-            'type': 'minecraft:simple_block_placer',
-            'config': {}
-        },
-        'whitelist': [],
+        'block_placer': placer,
         'blacklist': [],
+        'whitelist': [],
         'yspread': vertical_spread,
         'xspread': horizontal_spread,
-        'zspread': horizontal_spread
-    }
-    if count is not None:
-        cfg['tries'] = count
-    if whitelist is not None:
-        cfg['whitelist'] = whitelist
-    return wg.configure('tfc:cave_patch', cfg)
+        'zspread': horizontal_spread,
+        'tries': count,
+    }))
 
 
 def tall_feature(feature: str, state1: str, state2: str, tries: int, radius: int, min_height: int, max_height: int) -> Dict[str, Any]:
@@ -721,9 +717,22 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:ice_cave', 'tfc:calcite', 'tfc:mega_calcite', 'tfc:icicle', 'tfc:underground_loose_rocks'],  # underground decoration
+        [
+            'tfc:cave_spike',
+            'tfc:large_cave_spike',
+            'tfc:underwater_cave_spike',
+            'tfc:underwater_large_cave_spike',
+            'tfc:water_spring',
+            'tfc:lava_spring',
+            'tfc:ice_cave',
+            'tfc:calcite',
+            'tfc:mega_calcite',
+            'tfc:icicle',
+            'tfc:underground_loose_rocks',
+            'tfc:underground_guano'
+        ],  # underground decoration
         [],  # vegetal decoration
-        ['tfc:surface_loose_rocks', 'tfc:guano_cave']  # top layer modification
+        ['tfc:surface_loose_rocks']  # top layer modification
     ]
     if boulders:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']

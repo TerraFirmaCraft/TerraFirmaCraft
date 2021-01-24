@@ -13,7 +13,7 @@
               "config": {}
             },
             "decorator": {
-              "type": "minecraft:heightmap_world_surface",
+              "type": "minecraft:top_solid_heightmap",
               "config": {}
             }
           }

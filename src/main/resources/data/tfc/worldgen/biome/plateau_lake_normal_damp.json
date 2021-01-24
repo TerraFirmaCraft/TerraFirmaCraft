@@ -96,7 +96,8 @@
       "tfc:calcite",
       "tfc:mega_calcite",
       "tfc:icicle",
-      "tfc:underground_loose_rocks"
+      "tfc:underground_loose_rocks",
+      "tfc:underground_guano"
     ],
     [
       "tfc:forest",
@@ -185,7 +186,6 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:guano_cave",
       "tfc:sticks_forest",
       "tfc:pinecone",
       "tfc:salt_lick",

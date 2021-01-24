@@ -1,4 +1,4 @@
-package net.dries007.tfc.world;
+package net.dries007.tfc.world.placer;
 
 import java.util.Random;
 
@@ -11,13 +11,11 @@ import net.minecraft.world.gen.blockplacer.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.plant.WaterPlantBlock;
-import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class WaterPlantPlacer extends BlockPlacer
 {
-    public static final Codec<WaterPlantPlacer> CODEC = Codec.unit(WaterPlantPlacer::new);
+    public static final Codec<WaterPlantPlacer> CODEC = Codec.unit(new WaterPlantPlacer());
 
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
@@ -34,7 +32,7 @@ public class WaterPlantPlacer extends BlockPlacer
 
     protected BlockPlacerType<?> type()
     {
-        return TFCBlockPlacerTypes.WATER_PLANT_PLACER.get();
+        return TFCBlockPlacers.WATER_PLANT.get();
     }
 }
 

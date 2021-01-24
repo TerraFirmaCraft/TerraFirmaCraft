@@ -301,7 +301,7 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
 
-SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed', 'guano_shore']
+SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
 OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
