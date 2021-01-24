@@ -1,109 +1,76 @@
 package net.dries007.tfc.network;
 
 import java.nio.charset.Charset;
+import java.util.function.BooleanSupplier;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import stanhebben.zenscript.util.ArrayUtil;
 
 public class PacketSimpleMessage implements IMessage
 {
-    private boolean isLocalized;
-    private String text;
-    private String category;
-    private TextFormatting color = TextFormatting.WHITE;
-    private boolean isBold = false;
-    private boolean isItalic = false;
-    private boolean isStrikethrough = false;
-    private boolean isUnderline = false;
-    private boolean isObfuscated = false;
+    public enum MessageCategory
+    {
+        ANVIL(() -> ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar),
+        VESSEL(() -> ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar);
+        private BooleanSupplier displayToToolbar;
+
+        private MessageCategory(BooleanSupplier displayToToolbar)
+        {
+            this.displayToToolbar = displayToToolbar;
+        }
+    }
+
+    /**
+     * Utility method for making a message with just a single {@link TextComponentTranslation} element.
+     */
+    public static PacketSimpleMessage translateMessage(MessageCategory category, String unlocalized)
+    {
+        return new PacketSimpleMessage(category, new TextComponentTranslation(unlocalized));
+    }
+
+    /**
+     * Utility method for making a message with just a single {@link TextComponentString} element.
+     */
+    public static PacketSimpleMessage stringMessage(MessageCategory category, String localized)
+    {
+        return new PacketSimpleMessage(category, new TextComponentString(localized));
+    }
+
+    private ITextComponent text;
+    private MessageCategory category;
 
     public PacketSimpleMessage()
     {
     }
 
-    public PacketSimpleMessage(String category, String unlocalized)
+    public PacketSimpleMessage(MessageCategory category, ITextComponent text)
     {
-        this(category, false, unlocalized);
-    }
-
-    public PacketSimpleMessage(String category, String unlocalized, TextFormatting... formats)
-    {
-        this(category, false, unlocalized, formats);
-    }
-
-    public PacketSimpleMessage(String category, boolean isLocalized, String text, TextFormatting... formats)
-    {
-        this.isLocalized = isLocalized;
-        this.category = category;
         this.text = text;
-        for (TextFormatting format : formats)
-        {
-            switch (format)
-            {
-                case BOLD:
-                    isBold = true;
-                    break;
-                case ITALIC:
-                    isItalic = true;
-                    break;
-                case OBFUSCATED:
-                    isObfuscated = true;
-                    break;
-                case STRIKETHROUGH:
-                    isStrikethrough = true;
-                    break;
-                case UNDERLINE:
-                    isUnderline = true;
-                    break;
-                default:
-                    if (format != null && format.isColor())
-                    {
-                        color = format;
-                    }
-                    break;
-            }
-        }
+        this.category = category;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        isLocalized = buf.readBoolean();
-        category = buf.readCharSequence(buf.readInt(), Charset.defaultCharset()).toString();
-        text = buf.readCharSequence(buf.readInt(), Charset.defaultCharset()).toString();
-        isBold = buf.readBoolean();
-        isItalic = buf.readBoolean();
-        isObfuscated = buf.readBoolean();
-        isStrikethrough = buf.readBoolean();
-        isUnderline = buf.readBoolean();
-        color = TextFormatting.fromColorIndex(buf.readInt());
+        category = MessageCategory.values()[buf.readInt()];
+        text = ITextComponent.Serializer.jsonToComponent(buf.readCharSequence(buf.readInt(), Charset.defaultCharset()).toString());
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeBoolean(isLocalized);
-        buf.writeInt(category.length());
-        buf.writeCharSequence(category, Charset.defaultCharset());
-        buf.writeInt(text.length());
-        buf.writeCharSequence(text, Charset.defaultCharset());
-        buf.writeBoolean(isBold);
-        buf.writeBoolean(isItalic);
-        buf.writeBoolean(isObfuscated);
-        buf.writeBoolean(isStrikethrough);
-        buf.writeBoolean(isUnderline);
-        buf.writeInt(color.getColorIndex());
+        buf.writeInt(category.ordinal());
+        String json = ITextComponent.Serializer.componentToJson(text);
+        buf.writeInt(json.length());
+        buf.writeCharSequence(json, Charset.defaultCharset());
     }
 
     public static final class Handler implements IMessageHandler<PacketSimpleMessage, IMessage>
@@ -116,15 +83,7 @@ public class PacketSimpleMessage implements IMessage
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    ITextComponent text = message.isLocalized ? new TextComponentString(message.text) : new TextComponentTranslation(message.text);
-                    Style style = text.getStyle();
-                    style.setBold(message.isBold);
-                    style.setItalic(message.isItalic);
-                    style.setObfuscated(message.isObfuscated);
-                    style.setStrikethrough(message.isStrikethrough);
-                    style.setUnderlined(message.isUnderline);
-                    style.setColor(message.color);
-                    player.sendStatusMessage(text, ArrayUtil.contains(ConfigTFC.Client.TOOLTIP.tooltipCategoriesOutputToActionBar, message.category));
+                    player.sendStatusMessage(message.text, message.category.displayToToolbar.getAsBoolean());
                 }
             });
             return null;

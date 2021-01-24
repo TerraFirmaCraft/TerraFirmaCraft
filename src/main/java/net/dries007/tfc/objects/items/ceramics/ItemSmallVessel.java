@@ -52,6 +52,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
@@ -91,7 +92,7 @@ public class ItemSmallVessel extends ItemPottery
                         TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SMALL_VESSEL_LIQUID);
                         break;
                     case LIQUID_SOLID:
-                        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage("vessel", MOD_ID + ".vessel.liquid_solid"), (EntityPlayerMP) playerIn);
+                        TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.VESSEL, MOD_ID + ".vessel.liquid_solid"), (EntityPlayerMP) playerIn);
                         break;
                 }
             }
