@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -63,9 +64,6 @@ public final class BlocksTFC
     public static final BlockDecorativeStone ALABASTER_POLISHED_PLAIN = getNull();
     @GameRegistry.ObjectHolder("alabaster/raw/plain")
     public static final BlockDecorativeStone ALABASTER_RAW_PLAIN = getNull();
-
-    @GameRegistry.ObjectHolder("flower_pot")
-    public static final BlockFlowerPotTFC FLOWER_POT = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
@@ -123,6 +121,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
     private static ImmutableList<BlockSupport> allSupportBlocks;
+    private static ImmutableList<BlockFlowerPotTFC> allFlowerPots;
 
     private static ImmutableList<BlockFruitTreeSapling> allFruitTreeSaplingBlocks;
     private static ImmutableList<BlockFruitTreeTrunk> allFruitTreeTrunkBlocks;
@@ -266,6 +265,11 @@ public final class BlocksTFC
         return allSupportBlocks;
     }
 
+    public static ImmutableList<BlockFlowerPotTFC> getAllFlowerPots()
+    {
+        return allFlowerPots;
+    }
+
     public static ImmutableList<BlockFruitTreeSapling> getAllFruitTreeSaplingBlocks()
     {
         return allFruitTreeSaplingBlocks;
@@ -325,7 +329,6 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "flower_pot", new BlockFlowerPotTFC(), CT_POTTERY)));
         normalItemBlocks.add(new ItemBlockPowderKeg(register(r, "powderkeg", new BlockPowderKeg(), CT_WOOD)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
@@ -624,17 +627,26 @@ public final class BlocksTFC
         {
 
             Builder<BlockPlantTFC> b = ImmutableList.builder();
+            Builder<BlockFlowerPotTFC> pots = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
                 if (plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
                     b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
+                if (plant.canBePotted())
+                    pots.add(register(r, "flowerpot/" + plant.getRegistryName().getPath(), new BlockFlowerPotTFC(plant)));
             }
             allPlantBlocks = b.build();
+            allFlowerPots = pots.build();
+
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
                 if (blockPlant instanceof BlockFloatingWaterTFC)
                 {
                     inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC((BlockFloatingWaterTFC) blockPlant));
+                }
+                else if (blockPlant.getPlant().canBePotted())
+                {
+                    normalItemBlocks.add(new ItemBlockPlant(blockPlant, blockPlant.getPlant()));
                 }
                 else
                 {
@@ -711,7 +723,6 @@ public final class BlocksTFC
         register(TELargeVessel.class, "large_vessel");
         register(TEPowderKeg.class, "powderkeg");
         register(TESluice.class, "sluice");
-        register(TEFlowerPotTFC.class, "flower_pot");
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
