@@ -160,7 +160,8 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
                 {
                     worldIn.setBlockState(pos1, BlockRockVariant.get(rock, type.getNonGrassVersion()).getDefaultState());
                 }
-                worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
+                // worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
+                worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, state));
             }
             else
             {

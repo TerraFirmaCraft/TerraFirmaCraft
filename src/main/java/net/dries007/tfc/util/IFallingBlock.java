@@ -35,7 +35,15 @@ public interface IFallingBlock
 
     static boolean canFallThrough(World world, BlockPos pos, Material fallingBlockMaterial)
     {
-        IBlockState targetState = world.getBlockState(pos);
+        return canFallThrough(world, pos, fallingBlockMaterial, world.getBlockState(pos));
+    }
+
+    static boolean canFallThrough(World world, BlockPos pos, Material fallingBlockMaterial, IBlockState targetState)
+    {
+        if (BlockFalling.canFallThrough(targetState))
+        {
+            return true;
+        }
         if ((SOFT_MATERIALS.contains(fallingBlockMaterial) && HARD_MATERIALS.contains(targetState.getMaterial())) || targetState.getBlockHardness(world, pos) == -1.0F)
         {
             return false;
@@ -95,7 +103,8 @@ public interface IFallingBlock
                         worldIn.setBlockToAir(pos);
                         worldIn.setBlockState(pos1, state);
                     }
-                    worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
+                    // worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
+                    worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, state));
                 }
                 else
                 {

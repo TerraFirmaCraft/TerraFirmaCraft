@@ -4680,6 +4680,8 @@ entity.blackbeartfc.name=Black Bear
 entity.cougartfc.name=Cougar
 entity.coyotetfc.name=Coyote
 
+entity.falling_block.name=Falling %s
+
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
 death.attack.food_poison=%1$s died of food poisoning
