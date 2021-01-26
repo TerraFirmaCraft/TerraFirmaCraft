@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
@@ -24,7 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 import net.dries007.tfc.util.IFallingBlock;
 
 @MethodsReturnNonnullByDefault
@@ -139,7 +139,7 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     private BlockPos checkAreaClear(World world, BlockPos pos)
     {
         // Check that there are no entities in the area, otherwise it would collide with them
-        if (!world.getEntitiesWithinAABB(EntityFallingBlockTFC.class, new AxisAlignedBB(pos, pos.add(1, 1, 1))).isEmpty())
+        if (!world.getEntitiesWithinAABB(EntityFallingBlock.class, new AxisAlignedBB(pos, pos.add(1, 1, 1))).isEmpty())
         {
             // If we can't fall due to a collision, wait for the block to move out of the way and try again later
             world.scheduleUpdate(pos, this, 20);
