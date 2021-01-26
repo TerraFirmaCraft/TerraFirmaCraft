@@ -278,12 +278,7 @@ public class Plant extends IForgeRegistryEntry.Impl<Plant>
 
     public boolean canBePotted()
     {
-        return (isCrossModel() && !(oreDictName.isPresent() && oreDictName.get().equals("reed"))) || plantType == PlantType.CACTUS || plantType == PlantType.CREEPING || plantType == PlantType.TALL_PLANT;
-    }
-
-    public boolean isCrossModel()
-    {
-        return plantType == PlantType.STANDARD || plantType == PlantType.DRY || plantType == PlantType.DESERT || plantType == PlantType.MUSHROOM;
+        return plantType == PlantType.STANDARD || plantType == PlantType.CACTUS || plantType == PlantType.CREEPING || plantType == PlantType.TALL_PLANT || plantType == PlantType.DRY || plantType == PlantType.DESERT || plantType == PlantType.MUSHROOM;
     }
 
     public final EnumPlantTypeTFC getEnumPlantTypeTFC()

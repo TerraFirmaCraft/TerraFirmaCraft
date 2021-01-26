@@ -477,7 +477,8 @@ public class BlockSupport extends Block
         int distance = -1;
         for (int i = 0; i < 5; i++)
         {
-            if (!(worldIn.getBlockState(pos.offset(face, i)).getBlock() instanceof BlockSupport) && !worldIn.isAirBlock(pos.offset(face, i)))
+            BlockPos offsetPos = pos.offset(face, i);
+            if (!(worldIn.getBlockState(offsetPos).getBlock() instanceof BlockSupport) && !worldIn.isAirBlock(offsetPos))
             {
                 return 0;
             }
