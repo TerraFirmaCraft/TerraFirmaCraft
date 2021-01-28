@@ -13,14 +13,19 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
+
+plugins {
+    id 'net.minecrell.licenser' version '0.4.1'
+    id 'idea'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'idea'
 
 /*
  * !! Important Info for Contributors !!
  *
- * This project uses Mappificator (https://github.com/alcatrazEscapee/mappificator) for it's mappings. This is a tool based on the official mappings provided by Mojang.
+ * This project uses Mappificator (https://github.com/alcatrazEscapee/mappificator) for its mappings. This is a tool based on the official mappings provided by Mojang.
  * For information on how to set that up, see the project's README.md, it should detail how to create a customized mapping set and publish it to your maven local for use by FG.
  * While mappificator is recommended as it adds comments and parameter names to the standard official mappings, it is by no means necessary.
  * If you wish to use standard official mappings, see the below instructions to add the "use_official_mappings" property to your local dev.gradle
@@ -147,6 +152,20 @@ processResources {
             file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
         }
     }
+}
+
+// Automatically apply a license header when running checkLicense / updateLicense
+license {
+    header = project.file('HEADER.txt')
+
+    include('**/*.java')
+
+    // Fast Noise
+    exclude('net/dries007/tfc/world/noise/Cellular2D.java')
+    exclude('net/dries007/tfc/world/noise/Cellular3D.java')
+    exclude('net/dries007/tfc/world/noise/NoiseUtil.java')
+    exclude('net/dries007/tfc/world/noise/OpenSimplex2D.java')
+    exclude('net/dries007/tfc/world/noise/OpenSimplex3D.java')
 }
 
 // Puts the mod version into the jar for mods.toml to read from

@@ -16,17 +16,8 @@ You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mod
  - As per the Github terms of service, you grant us the right to use your contribution under the same license as this project.
  - In addition, we request that you give us the right to change the license in the future.
  - Import & use the project's Code Style. (Recommend using Intellij as that's what our code style xml is based on)
- - Add the following copyright header to all Java source files:
-
-```java
-/*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- */
-```
-Hint: Setup IntelliJ to do this automatically with a copyright profile applied to a shared scope matching pattern `net.dries007.tfc..*`.
-
-- TFC uses a specialized mapping set by default which is based on the official mappings. See [Mappificator](https://github.com/alcatrazEscapee/Mappificator) in order to install that.
+- Before creating a Pull Request, run `gradlew updateLicenses`. This will apply the correct license header to all project files.
+- This project uses [Mappificator](https://github.com/alcatrazEscapee/mappificator) for its mappings. This is a tool based on the official mappings provided by Mojang. For information on how to set that up, see the project's README.md, it should detail how to create a customized mapping set and publish it to your maven local for use by FG. (or the comment in [build.gradle](build.gradle))
 - We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, and `nbtlib`.
 
 ## License / Copyright / Credit
@@ -39,7 +30,9 @@ For a full list of contributors, see the git commit log.
 
 Please do read the full license. It's less than 300 lines of 80 characters long.
 
-Licensed under **EUPL v. 1.2** with additional provisions and clarifications, as specified in [LICENSE.txt](LICENSE.txt).
+Licensed under the EUPL, Version 1.2.
+You may obtain a copy of the Licence at: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+It is also included in [LICENSE.txt](LICENSE.txt)
 
 ### Credit
 

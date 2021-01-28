@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.biome;
 
 import net.dries007.tfc.world.noise.Cellular2D;
@@ -84,6 +90,6 @@ public final class VolcanoNoise
      */
     public static Cellular2D cellNoise(long seed)
     {
-        return new Cellular2D(seed + SEED_MODIFIER, 0.8f, CellularNoiseType.DISTANCE).spread(SEPARATION_MODIFIER);
+        return new Cellular2D(seed + SEED_MODIFIER, 0.8f, CellularNoiseType.F1).spread(SEPARATION_MODIFIER);
     }
 }

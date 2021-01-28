@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.layer;
@@ -170,7 +171,7 @@ public class TFCLayerUtil
         IAreaFactory<FastArea> mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
         plateArtist.draw("plate_generation", 1, plateLayer);
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
@@ -281,7 +282,7 @@ public class TFCLayerUtil
         IAreaFactory<FastArea> mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), layerSettings.getOceanPercent()).apply(plateContext.get());
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 
