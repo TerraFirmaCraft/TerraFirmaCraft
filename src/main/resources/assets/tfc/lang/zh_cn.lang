@@ -4694,6 +4694,8 @@ entity.blackbeartfc.name=黑熊
 entity.cougartfc.name=山狮
 entity.coyotetfc.name=郊狼
 
+entity.falling_block.name=下落的%s
+
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
 death.attack.food_poison=%1$s 死于食物中毒
