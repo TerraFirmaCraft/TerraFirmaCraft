@@ -87,7 +87,7 @@ public class Cellular2D implements INoise2D
             return type.apply(f1, f2, f3, centerHash);
         }
         lastX = x;
-        lastY = x;
+        lastY = y;
 
         x *= frequency;
         y *= frequency;
