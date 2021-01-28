@@ -1,7 +1,4 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- *
  * This was originally part of FastNoise (https://github.com/Auburn/FastNoise) and has been included as per the MIT license:
  *
  * MIT License

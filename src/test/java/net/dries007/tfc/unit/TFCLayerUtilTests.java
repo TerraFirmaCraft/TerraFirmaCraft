@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.unit;
 
 import java.awt.*;
@@ -116,7 +122,7 @@ public class TFCLayerUtilTests
             {
                 float distance = volcanoNoise.noise(x, z) + volcanoJitterNoise.noise(x, z);
                 float volcano = VolcanoNoise.calculateEasing(distance);
-                float chance = volcanoNoise.get(CellularNoiseType.VALUE);
+                float chance = volcanoNoise.noise(x, z, CellularNoiseType.VALUE);
                 if (volcano > 0 && chance < biome.getVolcanoChance())
                 {
                     return new Color(MathHelper.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano

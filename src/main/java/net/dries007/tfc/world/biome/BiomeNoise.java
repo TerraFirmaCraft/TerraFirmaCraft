@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.biome;
 
 import com.mojang.datafixers.util.Pair;
@@ -148,8 +154,8 @@ public final class BiomeNoise
         final float volcanoChance = 1f / frequency;
 
         return (x, z) -> {
-            final float distance = volcanoNoise.noise(x, z);
-            final float value = volcanoNoise.get(CellularNoiseType.VALUE);
+            final float distance = volcanoNoise.noise(x, z, CellularNoiseType.F1);
+            final float value = volcanoNoise.noise(x, z, CellularNoiseType.VALUE);
             final float baseHeight = baseNoise.noise(x, z);
             final float t = VolcanoNoise.calculateEasing(distance);
             if (value < volcanoChance && t > 0)
@@ -184,7 +190,7 @@ public final class BiomeNoise
 
         final Pair<INoise2D, INoise2D> riverPair = riverCarving(seed);
         final INoise2D baseNoise = riverPair.getSecond();
-        final INoise2D columnNoise = new Cellular2D(seed + 1, 1f, CellularNoiseType.DISTANCE).spread(0.065f);
+        final INoise2D columnNoise = new Cellular2D(seed + 1, 1f, CellularNoiseType.F1).spread(0.065f);
 
         return Pair.of(
             riverPair.getFirst(),
