@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.carver;
@@ -42,7 +43,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     {
         if (this.cachedSeed != worldSeed || !initialized)
         {
-            caveNoiseWorley = new Cellular3D(worldSeed + 2, 2.0f, CellularNoiseType.DISTANCE_PRODUCT).spread(0.04f).warped(
+            caveNoiseWorley = new Cellular3D(worldSeed + 2, 2.0f, CellularNoiseType.F1_MUL_F2).spread(0.04f).warped(
                 new OpenSimplex3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
                 new OpenSimplex3D(worldSeed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
                 new OpenSimplex3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)

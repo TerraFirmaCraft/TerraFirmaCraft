@@ -1,10 +1,16 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.unit;
 
 import java.awt.*;
 
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
-import net.minecraft.world.gen.area.LazyArea;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
@@ -14,18 +20,27 @@ import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
+import net.dries007.tfc.world.layer.traits.TypedArea;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 public class TFCLayerUtilTests
 {
-    static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
-    static final Artist.Typed<IAreaFactory<LazyArea>, Integer> AREA = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
-    static final Artist.Noise<IAreaFactory<LazyArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
+    // These inner lambdas could be shortened to factory.make()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
+    static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
+        final TypedArea<Plate> area = factory.make();
+        return Artist.Pixel.coerceInt(area::get);
+    });
+    static final Artist.Typed<IAreaFactory<? extends IArea>, Integer> AREA = Artist.forMap(factory -> {
+        final IArea area = factory.make();
+        return Artist.Pixel.coerceInt(area::get);
+    });
+    static final Artist.Noise<IAreaFactory<? extends IArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
     static final Artist.Raw RAW = Artist.raw().size(1000);
 
     @Test
@@ -41,7 +56,7 @@ public class TFCLayerUtilTests
             PLATES.centerSized(index == 1 ? 100 : 200).draw(name + '_' + index + "_wide", instance);
         };
 
-        IArtist<IAreaFactory<LazyArea>> layerArtist = (name, index, instance) -> {
+        IArtist<IAreaFactory<? extends IArea>> layerArtist = (name, index, instance) -> {
             switch (name)
             {
                 case "plate_boundary":
@@ -75,9 +90,9 @@ public class TFCLayerUtilTests
                 {
                     int zoom;
                     if (index <= 2) zoom = 0;
-                    else if (index <= 4) zoom = 1;
-                    else if (index <= 6) zoom = 2;
-                    else if (index <= 9) zoom = 3;
+                    else if (index <= 5) zoom = 1;
+                    else if (index <= 7) zoom = 2;
+                    else if (index <= 10) zoom = 3;
                     else zoom = 4;
 
                     AREA.color(this::biomeColor).centerSized((1 << zoom) * 20).draw(name + '_' + index, instance);
@@ -90,6 +105,7 @@ public class TFCLayerUtilTests
     }
 
     @Test
+    @Disabled
     public void testBiomesWithVolcanoes()
     {
         long seed = System.currentTimeMillis();
@@ -97,7 +113,7 @@ public class TFCLayerUtilTests
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
         INoise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
-        LazyArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
+        IArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
 
         Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceFloat((x, z) -> {
             int value = biomeArea.get(((int) x) >> 2, ((int) z) >> 2);
@@ -106,7 +122,7 @@ public class TFCLayerUtilTests
             {
                 float distance = volcanoNoise.noise(x, z) + volcanoJitterNoise.noise(x, z);
                 float volcano = VolcanoNoise.calculateEasing(distance);
-                float chance = volcanoNoise.get(CellularNoiseType.VALUE);
+                float chance = volcanoNoise.noise(x, z, CellularNoiseType.VALUE);
                 if (volcano > 0 && chance < biome.getVolcanoChance())
                 {
                     return new Color(MathHelper.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano
@@ -176,6 +192,8 @@ public class TFCLayerUtilTests
         if (id == DEEP_OCEAN_TRENCH) return new Color(15, 40, 170);
         if (id == OCEAN_OCEAN_CONVERGING_MARKER) return new Color(160, 160, 255);
         if (id == OCEAN_OCEAN_DIVERGING_MARKER) return new Color(0, 0, 100);
+        if (id == OCEAN_REEF_MARKER) return new Color(200, 200, 0);
+        if (id == OCEAN_REEF) return new Color(200, 250, 100);
         return Color.BLACK;
     }
 

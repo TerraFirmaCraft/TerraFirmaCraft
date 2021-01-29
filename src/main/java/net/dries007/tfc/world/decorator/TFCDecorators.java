@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.decorator;
 
 import java.util.function.Function;
@@ -22,6 +28,7 @@ public final class TFCDecorators
     public static final RegistryObject<NearWaterDecorator> NEAR_WATER = register("near_water", NearWaterDecorator::new, NearWaterConfig.CODEC);
     public static final RegistryObject<BoundedCarvingMaskDecorator> BOUNDED_CARVING_MASK = register("bounded_carving_mask", BoundedCarvingMaskDecorator::new, BoundedCarvingMaskConfig.CODEC);
     public static final RegistryObject<VolcanoDecorator> VOLCANO = register("volcano", VolcanoDecorator::new, VolcanoConfig.CODEC);
+    public static final RegistryObject<ShorelineDecorator> SHORELINE = register("shoreline", ShorelineDecorator::new, NearWaterConfig.CODEC);
 
     private static <C extends IPlacementConfig, D extends Placement<C>> RegistryObject<D> register(String name, Function<Codec<C>, D> factory, Codec<C> codec)
     {

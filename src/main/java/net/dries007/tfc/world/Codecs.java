@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world;
 
 import java.util.*;
@@ -121,14 +127,5 @@ public final class Codecs
             list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
             map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
         );
-    }
-
-    /**
-     * Creates a codec for a {@link Set}, for faster contains checks.
-     * Note: by necessity this does not preserve the original order and breaks the codec contract.
-     */
-    public static <E> Codec<Set<E>> setCodec(Codec<E> elementCodec)
-    {
-        return elementCodec.listOf().xmap(HashSet::new, ArrayList::new);
     }
 }

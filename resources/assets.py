@@ -367,6 +367,13 @@ def generate(rm: ResourceManager):
     snow_block_loot_table('snow_pile')
     snow_block_loot_table('minecraft:snow')
 
+    # Sea Ice
+    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
+    block.with_block_loot({
+        'entries': 'minecraft:ice',
+        'conditions': [silk_touch()]
+    })
+
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):
@@ -409,7 +416,6 @@ def generate(rm: ResourceManager):
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
         rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
-
     for powder in GENERIC_POWDERS:
         rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder))
     for powder in POWDERS:
@@ -426,6 +432,14 @@ def generate(rm: ResourceManager):
     for color in COLORS:
         rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
+    # Plants
+    for plant, plant_data in PLANTS.items():
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    for plant in MISC_PLANT_FEATURES:
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+    rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
     # Wood Blocks
     for wood in WOODS.keys():
@@ -548,6 +562,7 @@ def generate(rm: ResourceManager):
             if variant != 'log':
                 rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
             rm.block_tag('tfc:' + wood + '_logs', 'tfc:wood/' + variant + '/' + wood)
+            rm.block_tag('tfc:creeping_plantable_on', 'tfc:wood/' + variant + '/' + wood)
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
@@ -590,14 +605,30 @@ def generate(rm: ResourceManager):
     for metal in METALS.keys():
         molten_fluid(metal)
 
-    # Calcite
-    block = rm.blockstate('calcite', variants={
-        'tip=true': {'model': 'tfc:block/calcite_tip'},
-        'tip=false': {'model': 'tfc:block/calcite'}
-    })
-    block.with_item_model()
-    block.with_lang(lang('calcite'))
+    # Thin Spikes: Calcite + Icicles
+    for variant, texture in (('calcite', 'tfc:block/calcite'), ('icicle', 'minecraft:block/ice')):
+        block = rm.blockstate(variant, variants={
+            'tip=true': {'model': 'tfc:block/%s_tip' % variant},
+            'tip=false': {'model': 'tfc:block/%s' % variant}
+        })
+        block.with_item_model()
+        block.with_lang(lang(variant))
 
+        rm.block_model(variant, textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike')
+        rm.block_model(variant + '_tip', textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike_tip')
+
+    for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
+        for block_type in ('coral', 'coral_fan', 'coral_wall_fan'):
+            for life in ('dead_', ''):
+                second_type = block_type
+                if block_type == 'coral_wall_fan' and life != 'dead_':
+                    rm.block_tag('wall_corals', ('coral', color + '_' + life + block_type))
+                    second_type = 'coral_fan'
+                rm.item_model(('coral', color + '_' + life + block_type), 'minecraft:block/' + life + color + '_' + second_type)
+                if block_type == 'coral' or block_type == 'coral_fan':
+                    if life != 'dead_':
+                        rm.block_tag('corals', ('coral', color + '_' + life + block_type))
+                    rm.lang('block.tfc.coral.' + color + '_' + life + block_type, lang('%s %s %s', life, color, block_type))
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:
     return {

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.feature.tree;
@@ -22,6 +23,7 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
         super(codec);
     }
 
+    @SuppressWarnings("deprecation")
     protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
     {
         BlockState stateDown = worldIn.getBlockState(pos.below());

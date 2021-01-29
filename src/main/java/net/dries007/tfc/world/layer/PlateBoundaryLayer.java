@@ -1,17 +1,18 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.layer;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.area.IAreaFactory;
-import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.traits.IDimOffset1Transformer;
 
+import net.dries007.tfc.world.layer.traits.FastArea;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
-import net.dries007.tfc.world.layer.traits.LazyTypedArea;
+import net.dries007.tfc.world.layer.traits.TypedArea;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
@@ -24,19 +25,19 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
     public static final float HIGH_ELEVATION = 0.66f;
     public static final float MID_ELEVATION = 0.33f;
 
-    public IAreaFactory<LazyArea> run(IExtendedNoiseRandom<LazyArea> context, ITypedAreaFactory<Plate> plateLayer)
+    public IAreaFactory<FastArea> run(IExtendedNoiseRandom<FastArea> context, ITypedAreaFactory<Plate> plateLayer)
     {
         return () -> {
-            LazyTypedArea<Plate> area = plateLayer.make();
+            TypedArea<Plate> area = plateLayer.make();
             return context.createResult((x, z) -> {
                 context.initRandom(x, z);
                 return apply(context, area, x, z);
-            }, area.asLazyArea());
+            });
         };
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    private int apply(IExtendedNoiseRandom<?> context, LazyTypedArea<Plate> area, int x, int z)
+    private int apply(IExtendedNoiseRandom<?> context, TypedArea<Plate> area, int x, int z)
     {
         return apply(context,
             area.get(getParentX(x + 1), getParentY(z + 0)),

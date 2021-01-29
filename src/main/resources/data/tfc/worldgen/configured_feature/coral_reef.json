@@ -1,0 +1,63 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "minecraft:simple_random_selector",
+                  "config": {
+                    "features": [
+                      {
+                        "type": "tfc:coral_tree",
+                        "config": {}
+                      },
+                      {
+                        "type": "tfc:coral_mushroom",
+                        "config": {}
+                      },
+                      {
+                        "type": "tfc:coral_claw",
+                        "config": {}
+                      }
+                    ]
+                  }
+                },
+                "decorator": {
+                  "type": "minecraft:top_solid_heightmap",
+                  "config": {}
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:square",
+              "config": {}
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:count_noise_biased",
+          "config": {
+            "noise_to_count_ratio": 20,
+            "noise_factor": 400.0,
+            "noise_offset": 0.0
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:climate",
+      "config": {
+        "min_temperature": 20,
+        "fuzzy": true
+      }
+    }
+  }
+}

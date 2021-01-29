@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.decorator;
 
 import java.util.Random;
@@ -24,7 +30,7 @@ public class ClimateDecorator extends Placement<ClimateConfig>
     {
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(((WorldDecoratingHelperAccessor) helper).accessor$getGenerator());
         final ChunkData data = provider.get(pos, ChunkData.Status.CLIMATE);
-        if (config.isValid(data.getAverageTemp(pos), data.getRainfall(pos)))
+        if (config.isValid(data, pos, random))
         {
             return Stream.of(pos);
         }

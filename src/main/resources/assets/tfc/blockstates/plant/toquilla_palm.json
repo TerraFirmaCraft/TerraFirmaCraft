@@ -2,7 +2,7 @@
   "multipart": [
     {
       "when": {
-        "part": "lower|single"
+        "part": "lower"
       },
       "apply": [
         {

@@ -133,6 +133,8 @@ def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wo
         elif block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = String('tfc:wood/leaves/%s' % wood)
             block['Properties']['persistent'] = String('false')
+        else:
+            print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     if not os.path.exists(result_dir):

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.common.capabilities.heat;
@@ -72,7 +73,7 @@ public final class HeatCapability
      */
     public static void addTemp(IHeat instance, float modifier)
     {
-        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) TFCConfig.SERVER.itemHeatingModifier.get();
         instance.setTemperature(temp);
     }
 

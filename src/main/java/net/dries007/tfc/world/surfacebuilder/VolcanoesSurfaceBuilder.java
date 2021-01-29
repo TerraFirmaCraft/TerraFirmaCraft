@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
@@ -31,8 +37,8 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
         if (variants.isVolcanic())
         {
             // Sample volcano noise
-            final float distance = cellNoise.noise(x, z);
-            final float value = cellNoise.get(CellularNoiseType.VALUE);
+            final float distance = cellNoise.noise(x, z, CellularNoiseType.F1);
+            final float value = cellNoise.noise(x, z, CellularNoiseType.VALUE);
             final float easing = VolcanoNoise.calculateEasing(distance);
             final double heightNoise = noise * 2f + startHeight;
             if (value < variants.getVolcanoChance() && easing > 0.7f && heightNoise > variants.getVolcanoBasaltHeight())

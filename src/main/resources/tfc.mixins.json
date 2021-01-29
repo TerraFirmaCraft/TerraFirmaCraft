@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "block.FallingBlockMixin",
+    "block.IceBlockMixin",
     "block.SnowBlockMixin",
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",
@@ -34,7 +35,9 @@
     "client.renderer.FogRendererMixin",
     "client.renderer.WorldRendererMixin",
     "client.world.ClientWorldAccessor",
+    "client.world.ClientWorldInfoMixin",
     "client.world.ClientWorldMixin",
+    "client.world.DimensionRenderInfoAccessor",
     "world.biome.BiomeColorsAccessor"
   ],
   "injectors": {

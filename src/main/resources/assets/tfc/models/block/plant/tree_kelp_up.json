@@ -1,0 +1,40 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/giant_kelp/body",
+		"particle": "tfc:block/plant/giant_kelp/body"
+	},
+	"elements": [
+		{
+			"from": [6, 8, 6],
+			"to": [10, 16, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [17, 16, 14]},
+			"faces": {
+				"north": {"uv": [6, 0, 10, 8], "texture": "#0"},
+				"east": {"uv": [6, 0, 10, 8], "texture": "#0"},
+				"south": {"uv": [6, 0, 10, 8], "texture": "#0"},
+				"west": {"uv": [6, 0, 10, 8], "texture": "#0"},
+				"up": {"uv": [6, 0, 10, 4], "texture": "#0"},
+				"down": {"uv": [6, 12, 10, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 8, 0],
+			"to": [8, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 31, 13]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"west": {"uv": [16, 0, 0, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 8, 8],
+			"to": [16, 16, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-4, 31, 16]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"south": {"uv": [16, 0, 0, 8], "texture": "#0"}
+			}
+		}
+	]
+}

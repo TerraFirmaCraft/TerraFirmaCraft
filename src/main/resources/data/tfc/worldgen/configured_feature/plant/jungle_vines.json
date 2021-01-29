@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "tfc:vines",
+          "config": {
+            "state": "tfc:plant/jungle_vines",
+            "tries": 33,
+            "radius": 7,
+            "minHeight": 64,
+            "maxHeight": 160
+          }
+        },
+        "decorator": {
+          "type": "minecraft:chance",
+          "config": {
+            "chance": 5
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:climate",
+      "config": {
+        "min_temperature": 16,
+        "max_temperature": 32,
+        "min_rainfall": 150,
+        "max_rainfall": 470,
+        "max_forest": "normal",
+        "fuzzy": true
+      }
+    }
+  }
+}

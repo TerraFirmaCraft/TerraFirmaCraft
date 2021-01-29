@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.unit;
 
 import java.awt.*;
@@ -20,6 +26,7 @@ import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.decorator.ClimateConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import org.junit.jupiter.api.Disabled;
@@ -82,7 +89,7 @@ public class FloraNoiseTests
                     List<Plant> possiblePlants = new ArrayList<>();
                     for (Plant p : plants)
                     {
-                        if (climateConfigs.get(p).isValid(temp, rain))
+                        // todo: if (climateConfigs.get(p).isValid(temp, rain, ForestType.NORMAL))
                         {
                             possiblePlants.add(p);
                         }

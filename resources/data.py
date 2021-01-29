@@ -59,8 +59,27 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)  # used by vanilla, provided for consistiency
-        rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
+        def block(block_type: str):
+            return 'tfc:rock/%s/%s' % (block_type, rock)
+
+        rm.block_tag('forge:gravel', block('gravel'))
+        rm.block_tag('forge:stone', block('raw'), block('hardened'))
+        rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
+        rm.block_tag('tfc:breaks_when_isolated', block('raw'))  # only raw rock
+
+    # Plants
+    for plant, plant_data in PLANTS.items():
+        rm.block_tag('plant', 'tfc:plant/%s' % plant)
+        if plant_data.type in {'standard', 'short_grass', 'creeping'}:
+            rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
+
+    # Sand
+    for color in SAND_BLOCK_TYPES:
+        rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
+
+    # Forge you dingus, use vanilla tags
+    rm.block_tag('forge:sand', '#minecraft:sand')
 
     for wood, wood_data in WOODS.items():
         rm.item_tag('firepit_logs', 'tfc:wood/log/' + wood)
@@ -84,6 +103,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('small_spike', 'tfc:calcite')
+    rm.block_tag('sea_bush_plantable_on', '#forge:dirt', '#minecraft:sand', '#forge:gravel')
+    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld', '#minecraft:logs')
+    rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
+    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
+    rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
+    rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
+    rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.surfacebuilder;
@@ -98,13 +99,13 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
                 {
                     // Reached surface. Place top state and switch to subsurface layers
                     surfaceDepth = maxSurfaceDepth;
-                    if (y >= seaLevel)
+                    if (y < seaLevel - 1)
                     {
-                        underState = sandLayers[y % sandLayers.length];
+                        underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
                     else
                     {
-                        underState = underWaterConfig.get().getUnderwaterMaterial();
+                        underState = sandLayers[y % sandLayers.length];
                     }
 
                     chunkIn.setBlockState(pos, underState, false);

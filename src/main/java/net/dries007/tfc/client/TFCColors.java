@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.client;
@@ -28,6 +29,7 @@ import net.dries007.tfc.world.noise.NoiseUtil;
 public final class TFCColors
 {
     public static final ResourceLocation SKY_COLORS_LOCATION = Helpers.identifier("textures/colormap/sky.png");
+    public static final ResourceLocation FOG_COLORS_LOCATION = Helpers.identifier("textures/colormap/fog.png");
     public static final ResourceLocation WATER_COLORS_LOCATION = Helpers.identifier("textures/colormap/water.png");
     public static final ResourceLocation WATER_FOG_COLORS_LOCATION = Helpers.identifier("textures/colormap/water_fog.png");
     public static final ResourceLocation FOLIAGE_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage.png");
@@ -36,11 +38,12 @@ public final class TFCColors
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
 
     public static final ColorResolver FRESH_WATER = createColorResolver(TFCColors::getWaterColor);
-    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterFogColor); // todo: dedicated salt water color difference. This is different enough for now
+    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterColor);
 
     private static final int COLORMAP_SIZE = 256 * 256;
 
     private static int[] SKY_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] WATER_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] WATER_FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_COLORS_CACHE = new int[COLORMAP_SIZE];
@@ -51,6 +54,11 @@ public final class TFCColors
     public static void setSkyColors(int[] skyColors)
     {
         SKY_COLORS_CACHE = skyColors;
+    }
+
+    public static void setFogColors(int[] fogColors)
+    {
+        FOG_COLORS_CACHE = fogColors;
     }
 
     public static void setWaterColors(int[] waterColors)
@@ -86,6 +94,11 @@ public final class TFCColors
     public static int getSkyColor(BlockPos pos)
     {
         return getClimateColor(SKY_COLORS_CACHE, pos);
+    }
+
+    public static int getFogColor(BlockPos pos)
+    {
+        return getClimateColor(FOG_COLORS_CACHE, pos);
     }
 
     public static int getWaterColor(BlockPos pos)

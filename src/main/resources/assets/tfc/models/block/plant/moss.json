@@ -61,7 +61,7 @@
             0
           ],
           "texture": "#layer1",
-          "tintindex": 1
+          "tintindex": 0
         },
         "up": {
           "uv": [
@@ -71,7 +71,7 @@
             16
           ],
           "texture": "#layer1",
-          "tintindex": 1
+          "tintindex": 0
         }
       }
     },
@@ -95,7 +95,7 @@
             0
           ],
           "texture": "#layer2",
-          "tintindex": 2
+          "tintindex": 0
         },
         "up": {
           "uv": [
@@ -105,7 +105,7 @@
             16
           ],
           "texture": "#layer2",
-          "tintindex": 2
+          "tintindex": 0
         }
       }
     }

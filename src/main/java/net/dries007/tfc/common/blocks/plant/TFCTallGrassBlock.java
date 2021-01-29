@@ -1,10 +1,12 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -30,6 +32,8 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
     protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
+    protected static final VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
     public static TFCTallGrassBlock create(IPlant plant, Properties properties)
     {
@@ -124,7 +128,10 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        return getTallShape(state.getValue(AGE), world, pos);
+        Part part = state.getValue(PART);
+        if (part == Part.LOWER)
+            return PLANT_SHAPE;
+        return SHORTER_PLANT_SHAPE;
     }
 
     @Override
@@ -138,5 +145,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super.createBlockStateDefinition(builder);
         builder.add(PART);
+    }
+
+    public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
+    {
+        int age = random.nextInt(3) + 1;
+        world.setBlock(pos, updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlock(pos.above(), updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
     }
 }

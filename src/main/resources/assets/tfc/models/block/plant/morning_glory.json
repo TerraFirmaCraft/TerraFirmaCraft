@@ -63,7 +63,7 @@
             0
           ],
           "texture": "#layer1",
-          "tintindex": 1
+          "tintindex": 0
         },
         "up": {
           "uv": [
@@ -73,7 +73,7 @@
             16
           ],
           "texture": "#layer1",
-          "tintindex": 1
+          "tintindex": 0
         }
       }
     },

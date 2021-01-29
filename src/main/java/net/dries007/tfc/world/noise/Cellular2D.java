@@ -1,7 +1,4 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- *
  * This was originally part of FastNoise (https://github.com/Auburn/FastNoise) and has been included as per the MIT license:
  *
  * MIT License
@@ -30,6 +27,8 @@
 
 package net.dries007.tfc.world.noise;
 
+import it.unimi.dsi.fastutil.HashCommon;
+
 import static net.dries007.tfc.world.noise.NoiseUtil.*;
 
 public class Cellular2D implements INoise2D
@@ -38,10 +37,11 @@ public class Cellular2D implements INoise2D
     private final float jitter;
     private final CellularNoiseType returnType;
 
-    // Last computed values
+    // Last values
+    private float lastX, lastY;
     private float centerX, centerY;
-    private int closestHash;
-    private float distance0, distance1;
+    private int centerHash;
+    private float f1, f2, f3;
 
     // Modifiers
     private float frequency;
@@ -53,7 +53,7 @@ public class Cellular2D implements INoise2D
 
     public Cellular2D(long seed, float jitter, CellularNoiseType returnType)
     {
-        this.seed = (int) seed;
+        this.seed = (int) HashCommon.mix(seed);
         this.jitter = jitter;
         this.returnType = returnType;
         this.frequency = 1;
@@ -71,51 +71,81 @@ public class Cellular2D implements INoise2D
 
     public float get(CellularNoiseType alternateType)
     {
-        return alternateType.calculate(distance0, distance1, closestHash);
+        return alternateType.apply(f1, f2, f3, centerHash);
     }
 
     @Override
     public float noise(float x, float y)
     {
+        return noise(x, y, returnType);
+    }
+
+    public float noise(float x, float y, CellularNoiseType type)
+    {
+        if (lastX == x && lastY == y)
+        {
+            return type.apply(f1, f2, f3, centerHash);
+        }
+        lastX = x;
+        lastY = y;
+
         x *= frequency;
         y *= frequency;
 
-        int xr = NoiseUtil.fastRound(x);
-        int yr = NoiseUtil.fastRound(y);
+        final int xr = NoiseUtil.fastRound(x);
+        final int yr = NoiseUtil.fastRound(y);
 
-        distance0 = Float.MAX_VALUE;
-        distance1 = Float.MAX_VALUE;
-        closestHash = 0;
+        f1 = Float.MAX_VALUE;
+        f2 = Float.MAX_VALUE;
+        f3 = Float.MAX_VALUE;
+        centerHash = 0;
 
-        float cellularJitter = 0.43701595f * jitter;
+        final float cellularJitter = 0.43701595f * jitter;
 
         int xPrimed = (xr - 1) * PRIME_X;
-        int yPrimedBase = (yr - 1) * PRIME_Y;
+        final int yPrimedBase = (yr - 1) * PRIME_Y;
 
         for (int xi = xr - 1; xi <= xr + 1; xi++)
         {
             int yPrimed = yPrimedBase;
-
             for (int yi = yr - 1; yi <= yr + 1; yi++)
             {
-                int hash = hashPrimed(seed, xPrimed, yPrimed);
-                int idx = hash & (255 << 1);
+                final int hash = hashPrimed(seed, xPrimed, yPrimed);
+                final int idx = hash & (255 << 1);
 
-                float cellX = xi + RANDOM_VECTORS_2D[idx] * cellularJitter;
-                float cellY = yi + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
+                final float cellX = xi + RANDOM_VECTORS_2D[idx] * cellularJitter;
+                final float cellY = yi + RANDOM_VECTORS_2D[idx | 1] * cellularJitter;
 
-                float vecX = (x - cellX);
-                float vecY = (y - cellY);
+                final float vecX = (x - cellX);
+                final float vecY = (y - cellY);
+                final float f = vecX * vecX + vecY * vecY;
 
-                float newDistance = vecX * vecX + vecY * vecY;
-
-                distance1 = NoiseUtil.fastMax(NoiseUtil.fastMin(distance1, newDistance), distance0);
-                if (newDistance < distance0)
+                // Minimum effort to compute two things:
+                // 1. The shortest three distances (f1, f2, f3)
+                // 2. The center + hash of the shortest distance
+                if (f < f1)
                 {
-                    distance0 = newDistance;
-                    closestHash = hash;
+                    centerHash = hash;
                     centerX = cellX;
                     centerY = cellY;
+                }
+
+                float temp;
+                if (f < f3)
+                {
+                    f3 = f;
+                    if (f3 < f2)
+                    {
+                        temp = f2;
+                        f2 = f3;
+                        f3 = temp;
+                        if (f2 < f1)
+                        {
+                            temp = f1;
+                            f1 = f2;
+                            f2 = temp;
+                        }
+                    }
                 }
                 yPrimed += PRIME_Y;
             }
@@ -125,7 +155,7 @@ public class Cellular2D implements INoise2D
         centerX /= frequency;
         centerY /= frequency;
 
-        return returnType.calculate(distance0, distance1, closestHash);
+        return type.apply(f1, f2, f3, centerHash);
     }
 
     @Override

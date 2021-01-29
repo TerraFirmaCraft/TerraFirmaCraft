@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.mixin.block;
 
 import java.util.Random;
@@ -15,6 +21,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
@@ -42,7 +49,16 @@ public abstract class SnowBlockMixin extends Block
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
     private void inject$canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
-        if (!cir.getReturnValueZ())
+        if (cir.getReturnValueZ())
+        {
+            // Snow should not survive on ice (this adds to the big existing conditional
+            BlockState belowState = worldIn.getBlockState(pos.below());
+            if (belowState.is(TFCBlocks.SEA_ICE.get()))
+            {
+                cir.setReturnValue(false);
+            }
+        }
+        else
         {
             // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
             if (state.getValue(SnowBlock.LAYERS) == 1)
@@ -103,7 +119,7 @@ public abstract class SnowBlockMixin extends Block
         {
             return 0.6f;
         }
-        return 0;
+        return 1.0f;
     }
 
     /**

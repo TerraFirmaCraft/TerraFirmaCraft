@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.feature.vein;
 
 import java.util.Map;
@@ -38,7 +44,8 @@ public class VeinConfig implements IFeatureConfig
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
     private final Map<Block, IWeighted<BlockState>> states;
-    @Nullable private final Indicator indicator;
+    @Nullable
+    private final Indicator indicator;
     private final int rarity;
     private final int size;
     private final float density;
