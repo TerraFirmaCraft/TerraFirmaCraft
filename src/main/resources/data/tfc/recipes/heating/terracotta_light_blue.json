@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "minecraft:light_blue_terracotta"
+  },
+  "result": {
+    "count": 1,
+    "item": "minecraft:light_blue_glazed_terracotta"
+  },
+  "temperature": 1200
+}

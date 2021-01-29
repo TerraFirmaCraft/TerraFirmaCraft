@@ -30,7 +30,12 @@ def generate(rm: ResourceManager):
         })
         return RecipeContext(rm, res)
 
-    def heat_recipe(name, item: str, result: str, count: int = 1, temperature: float = 1599) -> RecipeContext:
+    def heat_recipe(name, item: str, result: str, count: int = 1, temperature: float = 1599, heat_capacity: float = 0) -> RecipeContext:
+        if heat_capacity > 0:
+            rm.data(('tfc', 'item_heats', name), {
+                'ingredient': utils.ingredient(item),
+                'heat_capacity': heat_capacity
+            })
         return rm.recipe(('heating', name), 'tfc:heating', {
             'ingredient': utils.ingredient(item),
             'result': utils.item_stack((count, result)),
@@ -78,5 +83,14 @@ def generate(rm: ResourceManager):
 
         damage_shapeless('crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
-    heat_recipe('torch_from_stick', 'minecraft:stick', 'minecraft:torch', count=2, temperature=40)
-    heat_recipe('torch_from_stick_bunch', 'tfc:stick_bunch', 'minecraft:torch', count=18, temperature=60)
+    heat_recipe('stick', 'tag!forge:rods/wooden', 'minecraft:torch', count=2, temperature=40, heat_capacity=0.1)
+    heat_recipe('stick_bunch', 'tfc:stick_bunch', 'minecraft:torch', count=18, temperature=60, heat_capacity=0.2)
+    heat_recipe('glass_shard', 'tfc:glass_shard', 'minecraft:glass', temperature=600, heat_capacity=1.0)
+    heat_recipe('unfired_brick', 'tfc:ceramic/unfired_brick', 'minecraft:brick', heat_capacity=1.1)
+    heat_recipe('sand', 'tag!forge:sand', 'minecraft:glass', temperature=600, heat_capacity=1.0)
+    heat_recipe('clay_block', 'minecraft:clay', 'minecraft:terracotta', temperature=600, heat_capacity=1.0)
+    for color in COLORS:
+        heat_recipe('terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 'minecraft:%s_glazed_terracotta' % color, temperature=1200, heat_capacity=1.0)
+    for pottery in PAIRED_POTTERY:
+        heat_recipe(pottery, 'tfc:ceramic/' + pottery, 'tfc:ceramic/unfired_' + pottery, heat_capacity=1.0)
+

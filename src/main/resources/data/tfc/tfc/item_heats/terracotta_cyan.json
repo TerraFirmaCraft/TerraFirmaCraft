@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "forge:rods/wooden"
+    "item": "minecraft:cyan_terracotta"
   },
-  "heat_capacity": 0.1
+  "heat_capacity": 1.0
 }

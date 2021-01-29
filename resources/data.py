@@ -74,9 +74,6 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fuels', 'peat'), fuel('tfc:peat', 2500, 680))
     rm.data(('tfc', 'fuels', 'stick_bundle'), fuel('tfc:stick_bundle', 600, 900))
 
-    rm.data(('tfc', 'item_heats', 'stick'), item_heat('minecraft:stick', 0.1, 1000))
-    rm.data(('tfc', 'item_heats', 'stick_bunch'), item_heat('tfc:stick_bunch', 0.2, 1000))
-
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
@@ -114,13 +111,19 @@ def metal_item(ingredient: str, metal: str, amount: int):
         'amount': amount
     }
 
-def item_heat(ingredient: str, heat_capacity, melt_temperature: int):
-    return {
-        'ingredient': item_stack(ingredient),
-        'heat_capacity': heat_capacity,
-        'forging_temperature': melt_temperature * 0.6,
-        'welding_temperature': melt_temperature * 0.8
-    }
+def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
+    if melt_temperature > 0:
+        return {
+            'ingredient': item_stack(ingredient),
+            'heat_capacity': heat_capacity,
+            'forging_temperature': melt_temperature * 0.6,
+            'welding_temperature': melt_temperature * 0.8
+        }
+    else:
+        return {
+            'ingredient': item_stack(ingredient),
+            'heat_capacity': heat_capacity
+        }
 
 def fuel(ingredient: str, amount: int, temp: float, forge=False, bloomery=False):
     return {

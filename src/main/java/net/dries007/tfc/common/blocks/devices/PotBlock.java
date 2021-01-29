@@ -73,7 +73,7 @@ public class PotBlock extends FirepitBlock
             if (lit)//can't take stuff out if it's lit
             {
                 player.hurt(TFCDamageSources.POT, 1.0F);
-                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH, world.getRandom());
+                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
             }
             else
             {
@@ -92,7 +92,7 @@ public class PotBlock extends FirepitBlock
             if (te != null && player instanceof ServerPlayerEntity)
             {
                 NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP, world.getRandom());
+                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
                 return SUCCESS;
             }
         }
@@ -116,8 +116,8 @@ public class PotBlock extends FirepitBlock
         PotTileEntity pot = Helpers.getTileEntity(world, pos, PotTileEntity.class);
         if (pot != null)
         {
-            world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(TFCItems.POT.get())));
-            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR, world.getRandom());
+            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POT.get()));
+            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
             List<ItemStack> logs = pot.getLogs();
             float[] fields = pot.getFields();
             pot.onRemovePot();

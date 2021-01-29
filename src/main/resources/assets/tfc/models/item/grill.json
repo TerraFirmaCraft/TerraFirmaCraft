@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/grill"
+  "parent": "tfc:block/firepit_grill",
+  "textures": {
+    "layer0": "tfc:item/grill"
+  }
 }

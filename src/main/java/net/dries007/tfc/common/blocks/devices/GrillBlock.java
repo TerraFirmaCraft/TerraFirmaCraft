@@ -60,7 +60,7 @@ public class GrillBlock extends FirepitBlock
             if (lit)//can't take stuff out if it's lit
             {
                 player.hurt(TFCDamageSources.GRILL, 1.0F);
-                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH, world.getRandom());
+                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
             }
             else
             {
@@ -79,7 +79,7 @@ public class GrillBlock extends FirepitBlock
             if (te != null && player instanceof ServerPlayerEntity)
             {
                 NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP, world.getRandom());
+                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
                 return SUCCESS;
             }
         }
@@ -103,8 +103,8 @@ public class GrillBlock extends FirepitBlock
         GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
         if (grill != null)
         {
-            world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get())));
-            Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK, world.getRandom());
+            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
+            Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK);
             List<ItemStack> logs = grill.getLogs();
             float[] fields = grill.getFields();
             grill.onRemoveGrill();

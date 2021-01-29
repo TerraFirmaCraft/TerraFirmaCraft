@@ -1,24 +1,25 @@
 package net.dries007.tfc.common.tileentity;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Queue;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -29,11 +30,14 @@ import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.Fuel;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class FirepitTileEntity extends TickableInventoryTileEntity
+public class FirepitTileEntity extends TickableInventoryTileEntity implements ICalendarTickable
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.firepit");
 
@@ -50,8 +54,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
     protected int airTicks; // ticks remaining for bellows provided air
     protected float burnTemperature; // burn temperature of the current fuel item
     protected float temperature; // current actual temperature
+    private long lastPlayerTick;
     protected final IIntArray syncableData;
     protected HeatingRecipe cachedRecipe;
+    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
     public static final int FIELD_TEMP = 3;
 
@@ -67,6 +73,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
         burnTicks = 0;
         temperature = 0;
         burnTemperature = 0;
+        lastPlayerTick = Calendars.SERVER.getTicks();
 
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
         cachedRecipe = null;
@@ -80,6 +87,17 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
         burnTicks = nbt.getInt("burnTicks");
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
+        if (level != null)
+            cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(SLOT_ITEM_INPUT)));
+        if (nbt.hasUUID("leftover"))
+        {
+            ListNBT surplusItems = nbt.getList("leftover", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < surplusItems.size(); i++)
+            {
+                leftover.add(ItemStack.of(surplusItems.getCompound(i)));
+            }
+        }
         super.load(state, nbt);
     }
 
@@ -91,6 +109,16 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
         nbt.putInt("burnTicks", burnTicks);
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
+        nbt.putLong("lastPlayerTick", lastPlayerTick);
+        if (!leftover.isEmpty())
+        {
+            ListNBT surplusList = new ListNBT();
+            for (ItemStack stack : leftover)
+            {
+                surplusList.add(stack.serializeNBT());
+            }
+            nbt.put("leftover", surplusList);
+        }
         return super.save(nbt);
     }
 
@@ -98,7 +126,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
     public void tick()
     {
         super.tick();
-        //todo:  check for calendar update
+        checkForCalendarUpdate();
         if (level != null && !level.isClientSide)
         {
             BlockState state = level.getBlockState(worldPosition);
@@ -132,7 +160,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
         if (temperature > 0 || burnTemperature > 0)
         {
             // Update temperature
-            float targetTemperature = burnTemperature + airTicks; // bellows raises the max temperature we can reach
+            float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
             if (temperature != targetTemperature)
             {
                 double delta = TFCConfig.SERVER.itemHeatingModifier.get();
@@ -144,6 +172,61 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
             cascadeFuelSlots();
     }
 
+    @Override
+    public void onCalendarUpdate(long deltaPlayerTicks)
+    {
+        if (level == null || !level.getBlockState(worldPosition).getValue(FirepitBlock.LIT)) return;
+        // Consume fuel as dictated by the delta player ticks (don't simulate any input changes), and then extinguish
+        if (burnTicks > deltaPlayerTicks)
+        {
+            burnTicks -= deltaPlayerTicks;
+            return;
+        }
+        else
+        {
+            deltaPlayerTicks -= burnTicks;
+            burnTicks = 0;
+        }
+        needsSlotUpdate = true; // Need to consume fuel
+        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_FUEL_INPUT; i++)
+        {
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = FuelManager.get(fuelStack);
+            if (fuel != null) // will always be true
+            {
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
+                if (fuel.getAmount() > deltaPlayerTicks)
+                {
+                    burnTicks = (int) (fuel.getAmount() - deltaPlayerTicks);
+                    burnTemperature = fuel.getTemperature();
+                    return;
+                }
+                else
+                {
+                    deltaPlayerTicks -= fuel.getAmount();
+                    burnTicks = 0;
+                }
+            }
+        }
+        if (deltaPlayerTicks > 0) // Consumed all fuel, so extinguish and cool instantly
+        {
+            extinguish(level.getBlockState(worldPosition));
+            inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> cap.setTemperature(0f));
+        }
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        lastPlayerTick = tick;
+    }
+
     /**
      * Superclasses should override this so as to still be able to call super.tick() without acting like a blank firepit does
      */
@@ -151,7 +234,6 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
     {
         if (temperature > 0)
         {
-            // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
             ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
             IHeat cap = inputStack.getCapability(HeatCapability.CAPABILITY, null).resolve().orElse(null);
             if (cap != null)
@@ -168,12 +250,28 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
                     inputStack.shrink(1);
                     if (!outputStack.isEmpty())
                     {
-                        //todo: leftovers
-                        inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+                        outputStack = mergeOutputStack(outputStack);
+                        if (!outputStack.isEmpty())
+                            leftover.add(outputStack);
                     }
                 }
             }
         }
+        if (!leftover.isEmpty())
+        {
+            ItemStack outputStack = leftover.peek();
+            outputStack = mergeOutputStack(outputStack); // grab the front of the queue and try to merge right away
+            if (outputStack.isEmpty())
+                leftover.poll(); // if we merged successfully, let's remove it
+        }
+    }
+
+    private ItemStack mergeOutputStack(ItemStack outputStack) //todo: CapabilityFood.mergeItemStacksIgnoreCreationDate
+    {
+        outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false); // insertItem returns what's left over
+        outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+        setAndUpdateSlots(SLOT_ITEM_INPUT); // unfortunately this i
+        return outputStack; // put into the leftover queue after
     }
 
     private void cascadeFuelSlots()
@@ -198,7 +296,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        markDirtyFast();
+        super.setAndUpdateSlots(slot);
         needsSlotUpdate = true;
         if (level != null)
             cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(SLOT_ITEM_INPUT)));
@@ -217,11 +315,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
 
     public void onAddAttachment()
     {
-        BlockPos pos = worldPosition;
         if (level == null) return;
         for (int i = SLOT_ITEM_INPUT; i <= SLOT_OUTPUT_2; i++)
         {
-            level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.7D, pos.getZ() + 0.5D, inventory.getStackInSlot(i)));
+            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
         }
     }
 
@@ -272,7 +369,8 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
                 return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
             case SLOT_OUTPUT_1:
             case SLOT_OUTPUT_2:
-                return stack.getCapability(HeatCapability.CAPABILITY).isPresent() && stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent();
+                return true; // todo: fix
+            //return stack.getCapability(HeatCapability.CAPABILITY).isPresent() && stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent();
             default:
                 return false;
         }
@@ -289,9 +387,9 @@ public class FirepitTileEntity extends TickableInventoryTileEntity
 
     @Nullable
     @Override
-    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_)
+    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
     {
-        return new FirepitContainer(this, p_createMenu_2_, p_createMenu_1_);
+        return new FirepitContainer(this, playerInv, windowID);
     }
 
     public IIntArray getSyncableData()

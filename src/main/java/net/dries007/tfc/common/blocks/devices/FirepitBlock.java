@@ -70,7 +70,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         box(8.5, 0, 13.5, 10.5, 1.5, 15.5),
         box(10.5, 0, 14, 12.5, 0.5, 16),
         box(12.5, 0, 12, 15.5, 1, 15),
-        box(2, 0, 2, 14, 1.1, 14)
+        box(2, 0, 2, 14, 1.0, 14)
     );
 
     public FirepitBlock(ForgeBlockProperties properties)
@@ -112,7 +112,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             if (te != null && player instanceof ServerPlayerEntity)
             {
                 NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP, world.getRandom());
+                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
                 return SUCCESS;
             }
         }
@@ -197,7 +197,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
 
     protected static void tryExtinguish(World world, BlockPos pos, BlockState state)
     {
-        Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH, world.getRandom());
+        Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
         FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
         if (pit != null)
             pit.extinguish(state);
@@ -214,7 +214,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
 
             world.setBlock(pos, TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
-            Helpers.playSound(world, pos, SoundEvents.CHAIN_PLACE, world.getRandom());
+            Helpers.playSound(world, pos, SoundEvents.CHAIN_PLACE);
             GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
             if (grill != null)
             {
@@ -234,7 +234,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
 
             world.setBlock(pos, TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
-            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR, world.getRandom());
+            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
             PotTileEntity pot = Helpers.getTileEntity(world, pos, PotTileEntity.class);
             if (pot != null)
             {

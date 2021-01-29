@@ -3,7 +3,5 @@
   "ingredient": {
     "item": "tfc:stick_bunch"
   },
-  "heat_capacity": 0.2,
-  "forging_temperature": 600.0,
-  "welding_temperature": 800.0
+  "heat_capacity": 0.2
 }

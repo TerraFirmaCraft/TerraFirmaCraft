@@ -24,6 +24,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
@@ -59,6 +60,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -475,11 +477,19 @@ public final class Helpers
         return (rand.nextDouble() - rand.nextDouble()) * 0.5;
     }
 
-    /**
-     * Used to reduce the number of parameters needed to get MC to play a simple sound
-     */
-    public static void playSound(World world, BlockPos pos, SoundEvent sound, Random rand)
+    public static void playSound(World world, BlockPos pos, SoundEvent sound)
     {
+        Random rand = world.getRandom();
         world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)
+    {
+        return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack)
+    {
+        return spawnItem(world, pos, stack, 0.5D);
     }
 }
