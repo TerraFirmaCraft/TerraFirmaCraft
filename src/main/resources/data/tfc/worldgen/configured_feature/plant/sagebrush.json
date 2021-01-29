@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch_density",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -39,7 +39,7 @@
                 "min_temperature": -34,
                 "max_temperature": 50,
                 "min_rainfall": 0,
-                "max_rainfall": 100
+                "max_rainfall": 120
               }
             }
           }

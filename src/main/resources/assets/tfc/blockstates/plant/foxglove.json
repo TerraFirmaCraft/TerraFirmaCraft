@@ -2,16 +2,6 @@
   "multipart": [
     {
       "when": {
-        "part": "single"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_single"
-        }
-      ]
-    },
-    {
-      "when": {
         "stage": "0",
         "part": "upper"
       },

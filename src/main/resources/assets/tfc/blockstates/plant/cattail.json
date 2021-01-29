@@ -66,28 +66,6 @@
           "y": 270
         }
       ]
-    },
-    {
-      "when": {
-        "part": "single"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/cattail_single_0"
-        },
-        {
-          "model": "tfc:block/plant/cattail_single_0",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/cattail_single_0",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/cattail_single_0",
-          "y": 270
-        }
-      ]
     }
   ]
 }

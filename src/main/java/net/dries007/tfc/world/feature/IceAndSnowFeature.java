@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
@@ -6,8 +12,10 @@ import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowyDirtBlock;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -16,6 +24,10 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -29,6 +41,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     private boolean initialized;
 
     private INoise2D temperatureNoise;
+    private INoise2D seaIceNoise;
 
     public IceAndSnowFeature(Codec<NoFeatureConfig> codec)
     {
@@ -54,13 +67,15 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
             {
                 mutablePos.set(x, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, x, z), z);
 
-                final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER) + temperatureNoise.noise(x, z);
+                final float noise = temperatureNoise.noise(x, z);
+                final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER);
                 final Biome biome = worldIn.getBiome(mutablePos);
 
-                final BlockState stateAt = worldIn.getBlockState(mutablePos);
+                BlockState stateAt = worldIn.getBlockState(mutablePos);
+                FluidState fluidAt;
                 if (stateAt.isAir() && snowState.canSurvive(worldIn, mutablePos))
                 {
-                    if (temperature < 0)
+                    if (temperature + noise < 0)
                     {
                         worldIn.setBlock(mutablePos, Blocks.SNOW.defaultBlockState(), 2);
 
@@ -70,17 +85,35 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
                         {
                             worldIn.setBlock(mutablePos, blockstate.setValue(SnowyDirtBlock.SNOWY, true), 2);
                         }
+                        mutablePos.move(0, 1, 0);
                     }
                 }
-                // todo: avoid calling biome.shouldFreeze
-                // todo: handle not completely freezing oceans
-                //else if (biome.shouldFreeze(worldIn, mutablePos, true))
-                //{
-                //    worldIn.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 2);
-                //}
+                else if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                {
+                    if (temperature + noise < 0)
+                    {
+                        SnowPileBlock.convertToPile(worldIn, mutablePos, stateAt);
+                    }
+                }
+
+                mutablePos.move(0, -1, 0);
+                stateAt = worldIn.getBlockState(mutablePos);
+                fluidAt = stateAt.getFluidState();
+
+                if (biome.shouldFreeze(worldIn, mutablePos, true))
+                {
+                    worldIn.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 2);
+                }
+                else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
+                {
+                    final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + MathHelper.clamp(temperature * 0.1f, -0.2f, 0.2f);
+                    if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
+                    {
+                        worldIn.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
+                    }
+                }
             }
         }
-
         return false;
     }
 
@@ -89,10 +122,8 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     {
         if (seed != cachedSeed || !initialized)
         {
-            temperatureNoise = new OpenSimplex2D(seed)
-                .octaves(2)
-                .spread(0.3f)
-                .scaled(-2, 2);
+            temperatureNoise = new OpenSimplex2D(seed).octaves(2).spread(0.3f).scaled(-2, 2);
+            seaIceNoise = new OpenSimplex2D(seed + 1).octaves(3).spread(0.6f);
 
             cachedSeed = seed;
             initialized = true;

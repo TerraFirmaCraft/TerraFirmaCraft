@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.common;
@@ -27,6 +28,14 @@ public class TFCTags
         public static final ITag.INamedTag<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final ITag.INamedTag<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final ITag.INamedTag<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
+        public static final ITag.INamedTag<Block> PLANT = create("plant"); // for some decoration placement
+        public static final ITag.INamedTag<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
+        public static final ITag.INamedTag<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
+        public static final ITag.INamedTag<Block> KELP_TREE = create("kelp_tree");
+        public static final ITag.INamedTag<Block> KELP_FLOWER = create("kelp_flower");
+        public static final ITag.INamedTag<Block> KELP_BRANCH = create("kelp_branch");
+        public static final ITag.INamedTag<Block> WALL_CORALS = create("wall_corals");
+        public static final ITag.INamedTag<Block> CORALS = create("corals");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 

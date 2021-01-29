@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.noise;
@@ -159,6 +160,16 @@ public interface INoise2D
     default INoise2D add(INoise2D other)
     {
         return (x, y) -> INoise2D.this.noise(x, y) + other.noise(x, y);
+    }
+
+    default INoise2D min(INoise2D other)
+    {
+        return (x, y) -> NoiseUtil.fastMin(INoise2D.this.noise(x, y), other.noise(x, y));
+    }
+
+    default INoise2D max(INoise2D other)
+    {
+        return (x, y) -> NoiseUtil.fastMax(INoise2D.this.noise(x, y), other.noise(x, y));
     }
 
     default INoise2D map(FloatUnaryFunction mappingFunction)

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.biome;
@@ -39,6 +40,7 @@ public final class TFCBiomes
 
     // Aquatic biomes
     public static final BiomeVariants OCEAN = register("ocean", builder(seed -> BiomeNoise.ocean(seed, -20, -12)).salty().group(BiomeVariants.LargeGroup.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
+    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder(seed -> BiomeNoise.ocean(seed, -16, -6)).salty().group(BiomeVariants.LargeGroup.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
     public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder(seed -> BiomeNoise.ocean(seed, -38, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
     public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder(seed -> BiomeNoise.oceanRidge(seed, -46, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 

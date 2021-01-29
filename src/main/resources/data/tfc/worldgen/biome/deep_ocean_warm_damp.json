@@ -85,11 +85,30 @@
       "tfc:underwater_large_cave_spike",
       "tfc:water_spring",
       "tfc:lava_spring",
+      "tfc:ice_cave",
       "tfc:calcite",
-      "tfc:mega_calcite"
+      "tfc:mega_calcite",
+      "tfc:icicle",
+      "tfc:underground_loose_rocks",
+      "tfc:underground_guano"
     ],
-    [],
     [
+      "tfc:plant/badderlocks",
+      "tfc:plant/gutweed",
+      "tfc:plant/laminaria",
+      "tfc:plant/manatee_grass",
+      "tfc:plant/sargassum",
+      "tfc:plant/star_grass",
+      "tfc:plant/turtle_grass",
+      "tfc:plant/giant_kelp",
+      "tfc:plant/winged_kelp",
+      "tfc:plant/leafy_kelp"
+    ],
+    [
+      "tfc:surface_loose_rocks",
+      "tfc:mussel",
+      "tfc:clam",
+      "tfc:mollusk",
       "tfc:ice_and_snow"
     ]
   ],

@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/laminaria/large",
+		"2": "tfc:block/plant/laminaria/small",
+		"4": "tfc:block/plant/laminaria/thin",
+		"particle": "tfc:block/plant/laminaria/large"
+	},
+	"elements": [
+		{
+			"from": [3, 2, 0],
+			"to": [3, 17, 10],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [11, 10, 11]},
+			"faces": {
+				"east": {"uv": [4, 1, 14, 16], "texture": "#0"},
+				"west": {"uv": [14, 1, 4, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 0, 1.5],
+			"to": [7, 16, 11.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [15, 8, 13]},
+			"faces": {
+				"east": {"uv": [2, 0, 12, 16], "texture": "#4"},
+				"west": {"uv": [2, 0, 12, 16], "texture": "#4"}
+			}
+		},
+		{
+			"from": [1.5, 0, 7],
+			"to": [11.5, 16, 7],
+			"rotation": {"angle": 0, "axis": "z", "origin": [1, 8, 15]},
+			"faces": {
+				"north": {"uv": [2, 0, 12, 16], "texture": "#4"},
+				"south": {"uv": [2, 0, 12, 16], "texture": "#4"}
+			}
+		},
+		{
+			"from": [4, 2, 3],
+			"to": [14, 17, 3],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [3, 10, 11]},
+			"faces": {
+				"north": {"uv": [14, 1, 4, 16], "texture": "#2"},
+				"south": {"uv": [4, 1, 14, 16], "texture": "#2"}
+			}
+		},
+		{
+			"from": [0, -5, 10],
+			"to": [10, 10, 10],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [11, 3, 18]},
+			"faces": {
+				"north": {"uv": [4, 1, 14, 16], "texture": "#2"},
+				"south": {"uv": [14, 1, 4, 16], "texture": "#2"}
+			}
+		},
+		{
+			"from": [10, -4, 6],
+			"to": [10, 11, 16],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [18, 4, 5]},
+			"faces": {
+				"east": {"uv": [14, 1, 4, 16], "texture": "#0"},
+				"west": {"uv": [4, 1, 14, 16], "texture": "#0"}
+			}
+		}
+	]
+}

@@ -1,7 +1,4 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- *
  * This was originally part of FastNoise (https://github.com/Auburn/FastNoise) and has been included as per the MIT license:
  *
  * MIT License
@@ -31,6 +28,8 @@
 package net.dries007.tfc.world.noise;
 
 
+import it.unimi.dsi.fastutil.HashCommon;
+
 import static net.dries007.tfc.world.noise.NoiseUtil.*;
 
 public class Cellular3D implements INoise3D
@@ -39,7 +38,13 @@ public class Cellular3D implements INoise3D
     private final float jitter;
     private final CellularNoiseType returnType;
 
+    // Last values
+    private float lastX, lastY, lastZ;
     private float centerX, centerY, centerZ;
+    private int centerHash;
+    private float f1, f2, f3;
+
+    // Modifiers
     private float frequency;
 
     public Cellular3D(long seed)
@@ -49,7 +54,7 @@ public class Cellular3D implements INoise3D
 
     public Cellular3D(long seed, float jitter, CellularNoiseType returnType)
     {
-        this.seed = (int) seed;
+        this.seed = (int) HashCommon.mix(seed);
         this.jitter = jitter;
         this.returnType = returnType;
         this.frequency = 1;
@@ -83,7 +88,7 @@ public class Cellular3D implements INoise3D
 
         float distance0 = Float.MAX_VALUE;
         float distance1 = Float.MAX_VALUE;
-        int closestHash = 0;
+        int centerHash = 0;
 
         float cellularJitter = 0.39614353f * jitter;
 
@@ -94,11 +99,9 @@ public class Cellular3D implements INoise3D
         for (int xi = xr - 1; xi <= xr + 1; xi++)
         {
             int yPrimed = yPrimedBase;
-
             for (int yi = yr - 1; yi <= yr + 1; yi++)
             {
                 int zPrimed = zPrimedBase;
-
                 for (int zi = zr - 1; zi <= zr + 1; zi++)
                 {
                     int hash = NoiseUtil.hashPrimed(seed, xPrimed, yPrimed, zPrimed);
@@ -114,7 +117,7 @@ public class Cellular3D implements INoise3D
                     if (newDistance < distance0)
                     {
                         distance0 = newDistance;
-                        closestHash = hash;
+                        centerHash = hash;
                         centerX = vecX + x;
                         centerY = vecY + y;
                         centerZ = vecZ + z;
@@ -130,7 +133,7 @@ public class Cellular3D implements INoise3D
         centerY /= frequency;
         centerZ /= frequency;
 
-        return returnType.calculate(distance0, distance1, closestHash);
+        return returnType.apply(f1, f2, f3, centerHash);
     }
 
     @Override

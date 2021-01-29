@@ -1,0 +1,46 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:ice_cave",
+              "config": {}
+            },
+            "decorator": {
+              "type": "minecraft:range",
+              "config": {
+                "bottom_offset": 20,
+                "top_offset": 0,
+                "maximum": 130
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "tfc:bounded_carving_mask",
+          "config": {
+            "step": "air",
+            "probability": 0.05,
+            "min_y": 0,
+            "max_y": 130
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:climate",
+      "config": {
+        "min_temperature": -50,
+        "max_temperature": 0,
+        "min_rainfall": 0,
+        "max_rainfall": 500
+      }
+    }
+  }
+}

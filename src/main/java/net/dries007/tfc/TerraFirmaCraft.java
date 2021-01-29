@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc;
@@ -11,6 +12,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -32,6 +34,8 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.placer.TFCBlockPlacers;
+import net.dries007.tfc.world.TFCBlockStateProviderTypes;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
@@ -73,6 +77,8 @@ public final class TerraFirmaCraft
         TFCDecorators.DECORATORS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCCarvers.CARVERS.register(modEventBus);
+        TFCBlockStateProviderTypes.BLOCK_STATE_PROVIDER_TYPES.register(modEventBus);
+        TFCBlockPlacers.BLOCK_PLACER_TYPES.register(modEventBus);
         TFCWorldType.WORLD_TYPES.register(modEventBus);
 
         // Init methods
@@ -92,12 +98,25 @@ public final class TerraFirmaCraft
         WorldTrackerCapability.setup();
         ServerCalendar.setup();
         InteractionManager.setup();
-        DispenserBehaviors.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+
+        event.enqueueWork(DispenserBehaviors::syncSetup);
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+    }
+
+    @SubscribeEvent
+    public void onConfigReloading(ModConfig.Reloading event)
+    {
+        TFCConfig.reload();
+    }
+
+    @SubscribeEvent
+    public void onConfigLoading(ModConfig.Loading event)
+    {
+        TFCConfig.reload();
     }
 }

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world;
@@ -450,12 +451,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 {
                     for (int z = 0; z < 16; z++)
                     {
-                        if (y <= surfaceHeightMap[x + 16 * z])
+                        if (y < surfaceHeightMap[x + 16 * z])
                         {
                             section.setBlockState(x, localY, z, fillerBlock, false);
                             filledAny = true;
                         }
-                        else if (y <= SEA_LEVEL)
+                        else if (y < SEA_LEVEL)
                         {
                             section.setBlockState(x, localY, z, fillerFluid, false);
                             filledAny = true;
@@ -488,7 +489,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             for (int z = 0; z < 16; z++)
             {
-                final int landHeight = surfaceHeightMap[x + 16 * z];
+                final int landHeight = surfaceHeightMap[x + 16 * z] - 1;
                 if (landHeight >= SEA_LEVEL)
                 {
                     worldSurface.update(x, landHeight, z, fillerBlock);
@@ -534,7 +535,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                         final int carvingMaskIndex = CarverHelpers.maskIndex(x, y, z);
 
                         BlockState stateAt;
-                        if (y <= SEA_LEVEL)
+                        if (y < SEA_LEVEL)
                         {
                             stateAt = caveFluid;
                             liquidCarvingMask.set(carvingMaskIndex, true);

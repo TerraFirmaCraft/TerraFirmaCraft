@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Random;
@@ -20,7 +26,7 @@ public class MossSpreadingBlock extends Block
             BlockState targetState = world.getBlockState(targetPos);
             if (targetState.getBlock() instanceof IMossGrowingBlock)
             {
-                ((IMossGrowingBlock) targetState.getBlock()).convertToMossy(world, targetPos, targetState);
+                ((IMossGrowingBlock) targetState.getBlock()).convertToMossy(world, targetPos, targetState, true);
             }
         }
     }

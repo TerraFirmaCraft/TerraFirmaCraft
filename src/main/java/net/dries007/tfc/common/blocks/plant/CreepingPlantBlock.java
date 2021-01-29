@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.common.blocks.plant;
@@ -18,7 +19,6 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -28,6 +28,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+
+import net.dries007.tfc.common.TFCTags;
 
 public abstract class CreepingPlantBlock extends PlantBlock
 {
@@ -73,7 +75,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Override
     public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(BlockTags.LEAVES));
+        stateIn = stateIn.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
         return isEmpty(stateIn) ? Blocks.AIR.defaultBlockState() : stateIn;
     }
 
@@ -83,7 +85,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).is(BlockTags.LEAVES))
+            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -123,16 +125,16 @@ public abstract class CreepingPlantBlock extends PlantBlock
     private BlockState updateStateFromSides(IWorld world, BlockPos pos, BlockState state)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        boolean hasLeaves = false;
+        boolean hasEarth = false;
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean leaves = world.getBlockState(mutablePos).is(BlockTags.LEAVES);
+            boolean ground = world.getBlockState(mutablePos).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
-            state = state.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), leaves);
-            hasLeaves |= leaves;
+            state = state.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
+            hasEarth |= ground;
         }
-        return hasLeaves ? state : Blocks.AIR.defaultBlockState();
+        return hasEarth ? state : Blocks.AIR.defaultBlockState();
     }
 
     private boolean isEmpty(BlockState state)

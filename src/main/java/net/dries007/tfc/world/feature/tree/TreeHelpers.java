@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
@@ -33,6 +39,7 @@ public final class TreeHelpers
      * A variant of {@link Template#placeInWorld(IServerWorld, BlockPos, PlacementSettings, Random)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
+    @SuppressWarnings("deprecation")
     public static void placeTemplate(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
         List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();

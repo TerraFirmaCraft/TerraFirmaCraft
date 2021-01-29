@@ -1,0 +1,66 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "minecraft:decorated",
+                  "config": {
+                    "feature": {
+                      "type": "tfc:twisting_vines",
+                      "config": {
+                        "body": "tfc:plant/arundo_plant",
+                        "head": "tfc:plant/arundo",
+                        "tries": 70,
+                        "radius": 7,
+                        "minHeight": 5,
+                        "maxHeight": 8
+                      }
+                    },
+                    "decorator": {
+                      "type": "tfc:near_water",
+                      "config": {
+                        "radius": 6
+                      }
+                    }
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:climate",
+                  "config": {
+                    "min_temperature": 5,
+                    "max_temperature": 22,
+                    "min_rainfall": 100,
+                    "max_rainfall": 500
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:square",
+              "config": {}
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:chance",
+          "config": {
+            "chance": 3
+          }
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
+    }
+  }
+}

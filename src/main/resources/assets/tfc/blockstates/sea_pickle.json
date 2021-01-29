@@ -1,0 +1,140 @@
+{
+  "variants": {
+    "pickles=1,fluid=empty": [
+      {
+        "model": "minecraft:block/dead_sea_pickle"
+      },
+      {
+        "model": "minecraft:block/dead_sea_pickle",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/dead_sea_pickle",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/dead_sea_pickle",
+        "y": 270
+      }
+    ],
+    "pickles=1,fluid=salt_water": [
+      {
+        "model": "minecraft:block/sea_pickle"
+      },
+      {
+        "model": "minecraft:block/sea_pickle",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/sea_pickle",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/sea_pickle",
+        "y": 270
+      }
+    ],
+    "pickles=2,fluid=empty": [
+      {
+        "model": "minecraft:block/two_dead_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/two_dead_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/two_dead_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/two_dead_sea_pickles",
+        "y": 270
+      }
+    ],
+    "pickles=2,fluid=salt_water": [
+      {
+        "model": "minecraft:block/two_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/two_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/two_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/two_sea_pickles",
+        "y": 270
+      }
+    ],
+    "pickles=3,fluid=empty": [
+      {
+        "model": "minecraft:block/three_dead_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/three_dead_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/three_dead_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/three_dead_sea_pickles",
+        "y": 270
+      }
+    ],
+    "pickles=3,fluid=salt_water": [
+      {
+        "model": "minecraft:block/three_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/three_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/three_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/three_sea_pickles",
+        "y": 270
+      }
+    ],
+    "pickles=4,fluid=empty": [
+      {
+        "model": "minecraft:block/four_dead_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/four_dead_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/four_dead_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/four_dead_sea_pickles",
+        "y": 270
+      }
+    ],
+    "pickles=4,fluid=salt_water": [
+      {
+        "model": "minecraft:block/four_sea_pickles"
+      },
+      {
+        "model": "minecraft:block/four_sea_pickles",
+        "y": 90
+      },
+      {
+        "model": "minecraft:block/four_sea_pickles",
+        "y": 180
+      },
+      {
+        "model": "minecraft:block/four_sea_pickles",
+        "y": 270
+      }
+    ]
+  }
+}

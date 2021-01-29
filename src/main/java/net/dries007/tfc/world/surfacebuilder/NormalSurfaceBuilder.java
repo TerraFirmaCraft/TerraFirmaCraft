@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.surfacebuilder;
@@ -60,14 +61,14 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                         topState = Blocks.AIR.defaultBlockState();
                         underState = defaultBlock;
                     }
-                    else if (y >= seaLevel)
+                    else if (y < seaLevel - 1)
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
                     else
                     {
-                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
+                        topState = config.getTopMaterial();
+                        underState = config.getUnderMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
@@ -14,6 +20,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.traits.FastArea;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -39,7 +46,7 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
     public ChunkDataGenerator(long worldSeed, Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
     {
-        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong(), layerSettings);
+        List<IAreaFactory<FastArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong(), layerSettings);
         this.bottomRockLayer = LayerFactory.rocks(rockLayers.get(0), layerSettings);
         this.middleRockLayer = LayerFactory.rocks(rockLayers.get(1), layerSettings);
         this.topRockLayer = LayerFactory.rocks(rockLayers.get(2), layerSettings);

@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.world.surfacebuilder;
@@ -29,6 +30,7 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         // Use underwater config for all locations
@@ -63,14 +65,14 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
                         topState = Blocks.AIR.defaultBlockState();
                         underState = defaultBlock;
                     }
-                    else if (y >= seaLevel)
+                    else if (y < seaLevel - 1)
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        topState = underState = config.getUnderwaterMaterial();
                     }
                     else
                     {
-                        topState = underState = config.getUnderwaterMaterial();
+                        topState = config.getTopMaterial();
+                        underState = config.getUnderMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);
