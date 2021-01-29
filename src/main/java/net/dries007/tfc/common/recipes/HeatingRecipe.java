@@ -1,11 +1,13 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -22,7 +24,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class HeatingRecipe extends SimpleItemRecipe
 {
-    public static final IndirectHashCollection<ItemStack, HeatingRecipe> CACHE = new IndirectHashCollection<>(recipe -> Arrays.stream(recipe.ingredient.getItems()).collect(Collectors.toSet()));
+    public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
     private final float temperature;
 
     public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result, float temperature)
@@ -34,7 +36,7 @@ public class HeatingRecipe extends SimpleItemRecipe
     @Nullable
     public static HeatingRecipe getRecipe(World world, ItemStackRecipeWrapper wrapper)
     {
-        for (HeatingRecipe recipe : CACHE.getAll(wrapper.getStack()))
+        for (HeatingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {
             if (recipe.matches(wrapper, world))
             {
@@ -78,6 +80,11 @@ public class HeatingRecipe extends SimpleItemRecipe
     public IRecipeType<?> getType()
     {
         return TFCRecipeTypes.HEATING;
+    }
+
+    public Collection<Item> getValidItems()
+    {
+        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     public static class Serializer extends RecipeSerializer<HeatingRecipe>

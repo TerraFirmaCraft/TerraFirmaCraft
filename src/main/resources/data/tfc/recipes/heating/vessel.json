@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/vessel"
+  },
+  "result": {
+    "count": 1,
+    "item": "tfc:ceramic/unfired_vessel"
+  },
+  "temperature": 1599
+}

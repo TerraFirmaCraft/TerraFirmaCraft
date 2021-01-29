@@ -2,11 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "minecraft:stick"
+    "tag": "forge:sand"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:torch"
+    "count": 1,
+    "item": "minecraft:glass"
   },
-  "temperature": 40
+  "temperature": 600
 }

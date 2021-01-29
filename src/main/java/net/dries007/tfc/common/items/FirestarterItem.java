@@ -77,7 +77,7 @@ public class FirestarterItem extends Item
                 final List<ItemEntity> usableItems = new ArrayList<>();
 
                 int sticks = 0, kindling = 0;
-                ItemEntity log = null;
+                ItemEntity logEntity = null;
 
                 for (ItemEntity entity : items)
                 {
@@ -94,12 +94,12 @@ public class FirestarterItem extends Item
                         kindling += itemCount;
                         usableItems.add(entity);
                     }
-                    else if (log == null && foundItem.is(TFCTags.Items.FIREPIT_LOGS))
+                    else if (logEntity == null && foundItem.is(TFCTags.Items.FIREPIT_LOGS))
                     {
-                        log = entity;
+                        logEntity = entity;
                     }
                 }
-                if (sticks >= 3 && log != null)
+                if (sticks >= 3 && logEntity != null)
                 {
                     final float kindlingModifier = Math.min(0.1F * (float) kindling, 0.5F);
                     if (random.nextFloat() < chance + kindlingModifier)
@@ -108,16 +108,17 @@ public class FirestarterItem extends Item
                         List<ItemStack> logs = NonNullList.withSize(4, ItemStack.EMPTY);
                         for (int i = 0; i < 4; i++)
                         {
-                            logs.set(i, log.getItem());
-                            log.getItem().shrink(1);
-                            if (log.getItem().getCount() == 0)
+                            logs.set(i, logEntity.getItem().copy());
+                            logEntity.getItem().shrink(1);
+                            if (logEntity.getItem().getCount() == 0)
                             {
-                                log.kill();
+                                logEntity.kill();
                                 break;
                             }
                         }
+                        logs.forEach(log -> log.setCount(1));
                         world.setBlock(abovePos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(TFCBlockStateProperties.LIT, true), 2);
-                        FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+                        FirepitTileEntity pit = Helpers.getTileEntity(world, abovePos, FirepitTileEntity.class);
                         if (pit != null)
                             pit.acceptData(logs, new float[] {0, 0, 0, 0});
                     }

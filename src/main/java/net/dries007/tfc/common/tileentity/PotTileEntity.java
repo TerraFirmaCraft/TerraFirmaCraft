@@ -14,6 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -40,13 +41,18 @@ public class PotTileEntity extends FirepitTileEntity
         super.tick();
     }
 
+    @Override
+    protected void handleCooking()
+    {
+
+    }
+
     public void onRemovePot()
     {
-        BlockPos pos = worldPosition;
         if (level == null) return;
         for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
         {
-            level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.7D, pos.getZ() + 0.5D, inventory.getStackInSlot(i)));
+            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
         }
     }
 
@@ -81,8 +87,8 @@ public class PotTileEntity extends FirepitTileEntity
 
     @Nullable
     @Override
-    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_)
+    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
     {
-        return new PotContainer(this, p_createMenu_2_, p_createMenu_1_);
+        return new PotContainer(this, playerInv, windowID);
     }
 }

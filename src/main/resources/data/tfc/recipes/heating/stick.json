@@ -1,7 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
   "ingredient": {
     "tag": "forge:rods/wooden"
   },
-  "heat_capacity": 0.1
+  "result": {
+    "count": 2,
+    "item": "minecraft:torch"
+  },
+  "temperature": 40
 }

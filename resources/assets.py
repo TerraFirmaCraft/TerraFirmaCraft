@@ -235,7 +235,8 @@ def generate(rm: ResourceManager):
         'functions': [
             loot_tables.set_count(1, 4)
         ],
-    }]).with_item_model()
+    }])
+    rm.item_model('firepit', parent='tfc:block/firepit_unlit')
 
     rm.blockstate_multipart('grill', [
         ({'model': 'tfc:block/firepit_grill'}),
@@ -246,7 +247,8 @@ def generate(rm: ResourceManager):
         'functions': [
             loot_tables.set_count(1, 4)
         ],
-    }, {'entries': 'tfc:wrought_iron_grill'}]).with_item_model()
+    }, {'entries': 'tfc:wrought_iron_grill'}])
+    rm.item_model('grill', parent='tfc:block/firepit_grill')
 
     rm.blockstate_multipart('pot', [
         ({'model': 'tfc:block/firepit_pot'}),
@@ -257,7 +259,8 @@ def generate(rm: ResourceManager):
         'functions': [
             loot_tables.set_count(1, 4)
         ],
-    }, {'entries': 'tfc:ceramic/pot'}]).with_item_model()
+    }, {'entries': 'tfc:ceramic/pot'}])
+    rm.item_model('pot', parent='tfc:block/firepit_pot')
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
