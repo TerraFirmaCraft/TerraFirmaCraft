@@ -71,10 +71,12 @@ def generate(rm: ResourceManager):
 
     rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), 'minecraft:heightmap_world_surface', 'minecraft:square'))
     rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
-        'state': 'minecraft:water'
+        'state': 'minecraft:water',
+        'replace_fluids': [],
     }), decorate_chance(5), 'minecraft:square', 'minecraft:heightmap_world_surface'))
     rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
-        'state': 'minecraft:water'
+        'state': 'minecraft:water',
+        'replace_fluids': [],
     }), decorate_count(3), 'minecraft:square', ('minecraft:range', {'bottom_offset': 16, 'top_offset': 16, 'maximum': 100})))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
@@ -152,6 +154,7 @@ def generate(rm: ResourceManager):
 
     rm.feature('volcano_caldera', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
         'overfill': True,
+        'replace_fluids': ['minecraft:water'],
         'state': 'minecraft:lava'
     }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
 
@@ -388,15 +391,14 @@ def generate(rm: ResourceManager):
         'noise_offset': 0.3
     }), 'minecraft:square', 'minecraft:heightmap_world_surface'))
 
-    # todo: figure out what count_noise_biased actually does, and fix it to use ridge noise (if possible), or otherwise just coat the biome
     rm.feature('coral_reef', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {'features': [
         wg.configure('tfc:coral_tree'),
         wg.configure('tfc:coral_mushroom'),
         wg.configure('tfc:coral_claw')
-    ]}), decorate_climate(min_temp=20, fuzzy=True), ('minecraft:count_noise_biased', {
-        "noise_to_count_ratio": 20,
-        "noise_factor": 400.0,
-        "noise_offset": 0.0
+    ]}), decorate_climate(min_temp=18), ('minecraft:count_noise_biased', {
+        "noise_to_count_ratio": 10,
+        "noise_factor": 200,
+        "noise_offset": 1
     }), 'minecraft:square', 'minecraft:top_solid_heightmap'))
 
     # Groundcover

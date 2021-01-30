@@ -18,6 +18,7 @@ from constants import *
 def main():
     parser = argparse.ArgumentParser(description='Generate resources for TFC')
     parser.add_argument('--clean', action='store_true', dest='clean', help='Clean all auto generated resources')
+    parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Also generate resources into the /out/production/resources directory, creates an asset hotswap')
     args = parser.parse_args()
 
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
@@ -33,6 +34,17 @@ def main():
         print('Clean Aborted')
         return
 
+    generate_all(rm)
+    print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))
+
+    if args.hotswap:
+        # Generate into the /out/production/resources folder, which is used when build + run with Intellij
+        rm = ResourceManager('tfc', resource_dir='../out/production/resources')
+        generate_all(rm)
+        print('Hotswap Finished')
+
+
+def generate_all(rm: ResourceManager):
     # do simple lang keys first, because it's ordered intentionally
     rm.lang(DEFAULT_LANG)
 
@@ -46,8 +58,6 @@ def main():
     collapse_recipes.generate(rm)
 
     rm.flush()
-
-    print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))
 
 
 if __name__ == '__main__':
