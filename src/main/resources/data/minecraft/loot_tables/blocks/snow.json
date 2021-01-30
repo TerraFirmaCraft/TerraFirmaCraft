@@ -37,7 +37,9 @@
       ],
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "condition": "minecraft:entity_properties",
+          "predicate": {},
+          "entity": "this"
         }
       ]
     }

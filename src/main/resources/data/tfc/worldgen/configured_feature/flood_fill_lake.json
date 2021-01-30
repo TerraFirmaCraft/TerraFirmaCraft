@@ -11,7 +11,8 @@
             "feature": {
               "type": "tfc:flood_fill_lake",
               "config": {
-                "state": "minecraft:water"
+                "state": "minecraft:water",
+                "replace_fluids": []
               }
             },
             "decorator": {
