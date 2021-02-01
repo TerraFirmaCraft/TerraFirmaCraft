@@ -60,7 +60,7 @@ public class WorldTracker implements ICapabilitySerializable<NBTTagCompound>
                         {
                             BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) stateAt.getBlock()).getFallingVariant();
                             world.setBlockState(posAt, fallingBlock.getDefaultState());
-                            fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
+                            // fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                             updatedPositions.add(posAt.up());
                         }

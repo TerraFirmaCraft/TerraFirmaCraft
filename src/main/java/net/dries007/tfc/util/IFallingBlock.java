@@ -103,7 +103,6 @@ public interface IFallingBlock
                         worldIn.setBlockToAir(pos);
                         worldIn.setBlockState(pos1, state);
                     }
-                    // worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, this, worldIn.getBlockState(pos1)));
                     worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, pos1, state));
                 }
                 else
