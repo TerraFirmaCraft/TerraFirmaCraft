@@ -63,7 +63,7 @@ file "build.properties" withReader {
 if (System.getenv('VERSION') != null) {
     version = System.getenv('VERSION')
 } else {
-    version = '1.7.10.168'
+    version = 'dev'
 }
 
 group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
@@ -138,7 +138,6 @@ dependencies {
 
     // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
     deobfProvided "curse.maven:hwyla:2568751"
-    deobfProvided "curse.maven:immersive-engineering:2974106"
     //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
     deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
     deobfProvided "vazkii.patchouli:Patchouli:${config.patchouli.version}"
