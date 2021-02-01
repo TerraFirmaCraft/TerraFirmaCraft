@@ -77,8 +77,8 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
         {
             if (world.getBlockState(pos) == fallTile)
             {
-                // world.setBlockToAir(pos);
                 world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(false));
+                world.setBlockToAir(pos);
                 world.destroyBlock(pos, false);
                 world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(true));
             }
