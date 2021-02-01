@@ -209,8 +209,10 @@ public class FallingBlockManager
             {
                 if (!fallablePos.equals(pos))
                 {
-                    worldIn.setBlockToAir(pos); // TODO check if this is needed
+                    worldIn.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(false));
+                    worldIn.setBlockToAir(pos);
                     worldIn.setBlockState(fallablePos, state);
+                    worldIn.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(true));
                 }
                 worldIn.spawnEntity(new EntityFallingBlockTFC(worldIn, fallablePos, state));
                 return true;
