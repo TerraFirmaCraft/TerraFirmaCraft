@@ -85,10 +85,11 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
         // Raw blocks that can't fall also can't pop off
         if (state.getValue(CAN_FALL))
         {
-            for (EnumFacing face : EnumFacing.values())
+            for (EnumFacing face : EnumFacing.VALUES)
             {
-                IBlockState faceState = worldIn.getBlockState(pos.offset(face));
-                if (faceState.getBlock().isSideSolid(faceState, worldIn, pos.offset(face), face.getOpposite()))
+                BlockPos offsetPos = pos.offset(face);
+                IBlockState faceState = worldIn.getBlockState(offsetPos);
+                if (faceState.getBlock().isSideSolid(faceState, worldIn, offsetPos, face.getOpposite()))
                 {
                     return;
                 }

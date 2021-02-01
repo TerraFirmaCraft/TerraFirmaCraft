@@ -384,22 +384,4 @@ public class BlockRockVariant extends Block implements IItemSize
         return Weight.LIGHT; // Stacksize = 32
     }
 
-    protected void onRockSlide(World world, BlockPos pos)
-    {
-        switch (type)
-        {
-            case SAND:
-            case CLAY:
-            case DIRT:
-            case GRASS:
-            case GRAVEL:
-            case CLAY_GRASS:
-            case FARMLAND:
-            case DRY_GRASS:
-                world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                break;
-            case COBBLE:
-                world.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        }
-    }
 }

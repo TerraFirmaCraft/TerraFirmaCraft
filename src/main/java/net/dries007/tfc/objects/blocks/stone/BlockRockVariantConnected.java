@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,8 +25,6 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlockPeat;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockShortGrassTFC;
-import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
-import net.dries007.tfc.util.IFallingBlock;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -143,6 +140,7 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
         return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
+    /*
     @Override
     public boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -180,4 +178,5 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
         }
         return false;
     }
+     */
 }

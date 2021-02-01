@@ -97,7 +97,7 @@ public interface ICollapsableBlock
                         // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                         BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) stateAt.getBlock()).getFallingVariant();
                         world.setBlockState(posAt, fallingBlock.getDefaultState());
-                        fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
+                        // fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
                         secondaryPositions.add(posAt.up());
                         break;
                     }

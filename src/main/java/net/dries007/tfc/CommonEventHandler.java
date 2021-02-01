@@ -92,6 +92,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.compat.patchouli.TFCPatchouliPlugin;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
@@ -129,6 +130,54 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class CommonEventHandler
 {
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
+    @SubscribeEvent
+    public static void onNeighborNotify(BlockEvent.NeighborNotifyEvent event)
+    {
+        IBlockState state = event.getState();
+        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(state);
+        if (spec != null)
+        {
+            if (FallingBlockManager.checkFalling(event.getWorld(), event.getPos(), state))
+            {
+                event.getWorld().playSound(null, event.getPos(), spec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
+        }
+        else
+        {
+            for (EnumFacing notifiedSide : event.getNotifiedSides())
+            {
+                BlockPos offsetPos = event.getPos().offset(notifiedSide);
+                IBlockState notifiedState = event.getWorld().getBlockState(offsetPos);
+                FallingBlockManager.Specification notifiedSpec = FallingBlockManager.getSpecification(notifiedState);
+                if (notifiedSpec != null)
+                {
+                    if (FallingBlockManager.checkFalling(event.getWorld(), offsetPos, notifiedState))
+                    {
+                        event.getWorld().playSound(null, offsetPos, notifiedSpec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event)
+    {
+        if (event.getWorld().isRemote)
+        {
+            return;
+        }
+        IBlockState state = event.getPlacedBlock();
+        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(state);
+        if (spec != null)
+        {
+            if (FallingBlockManager.checkFalling(event.getWorld(), event.getPos(), state))
+            {
+                event.getWorld().playSound(null, event.getPos(), spec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
+        }
+    }
 
     /**
      * Fill thirst after drinking vanilla water bottles or milk

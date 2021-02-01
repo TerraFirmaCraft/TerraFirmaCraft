@@ -7,6 +7,7 @@ package net.dries007.tfc.api.types;
 
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -15,6 +16,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.util.FallingBlockManager;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -125,32 +128,40 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, FALL_VERTICAL, false),
-        ANVIL(Material.ROCK, FALL_VERTICAL, false),
-        SPIKE(Material.ROCK, NO_FALL, false),
-        SMOOTH(Material.ROCK, FALL_VERTICAL, false),
-        COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
-        BRICKS(Material.ROCK, NO_FALL, false),
-        SAND(Material.SAND, FALL_HORIZONTAL, false),
-        GRAVEL(Material.SAND, FALL_HORIZONTAL, false),
-        DIRT(Material.GROUND, FALL_HORIZONTAL, false),
-        GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        CLAY(Material.CLAY, FALL_VERTICAL, false),
-        CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
-        PATH(Material.GROUND, FALL_VERTICAL, false);
+        RAW(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> TFCSounds.ROCK_SLIDE_SHORT)),
+        ANVIL(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> null)),
+        SPIKE(Material.ROCK, NO_FALL, false, null),
+        SMOOTH(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> null)),
+        COBBLE(Material.ROCK, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.ROCK_SLIDE_SHORT)),
+        BRICKS(Material.ROCK, NO_FALL, false, null),
+        SAND(Material.SAND, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        GRAVEL(Material.SAND, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        DIRT(Material.GROUND, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        GRASS(Material.GRASS, FALL_HORIZONTAL, true, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        CLAY(Material.CLAY, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true, new FallingBlockManager.Specification(false, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        FARMLAND(Material.GROUND, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> TFCSounds.DIRT_SLIDE_SHORT)),
+        PATH(Material.GROUND, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> TFCSounds.DIRT_SLIDE_SHORT));
 
         public final Material material;
         public final boolean isGrass;
 
-        private final FallingBlockType gravType;
+        @Deprecated private final FallingBlockType gravType;
+        @Nullable private final FallingBlockManager.Specification fallingSpecification;
 
-        Type(Material material, FallingBlockType gravType, boolean isGrass)
+        @Deprecated
+        Type(Material material, @Deprecated FallingBlockType gravType, boolean isGrass)
+        {
+            this(material, gravType, isGrass, null);
+        }
+
+        Type(Material material, @Deprecated FallingBlockType gravType, boolean isGrass, @Nullable FallingBlockManager.Specification fallingSpecification)
         {
             this.material = material;
             this.gravType = gravType;
             this.isGrass = isGrass;
+            this.fallingSpecification = fallingSpecification;
         }
 
         public boolean canFall()
@@ -158,9 +169,15 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
             return gravType != NO_FALL;
         }
 
+        @Deprecated
         public boolean canFallHorizontal()
         {
             return gravType == FALL_HORIZONTAL;
+        }
+
+        public boolean canFallHorizontally()
+        {
+            return fallingSpecification != null && fallingSpecification.canFallHorizontally();
         }
 
         public Type getNonGrassVersion()
@@ -190,8 +207,15 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
             }
             throw new IllegalArgumentException("You cannot get grass from rock types.");
         }
+
+        @Nullable
+        public FallingBlockManager.Specification getFallingSpecification()
+        {
+            return fallingSpecification;
+        }
     }
 
+    @Deprecated
     public enum FallingBlockType
     {
         NO_FALL,
