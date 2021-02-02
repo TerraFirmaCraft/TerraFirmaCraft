@@ -30,23 +30,26 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.ICollapsableBlock;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
-public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlock
+public class BlockStoneAnvil extends BlockRockVariant
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.875, 1);
 
     public BlockStoneAnvil(Rock.Type type, Rock rock)
     {
         super(type, rock);
+
+        FallingBlockManager.Specification spec = new FallingBlockManager.Specification(type.getFallingSpecification()); // Copy as each raw stone has an unique resultingState
+        FallingBlockManager.registerFallable(this.getDefaultState(), spec);
     }
 
     @Override
@@ -251,9 +254,4 @@ public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlo
         return ItemRock.get(rock);
     }
 
-    @Override
-    public BlockRockVariantFallable getFallingVariant()
-    {
-        return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
-    }
 }

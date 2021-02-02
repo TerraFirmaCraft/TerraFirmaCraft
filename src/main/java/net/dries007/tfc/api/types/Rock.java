@@ -128,10 +128,10 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> TFCSounds.ROCK_SLIDE_SHORT)),
-        ANVIL(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> null)),
+        RAW(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, true, () -> TFCSounds.ROCK_SLIDE_SHORT)),
+        ANVIL(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, true, () -> null)),
         SPIKE(Material.ROCK, NO_FALL, false, null),
-        SMOOTH(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, () -> null)),
+        SMOOTH(Material.ROCK, FALL_VERTICAL, false, new FallingBlockManager.Specification(false, true, () -> null)),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.ROCK_SLIDE_SHORT)),
         BRICKS(Material.ROCK, NO_FALL, false, null),
         SAND(Material.SAND, FALL_HORIZONTAL, false, new FallingBlockManager.Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT)),

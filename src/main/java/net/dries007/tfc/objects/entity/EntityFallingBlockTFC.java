@@ -2,8 +2,9 @@ package net.dries007.tfc.objects.entity;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -16,20 +17,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 
 public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntityAdditionalSpawnData
 {
+
+    private FallingBlockManager.Specification currentSpecification;
+
+    @SideOnly(Side.CLIENT)
+    private IBlockState renderState;
 
     public EntityFallingBlockTFC(World world)
     {
@@ -44,7 +50,17 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
     public EntityFallingBlockTFC(World world, double x, double y, double z, IBlockState fallingBlockState)
     {
         super(world);
+        this.currentSpecification = FallingBlockManager.getSpecification(fallingBlockState);
         this.fallTile = fallingBlockState;
+        BlockPos pos = new BlockPos(this);
+        if (currentSpecification.getResultingState() == null)
+        {
+            TileEntity tile = this.world.getTileEntity(pos);
+            if (tile != null)
+            {
+                this.tileEntityData = tile.serializeNBT(); // Original EntityFallingBlock doesn't even save tile entity data... what...
+            }
+        }
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 0.98F);
         this.setPosition(x + 0.5f, y + (double) ((1.0F - height) / 2.0F), z + 0.5f);
@@ -54,12 +70,14 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
         this.prevPosX = x;
         this.prevPosY = y;
         this.prevPosZ = z;
-        this.setOrigin(new BlockPos(this));
+        this.setOrigin(pos);
     }
 
-    public IBlockState getState()
+    @Nullable
+    @Override
+    public IBlockState getBlock()
     {
-        return getBlock();
+        return this.renderState == null ? this.fallTile : this.renderState;
     }
 
     @Override
@@ -73,18 +91,34 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
 
         BlockPos pos = new BlockPos(this);
 
+        if (this.currentSpecification == null) // For existing compatibility
+        {
+            this.currentSpecification = FallingBlockManager.getSpecification(fallTile);
+            if (this.currentSpecification == null)
+            {
+                // This theoretically should not happen
+                this.currentSpecification = Rock.Type.RAW.getFallingSpecification();
+            }
+        }
+
         if (fallTime++ == 0)
         {
-            if (world.getBlockState(pos) == fallTile)
+            IBlockState checkState = world.getBlockState(pos);
+            // FallingBlockManager.Specification checkSpec = FallingBlockManager.getSpecification(checkState);
+            /*if (checkSpec != null && ((checkSpec.getResultingState() == null && fallTile == checkState) || checkSpec.getResultingState() == fallTile))*/
+            if (FallingBlockManager.getSpecification(checkState) == currentSpecification)
             {
                 world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(false));
                 world.setBlockToAir(pos);
                 world.destroyBlock(pos, false);
                 world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(true));
+                if (!world.isRemote)
+                {
+                    currentSpecification.beginFall(world, pos);
+                }
             }
             else if (!world.isRemote)
             {
-                FallingBlockManager.getSpecification(fallTile).beginFall(world, pos);
                 setDead();
                 return;
             }
@@ -103,7 +137,7 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
             {
                 if (fallTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || fallTime > 600)
                 {
-                    FallingBlockManager.getSpecification(fallTile).endFall(world, pos);
+                    currentSpecification.endFall(world, pos);
                     setDead();
 
                     if (world.getGameRules().getBoolean("doEntityDrops"))
@@ -143,17 +177,16 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
 
                 if (current.getBlock() != Blocks.PISTON_EXTENSION)
                 {
-                    FallingBlockManager.getSpecification(fallTile).endFall(world, pos);
+                    currentSpecification.endFall(world, pos);
                     setDead();
 
                     if (fallThroughCurrentState)
                     {
                         world.destroyBlock(pos, true);
-                        IBlockState placeState = FallingBlockManager.getSpecification(fallTile).getResultingState(fallTile);
-                        world.setBlockState(pos, placeState, 3);
+                        world.setBlockState(pos, currentSpecification.getResultingState(fallTile), 3);
 
                         // Only persist TE data when resulting state is the same as the beginning state
-                        if (placeState == fallTile && tileEntityData != null && block.hasTileEntity(fallTile))
+                        if (tileEntityData != null && block.hasTileEntity(fallTile))
                         {
                             TileEntity te = world.getTileEntity(pos);
                             if (te != null)
@@ -187,9 +220,7 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
 
     private void dropItems(BlockPos pos)
     {
-        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(fallTile);
-        IBlockState dropState = spec.getResultingState(fallTile);
-        spec.getDrops(world, pos, dropState, tileEntityData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+        currentSpecification.getDrops(world, pos, currentSpecification.getResultingState(fallTile), tileEntityData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
     }
 
     @Override
@@ -236,19 +267,19 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
     public void writeSpawnData(ByteBuf buffer)
     {
         if (fallTile != null) {
-            buffer.writeByte(0b1);
+            buffer.writeBoolean(true);
             buffer.writeInt(Block.getStateId(fallTile));
         } else {
-            buffer.writeByte(0b0);
+            buffer.writeBoolean(false);
         }
     }
 
     @Override
     public void readSpawnData(ByteBuf additionalData)
     {
-        byte validation = additionalData.readByte();
-        if (validation == 0b1) {
+        if (additionalData.readBoolean()) {
             fallTile = Block.getStateById(additionalData.readInt());
+            renderState = FallingBlockManager.getSpecification(fallTile).getResultingState(fallTile);
         }
     }
 
