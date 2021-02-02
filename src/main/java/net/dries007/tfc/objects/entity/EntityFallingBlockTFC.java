@@ -97,15 +97,13 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
             if (this.currentSpecification == null)
             {
                 // This theoretically should not happen
-                this.currentSpecification = Rock.Type.RAW.getFallingSpecification();
+                this.currentSpecification = Rock.Type.COBBLE.getFallingSpecification();
             }
         }
 
         if (fallTime++ == 0)
         {
             IBlockState checkState = world.getBlockState(pos);
-            // FallingBlockManager.Specification checkSpec = FallingBlockManager.getSpecification(checkState);
-            /*if (checkSpec != null && ((checkSpec.getResultingState() == null && fallTile == checkState) || checkSpec.getResultingState() == fallTile))*/
             if (FallingBlockManager.getSpecification(checkState) == currentSpecification)
             {
                 world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(false));
