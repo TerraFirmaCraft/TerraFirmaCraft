@@ -10,16 +10,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.util.ICollapsableBlock;
+import net.dries007.tfc.api.util.FallingBlockManager;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockRockSmooth extends BlockRockVariant implements ICollapsableBlock
+public class BlockRockSmooth extends BlockRockVariant
 {
     public static final PropertyBool CAN_FALL = PropertyBool.create("can_fall");
 
@@ -27,19 +25,10 @@ public class BlockRockSmooth extends BlockRockVariant implements ICollapsableBlo
     {
         super(type, rock);
 
+        FallingBlockManager.Specification spec = new FallingBlockManager.Specification(type.getFallingSpecification()); // Copy as each raw stone has an unique resultingState
+        FallingBlockManager.registerFallable(this.getDefaultState().withProperty(CAN_FALL, true), spec);
+
         setDefaultState(getBlockState().getBaseState().withProperty(CAN_FALL, false));
-    }
-
-    @Override
-    public BlockRockVariantFallable getFallingVariant()
-    {
-        return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
-    }
-
-    @Override
-    public boolean canCollapse(World world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getValue(CAN_FALL) && ICollapsableBlock.super.canCollapse(world, pos);
     }
 
     @Override
@@ -53,15 +42,6 @@ public class BlockRockSmooth extends BlockRockVariant implements ICollapsableBlo
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(CAN_FALL) ? 1 : 0;
-    }
-
-    @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (state.getValue(CAN_FALL))
-        {
-            checkCollapsingArea(worldIn, pos);
-        }
     }
 
     @Override
