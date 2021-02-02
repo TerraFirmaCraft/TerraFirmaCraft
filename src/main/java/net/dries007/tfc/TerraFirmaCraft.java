@@ -31,7 +31,6 @@ import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
-import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
@@ -239,7 +238,5 @@ public final class TerraFirmaCraft
 
         // Initialize calendar for the current server
         CalendarTFC.INSTANCE.init(event.getServer());
-
-        // event.getServer().getEntityWorld().addEventListener(FallingBlockManager.NEIGHBOUR_CHANGE_LISTENER);
     }
 }

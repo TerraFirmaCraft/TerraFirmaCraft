@@ -407,8 +407,38 @@ public final class BlocksTFC
             // Add resultingState to the registered collapsable blocks.
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
             {
-                IBlockState cobble = BlockRockVariant.get(rock, COBBLE).getDefaultState();
+                for (Rock.Type type : Rock.Type.values())
+                {
+                    FallingBlockManager.Specification spec = type.getFallingSpecification();
+                    switch (type)
+                    {
+                        case ANVIL:
+                            if (!rock.getRockCategory().hasAnvil())
+                            {
+                                break;
+                            }
+                        case RAW:
+                            spec = new FallingBlockManager.Specification(spec);
+                            spec.setResultingState(BlockRockVariant.get(rock, COBBLE).getDefaultState());
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, RAW), spec);
+                            break;
+                        case SMOOTH:
+                            spec = new FallingBlockManager.Specification(spec);
+                            spec.setResultingState(BlockRockVariant.get(rock, COBBLE).getDefaultState());
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, SMOOTH).getDefaultState().withProperty(BlockRockSmooth.CAN_FALL, true), spec);
+                            break;
+                        default:
+                            Rock.Type nonGrassType = type.getNonGrassVersion();
+                            if (nonGrassType != type)
+                            {
+                                spec = new FallingBlockManager.Specification(spec);
+                                spec.setResultingState(BlockRockVariant.get(rock, nonGrassType).getDefaultState());
+                            }
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, type), spec);
+                    }
+                }
 
+                /*
                 BlockRockVariant.get(rock, RAW).getBlockState().getValidStates().forEach(s -> FallingBlockManager.getSpecification(s).setResultingState(cobble));
                 FallingBlockManager.getSpecification(BlockRockVariant.get(rock, SMOOTH).getDefaultState().withProperty(BlockRockSmooth.CAN_FALL, true)).setResultingState(cobble);
 
@@ -422,9 +452,13 @@ public final class BlocksTFC
                     Rock.Type nonGrassType = type.getNonGrassVersion();
                     if (nonGrassType != type)
                     {
-                        BlockRockVariant.get(rock, type).getBlockState().getValidStates().forEach(s -> FallingBlockManager.getSpecification(s).setResultingState(BlockRockVariant.get(rock, nonGrassType).getDefaultState()));
+                        BlockRockVariant.get(rock, type).getBlockState().getValidStates().forEach(s -> {
+                            FallingBlockManager.getSpecification(s).setResultingState(BlockRockVariant.get(rock, nonGrassType).getDefaultState())
+                        });
                     }
                 }
+
+                 */
             }
         }
 

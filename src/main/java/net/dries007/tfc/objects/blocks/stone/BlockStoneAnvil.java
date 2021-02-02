@@ -49,7 +49,7 @@ public class BlockStoneAnvil extends BlockRockVariant
         super(type, rock);
 
         FallingBlockManager.Specification spec = new FallingBlockManager.Specification(type.getFallingSpecification()); // Copy as each raw stone has an unique resultingState
-        FallingBlockManager.registerFallable(this.getDefaultState(), spec);
+        FallingBlockManager.registerFallable(this, spec);
     }
 
     @Override

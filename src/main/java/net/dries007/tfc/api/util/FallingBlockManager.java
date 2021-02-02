@@ -9,11 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +18,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -43,8 +38,6 @@ import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
 public class FallingBlockManager
 {
 
-    public static final IWorldEventListener NEIGHBOUR_CHANGE_LISTENER = new NeighborChangeListener();
-
     private static final Set<Material> SOFT_MATERIALS = new ObjectOpenHashSet<>(new Material[] { Material.GROUND, Material.SAND, Material.GRASS, Material.CLAY });
     private static final Set<Material> HARD_MATERIALS = new ObjectOpenHashSet<>(new Material[] { Material.IRON, BlockCharcoalPile.CHARCOAL_MATERIAL });
 
@@ -52,14 +45,6 @@ public class FallingBlockManager
 
     private static final Map<IBlockState, SupportBeamImitator> PSEUDO_SUPPORT_BEAMS = new Object2ObjectOpenHashMap<>(0);
     private static final Set<IBlockState> SIDE_SUPPORTS = new ObjectOpenHashSet<>(0);
-
-    static {
-        SIDE_SUPPORTS.add(Blocks.REDSTONE_WIRE.getDefaultState());
-        PSEUDO_SUPPORT_BEAMS.put(Blocks.OBSIDIAN.getDefaultState(), (world, pos) -> true);
-        Specification kek = new Specification(true, () -> SoundEvents.BLOCK_CHEST_OPEN);
-        kek.setResultingState(Blocks.GRAVEL.getDefaultState());
-        FALLABLES.put(Blocks.DIRT.getDefaultState(), kek);
-    }
 
     public static void registerSoftMaterial(Material material)
     {
@@ -528,74 +513,6 @@ public class FallingBlockManager
     public interface SupportBeamImitator
     {
         boolean canSupportBlocks(IBlockAccess world, BlockPos pos);
-    }
-
-    static class NeighborChangeListener implements IWorldEventListener
-    {
-
-        @Override
-        public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
-        {
-            Specification spec = getSpecification(oldState);
-            if (spec != null && !spec.isCollapsable())
-            {
-                if (checkFalling(world, pos, oldState))
-                {
-                    world.playSound(null, pos, spec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                }
-            }
-            /*
-            else
-            {
-                for (EnumFacing notifiedSide : event.getNotifiedSides())
-                {
-                    BlockPos offsetPos = event.getPos().offset(notifiedSide);
-                    IBlockState notifiedState = event.getWorld().getBlockState(offsetPos);
-                    FallingBlockManager.Specification notifiedSpec = FallingBlockManager.getSpecification(notifiedState);
-                    if (notifiedSpec != null && !notifiedSpec.isCollapsable())
-                    {
-                        if (FallingBlockManager.checkFalling(event.getWorld(), offsetPos, notifiedState))
-                        {
-                            event.getWorld().playSound(null, offsetPos, notifiedSpec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                        }
-                    }
-                }
-            }
-             */
-        }
-
-        @Override
-        public void notifyLightSet(BlockPos pos) { }
-
-        @Override
-        public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) { }
-
-        @Override
-        public void playSoundToAllNearExcept(@Nullable EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch) { }
-
-        @Override
-        public void playRecord(SoundEvent soundIn, BlockPos pos) { }
-
-        @Override
-        public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) { }
-
-        @Override
-        public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) { }
-
-        @Override
-        public void onEntityAdded(Entity entityIn) { }
-
-        @Override
-        public void onEntityRemoved(Entity entityIn) { }
-
-        @Override
-        public void broadcastSound(int soundID, BlockPos pos, int data) { }
-
-        @Override
-        public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data) { }
-
-        @Override
-        public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) { }
     }
 
     private FallingBlockManager() { }
