@@ -96,8 +96,8 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
             this.currentSpecification = FallingBlockManager.getSpecification(fallTile);
             if (this.currentSpecification == null)
             {
-                // This theoretically should not happen
-                this.currentSpecification = Rock.Type.COBBLE.getFallingSpecification();
+                setDead();
+                return;
             }
         }
 
