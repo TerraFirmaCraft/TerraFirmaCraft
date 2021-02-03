@@ -28,10 +28,12 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import net.dries007.tfc.client.render.PotTileEntityRenderer;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
@@ -41,6 +43,7 @@ import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
+import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
@@ -112,6 +115,10 @@ public final class ClientEventHandler
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+
+        // TE Rendering
+
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.POT.get(), PotTileEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

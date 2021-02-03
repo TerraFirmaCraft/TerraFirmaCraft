@@ -2,19 +2,29 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.container.PotContainer;
+import net.dries007.tfc.common.recipes.FluidInventoryRecipeWrapper;
+import net.dries007.tfc.common.recipes.IPotRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.types.FuelManager;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -25,6 +35,12 @@ public class PotTileEntity extends FirepitTileEntity
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
+    private IPotRecipe.Output output;
+    private IPotRecipe cachedPotRecipe;
+    private int boilingTicks;
+    protected FluidTank tank;
+    protected final LazyOptional<IFluidHandler> fluidCapability;
+
     public PotTileEntity()
     {
         this(TFCTileEntities.POT.get(), 9, NAME);
@@ -33,27 +49,119 @@ public class PotTileEntity extends FirepitTileEntity
     public PotTileEntity(TileEntityType<?> type, int inventorySlots, ITextComponent defaultName)
     {
         super(type, inventorySlots, defaultName);
+        output = null;
+        cachedPotRecipe = null;
+        boilingTicks = 0;
+        tank = new FluidTank(1000); //todo: predicate whitelist? custom tank impl?
+        fluidCapability = LazyOptional.of(() -> tank);
     }
 
     @Override
-    public void tick()
+    public void load(BlockState state, CompoundNBT nbt)
     {
-        super.tick();
+        tank.readFromNBT(nbt.getCompound("tank"));
+        if (nbt.hasUUID("output"))
+            output.deserializeNBT(nbt);
+        boilingTicks = nbt.getInt("boilingTicks");
+        super.load(state, nbt);
+    }
+
+    @Override
+    public CompoundNBT save(CompoundNBT nbt)
+    {
+        nbt.put("tank", tank.writeToNBT(new CompoundNBT()));
+        if (output != null)
+            nbt.put("output", output.serializeNBT());
+        nbt.putInt("boilingTicks", boilingTicks);
+        return super.save(nbt);
     }
 
     @Override
     protected void handleCooking()
     {
+        IPotRecipe recipe = cachedPotRecipe;
+        if (isBoiling())
+        {
+            if (boilingTicks > recipe.getDuration())
+            {
+                ItemStackHandler inv = convertInventory();
+                FluidStack fluidStack = tank.drain(1000, IFluidHandler.FluidAction.SIMULATE);
+                if (!recipe.isValid(inv, fluidStack))
+                {
+                    quit();
+                    return;
+                }
+                output = recipe.getOutput(inv, fluidStack);
+                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+                    inventory.setStackInSlot(i, ItemStack.EMPTY);
 
+                tank.setFluid(FluidStack.EMPTY);
+                tank.fill(recipe.getOutputFluid(), IFluidHandler.FluidAction.EXECUTE);
+
+                quit();
+                return;
+            }
+            boilingTicks++;
+        }
+        else quit();
     }
 
-    public void onRemovePot()
+    private void quit()
+    {
+        boilingTicks = 0;
+        markForSync();
+    }
+
+    @Override
+    protected void handleQuenching()
+    {
+        quit();
+    }
+
+    public boolean isBoiling() // if we have a recipe, there is no output, and we're hot enough, we boil
+    {
+        return cachedPotRecipe != null && output == null && cachedPotRecipe.isValidTemperature(temperature);
+    }
+
+    public void setFinished()
+    {
+        output = null;
+        markForSync();
+    }
+
+    /**
+     * Distinct from getOutput() in {@link IPotRecipe#getOutput(ItemStackHandler, FluidStack)}
+     * This is a copy of the internal data from calling that function
+     */
+    public IPotRecipe.Output getOutput()
+    {
+        return output;
+    }
+
+    public boolean hasOutput()
+    {
+        return output != null;
+    }
+
+    @Override
+    public void updateCache()
     {
         if (level == null) return;
-        for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
-        {
-            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
-        }
+        FluidInventoryRecipeWrapper wrapper = new FluidInventoryRecipeWrapper(convertInventory(), tank.drain(1000, IFluidHandler.FluidAction.SIMULATE));
+        cachedPotRecipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.POT, wrapper, level).orElse(null);
+    }
+
+    private ItemStackHandler convertInventory()
+    {
+        ItemStackHandler inv = new ItemStackHandler(5);
+        for (int i = 0; i < 5; i++)
+            inv.setStackInSlot(i, inventory.getStackInSlot(i + SLOT_EXTRA_INPUT_START).copy());
+        return inv;
+    }
+
+    public FluidStack getFluidContained()
+    {
+        return tank.getFluid();
     }
 
     @Override
@@ -69,20 +177,17 @@ public class PotTileEntity extends FirepitTileEntity
         {
             return FuelManager.isItemFuel(stack);
         }
-        else
-        {
-            //todo: soup restrictions
-            return true;
-        }
+        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 
     @Override
-    public void clearContent()
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_EXTRA_INPUT_END; i++)
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side == null)
         {
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
+            return fluidCapability.cast();
         }
+        return super.getCapability(cap, side);
     }
 
     @Nullable

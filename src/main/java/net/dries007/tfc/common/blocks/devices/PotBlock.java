@@ -4,34 +4,35 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.IPotRecipe;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
 
-import static net.minecraft.util.ActionResultType.PASS;
-import static net.minecraft.util.ActionResultType.SUCCESS;
+import static net.dries007.tfc.util.Helpers.offset;
+import static net.minecraft.util.ActionResultType.*;
 
 public class PotBlock extends FirepitBlock
 {
@@ -64,8 +65,7 @@ public class PotBlock extends FirepitBlock
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide()) return PASS;
-        if (hand.equals(Hand.OFF_HAND)) return PASS;
+        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
         ItemStack stack = player.getItemInHand(hand);
         boolean lit = state.getValue(LIT);
         if (stack.isEmpty() && player.isShiftKeyDown())
@@ -91,18 +91,53 @@ public class PotBlock extends FirepitBlock
             PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
             if (te != null && player instanceof ServerPlayerEntity)
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
-                return SUCCESS;
+                if (!te.isBoiling())
+                {
+                    if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, null))
+                    {
+                        return CONSUME;
+                    }
+                    else if (te.hasOutput())
+                    {
+                        IPotRecipe.Output output = te.getOutput();
+                        // retrieve the output via right click
+                        if (!output.isEmpty())
+                            output.onExtract(world, pos, stack);
+                        // if there's nothing left, set it to null so we can start the process over
+                        if (output.isEmpty())
+                            te.setFinished();
+                        return SUCCESS;
+                    }
+                    NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                    Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
+                    return SUCCESS;
+                }
             }
         }
-        return PASS;
+        return FAIL;
     }
 
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
-        makeBaseEffects(state, world, pos, rand, 1.0D);
+        super.animateTick(state, world, pos, rand);
+        PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
+        if (te != null && te.isBoiling())
+        {
+            double x = pos.getX() + 0.5;
+            double y = pos.getY();
+            double z = pos.getZ() + 0.5;
+            for (int i = 0; i < rand.nextInt(5) + 4; i++)
+                world.addParticle(ParticleTypes.BUBBLE_POP, false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
+            //todo: steam, custom bubble particle
+            Helpers.playSound(world, pos, SoundEvents.WATER_AMBIENT);
+        }
+    }
+
+    @Override
+    protected double getParticleHeightOffset()
+    {
+        return 0.8D;
     }
 
     @Override
@@ -120,7 +155,7 @@ public class PotBlock extends FirepitBlock
             Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
             List<ItemStack> logs = pot.getLogs();
             float[] fields = pot.getFields();
-            pot.onRemovePot();
+            pot.dump();
 
             world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
             FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);

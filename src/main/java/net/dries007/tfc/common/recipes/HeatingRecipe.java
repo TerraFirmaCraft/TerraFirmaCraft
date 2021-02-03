@@ -2,7 +2,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 

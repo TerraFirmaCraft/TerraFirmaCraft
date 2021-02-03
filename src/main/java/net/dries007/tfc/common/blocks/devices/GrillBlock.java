@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -87,9 +85,16 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
+    protected double getParticleHeightOffset()
+    {
+        return 0.8D;
+    }
+
+    @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
-        makeBaseEffects(state, world, pos, rand, 0.8D);
+        super.animateTick(state, world, pos, rand);
+        //todo: grill smoke
     }
 
     @Override
@@ -107,7 +112,7 @@ public class GrillBlock extends FirepitBlock
             Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK);
             List<ItemStack> logs = grill.getLogs();
             float[] fields = grill.getFields();
-            grill.onRemoveGrill();
+            grill.dump();
 
             world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
             FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);

@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IClearable;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -90,6 +91,15 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
             return inventoryCapability.cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void clearContent()
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
     }
 
     @Override

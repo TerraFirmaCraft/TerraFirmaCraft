@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:simple_pot",
+  "ingredients": [
+    {
+      "item": "tfc:jute"
+    },
+    {
+      "item": "tfc:jute"
+    },
+    {
+      "item": "tfc:straw"
+    }
+  ],
+  "outputs": [
+    {
+      "item": "tfc:glue"
+    },
+    {
+      "item": "tfc:glass_shard"
+    }
+  ],
+  "fluidInput": {
+    "FluidName": "minecraft:water",
+    "Amount": 1000
+  },
+  "fluidOutput": {
+    "FluidName": "tfc:salt_water",
+    "Amount": 1000
+  },
+  "duration": 200,
+  "temperature": 500
+}

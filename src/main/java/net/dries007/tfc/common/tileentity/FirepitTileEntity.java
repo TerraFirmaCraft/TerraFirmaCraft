@@ -15,15 +15,14 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
@@ -41,7 +40,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.firepit");
 
-    //todo: ICalendarTickable, hopper compat without IInventory
+    //todo: hopper compat without IInventory, canInsert/canExtract functions are missing
 
     public static final int SLOT_FUEL_CONSUME = 0; // where fuel is taken by the firepit
     public static final int SLOT_FUEL_INPUT = 3; // where fuel is inserted into the firepit (0-3 are all fuel slots)
@@ -88,8 +87,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
-        if (level != null)
-            cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(SLOT_ITEM_INPUT)));
+        updateCache();
         if (nbt.hasUUID("leftover"))
         {
             ListNBT surplusItems = nbt.getList("leftover", Constants.NBT.TAG_COMPOUND);
@@ -211,8 +209,13 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         if (deltaPlayerTicks > 0) // Consumed all fuel, so extinguish and cool instantly
         {
             extinguish(level.getBlockState(worldPosition));
-            inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> cap.setTemperature(0f));
+            handleQuenching();
         }
+    }
+
+    protected void handleQuenching()
+    {
+        inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> cap.setTemperature(0f));
     }
 
     @Override
@@ -235,9 +238,8 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         if (temperature > 0)
         {
             ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
-            IHeat cap = inputStack.getCapability(HeatCapability.CAPABILITY, null).resolve().orElse(null);
-            if (cap != null)
-            {
+            //IHeat cap = inputStack.getCapability(HeatCapability.CAPABILITY, null).resolve().orElse(null);
+            inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
                 float itemTemp = cap.getTemperature();
                 if (temperature > itemTemp)
                     HeatCapability.addTemp(cap); // heat up the item no matter what
@@ -255,7 +257,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
                             leftover.add(outputStack);
                     }
                 }
-            }
+            });
         }
         if (!leftover.isEmpty())
         {
@@ -270,7 +272,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
     {
         outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false); // insertItem returns what's left over
         outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
-        setAndUpdateSlots(SLOT_ITEM_INPUT); // unfortunately this i
+        setAndUpdateSlots(SLOT_ITEM_INPUT); // unfortunately this is needed
         return outputStack; // put into the leftover queue after
     }
 
@@ -298,6 +300,11 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
     {
         super.setAndUpdateSlots(slot);
         needsSlotUpdate = true;
+        updateCache();
+    }
+
+    public void updateCache()
+    {
         if (level != null)
             cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(SLOT_ITEM_INPUT)));
     }
@@ -313,10 +320,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         }
     }
 
-    public void onAddAttachment()
+    public void dump()
     {
         if (level == null) return;
-        for (int i = SLOT_ITEM_INPUT; i <= SLOT_OUTPUT_2; i++)
+        for (int i = SLOT_ITEM_INPUT; i < inventory.getSlots(); i++)
         {
             Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
         }
@@ -351,6 +358,14 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         needsSlotUpdate = true;
     }
 
+    public void onRainDrop()
+    {
+        if (level == null) return;
+        burnTicks -= TFCConfig.SERVER.rainTicks.get();
+        Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
+    }
+
+
     @Override
     public int getSlotStackLimit(int slot)
     {
@@ -369,19 +384,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
                 return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
             case SLOT_OUTPUT_1:
             case SLOT_OUTPUT_2:
-                return true; // todo: fix
+                return true; // todo: need canInsert/canExtract stuff for this to work properly
             //return stack.getCapability(HeatCapability.CAPABILITY).isPresent() && stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent();
             default:
                 return false;
-        }
-    }
-
-    @Override
-    public void clearContent()
-    {
-        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_OUTPUT_2; i++)
-        {
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 
