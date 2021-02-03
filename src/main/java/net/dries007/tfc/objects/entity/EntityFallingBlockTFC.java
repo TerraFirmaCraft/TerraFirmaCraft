@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -25,14 +26,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 
 public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntityAdditionalSpawnData
 {
 
-    private FallingBlockManager.Specification currentSpecification;
+    private FallingBlockManager.Specification currentSpecification; // Server-side only variable
 
     @SideOnly(Side.CLIENT)
     private IBlockState renderState;
@@ -96,7 +96,7 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
             this.currentSpecification = FallingBlockManager.getSpecification(fallTile);
             if (this.currentSpecification == null)
             {
-                setDead();
+                setDead(); // This will occur when a FALLABLE is removed.
                 return;
             }
         }
@@ -147,9 +147,9 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
             else
             {
                 final IBlockState current = world.getBlockState(pos);
-                boolean fallThroughCurrentState = FallingBlockManager.canFallThrough(world, pos, fallTile.getMaterial(), current);
+                Material material = currentSpecification.getResultingState(fallTile).getMaterial();
 
-                if (fallThroughCurrentState && !current.getBlock().isAir(current, world, pos))
+                if (!current.getBlock().isAir(current, world, pos) && FallingBlockManager.canFallThrough(world, pos, material, current))
                 {
                     world.destroyBlock(pos, true);
                     return;
@@ -158,7 +158,7 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
                 BlockPos downPos = pos.down();
                 IBlockState downState = world.getBlockState(downPos);
 
-                if (!downState.getBlock().isAir(downState, world, downPos) && FallingBlockManager.canFallThrough(world, downPos, fallTile.getMaterial(), downState))
+                if (!downState.getBlock().isAir(downState, world, downPos) && FallingBlockManager.canFallThrough(world, downPos, material, downState))
                 {
                     world.destroyBlock(downPos, true);
                     return;
@@ -178,11 +178,10 @@ public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntity
                     currentSpecification.endFall(world, pos);
                     setDead();
 
-                    if (fallThroughCurrentState)
+                    if (FallingBlockManager.canFallThrough(world, pos, material, current))
                     {
                         world.destroyBlock(pos, true);
                         world.setBlockState(pos, currentSpecification.getResultingState(fallTile), 3);
-
                         // Only persist TE data when resulting state is the same as the beginning state
                         if (tileEntityData != null && block.hasTileEntity(fallTile))
                         {
