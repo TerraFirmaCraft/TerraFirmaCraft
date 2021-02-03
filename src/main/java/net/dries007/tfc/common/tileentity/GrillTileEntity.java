@@ -2,19 +2,19 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.FuelManager;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -25,6 +25,8 @@ public class GrillTileEntity extends FirepitTileEntity
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
+    private final HeatingRecipe[] cachedGrillRecipes;
+
     public GrillTileEntity()
     {
         this(TFCTileEntities.GRILL.get(), 9, NAME);
@@ -33,26 +35,46 @@ public class GrillTileEntity extends FirepitTileEntity
     public GrillTileEntity(TileEntityType<?> type, int inventorySlots, ITextComponent defaultName)
     {
         super(type, inventorySlots, defaultName);
-    }
-
-    @Override
-    public void tick()
-    {
-        super.tick();
+        cachedGrillRecipes = new HeatingRecipe[5];
     }
 
     @Override
     protected void handleCooking()
     {
-
+        for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
+        {
+            ItemStack inputStack = inventory.getStackInSlot(slot);
+            int finalSlot = slot;
+            inputStack.getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> {
+                float itemTemp = cap.getTemperature();
+                if (temperature > itemTemp)
+                    HeatCapability.addTemp(cap);
+                HeatingRecipe recipe = cachedGrillRecipes[finalSlot - SLOT_EXTRA_INPUT_START];
+                if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
+                {
+                    ItemStack output = recipe.assemble(new ItemStackRecipeWrapper(inputStack));
+                    //todo: apply trait WOOD_GRILLED
+                    inventory.setStackInSlot(finalSlot, output);
+                    markForSync();
+                }
+            });
+        }
     }
 
-    public void onRemoveGrill()
+    @Override
+    protected void handleQuenching()
+    {
+        for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
+            inventory.getStackInSlot(slot).getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> cap.setTemperature(0f));
+    }
+
+    @Override
+    public void updateCache()
     {
         if (level == null) return;
         for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
         {
-            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
+            cachedGrillRecipes[i - SLOT_EXTRA_INPUT_START] = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(i)));
         }
     }
 
@@ -65,24 +87,12 @@ public class GrillTileEntity extends FirepitTileEntity
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
+        //todo: grill input restrictions?
         if (slot == SLOT_FUEL_INPUT)
         {
             return FuelManager.isItemFuel(stack);
         }
-        else
-        {
-            //todo: grill restrictions
-            return true;
-        }
-    }
-
-    @Override
-    public void clearContent()
-    {
-        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_EXTRA_INPUT_END; i++)
-        {
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
-        }
+        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 
     @Nullable

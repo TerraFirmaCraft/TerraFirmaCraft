@@ -48,6 +48,7 @@ public class ServerConfig extends CachingConfig
     public final Cache.Int mossyRockSpreadRate;
     // Mechanics - Heat
     public final Cache.Double itemHeatingModifier;
+    public final Cache.Int rainTicks;
     // Mechanics - Collapses
     public final Cache.Boolean enableBlockCollapsing;
     public final Cache.Boolean enableExplosionCollapsing;
@@ -111,6 +112,7 @@ public class ServerConfig extends CachingConfig
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         itemHeatingModifier = wrap(builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE));
+        rainTicks = wrap(builder.apply("rainTicks").comment("Number of burning ticks that is removed when the fire pit is on rain (random ticks). Makes fuel burn faster.").defineInRange("rainTicks", 1000, 0, Integer.MAX_VALUE));
 
         innerBuilder.pop().push("collapses");
 

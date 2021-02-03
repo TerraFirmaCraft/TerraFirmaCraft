@@ -42,6 +42,21 @@ def generate(rm: ResourceManager):
             'temperature': temperature
         })
 
+    def pot_recipe(name: utils.ResourceIdentifier, ingredients: List[str], outputs: List[str], fluid_in: str, fluid_out: str, duration: int, temperature: float) -> RecipeContext:
+        res = utils.resource_location(rm.domain, name)
+        rm.recipe(('simple_pot', name), 'tfc:simple_pot', {
+            'ingredients': [utils.ingredient(i) for i in ingredients],
+            'outputs': [utils.item_stack(i) for i in outputs],
+            'fluidInput': fluid_stack(fluid_in, 1000),
+            'fluidOutput': fluid_stack(fluid_out, 1000),
+            'duration': duration,
+            'temperature': temperature
+        })
+        return RecipeContext(rm, res)
+
+    def fluid_stack(fluid: str, amount: int):
+        return {'FluidName': fluid, 'Amount': amount}
+
     # Rock Things
     for rock in ROCKS.keys():
 
@@ -86,11 +101,15 @@ def generate(rm: ResourceManager):
     heat_recipe('stick', 'tag!forge:rods/wooden', 'minecraft:torch', count=2, temperature=40, heat_capacity=0.1)
     heat_recipe('stick_bunch', 'tfc:stick_bunch', 'minecraft:torch', count=18, temperature=60, heat_capacity=0.2)
     heat_recipe('glass_shard', 'tfc:glass_shard', 'minecraft:glass', temperature=600, heat_capacity=1.0)
-    heat_recipe('unfired_brick', 'tfc:ceramic/unfired_brick', 'minecraft:brick', heat_capacity=1.1)
     heat_recipe('sand', 'tag!forge:sand', 'minecraft:glass', temperature=600, heat_capacity=1.0)
+    heat_recipe('unfired_brick', 'tfc:ceramic/unfired_brick', 'minecraft:brick', heat_capacity=1.1)
+    heat_recipe('unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 'minecraft:flower_pot', heat_capacity=1.0)
+    heat_recipe('unfired_jug', 'tfc:ceramic/unfired_jug', 'tfc:ceramic/jug', heat_capacity=1.0)
+    # todo: crucible
     heat_recipe('clay_block', 'minecraft:clay', 'minecraft:terracotta', temperature=600, heat_capacity=1.0)
     for color in COLORS:
         heat_recipe('terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 'minecraft:%s_glazed_terracotta' % color, temperature=1200, heat_capacity=1.0)
     for pottery in PAIRED_POTTERY:
         heat_recipe(pottery, 'tfc:ceramic/' + pottery, 'tfc:ceramic/unfired_' + pottery, heat_capacity=1.0)
 
+    pot_recipe('test', ['tfc:jute', 'tfc:jute', 'tfc:straw'], ['tfc:glue', 'tfc:glass_shard'], 'minecraft:water', 'tfc:salt_water', 200, 500)

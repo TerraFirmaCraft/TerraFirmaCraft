@@ -9,7 +9,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -81,14 +80,13 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
 
-    //todo: functionality
-
     @Override
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
         if (world.isClientSide()) return SUCCESS;
-        if (hand.equals(Hand.OFF_HAND)) return PASS; // not great but we need to guarantee this method runs just once per click
+        if (hand.equals(Hand.OFF_HAND))
+            return PASS; // not great but we need to guarantee this method runs just once per click
         ItemStack stack = player.getItemInHand(hand);
         boolean lit = state.getValue(LIT);
         if (stack.sameItem(new ItemStack(TFCItems.POT.get())))
@@ -122,15 +120,26 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
-        makeBaseEffects(state, world, pos, rand, 0.35D);
+        makeBaseEffects(state, world, pos, rand);
+
+        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+        if (te != null && state.getValue(LIT) && world.isRainingAt(pos))
+        {
+            te.onRainDrop();
+        }
     }
 
-    protected void makeBaseEffects(BlockState state, World world, BlockPos pos, Random rand, double yOffset)
+    protected double getParticleHeightOffset()
+    {
+        return 0.35D;
+    }
+
+    protected void makeBaseEffects(BlockState state, World world, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
 
         double x = pos.getX() + 0.5;
-        double y = pos.getY() + yOffset;
+        double y = pos.getY() + getParticleHeightOffset();
         double z = pos.getZ() + 0.5;
 
         if (rand.nextInt(10) == 0)
@@ -210,7 +219,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         {
             List<ItemStack> logs = pit.getLogs();
             float[] fields = pit.getFields();
-            pit.onAddAttachment();
+            pit.dump();
 
             world.setBlock(pos, TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
@@ -230,7 +239,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         {
             List<ItemStack> logs = pit.getLogs();
             float[] fields = pit.getFields();
-            pit.onAddAttachment();
+            pit.dump();
 
             world.setBlock(pos, TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
