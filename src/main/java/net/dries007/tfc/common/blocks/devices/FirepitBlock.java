@@ -84,9 +84,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide()) return SUCCESS;
-        if (hand.equals(Hand.OFF_HAND))
-            return PASS; // not great but we need to guarantee this method runs just once per click
+        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
         ItemStack stack = player.getItemInHand(hand);
         boolean lit = state.getValue(LIT);
         if (stack.sameItem(new ItemStack(TFCItems.POT.get())))
@@ -114,30 +112,13 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
                 return SUCCESS;
             }
         }
-        return PASS;
+        return FAIL;
     }
 
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
-        makeBaseEffects(state, world, pos, rand);
-
-        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (te != null && state.getValue(LIT) && world.isRainingAt(pos))
-        {
-            te.onRainDrop();
-        }
-    }
-
-    protected double getParticleHeightOffset()
-    {
-        return 0.35D;
-    }
-
-    protected void makeBaseEffects(BlockState state, World world, BlockPos pos, Random rand)
-    {
         if (!state.getValue(LIT)) return;
-
         double x = pos.getX() + 0.5;
         double y = pos.getY() + getParticleHeightOffset();
         double z = pos.getZ() + 0.5;
@@ -150,6 +131,17 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             world.addParticle(ParticleTypes.SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
         if (rand.nextInt(8) == 1)
             world.addParticle(ParticleTypes.LARGE_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+
+        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+        if (te != null && world.isRainingAt(pos))
+        {
+            te.onRainDrop();
+        }
+    }
+
+    protected double getParticleHeightOffset()
+    {
+        return 0.35D;
     }
 
     @Override

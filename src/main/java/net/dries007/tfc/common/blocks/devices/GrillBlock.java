@@ -7,8 +7,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -18,6 +20,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -28,7 +31,9 @@ import net.dries007.tfc.common.tileentity.GrillTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
 
-import static net.minecraft.util.ActionResultType.PASS;
+import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
+import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
+import static net.minecraft.util.ActionResultType.FAIL;
 import static net.minecraft.util.ActionResultType.SUCCESS;
 
 
@@ -49,8 +54,7 @@ public class GrillBlock extends FirepitBlock
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide()) return PASS;
-        if (hand.equals(Hand.OFF_HAND)) return PASS;
+        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
         ItemStack stack = player.getItemInHand(hand);
         boolean lit = state.getValue(LIT);
         if (stack.isEmpty() && player.isShiftKeyDown())
@@ -81,7 +85,7 @@ public class GrillBlock extends FirepitBlock
                 return SUCCESS;
             }
         }
-        return PASS;
+        return FAIL;
     }
 
     @Override
@@ -94,7 +98,25 @@ public class GrillBlock extends FirepitBlock
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
         super.animateTick(state, world, pos, rand);
-        //todo: grill smoke
+        if (!state.getValue(LIT)) return;
+        GrillTileEntity te = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
+        if (te != null)
+        {
+            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+                {
+                    if (!cap.getStackInSlot(i).isEmpty())
+                    {
+                        double x = pos.getX() + 0.5D;
+                        double y = pos.getY() + 0.5D;
+                        double z = pos.getZ() + 0.5D;
+                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                        world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
+                        break;
+                    }
+                }
+            });
+        }
     }
 
     @Override

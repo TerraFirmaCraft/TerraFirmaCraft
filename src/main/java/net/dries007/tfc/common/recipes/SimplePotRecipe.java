@@ -111,6 +111,7 @@ public class SimplePotRecipe implements IPotRecipe
         return outputFluid.copy();
     }
 
+    //todo: could just add a thing similar to getOutputFluid() that deposits items into the inventory and leave the output handling unused. right now this is good to keep for demonstration purposes
     @Override
     public Output getOutput(ItemStackHandler inv, FluidStack fluid)
     {

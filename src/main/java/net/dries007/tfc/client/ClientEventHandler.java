@@ -33,6 +33,9 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.TFCParticleTypes;
+import net.dries007.tfc.client.render.GrillTileEntityRenderer;
 import net.dries007.tfc.client.render.PotTileEntityRenderer;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -119,6 +122,7 @@ public final class ClientEventHandler
         // TE Rendering
 
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.POT.get(), PotTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.GRILL.get(), GrillTileEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
@@ -189,5 +193,7 @@ public final class ClientEventHandler
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
+
+        Minecraft.getInstance().particleEngine.register(TFCParticleTypes.BUBBLE.get(), BubbleParticle.Factory::new);
     }
 }
