@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
-import crafttweaker.CraftTweakerAPI;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
@@ -219,11 +218,6 @@ public final class TerraFirmaCraft
         // This is the latest point that we can possibly stop creating non-decaying stacks on both server + client
         // It should be safe to use as we're only using it internally
         FoodHandler.setNonDecaying(false);
-
-        if (Loader.isModLoaded("crafttweaker"))
-        {
-            CraftTweakerAPI.tweaker.loadScript(false, "tfc");
-        }
     }
 
     @Mod.EventHandler
