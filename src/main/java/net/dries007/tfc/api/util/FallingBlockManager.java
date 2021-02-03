@@ -374,7 +374,7 @@ public class FallingBlockManager
         private final boolean collapsable;
         private CollapseChecker collapseChecker;
 
-        @Nullable private IBlockState resultingState; // Defaults to base IBlockState, null here as a reference is pretty memory hungry
+        @Nullable private IBlockState resultingState; // Defaults to base IBlockState, null here as a reference as states can be pretty big in memory
         @Nullable private BeginFallCallback beginFallCallback;
         @Nullable private EndFallCallback endFallCallback;
 
