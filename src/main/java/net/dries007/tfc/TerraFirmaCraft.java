@@ -17,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.particle.TFCParticleTypes;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -70,6 +71,7 @@ public final class TerraFirmaCraft
         TFCFluids.FLUIDS.register(modEventBus);
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
+        TFCParticleTypes.PARTICLE_TYPES.register(modEventBus);
         TFCTileEntities.TILE_ENTITIES.register(modEventBus);
 
         TFCBiomes.BIOMES.register(modEventBus);
