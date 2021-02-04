@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "layers=1": {
+      "model": "tfc:block/charcoal_pile/charcoal_height2"
+    },
+    "layers=2": {
+      "model": "tfc:block/charcoal_pile/charcoal_height4"
+    },
+    "layers=3": {
+      "model": "tfc:block/charcoal_pile/charcoal_height6"
+    },
+    "layers=4": {
+      "model": "tfc:block/charcoal_pile/charcoal_height8"
+    },
+    "layers=5": {
+      "model": "tfc:block/charcoal_pile/charcoal_height10"
+    },
+    "layers=6": {
+      "model": "tfc:block/charcoal_pile/charcoal_height12"
+    },
+    "layers=7": {
+      "model": "tfc:block/charcoal_pile/charcoal_height14"
+    },
+    "layers=8": {
+      "model": "tfc:block/charcoal_pile/charcoal_block"
+    }
+  }
+}

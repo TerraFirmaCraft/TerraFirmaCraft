@@ -2120,6 +2120,7 @@
   "block.tfc.dead_wall_torch": "Burnt Out Torch",
   "block.tfc.torch": "Torch",
   "block.tfc.dead_torch": "Burnt Out Torch",
+  "block.tfc.charcoal_pile": "Charcoal Pile",
   "block.tfc.thatch_bed": "Thatch Bed",
   "block.tfc.firepit": "Firepit",
   "block.tfc.grill": "Grill",
