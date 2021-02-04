@@ -46,6 +46,8 @@ public class ServerConfig extends CachingConfig
     // Blocks - Cobblestone
     public final Cache.Boolean enableMossyRockSpreading;
     public final Cache.Int mossyRockSpreadRate;
+    // Blocks - Torch
+    public final Cache.Int torchTime;
     // Mechanics - Heat
     public final Cache.Double itemHeatingModifier;
     public final Cache.Int rainTicks;
@@ -108,6 +110,10 @@ public class ServerConfig extends CachingConfig
 
         enableMossyRockSpreading = wrap(builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true));
         mossyRockSpreadRate = wrap(builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE));
+
+        innerBuilder.pop().push("torch");
+
+        torchTime = wrap(builder.apply("torchTime").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTime", 7200, -1, Integer.MAX_VALUE));
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

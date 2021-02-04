@@ -13,9 +13,11 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.WallTorchBlock;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -46,6 +48,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCDeadWallTorchBlock;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
@@ -53,7 +57,9 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
@@ -417,6 +423,30 @@ public final class ForgeEventHandler
             {
                 world.setBlock(pos, state.setValue(TFCBlockStateProperties.LIT, true), 2);
                 event.setCanceled(true);
+            }
+            else if (state.is(TFCBlocks.TORCH.get()) || state.is(TFCBlocks.WALL_TORCH.get()))
+            {
+                TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+                if (te != null)
+                    te.resetCounter();
+                event.setCanceled(true);
+            }
+            else if (state.is(TFCBlocks.DEAD_TORCH.get()))
+            {
+                world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+                event.setCanceled(true);
+            }
+            else if (state.is(TFCBlocks.DEAD_WALL_TORCH.get()))
+            {
+                Direction direction = state.getValue(TFCDeadWallTorchBlock.FACING);
+                world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+                event.setCanceled(true);
+            }
+
+            Item item = event.getItemStack().getItem();
+            if (item == TFCItems.TORCH.get())
+            {
+                event.setCanceled(true); // just to make sure!
             }
         }
     }

@@ -98,7 +98,7 @@ def generate(rm: ResourceManager):
 
         damage_shapeless('crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
-    heat_recipe('stick', 'tag!forge:rods/wooden', 'minecraft:torch', count=2, temperature=40, heat_capacity=0.1)
+    heat_recipe('stick', 'tag!forge:rods/wooden', 'tfc:torch', count=2, temperature=40, heat_capacity=0.1)
     heat_recipe('stick_bunch', 'tfc:stick_bunch', 'minecraft:torch', count=18, temperature=60, heat_capacity=0.2)
     heat_recipe('glass_shard', 'tfc:glass_shard', 'minecraft:glass', temperature=600, heat_capacity=1.0)
     heat_recipe('sand', 'tag!forge:sand', 'minecraft:glass', temperature=600, heat_capacity=1.0)

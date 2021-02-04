@@ -109,6 +109,10 @@ public final class ClientEventHandler
 
         // Other
         RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(TFCBlocks.TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(TFCBlocks.WALL_TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), RenderType.cutout());
 
         // Fluids
         RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), translucent);

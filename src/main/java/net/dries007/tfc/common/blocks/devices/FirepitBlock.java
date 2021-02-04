@@ -131,12 +131,14 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             world.addParticle(ParticleTypes.SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
         if (rand.nextInt(8) == 1)
             world.addParticle(ParticleTypes.LARGE_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+    }
 
+    @Override
+    public void handleRain(World world, BlockPos pos)
+    {
         FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
         if (te != null && world.isRainingAt(pos))
-        {
             te.onRainDrop();
-        }
     }
 
     protected double getParticleHeightOffset()
