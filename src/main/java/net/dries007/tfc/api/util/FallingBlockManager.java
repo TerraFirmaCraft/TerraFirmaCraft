@@ -17,7 +17,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -43,7 +42,6 @@ public class FallingBlockManager
 
     private static final Map<IBlockState, Specification> FALLABLES = new Object2ObjectOpenHashMap<>();
 
-    private static final Map<IBlockState, SupportBeamImitator> PSEUDO_SUPPORT_BEAMS = new Object2ObjectOpenHashMap<>(0);
     private static final Set<IBlockState> SIDE_SUPPORTS = new ObjectOpenHashSet<>(0);
 
     public static void registerSoftMaterial(Material material)
@@ -77,19 +75,6 @@ public class FallingBlockManager
     public static void registerSideSupports(Block block)
     {
         SIDE_SUPPORTS.addAll(block.getBlockState().getValidStates());
-    }
-
-    public static void registerSupportBeams(IBlockState state, SupportBeamImitator imitator)
-    {
-        PSEUDO_SUPPORT_BEAMS.put(state, imitator);
-    }
-
-    public static void registerSupportBeams(Block block, SupportBeamImitator imitator)
-    {
-        for (IBlockState state : block.getBlockState().getValidStates())
-        {
-            PSEUDO_SUPPORT_BEAMS.put(state, imitator);
-        }
     }
 
     @Nullable
@@ -508,11 +493,6 @@ public class FallingBlockManager
         {
             boolean canCollapse(World world, BlockPos collapsePos);
         }
-    }
-
-    public interface SupportBeamImitator
-    {
-        boolean canSupportBlocks(IBlockAccess world, BlockPos pos);
     }
 
     private FallingBlockManager() { }
