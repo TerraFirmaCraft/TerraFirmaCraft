@@ -45,9 +45,9 @@
         "decorator": {
           "type": "minecraft:count_noise_biased",
           "config": {
-            "noise_to_count_ratio": 20,
-            "noise_factor": 400.0,
-            "noise_offset": 0.0
+            "noise_to_count_ratio": 10,
+            "noise_factor": 200,
+            "noise_offset": 1
           }
         }
       }
@@ -55,8 +55,7 @@
     "decorator": {
       "type": "tfc:climate",
       "config": {
-        "min_temperature": 20,
-        "fuzzy": true
+        "min_temperature": 18
       }
     }
   }

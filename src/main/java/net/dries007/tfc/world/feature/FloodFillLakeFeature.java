@@ -88,7 +88,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 
     private boolean floodFill(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos, FloodFillLakeConfig config)
     {
-        boolean result = floodFillLayer(worldIn, startPos, box, filled, mutablePos);
+        boolean result = floodFillLayer(worldIn, startPos, box, filled, mutablePos, config);
         if (!result)
         {
             return false; // Failed the initial flood fill, exit early
@@ -103,7 +103,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         startPos = startPos.above();
         int prevSize = filled.size();
 
-        while (floodFillLayer(worldIn, startPos, box, nextFilled, mutablePos))
+        while (floodFillLayer(worldIn, startPos, box, nextFilled, mutablePos, config))
         {
             filled.addAll(nextFilled);
             if (prevSize == filled.size())
@@ -116,10 +116,10 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         return true;
     }
 
-    private boolean floodFillLayer(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos)
+    private boolean floodFillLayer(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos, FloodFillLakeConfig config)
     {
         // First check the start position, this must be fillable
-        if (!isFloodFillable(worldIn.getBlockState(startPos)))
+        if (!isFloodFillable(worldIn.getBlockState(startPos), config))
         {
             return false;
         }
@@ -139,7 +139,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                 if (!filled.contains(mutablePos) && mutablePos.getY() <= maximumY)
                 {
                     final BlockState stateAt = worldIn.getBlockState(mutablePos);
-                    if (isFloodFillable(stateAt))
+                    if (isFloodFillable(stateAt, config))
                     {
                         if (box.isInside(mutablePos))
                         {
@@ -160,8 +160,8 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         return !filled.isEmpty();
     }
 
-    private boolean isFloodFillable(BlockState state)
+    private boolean isFloodFillable(BlockState state, FloodFillLakeConfig config)
     {
-        return !state.getMaterial().isSolid() && !state.getMaterial().isLiquid();
+        return !state.getMaterial().isSolid() && config.shouldReplace(state.getFluidState().getType());
     }
 }
