@@ -92,6 +92,29 @@ public class CTFallingBlockManager
         FallingBlockManager.registerFallable(block, existingSpec);
     }
 
+    @ZenMethod
+    public static void registerSideSupport(IBlockState state)
+    {
+        FallingBlockManager.registerSideSupports((net.minecraft.block.state.IBlockState) state.getInternal());
+    }
+
+    @ZenMethod
+    public static void registerSideSupport(IBlockDefinition block)
+    {
+        FallingBlockManager.registerSideSupports((Block) block.getInternal());
+    }
+
+    @ZenMethod
+    public static void registerSideSupport(String blockId)
+    {
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+        if (block == null)
+        {
+            throw new IllegalArgumentException(blockId + " is not a valid Block.");
+        }
+        FallingBlockManager.registerSideSupports(block);
+    }
+
     @ZenRegister
     @ZenClass("mods.terrafirmacraft.fallingblock.Specification")
     public static class CTSpecification
