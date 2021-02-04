@@ -77,6 +77,36 @@ public class FallingBlockManager
         SIDE_SUPPORTS.addAll(block.getBlockState().getValidStates());
     }
 
+    public static void removeSoftMaterial(Material material)
+    {
+        SOFT_MATERIALS.remove(material);
+    }
+
+    public static void removeHardMaterial(Material material)
+    {
+        HARD_MATERIALS.remove(material);
+    }
+
+    public static void removeFallable(IBlockState state)
+    {
+        FALLABLES.remove(state);
+    }
+
+    public static void removeFallable(Block block)
+    {
+        block.getBlockState().getValidStates().forEach(FALLABLES::remove);
+    }
+
+    public static void removeSideSupport(IBlockState state)
+    {
+        SIDE_SUPPORTS.remove(state);
+    }
+
+    public static void removeSideSupport(Block block)
+    {
+        block.getBlockState().getValidStates().forEach(SIDE_SUPPORTS::remove);
+    }
+
     @Nullable
     public static Specification getSpecification(IBlockState state)
     {
