@@ -44,10 +44,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.TFCEventFactory;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.GroundcoverBlockType;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.ThatchBedBlock;
+import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
@@ -158,6 +155,35 @@ public final class InteractionManager
                 if (snow instanceof BlockItem)
                 {
                     return ((BlockItem) snow).place(blockContext);
+                }
+                return ActionResultType.FAIL;
+            }
+        });
+
+        register(Items.CHARCOAL, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && !player.abilities.mayBuild)
+            {
+                return ActionResultType.PASS;
+            }
+            else
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final BlockState stateAt = world.getBlockState(pos);
+                if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
+                {
+                    int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
+                    if (layers != 8)
+                    {
+                        world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
+                        return ActionResultType.SUCCESS;
+                    }
+                }
+                else if (world.isEmptyBlock(pos.above()))
+                {
+                    world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    return ActionResultType.SUCCESS;
                 }
                 return ActionResultType.FAIL;
             }

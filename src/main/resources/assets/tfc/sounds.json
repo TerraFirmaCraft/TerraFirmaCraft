@@ -192,7 +192,7 @@
       "tfc:frog1"
     ]
   },
-  "block.charcoal.break": {
+  "charcoal_break": {
     "category": "block",
     "sounds": [
       {
@@ -209,7 +209,7 @@
       }
     ]
   },
-  "block.charcoal.fall": {
+  "charcoal_fall": {
     "category": "block",
     "sounds": [
       {
@@ -226,7 +226,7 @@
       }
     ]
   },
-  "block.charcoal.hit": {
+  "charcoal_hit": {
     "category": "block",
     "sounds": [
       {
@@ -243,7 +243,7 @@
       }
     ]
   },
-  "block.charcoal.place": {
+  "charcoal_place": {
     "category": "block",
     "sounds": [
       {
@@ -260,7 +260,7 @@
       }
     ]
   },
-  "block.charcoal.step": {
+  "charcoal_step": {
     "category": "block",
     "sounds": [
       {
