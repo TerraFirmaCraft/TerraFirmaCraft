@@ -382,6 +382,11 @@ def generate(rm: ResourceManager):
                     'conditions': [silk_touch()],
                     'name': 'minecraft:snow'
                 }, 'minecraft:snowball'])
+            }],
+            'conditions': [{
+                'condition': 'minecraft:entity_properties',
+                'predicate': {},
+                'entity': 'this'
             }]
         })
 
