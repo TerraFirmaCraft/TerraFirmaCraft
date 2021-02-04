@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -31,6 +33,7 @@ public class TFCTileEntities
     public static final RegistryObject<TileEntityType<FirepitTileEntity>> FIREPIT = register("firepit", FirepitTileEntity::new, TFCBlocks.FIREPIT);
     public static final RegistryObject<TileEntityType<GrillTileEntity>> GRILL = register("grill", GrillTileEntity::new, TFCBlocks.GRILL);
     public static final RegistryObject<TileEntityType<PotTileEntity>> POT = register("pot", PotTileEntity::new, TFCBlocks.POT);
+    public static final RegistryObject<TileEntityType<TickCounterTileEntity>> TICK_COUNTER = register("tick_counter", TickCounterTileEntity::new, Arrays.asList(TFCBlocks.TORCH, TFCBlocks.WALL_TORCH));
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> factory, Supplier<? extends Block> block)

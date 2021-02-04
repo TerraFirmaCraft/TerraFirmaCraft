@@ -6,7 +6,7 @@
   },
   "result": {
     "count": 2,
-    "item": "minecraft:torch"
+    "item": "tfc:torch"
   },
   "temperature": 40
 }

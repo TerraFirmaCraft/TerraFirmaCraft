@@ -215,6 +215,25 @@ def generate(rm: ResourceManager):
         rm.blockstate(('alabaster', 'stained', color + '_alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_alabaster_bricks').with_lang(lang('%s Alabaster Bricks', color))
         rm.blockstate(('alabaster', 'stained', color + '_polished_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_polished_alabaster').with_lang(lang('%s Polished Alabaster', color))
 
+    rm.item_model('torch', 'minecraft:block/torch')
+    rm.item_model('dead_torch', 'tfc:block/torch_off')
+    rm.block_model('dead_torch', parent='minecraft:block/template_torch', textures={'torch': 'tfc:block/torch_off'})
+    rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
+    rm.blockstate('wall_torch', variants={
+        'facing=east': {'model': 'minecraft:block/wall_torch'},
+        'facing=north': {'model': 'minecraft:block/wall_torch', 'y': 270},
+        'facing=south': {'model': 'minecraft:block/wall_torch', 'y': 90},
+        'facing=west': {'model': 'minecraft:block/wall_torch', 'y': 180}
+    }).with_lang(lang('Torch')).with_block_loot('minecraft:stick')
+    rm.blockstate('dead_wall_torch', variants={
+        'facing=east': {'model': 'tfc:block/dead_wall_torch'},
+        'facing=north': {'model': 'tfc:block/dead_wall_torch', 'y': 270},
+        'facing=south': {'model': 'tfc:block/dead_wall_torch', 'y': 90},
+        'facing=west': {'model': 'tfc:block/dead_wall_torch', 'y': 180}
+    }).with_lang(lang('Torch')).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch')).with_block_loot('tfc:torch')
+    rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
+    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
+
     block = rm.block_model('thatch_bed').with_item_model().with_lang(lang('Thatch Bed'))
     block.with_block_loot({
         'entries': [{
