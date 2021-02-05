@@ -13,6 +13,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.ItemSizeHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 
@@ -22,10 +23,10 @@ public class ItemBlockTFC extends ItemBlock implements IItemSize
 
     public ItemBlockTFC(Block block)
     {
-        this(block, block instanceof IItemSize ? (IItemSize) block : null);
+        this(block, block instanceof IItemSize ? (IItemSize) block : ItemSizeHandler.get(Size.SMALL, Weight.LIGHT, true));
     }
 
-    public ItemBlockTFC(Block block, @Nullable IItemSize size)
+    public ItemBlockTFC(Block block, IItemSize size)
     {
         super(block);
 
@@ -36,20 +37,20 @@ public class ItemBlockTFC extends ItemBlock implements IItemSize
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return size != null ? size.getSize(stack) : Size.SMALL; // Stored everywhere
+        return size.getSize(stack);
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return size != null ? size.getWeight(stack) : Weight.LIGHT; // Stacksize = 32
+        return size.getWeight(stack);
     }
 
     @Override
     public boolean canStack(@Nonnull ItemStack stack)
     {
-        return size == null || size.canStack(stack);
+        return size.canStack(stack);
     }
 
     /**
@@ -58,6 +59,6 @@ public class ItemBlockTFC extends ItemBlock implements IItemSize
     @Override
     public int getItemStackLimit(ItemStack stack)
     {
-        return getStackSize(stack);
+        return getWeight(stack).stackSize;
     }
 }
