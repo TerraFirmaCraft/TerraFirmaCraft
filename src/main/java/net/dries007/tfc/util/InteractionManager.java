@@ -43,6 +43,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.TFCEventFactory;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -177,12 +178,14 @@ public final class InteractionManager
                     if (layers != 8)
                     {
                         world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
+                        Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                         return ActionResultType.SUCCESS;
                     }
                 }
-                else if (world.isEmptyBlock(pos.above()))
+                if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
                 {
                     world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                     return ActionResultType.SUCCESS;
                 }
                 return ActionResultType.FAIL;
@@ -201,7 +204,6 @@ public final class InteractionManager
         // todo: hide tag right click -> generic scraping recipe
         // todo: knapping tags
         // todo: log piles
-        // todo: charcoal piles
     }
 
     public static void register(BlockItemPlacement wrapper)
