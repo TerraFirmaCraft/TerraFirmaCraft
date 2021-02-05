@@ -1,14 +1,15 @@
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SnowBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+
+import net.dries007.tfc.client.TFCSoundTypes;
 
 public class CharcoalPileBlock extends SnowBlock
 {
@@ -34,5 +35,36 @@ public class CharcoalPileBlock extends SnowBlock
             return true;
         }
         return world.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (!worldIn.isClientSide() && facing == Direction.DOWN && facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
+        {
+            int layersAt = stateIn.getValue(LAYERS);
+            int layersUnder = facingState.getValue(LAYERS);
+            if (layersUnder < 8)
+            {
+                if (layersUnder + layersAt <= 8)
+                {
+                    worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
+                    return Blocks.AIR.defaultBlockState();
+                }
+                else
+                {
+                    worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
+                    return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
+                }
+            }
+        }
+        return stateIn;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public SoundType getSoundType(BlockState state)
+    {
+        return TFCSoundTypes.CHARCOAL;
     }
 }

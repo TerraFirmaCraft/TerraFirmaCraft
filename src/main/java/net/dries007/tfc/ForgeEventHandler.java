@@ -13,9 +13,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.WallTorchBlock;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,9 +46,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCDeadWallTorchBlock;
+import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
-import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -438,7 +435,7 @@ public final class ForgeEventHandler
             }
             else if (state.is(TFCBlocks.DEAD_WALL_TORCH.get()))
             {
-                Direction direction = state.getValue(TFCDeadWallTorchBlock.FACING);
+                Direction direction = state.getValue(DeadWallTorchBlock.FACING);
                 world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
                 event.setCanceled(true);
             }

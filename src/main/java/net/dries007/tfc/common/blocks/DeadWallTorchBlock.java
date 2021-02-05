@@ -8,9 +8,9 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TFCDeadWallTorchBlock extends WallTorchBlock
+public class DeadWallTorchBlock extends WallTorchBlock
 {
-    public TFCDeadWallTorchBlock(Properties properties, IParticleData particle)
+    public DeadWallTorchBlock(Properties properties, IParticleData particle)
     {
         super(properties, particle);
     }
