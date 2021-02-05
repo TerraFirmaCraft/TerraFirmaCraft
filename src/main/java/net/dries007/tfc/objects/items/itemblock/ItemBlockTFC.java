@@ -23,7 +23,7 @@ public class ItemBlockTFC extends ItemBlock implements IItemSize
 
     public ItemBlockTFC(Block block)
     {
-        this(block, block instanceof IItemSize ? (IItemSize) block : ItemSizeHandler.get(Size.SMALL, Weight.LIGHT, true));
+        this(block, block instanceof IItemSize ? (IItemSize) block : ItemSizeHandler.getDefault());
     }
 
     public ItemBlockTFC(Block block, IItemSize size)
