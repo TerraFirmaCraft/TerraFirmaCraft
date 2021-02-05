@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.stone;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -40,64 +41,74 @@ public class BlockRockVariantConnected extends BlockRockVariantFallable
     public static final PropertyBool SOUTH = PropertyBool.create("south");
     public static final PropertyBool WEST = PropertyBool.create("west");
 
-    public static void spreadGrass(World world, BlockPos pos, IBlockState us, Random rand)
-    {
-        IBlockState stateUp = world.getBlockState(pos.up());
-        if ((world.getLightFromNeighbors(pos.up()) < 4 && stateUp.getLightOpacity(world, pos.up()) > 2) || stateUp.getMaterial().isLiquid())
+    public static void spreadGrass(World world, BlockPos pos, IBlockState us, Random rand) {
+        BlockPos upPos = pos.up();
+        IBlockState up = world.getBlockState(upPos);
+        int neighborLight;
+        Block usBlock;
+        if (up.getMaterial().isLiquid() || ((neighborLight = world.getLightFromNeighbors(upPos)) < 4 && up.getLightOpacity(world, upPos) > 2))
         {
-            if (us.getBlock() instanceof BlockPeat)
+            usBlock = us.getBlock();
+            if (usBlock instanceof BlockPeat)
             {
                 world.setBlockState(pos, BlocksTFC.PEAT.getDefaultState());
             }
-            else if (us.getBlock() instanceof BlockRockVariant)
+            else if (usBlock instanceof BlockRockVariant)
             {
-                BlockRockVariant block = ((BlockRockVariant) us.getBlock());
-                world.setBlockState(pos, block.getVariant(block.getType().getNonGrassVersion()).getDefaultState());
+                BlockRockVariant rock = ((BlockRockVariant) usBlock);
+                world.setBlockState(pos, rock.getVariant(rock.getType().getNonGrassVersion()).getDefaultState());
             }
         }
-        else
+        else if (neighborLight >= 9)
         {
-            if (world.getLightFromNeighbors(pos.up()) < 9 || stateUp.getMaterial().isLiquid()) return;
-
             for (int i = 0; i < 4; ++i)
             {
                 BlockPos target = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
-                if (world.isOutsideBuildHeight(target) || !world.isBlockLoaded(target)) return;
-                BlockPos up = target.add(0, 1, 0);
-
+                if (world.isOutsideBuildHeight(target) || !world.isBlockLoaded(target))
+                {
+                    return;
+                }
                 IBlockState current = world.getBlockState(target);
-                if (!BlocksTFC.isSoil(current) || BlocksTFC.isGrass(current)) continue;
-                if (world.getLightFromNeighbors(up) < 4 || world.getBlockState(up).getLightOpacity(world, up) > 3 || world.getBlockState(up).getMaterial().isLiquid())
+                if (!BlocksTFC.isSoil(current) || BlocksTFC.isGrass(current))
+                {
                     continue;
-
-                if (current.getBlock() instanceof BlockPeat)
+                }
+                BlockPos targetUp = target.up();
+                IBlockState targetUpState;
+                if (world.getLightFromNeighbors(targetUp) < 4 || (targetUpState = world.getBlockState(targetUp)).getMaterial().isLiquid() || targetUpState.getLightOpacity(world, targetUp) > 3)
+                {
+                    continue;
+                }
+                Block currentBlock = current.getBlock();
+                if (currentBlock instanceof BlockPeat)
                 {
                     world.setBlockState(target, BlocksTFC.PEAT_GRASS.getDefaultState());
                 }
-                else if (current.getBlock() instanceof BlockRockVariant)
+                else if (currentBlock instanceof BlockRockVariant)
                 {
                     Rock.Type spreader = Rock.Type.GRASS;
-                    if ((us.getBlock() instanceof BlockRockVariant) && ((BlockRockVariant) us.getBlock()).getType() == Rock.Type.DRY_GRASS)
+                    usBlock = us.getBlock();
+                    if ((usBlock instanceof BlockRockVariant) && ((BlockRockVariant) usBlock).getType() == Rock.Type.DRY_GRASS)
+                    {
                         spreader = Rock.Type.DRY_GRASS;
-
+                    }
                     BlockRockVariant block = ((BlockRockVariant) current.getBlock());
                     world.setBlockState(target, block.getVariant(block.getType().getGrassVersion(spreader)).getDefaultState());
                 }
             }
-
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
                 if (plant.getPlantType() == Plant.PlantType.SHORT_GRASS && rand.nextFloat() < 0.5f)
                 {
-                    float temp = ClimateTFC.getActualTemp(world, pos.up());
+                    float temp = ClimateTFC.getActualTemp(world, upPos);
                     BlockShortGrassTFC plantBlock = BlockShortGrassTFC.get(plant);
 
-                    if (world.isAirBlock(pos.up()) &&
-                        plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, pos.up()), Math.subtractExact(world.getLightFor(EnumSkyBlock.SKY, pos.up()), world.getSkylightSubtracted())) &&
+                    if (world.isAirBlock(upPos) &&
+                        plant.isValidLocation(temp, ChunkDataTFC.getRainfall(world, upPos), Math.subtractExact(world.getLightFor(EnumSkyBlock.SKY, upPos), world.getSkylightSubtracted())) &&
                         plant.isValidGrowthTemp(temp) &&
-                        rand.nextDouble() < plantBlock.getGrowthRate(world, pos.up()))
+                        rand.nextDouble() < plantBlock.getGrowthRate(world, upPos))
                     {
-                        world.setBlockState(pos.up(), plantBlock.getDefaultState());
+                        world.setBlockState(upPos, plantBlock.getDefaultState());
                     }
                 }
             }
