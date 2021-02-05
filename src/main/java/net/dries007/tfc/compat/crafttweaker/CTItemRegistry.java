@@ -60,7 +60,7 @@ public class CTItemRegistry
                 @Override
                 public void apply()
                 {
-                    CapabilityItemSize.CUSTOM_ITEMS.put(inputIngredient, () -> new ItemSizeHandler(size, weight, true));
+                    CapabilityItemSize.CUSTOM_ITEMS.put(inputIngredient, () -> ItemSizeHandler.get(size, weight, true));
                 }
 
                 @Override
