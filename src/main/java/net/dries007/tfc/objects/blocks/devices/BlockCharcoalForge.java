@@ -108,13 +108,13 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
-    public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
+    public boolean canIntakeFrom(Vec3i offset, EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_INSET);
     }
 
     @Override
-    public void onAirIntake(TEBellows te, World world, BlockPos pos, int airAmount)
+    public void onAirIntake(World world, BlockPos pos, int airAmount)
     {
         TECharcoalForge teForge = Helpers.getTE(world, pos, TECharcoalForge.class);
         if (teForge != null)

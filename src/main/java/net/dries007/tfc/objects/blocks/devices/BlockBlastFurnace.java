@@ -182,13 +182,13 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
     }
 
     @Override
-    public boolean canIntakeFrom(@Nonnull TEBellows te, @Nonnull Vec3i offset, @Nonnull EnumFacing facing)
+    public boolean canIntakeFrom(@Nonnull Vec3i offset, @Nonnull EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_LEVEL);
     }
 
     @Override
-    public void onAirIntake(@Nonnull TEBellows te, @Nonnull World world, @Nonnull BlockPos pos, int airAmount)
+    public void onAirIntake(@Nonnull World world, @Nonnull BlockPos pos, int airAmount)
     {
         TEBlastFurnace teBlastFurnace = Helpers.getTE(world, pos, TEBlastFurnace.class);
         if (teBlastFurnace != null)

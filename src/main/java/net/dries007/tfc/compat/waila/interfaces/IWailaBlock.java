@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.interfaces;
 
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -27,7 +28,10 @@ public interface IWailaBlock
      * @return a List containing tooltips to write on the panel's body
      */
     @Nonnull
-    List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt);
+    default List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    {
+        return Collections.emptyList();
+    }
 
     /**
      * Overrides the title (default to the name of the block looked upon)
@@ -73,6 +77,16 @@ public interface IWailaBlock
     default boolean overrideTitle()
     {
         return false;
+    }
+
+    /**
+     * Allows getTooltip to be queried and appended to the body of the Hwyla tooltip
+     *
+     * @return true if you wish to append to the Hwyla tooltip
+     */
+    default boolean appendBody()
+    {
+        return true;
     }
 
     /**

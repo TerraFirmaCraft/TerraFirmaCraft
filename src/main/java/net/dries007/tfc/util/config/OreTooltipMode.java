@@ -10,7 +10,8 @@ public enum OreTooltipMode
     HIDE("Hide ore information"),
     UNIT_ONLY("Show only the ore units"),
     TOTAL_ONLY("Show only the stack total units"),
-    ALL_INFO("Show All");
+    ALL_INFO("Show All"),
+    ADVANCED("Show numeric heat/melt data");
 
     private final String name;
 

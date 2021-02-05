@@ -2,49 +2,126 @@
 #                                                                       #
 #                      Translated by craftersmine                       #
 #   Please send me DM at Discord if you find errors in my translation   #
-#                           craftersmine#7441                           #
-#                                                                       #
+#                           craftersmine#7441   (previous translator)	#
+#							zeefoes#4954        (re translated and fix) #
 #                    And also, Dwarf forges metal!                      #
 #                                                                       #
 #########################################################################
 
 # Command
-tfc.command.time.usage=/timetfc [add|query|set] [args...]
-tfc.command.time.usage_expected_first_argument=Ожидалось [add|query|set] после /timetfc
-tfc.command.time.usage_expected_second_argument_query=Ожидалось [daytime|day|gametime|playerticks|calendarticks] после /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Ожидалось [day|night|monthlength] <value> после /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Ожидалось [day|night|monthlength] <value> после /timetfc add
-tfc.command.time.set_month_length=Установить длину месяца равной %d дням/месяц
+tfc.command.timetfc.usage=/timetfc <add|query|set> [args...]
+tfc.command.timetfc.usage_expected_first_argument=/timetfc <add|query|set> 
+tfc.command.timetfc.usage_expected_second_argument_query=/timetfc [daytime|day|gametime|playerticks|calendarticks]
+tfc.command.timetfc.usage_expected_second_argument_set=/timetfc set [day|night|monthlength] или <value>
+tfc.command.timetfc.usage_expected_second_argument_add=/timetfc add [day|night|monthlength] или <value>
+tfc.command.timetfc.set_month_length=Установлена длина месяца в %d дня/дней.
+tfc.command.timetfc.set_day=Время установлено на следующий день
+tfc.command.timetfc.set_night=Время установлено на следующую ночь
+tfc.command.timetfc.set_ticks=Дневное время установлено на %d
+tfc.command.timetfc.add_days=Добавлено %d дней к времени (%d тиков)
+tfc.command.timetfc.add_months=Добавлено %d месяцев к времени (%d тиков)
+tfc.command.timetfc.add_years=Добавлено %d лет к времени (%d тиков)
+tfc.command.timetfc.add_ticks=Добавлено %d тиков к времени
+tfc.command.timetfc.query_calendarticks=Календарь тиков %d
+tfc.command.timetfc.query_playerticks=Тиков игрока %d
+tfc.command.timetfc.query_gametime=Время игры %d тиков
+tfc.command.timetfc.query_day=Текущий день %d
+tfc.command.timetfc.query_daytime=Текущее дневное время %d
+tfc.command.timetfc.set_player_time=Установлено время игрока %d.
+tfc.command.timetfc.set_calendar_time=Установлено календарное время %s.
+
+tfc.command.time.disabled=Эта комманда была отключена в TFC. Используй /timetfc
+
+tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
+tfc.command.playertfc.usage_expected_first_argument=/playertfc <get|set|add|reset>
+tfc.command.playertfc.usage_expected_second_argument=/playertfc %s [nutrition|food|saturation|water|skill <name>]
+tfc.command.playertfc.usage_expected_id=/playertfc %s <name>
+tfc.command.playertfc.usage_expected_value=/playertfc %s [value]
+tfc.command.playertfc.usage_cant_set_add_nutrients=Не могу установить / добавить питательные вещества, так как это основано на пищевой истории. Используйте /playertfc reset nutrition
+tfc.command.playertfc.usage_unknown_skill=Неизвестный навык: %s
+tfc.command.playertfc.usage_needs_player=Должен использоваться игроком
+tfc.command.playertfc.reset_nutrients=Уровень питательных веществ сброшен
+tfc.command.playertfc.get_nutrients=Усредненное Питание: %s
+tfc.command.playertfc.get_nutrients_nutrient= - %s: %s
+tfc.command.playertfc.get_nutrients_last_eaten=Последне съеденное: %d Голод, %s Питательность, %s Уровень гниения.
+tfc.command.playertfc.get_nutrients_last_eaten_nutrient= - %s: %s
+tfc.command.playertfc.add_skill=Добавлено %.2f уровней к %s
+tfc.command.playertfc.set_skill=Задан уровень %s на %.2f
+tfc.command.playertfc.get_skill=Навык %s: Общий уровень = %.2f, Уровень = %s, Уровень = %.2f
+tfc.command.playertfc.get_food=Голод: %d
+tfc.command.playertfc.set_food=Установить голод на %d
+tfc.command.playertfc.get_saturation=Питательность: %.2f
+tfc.command.playertfc.set_saturation=Питательность установлена на %.2f
+tfc.command.playertfc.get_water=Вода: %.1f%%
+tfc.command.playertfc.set_water=Вода установлена на %.1f%%
+
+tfc.command.findveins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.findveins.usage_expected_player=Может использоваться только игроком.
+tfc.command.findveins.usage_first_argument_not_vein=Жила %s не найдена
+tfc.command.findveins.dump_veins=Поиск всех жил в указанном радиусе, это займет некоторое время ...
+tfc.command.findveins.rate_veins=Поиск указанных жил в указанном радиусе, это займет некоторое время ...
+tfc.command.findveins.failed=Не удалось загрузить размер %d
+tfc.command.findveins.remaining_chunks=Чанков просканированно: %d / %d
+tfc.command.findveins.output=Найдена жила %s около %s
+tfc.command.findveins.output_file=Файл сохранён в %s
+tfc.command.findveins.output_file.error=Ошибка при попытке записи файла: %s
+
+tfc.command.debuginfo.usage=/tfcdebuginfodump - записывать много отладочной информации в лог-файл ... ну, ОЧЕНЬ МНОГО. Не используйте, если об этом не попросит разработчик.
+
+tfc.command.gentree.useage=/maketree [wood] -> Выращивает дерево указанного типа.
+tfc.command.gentree.failed=Отсутствует параметр дерева! /maketree [wood]
+tfc.command.gentree.failed.woodtype=Тип дерева %s не найден!
+tfc.command.gentree.failed.grow=Условия не выполнены, что бы создать дерево здесь!
+
+tfc.command.heat.usage=/heat <amount> -> устанавливает количество тепла элемента.
+tfc.command.heat.failed=Отсутствует значение параметра! /heat <amount>
+tfc.command.heat.failed.missingcap=Предмет в вашей основной руке не имеет возможности нагревания!
+tfc.command.heat.failed.usage_expected_player=Может использоваться только игроком.
+
+tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [ОПАСНО] Удаляет все возможные каменные блоки + вода.
+tfc.command.stripworld.failed=Отсутствует радиус! /stripworld <radiusInBlocks>
+tfc.command.stripworld.done=Выполнено!
+
+tfc.command.work.usage=/work [set|add] <amount> -> Изменяет объем работы желоба, выполняемой для того чанка, в котором вы находитесь.
+tfc.command.work.args=Неверный параметр
+tfc.command.work.string=Должен быть установлен или добавлен первый параметр.
+tfc.command.work.nonentity=Объект не найден.
 
 # Gui
 
 ## Tooltips
+tfc.tooltip.food_expiry_date.days=Сгниёт примерно через %s дня(дней)!
 tfc.tooltip.toolclass=§fКласс предмета:§7 %s
 tfc.tooltip.toolclasses=§fКлассы предметов:
 tfc.tooltip.oredictionaryentry=§fИмя в словаре руд:§7 %s
 tfc.tooltip.oredictionaryentries=§fИмена в словаре руд:
 tfc.tooltip.metal=§fМеталл:§7 %s
 tfc.tooltip.units=%d единиц
+tfc.tooltip.crucible_units=%d / %d единиц
+tfc.tooltip.units.total=§6%d всего единиц
+tfc.tooltip.units.info_total=%d единиц / §6%d всего
 tfc.tooltip.smelting=Расплавится через %s
 tfc.tooltip.liquid= - Жидкость
 tfc.tooltip.solid= - Твердое
 tfc.tooltip.barrel_empty=Пусто
 tfc.tooltip.barrel_fluid=Содержит %1$d mB %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
-tfc.tooltip.barrel_item=Contains %1$dx %2$s
+tfc.tooltip.barrel_item=Содержит %1$dx %2$s
 tfc.tooltip.barrel_item_in_fluid= и %1$dx %2$s
-tfc.tooltip.powderkeg_amount=Contains %sx of %s
+tfc.tooltip.powderkeg_amount=Содержит %sx из %s
 tfc.tooltip.powderkeg_empty=Пусто
 tfc.tooltip.small_vessel_empty=Пусто
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=Можно сварить
 tfc.tooltip.workable=Можно обработать
-tfc.tooltip.danger=Опасно!!
+tfc.tooltip.danger=**Перегрев!**
 tfc.tooltip.anvil_plan=Чертежи
 tfc.tooltip.anvil_tier_too_low=Эта наковальня слишком низкого уровня!
 tfc.tooltip.anvil_no_flux=В этой наковальне отсутствует флюс!
 tfc.tooltip.anvil_too_cold=Предмет(ы) недостаточно горячи для обработки!
+tfc.tooltip.anvil_not_weldable=Предмет(ы) нельзя сварить!
 tfc.tooltip.anvil_no_hammer=В это наковальне отсутствует молот!
+tfc.tooltip.anvil_safety=Это разрушит ввод!
 tfc.tooltip.crucible_result=Результат:
 tfc.tooltip.barrel_seal=Запечатать бочку
 tfc.tooltip.barrel_unseal=Распечатать бочку
@@ -55,9 +132,14 @@ tfc.tooltip.day=День : %s
 tfc.tooltip.date=Дата : %s
 tfc.tooltip.calendar_full_date=%s %s %02d, %04d
 tfc.tooltip.debug_times=PT: %d | CT: %d
-tfc.tooltip.food_expiry_date=Испортится в: %s
+tfc.tooltip.food_expiry_date=Испортится: %s
 tfc.tooltip.food_rotten=Испорчено - Я бы не стал это есть.
 tfc.tooltip.food_infinite_expiry=Не портится
+tfc.tooltip.nutrition=Питание:
+tfc.tooltip.nutrition_saturation= - Питательность: %s%%
+tfc.tooltip.nutrition_water= - Вода: %s%%
+tfc.tooltip.nutrition_nutrient= - %s: %s
+tfc.tooltip.hold_shift_for_nutrition_info=Зажмите (Shift) для получения информации о питательности
 tfc.tooltip.plant_cold=%sСлишком холодно%s
 tfc.tooltip.plant_dry=%sСлишком сухо%s
 tfc.tooltip.plant_hot=%sСлишком жарко%s
@@ -68,33 +150,47 @@ tfc.tooltip.plant_wet=%sСлишком влажно%s
 tfc.tooltip.blast_furnace_ore_amount=Руда
 tfc.tooltip.blast_furnace_fuel_amount=Топливо
 tfc.tooltip.blast_furnace_melt_amount=Расплавлено
+tfc.tooltip.blast_furnace_invalid_structure=Неверная структура!
 tfc.tooltip.large_vessel_seal=Запечатать большой сосуд
 tfc.tooltip.large_vessel_unseal=Распечатать большой сосуд
-tfc.tooltip.powderkeg_seal=
-tfc.tooltip.powderkeg_unseal=
+tfc.tooltip.powderkeg_seal=Запечатать Пороховая бочка
+tfc.tooltip.powderkeg_unseal=Распечатать Пороховая бочка
 tfc.tooltip.goldpan.chunkworked=Эта область выглядит переработанной. Вероятно вы не найдете здесь многого.
 tfc.tooltip.smithing_skill=Бонус опыта: %0.1f%%
 tfc.tooltip.crucible_alloy=Содержит %1$d mB %2$s
+tfc.tooltip.crucible_less_than_one=< 1 единицы
+tfc.tooltip.previous_page=Предыдущая страница
+tfc.tooltip.next_page=Следующая страница
+tfc.tooltip.firepit_cooking_pot_empty=Пусто
+tfc.tooltip.firepit_cooking_pot_waiting=Добавить ингредиенты
+tfc.tooltip.firepit_cooking_pot_boiling=Кипение
+tfc.tooltip.firepit_cooking_pot_servings=Порции: %d
+tfc.tooltip.fertilized=Оплодотворено
+tfc.tooltip.egg_hatch=Вылупится через %d дней
+tfc.tooltip.egg_hatch_today=Вылупится сегодня!
+tfc.tooltip.hold_shift_for_climate_info=Зажмите (Shift) для получения информации о климате
+tfc.tooltip.climate_info=Информация о климате:
+tfc.tooltip.climate_info_rainfall=Осадки: %s - %s
+tfc.tooltip.climate_info_temperature=Температура: %sºC - %sºC
+
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=Это животное слишком старо для спаривания.
-tfc.tooltip.animal.lowfamiliarity=Это животное не очень энакомо для спаривания.
-tfc.tooltip.animal.pregnant=Это живаотное беременно!
-tfc.tooltip.animal.resting=Это животное отдыхает после сегодняшнего спаривания.
+tfc.tooltip.animal.mating.old=Это животное слишком старо для спаривания.
+tfc.tooltip.animal.mating.low_familiarity=%s имеет низкий интерес к спариванию.
+tfc.tooltip.animal.mating.pregnant=Эта %s беременная!
+tfc.tooltip.animal.mating.resting=%s отдыхает после сегодняшнего спаривания.
 
-tfc.tooltip.animal.milk.male=Это бык!
-tfc.tooltip.animal.milk.old=Эта корова слишком старая для того чтобы ее доить.
-tfc.tooltip.animal.milk.child=Эта корова слишком молода для того чтобы ее доить.
-tfc.tooltip.animal.milk.lowfamiliarity=Эта корова не очень энакома для того чтобы ее доить.
-tfc.tooltip.animal.milk.empty=Эту корову уже доили сегодня.
+tfc.tooltip.animal.product.old=%s слишком стар(ая).
+tfc.tooltip.animal.product.young=%s слишком молод(ая).
+tfc.tooltip.animal.product.low_familiarity=Это животное не приручено %s.
 
-## Command Tooltips / Messages
-tfc.tooltip.set_month_length=Установлена длина месяца в %d дней.
-tfc.tooltip.time_command_set_player_time=Установлено время игрока %d.
-tfc.tooltip.time_command_set_calendar_time=Установлено календарное время %s.
-tfc.tooltip.time_command_disabled=Эта комманда была отключена TFC. Используй /timetfc!
-tfc.tooltip.skill_set=Задан уровень %s на %.2f
-tfc.tooltip.skill_add=Добавлено %.2f уровней к %s
+tfc.tooltip.animal.product.male_milk=Это самец!
+tfc.tooltip.animal.product.male_egg=Это самец!
+
+tfc.tooltip.animal.product.no_wool=Шерсть у %s ещё не выросла.
+tfc.tooltip.animal.product.no_milk=%s не готова к тому, чтобы её доили.
+tfc.tooltip.animal.product.no_egg=%s не готова откладывать яйца.
+
 
 ## Prospecting Result Messages
 tfc.propick.found=Найдено
@@ -106,7 +202,7 @@ tfc.propick.found_very_large=Найден большой след
 tfc.propick.found_nothing=Ничего не найдено.
 
 ## Thatch Bed
-tfc.thatch_bed.spawnpoint=Точка появления задана.
+tfc.thatch_bed.spawnpoint=Точка возраждения задана.
 tfc.thatch_bed.not_thundering=Эта кровать слишком не удобная для сна.
 
 ## Food Traits
@@ -116,14 +212,19 @@ tfc.food_traits.brined_active=Засаливается
 tfc.food_traits.salted=Солёный
 tfc.food_traits.pickled=Маринованый
 tfc.food_traits.preserved=Консервированый
+tfc.food_traits.vinegar=Консервированный в уксусе
+tfc.food_traits.charcoal_grilled=Жаренный на древесном угле
+tfc.food_traits.wood_grilled=Жаренный на брёвнах
+tfc.food_traits.burnt_to_a_crisp=Почерневшая, покрытая коркой отвратительная куча пепла
 tfc.tooltip.barrel_recipe_pickling=Маринование
 tfc.tooltip.barrel_recipe_brining=Засаливание
+tfc.tooltip.barrel_recipe_vinegar=Консервирование в уксусе
 
 ## Skills
-tfc.skill.prospecting=Геология: %s
+tfc.skill.prospecting=Геологоразведка: %s
 tfc.skill.smithing=Кузнечное дело: %s
 tfc.skill.agriculture=Сельское хозяйство: %s
-tfc.skill.butchering=Разделывание: %s
+tfc.skill.butchering=Разделка животных: %s
 
 tfc.enum.skilltier.novice=Начинающий
 tfc.enum.skilltier.adept=Знаток
@@ -133,10 +234,13 @@ tfc.enum.skilltier.master=Мастер
 ## Keybindings
 tfc.key.craft=Интерфейс создания
 tfc.key.placeblock=Установить блок-держатель предметов
+tfc.key.itemmode=Изменить режим предмета
+tfc.key.stack=Объединить еду
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Радиус вариации появления
 createWorld.customize.custom.flatbedrock=Плоский бедрок
+createWorld.customize.custom.smallrocklayer=Размер слоя породы
 createWorld.customize.custom.ravineRarity=Редкость ущельев
 createWorld.customize.custom.ravineHeight=Глубина ущельев
 createWorld.customize.custom.ravineVariability=Вариативность ущельев
@@ -146,219 +250,730 @@ createWorld.customize.custom.surfaceRavineVariability=Вариативность
 createWorld.customize.custom.riverRavineRarity=Редкость речных ущельев
 
 # Config
-config.tfc=TerraFirmaCraft
-config.tfc.tooltip=Настройки TerraFirmaCraft
-
 ## General Config
 config.tfc.general=Основные настройки
-config.tfc.general.toolip=Настройки общие для клиента и сервера.
+config.tfc.general.tooltip=Настройки общие для клиента и сервера.
 
+
+### Debug
 config.tfc.general.debug=Режим отладки
-config.tfc.general.debug.tooltip=Различные настройки для отладки. Активирует различные дополнительные функции. Включает дополнительные подсказки.
 
-config.tfc.general.removeVanillaRecipes=Удалить рецепты "ваниллы"
-config.tfc.general.removeVanillaRecipes.tooltip=Включает или отключает удаление оригинальных рецептов игры. False = Эти рецепты остаются в игре.
+config.tfc.general.debug.enable=Отладка
+config.tfc.general.debug.enable.tooltip=Различные настройки для отладки. Активирует различные дополнительные функции. Включает дополнительные подсказки.
 
-config.tfc.general.removeVanillaLoots=Удалить лут "ваниллы"
-config.tfc.general.removeVanillaLoots.tooltip=Включает или отключает лут появляющийся в игре который конфликтует с TFC (напр. Картофель). False = Этот лут остаётся в игре.
+config.tfc.general.debug.debugWorldGenDanger=Отладка генерации мира (ОПАСНО)
+config.tfc.general.debug.debugWorldGenDanger.tooltip=Отладка генерации мира [ОПАСНО] Ваш мир будет затронут! Не используйте на вашем собственном мире!
 
-config.tfc.general.leafStickDropChance=Шанс выпадения палки с листьев
-config.tfc.general.leafStickDropChance.tooltip=Задает шанс выпадения палки с листьев деревьев
-
-config.tfc.general.leafStickDropChanceBonus=Доп. шанс выпадения палки с листьев
-config.tfc.general.leafStickDropChanceBonus.tooltip=Задает дополнительный шанс выпадения палки с деревьев
-
-config.tfc.general.leafStickDropChanceBonusClasses=Классы пред. дающих доп. шанс вып. палки
-config.tfc.general.leafStickDropChanceBonusClasses.tooltip=Классы предметов дающих дополнительный шанс выпадения палки с листвы
-
-config.tfc.general.stoneGemDropChance=Шанс выпадения кристаллов
-config.tfc.general.stoneGemDropChance.tooltip=Задает шанс выпадения кристаллов из камня
-
-config.tfc.general.temperatureModifierGlobal=Глобальный модификатор температуры
-config.tfc.general.temperatureModifierGlobal.tooltip=Модификатор отвечающий за то как медленно или быстро предметы нагреваются. Меньше число = медленнее изменяется температура.
-
-config.tfc.general.temperatureModifierHeating=Глобальный модификатор нагрева
-config.tfc.general.temperatureModifierHeating.tooltip=Модификатор отвечающий за то как объекты (напр. Костер) увеличивают или уменьшают нагрев. Меньше число = медленнее изменяется нагрев.
-
-config.tfc.general.foodDecayModifier=Модификатор порчи еды
-config.tfc.general.foodDecayModifier.tooltip=Модификатор отвечающий за то как быстро портится еда. Большие значения = быстрее пропадает. Установите в 0 для бесконечного срока годности
-
-config.tfc.general.pitKilnTime=Время печи в яме
-config.tfc.general.pitKilnTime.tooltip=Кол-во тиков необходимых для того чтобы печь в яме догорела. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 8 часов.
-
-config.tfc.general.torchTime=Время затухания факела
-config.tfc.general.torchTime.tooltip=Кол-во тиков необходимых для того чтобы факел погас (1000 тиков = 1 игровому часу = 50 секундам), по умолчанию 72 часа. Установите в -1 для отключения затухания.
-
-config.tfc.general.bloomeryTime=Время кричного горна
-config.tfc.general.bloomeryTime.tooltip=Кол-во тиков необходимое для завершения работы кричного горна. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 15 часов.
-
-config.tfc.general.plantGrowthRate=Скорость роста растения
-config.tfc.general.plantGrowthRate.tooltip=Процентный шанс того что растение подрастёт за каждое обновление игры. Меньше число = медленнее.
-
-config.tfc.general.fireStarterChance=Шанс зажечь костер
-config.tfc.general.fireStarterChance.tooltip=Шанс того что вы сможете разжечь костер с помощью трута
-
-config.tfc.general.playerNutritionDecayModifier=Модификатор потери питательных веществ игроком
-config.tfc.general.playerNutritionDecayModifier.tooltip=Модификатор того, как быстро игрок будет терять питательные вещества
-
-config.tfc.general.playerMinHealthModifier=Модификатор минимального здоровья
-config.tfc.general.playerMinHealthModifier.tooltip=Модификатор задающий минимальное кол-во здоровья которое может быть получено при низком насыщении пит. веществами.
-
-config.tfc.general.playerMaxHealthModifier=Модификатор максимального здоровья
-config.tfc.general.playerMaxHealthModifier.tooltip=Модификатор задающий максимальное кол-во здоровья которое может быть получено при высоком насыщении пит. веществами.
-
-config.tfc.general.playerThirstModifier=Модификатор жажды игрока
-config.tfc.general.playerThirstModifier.tooltip=Модификатор задающий то как быстро у игрока начинается жажда.
-
-config.tfc.general.playerNaturalRegenerationModifier=Модификатор естеств. регенерации
-config.tfc.general.playerNaturalRegenerationModifier.tooltip=Модификатор задающий то как быстро игрок будет восстанавливать здоровье естественным путем.
-
-config.tfc.general.collapseChance=Шанс опадения камня
-config.tfc.general.collapseChance.tooltip=Шанс того что копание камня спровоцирует опадения камня.
-
-config.tfc.general.propagateCollapseChance=Шанс распространения опадения
-config.tfc.general.propagateCollapseChance.tooltip=Шанс того что падающие блоки спровоцируют опадение соседних. Зависит от расстояния от эпицентра опадения.
-
-config.tfc.general.slashingDamageSources=Источники рубящего урона
-config.tfc.general.slashingDamageSources.tooltip=Типы источников урона которые будут заданы как источники рубящего урона.
-
-config.tfc.general.piercingDamageSources=Источники проникающего урона
-config.tfc.general.piercingDamageSources.tooltip=Типы источников урона которые будут заданы как источники проникающего урона.
-
-config.tfc.general.crushingDamageSources=Источники давящего урона
-config.tfc.general.crushingDamageSources.tooltip=Типы источников урона которые будут заданы как источники давящего урона.
-
-config.tfc.general.slashingDamageEntities=Сущности рубящего урона
-config.tfc.general.slashingDamageEntities.tooltip=Типы сущностей которые будут заданы как источники рубящего урона.
-
-config.tfc.general.piercingDamageEntities=Сущности проникающего урона
-config.tfc.general.piercingDamageEntities.tooltip=Типы сущностей которые будут заданы как источники проникающего урона.
-
-config.tfc.general.crushingDamageEntities=Сущности давящего урона
-config.tfc.general.crushingDamageEntities.tooltip=Типы сущностей которые будут заданы как источники давящего урона.
-
-config.tfc.general.smallOreMetalAmount=Кол-во металла в самородке
-config.tfc.general.smallOreMetalAmount.tooltip=Кол-во металла содержащегося в самородке / малой руде.
-
-config.tfc.general.poorOreMetalAmount=Кол-во металла в бедной руде
-config.tfc.general.poorOreMetalAmount.tooltip=Кол-во металла содержащегося в бедной руде.
-
-config.tfc.general.normalOreMetalAmount=Кол-во металла в нормальной руде
-config.tfc.general.normalOreMetalAmount.tooltip=Кол-во металла содержащегося в нормальной руде.
-
-config.tfc.general.richOreMetalAmount=Кол-во металла в богатой руде
-config.tfc.general.richOreMetalAmount.tooltip=Кол-во металла содержащегося в богатой руде.
-
-config.tfc.general.maxWorkChunk=Макс. кол-во обработок чанка мира
-config.tfc.general.maxWorkChunk.tooltip=Сколько раз чанк мира может быть обработан. Примечание: В то время как шлюзы увеличивают значение на 1, промывочный лоток на 6.
-
-config.tfc.general.sluiceRadius=Радиус шлюза
-config.tfc.general.sluiceRadius.tooltip=Радиус того на сколько чанков действует шлюз.
-
-config.tfc.general.sluiceTicks=Кол-во тиков шлюза
-config.tfc.general.sluiceTicks.tooltip=Кол-во тиков требующихся для того чтобы шлюз сработал.
-
-config.tfc.general.sluiceOreChance=Шанс получения руд шлюзом
-config.tfc.general.sluiceOreChance.tooltip=Шанс того что при работе шлюза получатся малые руды.
-
-config.tfc.general.sluiceGemChance=Шанс получения кристаллов шлюзом
-config.tfc.general.sluiceGemChance.tooltip=Шанс того что при работе шлюза получатся кристаллы.
-
-config.tfc.general.sluiceDiamondGemChance=Шанс получения алмаза шлюзом
-config.tfc.general.sluiceDiamondGemChance.tooltip=Шанс получения алмаза при получении кристаллов шлюзом.
-
-config.tfc.general.overworkChunk=Переработка чанков мира
-config.tfc.general.overworkChunk.tooltip=Если true, лимиты для промывочного лотка и шлюза игнорируются
-
-config.tfc.general.forceNoVanillaNaturalRegeneration=Отключить естественную регенерацию
-config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=Если true, это форсирует игру установить значение параметра gamerule naturalRegeneration в значение false. Примечание: это НЕ ВЛИЯЕТ НА ЕСТЕСТВЕННУЮ РЕГЕНЕРАЦИЮ TFC. Если вы установите этот параметр в значение true, тогда у вас будет происходить и регенерация заданая параметрами TFC и стандартная "ванильная" регенерация здоровья (которая более быстрая).
-
-config.tfc.general.peacefulDifficultyPassiveRegeneration=Включить восстан. параметров игрока
-config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Должно ли происходить пассивная регенерация здоровья, голода и жажды в мирном режиме как это происходит в "ванильной игре"?
-
-config.tfc.general.worldRegenerationMinimumTime=Мин. время регенерации мира
-config.tfc.general.worldRegenerationMinimumTime.tooltip=Минимальное время для незанятого чанка для того чтобы его ресурсы начали естественно регенерироваться. (В днях). После этого значения, скорость регенерации будет увеличиваться основанно на том как долго времени прошло, до максимального значения в 4x
-
-config.tfc.general.worldRegenerationSticksRocksModifier=Модификатор восстановления обломков
-config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=Модификатор восстановления маленьких камней и палок в мире.
-
-config.tfc.general.foodDecayStackTime=Время порчи пачки еды
-config.tfc.general.foodDecayStackTime.tooltip=Кол-во часов перед тем как время порчи еды будет синхронизировано. Когда предмет являющийся пищей выброшен, его время порчи будет округлено до ближайшего лежащего в куче (в часах).
-
-config.tfc.general.foodPassiveExhaustionMultiplier=Множитель пассивного увеличения голода
-config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=Множитель отвечающий за пассивное увеличение голода (как быстро полоска голода уменьшается. 0 = голод не увеличиваться, больше значение = быстрее уменьшается).
-
-config.tfc.general.oreDictIron=Словарь железной руды для кованного железа
-config.tfc.general.oreDictIron.tooltip=Добавить тип железной руды словаря руд для кованного железа?
-
-config.tfc.general.oreDictPlate=Словарь пластин для металл. листов
-config.tfc.general.oreDictPlate.tooltip=Добавить тим пластин для металлических листов?
-
-config.tfc.general.spawnProtectionEnable=Включить защиту точки появления
-config.tfc.general.spawnProtectionEnable.tooltip=Разрешить блокировку появления враждебных мобов в чанке где игрок проживает?
-
-config.tfc.general.spawnProtectionMinY=Миним. уровень высоты защиты точки появ.
-config.tfc.general.spawnProtectionMinY.tooltip=Минимальное значение координаты Y (высота мира) для того чтобы включить защиту точки появления. (появление враждебных мобов не будет блокироваться ниже данной высоты).
-
-config.tfc.general.charcoalPitTime=Время угольной ямы
-config.tfc.general.charcoalPitTime.tooltip=Время требуемое угольной яме для завершения работы
+config.tfc.general.debug.debugWorldGenSafe=Отладка генерации мира (Безопасный)
+config.tfc.general.debug.debugWorldGenSafe.tooltip=Отладка генерации мира [Безопасный] Это вывести информацию отладки во время генерации мира и создаст некоторые изображения карты, не повлияет на мир.
 
 
-## Client Config
-config.tfc.general.woodenBucketWhitelist=Белый список жидк. для дерев. ведра
-config.tfc.general.woodenBucketWhitelist.tooltip=Разрешенные жидкости которые можно набрать в деревянное ведро.
+### Overrides
+config.tfc.general.overrides=Настройки корректировки
+config.tfc.general.overrides.tooltip=Различные настройки, некоторые для совместимость
 
+config.tfc.general.overrides.enableIngotPiles=Включить груды слитков
+config.tfc.general.overrides.enableIngotPiles.tooltip=Разрешить размещение груд слитков в мире.
+
+config.tfc.general.overrides.enableLogPiles=Включить штабеля бревен
+config.tfc.general.overrides.enableLogPiles.tooltip=Разрешить размещение штабелей бревен в мире.
+
+config.tfc.general.overrides.enableThatchBed=Включить соломенную кровать
+config.tfc.general.overrides.enableThatchBed.tooltip=Разрешите размещение соломенной кровати в мире.
+
+config.tfc.general.overrides.enableGrassPath=Включить травяную тропинку
+config.tfc.general.overrides.enableGrassPath.tooltip=Разрешает создавать травяные дорожки.
+
+config.tfc.general.overrides.enableHoeing=Включить вскапывание
+config.tfc.general.overrides.enableHoeing.tooltip=Разрешает заниматься фермерством, превращать землю в пашню.
+
+config.tfc.general.overrides.enableStoneAnvil=Включить каменную наковальню
+config.tfc.general.overrides.enableStoneAnvil.tooltip=Разрешает создавать каменные наковальни.
+
+config.tfc.general.overrides.enableTorchOverride=Включить управление факелами
+config.tfc.general.overrides.enableTorchOverride.tooltip=Выключите эту функцию, чтобы отключить замену факелов в TFC. Это со временем отключит затухания факелов.
+
+config.tfc.general.overrides.enableFrozenOverrides=Включить управление температурой
+config.tfc.general.overrides.enableFrozenOverrides.tooltip=Выключите эту функцию, что бы отключить генерацию блоков льда и снега. Это со временем отключит зависимость от температуры.
+
+config.tfc.general.overrides.torchTime=Время затухания факела
+config.tfc.general.overrides.torchTime.tooltip=Кол-во тиков необходимых для того чтобы факел погас (1000 тиков = 1 игровому часу = 50 секундам), по умолчанию 72 часа. Установите в -1 для отключения затухания.
+
+config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks=Включить смешивание TFC Лава/Вода
+config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks.tooltip=Смешивание лавы и воды превращают ванильные камни в камни TFC.
+
+config.tfc.general.overrides.forceTFCWorldType=Заменить базовый тип мира
+config.tfc.general.overrides.forceTFCWorldType.tooltip=Если true, TFC попытается принудительно установить параметр "level-type" на "tfc_classic" во время запуска выделенного сервера или определить его как тип мира по умолчанию для клиентов.
+
+config.tfc.general.overrides.forceDefaultOreGenFile=Заменить файл генерации руд
+config.tfc.general.overrides.enableDefaultOreGenFileOverwrite.tooltip=Если true, TFC заменит файл руды по умолчанию. Создатели паков: отключите это, чтобы не сбрасывать ваш файл руды до значений по умолчанию.
+
+config.tfc.general.overrides.removeVanillaRecipes=Удалить рецепты "ваниллы"
+config.tfc.general.overrides.removeVanillaRecipes.tooltip=Включает или отключает удаление оригинальных рецептов игры. False = Эти рецепты остаются в игре.
+
+config.tfc.general.overrides.removeVanillaLoots=Удалить лут "ваниллы"
+config.tfc.general.overrides.removeVanillaLoots.tooltip=Включает или отключает лут появляющийся в игре который конфликтует с TFC (напр. Картофель). False = Этот лут остаётся в игре.
+
+config.tfc.general.overrides.forceNoVanillaNaturalRegeneration=Отключить естественную регенерацию
+config.tfc.general.overrides.forceNoVanillaNaturalRegeneration.tooltip=Если true, это форсирует игру установить значение параметра /gamerule naturalRegeneration в значение false. Примечание: это НЕ ВЛИЯЕТ НА ЕСТЕСТВЕННУЮ РЕГЕНЕРАЦИЮ TFC. Если вы установите этот параметр в значение true, тогда у вас будет происходить и регенерация заданая параметрами TFC и стандартная "ванильная" регенерация здоровья (которая более быстрая).
+
+config.tfc.general.overrides.forceReplaceVanillaAnimals=Замена обычных животных
+config.tfc.general.overrides.forceReplaceVanillaAnimals.tooltip=Если true, это позволит заменить обычных животных аналогом TFC при любых обстоятельствах.
+
+
+### Fallable
+config.tfc.general.fallable=Настройки падения
+config.tfc.general.fallable.tooltip=Настройка падающих блоков
+
+config.tfc.general.fallable.enable=Включить падение блоков
+config.tfc.general.fallable.enable.tooltip=Если false, падающие блоки (т.е.: земля, камень) никогда не упадут.
+
+config.tfc.general.fallable.destroyOres=Падающие блоки - руды
+config.tfc.general.fallable.destroyOres.tooltip=Если false, падающие блоки (т.е.: земля, камень) никогда не уничтожит блоки руды.
+
+config.tfc.general.fallable.destroyItems=Падающие блоки - предметы
+config.tfc.general.fallable.destroyItems.tooltip=Если false, падающие блоки (т.е.: земля, камень) никогда не уничтожит предметы.
+
+config.tfc.general.fallable.hurtEntities=Падающие блоки - существа
+config.tfc.general.fallable.hurtEntities.tooltip=Если false, падающие блоки (т.е.: земля, камень) никогда не причинит вреда существам.
+
+config.tfc.general.fallable.collapseChance=Шанс падение камня
+config.tfc.general.fallable.collapseChance.tooltip=Шанс того что копание камня спровоцирует падение камня.
+
+config.tfc.general.fallable.propagateCollapseChance=Шанс распространения падения
+config.tfc.general.fallable.propagateCollapseChance.tooltip=Шанс того что падающие блоки спровоцируют опадение соседних. Зависит от расстояния от эпицентра падения.
+
+config.tfc.general.fallable.supportBeamRangeHor=Диапазон горизонтальной поддержки
+config.tfc.general.fallable.supportBeamRangeHor.tooltip=Горизонтальный радиус опоры ряда опорных балок.
+
+config.tfc.general.fallable.supportBeamRangeUp=Диапазон поддержки вверх
+config.tfc.general.fallable.supportBeamRangeUp.tooltip=Диапазон поддержки опорных балок вверх.
+
+config.tfc.general.fallable.supportBeamRangeDown=Диапазон поддержки вниз
+config.tfc.general.fallable.supportBeamRangeDown.tooltip=Диапазон поддержки опорных балок вниз.
+
+config.tfc.general.fallable.chiselCausesCollapse=Обработка причин коллапса
+config.tfc.general.fallable.chiselCausesCollapse.tooltip=Способна обработка камня вызвать обвалы?
+
+config.tfc.general.fallable.explosionCausesCollapse=Взрыв причин коллапса
+config.tfc.general.fallable.explosionCausesCollapse.tooltip=Способна взрыв камня вызвать обвалы?
+
+### Difficulty
+config.tfc.general.difficulty=Настройки сложности
+
+config.tfc.general.difficulty.animalSpawnCount=Количество возраждения животных
+config.tfc.general.difficulty.animalSpawnCount.tooltip=Это контролирует, сколько животных (любого вида) появляются (возраждается) на игрока. Высокое значение означает больше животных рядом с игроком, что, в свою очередь, повышает сложность и обилие мяса (осторожно, слишком большое значение также может негативно повлиять на производительность).
+
+config.tfc.general.difficulty.mobSpawnCount=Количество возраждения мобов
+config.tfc.general.difficulty.mobSpawnCount.tooltip=Это контролирует, сколько мобов появляются (возраждается) на игрока. Высокое значение означает больше мобов рядом с игроком, что, в свою очередь, повышает сложность (осторожно, слишком большое значение также может негативно повлиять на производительность).
+
+config.tfc.general.difficulty.preventMobsOnSurface=Появление мобов на поверхности
+config.tfc.general.difficulty.preventMobsOnSurface.tooltip=Предотвратить появление мобов на поверхности?
+
+config.tfc.general.difficulty.giveVanillaMobsEquipment=Выдать экипировку мобам
+config.tfc.general.difficulty.giveVanillaMobsEquipment.tooltip=Выдать ванильным мобам оружие и броню из кованого железа?
+
+config.tfc.general.difficulty.acceptableAnvilRange=Допустимый диапазон наковальни
+config.tfc.general.difficulty.acceptableAnvilRange.tooltip=Диапазон пикселей по обе стороны от рабочей цели, которая может быть принята для завершения кузнечного рецепта.
+
+### Trees
+config.tfc.general.tree=Настройки деревьев
+config.tfc.general.tree.tooltip=Включить / Выключить механику деревьев TerraFirmaCraft
+
+config.tfc.general.tree.enableFelling=Включить вырубку
+config.tfc.general.tree.enableFelling.tooltip=Включите возможность полного вырубки деревьев топорами. Отключите его, если вы хотите, чтобы другие моды обрабатывали вырубку деревьев. Дерево рубится целеком
+
+config.tfc.general.tree.enableHammerSticks=Включить молоток для палочек
+config.tfc.general.tree.enableHammerSticks.tooltip=Включите возможность добывать палки из брёвен ударом молотка
+
+config.tfc.general.tree.requiresAxe=Требуется топор
+config.tfc.general.tree.requiresAxe.tooltip=Должны ли требоваться инструменты (топоров и пил или молотков для палок) для рубки? Если false, то рубка бревен пустой рукой не приведет к выпадению бревен.
+
+config.tfc.general.tree.enableSaplings=Включить саженцы
+config.tfc.general.tree.enableSaplings.tooltip=Если false, из листьев не будут падать саженцы.
+
+config.tfc.general.tree.stoneAxeReturnRate=Шанс каменного топора
+config.tfc.general.tree.stoneAxeReturnRate.tooltip=Шанс выпадения бревна при использовании каменного топора.
+
+config.tfc.general.tree.leafStickDropChance=Шанс выпадения палки с листьев
+config.tfc.general.tree.leafStickDropChance.tooltip=Задает шанс выпадения палки с листьев деревьев
+
+config.tfc.general.tree.leafStickDropChanceBonus=Доп. шанс выпадения палки с листьев
+config.tfc.general.tree.leafStickDropChanceBonus.tooltip=Задает дополнительный шанс выпадения палки с деревьев
+
+config.tfc.general.tree.leafStickDropChanceBonusClasses=Классы пред. дающих доп. шанс вып. палки
+config.tfc.general.tree.leafStickDropChanceBonusClasses.tooltip=Классы предметов дающих дополнительный шанс выпадения палки с листвы
+
+
+### Spawn Protection
+config.tfc.general.spawn_protection=Настройки появления мобов
+
+config.tfc.general.spawn_protection.preventMobs=Предотвращать спавн мобов?
+config.tfc.general.spawn_protection.preventMobs.tooltip=Должны ли враждебные мобы в чанке предотвратить появление враждебной толпы в течении N промежутка времени?
+
+config.tfc.general.spawn_protection.preventPredators=Предотвращать спавн хищников?
+config.tfc.general.spawn_protection.preventPredators.tooltip=Отключает появление новых хищников, если они находятся в чанке.
+
+config.tfc.general.spawn_protection.minYMobs=Мин. уровень Y для мобов
+config.tfc.general.spawn_protection.minYMobs.tooltip=Минимальное значение координаты Y (высота мира) для того чтобы включить защиту точки появления. (появление враждебных мобов не будет блокироваться ниже данной высоты).
+
+config.tfc.general.spawn_protection.maxYMobs=Макс. уровень Y для мобов
+config.tfc.general.spawn_protection.maxYMobs.tooltip=Максимальное значение координаты Y (высота мира) для того чтобы включить защиту точки появления. (появление враждебных мобов не будет блокироваться ниже данной высоты).
+
+config.tfc.general.spawn_protection.minYPredators=Мин. уровень Y для хищников
+config.tfc.general.spawn_protection.minYPredators.tooltip=Минимальное значение координаты Y (высота мира) для того чтобы включить защиту точки появления от хищников. (появление хищников не будет блокироваться ниже данной высоты).
+
+config.tfc.general.spawn_protection.maxYPredators=Макс. уровень Y для хищников
+config.tfc.general.spawn_protection.maxYPredators.tooltip=Минимальное значение координаты Y (высота мира) для того чтобы включить защиту точки появления. (появление хищников не будет блокироваться ниже данной высоты).
+
+
+### Damage
+config.tfc.general.damage=Настройки типов урона
+
+config.tfc.general.damage.slashingSources=Источники рубящего урона
+config.tfc.general.damage.slashingSources.tooltip=Типы источников урона которые будут заданы как источники рубящего урона.
+
+config.tfc.general.damage.piercingSources=Источники колющего урона
+config.tfc.general.damage.piercingSources.tooltip=Типы источников урона которые будут заданы как источники колющего урона.
+
+config.tfc.general.damage.crushingSources=Источники дробящего урона
+config.tfc.general.damage.crushingSources.tooltip=Типы источников урона которые будут заданы как источники дробящего урона.
+
+config.tfc.general.damage.slashingEntities=Сущности рубящего урона
+config.tfc.general.damage.slashingEntities.tooltip=Типы сущностей которые будут заданы как источники рубящего урона.
+
+config.tfc.general.damage.piercingEntities=Сущности рубящего урона
+config.tfc.general.damage.piercingEntities.tooltip=Типы сущностей которые будут заданы как источники колющего урона.
+
+config.tfc.general.damage.crushingEntities=Сущности рубящего урона
+config.tfc.general.damage.crushingEntities.tooltip=Типы сущностей которые будут заданы как источники дробящего урона.
+
+
+### Player
+config.tfc.general.player=Настройки игрока
+
+config.tfc.general.player.inventoryCraftingMode=Верстак в инвентаре
+config.tfc.general.player.inventoryCraftingMode.tooltip=Включите крафт в инвентаре 3x3 с помощью привязки клавиш. (по умолчанию: нужен обычный верстак)
+
+config.tfc.general.player.minHealthModifier=Модификатор минимального здоровья
+config.tfc.general.player.minHealthModifier.tooltip=Модификатор задающий минимальное кол-во здоровья которое может быть получено при низком питательности веществами.
+
+config.tfc.general.player.maxHealthModifier=Модификатор максимального здоровья
+config.tfc.general.player.maxHealthModifier.tooltip=Модификатор задающий максимальное кол-во здоровья которое может быть получено при высоком питательности веществами.
+
+config.tfc.general.player.thirstModifier=Модификатор жажды игрока
+config.tfc.general.player.thirstModifier.tooltip=Модификатор задающий то как быстро у игрока начинается жажда.
+
+config.tfc.general.player.naturalRegenerationModifier=Модификатор естеств. регенерации
+config.tfc.general.player.naturalRegenerationModifier.tooltip=Модификатор задающий то как быстро игрок будет восстанавливать здоровье естественным путем.
+
+config.tfc.general.player.peacefulDifficultyPassiveRegeneration=Включить восстан. параметров игрока
+config.tfc.general.player.peacefulDifficultyPassiveRegeneration.tooltip=Должно ли происходить пассивная регенерация здоровья, голода и жажды в мирном режиме как это происходит в "ванильной игре"?
+
+config.tfc.general.player.passiveExhaustionMultiplier=Множитель пассивного увеличения голода
+config.tfc.general.player.passiveExhaustionMultiplier.tooltip=Множитель отвечающий за пассивное увеличение голода (как быстро полоска голода уменьшается. 0 = голод не увеличиваться, 1.0 = полная шкала голода за 2,5 дня).
+
+config.tfc.general.player.nutritionRotationHungerWindow=Шкала голода
+config.tfc.general.player.nutritionRotationHungerWindow.tooltip=Количество восполненного голода до того, как игрок потеряет первую съеденную пищу. Большинство продуктов TFC имеют 4 голода. Пример: умножьте ванильный голод (20) на 4, чтобы получить еду на один батончик до того, как первая еда будет потеряна из цикла.
+
+config.tfc.general.player.drinkDelay=Задержка питья
+config.tfc.general.player.drinkDelay.tooltip=Задержка (в тиках) для питья воды рукой
+
+config.tfc.general.player.chanceThirstOnSaltyDrink=Шанс дебаффа жажды
+config.tfc.general.player.chanceThirstOnSaltyDrink.tooltip=Есть вероятность, что соленая вода вызовет чувство жажды.
+
+config.tfc.general.player.quiverSearch=Место хранения колчана
+config.tfc.general.player.quiverSearch.tooltip=В каких слотах инвентаря можно найти колчан для пополнения/сбора боеприпасов?
+
+
+### World
+config.tfc.general.world=Настройки генерации мира
+config.tfc.general.world.tooltip=Различные настройки и параметры генерации мира
+
+config.tfc.general.world.hemisphereType=Тип полушария
+config.tfc.general.world.hemisphereType.tooltip=Отвечает за то как температурный градиент сменяется ближе к экватору. 1: юг экватора - жарче, север экватора - холоднее. -1: юг экватора - холоднее, север экватора - жарче.
+
+config.tfc.general.world.temperatureMode=Температурный режим
+config.tfc.general.world.temperatureMode.tooltip=Это контролирует, как температура зависит от того, как далеко вы находитесь от экватора.
+
+config.tfc.general.world.latitudeTemperatureModifier=Модификатор температуры широты
+config.tfc.general.world.latitudeTemperatureModifier.tooltip=Отвечает за размеры температурных областей. Размер каждой температурной зоны задается синусоидой. Это представляет половину периода волны = расстояние между теплой и холодной полосой, в блоках
+
+config.tfc.general.world.clayRarity=Редкость залежей глины
+config.tfc.general.world.clayRarity.tooltip=Редкость появления залежей глины. В среднем 1 / N чанков будет содержать залеж глины, если чанк под вопросом корректный для того чтобы появится глине.
+
+config.tfc.general.world.clayRainfallThreshold=Порог глинистого осадка
+config.tfc.general.world.clayRainfallThreshold.tooltip=Минимальное количество осадков в районе, необходимое для появления глины. По умолчанию это тот же порог, что и сухой травы.
+
+config.tfc.general.world.looseRocksFrequency=Частота маленьких камней
+config.tfc.general.world.looseRocksFrequency.tooltip=Кол-во попыток на чанк для появления маленьких камней. Включая поверхностные рудные образцы.
+
+config.tfc.general.world.enableLooseRocks=Включить рыхлые породы
+config.tfc.general.world.enableLooseRocks.tooltip=Включить генерацию рыхлых пород (только камней)?
+
+config.tfc.general.world.enableLooseOres=Включить рыхлые породы
+config.tfc.general.world.enableLooseOres.tooltip=Включить генерацию руд в рыхлых породах?
+
+config.tfc.general.world.enableLooseSticks=Включить рыхлые породы
+config.tfc.general.world.enableLooseSticks.tooltip=Включить генерацию палок на рыхлых породах?
+
+
+config.tfc.general.world.sticksDensityModifier=Модификатор плотности палок
+config.tfc.general.world.sticksDensityModifier.tooltip=Это управляет количеством палок, генерируемых при генерации чанка. Количество деревьев в этом районе и плотность флоры также являются фактором, влияющим на это.
+
+config.tfc.general.world.looseRockScan=Сканер жил в рыхлых породах
+config.tfc.general.world.looseRockScan.tooltip=Это то, как глубоко (в блоках) от поверхности рыхлая порода будет создавать жилу при генерации, Большее значение = больше жил порождают образцы, таким образом добавляя больше образцов.
+
+config.tfc.general.world.rainfallSpreadFactor=Коэффициент разброса осадков
+config.tfc.general.world.rainfallSpreadFactor.tooltip=Отвечает за разброс осадков в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+
+config.tfc.general.world.floraDiversitySpreadFactor=Коэффициент разброса разнообразия флоры
+config.tfc.general.world.floraDiversitySpreadFactor.tooltip=Отвечает за разброс разнообразия флоры в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+
+config.tfc.general.world.floraDensitySpreadFactor=Коэффициент разброса плотности флоры
+config.tfc.general.world.floraDensitySpreadFactor.tooltip=Отвечает за разброс плотности флоры в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+
+config.tfc.general.world.respawnableCreatures=Возрождение существ
+config.tfc.general.world.respawnableCreatures.tooltip=Это контролирует, какие существа могут возрождаться в биомах TFC. Вы должны указать, следуя шаблону 'modid:entity <rarity> <minGroupSpawn> <maxGroupSpawn>'. Неверные значения будут проигнорированы.
+
+
+### World Regen
+config.tfc.general.world_regen=Настройки восстановления мира
+
+config.tfc.general.world_regen.minimumTime=Мин. время регенерации мира
+config.tfc.general.world_regen.minimumTime.tooltip=Минимальное время для незанятого чанка для того чтобы его ресурсы начали естественно регенерироваться. (В днях). После этого значения, скорость регенерации будет увеличиваться основанно на том как долго времени прошло, до максимального значения в 4x
+
+config.tfc.general.world_regen.sticksRocksModifier=Модификатор восстановления обломков
+config.tfc.general.world_regen.sticksRocksModifier.tooltip=Модификатор восстановления маленьких камней и палок в мире.
+
+
+### Food
+config.tfc.general.food=Настройки еды
+config.tfc.general.food.tooltip=Настройки для различных аспектов пищи, от разложения до изобилия.
+
+config.tfc.general.food.decayModifier=Модификатор порчи еды
+config.tfc.general.food.decayModifier.tooltip=Модификатор отвечающий за то как быстро портится еда. Большие значения = быстрее пропадает. Установите в 0 для бесконечного срока годности
+
+config.tfc.general.food.decayStackTime=Время порчи пачки еды
+config.tfc.general.food.decayStackTime.tooltip=Кол-во часов перед тем как время порчи еды будет синхронизировано. Когда предмет являющийся пищей выброшен, его время порчи будет округлено до ближайшего лежащего в куче (в часах).
+
+config.tfc.general.food.enableCropDeath=Включить гибель урожая
+config.tfc.general.food.enableCropDeath.tooltip=Если false, урожай никогда не погибнет ни при каких обстоятельствах.
+
+config.tfc.general.food.cropRarity=Редкость диких посевов
+config.tfc.general.food.cropRarity.tooltip=Определяет редкость диких посевов при генерации, в 1 / N чанках. 0 = Отключено
+
+config.tfc.general.food.berryBushRarity=Редкость ягодных кустов
+config.tfc.general.food.berryBushRarity.tooltip=Определяет редкость диких посевов при генерации, в 1 / N чанках. 0 = Отключено
+
+config.tfc.general.food.fruitTreeRarity=Редкость фруктовых деревьев
+config.tfc.general.food.fruitTreeRarity.tooltip=Определяет редкость фруктовых деревьев при генерации, в 1 / N чанках. 0 = Отключено
+
+config.tfc.general.food.cropGrowthTimeModifier=Модификатор времени роста посевов
+config.tfc.general.food.cropGrowthTimeModifier.tooltip=Модификатор времени, необходимого для выращивания посевов.
+
+config.tfc.general.food.berryBushGrowthTimeModifier=Модификатор времени ягодных кустов
+config.tfc.general.food.berryBushGrowthTimeModifier.tooltip=Модификатор времени, необходимого для выращивания ягод на кустах.
+
+config.tfc.general.food.fruitTreeGrowthTimeModifier=Модификатор времени фруктовых деревьев
+config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=Модификатор времени, необходимого фруктовым деревьям для роста стволов / листьев / фруктов.
+
+
+### Misc
+config.tfc.general.misc=Прочие настройки
+config.tfc.general.misc.tooltip=Настройки для разных вещей.
+
+config.tfc.general.misc.guidebook=Выдать руководство
+config.tfc.general.misc.guidebook.tooltip=Выдать игроку руководство? (Требуется patchouli)
+
+config.tfc.general.misc.defaultMonthLength=Продолжительность месяца
+config.tfc.general.misc.defaultMonthLength.tooltip=Продолжительность месяца (в днях) по умолчанию при запуске нового мира. Это можно изменить в существующих мирах с помощью команды / timetfc.
+
+config.tfc.general.misc.plantGrowthRate=Скорость роста растения
+config.tfc.general.misc.plantGrowthRate.tooltip=Процентный шанс того что растение подрастёт за каждое обновление игры. Меньше число = медленнее.
+
+config.tfc.general.misc.leafMovementModifier=Модификатор движения листвы
+config.tfc.general.misc.leafMovementModifier.tooltip=Модификатор движения блока листьев. Меньше = Медленнее, Больше = Быстрее. 1 = Нет замедления. (Скорость * это = медленно).
+
+config.tfc.general.misc.berryBushMovementModifier=Модификатор движения ягодных кустов
+config.tfc.general.misc.berryBushMovementModifier.tooltip=Модификатор движения блока листьев. Меньше = Медленнее, Больше = Быстрее. 1 = Нет замедления. (Скорость * это = медленно).
+
+config.tfc.general.misc.snowMovementModifier=Модификатор движения снега
+config.tfc.general.misc.snowMovementModifier.tooltip=Общий модификатор движения снега. Меньше = Медленнее, Больше = Быстрее. 1 = Нет замедления. (Скорость * это = медленно).
+
+config.tfc.general.misc.minimumPlantMovementModifier=Модификатор минимального движения растений
+config.tfc.general.misc.minimumPlantMovementModifier.tooltip=Общий модификатор движения. Меньше = Медленнее, Больше = Быстрее. 1 = Нет замедления. Заметка: это немного отличается от других (листва / ягодные кусты), потому что это фактически функционирует как максимальное замедление. Фактическое значение зависит от растения и его стадии.
+
+config.tfc.general.misc.stoneGemDropChance=Шанс выпадения кристаллов
+config.tfc.general.misc.stoneGemDropChance.tooltip=Задает шанс выпадения кристаллов из камня. Уровень повреждения кристаллов случайный: 16/31 Расколотый, 8/31 Треснутый, 4/31 Обычный, 2/31 Безупречный и 1/31 Изысканый.
+
+config.tfc.general.misc.fireStarterChance=Шанс зажечь костер
+config.tfc.general.misc.fireStarterChance.tooltip=Шанс того что вы сможете разжечь костер с помощью поджигателя
+
+config.tfc.general.misc.smallOreMetalAmount=Кол-во металла в самородке
+config.tfc.general.misc.smallOreMetalAmount.tooltip=Кол-во металла содержащегося в самородке / малой руде.
+
+config.tfc.general.misc.poorOreMetalAmount=Кол-во металла в бедной руде
+config.tfc.general.misc.poorOreMetalAmount.tooltip=Кол-во металла содержащегося в бедной руде.
+
+config.tfc.general.misc.normalOreMetalAmount=Кол-во металла в нормальной руде
+config.tfc.general.misc.normalOreMetalAmount.tooltip=Кол-во металла содержащегося в нормальной руде.
+
+config.tfc.general.misc.richOreMetalAmount=Кол-во металла в богатой руде
+config.tfc.general.misc.richOreMetalAmount.tooltip=Кол-во металла содержащегося в богатой руде.
+
+config.tfc.general.misc.dictionaryIron=Словарь железной руды для кованного железа
+config.tfc.general.misc.dictionaryIron.tooltip=Добавить тип железной руды словаря руд (т.е.: ingotIron, oreIron) для кованного железа?
+
+config.tfc.general.misc.dictionaryPlates=Словарь пластин для металл. листов
+config.tfc.general.misc.dictionaryPlates.tooltip=Добавить тим пластин (plateIron, plateBronze) для металлических листов?
+
+config.tfc.general.misc.woodenBucketWhitelist=Белый список для деревянного ведра
+config.tfc.general.misc.woodenBucketWhitelist.tooltip=Разрешенные жидкости которые можно набрать в деревянное ведро.
+
+config.tfc.general.misc.blueSteelBucketWhitelist=Белый список для ведра из синей стали
+config.tfc.general.misc.blueSteelBucketWhitelist.tooltip=Разрешенные жидкости которые можно набрать в ведро из синей стали.
+
+config.tfc.general.misc.redSteelBucketWhitelist=Белый список для ведра из красной стали
+config.tfc.general.misc.redSteelBucketWhitelist.tooltip=Разрешенные жидкости которые можно набрать в ведро из красной стали.
+
+config.tfc.general.misc.pluckableEntities=Выщипываемые существа
+config.tfc.general.misc.pluckableEntities.tooltip=Существа, которые роняют перо при щелчке пкм + shift.
+
+config.tfc.general.misc.damagePerFeather=Урон за выщипывания пера
+config.tfc.general.misc.damagePerFeather.tooltip=Сколько вреда причиняется существу, когда выщипывают перо.
+
+config.tfc.general.misc.rockMiningTimeModifier=Модификатор времени добычи камней
+config.tfc.general.misc.rockMiningTimeModifier.tooltip=Это контролирует время, необходимое для добычи каменных блоков. 1.0 = Ванилла, 10.0 = Классический TFC
+
+config.tfc.general.misc.logMiningTimeModifier=Модификатор времени добычи бревен
+config.tfc.general.misc.logMiningTimeModifier.tooltip=Это контролирует время, необходимое для добычи бревен. 1.0 = Ванилла, 10.0 = Классический TFC
+
+
+## Devices Config
+config.tfc.devices=Настройки устройств
+config.tfc.devices.tooltip=Различные параметры конфигурации устройств (т.е.: Кричный горн, Малый сосуд, Бочка)
+
+
+### Temperature
+config.tfc.devices.temperature=Настройки температуры
+
+config.tfc.devices.temperature.globalModifier=Глобальный модификатор температуры
+config.tfc.devices.temperature.globalModifier.tooltip=Модификатор отвечающий за то как медленно или быстро предметы нагреваются. Меньше число = медленнее изменяется температура.
+
+config.tfc.devices.temperature.heatingModifier=Глобальный модификатор нагрева
+config.tfc.devices.temperature.heatingModifier.tooltip=Модификатор отвечающий за то как объекты (т.е. костер) увеличивают или уменьшают нагрев. Меньше число = медленнее изменяется нагрев.
+
+config.tfc.devices.temperature.coolHeatablesInWorld=Остужать нагреваемые предметы
+config.tfc.devices.temperature.coolHeatablesInWorld.tooltip=Можно ли охлаждать нагреваемые предметы в мире? Например, положить его с воду или на снег?
+
+config.tfc.devices.temperature.ticksBeforeAttemptToCool=Время охлаждения
+config.tfc.devices.temperature.ticksBeforeAttemptToCool.tooltip=Кол-во тиков необходимое для полного охлаждения предмета.
+
+
+### Barrel
+config.tfc.devices.barrel=Бочка
+
+config.tfc.devices.barrel.tank=Объём бочки
+config.tfc.devices.barrel.tank.tooltip=Сколько жидкости (mB) может вместить бочка?
+
+config.tfc.devices.barrel.fluidWhitelist=Разрешенные жидкости
+config.tfc.devices.barrel.fluidWhitelist.tooltip=Список жидкостей, разрешенных к вливу в бочку
+
+
+### Blast Furnace
+config.tfc.devices.blast_furnace=Доменная печь
+
+config.tfc.devices.blast_furnace.consumption=Расход топлива
+config.tfc.devices.blast_furnace.consumption.tooltip=Как быстро доменная печь расходует топливо (по сравнению с угольной кузницей). Пример: древесного угля (без мехов) хватает на 1800 тиков в кузнице, а 1800 / 4 = 450 тиков в доменной печи.
+
+
+### Bloomery
+config.tfc.devices.bloomery=Кричной горн
+
+config.tfc.devices.bloomery.ticks=Время кричного горна
+config.tfc.devices.bloomery.ticks.tooltip=Кол-во тиков необходимое для завершения работы кричного горна. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 15 часов.
+
+
+### Crucible
+config.tfc.devices.crucible=Тигель
+
+config.tfc.devices.crucible.tank=Объем тигеля
+config.tfc.devices.crucible.tank.tooltip=Сколько металла (единиц / mB) может вместить тигель?
+
+config.tfc.devices.crucible.enableAllSlots=Принять заливку из всех ячеек
+config.tfc.devices.crucible.enableAllSlots.tooltip=Позвольте тиглям принимать разливаемый металл (из малых сосудов / форм) из всех 9 входных ячеек одновременно.
+
+config.tfc.devices.crucible.pouringSpeed=Скорость заливки
+config.tfc.devices.crucible.pouringSpeed.tooltip=Как быстро тигель должен принимать жидкости из форм / малых сосудов?
+
+
+### Charcoal Pit
+config.tfc.devices.charcoal_pit=Угольная яма
+
+config.tfc.devices.charcoal_pit.ticks=Время угольной ямы
+config.tfc.devices.charcoal_pit.ticks.tooltip=Кол-во тиков необходимое для завершения работы угольной ямы. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 18 часов.
+config.tfc.devices.charcoal_pit.glass=Можно использовать стекло
+config.tfc.devices.charcoal_pit.glass.tooltip=Могут ли угольные ямы использовать стекло (окрашенное стекло) в качестве действительного покрытия?
+
+
+### Charcoal Forge
+config.tfc.devices.charcoal_forge=Угольная кузница
+
+config.tfc.devices.charcoal_forge.rainTicks=Дождь сокращает время горения в тиках
+config.tfc.devices.charcoal_forge.ticks.tooltip=Кол-во  тиков горения, которые удаляются, когда угольная кузница находится под дождем (случайное количество тиков). Это эффективно заставляет угольную кузницу потреблять больше топлива, когда над ним идет дождь.
+
+
+### Fire Pit
+config.tfc.devices.fire_pit=Костер
+
+config.tfc.devices.fire_pit.ticks=Время костра
+config.tfc.devices.fire_pit.ticks.tooltip=Кол-во тиков, необходимых для того, чтобы кастрюля на костре закипела, прежде чем превратиться в суп, на одну порцию. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 1 час.
+
+config.tfc.devices.fire_pit.rainTicks=Дождь сокращает время горения в тиках
+config.tfc.devices.fire_pit.rainTicks.tooltip=Кол-во тиков горения, которые удаляются, когда костер находится под дождем (случайное количество тиков). Это эффективно заставляет костёр потреблять больше топлива, когда над ним идет дождь.
+
+
+### Pit Kiln
+config.tfc.devices.pit_kiln=Яма для обжига
+
+config.tfc.devices.pit_kiln.ticks=Время ямы для обжига
+config.tfc.devices.pit_kiln.ticks.tooltip=Кол-во тиков необходимое для завершения работы ямы для обжига. (1000 тиков = 1 игровой часу = 50 секундам), по умолчанию 8 часов.
+
+
+### Lamp
+config.tfc.devices.lamp=Лампа
+
+config.tfc.devices.lamp.tank=Объём лампы
+config.tfc.devices.lamp.tank.tooltip=Сколько топлива (mB) вместит лампа?
+
+config.tfc.devices.lamp.burnRate=Скорость горения
+config.tfc.devices.lamp.burnRate.tooltip=Как быстро лампы расходуют топливо (mb/час)? 1 = время горения 1 час на mB, 0.125 = время горения 2000 часов по умолчанию, 0 = бесконечное топливо
+
+config.tfc.devices.lamp.fuels=Допустимые виды топлива
+config.tfc.devices.lamp.fuels.tooltip=Какие жидкости можно использовать в качестве топлива для ламп?
+
+
+### Chisel
+config.tfc.devices.chisel=Зубило
+
+config.tfc.devices.chisel.hasDelay=Задержка
+config.tfc.devices.chisel.hasDelay.tooltip=Есть ли у зубила задержка при использовании?
+
+config.tfc.devices.chisel.requireHammerInOffHand=Молот в руке
+config.tfc.devices.chisel.requireHammerInOffHand.tooltip=Если true, то молодок должен быть во второй руке для использования зубила. Если false, молоток должен быть во второй руке или на панели инструментов.
+
+
+### Small Vessel
+config.tfc.devices.small_vessel=Малый сосуд
+
+config.tfc.devices.small_vessel.tank=Объём малого сосуда
+config.tfc.devices.small_vessel.tank.tooltip=Сколько металла (единиц / mB) вместить малый сосуд?
+
+
+### Sluice
+config.tfc.devices.sluice=Рудопромывочный жёлоб
+
+config.tfc.devices.sluice.maxWorkChunk=Максимальная обработка чанка
+config.tfc.devices.sluice.maxWorkChunk.tooltip=Сколько раз можно промывать в чанке (300 = по умолчанию, 0 = отключено). Заметка: В то время как жёлоб увеличит работу на 1, золотой лоток увеличит на 6.
+
+config.tfc.devices.sluice.radius=Радиус рудопромывочного жёлоба
+config.tfc.devices.sluice.radius.tooltip=Радиус того на сколько чанков действует рудопромывочный жёлоб.
+
+config.tfc.devices.sluice.ticks=Время рудопромывочного жёлоба
+config.tfc.devices.sluice.ticks.tooltip=Кол-во тиков требующихся для того чтобы рудопромывочный жёлоб сработал.
+
+config.tfc.devices.sluice.oreChance=Шанс получения руд
+config.tfc.devices.sluice.oreChance.tooltip=Шанс того что при работе рудопромывочного жёлоба получатся малые руды.
+
+config.tfc.devices.sluice.gemChance=Шанс получения кристаллов
+config.tfc.devices.sluice.gemChance.tooltip=Шанс того что при работе рудопромывочного жёлоба получатся кристаллы.
+
+config.tfc.devices.sluice.diamondGemChance=Шанс получения алмаза
+config.tfc.devices.sluice.diamondGemChance.tooltip=Шанс получения алмаза при получении кристаллов рудопромывочным жёлобом.
+
+
+## Jug
+config.tfc.devices.jug=Кувшин
+
+config.tfc.devices.jug.dumpWaterOut=Слить воду нажав Shift+ПКМ
+config.tfc.devices.jug.dumpWaterOut.tooltip=Включите Shift-ПКМ, чтобы слить воду из кувшина. Включение этого режима не приведет к размещению водяного блока на землю.
+
+
+## Gold Pan
+config.tfc.devices.gold_pan=Промывочный лоток
+
+config.tfc.devices.gold_pan.cooldownTicks=Время восстановления в тиках
+config.tfc.devices.gold_pan.cooldownTicks.tooltip=Время восстановления после промывки
+
+
+## Clients
 config.tfc.client=Настройки клиента
-config.tfc.client.toolip=Настройки влияющие только на клиент игры.
 
-config.tfc.client.makeWorldTypeClassicDefault=Сделать генерацию TFC Classic по умол.
-config.tfc.client.makeWorldTypeClassicDefault.tooltip=Работает только на клиенте игры! Для установки типа генерации на серверах, тип мира в настройках сервера должен быть 'tfc_classic'
+### Tooltips
+config.tfc.client.tooltip=Настройки влияющие только на клиент игры.
 
-config.tfc.client.showToolClassTooltip=Показывать тип инструмента в подск.
-config.tfc.client.showToolClassTooltip.tooltip=Показывает тип инструмента определённого ItemStack когда продвинутые подсказки включены. (F3+H)
+config.tfc.client.tooltip.showToolClassTooltip=Показывать тип инструмента в подсказках
+config.tfc.client.tooltip.showToolClassTooltip.tooltip=Показывает тип инструмента определённого ItemStack когда продвинутые подсказки включены. (F3+H)
 
-config.tfc.client.showOreDictionaryTooltip=Показывать словарь руд в подск.
-config.tfc.client.showOreDictionaryTooltip.tooltip=Показывать к какому словарю руд относится предмет когда продвинутые подсказки включены. (F3+H)
+config.tfc.client.tooltip.showOreDictionaryTooltip=Показывать словарь руд в подсказках
+config.tfc.client.tooltip.showOreDictionaryTooltip.tooltip=Показывать к какому словарю руд относится предмет когда продвинутые подсказки включены. (F3+H)
 
-config.tfc.client.showNBTTooltip=Показывать метаданные NBT в подск.
-config.tfc.client.showNBTTooltip.tooltip=Показывать метаданные NBT предмета когда продвинутые подсказки включены. (F3+H)
+config.tfc.client.tooltip.showNBTTooltip=Показывать метаданные NBT в подсказках
+config.tfc.client.tooltip.showNBTTooltip.tooltip=Показывать метаданные NBT предмета когда продвинутые подсказки включены. (F3+H)
 
-config.tfc.client.propickOutputToActionBar=Кирка геолога выводит в панель действий
-config.tfc.client.propickOutputToActionBar.tooltip=Должна ли кирка геолога выводить сообщение в панель действий? (место выше панели быстрого действия)
+config.tfc.client.tooltip.propickOutputToActionBar=Вывод информации геологического молотка
+config.tfc.client.tooltip.propickOutputToActionBar.tooltip=Должен ли геологический молоток выводить сообщение в панель действий? (место выше панели быстрого действия)
 
-config.tfc.client.rottenFoodOverlayColor=Затенение цветом для пропавшей еды
-config.tfc.client.rottenFoodOverlayColor.tooltip=Цвет для отрисовки поверх предмета пропавшей еды. Выражается 265-битным значением цвета RGB: 0xFFFFFF = белый, 0x000000 = черный
+config.tfc.client.tooltip.oreTooltipMode=Режим подсказок о руде
+config.tfc.client.tooltip.oreTooltipMode.tooltip=Режим, показывает информацию о рудах. (тип руды, единицы)
 
-## World Config
-config.tfc.world=Настройки генерации мира
-config.tfc.world.tooltip=Различные настройки и параметры генерации мира
+config.tfc.client.tooltip.decayTooltipMode=Специфичный режим гниения
+config.tfc.client.tooltip.decayTooltipMode.tooltip=Режим, показывает информацию о гниении.
 
-config.tfc.world.hemisphereType=Тип полушария
-config.tfc.world.hemisphereType.tooltip=Отвечает за то как температурный градиент сменяется ближе к экватору. 1: юг экватора - жарче, север экватора - холоднее. -1: юг экватора - холоднее, север экватора - жарче.
+config.tfc.client.tooltip.timeTooltipMode=Информация о времени
+config.tfc.client.tooltip.timeTooltipMode.tooltip=Режим, показывает информацию о времени в игре. (майнкафтовое время или реальное)
 
-config.tfc.world.cyclicTemperatureRegions=Включить циклические темпер. области
-config.tfc.world.cyclicTemperatureRegions.tooltip=Отвечает за циклические температурные области. Если вы хотите бесконечный север/юг со средним экватором, установите это в false.
 
-config.tfc.world.debugWorldGen=Отладочная генерация (ОПАСНО)
-config.tfc.world.debugWorldGen.tooltip=Отладочная генерация [ОПАСНО] Ваш мир будет затронут! Не используйте на тех файлах игры на коротых вы играете!
+### Display
+config.tfc.client.display=Настройки экрана
 
-config.tfc.world.latitudeTemperatureModifier=Модификатор температуры широты
-config.tfc.world.latitudeTemperatureModifier.tooltip=Отвечает за размеры температурных областей. Размер каждой температурной зоны задается синусоидой. Это представляет половину периода волны = расстояние между теплой и холодной полосой, в блоках
+config.tfc.client.display.healthDisplayFormat=Формат отображения здоровья
+config.tfc.client.display.healthDisplayFormat.tooltip=Если палень здоровья TFC включена, это изменяет формат отображения здоровья. (По умолчанию: TFC = 1000 / 1000).
 
-config.tfc.world.clayRarity=Редкость залежей глины
-config.tfc.world.clayRarity.tooltip=Редкость появления залежей глины. В среднем 1 / N чанков будет содержать залеж глины, если чанк под вопросом корректный для того чтобы появится глине.
+config.tfc.client.display.useVanillaHealth=Использовать обычную полосу здоровья
+config.tfc.client.display.useVanillaHealth.tooltip=Отключить полосу здоровья TFC и использовать обычную?
 
-config.tfc.world.looseRocksFrequency=Частота маленьких камней
-config.tfc.world.looseRocksFrequency.tooltip=Кол-во попыток на чанк для появления маленьких камней. Включая поверхностные рудные образцы.
+config.tfc.client.display.useVanillaHunger=Использовать обычную полосу голода
+config.tfc.client.display.useVanillaHunger.tooltip=Отключить полосу голода TFC и использовать обычную?
 
-config.tfc.world.rainfallSpreadFactor=Коэффициент разброса осадков
-config.tfc.world.rainfallSpreadFactor.tooltip=Отвечает за разброс осадков в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+config.tfc.client.display.hideThirstBar=Скрыть полосу жажды (воды)
+config.tfc.client.display.hideThirstBar.tooltip=Скрыть полосу жажды?
 
-config.tfc.world.floraDiversitySpreadFactor=Коэффициент разброса разнообразия флоры
-config.tfc.world.floraDiversitySpreadFactor.tooltip=Отвечает за разброс разнообразия флоры в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+config.tfc.client.display.rottenFoodOverlayColor=Цвет гнилой пищи
+config.tfc.client.display.rottenFoodOverlayColor.tooltip=Цвет для отрисовки поверх предмета пропавшей еды. Выражается 265-битным значением цвета RGB: 0xFFFFFF = белый, 0x000000 = черный
 
-config.tfc.world.floraDensitySpreadFactor=Коэффициент разброса плотности флоры
-config.tfc.world.floraDensitySpreadFactor.tooltip=Отвечает за разброс плотности флоры в мире. Более высокие значения означают что мир будет определен в более экстремальную сторону. ПРЕДУПРЕЖДЕНИЕ: Может вызвать очень странное поведениие генерации мира.
+
+
+### Grass Color
+config.tfc.client.grassColor=Настройки цвета травы
+
+config.tfc.client.grassColor.noiseEnable=Включить шум?
+config.tfc.client.grassColor.noiseEnable.tooltip=Включить травяной шум вообще?
+
+config.tfc.client.grassColor.noiseDarkness=Шум темноты
+config.tfc.client.grassColor.noiseDarkness.tooltip=Насколько темным должен быть шум в самом сильном месте?
+
+config.tfc.client.grassColor.noiseLevels=Уровень шума
+config.tfc.client.grassColor.noiseLevels.tooltip=Сколько уровней темноты должен быть у шума?
+
+config.tfc.client.grassColor.noiseScale=Шкала шума
+config.tfc.client.grassColor.noiseScale.tooltip=Насколько большими должны быть зоны шума?
+
+
+config.tfc.client.grassColor.seasonColorEnable=Включить сезонные цвета?
+config.tfc.client.grassColor.seasonColorEnable.tooltip=Включить сезонные цвета травы?
+
+config.tfc.client.grassColor.seasonColorSpring=Сезонный цвет: Весна
+config.tfc.client.grassColor.seasonColorSpring.tooltip=Цвет весны, код ARGB в шестнадцатеричном формате.
+
+config.tfc.client.grassColor.seasonColorSummer=Сезонный цвет: Лето
+config.tfc.client.grassColor.seasonColorSummer.tooltip=Цвет лета, код ARGB в шестнадцатеричном формате.
+
+config.tfc.client.grassColor.seasonColorAutumn=Сезонный цвет: Осень
+config.tfc.client.grassColor.seasonColorAutumn.tooltip=Цвет осени, код ARGB в шестнадцатеричном формате.
+
+config.tfc.client.grassColor.seasonColorWinter=Сезонный цвет: Зима
+config.tfc.client.grassColor.seasonColorWinter.tooltip=Цвет зимы, код ARGB в шестнадцатеричном формате.
+
+## Animals
+config.tfc.animals=Настройки животных
+config.tfc.animals.tooltip=Различные конфигурации животных, такие как периоды беременности, количество потомства и редкость появления.
+
+
+### Config Names
+config.tfc.animals.alpaca=Альпака
+config.tfc.animals.sheep=Овца
+config.tfc.animals.cow=Корова
+config.tfc.animals.goat=Козел
+config.tfc.animals.chicken=Курица
+config.tfc.animals.duck=Утка
+config.tfc.animals.pig=Свинья
+config.tfc.animals.camel=Верблюд
+config.tfc.animals.llama=Лама
+config.tfc.animals.horse=Лошадь
+config.tfc.animals.donkey=Осел
+config.tfc.animals.mule=Мул
+config.tfc.animals.ocelot=Оцелот
+config.tfc.animals.wolf=Волк
+config.tfc.animals.grizzly_bear=Медведь гризли
+config.tfc.animals.polar_bear=Полярный медведь
+config.tfc.animals.lion=Лев
+config.tfc.animals.panther=Пантера
+config.tfc.animals.saber_tooth=Саблезуб
+config.tfc.animals.hyena=Гиена
+config.tfc.animals.deer=Олень
+config.tfc.animals.parrot=Попугай
+config.tfc.animals.pheasant=Фазан
+config.tfc.animals.rabbit=Кролик
+config.tfc.animals.direwolf=Лютоволк
+config.tfc.animals.hare=Заяц
+config.tfc.animals.boar=Кабан
+config.tfc.animals.zebu=Зебу
+config.tfc.animals.gazelle=Газель
+config.tfc.animals.wildebeest=Гну
+config.tfc.animals.quail=Перепел
+config.tfc.animals.grouse=Рябчик
+config.tfc.animals.mongoose=Мангуст
+config.tfc.animals.turkey=Индейка
+config.tfc.animals.jackal=Шакал
+config.tfc.animals.muskox=Овцебык
+config.tfc.animals.yak=Як
+config.tfc.animals.black_bear=Черный медведь
+config.tfc.animals.cougar=Пума
+config.tfc.animals.coyote=Койот
+
+
+### Common
+config.tfc.animals.adulthood=Взросление
+config.tfc.animals.adulthood.tooltip=Сколько дней пройдет, прежде чем животное станет взрослым?
+
+config.tfc.animals.elder=Старение
+config.tfc.animals.elder.tooltip=Через сколько дней после взросления животное состарится? 0 = Отключено
+
+config.tfc.animals.gestation=Беременность
+config.tfc.animals.gestation.tooltip=Сколько дней до того, как животное родит?
+
+config.tfc.animals.hatch=Вылупление
+config.tfc.animals.hatch.tooltip=Сколько дней нужно, чтобы животное вылупилось?
+
+config.tfc.animals.babies=Потомство
+config.tfc.animals.babies.tooltip=Сколько потомства появляется после родов?
+
+config.tfc.animals.woolTicks=Время восстановления шерсти
+config.tfc.animals.woolTicks.tooltip=Сколько нужно тиков для того, чтобы у животного отросла шерсть?
+
+config.tfc.animals.milkTicks=Время восстановления молока
+config.tfc.animals.milkTicks.tooltip=Сколько нужно тиков для того, чтобы у животного появилось молоко?
+
+config.tfc.animals.eggTicks=Время восстановления несушки
+config.tfc.animals.eggTicks.tooltip=Сколько нужно тиков для того, чтобы животное снесло яйцо?
+
+config.tfc.animals.oldDeathChance=Шанс смерти у пожилых
+config.tfc.animals.oldDeathChance.tooltip=Если животное - старое, каков шанс, что он умрет на следующий день? 0 = Отключено
+
+config.tfc.animals.rarity=Шанс появления
+config.tfc.animals.rarity.tooltip=На сколько редко животное появляется в 1 / N чанке, в доступных биомах? 0 = Отключено.
+
+config.tfc.animals.huntCreatures=Охота на существ
+config.tfc.animals.huntCreatures.tooltip=Это контролирует, на какие зарегистрированные объекты охотятся животные (если только они не приручены), в порядке приоритета. Вы должны указать 'modid:entity'. Неверные значения будут проигнорированы.
+
+config.tfc.animals.food=Список продуктов питания
+config.tfc.animals.food.tooltip=Это контролирует, какие предметы считаются пищей для животного.. Вы должны указать 'ore:tag' или 'modid:item [meta]'. Неверные значения будут проигнорированы.
+
+config.tfc.animals.acceptRotten=Принимает тухлые продукты 
+config.tfc.animals.acceptRotten.tooltip=Это животное ест гнилую пищу?
+
 
 # Misc
 itemGroup.tfc.misc=TFC Разное
@@ -371,6 +986,14 @@ itemGroup.tfc.metal=TFC Металлы
 itemGroup.tfc.gems=TFC Кристаллы
 itemGroup.tfc.food=TFC Пища
 itemGroup.tfc.plants=TFC Растения
+
+item.dyePowder.green.name=Зеленый краситель
+item.dyePowder.red.name=Красный краситель
+item.dyePowder.yellow.name=Желтый краситель
+item.tfc.dye.blue.name=Синий краситель
+item.tfc.dye.black.name=Чёрный краситель
+item.tfc.dye.brown.name=Коричневый краситель
+item.tfc.dye.white.name=Белый краситель
 
 generator.tfc_classic=Класический TFC
 
@@ -408,6 +1031,14 @@ tfc.types.metal.high_carbon_black_steel=Черная высокоуглерод�
 tfc.types.metal.high_carbon_blue_steel=Синяя высокоуглеродистая сталь
 tfc.types.metal.high_carbon_red_steel=Красная высокоуглеродистая сталь
 
+## Rock category
+tfc.types.rock_category.sedimentary=Осадочная
+tfc.types.rock_category.metamorphic=Метаморфическая
+tfc.types.rock_category.igneous_intrusive=Магматическая интрузивная
+tfc.types.rock_category.igneous_extrusive=Магматическая экструзивная
+
+## Tier
+
 tfc.enum.tier.tier_0=Уровень 0
 tfc.enum.tier.tier_i=Уровень I
 tfc.enum.tier.tier_ii=Уровень II
@@ -426,9 +1057,11 @@ tfc.enum.size.very_large=Очень большой
 tfc.enum.size.huge=Огромный
 
 ## Weight
+tfc.enum.weight.very_light=Очень легкий
 tfc.enum.weight.light=Легкий
 tfc.enum.weight.medium=Средний
 tfc.enum.weight.heavy=Тяжелый
+tfc.enum.weight.very_heavy=Очень тяжелый
 
 ## Heat
 tfc.enum.heat.warming=Нагревается
@@ -521,31 +1154,59 @@ tfc.enum.day.thursday=Четверг
 tfc.enum.day.friday=Пятница
 tfc.enum.day.saturday=Суббота
 
-tfc.enum.nutrient.carbohydrates=Углеводы
-tfc.enum.nutrient.fat=Жиры
+tfc.enum.nutrient.grain=Зерновые
+tfc.enum.nutrient.vegetables=Овощи
+tfc.enum.nutrient.fruit=Фрукты
 tfc.enum.nutrient.protein=Белки
-tfc.enum.nutrient.minerals=Минералы
-tfc.enum.nutrient.vitamins=Витамины
+tfc.enum.nutrient.dairy=Молочные
 
 #JEI
 jei.category.tfc.alloy=Рецепты сплавления
 jei.category.tfc.anvil=Наковальня
 jei.category.tfc.barrel=Рецепты бочки
+jei.category.tfc.blast_furnace=Рецепты доменной печи
+jei.category.tfc.bloomery=Рецепты горна
+jei.category.tfc.casting=Рецепты отливки
+jei.category.tfc.chisel=Рецепты сглаживания зубила
 jei.category.tfc.heat=Рецепты нагрева
 jei.category.tfc.knap.clay=Обработка глины
 jei.category.tfc.knap.fireclay=Обработка огнеупорной глины
 jei.category.tfc.knap.leather=Обработка кожи
 jei.category.tfc.knap.stone=Обработка камня
+jei.category.tfc.metal_heat=Рецепты нагрева металла
 jei.category.tfc.loom=Ткацкий станок
-jei.category.tfc.quern=Ручная мельница
+jei.category.tfc.quern=Жёрнов
+jei.category.tfc.rock_layer=Руды породного слоя
+jei.category.tfc.vein=Информация о жилах
 jei.category.tfc.welding=Рецепты сварки
 
+## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Мгновенно
-jei.tooltips.tfc.barrel.duration=%d часов
+jei.tooltips.tfc.barrel.duration=%d дней
+jei.tooltips.tfc.barrel.duration.short=%d часов
+
+## JEI Descriptions
+jei.description.tfc.pit_kiln=Используется для обжига керамики и плавления первых металлов. Разметите 4 предмета (Клавиша по умолчанию: V) в зоне 1x1 блока, затем заполните яму (правой кнопкой мыши) 8 соломы и 8 бревен и зажгите с помощью поджигателя или бросьте сверху факел. Обжиг или плавка первых металлов будет окончена когда огонь сверху погаснет
+jei.description.tfc.placed_item=Предметы можно размещать на земле, в основном для помещения в яму для обжига. Используйте (Клавиша по умолчанию: V) чтобы разместить каждый элемент (до 4) на один блок.
+jei.description.tfc.charcoal_pit=Чтобы получить древесный уголь, нажмите Shift + ПКМ чтобы уложить штабеля бревен. Покройте эти штабеля бревен почти полностью твердыми блоками, зажгите один из них, а затем покройте его твердым блоком. Через несколько часов у вас будет древесный уголь.
+
+### Rock Layer
+jei.tooltips.tfc.rock_layer.category=Категория
+jei.tooltips.tfc.rock_layer.layers=Слои
+jei.tooltips.tfc.rock_layer.top=Верхний
+jei.tooltips.tfc.rock_layer.middle=Средний
+jei.tooltips.tfc.rock_layer.bottom=Нижний
+
+### Vein Information
+jei.tooltips.tfc.vein.min_y=Мин Y
+jei.tooltips.tfc.vein.max_y=Макс Y
+jei.tooltips.tfc.vein.rarity=Редкость
+jei.tooltips.tfc.vein.rarity_value=%s%% чанков
+jei.tooltips.tfc.vein.loose_rock=Рыхлый камень
 
 # Fluids
 fluid.salt_water=Солёная вода
-fluid.fresh_water=Свежая вода
+fluid.fresh_water=Пресная вода
 fluid.hot_water=Горячая вода
 fluid.rum=Ром
 fluid.beer=Пиво
@@ -558,7 +1219,9 @@ fluid.cider=Сидр
 fluid.vinegar=Уксус
 fluid.brine=Рассол
 fluid.olive_oil=Оливковое масло
+fluid.olive_oil_water=Оливковое масло с водой
 fluid.tannin=Танин
+fluid.lye=Щелочь
 fluid.limewater=Известковая вода
 fluid.milk=Молоко
 fluid.milk_curdled=Простокваша
@@ -592,6 +1255,54 @@ fluid.high_carbon_blue_steel=Расплавленая высокоуглерод
 fluid.high_carbon_red_steel=Расплавленая высокоуглеродистая красная сталь
 fluid.high_carbon_black_steel=Расплавленая высокоуглеродистая черная сталь
 fluid.unknown=Неизвестный расплавленный металл
+fluid.white_dye=Белый краситель
+fluid.orange_dye=Оранжевый краситель
+fluid.magenta_dye=Пурпурный краситель
+fluid.light_blue_dye=Светло-синий краситель
+fluid.yellow_dye=Желтый краситель
+fluid.lime_dye=Лаймовый краситель
+fluid.pink_dye=Розовый краситель
+fluid.gray_dye=Серый краситель
+fluid.light_gray_dye=Светло-серый краситель
+fluid.cyan_dye=Голубой краситель
+fluid.purple_dye=Фиолетовый краситель
+fluid.blue_dye=Синий краситель
+fluid.brown_dye=Коричневый краситель
+fluid.green_dye=Зеленый краситель
+fluid.red_dye=Красный краситель
+fluid.black_dye=Чёрный краситель
+
+# Vein names
+vein.native_copper.name=Самородная медь
+vein.native_gold.name=Самородное золото
+vein.native_platinum.name=Самородная платина
+vein.native_silver.name=Самородное серебро
+vein.hematite.name=Гематит
+vein.cassiterite.name=Касситерит
+vein.bismuthinite.name=Висмутин
+vein.garnierite.name=Гарниерит
+vein.malachite.name=Малахит
+vein.magnetite.name=Магнетит
+vein.limonite.name=Лимонит
+vein.sphalerite.name=Сфалерит
+vein.tetrahedrite.name=Тетраэдрит
+vein.bithminous_coal.name=Битумный уголь
+vein.lignite.name=Лигнит
+vein.kaolinite.name=Каолинит
+vein.graphite.name=Графит
+vein.kimberlite.name=Кимберлит
+vein.cinnabar.name=Киноварь
+vein.cryolite.name=Криолит
+vein.saltpeter.name=Селитра
+vein.sylvite.name=Сильвит
+vein.borax.name=Бура
+vein.gypsum.name=Гипс
+vein.lapis_lazuli.name=Лазурит
+vein.surface_native_copper.name=Поверхность самородной меди
+vein.surface_cassiterite.name=Поверхностный касситерит
+vein.surface_bismuthinite.name=Поверхностный висмутинит
+vein.surface_sphalerite.name=Поверхностный сфалерит
+vein.surface_tetrahedrite.name=Поверхностный тетраэдрит
 
 
 ### ================== BLOCKS ===========================
@@ -600,24 +1311,82 @@ fluid.unknown=Неизвестный расплавленный металл
 tile.tfc.debug.name=Отладочный блок TFC
 tile.tfc.placed_item.name=Установленные предметы
 tile.tfc.placed_item_flat.name=Мусор
-tile.tfc.pit_kiln.name=Печь в яме
+tile.tfc.pit_kiln.name=Яма для обжига
 tile.tfc.charcoal_forge.name=Угольная кузница
 tile.tfc.peat.name=Торф
 tile.tfc.peat_grass.name=Торфяная трава
-tile.tfc.thatch.name=Солома
+tile.tfc.thatch.name=Сноп соломы
 tile.tfc.firepit.name=Костер
 tile.tfc.bellows.name=Кузнечные меха
-tile.tfc.crucible.name=Котел
+tile.tfc.crucible.name=Тигель
 tile.tfc.torch.name=Факел
 tile.tfc.blast_furnace.name=Доменная печь
 tile.tfc.bloomery.name=Кричной горн
 tile.tfc.fire_bricks.name=Огнеупорный кирпич
-tile.tfc.quern.name=Ручная мельница
+tile.tfc.quern.name=Жёрнов
 tile.tfc.ceramics.fired.large_vessel.name=Большой сосуд
-tile.tfc.sluice.name=Шлюз
+tile.tfc.fire_clay_block.name=Огнеупорная глина
+tile.tfc.aggregate.name=Заполнитель
+tile.tfc.sluice.name=Рудопромывочный жёлоб
 tile.tfc.ice.name=Лед
 tile.tfc.sea_ice.name=Морской лед
-tile.tfc.nest_box.name=Гнездо
+tile.tfc.nest_box.name=Насест
+tile.tfc.powderkeg.name=Пороховая бочка
+
+## Decoration blocks
+tile.tfc.alabaster.bricks.cyan.name=Голубой алебастровый кирпич
+tile.tfc.alabaster.bricks.black.name=Черный алебастровый кирпич
+tile.tfc.alabaster.bricks.magenta.name=Пурпурный алебастровый кирпич
+tile.tfc.alabaster.bricks.orange.name=Оранжевый алебастровый кирпич
+tile.tfc.alabaster.bricks.lime.name=Лаймовый алебастровый кирпич
+tile.tfc.alabaster.bricks.plain.name= Алебастровый кирпич
+tile.tfc.alabaster.bricks.blue.name=Синий алебастровый кирпич
+tile.tfc.alabaster.bricks.purple.name=Фиолетовый алебастровый кирпич
+tile.tfc.alabaster.bricks.light_blue.name=Светло-синий алебастровый кирпич
+tile.tfc.alabaster.bricks.gray.name=Серый алебастровый кирпич
+tile.tfc.alabaster.bricks.silver.name=Светло-серый алебастровый кирпич
+tile.tfc.alabaster.bricks.yellow.name=Желтый алебастровый кирпич
+tile.tfc.alabaster.bricks.brown.name=Коричневый алебастровый кирпич
+tile.tfc.alabaster.bricks.pink.name=Розовый алебастровый кирпич
+tile.tfc.alabaster.bricks.green.name=Зеленый алебастровый кирпич
+tile.tfc.alabaster.bricks.white.name=Белый алебастровый кирпич
+tile.tfc.alabaster.bricks.red.name=Красный алебастровый кирпич
+
+tile.tfc.alabaster.raw.cyan.name=Голубой алебастр
+tile.tfc.alabaster.raw.black.name=Черный алебастр
+tile.tfc.alabaster.raw.magenta.name=Пурпурный алебастр
+tile.tfc.alabaster.raw.orange.name=Оранжевый алебастр
+tile.tfc.alabaster.raw.lime.name=Лаймовый алебастр
+tile.tfc.alabaster.raw.plain.name= Алебастр
+tile.tfc.alabaster.raw.blue.name=Синий алебастр
+tile.tfc.alabaster.raw.purple.name=Фиолетовый алебастр
+tile.tfc.alabaster.raw.light_blue.name=Светло-синий алебастр
+tile.tfc.alabaster.raw.gray.name=Серый алебастр
+tile.tfc.alabaster.raw.silver.name=Светло-серый алебастр
+tile.tfc.alabaster.raw.yellow.name=Желтый алебастр
+tile.tfc.alabaster.raw.brown.name=Коричневый алебастр
+tile.tfc.alabaster.raw.pink.name=Розовый алебастр
+tile.tfc.alabaster.raw.green.name=Зеленый алебастр
+tile.tfc.alabaster.raw.white.name=Белый алебастр
+tile.tfc.alabaster.raw.red.name=Красный алебастр
+
+tile.tfc.alabaster.polished.cyan.name=Голубой гладкий алебастр
+tile.tfc.alabaster.polished.black.name=Черный гладкий алебастр
+tile.tfc.alabaster.polished.magenta.name=Пурпурный гладкий алебастр
+tile.tfc.alabaster.polished.orange.name=Оранжевый гладкий алебастр
+tile.tfc.alabaster.polished.lime.name=Лаймовый гладкий алебастр
+tile.tfc.alabaster.polished.plain.name= Гладкий алебастр
+tile.tfc.alabaster.polished.blue.name=Синий гладкий алебастр
+tile.tfc.alabaster.polished.purple.name=Фиолетовый гладкий алебастр
+tile.tfc.alabaster.polished.light_blue.name=Светло-синий гладкий алебастр
+tile.tfc.alabaster.polished.gray.name=Серый гладкий алебастр
+tile.tfc.alabaster.polished.silver.name=Светло-серый гладкий алебастр
+tile.tfc.alabaster.polished.yellow.name=Желтый гладкий алебастр
+tile.tfc.alabaster.polished.brown.name=Коричневый гладкий алебастр
+tile.tfc.alabaster.polished.pink.name=Розовый гладкий алебастр
+tile.tfc.alabaster.polished.green.name=Зеленый гладкий алебастр
+tile.tfc.alabaster.polished.white.name=Белый гладкий алебастр
+tile.tfc.alabaster.polished.red.name=Красный гладкий алебастр
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Гранит
@@ -1088,11 +1857,11 @@ tile.tfc.double_slab.bricks.schist.name=Двойной полублок из к�
 tile.tfc.double_slab.bricks.gneiss.name=Двойной полублок из гнейсовых кирпичей
 tile.tfc.double_slab.bricks.marble.name=Двойной полублок из мраморных кирпичей
 
-tile.tfc.ore.native_copper.granite.name=Гранит с чистой медью
-tile.tfc.ore.native_gold.granite.name=Гранитное чистым золотом
-tile.tfc.ore.native_platinum.granite.name=Гранит с чистой платиной
+tile.tfc.ore.native_copper.granite.name=Гранит с самородной медью
+tile.tfc.ore.native_gold.granite.name=Гранитное самородным золотом
+tile.tfc.ore.native_platinum.granite.name=Гранит с самородной платиной
 tile.tfc.ore.hematite.granite.name=Гранитный гематитом
-tile.tfc.ore.native_silver.granite.name=Гранитное чистым серебром
+tile.tfc.ore.native_silver.granite.name=Гранитное самородным серебром
 tile.tfc.ore.cassiterite.granite.name=Гранит с касситеритом
 tile.tfc.ore.galena.granite.name=Гранит с галеной
 tile.tfc.ore.bismuthinite.granite.name=Гранит с висмутином
@@ -1123,11 +1892,11 @@ tile.tfc.ore.sylvite.granite.name=Гранит с сильвитом
 tile.tfc.ore.borax.granite.name=Гранит с бурой
 tile.tfc.ore.olivine.granite.name=Гранит с оливином
 tile.tfc.ore.lapis_lazuli.granite.name=Гранит с лазуритом
-tile.tfc.ore.native_copper.diorite.name=Диорит с чистой медью
-tile.tfc.ore.native_gold.diorite.name=Диорит с чистым золотом
-tile.tfc.ore.native_platinum.diorite.name=Диорит с чистой платиной
+tile.tfc.ore.native_copper.diorite.name=Диорит с самородной медью
+tile.tfc.ore.native_gold.diorite.name=Диорит с самородным золотом
+tile.tfc.ore.native_platinum.diorite.name=Диорит с самородной платиной
 tile.tfc.ore.hematite.diorite.name=Диорит с гематитом
-tile.tfc.ore.native_silver.diorite.name=Диорит с чистым серебром
+tile.tfc.ore.native_silver.diorite.name=Диорит с самородным серебром
 tile.tfc.ore.cassiterite.diorite.name=Диорит с касситеритом
 tile.tfc.ore.galena.diorite.name=Диорит с галеной
 tile.tfc.ore.bismuthinite.diorite.name=Диорит с висмутином
@@ -1158,11 +1927,11 @@ tile.tfc.ore.sylvite.diorite.name=Диорит с сильвитом
 tile.tfc.ore.borax.diorite.name=Диорит с бурой
 tile.tfc.ore.olivine.diorite.name=Диорит с оливином
 tile.tfc.ore.lapis_lazuli.diorite.name=Диорит с лазуритом
-tile.tfc.ore.native_copper.gabbro.name=Габбро с чистой медью
-tile.tfc.ore.native_gold.gabbro.name=Габбро с чистым золотом
-tile.tfc.ore.native_platinum.gabbro.name=Габбро с чистой платиной
+tile.tfc.ore.native_copper.gabbro.name=Габбро с самородной медью
+tile.tfc.ore.native_gold.gabbro.name=Габбро с самородным золотом
+tile.tfc.ore.native_platinum.gabbro.name=Габбро с самородной платиной
 tile.tfc.ore.hematite.gabbro.name=Габбро с гематитом
-tile.tfc.ore.native_silver.gabbro.name=Габбро с чистым серебром
+tile.tfc.ore.native_silver.gabbro.name=Габбро с самородным серебром
 tile.tfc.ore.cassiterite.gabbro.name=Габбро с касситеритом
 tile.tfc.ore.galena.gabbro.name=Габбро с галеной
 tile.tfc.ore.bismuthinite.gabbro.name=Габбро с висмутином
@@ -1193,81 +1962,81 @@ tile.tfc.ore.sylvite.gabbro.name=Габбро с сильвитом
 tile.tfc.ore.borax.gabbro.name=Габбро с бурой
 tile.tfc.ore.olivine.gabbro.name=Габбро с оливином
 tile.tfc.ore.lapis_lazuli.gabbro.name=Габбро с лазуритом
-tile.tfc.ore.native_copper.shale.name=Сланцевый чистой медью
-tile.tfc.ore.native_gold.shale.name=Сланцевый чистым золотом
-tile.tfc.ore.native_platinum.shale.name=Сланцевый чистой платиной
-tile.tfc.ore.hematite.shale.name=Сланцевый гематитом
-tile.tfc.ore.native_silver.shale.name=Сланцевый чистым серебром
-tile.tfc.ore.cassiterite.shale.name=Сланцевый касситеритом
-tile.tfc.ore.galena.shale.name=Сланцевый галеной
-tile.tfc.ore.bismuthinite.shale.name=Сланцевый висмутином
-tile.tfc.ore.garnierite.shale.name=Сланцевый гарниеритом
-tile.tfc.ore.malachite.shale.name=Сланцевый малахитом
-tile.tfc.ore.magnetite.shale.name=Сланцевый магнетитом
-tile.tfc.ore.limonite.shale.name=Сланцевый лимонитом
-tile.tfc.ore.sphalerite.shale.name=Сланцевый сфалеритом
-tile.tfc.ore.tetrahedrite.shale.name=Сланцевый тетраэдритом
-tile.tfc.ore.bituminous_coal.shale.name=Сланцевый битумным углем
-tile.tfc.ore.lignite.shale.name=Сланцевый лигнитом
-tile.tfc.ore.kaolinite.shale.name=Сланцевый каолинитом
-tile.tfc.ore.gypsum.shale.name=Сланцевый гипсом
-tile.tfc.ore.satinspar.shale.name=Сланцевый шелковистым шпатом
-tile.tfc.ore.selenite.shale.name=Сланцевый селенитом
-tile.tfc.ore.graphite.shale.name=Сланцевый графитом
-tile.tfc.ore.kimberlite.shale.name=Сланцевый кимберлитом
-tile.tfc.ore.petrified_wood.shale.name=Сланцевый окаменелым деревом
-tile.tfc.ore.sulfur.shale.name=Сланцевый серой
-tile.tfc.ore.jet.shale.name=Сланцевый гагатом
-tile.tfc.ore.microcline.shale.name=Сланцевый микроклином
-tile.tfc.ore.pitchblende.shale.name=Сланцевый уранинитом
-tile.tfc.ore.cinnabar.shale.name=Сланцевый киноварью
-tile.tfc.ore.cryolite.shale.name=Сланцевый криолитом
-tile.tfc.ore.saltpeter.shale.name=Сланцевый селитрой
-tile.tfc.ore.serpentine.shale.name=Сланцевый серпентином
-tile.tfc.ore.sylvite.shale.name=Сланцевый сильвитом
-tile.tfc.ore.borax.shale.name=Сланцевый бурой
-tile.tfc.ore.olivine.shale.name=Сланцевый оливином
-tile.tfc.ore.lapis_lazuli.shale.name=Сланцевый лазуритом
-tile.tfc.ore.native_copper.claystone.name=Аргиллитовый чистой медью
-tile.tfc.ore.native_gold.claystone.name=Аргиллитовый чистым золотом
-tile.tfc.ore.native_platinum.claystone.name=Аргиллитовый чистой платиной
+tile.tfc.ore.native_copper.shale.name=Сланец с самородной медью
+tile.tfc.ore.native_gold.shale.name=Сланец с самородным золотом
+tile.tfc.ore.native_platinum.shale.name=Сланец с самородной платиной
+tile.tfc.ore.hematite.shale.name=Сланец с гематитом
+tile.tfc.ore.native_silver.shale.name=Сланец с самородным серебром
+tile.tfc.ore.cassiterite.shale.name=Сланец с касситеритом
+tile.tfc.ore.galena.shale.name=Сланец с галеной
+tile.tfc.ore.bismuthinite.shale.name=Сланец с висмутином
+tile.tfc.ore.garnierite.shale.name=Сланец с гарниеритом
+tile.tfc.ore.malachite.shale.name=Сланец с малахитом
+tile.tfc.ore.magnetite.shale.name=Сланец с магнетитом
+tile.tfc.ore.limonite.shale.name=Сланец с лимонитом
+tile.tfc.ore.sphalerite.shale.name=Сланец с сфалеритом
+tile.tfc.ore.tetrahedrite.shale.name=Сланец с тетраэдритом
+tile.tfc.ore.bituminous_coal.shale.name=Сланец с битумным углем
+tile.tfc.ore.lignite.shale.name=Сланец с лигнитом
+tile.tfc.ore.kaolinite.shale.name=Сланец с каолинитом
+tile.tfc.ore.gypsum.shale.name=Сланец с гипсом
+tile.tfc.ore.satinspar.shale.name=Сланец с шелковистым шпатом
+tile.tfc.ore.selenite.shale.name=Сланец с селенитом
+tile.tfc.ore.graphite.shale.name=Сланец с графитом
+tile.tfc.ore.kimberlite.shale.name=Сланец с кимберлитом
+tile.tfc.ore.petrified_wood.shale.name=Сланец с окаменелым деревом
+tile.tfc.ore.sulfur.shale.name=Сланец с серой
+tile.tfc.ore.jet.shale.name=Сланец с гагатом
+tile.tfc.ore.microcline.shale.name=Сланец с микроклином
+tile.tfc.ore.pitchblende.shale.name=Сланец с уранинитом
+tile.tfc.ore.cinnabar.shale.name=Сланец с киноварью
+tile.tfc.ore.cryolite.shale.name=Сланец с криолитом
+tile.tfc.ore.saltpeter.shale.name=Сланец с селитрой
+tile.tfc.ore.serpentine.shale.name=Сланец с серпентином
+tile.tfc.ore.sylvite.shale.name=Сланец с сильвитом
+tile.tfc.ore.borax.shale.name=Сланец с бурой
+tile.tfc.ore.olivine.shale.name=Сланец с оливином
+tile.tfc.ore.lapis_lazuli.shale.name=Сланец с лазуритом
+tile.tfc.ore.native_copper.claystone.name=Аргиллит с самородной медью
+tile.tfc.ore.native_gold.claystone.name=Аргиллит с самородным золотом
+tile.tfc.ore.native_platinum.claystone.name=Аргиллит с самородной платиной
 tile.tfc.ore.hematite.claystone.name=Аргиллитовый гематитом
-tile.tfc.ore.native_silver.claystone.name=Аргиллитовый чистым серебром
-tile.tfc.ore.cassiterite.claystone.name=Аргиллитовый касситеритом
-tile.tfc.ore.galena.claystone.name=Аргиллитовый галеной
-tile.tfc.ore.bismuthinite.claystone.name=Аргиллитовый висмутином
-tile.tfc.ore.garnierite.claystone.name=Аргиллитовый гарниеритом
-tile.tfc.ore.malachite.claystone.name=Аргиллитовый малахитом
-tile.tfc.ore.magnetite.claystone.name=Аргиллитовый магнетитом
-tile.tfc.ore.limonite.claystone.name=Аргиллитовый лимонитом
-tile.tfc.ore.sphalerite.claystone.name=Аргиллитовый сфалеритом
-tile.tfc.ore.tetrahedrite.claystone.name=Аргиллитовый тетраэдритом
-tile.tfc.ore.bituminous_coal.claystone.name=Аргиллитовый битумным углем
-tile.tfc.ore.lignite.claystone.name=Аргиллитовый лигнитом
-tile.tfc.ore.kaolinite.claystone.name=Аргиллитовый каолинитом
-tile.tfc.ore.gypsum.claystone.name=Аргиллитовый гипсом
-tile.tfc.ore.satinspar.claystone.name=Аргиллитовый шелковистым шпатом
-tile.tfc.ore.selenite.claystone.name=Аргиллитовый селенитом
-tile.tfc.ore.graphite.claystone.name=Аргиллитовый графитом
-tile.tfc.ore.kimberlite.claystone.name=Аргиллитовый кимберлитом
-tile.tfc.ore.petrified_wood.claystone.name=Аргиллитовый окаменелым деревом
-tile.tfc.ore.sulfur.claystone.name=Аргиллитовый серой
-tile.tfc.ore.jet.claystone.name=Аргиллитовый гагатом
-tile.tfc.ore.microcline.claystone.name=Аргиллитовый микроклином
-tile.tfc.ore.pitchblende.claystone.name=Аргиллитовый уранинитом
-tile.tfc.ore.cinnabar.claystone.name=Аргиллитовый киноварью
-tile.tfc.ore.cryolite.claystone.name=Аргиллитовый криолитом
-tile.tfc.ore.saltpeter.claystone.name=Аргиллитовый селитрой
-tile.tfc.ore.serpentine.claystone.name=Аргиллитовый серпентином
-tile.tfc.ore.sylvite.claystone.name=Аргиллитовый сильвитом
-tile.tfc.ore.borax.claystone.name=Аргиллитовый бурой
-tile.tfc.ore.olivine.claystone.name=Аргиллитовый оливином
-tile.tfc.ore.lapis_lazuli.claystone.name=Аргиллитовый лазуритом
-tile.tfc.ore.native_copper.rocksalt.name=Каменная соль с чистой медью
-tile.tfc.ore.native_gold.rocksalt.name=Каменная соль с чистым золотом
-tile.tfc.ore.native_platinum.rocksalt.name=Каменная соль с чистой платиной
+tile.tfc.ore.native_silver.claystone.name=Аргиллит с самородным серебром
+tile.tfc.ore.cassiterite.claystone.name=Аргиллит с касситеритом
+tile.tfc.ore.galena.claystone.name=Аргиллит с галеной
+tile.tfc.ore.bismuthinite.claystone.name=Аргиллит с висмутином
+tile.tfc.ore.garnierite.claystone.name=Аргиллит с гарниеритом
+tile.tfc.ore.malachite.claystone.name=Аргиллит с малахитом
+tile.tfc.ore.magnetite.claystone.name=Аргиллит с магнетитом
+tile.tfc.ore.limonite.claystone.name=Аргиллит с лимонитом
+tile.tfc.ore.sphalerite.claystone.name=Аргиллит с сфалеритом
+tile.tfc.ore.tetrahedrite.claystone.name=Аргиллит с тетраэдритом
+tile.tfc.ore.bituminous_coal.claystone.name=Аргиллит с битумным углем
+tile.tfc.ore.lignite.claystone.name=Аргиллит с лигнитом
+tile.tfc.ore.kaolinite.claystone.name=Аргиллит с каолинитом
+tile.tfc.ore.gypsum.claystone.name=Аргиллит с гипсом
+tile.tfc.ore.satinspar.claystone.name=Аргиллит с шелковистым шпатом
+tile.tfc.ore.selenite.claystone.name=Аргиллит с селенитом
+tile.tfc.ore.graphite.claystone.name=Аргиллит с графитом
+tile.tfc.ore.kimberlite.claystone.name=Аргиллит с кимберлитом
+tile.tfc.ore.petrified_wood.claystone.name=Аргиллит с окаменелым деревом
+tile.tfc.ore.sulfur.claystone.name=Аргиллит с серой
+tile.tfc.ore.jet.claystone.name=Аргиллит с гагатом
+tile.tfc.ore.microcline.claystone.name=Аргиллит с микроклином
+tile.tfc.ore.pitchblende.claystone.name=Аргиллит с уранинитом
+tile.tfc.ore.cinnabar.claystone.name=Аргиллит с киноварью
+tile.tfc.ore.cryolite.claystone.name=Аргиллит с криолитом
+tile.tfc.ore.saltpeter.claystone.name=Аргиллит с селитрой
+tile.tfc.ore.serpentine.claystone.name=Аргиллит с серпентином
+tile.tfc.ore.sylvite.claystone.name=Аргиллит с сильвитом
+tile.tfc.ore.borax.claystone.name=Аргиллит с бурой
+tile.tfc.ore.olivine.claystone.name=Аргиллит с оливином
+tile.tfc.ore.lapis_lazuli.claystone.name=Аргиллит с лазуритом
+tile.tfc.ore.native_copper.rocksalt.name=Каменная соль с самородной медью
+tile.tfc.ore.native_gold.rocksalt.name=Каменная соль с самородным золотом
+tile.tfc.ore.native_platinum.rocksalt.name=Каменная соль с самородной платиной
 tile.tfc.ore.hematite.rocksalt.name=Каменная соль с гематитом
-tile.tfc.ore.native_silver.rocksalt.name=Каменная соль с чистым серебром
+tile.tfc.ore.native_silver.rocksalt.name=Каменная соль с самородным серебром
 tile.tfc.ore.cassiterite.rocksalt.name=Каменная соль с касситеритом
 tile.tfc.ore.galena.rocksalt.name=Каменная соль с галеной
 tile.tfc.ore.bismuthinite.rocksalt.name=Каменная соль с висмутином
@@ -1298,11 +2067,11 @@ tile.tfc.ore.sylvite.rocksalt.name=Каменная соль с сильвито
 tile.tfc.ore.borax.rocksalt.name=Каменная соль с бурой
 tile.tfc.ore.olivine.rocksalt.name=Каменная соль с оливином
 tile.tfc.ore.lapis_lazuli.rocksalt.name=Каменная соль с лазуритом
-tile.tfc.ore.native_copper.limestone.name=Известняк с чистой медью
-tile.tfc.ore.native_gold.limestone.name=Известняк с чистым золотом
-tile.tfc.ore.native_platinum.limestone.name=Известняк с чистой платиной
+tile.tfc.ore.native_copper.limestone.name=Известняк с самородной медью
+tile.tfc.ore.native_gold.limestone.name=Известняк с самородным золотом
+tile.tfc.ore.native_platinum.limestone.name=Известняк с самородной платиной
 tile.tfc.ore.hematite.limestone.name=Известняк с гематитом
-tile.tfc.ore.native_silver.limestone.name=Известняк с чистым серебром
+tile.tfc.ore.native_silver.limestone.name=Известняк с самородным серебром
 tile.tfc.ore.cassiterite.limestone.name=Известняк с касситеритом
 tile.tfc.ore.galena.limestone.name=Известняк с галеной
 tile.tfc.ore.bismuthinite.limestone.name=Известняк с висмутином
@@ -1333,11 +2102,11 @@ tile.tfc.ore.sylvite.limestone.name=Известняк с сильвитом
 tile.tfc.ore.borax.limestone.name=Известняк с бурой
 tile.tfc.ore.olivine.limestone.name=Известняк с оливином
 tile.tfc.ore.lapis_lazuli.limestone.name=Известняк с лазуритом
-tile.tfc.ore.native_copper.conglomerate.name=Конгломерат с чистой медью
-tile.tfc.ore.native_gold.conglomerate.name=Конгломерат с чистым золотом
-tile.tfc.ore.native_platinum.conglomerate.name=Конгломерат с чистой платиной
+tile.tfc.ore.native_copper.conglomerate.name=Конгломерат с самородной медью
+tile.tfc.ore.native_gold.conglomerate.name=Конгломерат с самородным золотом
+tile.tfc.ore.native_platinum.conglomerate.name=Конгломерат с самородной платиной
 tile.tfc.ore.hematite.conglomerate.name=Конгломерат с гематитом
-tile.tfc.ore.native_silver.conglomerate.name=Конгломерат с чистым серебром
+tile.tfc.ore.native_silver.conglomerate.name=Конгломерат с самородным серебром
 tile.tfc.ore.cassiterite.conglomerate.name=Конгломерат с касситеритом
 tile.tfc.ore.galena.conglomerate.name=Конгломерат с галеной
 tile.tfc.ore.bismuthinite.conglomerate.name=Конгломерат с висмутином
@@ -1368,11 +2137,11 @@ tile.tfc.ore.sylvite.conglomerate.name=Конгломерат с сильвит�
 tile.tfc.ore.borax.conglomerate.name=Конгломерат с бурой
 tile.tfc.ore.olivine.conglomerate.name=Конгломерат с оливином
 tile.tfc.ore.lapis_lazuli.conglomerate.name=Конгломерат с лазуритом
-tile.tfc.ore.native_copper.dolomite.name=Доломит с чистой медью
-tile.tfc.ore.native_gold.dolomite.name=Доломит с чистым золотом
-tile.tfc.ore.native_platinum.dolomite.name=Доломит с чистой платиной
+tile.tfc.ore.native_copper.dolomite.name=Доломит с самородной медью
+tile.tfc.ore.native_gold.dolomite.name=Доломит с самородным золотом
+tile.tfc.ore.native_platinum.dolomite.name=Доломит с самородной платиной
 tile.tfc.ore.hematite.dolomite.name=Доломит с гематитом
-tile.tfc.ore.native_silver.dolomite.name=Доломит с чистым серебром
+tile.tfc.ore.native_silver.dolomite.name=Доломит с самородным серебром
 tile.tfc.ore.cassiterite.dolomite.name=Доломит с касситеритом
 tile.tfc.ore.galena.dolomite.name=Доломит с галеной
 tile.tfc.ore.bismuthinite.dolomite.name=Доломит с висмутином
@@ -1403,11 +2172,11 @@ tile.tfc.ore.sylvite.dolomite.name=Доломит с сильвитом
 tile.tfc.ore.borax.dolomite.name=Доломит с бурой
 tile.tfc.ore.olivine.dolomite.name=Доломит с оливином
 tile.tfc.ore.lapis_lazuli.dolomite.name=Доломит с лазуритом
-tile.tfc.ore.native_copper.chert.name=Кремнистый известняк с чистой медью
-tile.tfc.ore.native_gold.chert.name=Кремнистый известняк с чистым золотом
-tile.tfc.ore.native_platinum.chert.name=Кремнистый известняк с чистой платиной
+tile.tfc.ore.native_copper.chert.name=Кремнистый известняк с самородной медью
+tile.tfc.ore.native_gold.chert.name=Кремнистый известняк с самородным золотом
+tile.tfc.ore.native_platinum.chert.name=Кремнистый известняк с самородной платиной
 tile.tfc.ore.hematite.chert.name=Кремнистый известняк с гематитом
-tile.tfc.ore.native_silver.chert.name=Кремнистый известняк с чистым серебром
+tile.tfc.ore.native_silver.chert.name=Кремнистый известняк с самородным серебром
 tile.tfc.ore.cassiterite.chert.name=Кремнистый известняк с касситеритом
 tile.tfc.ore.galena.chert.name=Кремнистый известняк с галеной
 tile.tfc.ore.bismuthinite.chert.name=Кремнистый известняк с висмутином
@@ -1438,11 +2207,11 @@ tile.tfc.ore.sylvite.chert.name=Кремнистый известняк с си�
 tile.tfc.ore.borax.chert.name=Кремнистый известняк с бурой
 tile.tfc.ore.olivine.chert.name=Кремнистый известняк с оливином
 tile.tfc.ore.lapis_lazuli.chert.name=Кремнистый известняк с лазуритом
-tile.tfc.ore.native_copper.chalk.name=Мел с чистой медью
-tile.tfc.ore.native_gold.chalk.name=Мел с чистым золотом
-tile.tfc.ore.native_platinum.chalk.name=Мел с чистой платиной
+tile.tfc.ore.native_copper.chalk.name=Мел с самородной медью
+tile.tfc.ore.native_gold.chalk.name=Мел с самородным золотом
+tile.tfc.ore.native_platinum.chalk.name=Мел с самородной платиной
 tile.tfc.ore.hematite.chalk.name=Мел с гематитом
-tile.tfc.ore.native_silver.chalk.name=Мел с чистым серебром
+tile.tfc.ore.native_silver.chalk.name=Мел с самородным серебром
 tile.tfc.ore.cassiterite.chalk.name=Мел с касситеритом
 tile.tfc.ore.galena.chalk.name=Мел с галеной
 tile.tfc.ore.bismuthinite.chalk.name=Мел с висмутином
@@ -1473,11 +2242,11 @@ tile.tfc.ore.sylvite.chalk.name=Мел с сильвитом
 tile.tfc.ore.borax.chalk.name=Мел с бурой
 tile.tfc.ore.olivine.chalk.name=Мел с оливином
 tile.tfc.ore.lapis_lazuli.chalk.name=Мел с лазуритом
-tile.tfc.ore.native_copper.rhyolite.name=Риолит с чистой медью
-tile.tfc.ore.native_gold.rhyolite.name=Риолит с чистым золотом
-tile.tfc.ore.native_platinum.rhyolite.name=Риолит с чистой платиной
+tile.tfc.ore.native_copper.rhyolite.name=Риолит с самородной медью
+tile.tfc.ore.native_gold.rhyolite.name=Риолит с самородным золотом
+tile.tfc.ore.native_platinum.rhyolite.name=Риолит с самородной платиной
 tile.tfc.ore.hematite.rhyolite.name=Риолит с гематитом
-tile.tfc.ore.native_silver.rhyolite.name=Риолит с чистым серебром
+tile.tfc.ore.native_silver.rhyolite.name=Риолит с самородным серебром
 tile.tfc.ore.cassiterite.rhyolite.name=Риолит с касситеритом
 tile.tfc.ore.galena.rhyolite.name=Риолит с галеной
 tile.tfc.ore.bismuthinite.rhyolite.name=Риолит с висмутином
@@ -1508,11 +2277,11 @@ tile.tfc.ore.sylvite.rhyolite.name=Риолит с сильвитом
 tile.tfc.ore.borax.rhyolite.name=Риолит с бурой
 tile.tfc.ore.olivine.rhyolite.name=Риолит с оливином
 tile.tfc.ore.lapis_lazuli.rhyolite.name=Риолит с лазуритом
-tile.tfc.ore.native_copper.basalt.name=Базальт с чистой медью
-tile.tfc.ore.native_gold.basalt.name=Базальт с чистым золотом
-tile.tfc.ore.native_platinum.basalt.name=Базальт с чистой платиной
+tile.tfc.ore.native_copper.basalt.name=Базальт с самородной медью
+tile.tfc.ore.native_gold.basalt.name=Базальт с ссамородным золотом
+tile.tfc.ore.native_platinum.basalt.name=Базальт с самородной платиной
 tile.tfc.ore.hematite.basalt.name=Базальт с гематитом
-tile.tfc.ore.native_silver.basalt.name=Базальт с чистым серебром
+tile.tfc.ore.native_silver.basalt.name=Базальт с самородным серебром
 tile.tfc.ore.cassiterite.basalt.name=Базальт с касситеритом
 tile.tfc.ore.galena.basalt.name=Базальт с галеной
 tile.tfc.ore.bismuthinite.basalt.name=Базальт с висмутином
@@ -1543,11 +2312,11 @@ tile.tfc.ore.sylvite.basalt.name=Базальт с сильвитом
 tile.tfc.ore.borax.basalt.name=Базальт с бурой
 tile.tfc.ore.olivine.basalt.name=Базальт с оливином
 tile.tfc.ore.lapis_lazuli.basalt.name=Базальт с лазуритом
-tile.tfc.ore.native_copper.andesite.name=Андезит с чистой медью
-tile.tfc.ore.native_gold.andesite.name=Андезит с чистым золотом
-tile.tfc.ore.native_platinum.andesite.name=Андезит с чистой платиной
+tile.tfc.ore.native_copper.andesite.name=Андезит с самородной медью
+tile.tfc.ore.native_gold.andesite.name=Андезит с самородным золотом
+tile.tfc.ore.native_platinum.andesite.name=Андезит с самородной платиной
 tile.tfc.ore.hematite.andesite.name=Андезит с гематитом
-tile.tfc.ore.native_silver.andesite.name=Андезит с чистым серебром
+tile.tfc.ore.native_silver.andesite.name=Андезит с самородным серебром
 tile.tfc.ore.cassiterite.andesite.name=Андезит с касситеритом
 tile.tfc.ore.galena.andesite.name=Андезит с галеной
 tile.tfc.ore.bismuthinite.andesite.name=Андезит с висмутином
@@ -1578,11 +2347,11 @@ tile.tfc.ore.sylvite.andesite.name=Андезит с сильвитом
 tile.tfc.ore.borax.andesite.name=Андезит с бурой
 tile.tfc.ore.olivine.andesite.name=Андезит с оливином
 tile.tfc.ore.lapis_lazuli.andesite.name=Андезит с лазуритом
-tile.tfc.ore.native_copper.dacite.name=Дацит с чистой медью
-tile.tfc.ore.native_gold.dacite.name=Дацит с чистым золотом
-tile.tfc.ore.native_platinum.dacite.name=Дацит с чистой платиной
+tile.tfc.ore.native_copper.dacite.name=Дацит с самородной медью
+tile.tfc.ore.native_gold.dacite.name=Дацит с самородным золотом
+tile.tfc.ore.native_platinum.dacite.name=Дацит с самородной платиной
 tile.tfc.ore.hematite.dacite.name=Дацит с гематитом
-tile.tfc.ore.native_silver.dacite.name=Дацит с чистым серебром
+tile.tfc.ore.native_silver.dacite.name=Дацит с самородным серебром
 tile.tfc.ore.cassiterite.dacite.name=Дацит с касситеритом
 tile.tfc.ore.galena.dacite.name=Дацит с галеной
 tile.tfc.ore.bismuthinite.dacite.name=Дацит с висмутином
@@ -1613,11 +2382,11 @@ tile.tfc.ore.sylvite.dacite.name=Дацит с сильвитом
 tile.tfc.ore.borax.dacite.name=Дацит с бурой
 tile.tfc.ore.olivine.dacite.name=Дацит с оливином
 tile.tfc.ore.lapis_lazuli.dacite.name=Дацит с лазуритом
-tile.tfc.ore.native_copper.quartzite.name=Кварцит с чистой медью
-tile.tfc.ore.native_gold.quartzite.name=Кварцит с чистым золотом
-tile.tfc.ore.native_platinum.quartzite.name=Кварцит с чистой платиной
+tile.tfc.ore.native_copper.quartzite.name=Кварцит с самородной медью
+tile.tfc.ore.native_gold.quartzite.name=Кварцит с самородным золотом
+tile.tfc.ore.native_platinum.quartzite.name=Кварцит с самородной платиной
 tile.tfc.ore.hematite.quartzite.name=Кварцит с гематитом
-tile.tfc.ore.native_silver.quartzite.name=Кварцит с чистым серебром
+tile.tfc.ore.native_silver.quartzite.name=Кварцит с самородным серебром
 tile.tfc.ore.cassiterite.quartzite.name=Кварцит с касситеритом
 tile.tfc.ore.galena.quartzite.name=Кварцит с галеной
 tile.tfc.ore.bismuthinite.quartzite.name=Кварцит с висмутином
@@ -1648,11 +2417,11 @@ tile.tfc.ore.sylvite.quartzite.name=Кварцит с сильвитом
 tile.tfc.ore.borax.quartzite.name=Кварцит с бурой
 tile.tfc.ore.olivine.quartzite.name=Кварцит с оливином
 tile.tfc.ore.lapis_lazuli.quartzite.name=Кварцит с лазуритом
-tile.tfc.ore.native_copper.slate.name=Шифер с чистой медью
-tile.tfc.ore.native_gold.slate.name=Шифер с чистым золотом
-tile.tfc.ore.native_platinum.slate.name=Шифер с чистой платиной
+tile.tfc.ore.native_copper.slate.name=Шифер с самородной медью
+tile.tfc.ore.native_gold.slate.name=Шифер с самородным золотом
+tile.tfc.ore.native_platinum.slate.name=Шифер с самородной платиной
 tile.tfc.ore.hematite.slate.name=Шифер с гематитом
-tile.tfc.ore.native_silver.slate.name=Шифер с чистым серебром
+tile.tfc.ore.native_silver.slate.name=Шифер с самородным серебром
 tile.tfc.ore.cassiterite.slate.name=Шифер с касситеритом
 tile.tfc.ore.galena.slate.name=Шифер с галеной
 tile.tfc.ore.bismuthinite.slate.name=Шифер с висмутином
@@ -1683,11 +2452,11 @@ tile.tfc.ore.sylvite.slate.name=Шифер с сильвитом
 tile.tfc.ore.borax.slate.name=Шифер с бурой
 tile.tfc.ore.olivine.slate.name=Шифер с оливином
 tile.tfc.ore.lapis_lazuli.slate.name=Шифер с лазуритом
-tile.tfc.ore.native_copper.phyllite.name=Филлит с чистой медью
-tile.tfc.ore.native_gold.phyllite.name=Филлит с чистым золотом
-tile.tfc.ore.native_platinum.phyllite.name=Филлит с чистой платиной
+tile.tfc.ore.native_copper.phyllite.name=Филлит с самородной медью
+tile.tfc.ore.native_gold.phyllite.name=Филлит с самородным золотом
+tile.tfc.ore.native_platinum.phyllite.name=Филлит с самородной платиной
 tile.tfc.ore.hematite.phyllite.name=Филлит с гематитом
-tile.tfc.ore.native_silver.phyllite.name=Филлит с чистым серебром
+tile.tfc.ore.native_silver.phyllite.name=Филлит с самородным серебром
 tile.tfc.ore.cassiterite.phyllite.name=Филлит с касситеритом
 tile.tfc.ore.galena.phyllite.name=Филлит с галеной
 tile.tfc.ore.bismuthinite.phyllite.name=Филлит с висмутином
@@ -1718,11 +2487,11 @@ tile.tfc.ore.sylvite.phyllite.name=Филлит с сильвитом
 tile.tfc.ore.borax.phyllite.name=Филлит с бурой
 tile.tfc.ore.olivine.phyllite.name=Филлит с оливином
 tile.tfc.ore.lapis_lazuli.phyllite.name=Филлит с лазуритом
-tile.tfc.ore.native_copper.schist.name=Аспидный сланец с чистой медью
-tile.tfc.ore.native_gold.schist.name=Аспидный сланец с чистым золотом
-tile.tfc.ore.native_platinum.schist.name=Аспидный сланец с чистой платиной
+tile.tfc.ore.native_copper.schist.name=Аспидный сланец с самородной медью
+tile.tfc.ore.native_gold.schist.name=Аспидный сланец с самородным золотом
+tile.tfc.ore.native_platinum.schist.name=Аспидный сланец с самородной платиной
 tile.tfc.ore.hematite.schist.name=Аспидный сланец с гематитом
-tile.tfc.ore.native_silver.schist.name=Аспидный сланец с чистым серебром
+tile.tfc.ore.native_silver.schist.name=Аспидный сланец с самородным серебром
 tile.tfc.ore.cassiterite.schist.name=Аспидный сланец с касситеритом
 tile.tfc.ore.galena.schist.name=Аспидный сланец с галеной
 tile.tfc.ore.bismuthinite.schist.name=Аспидный сланец с висмутином
@@ -1753,11 +2522,11 @@ tile.tfc.ore.sylvite.schist.name=Аспидный сланец с сильвит
 tile.tfc.ore.borax.schist.name=Аспидный сланец с бурой
 tile.tfc.ore.olivine.schist.name=Аспидный сланец с оливином
 tile.tfc.ore.lapis_lazuli.schist.name=Аспидный сланец с лазуритом
-tile.tfc.ore.native_copper.gneiss.name=Гнейс с чистой медью
-tile.tfc.ore.native_gold.gneiss.name=Гнейс с чистым золотом
-tile.tfc.ore.native_platinum.gneiss.name=Гнейс с чистой платиной
+tile.tfc.ore.native_copper.gneiss.name=Гнейс с самородной медью
+tile.tfc.ore.native_gold.gneiss.name=Гнейс с самородным золотом
+tile.tfc.ore.native_platinum.gneiss.name=Гнейс с самородной платиной
 tile.tfc.ore.hematite.gneiss.name=Гнейс с гематитом
-tile.tfc.ore.native_silver.gneiss.name=Гнейс с чистым серебром
+tile.tfc.ore.native_silver.gneiss.name=Гнейс с самородным серебром
 tile.tfc.ore.cassiterite.gneiss.name=Гнейс с касситеритом
 tile.tfc.ore.galena.gneiss.name=Гнейс с галеной
 tile.tfc.ore.bismuthinite.gneiss.name=Гнейс с висмутином
@@ -1788,11 +2557,11 @@ tile.tfc.ore.sylvite.gneiss.name=Гнейс с сильвитом
 tile.tfc.ore.borax.gneiss.name=Гнейс с бурой
 tile.tfc.ore.olivine.gneiss.name=Гнейс с оливином
 tile.tfc.ore.lapis_lazuli.gneiss.name=Гнейс с лазуритом
-tile.tfc.ore.native_copper.marble.name=Мрамор с чистой медью
-tile.tfc.ore.native_gold.marble.name=Мрамор с чистым золотом
-tile.tfc.ore.native_platinum.marble.name=Мрамор с чистой платиной
+tile.tfc.ore.native_copper.marble.name=Мрамор с самородной медью
+tile.tfc.ore.native_gold.marble.name=Мрамор с самородным золотом
+tile.tfc.ore.native_platinum.marble.name=Мрамор с самородной платиной
 tile.tfc.ore.hematite.marble.name=Мрамор с гематитом
-tile.tfc.ore.native_silver.marble.name=Мрамор с чистым серебром
+tile.tfc.ore.native_silver.marble.name=Мрамор с самородным серебром
 tile.tfc.ore.cassiterite.marble.name=Мрамор с касситеритом
 tile.tfc.ore.galena.marble.name=Мрамор с галеной
 tile.tfc.ore.bismuthinite.marble.name=Мрамор с висмутином
@@ -1900,25 +2669,25 @@ tile.tfc.wood.fence.acacia.name=Забор из акации
 tile.tfc.wood.fence.rosewood.name=Забор из палисандровые доски
 tile.tfc.wood.fence.blackwood.name=Забор из гренадила
 tile.tfc.wood.fence.palm.name=Забор из пальмы
-tile.tfc.wood.fence_gate.ash.name=Ворота из ясеня
-tile.tfc.wood.fence_gate.aspen.name=Ворота из осины
-tile.tfc.wood.fence_gate.birch.name=Ворота из березы
-tile.tfc.wood.fence_gate.chestnut.name=Ворота из каштана
-tile.tfc.wood.fence_gate.douglas_fir.name=Ворота из пихты Дугласа
-tile.tfc.wood.fence_gate.hickory.name=Ворота из гикори
-tile.tfc.wood.fence_gate.maple.name=Ворота из клена
-tile.tfc.wood.fence_gate.oak.name=Ворота из дуба
-tile.tfc.wood.fence_gate.pine.name=Ворота из сосны
-tile.tfc.wood.fence_gate.sequoia.name=Ворота из секвойи
-tile.tfc.wood.fence_gate.spruce.name=Ворота из ели
-tile.tfc.wood.fence_gate.sycamore.name=Ворота из платана
-tile.tfc.wood.fence_gate.white_cedar.name=Ворота из белого кедра
-tile.tfc.wood.fence_gate.willow.name=Ворота из ивы
-tile.tfc.wood.fence_gate.kapok.name=Ворота из хлопкового дерева
-tile.tfc.wood.fence_gate.acacia.name=Ворота из акации
-tile.tfc.wood.fence_gate.rosewood.name=Ворота из палисандра
-tile.tfc.wood.fence_gate.blackwood.name=Ворота из гренадила
-tile.tfc.wood.fence_gate.palm.name=Ворота из пальмы
+tile.tfc.wood.fence_gate.ash.name=Калитка из ясеня
+tile.tfc.wood.fence_gate.aspen.name=Калитка из осины
+tile.tfc.wood.fence_gate.birch.name=Калитка из березы
+tile.tfc.wood.fence_gate.chestnut.name=Калитка из каштана
+tile.tfc.wood.fence_gate.douglas_fir.name=Калитка из пихты Дугласа
+tile.tfc.wood.fence_gate.hickory.name=Калитка из гикори
+tile.tfc.wood.fence_gate.maple.name=Калитка из клена
+tile.tfc.wood.fence_gate.oak.name=Калитка из дуба
+tile.tfc.wood.fence_gate.pine.name=Калитка из сосны
+tile.tfc.wood.fence_gate.sequoia.name=Калитка из секвойи
+tile.tfc.wood.fence_gate.spruce.name=Калитка из ели
+tile.tfc.wood.fence_gate.sycamore.name=Калитка из платана
+tile.tfc.wood.fence_gate.white_cedar.name=Калитка из белого кедра
+tile.tfc.wood.fence_gate.willow.name=Калитка из ивы
+tile.tfc.wood.fence_gate.kapok.name=Калитка из хлопкового дерева
+tile.tfc.wood.fence_gate.acacia.name=Калитка из акации
+tile.tfc.wood.fence_gate.rosewood.name=Калитка из палисандра
+tile.tfc.wood.fence_gate.blackwood.name=Калитка из гренадила
+tile.tfc.wood.fence_gate.palm.name=Калитка из пальмы
 
 tile.tfc.wood.chest.ash.name=Сундук из ясеня
 tile.tfc.wood.chest.aspen.name=Сундук из осины
@@ -1940,25 +2709,25 @@ tile.tfc.wood.chest.rosewood.name=Сундук из палисандра
 tile.tfc.wood.chest.blackwood.name=Сундук из гренадила
 tile.tfc.wood.chest.palm.name=Сундук из пальмы
 
-tile.tfc.wood.chest_trap.ash.name=Сундук с ловушкой из ясеня
-tile.tfc.wood.chest_trap.aspen.name=Сундук с ловушкой из осины
-tile.tfc.wood.chest_trap.birch.name=Сундук с ловушкой из березы
-tile.tfc.wood.chest_trap.chest_trapnut.name=Сундук с ловушкой из каштана
-tile.tfc.wood.chest_trap.douglas_fir.name=Сундук с ловушкой из пихты Дугласа
-tile.tfc.wood.chest_trap.hickory.name=Сундук с ловушкой из гикори
-tile.tfc.wood.chest_trap.maple.name=Сундук с ловушкой из клена
-tile.tfc.wood.chest_trap.oak.name=Сундук с ловушкой из дуба
-tile.tfc.wood.chest_trap.pine.name=Сундук с ловушкой из сосны
-tile.tfc.wood.chest_trap.sequoia.name=Сундук с ловушкой из секвойи
-tile.tfc.wood.chest_trap.spruce.name=Сундук с ловушкой из ели
-tile.tfc.wood.chest_trap.sycamore.name=Сундук с ловушкой из платана
-tile.tfc.wood.chest_trap.white_cedar.name=Сундук с ловушкой из белого кедра
-tile.tfc.wood.chest_trap.willow.name=Сундук с ловушкой из ивы
-tile.tfc.wood.chest_trap.kapok.name=Сундук с ловушкой из хлопкового дерева
-tile.tfc.wood.chest_trap.acacia.name=Сундук с ловушкой из акации
-tile.tfc.wood.chest_trap.rosewood.name=Сундук с ловушкой из палисандра
-tile.tfc.wood.chest_trap.blackwood.name=Сундук с ловушкой из гренадила
-tile.tfc.wood.chest_trap.palm.name=Сундук с ловушкой из пальмы
+tile.tfc.wood.chest_trap.ash.name=Сундук-ловушка из ясеня
+tile.tfc.wood.chest_trap.aspen.name=Сундук-ловушка из осины
+tile.tfc.wood.chest_trap.birch.name=Сундук-ловушка из березы
+tile.tfc.wood.chest_trap.chestnut.name=Сундук-ловушка из каштана
+tile.tfc.wood.chest_trap.douglas_fir.name=Сундук-ловушка из пихты Дугласа
+tile.tfc.wood.chest_trap.hickory.name=Сундук-ловушка из гикори
+tile.tfc.wood.chest_trap.maple.name=Сундук-ловушка из клена
+tile.tfc.wood.chest_trap.oak.name=Сундук-ловушка из дуба
+tile.tfc.wood.chest_trap.pine.name=Сундук-ловушка из сосны
+tile.tfc.wood.chest_trap.sequoia.name=Сундук-ловушка из секвойи
+tile.tfc.wood.chest_trap.spruce.name=Сундук-ловушка из ели
+tile.tfc.wood.chest_trap.sycamore.name=Сундук-ловушка из платана
+tile.tfc.wood.chest_trap.white_cedar.name=Сундук-ловушка из белого кедра
+tile.tfc.wood.chest_trap.willow.name=Сундук-ловушка из ивы
+tile.tfc.wood.chest_trap.kapok.name=Сундук-ловушка из хлопкового дерева
+tile.tfc.wood.chest_trap.acacia.name=Сундук-ловушка из акации
+tile.tfc.wood.chest_trap.rosewood.name=Сундук-ловушка из палисандра
+tile.tfc.wood.chest_trap.blackwood.name=Сундук-ловушка из гренадила
+tile.tfc.wood.chest_trap.palm.name=Сундук-ловушка из пальмы
 
 tile.tfc.wood.workbench.ash.name=Верстак из ясеня
 tile.tfc.wood.workbench.aspen.name=Верстак из осины
@@ -2019,6 +2788,26 @@ tile.tfc.wood.button.acacia.name=Кнопка из акации
 tile.tfc.wood.button.rosewood.name=Кнопка из палисандра
 tile.tfc.wood.button.blackwood.name=Кнопка из гренадила
 tile.tfc.wood.button.palm.name=Кнопка из пальмы
+
+tile.tfc.wood.pressure_plate.ash.name=Нажимная пластина из ясеня
+tile.tfc.wood.pressure_plate.aspen.name=Нажимная пластина из осины
+tile.tfc.wood.pressure_plate.birch.name=Нажимная пластина из березы
+tile.tfc.wood.pressure_plate.chestnut.name=Нажимная пластина из каштана
+tile.tfc.wood.pressure_plate.douglas_fir.name=Нажимная пластина из пихты Дугласа
+tile.tfc.wood.pressure_plate.hickory.name=Нажимная пластина из гикори
+tile.tfc.wood.pressure_plate.maple.name=Нажимная пластина из клена
+tile.tfc.wood.pressure_plate.oak.name=Нажимная пластина из дуба
+tile.tfc.wood.pressure_plate.pine.name=Нажимная пластина из сосны
+tile.tfc.wood.pressure_plate.sequoia.name=Нажимная пластина из секвойи
+tile.tfc.wood.pressure_plate.spruce.name=Нажимная пластина из ели
+tile.tfc.wood.pressure_plate.sycamore.name=Нажимная пластина из платана
+tile.tfc.wood.pressure_plate.white_cedar.name=Нажимная пластина из белого кедра
+tile.tfc.wood.pressure_plate.willow.name=Нажимная пластина из ивы
+tile.tfc.wood.pressure_plate.kapok.name=Нажимная пластина из хлопкового дерева
+tile.tfc.wood.pressure_plate.acacia.name=Нажимная пластина из акации
+tile.tfc.wood.pressure_plate.rosewood.name=Нажимная пластина из палисандра
+tile.tfc.wood.pressure_plate.blackwood.name=Нажимная пластина из гренадила
+tile.tfc.wood.pressure_plate.palm.name=Нажимная пластина из пальмы
 
 tile.tfc.wood.tool_rack.ash.name=Стеллаж для инструментов из ясеня
 tile.tfc.wood.tool_rack.aspen.name=Стеллаж для инструментов из осины
@@ -2412,6 +3201,8 @@ tile.tfc.berry_bush.snow_berry.name=Куст снежноягодника
 tile.tfc.berry_bush.strawberry.name=Куст клубники
 tile.tfc.berry_bush.wintergreen_berry.name=Куст гаультерии
 
+# Redstone "manipulators"
+## Buttons
 tile.tfc.stone.button.granite.name=Кнопка из гранита
 tile.tfc.stone.button.diorite.name=Кнопка из диорита
 tile.tfc.stone.button.gabbro.name=Кнопка из габбро
@@ -2434,6 +3225,32 @@ tile.tfc.stone.button.schist.name=Кнопка из аспидного слан�
 tile.tfc.stone.button.gneiss.name=Кнопка из гнейса
 tile.tfc.stone.button.marble.name=Кнопка из мрамора
 tile.tfc.stone.button.ranite.name=Кнопка из гранита
+
+## Plates
+tile.tfc.stone.pressure_plate.granite.name=Нажимная пластина из гранита
+tile.tfc.stone.pressure_plate.diorite.name=Нажимная пластина из диорита
+tile.tfc.stone.pressure_plate.gabbro.name=Нажимная пластина из габбро
+tile.tfc.stone.pressure_plate.shale.name=Нажимная пластина из сланца
+tile.tfc.stone.pressure_plate.claystone.name=Нажимная пластина из аргиллита
+tile.tfc.stone.pressure_plate.rocksalt.name=Нажимная пластина из каменной соли
+tile.tfc.stone.pressure_plate.limestone.name=Нажимная пластина из известняка
+tile.tfc.stone.pressure_plate.conglomerate.name=Нажимная пластина из конгломерата
+tile.tfc.stone.pressure_plate.dolomite.name=Нажимная пластина из доломита
+tile.tfc.stone.pressure_plate.chert.name=Нажимная пластина из кремнистого известняка
+tile.tfc.stone.pressure_plate.chalk.name=Нажимная пластина из мела
+tile.tfc.stone.pressure_plate.rhyolite.name=Нажимная пластина из риолита
+tile.tfc.stone.pressure_plate.basalt.name=Нажимная пластина из базальта
+tile.tfc.stone.pressure_plate.andesite.name=Нажимная пластина из андезита
+tile.tfc.stone.pressure_plate.dacite.name=Нажимная пластина из дацита
+tile.tfc.stone.pressure_plate.quartzite.name=Нажимная пластина из кварицита
+tile.tfc.stone.pressure_plate.slate.name=Нажимная пластина из шифера
+tile.tfc.stone.pressure_plate.phyllite.name=Нажимная пластина из филлита
+tile.tfc.stone.pressure_plate.schist.name=Нажимная пластина из аспидного сланца
+tile.tfc.stone.pressure_plate.gneiss.name=Нажимная пластина из гнейса
+tile.tfc.stone.pressure_plate.marble.name=Нажимная пластина из мрамора
+tile.tfc.stone.pressure_plate.ranite.name=Нажимная пластина из гранита
+
+# Crops
 tile.tfc.crop.barley.name=Ячмень
 tile.tfc.crop.beet.name=Свекла
 tile.tfc.crop.cabbage.name=Капуста
@@ -2455,6 +3272,73 @@ tile.tfc.crop.tomato.name=Томаты
 tile.tfc.crop.wheat.name=Пшеница
 tile.tfc.crop.yellow_bell_pepper.name=Желтый перец
 
+tile.tfc.lamp.bismuth.name=Лампа из висмута
+tile.tfc.lamp.bismuth_bronze.name=Лампа из висмутовой бронзы
+tile.tfc.lamp.black_bronze.name=Лампа из черной бронзы
+tile.tfc.lamp.brass.name=Лампа из латуни
+tile.tfc.lamp.bronze.name=Лампа из бронзы
+tile.tfc.lamp.copper.name=Лампа из меди
+tile.tfc.lamp.gold.name=Лампа из золота
+tile.tfc.lamp.lead.name=Лампа из свинца
+tile.tfc.lamp.nickel.name=Лампа из никеля
+tile.tfc.lamp.rose_gold.name=Лампа из розового золота
+tile.tfc.lamp.silver.name=Лампа из серебра
+tile.tfc.lamp.tin.name=Лампа из олова
+tile.tfc.lamp.zinc.name=Лампа из цинка
+tile.tfc.lamp.sterling_silver.name=Лампа из стерлинга (чистого серебра)
+tile.tfc.lamp.wrought_iron.name=Лампа из кованного железа
+tile.tfc.lamp.pig_iron.name=Лампа из чугуна
+tile.tfc.lamp.steel.name=Лампа из стали
+tile.tfc.lamp.platinum.name=Лампа из платины
+tile.tfc.lamp.black_steel.name=Лампа из черной стали
+tile.tfc.lamp.blue_steel.name=Лампа из синей стали
+tile.tfc.lamp.red_steel.name=Лампа из красной стали
+
+tile.tfc.lamp.bismuth.filled.name=Маслянная лампа из висмута
+tile.tfc.lamp.bismuth_bronze.filled.name=Маслянная лампа из висмутовой бронзы
+tile.tfc.lamp.black_bronze.filled.name=Маслянная лампа из черной бронзы
+tile.tfc.lamp.brass.filled.name=Маслянная лампа из латуни
+tile.tfc.lamp.bronze.filled.name=Маслянная лампа из бронзы
+tile.tfc.lamp.copper.filled.name=Маслянная лампа из меди
+tile.tfc.lamp.gold.filled.name=Маслянная лампа из золота
+tile.tfc.lamp.lead.filled.name=Маслянная лампа из свинца
+tile.tfc.lamp.nickel.filled.name=Маслянная лампа из никеля
+tile.tfc.lamp.rose_gold.filled.name=Маслянная лампа из розового золота
+tile.tfc.lamp.silver.filled.name=Маслянная лампа из серебра
+tile.tfc.lamp.tin.filled.name=Маслянная лампа из олова
+tile.tfc.lamp.zinc.filled.name=Маслянная лампа из цинка
+tile.tfc.lamp.sterling_silver.filled.name=Маслянная лампа из стерлинга (чистого серебра)
+tile.tfc.lamp.wrought_iron.filled.name=Маслянная лампа из кованного железа
+tile.tfc.lamp.pig_iron.filled.name=Маслянная лампа из чугуна
+tile.tfc.lamp.steel.filled.name=Маслянная лампа из стали
+tile.tfc.lamp.platinum.filled.name=Маслянная лампа из платины
+tile.tfc.lamp.black_steel.filled.name=Маслянная лампа из черной стали
+tile.tfc.lamp.blue_steel.filled.name=Маслянная лампа из синей стали
+tile.tfc.lamp.red_steel.filled.name=Маслянная лампа из красной стали
+
+tile.tfc.lavalamp.name=Лавовая лампа из синей стали
+
+tile.tfc.trapdoor.bismuth.name=Люк из висмута
+tile.tfc.trapdoor.bismuth_bronze.name=Люк из висмутовой бронзы
+tile.tfc.trapdoor.black_bronze.name=Люк из черной бронзы
+tile.tfc.trapdoor.brass.name=Люк из латуни
+tile.tfc.trapdoor.bronze.name=Люк из бронзы
+tile.tfc.trapdoor.copper.name=Люк из меди
+tile.tfc.trapdoor.gold.name=Люк из золота
+tile.tfc.trapdoor.lead.name=Люк из свинца
+tile.tfc.trapdoor.nickel.name=Люк из никеля
+tile.tfc.trapdoor.rose_gold.name=Люк из розового золота
+tile.tfc.trapdoor.silver.name=Люк из серебра
+tile.tfc.trapdoor.tin.name=Люк из олова
+tile.tfc.trapdoor.zinc.name=Люк из цинка
+tile.tfc.trapdoor.sterling_silver.name=Люк из стерлинга (чистого серебра)
+tile.tfc.trapdoor.wrought_iron.name=Люк из кованного железа
+tile.tfc.trapdoor.pig_iron.name=Люк из чугуна
+tile.tfc.trapdoor.steel.name=Люк из стали
+tile.tfc.trapdoor.platinum.name=Люк из платины
+tile.tfc.trapdoor.black_steel.name=Люк из черной стали
+tile.tfc.trapdoor.blue_steel.name=Люк из синей стали
+tile.tfc.trapdoor.red_steel.name=Люк из красной стали
 
 ### ======================= ITEMS ======================
 
@@ -2465,18 +3349,29 @@ item.tfc.firestarter.name=Поджигатель
 item.tfc.straw.name=Солома
 item.leather.name=Кожа
 item.tfc.spindle.name=Веретено
-item.tfc.handstone.name=Камень ручной мельницы
+item.tfc.glass_shard.name=Осколок стекла
+item.tfc.handstone.name=Верхная часть жёрнова
 item.tfc.wooden_bucket.name=Ведро
-item.tfc.wooden_bucket.filled=Ведро с %s
+item.tfc.wooden_bucket.filled.name=Ведро с %s
 item.tfc.ceramics.fired.jug.name=Кувшин
 item.tfc.ceramics.fired.jug.filled=Кувшин с %s
+item.tfc.ceramics.unfired.clay_flower_pot.name=Необожженный глиняный цветочный горшок
+item.tfc.ceramics.unfired.crucible.name=Необожженный тигель
 item.tfc.mortar.name=Строительный раствор
+item.tfc.halter.name=Узда
+item.tfc.wrought_iron_grill.name=Гриль из кованого железа
+item.tfc.alabaster_brick.name=Алебастровый кирпич
+item.tfc.metal.rod.gold.name=Золотой стержень
+item.tfc.metal.rod.wrought_iron.name=Стержень из кованного железа
+item.tfc.metal.rod.steel.name=Стальной стержень
+item.tfc.brass_mechanisms.name=Латунный механизм
+item.tfc.glue.name=Клей
 
-item.tfc.ore.native_copper.name=Чистая медь
-item.tfc.ore.native_gold.name=Чистое золото
-item.tfc.ore.native_platinum.name=Чистая платина
+item.tfc.ore.native_copper.name=Самородная медь
+item.tfc.ore.native_gold.name=Самородное золото
+item.tfc.ore.native_platinum.name=Самородная платина
 item.tfc.ore.hematite.name=Гематит
-item.tfc.ore.native_silver.name=Чистое серебро
+item.tfc.ore.native_silver.name=Самородное серебро
 item.tfc.ore.cassiterite.name=Касситерит
 item.tfc.ore.galena.name=Галена
 item.tfc.ore.bismuthinite.name=Висмутин
@@ -2508,11 +3403,11 @@ item.tfc.ore.borax.name=Бура
 item.tfc.ore.olivine.name=Оливин
 item.tfc.ore.lapis_lazuli.name=Лазурит
 
-item.tfc.ore.native_copper.poor.name=Бедная чистая медь
-item.tfc.ore.native_gold.poor.name=Бедное чистое золото
-item.tfc.ore.native_platinum.poor.name=Бедная чистая платина
+item.tfc.ore.native_copper.poor.name=Бедная самородная медь
+item.tfc.ore.native_gold.poor.name=Бедное самородное золото
+item.tfc.ore.native_platinum.poor.name=Бедная самородная платина
 item.tfc.ore.hematite.poor.name=Бедный гематит
-item.tfc.ore.native_silver.poor.name=Бедное чистое серебро
+item.tfc.ore.native_silver.poor.name=Бедное самородное серебро
 item.tfc.ore.cassiterite.poor.name=Бедный касситерит
 item.tfc.ore.galena.poor.name=Бедная галена
 item.tfc.ore.bismuthinite.poor.name=Бедный висмутин
@@ -2544,11 +3439,11 @@ item.tfc.ore.borax.poor.name=Бедная бура
 item.tfc.ore.olivine.poor.name=Бедный оливин
 item.tfc.ore.lapis_lazuli.poor.name=Бедный лазурит
 
-item.tfc.ore.native_copper.rich.name=Богатая чистая медь
-item.tfc.ore.native_gold.rich.name=Богатое чистое золото
-item.tfc.ore.native_platinum.rich.name=Богатая чистая платина
+item.tfc.ore.native_copper.rich.name=Богатая самородная медь
+item.tfc.ore.native_gold.rich.name=Богатое самородное золото
+item.tfc.ore.native_platinum.rich.name=Богатая самородная платина
 item.tfc.ore.hematite.rich.name=Богатый гематит
-item.tfc.ore.native_silver.rich.name=Богатое чистое серебро
+item.tfc.ore.native_silver.rich.name=Богатое самородное серебро
 item.tfc.ore.cassiterite.rich.name=Богатый касситерит
 item.tfc.ore.galena.rich.name=Богатая галена
 item.tfc.ore.bismuthinite.rich.name=Богатый висмутин
@@ -2580,11 +3475,11 @@ item.tfc.ore.borax.rich.name=Богатая бура
 item.tfc.ore.olivine.rich.name=Богатый оливин
 item.tfc.ore.lapis_lazuli.rich.name=Богатый лазурит
 
-item.tfc.ore.small.native_copper.name=Самородок чистой меди
-item.tfc.ore.small.native_gold.name=Самородок чистого золота
-item.tfc.ore.small.native_platinum.name=Самородок чистой платины
+item.tfc.ore.small.native_copper.name=Малый кусочек самородной меди
+item.tfc.ore.small.native_gold.name=Малый кусочек самородного золота
+item.tfc.ore.small.native_platinum.name=Малый кусочек самородной платины
 item.tfc.ore.small.hematite.name=Малый кусочек гематита
-item.tfc.ore.small.native_silver.name=Самородок чистого серебра
+item.tfc.ore.small.native_silver.name=Малый кусочек самородного серебра
 item.tfc.ore.small.cassiterite.name=Малый кусочек касситерита
 item.tfc.ore.small.galena.name=Малый кусочек галены
 item.tfc.ore.small.bismuthinite.name=Малый кусочек висмутина
@@ -2662,6 +3557,9 @@ item.tfc.brick.gneiss.name=Гнейсовый кирпич
 item.tfc.brick.marble.name=Мраморный кирпич
 item.tfc.brick.ranite.name=Гранитный кирпич
 
+item.tfc.stick_bunch.name=Связка из палок
+item.tfc.stick_bundle.name=Тюк палок
+item.tfc.wood_ash.name=Древесная зола
 item.tfc.wood.lumber.ash.name=Пиломатериалы из ясеня
 item.tfc.wood.lumber.aspen.name=Пиломатериалы из осины
 item.tfc.wood.lumber.birch.name=Пиломатериалы из березы
@@ -2736,19 +3634,19 @@ item.tfc.gem.sapphire.normal.name=Сапфир
 item.tfc.gem.topaz.normal.name=Топаз
 item.tfc.gem.tourmaline.normal.name=Турмалин
 
-item.tfc.gem.agate.flawed.name=Порочный агат
-item.tfc.gem.amethyst.flawed.name=Порочный аметист
-item.tfc.gem.beryl.flawed.name=Порочный берилл
-item.tfc.gem.diamond.flawed.name=Порочный алмаз
-item.tfc.gem.emerald.flawed.name=Порочный изумруд
-item.tfc.gem.garnet.flawed.name=Порочный гранат
-item.tfc.gem.jade.flawed.name=Порочный нефрит
-item.tfc.gem.jasper.flawed.name=Порочная яшма
-item.tfc.gem.opal.flawed.name=Порочный опал
-item.tfc.gem.ruby.flawed.name=Порочный рубин
-item.tfc.gem.sapphire.flawed.name=Порочный сапфир
-item.tfc.gem.topaz.flawed.name=Порочный топаз
-item.tfc.gem.tourmaline.flawed.name=Порочный турмалин
+item.tfc.gem.agate.flawed.name=Треснутый агат
+item.tfc.gem.amethyst.flawed.name=Треснутый аметист
+item.tfc.gem.beryl.flawed.name=Треснутый берилл
+item.tfc.gem.diamond.flawed.name=Треснутый алмаз
+item.tfc.gem.emerald.flawed.name=Треснутый изумруд
+item.tfc.gem.garnet.flawed.name=Треснутый гранат
+item.tfc.gem.jade.flawed.name=Треснутый нефрит
+item.tfc.gem.jasper.flawed.name=Треснутая яшма
+item.tfc.gem.opal.flawed.name=Треснутый опал
+item.tfc.gem.ruby.flawed.name=Треснутый рубин
+item.tfc.gem.sapphire.flawed.name=Треснутый сапфир
+item.tfc.gem.topaz.flawed.name=Треснутый топаз
+item.tfc.gem.tourmaline.flawed.name=Треснутый турмалин
 
 item.tfc.gem.agate.flawless.name=Безупречный агат
 item.tfc.gem.amethyst.flawless.name=Безупречный аметист
@@ -3030,24 +3928,24 @@ item.tfc.metal.hoe_head.steel.name=Стальное оголовье мотыг�
 item.tfc.metal.hoe_head.black_steel.name=Оголовье мотыги из черной стали
 item.tfc.metal.hoe_head.blue_steel.name=Оголовье мотыги из синей стали
 item.tfc.metal.hoe_head.red_steel.name=Оголовье мотыги из красной стали
-item.tfc.metal.chisel.bismuth_bronze.name=Стамеска из висмутовой бронзы
-item.tfc.metal.chisel.black_bronze.name=Стамеска из черной бронзы
-item.tfc.metal.chisel.bronze.name=Бронзовая стамеска
-item.tfc.metal.chisel.copper.name=Медная стамеска
-item.tfc.metal.chisel.wrought_iron.name=Стамеска из кованного железа
-item.tfc.metal.chisel.steel.name=Стальная стамеска
-item.tfc.metal.chisel.black_steel.name=Стамеска из черной стали
-item.tfc.metal.chisel.blue_steel.name=Стамеска из синей стали
-item.tfc.metal.chisel.red_steel.name=Стамеска из красной стали
-item.tfc.metal.chisel_head.bismuth_bronze.name=Оголовье стамески из висмутовой бронзы
-item.tfc.metal.chisel_head.black_bronze.name=Оголовье стамески из черной бронзы
-item.tfc.metal.chisel_head.bronze.name=Бронзовое оголовье стамески
-item.tfc.metal.chisel_head.copper.name=Медное оголовье стамески
-item.tfc.metal.chisel_head.wrought_iron.name=Оголовье стамески из кованного железа
-item.tfc.metal.chisel_head.steel.name=Стальное оголовье стамески
-item.tfc.metal.chisel_head.black_steel.name=Оголовье стамески из черной стали
-item.tfc.metal.chisel_head.blue_steel.name=Оголовье стамески из синей стали
-item.tfc.metal.chisel_head.red_steel.name=Оголовье стамески из красной стали
+item.tfc.metal.chisel.bismuth_bronze.name=Зубило из висмутовой бронзы
+item.tfc.metal.chisel.black_bronze.name=Зубило из черной бронзы
+item.tfc.metal.chisel.bronze.name=Бронзовая зубило
+item.tfc.metal.chisel.copper.name=Медная зубило
+item.tfc.metal.chisel.wrought_iron.name=Зубило из кованного железа
+item.tfc.metal.chisel.steel.name=Стальная зубило
+item.tfc.metal.chisel.black_steel.name=Зубило из черной стали
+item.tfc.metal.chisel.blue_steel.name=Зубило из синей стали
+item.tfc.metal.chisel.red_steel.name=Зубило из красной стали
+item.tfc.metal.chisel_head.bismuth_bronze.name=Оголовье зубила из висмутовой бронзы
+item.tfc.metal.chisel_head.black_bronze.name=Оголовье зубила из черной бронзы
+item.tfc.metal.chisel_head.bronze.name=Бронзовое оголовье зубила
+item.tfc.metal.chisel_head.copper.name=Медное оголовье зубила
+item.tfc.metal.chisel_head.wrought_iron.name=Оголовье зубила из кованного железа
+item.tfc.metal.chisel_head.steel.name=Стальное оголовье зубила
+item.tfc.metal.chisel_head.black_steel.name=Оголовье зубила из черной стали
+item.tfc.metal.chisel_head.blue_steel.name=Оголовье зубила из синей стали
+item.tfc.metal.chisel_head.red_steel.name=Оголовье зубила из красной стали
 item.tfc.metal.sword.bismuth_bronze.name=Меч из висмутовой бронзы
 item.tfc.metal.sword.black_bronze.name=Меч из черной бронзы
 item.tfc.metal.sword.bronze.name=Бронзовый меч
@@ -3156,24 +4054,24 @@ item.tfc.metal.hammer_head.steel.name=Стальное оголовье моло
 item.tfc.metal.hammer_head.black_steel.name=Оголовье молота из черной стали
 item.tfc.metal.hammer_head.blue_steel.name=Оголовье молота из синей стали
 item.tfc.metal.hammer_head.red_steel.name=Оголовье молота из красной стали
-item.tfc.metal.propick.bismuth_bronze.name=Кирка геолога из висмутовой бронзы
-item.tfc.metal.propick.black_bronze.name=Кирка геолога из черной бронзы
-item.tfc.metal.propick.bronze.name=Бронзовая кирка геолога
-item.tfc.metal.propick.copper.name=Медная кирка геолога
-item.tfc.metal.propick.wrought_iron.name=кирка геолога из кованного железа
-item.tfc.metal.propick.steel.name=Стальная кирка геолога
-item.tfc.metal.propick.black_steel.name=Кирка геолога из черной стали
-item.tfc.metal.propick.blue_steel.name=Кирка геолога из синей стали
-item.tfc.metal.propick.red_steel.name=Кирка геолога из красной стали
-item.tfc.metal.propick_head.bismuth_bronze.name=Оголовье кирки геолога из висмутовой бронзы
-item.tfc.metal.propick_head.black_bronze.name=Оголовье кирки геолога из черной бронзы
-item.tfc.metal.propick_head.bronze.name=Бронзовое оголовье кирки геолога
-item.tfc.metal.propick_head.copper.name=Медное оголовье кирки геолога
-item.tfc.metal.propick_head.wrought_iron.name=Оголовье кирки геолога из кованного железа
-item.tfc.metal.propick_head.steel.name=Стальное оголовье кирки геолога
-item.tfc.metal.propick_head.black_steel.name=Оголовье кирки геолога из черной стали
-item.tfc.metal.propick_head.blue_steel.name=Оголовье кирки геолога из синей стали
-item.tfc.metal.propick_head.red_steel.name=Оголовье кирки геолога из красной стали
+item.tfc.metal.propick.bismuth_bronze.name=Геологический молоток из висмутовой бронзы
+item.tfc.metal.propick.black_bronze.name=Геологический молоток из черной бронзы
+item.tfc.metal.propick.bronze.name=Бронзовый геологический молоток
+item.tfc.metal.propick.copper.name=Медный геологический молоток
+item.tfc.metal.propick.wrought_iron.name=Геологический молоток из кованного железа
+item.tfc.metal.propick.steel.name=Стальной геологический молоток
+item.tfc.metal.propick.black_steel.name=Геологический молоток из черной стали
+item.tfc.metal.propick.blue_steel.name=Геологический молоток из синей стали
+item.tfc.metal.propick.red_steel.name=Геологический молоток из красной стали
+item.tfc.metal.propick_head.bismuth_bronze.name=Оголовье геологического молотка из висмутовой бронзы
+item.tfc.metal.propick_head.black_bronze.name=Оголовье геологического молотка из черной бронзы
+item.tfc.metal.propick_head.bronze.name=Бронзовое оголовье геологического молотка
+item.tfc.metal.propick_head.copper.name=Медное оголовье геологического молотка
+item.tfc.metal.propick_head.wrought_iron.name=Оголовье геологического молотка из кованного железа
+item.tfc.metal.propick_head.steel.name=Стальное оголовье геологического молотка
+item.tfc.metal.propick_head.black_steel.name=Оголовье геологического молотка из черной стали
+item.tfc.metal.propick_head.blue_steel.name=Оголовье геологического молотка из синей стали
+item.tfc.metal.propick_head.red_steel.name=Оголовье геологического молотка из красной стали
 item.tfc.metal.knife.bismuth_bronze.name=Нож из висмутовой бронзы
 item.tfc.metal.knife.black_bronze.name=Нож из черной бронзы
 item.tfc.metal.knife.bronze.name=Бронзовый нож
@@ -3237,6 +4135,10 @@ item.tfc.metal.boots.steel.name=Стальные ботинки
 item.tfc.metal.boots.black_steel.name=Ботинки из черной стали
 item.tfc.metal.boots.blue_steel.name=Ботинки из синей стали
 item.tfc.metal.boots.red_steel.name=Ботинки из красной стали
+item.tfc.metal.bucket.blue_steel.name=Ведро из синей стали
+item.tfc.metal.bucket.red_steel.name=Ведро из красной стали
+item.tfc.metal.bucket.blue_steel.filled.name=Ведро с %s
+item.tfc.metal.bucket.red_steel.filled.name=Ведро с %s
 item.tfc.metal.helmet.bismuth_bronze.name=Шлем из висмутовой бронзы
 item.tfc.metal.helmet.black_bronze.name=Шлем из черной бронзы
 item.tfc.metal.helmet.bronze.name=Бронзовый шлем
@@ -3256,15 +4158,6 @@ item.tfc.metal.unfinished_chestplate.steel.name=Стальной незакон�
 item.tfc.metal.unfinished_chestplate.black_steel.name=Незаконченый нагрудник из черной стали
 item.tfc.metal.unfinished_chestplate.blue_steel.name=Незаконченый нагрудник из синей стали
 item.tfc.metal.unfinished_chestplate.red_steel.name=Незаконченый нагрудник из красной стали
-item.tfc.metal.unfinished_greaves.bismuth_bronze.name=Незаконченые поножи из висмутовой бронзы
-item.tfc.metal.unfinished_greaves.black_bronze.name=Незаконченые поножи из черной бронзы
-item.tfc.metal.unfinished_greaves.bronze.name=Бронзовые незаконченые поножи
-item.tfc.metal.unfinished_greaves.copper.name=Медные незаконченые поножи
-item.tfc.metal.unfinished_greaves.wrought_iron.name=Незаконченые поножи из кованного железа
-item.tfc.metal.unfinished_greaves.steel.name=Стальные незаконченые поножи
-item.tfc.metal.unfinished_greaves.black_steel.name=Незаконченые поножи из черной стали
-item.tfc.metal.unfinished_greaves.blue_steel.name=Незаконченые поножи из синей стали
-item.tfc.metal.unfinished_greaves.red_steel.name=Незаконченые поножи из красной стали
 item.tfc.metal.unfinished_boots.bismuth_bronze.name=Незаконченые ботинки из висмутовой бронзы
 item.tfc.metal.unfinished_boots.black_bronze.name=Незаконченые ботинки из черной бронзы
 item.tfc.metal.unfinished_boots.bronze.name=Бронзовые незаконченые ботинки
@@ -3283,6 +4176,15 @@ item.tfc.metal.unfinished_helmet.steel.name=Стальной незаконче�
 item.tfc.metal.unfinished_helmet.black_steel.name=Незаконченый шлем из черной стали
 item.tfc.metal.unfinished_helmet.blue_steel.name=Незаконченый шлем из синей стали
 item.tfc.metal.unfinished_helmet.red_steel.name=Незаконченый шлем из красной стали
+item.tfc.metal.unfinished_greaves.bismuth_bronze.name=Незаконченые поножи из висмутовой бронзы
+item.tfc.metal.unfinished_greaves.black_bronze.name=Незаконченые поножи из черной бронзы
+item.tfc.metal.unfinished_greaves.bronze.name=Бронзовые незаконченые поножи
+item.tfc.metal.unfinished_greaves.copper.name=Медные незаконченые поножи
+item.tfc.metal.unfinished_greaves.wrought_iron.name=Незаконченые поножи из кованного железа
+item.tfc.metal.unfinished_greaves.steel.name=Стальные незаконченые поножи
+item.tfc.metal.unfinished_greaves.black_steel.name=Незаконченые поножи из черной стали
+item.tfc.metal.unfinished_greaves.blue_steel.name=Незаконченые поножи из синей стали
+item.tfc.metal.unfinished_greaves.red_steel.name=Незаконченые поножи из красной стали
 
 item.tfc.metal.lamp.bismuth.name=Лампа из висмута
 item.tfc.metal.lamp.bismuth_bronze.name=Лампа из висмутовой бронзы
@@ -3402,7 +4304,8 @@ item.tfc.powder.limonite.name=Лимонитовый порошок
 item.tfc.powder.malachite.name=Малахитовый порошок
 item.tfc.powder.salt.name=Соль
 item.tfc.powder.fertilizer.name=Удобрение
-item.tfc.powder.charcoal.name=
+item.tfc.powder.charcoal.name=Порошок древесного угля
+
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=Неформованный слиток висмута
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=Неформованный слиток висмутовой бронзы
@@ -3442,13 +4345,13 @@ item.tfc.ceramics.fired.mold.pick_head.name=Форма для оголовья �
 item.tfc.ceramics.fired.mold.shovel_head.name=Форма для оголовья лопаты
 item.tfc.ceramics.fired.mold.axe_head.name=Форма для оголовья топора
 item.tfc.ceramics.fired.mold.hoe_head.name=Форма для оголовья мотыги
-item.tfc.ceramics.fired.mold.chisel_head.name=Форма для оголовья стамески
+item.tfc.ceramics.fired.mold.chisel_head.name=Форма для оголовья зубила
 item.tfc.ceramics.fired.mold.sword_blade.name=Форма для лезвия меча
 item.tfc.ceramics.fired.mold.mace_head.name=Форма для оголовья булавы
 item.tfc.ceramics.fired.mold.saw_blade.name=Форма для полотна ножовки
 item.tfc.ceramics.fired.mold.javelin_head.name=Форма для наконечника копья
 item.tfc.ceramics.fired.mold.hammer_head.name=Форма для оголовья молота
-item.tfc.ceramics.fired.mold.propick_head.name=Форма для оголовья кирки геолога
+item.tfc.ceramics.fired.mold.propick_head.name=Форма для оголовья геологического молотка
 item.tfc.ceramics.fired.mold.knife_blade.name=Форма для лезвия ножа
 item.tfc.ceramics.fired.mold.scythe_blade.name=Форма для лезвия косы
 
@@ -3456,13 +4359,13 @@ item.tfc.ceramics.fired.mold.pick_head.bronze.name=Форма для оголо�
 item.tfc.ceramics.fired.mold.shovel_head.bronze.name=Форма для оголовья лопаты (Бронза)
 item.tfc.ceramics.fired.mold.axe_head.bronze.name=Форма для оголовья топора (Бронза)
 item.tfc.ceramics.fired.mold.hoe_head.bronze.name=Форма для оголовья мотыги (Бронза)
-item.tfc.ceramics.fired.mold.chisel_head.bronze.name=Форма для оголовья стамески (Бронза)
+item.tfc.ceramics.fired.mold.chisel_head.bronze.name=Форма для оголовья зубила (Бронза)
 item.tfc.ceramics.fired.mold.sword_blade.bronze.name=Форма для лезвия ножа (Бронза)
 item.tfc.ceramics.fired.mold.mace_head.bronze.name=Форма для оголовья булавы (Бронза)
 item.tfc.ceramics.fired.mold.saw_blade.bronze.name=Форма для полотна ножовки (Бронза)
 item.tfc.ceramics.fired.mold.javelin_head.bronze.name=Форма для наконечника копья (Бронза)
 item.tfc.ceramics.fired.mold.hammer_head.bronze.name=Форма для оголовья молота (Бронза)
-item.tfc.ceramics.fired.mold.propick_head.bronze.name=Форма для оголовья кирки геолога (Бронза)
+item.tfc.ceramics.fired.mold.propick_head.bronze.name=Форма для оголовья геологического молотка (Бронза)
 item.tfc.ceramics.fired.mold.knife_blade.bronze.name=Форма для лезвия ножа (Бронза)
 item.tfc.ceramics.fired.mold.scythe_blade.bronze.name=Форма для лезвия косы (Бронза)
 
@@ -3470,13 +4373,13 @@ item.tfc.ceramics.fired.mold.pick_head.black_bronze.name=Форма для ог�
 item.tfc.ceramics.fired.mold.shovel_head.black_bronze.name=Форма для оголовья лопаты (Черная бронза)
 item.tfc.ceramics.fired.mold.axe_head.black_bronze.name=Форма для оголовья топора (Черная бронза)
 item.tfc.ceramics.fired.mold.hoe_head.black_bronze.name=Форма для оголовья мотыги (Черная бронза)
-item.tfc.ceramics.fired.mold.chisel_head.black_bronze.name=Форма для оголовья стамески (Черная бронза)
+item.tfc.ceramics.fired.mold.chisel_head.black_bronze.name=Форма для оголовья зубила (Черная бронза)
 item.tfc.ceramics.fired.mold.sword_blade.black_bronze.name=Форма для лезвия ножа (Черная бронза)
 item.tfc.ceramics.fired.mold.mace_head.black_bronze.name=Форма для оголовья булавы (Черная бронза)
 item.tfc.ceramics.fired.mold.saw_blade.black_bronze.name=Форма для полотна ножовки (Черная бронза)
 item.tfc.ceramics.fired.mold.javelin_head.black_bronze.name=Форма для наконечника копья (Черная бронза)
 item.tfc.ceramics.fired.mold.hammer_head.black_bronze.name=Форма для оголовья молота (Черная бронза)
-item.tfc.ceramics.fired.mold.propick_head.black_bronze.name=Форма для оголовья кирки геолога (Черная бронза)
+item.tfc.ceramics.fired.mold.propick_head.black_bronze.name=Форма для оголовья геологического молотка (Черная бронза)
 item.tfc.ceramics.fired.mold.knife_blade.black_bronze.name=Форма для лезвия ножа (Черная бронза)
 item.tfc.ceramics.fired.mold.scythe_blade.black_bronze.name=Форма для лезвия косы (Черная бронза)
 
@@ -3484,13 +4387,13 @@ item.tfc.ceramics.fired.mold.pick_head.bismuth_bronze.name=Форма для о�
 item.tfc.ceramics.fired.mold.shovel_head.bismuth_bronze.name=Форма для оголовья лопаты (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.axe_head.bismuth_bronze.name=Форма для оголовья топора (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.hoe_head.bismuth_bronze.name=Форма для оголовья мотыги (Висмутовая бронза)
-item.tfc.ceramics.fired.mold.chisel_head.bismuth_bronze.name=Форма для оголовья стамески (Висмутовая бронза)
+item.tfc.ceramics.fired.mold.chisel_head.bismuth_bronze.name=Форма для оголовья зубила (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.sword_blade.bismuth_bronze.name=Форма для лезвия ножа (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.mace_head.bismuth_bronze.name=Форма для оголовья булавы (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.saw_blade.bismuth_bronze.name=Форма для полотна ножовки (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.javelin_head.bismuth_bronze.name=Форма для наконечника копья (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.hammer_head.bismuth_bronze.name=Форма для оголовья молота (Висмутовая бронза)
-item.tfc.ceramics.fired.mold.propick_head.bismuth_bronze.name=Форма для оголовья кирки геолога (Висмутовая бронза)
+item.tfc.ceramics.fired.mold.propick_head.bismuth_bronze.name=Форма для оголовья геологического молотка (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.knife_blade.bismuth_bronze.name=Форма для лезвия ножа (Висмутовая бронза)
 item.tfc.ceramics.fired.mold.scythe_blade.bismuth_bronze.name=Форма для лезвия косы (Висмутовая бронза)
 
@@ -3498,13 +4401,13 @@ item.tfc.ceramics.fired.mold.pick_head.copper.name=Форма для оголо�
 item.tfc.ceramics.fired.mold.shovel_head.copper.name=Форма для оголовья лопаты (Медь)
 item.tfc.ceramics.fired.mold.axe_head.copper.name=Форма для оголовья топора (Медь)
 item.tfc.ceramics.fired.mold.hoe_head.copper.name=Форма для оголовья мотыги (Медь)
-item.tfc.ceramics.fired.mold.chisel_head.copper.name=Форма для оголовья стамески (Медь)
+item.tfc.ceramics.fired.mold.chisel_head.copper.name=Форма для оголовья зубила (Медь)
 item.tfc.ceramics.fired.mold.sword_blade.copper.name=Форма для лезвия ножа (Медь)
 item.tfc.ceramics.fired.mold.mace_head.copper.name=Форма для оголовья булавы (Медь)
 item.tfc.ceramics.fired.mold.saw_blade.copper.name=Форма для полотна ножовки (Медь)
 item.tfc.ceramics.fired.mold.javelin_head.copper.name=Форма для наконечника копья (Медь)
 item.tfc.ceramics.fired.mold.hammer_head.copper.name=Форма для оголовья молота (Медь)
-item.tfc.ceramics.fired.mold.propick_head.copper.name=Форма для оголовья кирки геолога (Медь)
+item.tfc.ceramics.fired.mold.propick_head.copper.name=Форма для оголовья геологического молотка (Медь)
 item.tfc.ceramics.fired.mold.knife_blade.copper.name=Форма для лезвия ножа (Медь)
 item.tfc.ceramics.fired.mold.scythe_blade.copper.name=Форма для лезвия косы (Медь)
 
@@ -3513,13 +4416,13 @@ item.tfc.ceramics.unfired.mold.pick_head.name=Необожженная форм�
 item.tfc.ceramics.unfired.mold.shovel_head.name=Необожженная форма для оголовья лопаты
 item.tfc.ceramics.unfired.mold.axe_head.name=Необожженная форма для оголовья топора
 item.tfc.ceramics.unfired.mold.hoe_head.name=Необожженная форма для оголовья мотыги
-item.tfc.ceramics.unfired.mold.chisel_head.name=Необожженная форма для оголовья стамески
+item.tfc.ceramics.unfired.mold.chisel_head.name=Необожженная форма для оголовья зубила
 item.tfc.ceramics.unfired.mold.sword_blade.name=Необожженная форма для лезвия меча
 item.tfc.ceramics.unfired.mold.mace_head.name=Необожженная форма для оголовья булавы
 item.tfc.ceramics.unfired.mold.saw_blade.name=Необожженная форма для лезвия ножа
 item.tfc.ceramics.unfired.mold.javelin_head.name=Необожженная форма для наконечника копья
 item.tfc.ceramics.unfired.mold.hammer_head.name=Необожженная форма для оголовья молота
-item.tfc.ceramics.unfired.mold.propick_head.name=Необожженная форма для оголовья кирки геолога
+item.tfc.ceramics.unfired.mold.propick_head.name=Необожженная форма для оголовья геологического молотка
 item.tfc.ceramics.unfired.mold.knife_blade.name=Необожженная форма для лезвия ножа
 item.tfc.ceramics.unfired.mold.scythe_blade.name=Необожженная форма для лезвия косы
 
@@ -3527,7 +4430,7 @@ item.tfc.ceramics.fired.vessel.name=Малый сосуд
 item.tfc.ceramics.unfired.vessel.name=Малый необожженный сосуд
 item.tfc.ceramics.fired.vessel_glazed.white.name=Малый белый сосуд
 item.tfc.ceramics.fired.vessel_glazed.orange.name=Малый оранжевый сосуд
-item.tfc.ceramics.fired.vessel_glazed.magenta.name=Малый сиреневый сосуд
+item.tfc.ceramics.fired.vessel_glazed.magenta.name=Малый пурпурный сосуд
 item.tfc.ceramics.fired.vessel_glazed.light_blue.name=Малый голубой сосуд
 item.tfc.ceramics.fired.vessel_glazed.yellow.name=Малый желтый сосуд
 item.tfc.ceramics.fired.vessel_glazed.lime.name=Малый лаймовый сосуд
@@ -3543,7 +4446,7 @@ item.tfc.ceramics.fired.vessel_glazed.red.name=Малый красный сос�
 item.tfc.ceramics.fired.vessel_glazed.black.name=Малый черный сосуд
 item.tfc.ceramics.unfired.vessel_glazed.white.name=Малый необожженный белый сосуд
 item.tfc.ceramics.unfired.vessel_glazed.orange.name=Малый необожженный оранжевый сосуд
-item.tfc.ceramics.unfired.vessel_glazed.magenta.name=Малый необожженный сиреневый сосуд
+item.tfc.ceramics.unfired.vessel_glazed.magenta.name=Малый необожженный пурпурный сосуд
 item.tfc.ceramics.unfired.vessel_glazed.light_blue.name=Малый необожженный голубой сосуд
 item.tfc.ceramics.unfired.vessel_glazed.yellow.name=Малый необожженный желтый сосуд
 item.tfc.ceramics.unfired.vessel_glazed.lime.name=Малый необожженный лаймовый сосуд
@@ -3569,6 +4472,7 @@ item.tfc.ceramics.unfired.bowl.name=Необожженная миска
 item.tfc.ceramics.fired.fire_brick.name=Огнеупорный кирпич
 item.tfc.ceramics.unfired.fire_brick.name=Необожженный огнеупорный кирпич
 item.tfc.ceramics.fire_clay.name=Огнеупорная глина
+item.tfc.ceramics.unfired.clay_brick.name=Необожженный глиняный кирпич
 
 item.tfc.hide.raw.small.name=Маленькая сырая шкура
 item.tfc.hide.raw.medium.name=Средняя сырая шкура
@@ -3598,6 +4502,7 @@ item.tfc.food.gooseberry.name=Шиповник
 item.tfc.food.green_apple.name=Зеленое яблоко
 item.tfc.food.lemon.name=Лимон
 item.tfc.food.olive.name=Оливка
+item.tfc.food.olive_paste.name=Оливковая паста
 item.tfc.food.orange.name=Апельсин
 item.tfc.food.peach.name=Персик
 item.tfc.food.plum.name=Слива
@@ -3612,6 +4517,7 @@ item.tfc.food.barley_flour.name=Ячменная мука
 item.tfc.food.barley_dough.name=Ячменное тесто
 item.tfc.food.barley_bread.name=Ячменный хлеб
 item.tfc.food.maize.name=Кукуруза
+item.tfc.food.maize_grain.name=Кукурузное зерна
 item.tfc.food.cornbread.name=Кукурузный хлеб
 item.tfc.food.cornmeal_flour.name=Кукурузная мука
 item.tfc.food.cornmeal_dough.name=Кукурузное тесто
@@ -3664,6 +4570,9 @@ item.tfc.food.pheasant.name=Сырой фазан
 item.tfc.food.venison.name=Сырая оленина
 item.tfc.food.rabbit.name=Сырой кролик
 item.tfc.food.wolf.name=Сырая волчатина
+item.tfc.food.mongoose.name=Сырое мясо мангуста
+item.tfc.food.gran_feline.name=Сырая кошатина
+item.tfc.food.camelidae.name=Сырое мясо верблюда
 item.tfc.food.cooked_beef.name=Приготовленная говядина
 item.tfc.food.cooked_pork.name=Приготовленная свинина
 item.tfc.food.cooked_chicken.name=Приготовленная курица
@@ -3676,6 +4585,25 @@ item.tfc.food.cooked_pheasant.name=Приготовленный фазан
 item.tfc.food.cooked_venison.name=Приготовленная оленина
 item.tfc.food.cooked_rabbit.name=Приготовленный кролик
 item.tfc.food.cooked_wolf.name=Приготовленная волчатина
+item.tfc.food.cooked_mongoose.name=Приготовленное мясо мангуста
+item.tfc.food.cooked_gran_feline.name=Приготовленная кошатина
+item.tfc.food.cooked_camelidae.name=Приготовленное мясо верблюда
+item.tfc.food.barley_bread_sandwich.name=Бутерброд с ячменным хлебом
+item.tfc.food.cornbread_sandwich.name=Бутерброд с кукурузным хлебом
+item.tfc.food.rye_bread_sandwich.name=Бутерброд с ржаным хлебом
+item.tfc.food.oat_bread_sandwich.name=БутербродOat Bread Sandwich
+item.tfc.food.wheat_bread_sandwich.name=Бутерброд с пшеничным хлебом
+item.tfc.food.rice_bread_sandwich.name=Бутерброд с рисовым хлебом
+item.tfc.food.soup_grain.name=Полезный суп
+item.tfc.food.soup_fruit.name=Вкусный суп
+item.tfc.food.soup_vegetable.name=Заполнение супа
+item.tfc.food.soup_meat.name=Сытный суп
+item.tfc.food.soup_dairy.name=Сливочный суп
+item.tfc.food.salad_grain.name=Хрустящий салат
+item.tfc.food.salad_fruit.name=Сладкий салат
+item.tfc.food.salad_vegetable.name=Здоровый салат
+item.tfc.food.salad_meat.name=Ароматный салат
+item.tfc.food.salad_dairy.name=Отвратительный салат
 
 item.tfc.crop.seeds.barley.name=Семена ячменя
 item.tfc.crop.seeds.beet.name=Семена свеклы
@@ -3702,10 +4630,17 @@ item.tfc.crop.seeds.melon.name=Семена арбуза
 
 item.tfc.crop.product.jute.name=Джут
 item.tfc.crop.product.jute_fiber.name=Джутовое волокно
+item.tfc.crop.product.dirty_jute_net.name=Грязная джутовая сетка
+item.tfc.crop.product.jute_net.name=Джутовая сетка
+item.tfc.crop.product.jute_disc.name=Джутовый диск
+item.tfc.crop.product.olive_jute_disc.name=Джутовый диск в оливковой пасте
 item.tfc.crop.product.burlap_cloth.name=Джутовая ткань
 
-item.tfc.bloom.unrefined.name=Сырая крица
-item.tfc.bloom.refined.name=Очищеная крица
+item.tfc.bloom.unrefined.unknown.name=Сырая крица
+item.tfc.bloom.refined.unknown.name=Очищеная крица
+
+item.tfc.bloom.unrefined.wrought_iron.name=Крица
+item.tfc.bloom.refined.wrought_iron.name=Очищенная крица
 
 item.tfc.animal.product.wool.name=Шерсть
 item.tfc.animal.product.wool_yarn.name=Шерстяная пряжа
@@ -3714,9 +4649,12 @@ item.tfc.animal.product.silk_cloth.name=Шелковая ткань
 
 item.tfc.quiver.name=Колчан
 
+## Entities
+
+# Animals
 entity.sheeptfc.name=Овца
 entity.cowtfc.name=Корова
-entity.beartfc.name=Медведь
+entity.grizzlybeartfc.name=Медведь гризли
 entity.pigtfc.name=Свинья
 entity.chickentfc.name=Курица
 entity.deertfc.name=Олень
@@ -3726,5 +4664,433 @@ entity.wolftfc.name=Волк
 entity.horsetfc.name=Лошадь
 entity.donkeytfc.name=Осел
 entity.muletfc.name=Мул
+entity.parrottfc.name=Попугай
+entity.llamatfc.name=Лама
+entity.polarbeartfc.name=Полярный медведь
+entity.alpacatfc.name=Альпака
+entity.ducktfc.name=Утка
+entity.goattfc.name=Козел
+entity.panthertfc.name=Чёрная пантера
+entity.ocelottfc.name=Оцелот
+entity.sabertoothtfc.name=Саблезуб
+entity.cameltfc.name=Верблюд
+entity.liontfc.name=Лев
+entity.hyenatfc.name=Гиена
+entity.direwolftfc.name=Лютоволк
+entity.haretfc.name=Заяц
+entity.boartfc.name=Кабан
+entity.zebutfc.name=Зебу
+entity.gazelletfc.name=Газель
+entity.wildebeesttfc.name=Гну
+entity.quailtfc.name=Перепел
+entity.grousetfc.name=Рябчик
+entity.mongoosetfc.name=Мангуст
+entity.turkeytfc.name=Индейка
+entity.jackaltfc.name=Шакал
+entity.muskoxtfc.name=Овцебык
+entity.yaktfc.name=Як
+entity.blackbeartfc.name=Черный медведь
+entity.cougartfc.name=Пума
+entity.coyotetfc.name=Койот
 
+#TFC death messages
 death.attack.dehydration=%1$s умер от жажды
+death.attack.food_poison=%1$s умер от отравления
+death.attack.plucking=%1$s умер от вырванных перьев
+death.attack.grill=%1$s поджарен до корочки
+death.attack.soup=%1$s превратился в фарш
+
+#Effects
+effectsTFC.overburdened=Перегружен
+effectsTFC.thirst=Жажда
+effectsTFC.food_poison=Пищевое отравление
+
+# Animal names by gender
+tfc.animal.sheeptfc.male=Овца♂
+tfc.animal.sheeptfc.female=Овца♀
+tfc.animal.cowtfc.male=Бык
+tfc.animal.cowtfc.female=Корова
+tfc.animal.grizzlybeartfc.male=Медведь гризли♂
+tfc.animal.grizzlybeartfc.female=Медведь гризли♀
+tfc.animal.pigtfc.male=Свинья♂
+tfc.animal.pigtfc.female=Свинья♀
+tfc.animal.chickentfc.male=Петух
+tfc.animal.chickentfc.female=Курица
+tfc.animal.deertfc.male=Олень
+tfc.animal.deertfc.female=Олениха
+tfc.animal.pheasanttfc.male=Фазан♂
+tfc.animal.pheasanttfc.female=Фазан♀
+tfc.animal.rabbittfc.male=Кролик♂
+tfc.animal.rabbittfc.female=Кролик♀
+tfc.animal.wolftfc.male=Волк♂
+tfc.animal.wolftfc.female=Волк♀
+tfc.animal.horsetfc.male=Жеребец
+tfc.animal.horsetfc.female=Кобыла
+tfc.animal.donkeytfc.male=Осел♂
+tfc.animal.donkeytfc.female=Осел♀
+tfc.animal.muletfc.male=Мул♂
+tfc.animal.muletfc.female=Мул♀
+tfc.animal.parrottfc.male=Попугай♂
+tfc.animal.parrottfc.female=Попугай♀
+tfc.animal.llamatfc.male=Лама♂
+tfc.animal.llamatfc.female=Ламаa♀
+tfc.animal.polarbeartfc.male=Полярный медведь♂
+tfc.animal.polarbeartfc.female=Полярный медведь♀
+tfc.animal.alpacatfc.male=Альпака♂
+tfc.animal.alpacatfc.female=Альпака♀
+tfc.animal.ducktfc.male=Селезень
+tfc.animal.ducktfc.female=Утка
+tfc.animal.goattfc.male=Козел♂
+tfc.animal.goattfc.female=Козел♀
+tfc.animal.ocelottfc.male=Оцелот♂
+tfc.animal.ocelottfc.female=Оцелот♀
+tfc.animal.cattfc.male=Кот♂
+tfc.animal.cattfc.female=Кошка♀
+tfc.animal.panthertfc.male=Пантера♂
+tfc.animal.panthertfc.female=Пантера♀
+tfc.animal.sabertoothtfc.male=Саблезуб♂
+tfc.animal.sabertoothtfc.female=Саблезуб♀
+tfc.animal.cameltfc.male=Верблюд♂
+tfc.animal.cameltfc.female=Верблюдl♀
+tfc.animal.liontfc.male=Лев
+tfc.animal.liontfc.female=Львица
+tfc.animal.hyenatfc.male=Гиена♂
+tfc.animal.hyenatfc.female=Гиена♀
+tfc.animal.direwolftfc.male=Лютоволк♂
+tfc.animal.haretfc.male=Заяц♂
+tfc.animal.boartfc.male=Кабан♂
+tfc.animal.zebutfc.male=Зебу♂
+tfc.animal.gazelletfc.male=Газель♂
+tfc.animal.wildebeesttfc.male=Гну♂
+tfc.animal.quailtfc.male=Перепел♂
+tfc.animal.grousetfc.male=Рябчик♂
+tfc.animal.mongoosetfc.male=Мангуст♂
+tfc.animal.turkeytfc.male=Индейка♂
+tfc.animal.jackaltfc.male=Шакал♂
+tfc.animal.muskoxtfc.male=Овцебык♂
+tfc.animal.yaktfc.male=Як♂
+tfc.animal.blackbeartfc.male=Черный медведь♂
+tfc.animal.cougartfc.male=Пума♂
+tfc.animal.coyotetfc.male=Койот♂
+tfc.animal.direwolftfc.female=Лютоволк♀
+tfc.animal.haretfc.female=Заяц♀
+tfc.animal.boartfc.female=Кабан♀
+tfc.animal.zebutfc.female=Зебу♀
+tfc.animal.gazelletfc.female=Газель♀
+tfc.animal.wildebeesttfc.female=Гну♀
+tfc.animal.quailtfc.female=Перепел♀
+tfc.animal.grousetfc.female=Рябчик♀
+tfc.animal.mongoosetfc.female=Мангуст♀
+tfc.animal.turkeytfc.female=Индейка♀
+tfc.animal.jackaltfc.female=Шакал♀
+tfc.animal.muskoxtfc.female=Овцебык♀
+tfc.animal.yaktfc.female=Як♀
+tfc.animal.blackbeartfc.female=Черный медведь♀
+tfc.animal.cougartfc.female=Пума♀
+tfc.animal.coyotetfc.female=Койот♀
+
+# Sound Events
+tfc.item.ceramicbreak=Керамический предмет ломается
+tfc.item.firestarter=Поджигатель шипит
+tfc.item.jug.blow=Звуки музыки!!!
+tfc.item.jug.fill=Кувшин наполняется
+tfc.item.throw=Метание копья
+tfc.animal.rooster.cry=Петух плачет
+tfc.quern.stonedrag=Жёрнов перемалывает
+tfc.bellows.blow.air=Меха пыхают
+tfc.dirt.slide=Скольжение по грязи
+tfc.rock.slide=Скольжение по камню
+tfc.anvil.metalimpact=Удары молотком по наковальне
+tfc.animal.deer.say=Олень фыркает
+tfc.animal.deer.cry=Олень плачет
+tfc.animal.deer.hurt=Олень ранен
+tfc.animal.deer.death=Олень погибает
+tfc.animal.bear.say=Медведь рычит
+tfc.animal.bear.cry=Медведь плачет
+tfc.animal.bear.cub.cry=Детеныш медведя плачет
+tfc.animal.bear.hurt=Медведь ранен
+tfc.animal.bear.death=Медведь погибает
+tfc.animal.pheasant.say=Фазан крякает
+tfc.animal.pheasant.chick.say=Детеныш фазана кряхтит
+tfc.animal.pheasant.hurt=Фазан ранен
+tfc.animal.pheasant.death=Фазан погибает
+tfc.animal.alpaca.say=Альпака кричит
+tfc.animal.alpaca.cry=Альпака скулит
+tfc.animal.alpaca.hurt=Альпака ранена
+tfc.animal.alpaca.death=Альпака погибает
+tfc.animal.alpaca.step=Шаги
+tfc.animal.duck.say=Утка крякает
+tfc.animal.duck.cry=Утка крякает
+tfc.animal.duck.hurt=Утка ранена
+tfc.animal.duck.death=Утка погибает
+tfc.animal.goat.say=Блеяние козла
+tfc.animal.goat.cry=Блеяние козла
+tfc.animal.goat.hurt=Козел ранен
+tfc.animal.goat.death=Козел погибает
+tfc.animal.camel.say=Верблюд рычит
+tfc.animal.camel.cry=Верблюд плачет
+tfc.animal.camel.hurt=Верблюд ранен
+tfc.animal.camel.death=Верблюд погибает
+tfc.animal.panther.say=Пантера рычит
+tfc.animal.panther.cry=Пантера плачет
+tfc.animal.panther.hurt=Пантера ранена
+tfc.animal.panther.death=Пантера погибает
+tfc.animal.sabertooth.say=Саблезуб рычит
+tfc.animal.sabertooth.cry=Саблезуб плачет
+tfc.animal.sabertooth.hurt=Саблезуб ранен
+tfc.animal.sabertooth.death=Саблезуб погибает
+tfc.animal.lion.say=Лев рычит
+tfc.animal.lion.cry=Лев рев
+tfc.animal.lion.hurt=Лев ранен
+tfc.animal.lion.death=Лев погибает
+tfc.animal.hyena.say=Гиена рычит
+tfc.animal.hyena.cry=Гиена плачет
+tfc.animal.hyena.hurt=Гиена ранена
+tfc.animal.hyena.death=Гиена погибает
+tfc.animal.zebu.say=Зебу рычит
+tfc.animal.zebu.cry=Зебу плачет
+tfc.animal.zebu.hurt=Зебу ранена
+tfc.animal.zebu.death=Зебу погибает
+tfc.animal.muskox.say=Овцебык рычит
+tfc.animal.muskox.cry=Овцебык плачет
+tfc.animal.muskox.hurt=Овцебык ранен
+tfc.animal.muskox.death=Овцебык погибает
+tfc.animal.turkey.say=Индейка рычит
+tfc.animal.turkey.cry=Индейка плачет
+tfc.animal.turkey.hurt=Индейка ранена
+tfc.animal.turkey.death=Индейка погибает
+tfc.animal.boar.say=Кабан рычит
+tfc.animal.boar.cry=Кабан плачет
+tfc.animal.boar.hurt=Кабан ранен
+tfc.animal.boar.death=Кабан погибает
+tfc.animal.wildebeest.say=Гну рычит
+tfc.animal.wildebeest.hurt=Гну ранен
+tfc.animal.wildebeest.death=Гну погибает
+tfc.animal.quail.say=Перепел чирикает
+tfc.animal.quail.hurt=Перепел ранен
+tfc.animal.quail.death=Перепел погибает
+tfc.animal.grouse.say=Рябчик чирикает
+tfc.animal.grouse.hurt=Рябчик ранен
+tfc.animal.grouse.death=Рябчик погибает
+tfc.animal.cougar.say=Пума рычит
+tfc.animal.cougar.cry=Пума плачет
+tfc.animal.cougar.hurt=Пума ранена
+tfc.animal.cougar.death=Пума погибает
+tfc.animal.coyote.say=Койот рычит
+tfc.animal.coyote.cry=Койот плачет
+tfc.animal.coyote.hurt=Койот ранен
+tfc.animal.coyote.death=Койот погибает
+tfc.animal.gazelle.say=Газель рычит
+tfc.animal.gazelle.hurt=Газель ранен
+tfc.animal.gazelle.death=Газель погибает
+tfc.animal.direwolf.cry=Лютоволк воет
+tfc.animal.direwolf.say=Лютоволк рявкает
+tfc.animal.direwolf.hurt=Лютоволк скулит
+tfc.animal.direwolf.death=Лютоволк погибает
+tfc.animal.yak.say=Як мычит
+tfc.animal.yak.hurt=Як вздыхает
+tfc.animal.yak.death=Як погибает
+tfc.animal.jackal.say=Шакал рычит
+tfc.animal.jackal.cry=Шакал вызжит
+tfc.animal.jackal.hurt=Шакал ранен
+tfc.animal.jackal.death=Шакал погибает
+tfc.animal.mongoose.say=Мангуст мычать
+tfc.animal.mongoose.hurt=Мангуст ранен
+tfc.animal.mongoose.death=Мангуст погибает
+tfc.animal.feline.step=Шаги животного
+tfc.animal.cricket=Сверчки
+tfc.animal.frog=Лягушки
+
+## Advancements
+
+# Main Quest
+# Stone Age
+advancements.tfc.main.root.title=TerraFirmaCraft
+advancements.tfc.main.root.description=TFC'а основная линия развития.
+advancements.tfc.main.pick_rock.title=Просто камень
+advancements.tfc.main.pick_rock.description=Поднимите камень с земли.
+advancements.tfc.main.stone_age.title=Палеолит!
+advancements.tfc.main.stone_age.description=Изготовить каменный инструмент и перейти в Каменный век
+advancements.tfc.main.get_straw.title=Хватаясь за соломинку
+advancements.tfc.main.get_straw.description=Срежьте немного травы ножом или косой, чтобы получить солому.
+advancements.tfc.main.logging.title=Древесинаааа!
+advancements.tfc.main.logging.description=Используйте топор, чтобы срубить дерево.
+advancements.tfc.main.firestarter.title=Угли
+advancements.tfc.main.firestarter.description=Создайте поджигатель из двух палок.
+advancements.tfc.main.campfire.title=Кострище 
+advancements.tfc.main.campfire.description=Бросьте бревно и три палки на землю, затем зажгите их.
+advancements.tfc.main.charcoal.title=Лучшее топливо
+advancements.tfc.main.charcoal.description=Сделайте древесный уголь, подожгите несколько штабелей бревен в яме и накрыв их.
+advancements.tfc.main.find_clay.title=Поиск глины
+advancements.tfc.main.find_clay.description=Найдите и выкопайте глину для гончарных изделий.
+advancements.tfc.main.pottery.title=Ремесло
+advancements.tfc.main.pottery.description=Слепите из глины глиняную посуду и обжигайте ее в яме для обжига.
+advancements.tfc.main.get_unknown.title=Блин!
+advancements.tfc.main.get_unknown.description=Получить неизвестный слиток из испорченного сплава.
+#advancements.tfc.main.stone_anvil.title=Время молотка
+#advancements.tfc.main.stone_anvil.description=Ударьте молотком по горному камню, чтобы сделать первую наковальню.
+advancements.tfc.main.metal_casting.title=Разливка металла
+advancements.tfc.main.metal_casting.description=Создайте обожженную форму, с помощью которой можно отлить металлический инструмент.
+# Copper and Bronze Ages
+advancements.tfc.main.copper_age.title=Медный век
+advancements.tfc.main.copper_age.description=Отлить что-либо из металла и перейти в Медный век
+advancements.tfc.main.mining.title=Пора добывать (Наконец!)
+advancements.tfc.main.mining.description=Создайте кирку.
+advancements.tfc.main.carpentry.title=Плотник
+advancements.tfc.main.carpentry.description=Создайте ножовку.
+advancements.tfc.main.make_barrel.title=Сделать бочку!
+advancements.tfc.main.make_barrel.description=Создайте бочку, используя пиломатериалы, сделанные с помощью вашей пилы.
+advancements.tfc.main.make_quern.title=Помол
+advancements.tfc.main.make_quern.description=Создайте жёрнов.
+advancements.tfc.main.get_flux.title=флюс
+advancements.tfc.main.get_flux.description=Получите немного флюса, чтобы начать сварку.
+advancements.tfc.main.metal_anvil.title=Бросить наковальню
+advancements.tfc.main.metal_anvil.description=Изготовьте медную наковальню из двойных слитков, изготовленных сваркой.
+advancements.tfc.main.metal_sheet.title=Сплющивание
+advancements.tfc.main.metal_sheet.description=Сделайте лист металла из двойного слитка.
+advancements.tfc.main.make_shield.title=В Укрытие!
+advancements.tfc.main.make_shield.description=Сделайте щит из двойного листа.
+advancements.tfc.main.scraped_hide.title=Замочите и соскоблите
+advancements.tfc.main.scraped_hide.description=Замочите необработанную шкуру в бочке с известковой водой, затем соскребите ее на бревне.
+advancements.tfc.main.make_leather.title=Натуральная кожа
+advancements.tfc.main.make_leather.description=Замочите очищенную шкуру в бочке с пресной водой, а затем в бочке с танином.
+advancements.tfc.main.make_bellows.title=Сдую тебя от сюда
+advancements.tfc.main.make_bellows.description=Используйте кожу, чтобы сделать мехи.
+advancements.tfc.main.bronze_age.title=Бронзовый век
+advancements.tfc.main.bronze_age.description=Изготовить бронзовую наковальню и перейти в Бронзовый век
+# Iron Age
+advancements.tfc.main.make_bloomery.title=Металлургический завод
+advancements.tfc.main.make_bloomery.description=Изготовить кричной горн.
+advancements.tfc.main.iron_bloom.title=Крица
+advancements.tfc.main.iron_bloom.description=Используйе кричный горн что бы получить кричное железо.
+advancements.tfc.main.iron_age.title=Железный век
+advancements.tfc.main.iron_age.description=Изготовить слиток кованого железа и перейти в Железный век.
+advancements.tfc.main.iron_armor.title=Рыцарь в блестящих доспехах
+advancements.tfc.main.iron_armor.description=Наденьте полный сет железной брони.
+advancements.tfc.main.make_blast_furnace.title=Полетели!
+advancements.tfc.main.make_blast_furnace.description=Изготовить доменную печь.
+advancements.tfc.main.make_fire_clay.title=Огнестойкий
+advancements.tfc.main.make_fire_clay.description=оздайте огнеупорную глину.
+advancements.tfc.main.make_fire_bricks.title=Делаем дымоход
+advancements.tfc.main.make_fire_bricks.description=Создайте четыре блока огнеупорного кирпича, для постройки доменной печи.
+advancements.tfc.main.make_crucible.title=Металлург!
+advancements.tfc.main.make_crucible.description=Создайте тигель из огнеупорной глины
+advancements.tfc.main.get_steel.title=Промышленно развитый
+advancements.tfc.main.get_steel.description=Получите стальной слиток.
+advancements.tfc.main.flint_and_steel.title=Зажги мой огонь
+advancements.tfc.main.flint_and_steel.description=Создайте огниво из кремния и стали.
+advancements.tfc.main.get_black_steel.title=Снова в черном!
+advancements.tfc.main.get_black_steel.description=Получите слиток черной стали.
+advancements.tfc.main.get_blue_steel.title=Синий огр
+advancements.tfc.main.get_blue_steel.description=Получите слиток синей стали.
+advancements.tfc.main.get_red_steel.title=Красный огр
+advancements.tfc.main.get_red_steel.description=Получите слиток красной стали.
+advancements.tfc.main.blue_steel_bucket.title=Супер острый соус
+advancements.tfc.main.blue_steel_bucket.description=Создайте ведро из синей стали.
+advancements.tfc.main.red_steel_bucket.title=Цунами
+advancements.tfc.main.red_steel_bucket.description=Создайте ведро из красной стали.
+advancements.tfc.main.ultimate_goal.title=И все это ради ведра?!
+advancements.tfc.main.ultimate_goal.description=Соедините красное и синее стальное ведро в обычное Ведро.
+
+# World
+#Farming and Animals
+advancements.tfc.world.root.title=Мир TerraFirmaCraft
+advancements.tfc.world.root.description=Исследуйте мир TFC'а в поисках ресурсов.
+advancements.tfc.world.gatherer.title=Собиратель
+advancements.tfc.world.gatherer.description=Получить семена из дикого урожая.
+advancements.tfc.world.farming.title=Фермер
+advancements.tfc.world.farming.description=Соберите полностью выращенный урожай.
+advancements.tfc.world.baker.title=Пекущийся хлеб
+advancements.tfc.world.baker.description=Сделайте буханку хлеба.
+advancements.tfc.world.botanist.title=Ботаник
+advancements.tfc.world.botanist.description=Соберите семена каждого урожая.
+#advancements.tfc.world.rutabaga.title=Дурацкий лук...
+#advancements.tfc.world.rutabaga.description=Найти брюкву.
+advancements.tfc.world.first_familiarity.title=Заводить друзей
+advancements.tfc.world.first_familiarity.description=Приручите животное.
+advancements.tfc.world.wolf_familiarity.title=Лучший друг человека
+advancements.tfc.world.wolf_familiarity.description=Полностью приручите волка.
+advancements.tfc.world.make_spindle.title=Прядение
+advancements.tfc.world.make_spindle.description=Сделайте веретено, чтобы превратить шерсть в пряжу.
+advancements.tfc.world.make_loom.title=Ткацкий станок
+advancements.tfc.world.make_loom.description=Сделайте ткацкий станок, чтобы превратить пряжу в ткань.
+advancements.tfc.world.make_bed.title=Спокойной ночи и отдыха
+advancements.tfc.world.make_bed.description=Создайте кровать, используя шерстяную или шелковую ткань, сделанную на ткацком станке.
+advancements.tfc.world.hunter.title=Охотник
+advancements.tfc.world.hunter.description=Убейте животное.
+advancements.tfc.world.kill_bear.title=Медведь в мечтах
+advancements.tfc.world.kill_bear.description=Убейте медведя.
+# Minerals
+advancements.tfc.world.pick_nugget.title=Странный камень
+advancements.tfc.world.pick_nugget.description=Подберите самородок с земли.
+advancements.tfc.world.make_propick.title=Поиск
+advancements.tfc.world.make_propick.description=Создайте геологический молоток.
+advancements.tfc.world.geologist.title=Геолог
+advancements.tfc.world.geologist.description=Добудьте драгоценные камни всех видов
+advancements.tfc.world.find_diamonds.title=АЛМ... а, стоп...
+advancements.tfc.world.find_diamonds.description=Найдите алмаз
+advancements.tfc.world.find_coal.title=Каменный уголь
+advancements.tfc.world.find_coal.description=Найдите битумный уголь или лигнит.
+advancements.tfc.world.find_graphite.title=Письменный камень
+advancements.tfc.world.find_graphite.description=Найдите графит.
+advancements.tfc.world.find_kaolinite.title=Розовый Единорог
+advancements.tfc.world.find_kaolinite.description=Найдите каолинит.
+#advancements.tfc.world.find_sylvite.title=Хорошо для ваших растений
+#advancements.tfc.world.find_sylvite.description=Найдите сильвит.
+advancements.tfc.world.find_iron.title=Довольно иронично
+advancements.tfc.world.find_iron.description=Найдите гематит, лимонит или магнетитовую руду.
+advancements.tfc.world.find_gold.title=Золотая лихорадка
+advancements.tfc.world.find_gold.description=Найдите самородное золото.
+advancements.tfc.world.find_silver.title=Серебряная пуля
+advancements.tfc.world.find_silver.description=Найдите самородное серебро.
+advancements.tfc.world.find_nickel.title=Монетки и никель
+advancements.tfc.world.find_nickel.description=Найдите гарниерит.
+
+# Waila
+waila.tfc.ore_drop=Содержит: %s
+waila.tfc.flux_stone=Флюс
+waila.tfc.temperature=Температура воздуха: %dºC
+waila.tfc.rainfall=Осадки: %d
+waila.tfc.metal.output=Содержит: %d единицы %s
+
+# Patchouli
+tfc.patchouli.landing_text=Руководство для TFC-TNG, полный мод преобразования для 1.12.2
+tfc.patchouli.recipe_removed=Рецепт удален
+
+## Devices
+waila.tfc.devices.minutes_remaining=Осталось %d минут(ы)
+waila.tfc.devices.hours_remaining=Осталось %d час(ов)
+waila.tfc.devices.ticks_remaining=Осталось %d тиков
+waila.tfc.pitkiln.unlit=Не горит
+waila.tfc.pitkiln.straw=Нужно %d солома/ы
+waila.tfc.pitkiln.logs=Нужно %d бревна/ен
+waila.tfc.barrel.recipe=Изготовление: %s
+waila.tfc.barrel.no_recipe=Нет рецепта
+waila.tfc.barrel.contents=Содержит: %dmB %s
+waila.tfc.barrel.sealed=Запечатанный: %s
+waila.tfc.bloomery.output=Изготовление: %d единицы %s
+waila.tfc.bloomery.ores=Руды: %d/%d
+waila.tfc.bloomery.fuel=Топливо: %d/%d
+waila.tfc.blast_furnace.not_formed=Не сформирован
+
+## Agriculture
+waila.tfc.agriculture.harvesting_months=Сезоны сбора урожая:
+waila.tfc.crop.mature=Зрелое
+waila.tfc.crop.dead_crop=Погибшее растение
+waila.tfc.crop.wild=Дикий урожай
+waila.tfc.crop.growth=Рост: %s
+waila.tfc.crop.growing=Растущий
+waila.tfc.crop.not_growing=Не растет
+
+
+## Animal stuff
+waila.tfc.animal.has_milk=Можно доить
+waila.tfc.animal.can_mate=Может спариваться
+waila.tfc.animal.has_eggs=Может отложить яйцо
+waila.tfc.animal.childhood_end=Вырастет: %s
+waila.tfc.animal.familiarized=Прирученное животное
+waila.tfc.animal.not_familiarized=Не прирученное животное
+waila.tfc.animal.old=Старое животное
+waila.tfc.animal.pregnant=Беременная
+waila.tfc.animal.can_shear=Можно стричь
+waila.tfc.animal.pregnant_end=Родит через %s дней
