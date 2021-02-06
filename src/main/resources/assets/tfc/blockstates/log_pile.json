@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x": {
+      "model": "tfc:block/log_pile",
+      "y": 90,
+      "x": 90
+    },
+    "axis=z": {
+      "model": "tfc:block/log_pile",
+      "x": 90
+    }
+  }
+}

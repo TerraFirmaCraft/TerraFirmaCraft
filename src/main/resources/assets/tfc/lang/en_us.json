@@ -2121,6 +2121,8 @@
   "block.tfc.torch": "Torch",
   "block.tfc.dead_torch": "Burnt Out Torch",
   "block.tfc.charcoal_pile": "Charcoal Pile",
+  "block.tfc.log_pile": "Log Pile",
+  "block.tfc.burning_log_pile": "Burning Log Pile",
   "block.tfc.thatch_bed": "Thatch Bed",
   "block.tfc.firepit": "Firepit",
   "block.tfc.grill": "Grill",

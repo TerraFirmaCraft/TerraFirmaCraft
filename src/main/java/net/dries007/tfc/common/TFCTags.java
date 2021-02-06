@@ -70,6 +70,7 @@ public class TFCTags
         public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_DURABILITY = create("starts_fires_with_durability");
         public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_ITEMS = create("starts_fires_with_items");
         public static final ITag.INamedTag<Item> EXTINGUISHER = create("extinguisher");
+        public static final ITag.INamedTag<Item> LOG_PILE_LOGS = create("log_pile_logs");
 
         private static ITag.INamedTag<Item> create(String id)
         {
