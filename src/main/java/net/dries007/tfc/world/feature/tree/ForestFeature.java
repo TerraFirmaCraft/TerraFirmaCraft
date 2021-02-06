@@ -61,6 +61,11 @@ public class ForestFeature extends Feature<ForestConfig>
             }
             return true;
         }
+        else if (forestType == ForestType.EDGE)
+        {
+            treeCount = 2;
+            groundCount = 15;
+        }
         else if (forestType == ForestType.NORMAL)
         {
             treeCount = 5;

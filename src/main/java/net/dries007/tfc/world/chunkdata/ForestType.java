@@ -16,6 +16,7 @@ public enum ForestType implements IStringSerializable
 {
     NONE,
     SPARSE,
+    EDGE,
     NORMAL,
     OLD_GROWTH;
 
