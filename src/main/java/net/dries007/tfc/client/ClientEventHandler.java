@@ -42,6 +42,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.FirepitContainer;
+import net.dries007.tfc.common.container.LogPileContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -72,6 +73,7 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
         ScreenManager.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
         ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
+        ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
 
         // Render Types
         final RenderType cutout = RenderType.cutout();

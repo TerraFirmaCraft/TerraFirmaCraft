@@ -84,7 +84,10 @@ def generate(rm: ResourceManager):
     for wood, wood_data in WOODS.items():
         rm.item_tag('firepit_logs', 'tfc:wood/log/' + wood)
         rm.item_tag('firepit_logs', 'tfc:wood/wood/' + wood)
+        rm.item_tag('log_pile_logs', 'tfc:wood/log/' + wood)
+        rm.item_tag('log_pile_logs', 'tfc:wood/wood/' + wood)
         rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.amount, wood_data.temp))
+    rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
 
     rm.data(('tfc', 'fuels', 'coal'), fuel('minecraft:coal', 2200, 1415, forge=True))  # vanilla coal for compat
     rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel('tfc:ore/bituminous_coal', 2200, 1415, forge=True))

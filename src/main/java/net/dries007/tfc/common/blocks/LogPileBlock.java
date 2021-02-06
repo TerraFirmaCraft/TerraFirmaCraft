@@ -1,0 +1,109 @@
+package net.dries007.tfc.common.blocks;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.tileentity.LogPileTileEntity;
+import net.dries007.tfc.util.Helpers;
+
+public class LogPileBlock extends Block implements IForgeBlockProperties
+{
+    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+    private final ForgeBlockProperties properties;
+
+    public LogPileBlock(ForgeBlockProperties properties)
+    {
+        super(properties.properties());
+        this.properties = properties;
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
+    }
+
+    @Override
+    public ForgeBlockProperties getForgeProperties()
+    {
+        return properties;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    {
+        if (world.isClientSide()) return ActionResultType.SUCCESS;
+        LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
+        ItemStack stack = player.getItemInHand(hand);
+        if (te != null)
+        {
+            if (stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS)) // logic duplicated in InteractionManage
+            {
+                if (!player.isShiftKeyDown())
+                {
+                    if (te.insertLog(stack.copy()))
+                    {
+                        if (!world.isClientSide())
+                        {
+                            Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
+                            stack.shrink(1);
+                        }
+                        return ActionResultType.sidedSuccess(world.isClientSide());
+                    }
+                }
+            }
+
+            if (!player.isShiftKeyDown() && player instanceof ServerPlayerEntity)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                return ActionResultType.SUCCESS;
+            }
+        }
+
+        return ActionResultType.FAIL;
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+        LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
+        return te != null ? te.getLog().copy() : ItemStack.EMPTY;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (te != null)
+            te.onBreak();
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(AXIS);
+    }
+}

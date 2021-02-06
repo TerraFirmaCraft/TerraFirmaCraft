@@ -48,6 +48,8 @@ public class ServerConfig extends CachingConfig
     public final Cache.Int mossyRockSpreadRate;
     // Blocks - Torch
     public final Cache.Int torchTime;
+    // Blocks - Charcoal Pit
+    public final Cache.Int charcoalTicks;
     // Mechanics - Heat
     public final Cache.Double itemHeatingModifier;
     public final Cache.Int rainTicks;
@@ -114,6 +116,10 @@ public class ServerConfig extends CachingConfig
         innerBuilder.pop().push("torch");
 
         torchTime = wrap(builder.apply("torchTime").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTime", 7200, -1, Integer.MAX_VALUE));
+
+        innerBuilder.pop().push("charcoal");
+
+        charcoalTicks = wrap(builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE));
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

@@ -40,22 +40,30 @@ public class CharcoalPileBlock extends SnowBlock
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!worldIn.isClientSide() && facing == Direction.DOWN && facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
+        if (!worldIn.isClientSide() && facing == Direction.DOWN)
         {
-            int layersAt = stateIn.getValue(LAYERS);
-            int layersUnder = facingState.getValue(LAYERS);
-            if (layersUnder < 8)
+            if (facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
             {
-                if (layersUnder + layersAt <= 8)
+                int layersAt = stateIn.getValue(LAYERS);
+                int layersUnder = facingState.getValue(LAYERS);
+                if (layersUnder < 8)
                 {
-                    worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
-                    return Blocks.AIR.defaultBlockState();
+                    if (layersUnder + layersAt <= 8)
+                    {
+                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
+                        return Blocks.AIR.defaultBlockState();
+                    }
+                    else
+                    {
+                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
+                        return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
+                    }
                 }
-                else
-                {
-                    worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
-                    return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
-                }
+            }
+            if (!canSurvive(stateIn, worldIn, currentPos))
+            {
+                worldIn.destroyBlock(currentPos, true);
+                return stateIn.setValue(LAYERS, stateIn.getValue(LAYERS) - 1);
             }
         }
         return stateIn;

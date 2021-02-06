@@ -44,10 +44,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
-import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
+import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -437,6 +434,11 @@ public final class ForgeEventHandler
             {
                 Direction direction = state.getValue(DeadWallTorchBlock.FACING);
                 world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+                event.setCanceled(true);
+            }
+            else if (state.is(TFCBlocks.LOG_PILE.get()))
+            {
+                BurningLogPileBlock.tryLightLogPile(world, pos);
                 event.setCanceled(true);
             }
 

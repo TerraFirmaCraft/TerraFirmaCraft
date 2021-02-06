@@ -35,6 +35,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 import net.dries007.tfc.common.tileentity.GrillTileEntity;
+import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -137,7 +138,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
     public void handleRain(World world, BlockPos pos)
     {
         FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (te != null && world.isRainingAt(pos))
+        if (te != null)
             te.onRainDrop();
     }
 
@@ -154,6 +155,15 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
         super.stepOn(world, pos, entity);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (te != null)
+            te.onBreak();
     }
 
     public static boolean canSurvive(IWorldReader world, BlockPos pos)

@@ -16,9 +16,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dries007.tfc.common.tileentity.TFCTileEntity;
 
-public abstract class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
+public class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {
     protected final ResourceLocation texture;
+    protected static final ResourceLocation SMALL_INV = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
 
     public TFCContainerScreen(C container, PlayerInventory playerInventory, ITextComponent name, ResourceLocation texture)
     {

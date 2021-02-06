@@ -19,6 +19,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.container.ItemStackHandlerCallback;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class InventoryTileEntity extends TFCTileEntity implements INamedContainerProvider, ISlotCallback, IClearable
 {
@@ -99,6 +100,15 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
         for (int i = 0; i < inventory.getSlots(); i++)
         {
             inventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
+    }
+
+    public void onBreak()
+    {
+        if (level == null) return;
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i));
         }
     }
 

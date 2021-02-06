@@ -34,10 +34,7 @@ import net.minecraft.item.*;
 import net.minecraft.state.properties.BedPart;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
@@ -46,6 +43,7 @@ import net.dries007.tfc.TFCEventFactory;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
@@ -192,6 +190,70 @@ public final class InteractionManager
             }
         });
 
+        // Log pile creation and insertion. Don't touch unless broken
+        register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
+            final PlayerEntity player = context.getPlayer();
+            if (player != null)
+            {
+                final World world = context.getLevel();
+                final Direction direction = context.getClickedFace();
+                final BlockPos posClicked = context.getClickedPos();
+                final BlockPos relativePos = posClicked.relative(direction);
+
+                if (!player.isShiftKeyDown()) return ActionResultType.PASS;
+
+                // First we allow bulk insertion via shift click.
+                if (world.getBlockState(posClicked).is(TFCBlocks.LOG_PILE.get()))
+                {
+                    LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
+                    if (te != null && !te.isFull())
+                    {
+                        int inserted = te.insertLogs(stack.copy());
+                        if (inserted > 0)
+                        {
+                            if (!world.isClientSide())
+                            {
+                                Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                stack.shrink(inserted);
+                            }
+                        }
+                        return ActionResultType.PASS;
+                    }
+                }
+
+                // Trying to place a log pile.
+                if (world.isEmptyBlock(relativePos))
+                {
+                    if (world.isClientSide()) return ActionResultType.SUCCESS;
+                    final BlockPos belowPos = relativePos.below();
+                    final BlockState belowState = world.getBlockState(belowPos);
+                    if (belowState.isFaceSturdy(world, belowPos, Direction.UP))
+                    {
+                        if (belowState.is(TFCBlocks.LOG_PILE.get()))
+                        {
+                            LogPileTileEntity te = Helpers.getTileEntity(world, belowPos, LogPileTileEntity.class);
+                            if (te == null || !te.isFull())
+                            {
+                                return ActionResultType.FAIL; // can't place on a full log pile
+                            }
+                        }
+                        world.setBlockAndUpdate(relativePos, TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(LogPileBlock.AXIS, context.getHorizontalDirection().getAxis()));
+                        Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                        LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
+                        if (te != null)
+                        {
+                            if (te.insertLog(stack.copy()))
+                            {
+                                stack.shrink(1); // insert one log so that the log pile doesn't disappear
+                            }
+                        }
+                        return ActionResultType.CONSUME;
+                    }
+                }
+            }
+           return ActionResultType.PASS;
+        });
+
         // BlockItem mechanics for vanilla items that match groundcover types
         for (GroundcoverBlockType type : GroundcoverBlockType.values())
         {
@@ -203,7 +265,6 @@ public final class InteractionManager
 
         // todo: hide tag right click -> generic scraping recipe
         // todo: knapping tags
-        // todo: log piles
     }
 
     public static void register(BlockItemPlacement wrapper)
