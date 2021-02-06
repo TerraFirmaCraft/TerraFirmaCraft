@@ -23,13 +23,13 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import net.dries007.tfc.world.layer.traits.FastArea;
 import net.dries007.tfc.world.layer.traits.FastAreaContext;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
 import net.dries007.tfc.world.layer.traits.TypedAreaContext;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
@@ -56,7 +56,16 @@ public class TFCLayerUtil
     public static final int CONTINENTAL_SHELF = 12;
 
     /**
-     * These are the int IDs that are used for layer generation
+     * These are the int IDs that are used for forest layer generation
+     */
+    public static final int FOREST_NONE = ForestType.NONE.ordinal();
+    public static final int FOREST_NORMAL = ForestType.NORMAL.ordinal();
+    public static final int FOREST_SPARSE = ForestType.SPARSE.ordinal();
+    public static final int FOREST_EDGE = ForestType.EDGE.ordinal();
+    public static final int FOREST_OLD = ForestType.OLD_GROWTH.ordinal();
+
+    /**
+     * These are the int IDs that are used for biome layer generation
      * They are mapped to {@link BiomeVariants} through the internal registry
      */
     public static final int OCEAN;
@@ -268,6 +277,35 @@ public class TFCLayerUtil
         layerArtist.draw("biomes", 17, mainLayer);
         mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 18, mainLayer);
+
+        return mainLayer;
+    }
+
+    public static IAreaFactory<FastArea> createOverworldForestLayer(long seed, TFCBiomeProvider.LayerSettings settings, IArtist<IAreaFactory<? extends IArea>> artist)
+    {
+        final Random random = new Random(seed);
+        final Supplier<FastAreaContext> layerContext = () -> new FastAreaContext(seed, random.nextLong());
+
+        IAreaFactory<FastArea> mainLayer;
+
+        mainLayer = ForestInitLayer.INSTANCE.run(layerContext.get());
+        artist.draw("forest", 1, mainLayer);
+        mainLayer = ForestRandomizeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 2, mainLayer);
+        mainLayer = ZoomLayer.FUZZY.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 3, mainLayer);
+        mainLayer = ForestRandomizeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 4, mainLayer);
+        mainLayer = ZoomLayer.FUZZY.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 5, mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 6, mainLayer);
+        mainLayer = ForestEdgeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 7, mainLayer);
+        mainLayer = ForestRandomizeSmallLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 8, mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        artist.draw("forest", 9, mainLayer);
 
         return mainLayer;
     }
