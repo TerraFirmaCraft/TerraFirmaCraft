@@ -3,12 +3,17 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSoundTypes;
 
 public class CharcoalPileBlock extends SnowBlock
@@ -29,6 +34,12 @@ public class CharcoalPileBlock extends SnowBlock
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
+
+        if (player.isCreative())
+        {
+            return world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        }
+
         int prevLayers = state.getValue(LAYERS);
         if (prevLayers == 1)
         {
@@ -60,13 +71,8 @@ public class CharcoalPileBlock extends SnowBlock
                     }
                 }
             }
-            if (!canSurvive(stateIn, worldIn, currentPos))
-            {
-                worldIn.destroyBlock(currentPos, true);
-                return stateIn.setValue(LAYERS, stateIn.getValue(LAYERS) - 1);
-            }
         }
-        return stateIn;
+        return canSurvive(stateIn, worldIn, currentPos) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -74,5 +80,11 @@ public class CharcoalPileBlock extends SnowBlock
     public SoundType getSoundType(BlockState state)
     {
         return TFCSoundTypes.CHARCOAL;
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+        return new ItemStack(Items.CHARCOAL);
     }
 }

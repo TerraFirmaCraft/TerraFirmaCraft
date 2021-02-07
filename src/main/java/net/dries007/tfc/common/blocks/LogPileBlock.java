@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -59,16 +61,17 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
         ItemStack stack = player.getItemInHand(hand);
         if (te != null)
         {
-            if (stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS)) // logic duplicated in InteractionManage
+            if (stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS))
             {
-                if (!player.isShiftKeyDown())
+                if (!player.isShiftKeyDown()) // shift interaction handled in InteractionManager
                 {
                     if (te.insertLog(stack.copy()))
                     {
                         if (!world.isClientSide())
                         {
                             Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
-                            stack.shrink(1);
+                            if (!player.isCreative())
+                                stack.shrink(1);
                         }
                         return ActionResultType.sidedSuccess(world.isClientSide());
                     }
@@ -83,6 +86,20 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
         }
 
         return ActionResultType.FAIL;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (!worldIn.isClientSide() && worldIn instanceof World)
+        {
+            if (facingState.is(BlockTags.FIRE))
+            {
+                BurningLogPileBlock.tryLightLogPile((World) worldIn, currentPos);
+            }
+        }
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override

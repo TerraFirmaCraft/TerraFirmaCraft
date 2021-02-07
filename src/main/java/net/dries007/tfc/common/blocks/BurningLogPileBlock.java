@@ -5,14 +5,20 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.tileentity.BurningLogPileTileEntity;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.Helpers;
@@ -21,7 +27,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
 {
     private static boolean isValidCoverBlock(BlockState offsetState, World world, BlockPos pos, Direction side)
     {
-        if (offsetState.is(TFCBlocks.LOG_PILE.get()) || offsetState.is(TFCBlocks.CHARCOAL_PILE.get()) || offsetState.is(TFCBlocks.BURNING_LOG_PILE.get()))
+        if (offsetState.is(TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
         {
             return true;
         }
@@ -69,12 +75,14 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         {
             int logs = pile.countLogs();
             pile.clearContent(); // avoid dumping when onRemove is called
+            pile.setRemoved();
             world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
+            Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);
+
             BurningLogPileTileEntity newPile = Helpers.getTileEntity(world, pos, BurningLogPileTileEntity.class);
             if (newPile != null)
             {
                 newPile.light(logs);
-                world.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, SoundEvents.BLAZE_SHOOT, SoundCategory.BLOCKS, 1.0f, 0.8f, false);
                 tryLightNearby(world, pos);
             }
         }
@@ -96,8 +104,14 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
             }
             else
             {
-                world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                world.setBlockAndUpdate(offsetPos, Blocks.FIRE.defaultBlockState());
             }
         }
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+        return new ItemStack(Items.CHARCOAL);
     }
 }

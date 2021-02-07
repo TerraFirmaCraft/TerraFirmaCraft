@@ -222,7 +222,7 @@ public final class InteractionManager
                 }
 
                 // Trying to place a log pile.
-                if (world.isEmptyBlock(relativePos))
+                if (world.isEmptyBlock(relativePos) && !player.blockPosition().equals(relativePos))
                 {
                     if (world.isClientSide()) return ActionResultType.SUCCESS;
                     final BlockPos belowPos = relativePos.below();

@@ -17,7 +17,7 @@ public class TFCEventFactory
      * This starts a fire on the passed in face if the event is not intercepted. See {@link StartFireEvent} for usage considerations.
      * @return Whether a fire block was placed or not
      */
-    public static boolean startFire(World world, BlockPos pos, BlockState state, Direction direction, @Nullable PlayerEntity player, ItemStack stack)
+    public static boolean startFire(World world, BlockPos pos, BlockState state, Direction direction, @Nullable PlayerEntity player, @Nullable ItemStack stack)
     {
         boolean isExecuted = !MinecraftForge.EVENT_BUS.post(new StartFireEvent(world, pos, state, direction, player, stack));
         pos = pos.relative(direction);

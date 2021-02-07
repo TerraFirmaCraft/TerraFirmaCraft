@@ -36,6 +36,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -405,6 +406,16 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
+    public static void onEntityItemPickup(EntityItemPickupEvent event)
+    {
+        ItemStack stack = event.getItem().getItem();
+        if (stack.getItem() == TFCItems.TORCH.get())
+        {
+            stack.removeTagKey("burnTicks");
+        }
+    }
+
+    @SubscribeEvent
     public static void onFireStart(StartFireEvent event)
     {
         World world = event.getLevel();
@@ -442,10 +453,10 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
 
-            Item item = event.getItemStack().getItem();
-            if (item == TFCItems.TORCH.get())
+            ItemStack item = event.getItemStack();
+            if (item != null && item.getItem() == TFCItems.TORCH.get())
             {
-                event.setCanceled(true); // just to make sure!
+                event.setCanceled(true); // so torches don't start fires
             }
         }
     }
