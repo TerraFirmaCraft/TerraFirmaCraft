@@ -170,13 +170,15 @@ public final class ClientEventHandler
     @SubscribeEvent
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
-        LOGGER.debug("Registering Color Handler Blocks");
+        LOGGER.debug("Registering Color Handler Items");
         final ItemColors registry = event.getItemColors();
 
         Item[] leafyPlants = Stream.of(Plant.values()).filter(Plant::isLeafColored).map(p -> TFCBlocks.PLANTS.get(p).get().asItem()).toArray(Item[]::new);
         Item[] grassyPlants = Stream.of(Plant.values()).filter(Plant::needsItemColor).map(p -> TFCBlocks.PLANTS.get(p).get().asItem()).toArray(Item[]::new);
         registry.register((itemStack, tintIndex) -> TFCColors.getGrassColor(new BlockPos(0, 96, 0), tintIndex), grassyPlants);
         registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), leafyPlants);
+
+        TFCBlocks.WOODS.forEach((key, value) -> registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
     }
 
     @SubscribeEvent

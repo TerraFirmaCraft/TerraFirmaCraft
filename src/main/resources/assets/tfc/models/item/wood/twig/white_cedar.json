@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/wood/twig/white_cedar"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/wood/twig/white_cedar"
+  }
 }

@@ -469,6 +469,7 @@ def generate(rm: ResourceManager):
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
+    rm.item_model('giant_kelp_flower', 'tfc:item/giant_kelp_flower')
 
     # Wood Blocks
     for wood in WOODS.keys():
@@ -502,14 +503,15 @@ def generate(rm: ResourceManager):
                 'facing=south': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 180},
                 'facing=west': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 270}
             })
-            block.with_item_model()
             block.with_lang(lang('%s %s', wood, variant))
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
                 block.with_block_loot('minecraft:stick')
+                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood)
             elif variant == 'fallen_leaves':
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
+                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/groundcover/fallen_leaves')
                 block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
 
             block.with_tag('can_be_snow_piled')
