@@ -28,7 +28,7 @@ public abstract class MinecraftMixin extends RecursiveEventLoop<Runnable>
      *
      * Fixed by https://github.com/MinecraftForge/MinecraftForge/pull/7275
      */
-    @ModifyVariable(method = "loadWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft$WorldSelectionType;NONE:Lnet/minecraft/client/Minecraft$WorldSelectionType;", ordinal = 0), ordinal = 2, index = 11, name = "flag1")
+    @ModifyVariable(method = "loadWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft$WorldSelectionType;NONE:Lnet/minecraft/client/Minecraft$WorldSelectionType;", ordinal = 0), ordinal = 3, index = 13, name = "flag1")
     private boolean modify$doLoadLevel$flag1(boolean flag1)
     {
         if (TFCConfig.CLIENT.ignoreExperimentalWorldGenWarning.get())

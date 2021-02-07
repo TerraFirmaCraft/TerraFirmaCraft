@@ -412,7 +412,7 @@ DEFAULT_LANG = {
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
-    **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'none')),
+    **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
     **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     'tfc.enum.platetectonicsclassification.oceanic': 'Oceanic Plate',
     'tfc.enum.platetectonicsclassification.continental_low': 'Low Altitude Continental',

@@ -17,6 +17,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
@@ -34,11 +35,11 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
 public class ChunkDataGenerator implements IChunkDataGenerator
 {
     private final LayerFactory<Rock> bottomRockLayer, middleRockLayer, topRockLayer;
+    private final LayerFactory<ForestType> forestTypeLayer;
 
     private final INoise2D temperatureNoise;
     private final INoise2D rainfallNoise;
     private final INoise2D layerHeightNoise;
-    private final INoise2D forestBaseNoise;
     private final INoise2D forestWeirdnessNoise;
     private final INoise2D forestDensityNoise;
 
@@ -71,10 +72,11 @@ public class ChunkDataGenerator implements IChunkDataGenerator
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
-        forestBaseNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
+        forestTypeLayer = LayerFactory.forest(TFCLayerUtil.createOverworldForestLayer(seedGenerator.nextLong(), layerSettings, IArtist.nope()));
         forestWeirdnessNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
         forestDensityNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
+        // Plate Tectonics
         plateTectonicsInfo = LayerFactory.plateTectonics(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed, layerSettings));
     }
 
@@ -113,18 +115,6 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     public INoise2D getRainfallNoise()
     {
         return rainfallNoise;
-    }
-
-    @VisibleForTesting
-    public INoise2D getForestDensityNoise()
-    {
-        return forestDensityNoise;
-    }
-
-    @VisibleForTesting
-    public INoise2D getForestWeirdnessNoise()
-    {
-        return forestWeirdnessNoise;
     }
 
     private void generatePlateTectonics(ChunkData data)
@@ -173,24 +163,9 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
     private void generateFlora(ChunkData data, int chunkX, int chunkZ)
     {
-        // Tree generation layers
-        float forestBase = forestBaseNoise.noise(chunkX + 8, chunkZ + 8);
-        ForestType forestType = ForestType.NONE;
-        if (forestBase > 0.4f)
-        {
-            forestType = ForestType.OLD_GROWTH;
-        }
-        else if (forestBase > 0.18f)
-        {
-            forestType = ForestType.NORMAL;
-        }
-        else if (forestBase > 0.06f)
-        {
-            forestType = ForestType.SPARSE;
-        }
-
-        float forestWeirdness = forestWeirdnessNoise.noise(chunkX + 8, chunkZ + 8);
-        float forestDensity = forestDensityNoise.noise(chunkX + 8, chunkZ + 8);
+        final ForestType forestType = forestTypeLayer.get(chunkX >> 4, chunkZ >> 4); // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
+        final float forestWeirdness = forestWeirdnessNoise.noise(chunkX + 8, chunkZ + 8);
+        final float forestDensity = forestDensityNoise.noise(chunkX + 8, chunkZ + 8);
 
         data.setFloraData(forestType, forestWeirdness, forestDensity);
     }

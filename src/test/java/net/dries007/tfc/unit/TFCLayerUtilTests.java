@@ -44,6 +44,7 @@ public class TFCLayerUtilTests
     static final Artist.Raw RAW = Artist.raw().size(1000);
 
     @Test
+    @Disabled
     public void testCreateOverworldBiomeLayer()
     {
         final long seed = System.currentTimeMillis();
@@ -102,6 +103,27 @@ public class TFCLayerUtilTests
         };
 
         TFCLayerUtil.createOverworldBiomeLayer(seed, settings, plateArtist, layerArtist);
+    }
+
+    @Test
+    public void testOverworldForestLayer()
+    {
+        final long seed = System.currentTimeMillis();
+        final TFCBiomeProvider.LayerSettings settings = new TFCBiomeProvider.LayerSettings();
+
+        IArtist<IAreaFactory<? extends IArea>> artist = (name, index, instance) -> {
+            int zoom;
+            if (index <= 2) zoom = 1;
+            else if (index <= 4) zoom = 2;
+            else if (index == 5) zoom = 3;
+            else if (index <= 8) zoom = 4;
+            else zoom = 5;
+
+            AREA.color(this::forestColor).centerSized(4 * (1 << zoom));
+            AREA.draw(name + '_' + index, instance);
+        };
+
+        TFCLayerUtil.createOverworldForestLayer(seed, settings, artist);
     }
 
     @Test
@@ -207,6 +229,16 @@ public class TFCLayerUtilTests
     {
         if (id == LAKE_MARKER) return new Color(20, 140, 255);
         if (id == INLAND_MARKER) return new Color(100, 100, 100);
+        return Color.BLACK;
+    }
+
+    private Color forestColor(int id)
+    {
+        if (id == FOREST_NONE) return new Color(140, 140, 140);
+        if (id == FOREST_NORMAL) return new Color(50, 200, 50);
+        if (id == FOREST_SPARSE) return new Color(100, 180, 100);
+        if (id == FOREST_EDGE) return new Color(180, 140, 40);
+        if (id == FOREST_OLD) return new Color(0, 80, 0);
         return Color.BLACK;
     }
 }
