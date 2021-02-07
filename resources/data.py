@@ -86,6 +86,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('firepit_logs', 'tfc:wood/wood/' + wood)
         rm.item_tag('log_pile_logs', 'tfc:wood/log/' + wood)
         rm.item_tag('log_pile_logs', 'tfc:wood/wood/' + wood)
+        rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.amount, wood_data.temp))
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
 
@@ -113,6 +114,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
+    rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch')  # todo: add pit kiln to this
+    rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

@@ -81,7 +81,8 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(AbstractBlock.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
-    public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW).harvestTool(ToolType.SHOVEL).harvestLevel(0)).tileEntity(SnowPileTileEntity::new)), EARTH);    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(SoundType.GRASS)).flammable(50, 100)), DECORATIONS);
+    public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW).harvestTool(ToolType.SHOVEL).harvestLevel(0)).tileEntity(SnowPileTileEntity::new)), EARTH);
+    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(SoundType.GRASS)).flammable(50, 100)), DECORATIONS);
     public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new ThinSpikeBlock(Properties.of(Material.ICE).noDrops().strength(0.4f).sound(SoundType.GLASS).noOcclusion()));
     public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of(Material.GLASS).noDrops().strength(0.2f).sound(SoundType.BONE_BLOCK)));
 

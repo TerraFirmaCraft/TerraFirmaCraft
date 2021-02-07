@@ -44,6 +44,8 @@ public class TFCTags
 
         public static final ITag.INamedTag<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
         public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
+        public static final ITag.INamedTag<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
+        public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
 
         private static ITag.INamedTag<Block> create(String id)
         {
