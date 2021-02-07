@@ -93,6 +93,7 @@
   "tfc.enum.foresttype.sparse": "Sparse",
   "tfc.enum.foresttype.old_growth": "Old Growth",
   "tfc.enum.foresttype.normal": "Normal",
+  "tfc.enum.foresttype.edge": "Edge",
   "tfc.enum.foresttype.none": "None",
   "tfc.enum.koppenclimateclassification.arctic": "Arctic",
   "tfc.enum.koppenclimateclassification.tundra": "Tundra",

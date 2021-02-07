@@ -32,9 +32,9 @@ public class TFCEntities
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder, boolean serialize)
     {
         return ENTITIES.register(name, () -> {
-            final String id = MOD_ID + ":" + name;
-
             // This is a hack to avoid the data fixer lookup and error message when it can't find one
+            // This could be resolved by MinecraftForge#7636 which would put it behind a config option - hopefully, defaulting to true.
+            final String id = MOD_ID + ":" + name;
             final EntityType<E> type = builder.noSave().build(id);
             ((EntityTypeAccessor) type).accessor$setSerialize(serialize);
             return type;

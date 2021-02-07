@@ -28,6 +28,7 @@ public interface Cache
             this.supplier = supplier;
         }
 
+        @Override
         public void reload()
         {
             value = supplier.getAsBoolean();
@@ -49,6 +50,7 @@ public interface Cache
             this.supplier = supplier;
         }
 
+        @Override
         public void reload()
         {
             value = supplier.getAsInt();
@@ -70,6 +72,7 @@ public interface Cache
             this.supplier = supplier;
         }
 
+        @Override
         public void reload()
         {
             value = supplier.getAsDouble();
@@ -91,6 +94,7 @@ public interface Cache
             this.supplier = supplier;
         }
 
+        @Override
         public void reload()
         {
             value = supplier.get();

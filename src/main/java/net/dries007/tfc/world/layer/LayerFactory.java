@@ -23,6 +23,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 /**
@@ -70,6 +71,11 @@ public class LayerFactory<T>
     public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<? extends IArea> factory)
     {
         return new LayerFactory<>(factory, PlateTectonicsClassification::valueOf);
+    }
+
+    public static LayerFactory<ForestType> forest(IAreaFactory<? extends IArea> factory)
+    {
+        return new LayerFactory<>(factory, ForestType::valueOf);
     }
 
     /**
