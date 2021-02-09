@@ -82,13 +82,15 @@ def generate(rm: ResourceManager):
     rm.block_tag('forge:sand', '#minecraft:sand')
 
     for wood, wood_data in WOODS.items():
-        rm.item_tag('firepit_logs', 'tfc:wood/log/' + wood)
-        rm.item_tag('firepit_logs', 'tfc:wood/wood/' + wood)
-        rm.item_tag('log_pile_logs', 'tfc:wood/log/' + wood)
-        rm.item_tag('log_pile_logs', 'tfc:wood/wood/' + wood)
+        rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
+        rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.amount, wood_data.temp))
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
+    rm.item_tag('pit_kiln_straw', 'tfc:straw')
+    rm.item_tag('firepit_logs', '#minecraft:logs')
+    rm.item_tag('log_pile_logs', '#minecraft:logs')
+    rm.item_tag('pit_kiln_logs', '#minecraft:logs')
 
     rm.data(('tfc', 'fuels', 'coal'), fuel('minecraft:coal', 2200, 1415, forge=True))  # vanilla coal for compat
     rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel('tfc:ore/bituminous_coal', 2200, 1415, forge=True))
@@ -114,7 +116,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
-    rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch')  # todo: add pit kiln to this
+    rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch', 'tfc:pit_kiln')
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
 
     # Thatch Bed

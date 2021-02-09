@@ -1,0 +1,56 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "stage=0": {
+      "model": "tfc:block/pitkiln/pitkiln_0"
+    },
+    "stage=1": {
+      "model": "tfc:block/pitkiln/pitkiln_1"
+    },
+    "stage=2": {
+      "model": "tfc:block/pitkiln/pitkiln_2"
+    },
+    "stage=3": {
+      "model": "tfc:block/pitkiln/pitkiln_3"
+    },
+    "stage=4": {
+      "model": "tfc:block/pitkiln/pitkiln_4"
+    },
+    "stage=5": {
+      "model": "tfc:block/pitkiln/pitkiln_5"
+    },
+    "stage=6": {
+      "model": "tfc:block/pitkiln/pitkiln_6"
+    },
+    "stage=7": {
+      "model": "tfc:block/pitkiln/pitkiln_7"
+    },
+    "stage=8": {
+      "model": "tfc:block/pitkiln/pitkiln_8"
+    },
+    "stage=9": {
+      "model": "tfc:block/pitkiln/pitkiln_9"
+    },
+    "stage=10": {
+      "model": "tfc:block/pitkiln/pitkiln_10"
+    },
+    "stage=11": {
+      "model": "tfc:block/pitkiln/pitkiln_11"
+    },
+    "stage=12": {
+      "model": "tfc:block/pitkiln/pitkiln_12"
+    },
+    "stage=13": {
+      "model": "tfc:block/pitkiln/pitkiln_13"
+    },
+    "stage=14": {
+      "model": "tfc:block/pitkiln/pitkiln_14"
+    },
+    "stage=15": {
+      "model": "tfc:block/pitkiln/pitkiln_15"
+    },
+    "stage=16": {
+      "model": "tfc:block/pitkiln/pitkiln_16"
+    }
+  }
+}

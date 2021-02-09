@@ -17,12 +17,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+//todo: convert to respect item sizes
 public class PlacedItemTileEntity extends InventoryTileEntity
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
 
     public static final int SLOT_LARGE_ITEM = 0;
-    private boolean isHoldingLargeItem;
+    public boolean isHoldingLargeItem;
 
     public PlacedItemTileEntity()
     {
