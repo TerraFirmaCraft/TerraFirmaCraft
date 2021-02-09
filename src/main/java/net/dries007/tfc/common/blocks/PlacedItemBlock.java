@@ -1,15 +1,17 @@
 package net.dries007.tfc.common.blocks;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.*;
@@ -19,7 +21,9 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -45,7 +49,7 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
     {
         super(properties.properties());
         this.properties = properties;
-        registerDefaultState(getStateDefinition().any().setValue(ITEM_0, false).setValue(ITEM_1, false).setValue(ITEM_2, false).setValue(ITEM_3, false));
+        registerDefaultState(getStateDefinition().any().setValue(ITEM_0, true).setValue(ITEM_1, true).setValue(ITEM_2, true).setValue(ITEM_3, true));
     }
 
     @Override
@@ -64,6 +68,11 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
             if (te != null)
             {
                 ItemStack held = player.getItemInHand(handIn);
+                if (held.getItem().is(TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnTileEntity.isValid(worldIn, pos))
+                {
+                    convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
+                    return ActionResultType.SUCCESS;
+                }
                 return te.onRightClick(player, held, hit) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
             }
         }
@@ -153,5 +162,46 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
     {
         VoxelShape supportShape = state.getBlockSupportShape(world, pos).getFaceShape(Direction.UP);
         return !VoxelShapes.joinIsNotEmpty(supportShape, SHAPES[slot], IBooleanFunction.ONLY_SECOND);
+    }
+
+    private static void convertPlacedItemToPitKiln(World world, BlockPos pos, ItemStack strawStack)
+    {
+        PlacedItemTileEntity teOld = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
+        if (teOld != null)
+        {
+            // Remove inventory items
+            // This happens here to stop the block dropping its items in onBreakBlock()
+            ItemStack[] inventory = new ItemStack[4];
+            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+                for (int i = 0; i < 4; i++)
+                {
+                    inventory[i] = cap.extractItem(i, 64, false);
+                }
+            });
+
+            // Replace the block
+            world.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
+            teOld.setRemoved();
+            // Play placement sound
+            world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            // Copy TE data
+            PitKilnTileEntity teNew = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
+            if (teNew != null)
+            {
+                // Copy inventory
+                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (inventory[i] != null && !inventory[i].isEmpty())
+                        {
+                            cap.insertItem(i, inventory[i], false);
+                        }
+                    }
+                });
+                // Copy misc data
+                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
+                teNew.addStraw(strawStack, 0);
+            }
+        }
     }
 }

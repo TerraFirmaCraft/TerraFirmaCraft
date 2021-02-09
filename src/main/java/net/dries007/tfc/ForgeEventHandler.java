@@ -54,6 +54,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.config.TFCConfig;
@@ -451,6 +452,12 @@ public final class ForgeEventHandler
             {
                 BurningLogPileBlock.tryLightLogPile(world, pos);
                 event.setCanceled(true);
+            }
+            else if (state.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+            {
+                PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
+                if (kiln != null)
+                    kiln.tryLight();
             }
 
             ItemStack item = event.getItemStack();

@@ -287,6 +287,7 @@ def generate(rm: ResourceManager):
     rm.item_model('pot', parent='tfc:block/firepit_pot')
 
     rm.blockstate('placed_item', 'tfc:block/empty')
+    rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:

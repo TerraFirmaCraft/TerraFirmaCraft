@@ -50,6 +50,8 @@ public class ServerConfig extends CachingConfig
     public final Cache.Int torchTime;
     // Blocks - Charcoal Pit
     public final Cache.Int charcoalTicks;
+    // Blocks - Pit Kiln
+    public final Cache.Int pitKilnTicks;
     // Mechanics - Heat
     public final Cache.Double itemHeatingModifier;
     public final Cache.Int rainTicks;
@@ -120,6 +122,10 @@ public class ServerConfig extends CachingConfig
         innerBuilder.pop().push("charcoal");
 
         charcoalTicks = wrap(builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE));
+
+        innerBuilder.pop().push("pit_kiln");
+
+        pitKilnTicks = wrap(builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE));
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

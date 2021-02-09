@@ -34,7 +34,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.TFCParticleTypes;
 import net.dries007.tfc.client.render.GrillTileEntityRenderer;
-import net.dries007.tfc.client.render.PlacedItemTIleEntityRenderer;
+import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
+import net.dries007.tfc.client.render.PlacedItemTileEntityRenderer;
 import net.dries007.tfc.client.render.PotTileEntityRenderer;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -126,7 +127,8 @@ public final class ClientEventHandler
 
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.POT.get(), PotTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.GRILL.get(), GrillTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTIleEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PIT_KILN.get(), PitKilnTileEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

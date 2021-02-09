@@ -153,6 +153,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> POT = register("pot", () -> new PotBlock(new ForgeBlockProperties(Properties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).noOcclusion().lightLevel(litBlockEmission(15))).tileEntity(PotTileEntity::new)), DECORATIONS);
 
     public static final RegistryObject<Block> PLACED_ITEM = register("placed_item", () -> new PlacedItemBlock(new ForgeBlockProperties(Properties.of(Material.DECORATION).instabreak().sound(SoundType.STEM).noOcclusion()).tileEntity(PlacedItemTileEntity::new)));
+    public static final RegistryObject<Block> PIT_KILN = register("pit_kiln", () -> new PitKilnBlock(new ForgeBlockProperties(Properties.of(Material.GLASS).sound(SoundType.WOOD).strength(0.6f).noOcclusion()).tileEntity(PitKilnTileEntity::new)));
 
     // Flora
 
@@ -193,7 +194,7 @@ public final class TFCBlocks
     // Misc
 
     public static final RegistryObject<Block> AGGREGATE = register("aggregate", () -> new GravelBlock(Properties.of(Material.SAND, MaterialColor.STONE).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
-    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.6F)));
+    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F)));
     public static final RegistryObject<Block> FIRE_BRICKS = register("fire_bricks", () -> new Block(Properties.of(Material.STONE, MaterialColor.COLOR_RED).requiresCorrectToolForDrops().strength(2.0F, 6.0F)), DECORATIONS);
     public static final RegistryObject<Block> FIRE_CLAY_BLOCK = register("fire_clay_block", () -> new Block(Properties.of(Material.CLAY).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F)), DECORATIONS);

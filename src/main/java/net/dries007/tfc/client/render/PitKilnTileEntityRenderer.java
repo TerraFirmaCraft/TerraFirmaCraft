@@ -14,20 +14,22 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
+import net.dries007.tfc.common.blocks.PitKilnBlock;
+import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 
 @ParametersAreNonnullByDefault
-public class PlacedItemTIleEntityRenderer extends TileEntityRenderer<PlacedItemTileEntity>
+public class PitKilnTileEntityRenderer extends TileEntityRenderer<PitKilnTileEntity>
 {
-
-    public PlacedItemTIleEntityRenderer(TileEntityRendererDispatcher dispatcher)
+    public PitKilnTileEntityRenderer(TileEntityRendererDispatcher dispatcher)
     {
         super(dispatcher);
     }
 
     @Override
-    public void render(PlacedItemTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+    public void render(PitKilnTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
     {
+        if (te.getBlockState().getValue(PitKilnBlock.STAGE) > 9) return;
+
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             float timeD = (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);

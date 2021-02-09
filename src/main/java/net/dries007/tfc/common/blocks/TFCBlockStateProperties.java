@@ -73,4 +73,6 @@ public class TFCBlockStateProperties
     public static final BooleanProperty ITEM_1 = BooleanProperty.create("item_1");
     public static final BooleanProperty ITEM_2 = BooleanProperty.create("item_2");
     public static final BooleanProperty ITEM_3 = BooleanProperty.create("item_3");
+
+    public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
 }
