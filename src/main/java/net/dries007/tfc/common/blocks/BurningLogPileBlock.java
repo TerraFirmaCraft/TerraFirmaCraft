@@ -66,6 +66,10 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         {
             worldIn.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         }
+        for (int i = 0; i < rand.nextInt(3); i++)
+        {
+            worldIn.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, (0.5F - rand.nextFloat()) / 10, 0.1f + rand.nextFloat() / 8, (0.5F - rand.nextFloat()) / 10);
+        }
     }
 
     public static void tryLightLogPile(World world, BlockPos pos)
