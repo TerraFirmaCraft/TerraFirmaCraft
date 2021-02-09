@@ -286,6 +286,8 @@ def generate(rm: ResourceManager):
     }, {'entries': 'tfc:ceramic/pot'}])
     rm.item_model('pot', parent='tfc:block/firepit_pot')
 
+    rm.blockstate('placed_item', 'tfc:block/empty')
+
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
         # Regular Dirt

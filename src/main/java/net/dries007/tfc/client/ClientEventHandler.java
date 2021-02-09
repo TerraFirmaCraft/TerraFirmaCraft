@@ -18,11 +18,9 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.item.Item;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -36,22 +34,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.TFCParticleTypes;
 import net.dries007.tfc.client.render.GrillTileEntityRenderer;
+import net.dries007.tfc.client.render.PlacedItemTIleEntityRenderer;
 import net.dries007.tfc.client.render.PotTileEntityRenderer;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.container.FirepitContainer;
-import net.dries007.tfc.common.container.LogPileContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.tileentity.FirepitTileEntity;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -74,6 +68,9 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
         ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
         ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+
+        // Keybindings
+        ClientRegistry.registerKeyBinding(TFCKeybindings.PLACE_BLOCK);
 
         // Render Types
         final RenderType cutout = RenderType.cutout();
@@ -110,11 +107,11 @@ public final class ClientEventHandler
         TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout)));
 
         // Other
-        RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(TFCBlocks.TORCH.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(TFCBlocks.WALL_TORCH.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
 
         // Fluids
         RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), translucent);
@@ -129,6 +126,7 @@ public final class ClientEventHandler
 
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.POT.get(), PotTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.GRILL.get(), GrillTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTIleEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
