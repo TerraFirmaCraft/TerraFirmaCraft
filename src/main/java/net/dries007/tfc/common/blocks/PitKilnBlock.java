@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -139,6 +140,17 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
             {
                 worldIn.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, x, y, z, 0, 0.1f + rand.nextFloat() / 8, 0);
             }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (te != null)
+        {
+            te.onBreak();
         }
     }
 

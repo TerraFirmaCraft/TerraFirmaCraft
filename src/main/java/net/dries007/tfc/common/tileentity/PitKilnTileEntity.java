@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 
@@ -145,11 +146,13 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
                     return;
                 }
             }
-            cookContents(); // we are always heating
+            cookContents(false); // we are always heating
 
             long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - litTick);
             if (remainingTicks <= 0) //thus the only thing to do at the end is to delete the pit kiln block
             {
+                cookContents(true);
+                adjustTempsForTime(-1 * remainingTicks);
                 emptyFuelContents();
                 level.setBlockAndUpdate(worldPosition.above(), Blocks.AIR.defaultBlockState());
                 markForBlockUpdate();
@@ -225,7 +228,17 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         logItems.clear();
     }
 
-    private void cookContents()
+    private void adjustTempsForTime(long remainingTicks)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            ItemStack stack = inventory.getStackInSlot(i);
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> heat.setTemperature(MathHelper.clamp(heat.getTemperature() - remainingTicks / 10.0f, 0, MAX_TEMP)));
+        }
+    }
+
+
+    private void cookContents(boolean isEnding)
     {
         if (level == null) return;
         float pitTicks = (float) TFCConfig.SERVER.pitKilnTicks.get();
@@ -236,7 +249,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
             ItemStack stack = inventory.getStackInSlot(i);
             int slot = i; // the boy genius Lex Manos has turned me into a functional programmer
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
-                heat.setTemperature(temp);
+                heat.setTemperature(isEnding ? MAX_TEMP : temp);
                 HeatingRecipe recipe = cachedRecipes[slot];
                 if (recipe != null && recipe.isValidTemperature(temp))
                 {
