@@ -119,7 +119,6 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
     public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn)
     {
         Metal metal = getMetal(stack);
-        int meltTemp = (int) metal.getMeltTemp();
         if (metal != null)
         {
             int smeltAmount = this.getSmeltAmount(stack);
@@ -155,7 +154,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
                     String advancedTotal;
                     if (stack.getCount() > 1)
                     {
-                        advancedTotal = String.format("%s: %s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.info_total", smeltAmount, smeltAmount * stack.getCount()), I18n.format("tfc.tooltip.melttemp", meltTemp));
+                        advancedTotal = String.format("%s: %s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.info_total", smeltAmount, smeltAmount * stack.getCount()), I18n.format("tfc.tooltip.melttemp", (int) metal.getMeltTemp()));
                     }
                     else
                     {
