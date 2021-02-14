@@ -462,15 +462,17 @@ public final class Helpers
                 // Copied from Block.getDrops()
                 LootContext.Builder lootContext = new LootContext.Builder((ServerWorld) worldIn)
                     .withRandom(worldIn.rand)
-                    .withParameter(LootParameters..ORIGIN, Vector3d.atCenterOf(pos))
+                    //ORIGIN
+                    .withParameter(LootParameters.field_237457_g_, Vector3d.copyCentered(pos))
                     .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
-                    .withOptionalParameter(LootParameters.THIS_ENTITY, null)
-                    .withOptionalParameter(LootParameters.BLOCK_ENTITY, tileEntity);
+                    .withNullableParameter(LootParameters.THIS_ENTITY, null)
+                    .withNullableParameter(LootParameters.BLOCK_ENTITY, tileEntity);
                 builder.accept(lootContext);
-                state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
-                state.spawnAfterBreak((ServerWorld) worldIn, pos, ItemStack.EMPTY);
+                //popResourse
+                state.getDrops(lootContext).forEach(stackToSpawn -> Block.spawnAsEntity(worldIn, pos, stackToSpawn));
+                state.spawnAdditionalDrops((ServerWorld) worldIn, pos, ItemStack.EMPTY);
             }
-            worldIn.setBlockState(pos, fluidstate.createLegacyBlock(), 3, 512);
+            worldIn.setBlockState(pos, fluidstate.getBlockState(), 3, 512);
         }
     }
 }

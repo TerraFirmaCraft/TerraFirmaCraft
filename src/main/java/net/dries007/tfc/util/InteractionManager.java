@@ -60,18 +60,18 @@ public final class InteractionManager
             if (!!world.isRemote() && player != null)
             {
                 final BlockPos basePos = context.getPos();
-                final Direction facing = context.getHorizontalDirection();
+                final Direction facing = context.getPlacementHorizontalFacing();
                 final BlockState bed = TFCBlocks.THATCH_BED.get().getDefaultState();
-                for (Direction direction : new Direction[] {facing, facing.getClockWise(), facing.getOpposite(), facing.getCounterClockWise()})
+                for (Direction direction : new Direction[] {facing, facing.rotateY(), facing.getOpposite(), facing.rotateYCCW()})
                 {
                     final BlockPos headPos = basePos.offset(direction, 1);
                     if (world.getBlockState(basePos).isIn(TFCTags.Blocks.THATCH_BED_THATCH) && world.getBlockState(headPos).isIn(TFCTags.Blocks.THATCH_BED_THATCH))
                     {
-                        final BlockPos playerPos = player.blockPosition();
+                        final BlockPos playerPos = player.getPosition();
                         if (playerPos != headPos && playerPos != basePos)
                         {
-                            world.setBlockState(basePos, bed.with(ThatchBedBlock.PART, BedPart.FOOT).with(ThatchBedBlock.FACING, direction), 18);
-                            world.setBlockState(headPos, bed.with(ThatchBedBlock.PART, BedPart.HEAD).with(ThatchBedBlock.FACING, direction.getOpposite()), 18);
+                            world.setBlockState(basePos, bed.with(ThatchBedBlock.PART, BedPart.FOOT).with(ThatchBedBlock.HORIZONTAL_FACING, direction), 18);
+                            world.setBlockState(headPos, bed.with(ThatchBedBlock.PART, BedPart.HEAD).with(ThatchBedBlock.HORIZONTAL_FACING, direction.getOpposite()), 18);
                             stack.shrink(1);
                             return ActionResultType.SUCCESS;
                         }
@@ -84,7 +84,7 @@ public final class InteractionManager
 
         register(Items.SNOW, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player != null && !player.abilities.mayBuild)
+            if (player != null && !player.abilities.allowEdit)
             {
                 return ActionResultType.PASS;
             }
@@ -93,22 +93,22 @@ public final class InteractionManager
                 final BlockItemUseContext blockContext = new BlockItemUseContext(context);
                 final World world = context.getWorld();
                 final BlockPos pos = context.getPos();
-                final BlockState stateAt = world.getBlockState(blockContext.getClickedPos());
+                final BlockState stateAt = world.getBlockState(blockContext.getPos());
                 if (stateAt.isIn(TFCTags.Blocks.CAN_BE_SNOW_PILED))
                 {
                     SnowPileBlock.convertToPile(world, pos, stateAt);
                     BlockState placedState = world.getBlockState(pos);
                     SoundType placementSound = placedState.getSoundType(world, pos, player);
                     world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
-                    if (player == null || !player.abilities.instabuild)
+                    if (player == null || !player.abilities.allowEdit)
                     {
                         stack.shrink(1);
                     }
 
-                    ActionResultType result = ActionResultType.sidedSuccess(!world.isRemote);
-                    if (player != null && result.consumesAction())
+                    ActionResultType result = ActionResultType.func_233537_a_(!world.isRemote);
+                    if (player != null && result.isSuccessOrConsume())
                     {
-                        player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
+                        player.addStat(Stats.ITEM_USED.get(Items.SNOW));
                     }
                     return result;
                 }
@@ -116,7 +116,7 @@ public final class InteractionManager
                 Item snow = Items.SNOW;
                 if (snow instanceof BlockItem)
                 {
-                    return ((BlockItem) snow).place(blockContext);
+                    return ((BlockItem) snow).tryPlace(blockContext);
                 }
                 return ActionResultType.FAIL;
             }
@@ -149,7 +149,7 @@ public final class InteractionManager
 
     public static void register(ITag<Item> tag, OnItemUseAction action)
     {
-        ACTIONS.add(new Entry(action, stack -> stack.getItem().isIn(tag), tag::getValues));
+        ACTIONS.add(new Entry(action, stack -> stack.getItem().isIn(tag), tag::getAllElements));
     }
 
     public static Optional<ActionResultType> onItemUse(ItemStack stack, ItemUseContext context)
