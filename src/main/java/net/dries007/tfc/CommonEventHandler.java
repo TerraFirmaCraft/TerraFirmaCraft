@@ -1055,14 +1055,22 @@ public final class CommonEventHandler
         Entity target = event.getTarget();
         EntityPlayer player = event.getEntityPlayer();
 
-        if (entityType != null && target.hurtResistantTime == 0 && !target.getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty()
-            && player.isSneaking() && Arrays.asList(ConfigTFC.General.MISC.pluckableEntities).contains(entityType.toString()))
+        if (entityType != null && target.hurtResistantTime == 0 && !target.getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty() && player.isSneaking())
         {
-            target.dropItem(Items.FEATHER, 1);
-            target.attackEntityFrom(DamageSourcesTFC.PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
-            if (target instanceof IAnimalTFC)
+            String entityTypeName = entityType.toString();
+            for (String pluckable : ConfigTFC.General.MISC.pluckableEntities)
             {
-                ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
+                if (pluckable.equals(entityTypeName))
+                {
+                    target.dropItem(Items.FEATHER, 1);
+                    target.attackEntityFrom(DamageSourcesTFC.PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
+                    if (target instanceof IAnimalTFC)
+                    {
+                        IAnimalTFC animalTarget = (IAnimalTFC) target;
+                        animalTarget.setFamiliarity(animalTarget.getFamiliarity() - 0.04f);
+                    }
+                    return;
+                }
             }
         }
     }
