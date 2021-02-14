@@ -106,6 +106,10 @@ public final class ClientEventHandler
         // Plants
         TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
         TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout)));
+        TFCBlocks.SPREADING_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutout));
+        TFCBlocks.SPREADING_CANES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutout));
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_BERRY_BUSH.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_CANE.get(), cutout);
 
         // Other
         RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);

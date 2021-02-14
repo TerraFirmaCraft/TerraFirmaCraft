@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "#cane",
+		"particle": "#bush"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 5],
+			"to": [22, 13, 5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [14, 8, 13]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 13], "texture": "#1"},
+				"south": {"uv": [16, 0, 0, 13], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-5, 0, 5],
+			"to": [11, 13, 5],
+			"rotation": {"angle": -45, "axis": "y", "origin": [3, 8, 13]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 13], "texture": "#1"},
+				"south": {"uv": [16, 0, 0, 13], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "base",
+			"origin": [8, 8, 8],
+			"children": [0, 1]
+		}
+	]
+}

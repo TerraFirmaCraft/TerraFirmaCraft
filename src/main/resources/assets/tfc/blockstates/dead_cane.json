@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east,stage=0": {
+      "model": "tfc:block/berry_bush/dead_bush_side_0",
+      "y": 90
+    },
+    "facing=north,stage=0": {
+      "model": "tfc:block/berry_bush/dead_bush_side_0"
+    },
+    "facing=south,stage=0": {
+      "model": "tfc:block/berry_bush/dead_bush_side_0",
+      "y": 180
+    },
+    "facing=west,stage=0": {
+      "model": "tfc:block/berry_bush/dead_bush_side_0",
+      "y": 270
+    },
+    "facing=east,stage=1": {
+      "model": "tfc:block/berry_bush/dead_bush_side_1",
+      "y": 90
+    },
+    "facing=north,stage=1": {
+      "model": "tfc:block/berry_bush/dead_bush_side_1"
+    },
+    "facing=south,stage=1": {
+      "model": "tfc:block/berry_bush/dead_bush_side_1",
+      "y": 180
+    },
+    "facing=west,stage=1": {
+      "model": "tfc:block/berry_bush/dead_bush_side_1",
+      "y": 270
+    },
+    "facing=east,stage=2": {
+      "model": "tfc:block/berry_bush/dead_bush_side_2",
+      "y": 90
+    },
+    "facing=north,stage=2": {
+      "model": "tfc:block/berry_bush/dead_bush_side_2"
+    },
+    "facing=south,stage=2": {
+      "model": "tfc:block/berry_bush/dead_bush_side_2",
+      "y": 180
+    },
+    "facing=west,stage=2": {
+      "model": "tfc:block/berry_bush/dead_bush_side_2",
+      "y": 270
+    }
+  }
+}

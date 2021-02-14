@@ -17,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.berry_bush.Berry;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.*;
@@ -94,6 +95,10 @@ public final class TFCItems
 
     public static final Map<Wood.Default, RegistryObject<Item>> LUMBER = Helpers.mapOfKeys(Wood.Default.class, wood ->
         register(("wood/lumber/" + wood.name()).toLowerCase(), MISC)
+    );
+
+    public static final Map<Berry, RegistryObject<Item>> BERRIES = Helpers.mapOfKeys(Berry.class, berry ->
+        register(("food/" + berry.name()).toLowerCase(), MISC)
     );
 
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", MISC);
