@@ -395,5 +395,12 @@
 			"translation": [0, 0, -0.38],
 			"scale": [2, 2, 2]
 		}
-	}
+	},
+    "overrides": [  {
+        "predicate": {
+            "blocking": 1
+        },
+        "model": "tfc:item/metal/shield/red_steel_blocking"
+    }
+  ]
 }
