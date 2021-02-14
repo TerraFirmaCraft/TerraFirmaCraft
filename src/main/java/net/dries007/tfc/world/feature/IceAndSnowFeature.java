@@ -59,11 +59,11 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
         final ChunkData chunkData = ChunkData.get(worldIn, chunkPos).ifEmptyGet(() -> ChunkDataProvider.getOrThrow(chunkGenerator).get(chunkPos, ChunkData.Status.CLIMATE));
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        final BlockState snowState = Blocks.SNOW.defaultBlockState();
+        final BlockState snowState = Blocks.SNOW.getDefaultState();
 
-        for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); x++)
+        for (int x = chunkPos.getXStart(); x <= chunkPos.getXEnd(); x++)
         {
-            for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++)
+            for (int z = chunkPos.getZStart(); z <= chunkPos.getZEnd(); z++)
             {
                 mutablePos.set(x, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, x, z), z);
 
@@ -73,22 +73,22 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 
                 BlockState stateAt = worldIn.getBlockState(mutablePos);
                 FluidState fluidAt;
-                if (stateAt.isAir() && snowState.canSurvive(worldIn, mutablePos))
+                if (stateAt.isAir() && snowState.canBeReplacedByLeaves(worldIn, mutablePos))
                 {
                     if (temperature + noise < 0)
                     {
-                        worldIn.setBlock(mutablePos, Blocks.SNOW.defaultBlockState(), 2);
+                        worldIn.setBlockState(mutablePos, Blocks.SNOW.getDefaultState(), 2);
 
                         mutablePos.move(0, -1, 0);
                         BlockState blockstate = worldIn.getBlockState(mutablePos);
                         if (blockstate.hasProperty(SnowyDirtBlock.SNOWY))
                         {
-                            worldIn.setBlock(mutablePos, blockstate.setValue(SnowyDirtBlock.SNOWY, true), 2);
+                            worldIn.setBlockState(mutablePos, blockstate.with(SnowyDirtBlock.SNOWY, true), 2);
                         }
                         mutablePos.move(0, 1, 0);
                     }
                 }
-                else if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                else if (stateAt.isIn(TFCTags.Blocks.CAN_BE_SNOW_PILED))
                 {
                     if (temperature + noise < 0)
                     {
@@ -102,14 +102,14 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 
                 if (biome.shouldFreeze(worldIn, mutablePos, true))
                 {
-                    worldIn.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 2);
+                    worldIn.setBlockState(mutablePos, Blocks.ICE.getDefaultState(), 2);
                 }
                 else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
                 {
                     final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + MathHelper.clamp(temperature * 0.1f, -0.2f, 0.2f);
                     if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
                     {
-                        worldIn.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
+                        worldIn.setBlockState(mutablePos, TFCBlocks.SEA_ICE.get().getDefaultState(), 2);
                     }
                 }
             }

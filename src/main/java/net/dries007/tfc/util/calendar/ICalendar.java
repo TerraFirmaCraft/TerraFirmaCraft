@@ -94,7 +94,7 @@ public interface ICalendar
     {
         return new StringTextComponent(String.format("%d:%02d ", hour, minute))
             .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
-            .append(" ")
+            .append(new StringTextComponent("   "))
             .append(new TranslationTextComponent("tfc.tooltip.calendar_days_years", day, years));
     }
 
@@ -187,7 +187,7 @@ public interface ICalendar
      * Get the equivalent total world time
      * World time 0 = 6:00 AM, which is calendar time 6000
      *
-     * @return a value in [0, 24000) which should match the result of {@link World#getDayTime()}
+     * @return a value in [0, 24000) which should match the result of {  World#getDayTime()}
      */
     default long getCalendarDayTime()
     {

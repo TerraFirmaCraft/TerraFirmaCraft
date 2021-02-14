@@ -30,7 +30,7 @@ public class DamageInputsCraftingRecipe extends DelegatingRecipe<CraftingInvento
         for (int i = 0; i < items.size(); ++i)
         {
             ItemStack stack = inv.getItem(i);
-            if (stack.isDamageableItem())
+            if (stack.isDamageable())
             {
                 Helpers.damageCraftingItem(stack, 1);
             }

@@ -9,7 +9,7 @@ package net.dries007.tfc.world.layer.traits;
 import net.minecraft.world.gen.layer.traits.IDimTransformer;
 
 /**
- * Like {@link net.minecraft.world.gen.layer.traits.IAreaTransformer1} but with {@link TypedArea}
+ * Like {  net.minecraft.world.gen.layer.traits.IAreaTransformer1} but with {  TypedArea}
  */
 public interface ITypedAreaTransformer1<A> extends IDimTransformer
 {

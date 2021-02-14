@@ -41,7 +41,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         ChunkPos chunkPos = new ChunkPos(pos);
-        int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
+        int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
         int minX = chunkX - 8, maxX = chunkX + 24, minZ = chunkZ - 8, maxZ = chunkZ + 24;
 
         Map<BlockPos, LandslideRecipe> landslidePositions = new HashMap<>();
@@ -67,7 +67,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                     }
                     mutableWrapper.update(chunkX + x, y, chunkZ + z, stateAt);
 
-                    final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
+                    final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getWorld(), mutableWrapper);
                     if (recipe != null)
                     {
                         landslidePositions.put(mutablePos.immutable(), recipe);
@@ -93,13 +93,13 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
             LandslideRecipe recipe = landslidePositions.get(landslidePos);
             BlockState stateAt = worldIn.getBlockState(landslidePos);
             mutableWrapper.update(landslidePos.getX(), landslidePos.getY(), landslidePos.getZ(), stateAt);
-            if (recipe.matches(mutableWrapper, worldIn.getLevel()))
+            if (recipe.matches(mutableWrapper, worldIn.getWorld()))
             {
                 BlockPos resultPos = quickLandslideBlock(worldIn, landslidePos, rand, minX, maxX, minZ, maxZ);
                 if (resultPos != null && !resultPos.equals(landslidePos))
                 {
-                    worldIn.setBlock(landslidePos, Blocks.AIR.defaultBlockState(), 2);
-                    worldIn.setBlock(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
+                    worldIn.setBlockState(landslidePos, Blocks.AIR.getDefaultState(), 2);
+                    worldIn.setBlockState(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
 
                     // Fix exposed and/or covered grass
                     if (stateAt.getBlock() instanceof IGrassBlock)
@@ -110,7 +110,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                         {
                             // Replace exposed dirt with grass
                             DirtBlock dirtBlock = (DirtBlock) pastDirtState.getBlock();
-                            worldIn.setBlock(mutablePos, dirtBlock.getGrass(), 2);
+                            worldIn.setBlockState(mutablePos, dirtBlock.getGrass(), 2);
                             worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock, 0);
                         }
 
@@ -120,7 +120,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                         {
                             // Replace covered grass with dirt
                             IGrassBlock grassBlock = (IGrassBlock) pastGrassState.getBlock();
-                            worldIn.setBlock(mutablePos, grassBlock.getDirt(), 2);
+                            worldIn.setBlockState(mutablePos, grassBlock.getDirt(), 2);
                         }
                     }
                 }
@@ -136,11 +136,11 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
         while (pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ && pos.getY() > minY)
         {
             // Cascade downwards
-            BlockPos down = pos.below();
+            BlockPos down = pos.down();
             while (TFCFallingBlockEntity.canFallThrough(world, down))
             {
                 pos = down;
-                down = pos.below();
+                down = pos.down();
             }
             // Unable to cascade downwards any more, try sideways
             int supportedDirections = 0;
@@ -159,8 +159,8 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                 else
                 {
                     // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
-                    BlockPos posSide = pos.relative(side);
-                    if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.below()))
+                    BlockPos posSide = pos.offset(side);
+                    if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.down()))
                     {
                         possibleDirections.add(posSide);
                     }

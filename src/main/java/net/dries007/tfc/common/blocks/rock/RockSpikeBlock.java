@@ -46,7 +46,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(stateDefinition.any().with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -66,9 +66,9 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
         // Check support from above or below
-        BlockPos belowPos = pos.below();
+        BlockPos belowPos = pos.down();
         BlockState belowState = worldIn.getBlockState(belowPos);
-        if (belowState.getBlock() == this && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
+        if (belowState.getBlock() == this && belowState.get(PART).isLargerThan(state.get(PART)))
         {
             // Larger spike below. Tick that to ensure it is supported
             worldIn.getBlockTicks().scheduleTick(belowPos, this, 1);
@@ -81,9 +81,9 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         }
 
         // No support below, try above
-        BlockPos abovePos = pos.above();
+        BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
-        if (aboveState.getBlock() == this && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
+        if (aboveState.getBlock() == this && aboveState.get(PART).isLargerThan(state.get(PART)))
         {
             // Larger spike above. Tick to ensure that it is supported
             worldIn.getBlockTicks().scheduleTick(abovePos, this, 1);
@@ -117,7 +117,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(PART))
+        switch (state.get(PART))
         {
             case BASE:
                 return BASE_SHAPE;

@@ -26,7 +26,7 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
     @SuppressWarnings("deprecation")
     protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
     {
-        BlockState stateDown = worldIn.getBlockState(pos.below());
+        BlockState stateDown = worldIn.getBlockState(pos.down());
         if (!TFCTags.Blocks.TREE_GROWS_ON.contains(stateDown.getBlock()))
         {
             return false;

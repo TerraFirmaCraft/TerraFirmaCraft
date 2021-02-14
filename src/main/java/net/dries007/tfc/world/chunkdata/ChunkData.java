@@ -105,7 +105,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(z / 16f, 1 - (x / 16f));
+        return rainfallLayer.get(z / 16f, 1 - (x / 16f));
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -120,7 +120,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(z / 16f, 1 - (x / 16f));
+        return temperatureLayer.get(z / 16f, 1 - (x / 16f));
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)

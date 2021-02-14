@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface FallingBlockEntityAccessor
 {
     /**
-     * Needed by {@link net.dries007.tfc.common.entities.TFCFallingBlockEntity} as it overrides the tick method and the field is private rather than protected.
+     * Needed by {  net.dries007.tfc.common.entities.TFCFallingBlockEntity} as it overrides the tick method and the field is private rather than protected.
      */
     @Accessor("blockState")
     void accessor$setBlockState(BlockState blockState);

@@ -14,8 +14,8 @@ import net.minecraft.world.biome.BiomeContainer;
 import net.minecraft.world.biome.provider.BiomeProvider;
 
 /**
- * An optimized {@link BiomeContainer} for world generation where biomes are not actually 3D
- * Avoids the expensive call to {@link BiomeProvider#getNoiseBiome(int, int, int)}
+ * An optimized {  BiomeContainer} for world generation where biomes are not actually 3D
+ * Avoids the expensive call to {  BiomeProvider#getNoiseBiome(int, int, int)}
  */
 public class ColumnBiomeContainer extends BiomeContainer
 {
@@ -30,8 +30,8 @@ public class ColumnBiomeContainer extends BiomeContainer
         // This copies the initialization except it only queries the biome provider once per column, saving 98% of the biome generation calls
         super(biomeIdRegistry, Util.make(() -> {
             Biome[] biomes = new Biome[BIOMES_SIZE];
-            int biomeCoordX = chunkPosIn.getMinBlockX() >> 2;
-            int biomeCoordZ = chunkPosIn.getMinBlockZ() >> 2;
+            int biomeCoordX = chunkPosIn.getXStart() >> 2;
+            int biomeCoordZ = chunkPosIn.getZStart() >> 2;
 
             for (int index = 0; index < (1 << HORIZONTAL_BITS); ++index)
             {

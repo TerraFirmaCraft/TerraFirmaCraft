@@ -52,11 +52,11 @@ public class ChunkBlockReplacer
         Function<Rock.BlockType, IBlockReplacer> factory = rockType -> (rockData, x, y, z, rainfall, temperature, salty) -> {
             if (y < rockData.getRockHeight(x, z))
             {
-                return rockData.getBottomRock(x, z).getBlock(rockType).defaultBlockState();
+                return rockData.getBottomRock(x, z).getBlock(rockType).getDefaultState();
             }
             else
             {
-                return rockData.getTopRock(x, z).getBlock(rockType).defaultBlockState();
+                return rockData.getTopRock(x, z).getBlock(rockType).getDefaultState();
             }
         };
         register(Blocks.STONE, factory.apply(Rock.BlockType.RAW));
@@ -68,27 +68,27 @@ public class ChunkBlockReplacer
         register(Blocks.GRASS_BLOCK, new SoilBlockReplacer(SoilBlockType.GRASS));
 
         // Gravel -> surface material. Replace with rock type gravel
-        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature, salty) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState());
+        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature, salty) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
 
         // Sand -> Desert sand layer. Replace with sand color from top rock layer
-        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, salty) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().defaultBlockState());
+        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, salty) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState());
 
         // Red Sand -> Beach sand layer. Replace with the beach sand color from top rock layer
-        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature, salty) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getBeachSandColor()).get().defaultBlockState());
+        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature, salty) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getBeachSandColor()).get().getDefaultState());
 
         // Red Sandstone -> Beach variant sand layer. If tropical, replace with pink sand.
         register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, salty) -> {
             if (rainfall > 300f && temperature > 15f)
             {
-                return TFCBlocks.SAND.get(SandBlockType.PINK).get().defaultBlockState();
+                return TFCBlocks.SAND.get(SandBlockType.PINK).get().getDefaultState();
             }
             else if (rainfall > 300f)
             {
-                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().defaultBlockState();
+                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().getDefaultState();
             }
             else
             {
-                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().defaultBlockState();
+                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().getDefaultState();
             }
         });
 
@@ -101,8 +101,8 @@ public class ChunkBlockReplacer
     @SuppressWarnings("deprecation")
     public void replace(ChunkPrimer chunk, ChunkData data, ISeedReader world)
     {
-        final int xStart = chunk.getPos().getMinBlockX();
-        final int zStart = chunk.getPos().getMinBlockZ();
+        final int xStart = chunk.getPos().getXStart();
+        final int zStart = chunk.getPos().getZStart();
         final RockData rockData = data.getRockData();
 
         for (int x = 0; x < 16; x++)

@@ -34,7 +34,7 @@ public class MossGrowingStairsBlock extends StairsBlock implements IMossGrowingB
     {
         if (!needsWater || FluidHelpers.isSame(worldIn.getFluidState(pos), Fluids.WATER))
         {
-            worldIn.setBlockAndUpdate(pos, Helpers.copyProperties(mossy.get().defaultBlockState(), state));
+            worldIn.setBlockAndUpdate(pos, Helpers.copyProperties(mossy.get().getDefaultState(), state));
         }
     }
 }

@@ -42,8 +42,8 @@ public class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.tier = Tier.valueOf(JSONUtils.getAsInt(json, "tier"));
-        this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(JSONUtils.getAsString(json, "fluid")));
+        this.tier = Tier.valueOf(JSONUtils.getInt(json, "tier"));
+        this.fluid = ForgeRegistries.FLUIDS.get(new ResourceLocation(JSONUtils.getString(json, "fluid")));
     }
 
     public ResourceLocation getId()

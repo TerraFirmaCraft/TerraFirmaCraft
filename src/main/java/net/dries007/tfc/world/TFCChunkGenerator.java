@@ -173,7 +173,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     /**
-     * This override just ignores strongholds conditionally as by default TFC does not generate them, but  {@link ChunkGenerator} hard codes them to generate.
+     * This override just ignores strongholds conditionally as by default TFC does not generate them, but  {  ChunkGenerator} hard codes them to generate.
      */
     @Override
     public void createStructures(DynamicRegistries dynamicRegistry, StructureManager structureManager, IChunk chunk, TemplateManager templateManager, long seed)
@@ -225,7 +225,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final ChunkPrimer chunk = (ChunkPrimer) chunkIn;
         final ChunkPos chunkPos = chunk.getPos();
         final SharedSeedRandom random = new SharedSeedRandom();
-        final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
+        final int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
         final BlockPos.Mutable pos = new BlockPos.Mutable();
 
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
@@ -311,7 +311,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 carvingCenter += SEA_LEVEL * (1 - carvingWeight);
 
                 // Record the local (accurate) biome.
-                localBiomes[x + 16 * z] = mutableBiome.getValue();
+                localBiomes[x + 16 * z] = mutableBiome.get();
 
                 // Record height maps
                 surfaceHeightMap[x + 16 * z] = (int) actualHeight;
@@ -427,7 +427,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
             biomeAt = shoreBiomeAt;
         }
 
-        mutableBiome.setValue(Objects.requireNonNull(biomeAt, "Biome should not be null!"));
+        mutableBiome.with(Objects.requireNonNull(biomeAt, "Biome should not be null!"));
         return actualHeight;
     }
 
@@ -475,7 +475,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
     /**
      * Updates chunk height maps based on the initial surface height.
-     * This is split off of {@link TFCChunkGenerator#fillInitialChunkBlocks(ChunkPrimer, int[])} as that method exits early whenever it reaches the top layer.
+     * This is split off of {  TFCChunkGenerator#fillInitialChunkBlocks(ChunkPrimer, int[])} as that method exits early whenever it reaches the top layer.
      */
     protected void updateInitialChunkHeightmaps(ChunkPrimer chunk, int[] surfaceHeightMap)
     {
@@ -513,7 +513,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
 
         final BlockState caveFluid = settings.getDefaultFluid();
-        final BlockState caveAir = Blocks.CAVE_AIR.defaultBlockState();
+        final BlockState caveAir = Blocks.CAVE_AIR.getDefaultState();
 
         for (int x = 0; x < 16; x++)
         {
@@ -573,8 +573,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             for (int z = 0; z < 16; ++z)
             {
-                final int posX = chunkPos.getMinBlockX() + x;
-                final int posZ = chunkPos.getMinBlockZ() + z;
+                final int posX = chunkPos.getXStart() + x;
+                final int posZ = chunkPos.getZStart() + z;
                 final int posY = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                 final double noise = surfaceDepthNoise.getSurfaceNoiseValue(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
 
@@ -591,7 +591,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     protected void makeBedrock(ChunkPrimer chunk, Random random)
     {
         final ChunkSection bottomSection = chunk.getOrCreateSection(0);
-        final BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
+        final BlockState bedrock = Blocks.BEDROCK.getDefaultState();
 
         for (int x = 0; x < 16; x++)
         {

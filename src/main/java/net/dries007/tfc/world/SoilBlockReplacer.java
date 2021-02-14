@@ -91,11 +91,11 @@ public class SoilBlockReplacer extends SeedBlockReplacer
 
     private BlockState sand(RockData rockData, int x, int z)
     {
-        return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().defaultBlockState();
+        return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)
     {
-        return TFCBlocks.SOIL.get(soil).get(variant).get().defaultBlockState();
+        return TFCBlocks.SOIL.get(soil).get(variant).get().getDefaultState();
     }
 }

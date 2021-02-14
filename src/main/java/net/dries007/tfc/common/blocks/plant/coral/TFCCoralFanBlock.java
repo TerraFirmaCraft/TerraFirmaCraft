@@ -15,7 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
 /**
- * {@link net.minecraft.block.CoralFanBlock}
+ * {  net.minecraft.block.CoralFanBlock}
  */
 public class TFCCoralFanBlock extends TFCAbstractCoralPlantBlock
 {

@@ -20,7 +20,7 @@ public interface FlowingFluidAccessor
 {
     /**
      * This method checks if fluid can flow between two positions, based on the shapes of potential waterlogged block states in the way
-     * We do not override it as it queries a thread local static cache in {@link FlowingFluid}
+     * We do not override it as it queries a thread local static cache in {  FlowingFluid}
      */
     @Invoker("canPassThroughWall")
     boolean invoke$canPassThroughWall(Direction direction, IBlockReader world, BlockPos pos, BlockState state, BlockPos adjacentPos, BlockState adjacentState);

@@ -40,18 +40,18 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockState blockstate = worldIn.getBlockState(pos.below());
-        if (state.getValue(PART) == Part.LOWER)
+        BlockState blockstate = worldIn.getBlockState(pos.down());
+        if (state.get(PART) == Part.LOWER)
         {
-            return blockstate.is(BlockTags.SAND);
+            return blockstate.isIn(BlockTags.SAND);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return blockstate.is(BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
+                return blockstate.isIn(BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
             }
-            return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
+            return blockstate.getBlock() == this && blockstate.get(PART) == Part.LOWER;
         }
     }
 

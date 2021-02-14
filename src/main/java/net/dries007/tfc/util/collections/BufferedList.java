@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Wrapper for a list which needs to be very careful about adding while iterating
- * Any new elements added will sit in the buffer list, and have to be manually added to the backing list by calling {@link BufferedList#flush()}
+ * Any new elements added will sit in the buffer list, and have to be manually added to the backing list by calling {  BufferedList#flush()}
  */
 public class BufferedList<E> extends AbstractList<E>
 {

@@ -63,7 +63,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         this.grassPath = grassPath;
         this.farmland = farmland;
 
-        registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false).setValue(SNOWY, false));
+        registerDefaultState(stateDefinition.any().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (facing == Direction.UP)
         {
-            return stateIn.setValue(SNOWY, facingState.is(TFCTags.Blocks.SNOW));
+            return stateIn.with(SNOWY, facingState.isIn(TFCTags.Blocks.SNOW));
         }
         else if (facing != Direction.DOWN)
         {
@@ -91,7 +91,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+            worldIn.getBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
         }
     }
 
@@ -100,7 +100,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+            worldIn.getBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
         }
         super.onRemove(state, worldIn, pos, newState, isMoving);
     }
@@ -118,7 +118,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         }
         else
         {
-            if (worldIn.getMaxLocalRawBrightness(pos.above()) >= 9)
+            if (worldIn.getMaxLocalRawBrightness(pos.up()) >= 9)
             {
                 for (int i = 0; i < 4; ++i)
                 {
@@ -143,15 +143,15 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (worldIn.isAreaLoaded(pos, 2))
         {
-            worldIn.setBlock(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
+            worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
         }
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockState stateUp = context.getLevel().getBlockState(context.getClickedPos().above());
-        return updateStateFromNeighbors(context.getLevel(), context.getClickedPos(), defaultBlockState()).setValue(SNOWY, stateUp.is(Blocks.SNOW_BLOCK) || stateUp.is(Blocks.SNOW));
+        BlockState stateUp = context.getWorld().getBlockState(context.getPos().up());
+        return updateStateFromNeighbors(context.getWorld(), context.getPos(), defaultBlockState()).with(SNOWY, stateUp.isIn(Blocks.SNOW_BLOCK) || stateUp.isIn(Blocks.SNOW));
     }
 
     @Override
@@ -163,7 +163,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @Override
     public BlockState getDirt()
     {
-        return dirt.get().defaultBlockState();
+        return dirt.get().getDefaultState();
     }
 
     @Nullable
@@ -172,11 +172,11 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (toolType == ToolType.HOE && TFCConfig.SERVER.enableFarmlandCreation.get() && farmland != null)
         {
-            return farmland.get().defaultBlockState();
+            return farmland.get().getDefaultState();
         }
         else if (toolType == ToolType.SHOVEL && TFCConfig.SERVER.enableGrassPathCreation.get() && grassPath != null)
         {
-            return grassPath.get().defaultBlockState();
+            return grassPath.get().getDefaultState();
         }
         return state;
     }
@@ -193,11 +193,11 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         {
             for (Direction direction : Direction.Plane.HORIZONTAL)
             {
-                BlockPos targetPos = pos.above().relative(direction);
+                BlockPos targetPos = pos.up().offset(direction);
                 BlockState targetState = world.getBlockState(targetPos);
                 if (targetState.getBlock() instanceof IGrassBlock)
                 {
-                    world.setBlock(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
+                    world.setBlockState(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
                 }
             }
         }
@@ -231,6 +231,6 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      */
     protected BlockState updateStateFromDirection(IBlockReader worldIn, BlockPos pos, BlockState stateIn, Direction direction)
     {
-        return stateIn.setValue(PROPERTIES.get(direction), worldIn.getBlockState(pos.relative(direction).below()).getBlock() instanceof IGrassBlock);
+        return stateIn.with(PROPERTIES.get(direction), worldIn.getBlockState(pos.offset(direction).down()).getBlock() instanceof IGrassBlock);
     }
 }

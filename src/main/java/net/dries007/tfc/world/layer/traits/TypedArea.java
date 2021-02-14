@@ -19,8 +19,8 @@ import it.unimi.dsi.fastutil.longs.Long2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 
 /**
- * Like {@link net.minecraft.world.gen.area.LazyArea} but with a generic return type.
- * There isn't an interface type like {@link net.minecraft.world.gen.area.IArea} as there's no need.
+ * Like {  net.minecraft.world.gen.area.LazyArea} but with a generic return type.
+ * There isn't an interface type like {  net.minecraft.world.gen.area.IArea} as there's no need.
  */
 public class TypedArea<A>
 {

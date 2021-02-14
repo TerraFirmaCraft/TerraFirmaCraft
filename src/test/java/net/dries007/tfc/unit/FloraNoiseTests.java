@@ -57,7 +57,7 @@ public class FloraNoiseTests
 
         Map<Plant, ClimateConfig> climateConfigs = Arrays.stream(Plant.values()).map(plant -> {
             ResourceLocation id = Helpers.identifier("plant/" + plant.name().toLowerCase());
-            ConfiguredFeature<?, ?> feature = registry.get(id);
+            ConfiguredFeature<?, ?> feature = registry.getValue(id);
 
             if (feature != null)
             {

@@ -38,17 +38,17 @@ public class KelpTreeFeature extends Feature<BlockStateFeatureConfig>
         for (int i = 0; i < 20; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), 0, rand.nextInt(10) - rand.nextInt(10));
-            if (!world.isWaterAt(mutablePos) || world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable)
+            if (!world.hasWater(mutablePos) || world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable)
                 continue;
             mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+            if (!world.getBlockState(mutablePos).isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 continue;
             mutablePos.move(Direction.UP);
             for (int j = 0; j < 4; j++)
             {
                 mutablePos.move(Direction.UP);
                 //horrendously inefficient check but whatever
-                if (world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable || !world.isWaterAt(pos))
+                if (world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable || !world.hasWater(pos))
                     break;
             }
             mutablePos.move(Direction.DOWN, 4);

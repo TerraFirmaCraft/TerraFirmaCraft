@@ -124,10 +124,10 @@ public final class TFCFluids
         // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
         // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
         final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();
-        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue().get()));
-        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue().get()));
+        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.get().get()));
+        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.get().get()));
 
-        propertiesBox.setValue(Lazy.of(() -> {
+        propertiesBox.with(Lazy.of(() -> {
             ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
             builder.accept(lazyProperties);
             return lazyProperties;
@@ -142,7 +142,7 @@ public final class TFCFluids
     }
 
     /**
-     * Helper for the stupid protected constructor on {@link FluidAttributes.Builder}
+     * Helper for the stupid protected constructor on {  FluidAttributes.Builder}
      */
     private static FluidAttributes.Builder builder(ResourceLocation stillTexture, ResourceLocation flowingTexture, BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory)
     {

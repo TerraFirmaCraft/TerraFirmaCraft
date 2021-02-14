@@ -60,7 +60,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                 if (worldIn.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
-                    if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    if (worldIn.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(worldIn, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
                         worldIn.getLiquidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
@@ -70,12 +70,12 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
             if (rand.nextFloat() < 0.02f)//cobwebs
             {
                 mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                if (worldIn.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
                     if (worldIn.isEmptyBlock(mutablePos))
                     {
-                        setBlock(worldIn, mutablePos, Blocks.COBWEB.defaultBlockState());
+                        setBlock(worldIn, mutablePos, Blocks.COBWEB.getDefaultState());
                     }
                 }
             }

@@ -43,11 +43,11 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
-        else if (stateIn.getValue(WATERLOGGED))
+        else if (stateIn.get(WATERLOGGED))
         {
             worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
@@ -58,22 +58,22 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.get(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        Direction direction = state.getValue(FACING);
-        return canAttachTo(worldIn, pos.relative(direction.getOpposite()), direction);
+        Direction direction = state.get(FACING);
+        return canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
             case NORTH:
                 return RACK_NORTH_AABB;
@@ -93,27 +93,27 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         BlockState contextualState;
         if (!context.replacingClickedOnBlock())
         {
-            contextualState = context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite()));
-            if (contextualState.getBlock() == this && contextualState.getValue(FACING) == context.getClickedFace())
+            contextualState = context.getWorld().getBlockState(context.getPos().offset(context.getClickedFace().getOpposite()));
+            if (contextualState.getBlock() == this && contextualState.get(FACING) == context.getClickedFace())
             {
                 return null;
             }
         }
 
         contextualState = defaultBlockState();
-        IWorldReader world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        FluidState fluidState = world.getFluidState(context.getClickedPos());
+        IWorldReader world = context.getWorld();
+        BlockPos pos = context.getPos();
+        FluidState fluidState = world.getFluidState(context.getPos());
         Direction[] directionList = context.getNearestLookingDirections();
 
         for (Direction direction : directionList)
         {
             if (direction.getAxis().isHorizontal())
             {
-                contextualState = contextualState.setValue(FACING, direction.getOpposite());
-                if (contextualState.canSurvive(world, pos))
+                contextualState = contextualState.with(FACING, direction.getOpposite());
+                if (contextualState.canBeReplacedByLeaves(world, pos))
                 {
-                    return contextualState.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+                    return contextualState.with(WATERLOGGED, fluidState.getType() == Fluids.WATER);
                 }
             }
         }

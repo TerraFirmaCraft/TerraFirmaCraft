@@ -29,9 +29,9 @@ public enum Season implements IStringSerializable
         return this == WINTER ? SPRING : VALUES[this.ordinal() + 1];
     }
 
+
     @Override
-    public String getSerializedName()
-    {
+    public String getString() {
         return serializedName;
     }
 }

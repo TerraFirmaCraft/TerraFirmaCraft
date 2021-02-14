@@ -17,7 +17,7 @@ import net.minecraft.world.gen.layer.traits.IPixelTransformer;
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
- * A variant of {@link LazyArea} which implements a non-synchronized, lossy cache
+ * A variant of {  LazyArea} which implements a non-synchronized, lossy cache
  */
 public class FastArea implements IArea
 {

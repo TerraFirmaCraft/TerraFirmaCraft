@@ -35,17 +35,17 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     {
         super(properties, VoxelShapes.empty(), null);
 
-        registerDefaultState(defaultBlockState().setValue(COUNT, 1));
+        registerDefaultState(defaultBlockState().with(COUNT, 1));
     }
 
     @Override
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockState stateAt = context.getLevel().getBlockState(context.getClickedPos());
-        if (stateAt.is(this))
+        BlockState stateAt = context.getWorld().getBlockState(context.getPos());
+        if (stateAt.isIn(this))
         {
-            return stateAt.setValue(COUNT, Math.min(3, stateAt.getValue(COUNT) + 1));
+            return stateAt.with(COUNT, Math.min(3, stateAt.get(COUNT) + 1));
         }
         return super.getStateForPlacement(context);
     }
@@ -59,7 +59,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(COUNT))
+        switch (state.get(COUNT))
         {
             case 1:
                 return ONE;
@@ -68,6 +68,6 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
             case 3:
                 return THREE;
         }
-        throw new IllegalStateException("Unknown value for property LooseRockBlock#ROCKS: " + state.getValue(COUNT));
+        throw new IllegalStateException("Unknown value for property LooseRockBlock#ROCKS: " + state.get(COUNT));
     }
 }

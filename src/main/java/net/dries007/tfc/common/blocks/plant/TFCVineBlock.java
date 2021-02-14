@@ -31,7 +31,7 @@ public class TFCVineBlock extends VineBlock
     {
         super(properties);
 
-        registerDefaultState(defaultBlockState().setValue(SEASON_NO_SPRING, Season.SUMMER));
+        registerDefaultState(defaultBlockState().with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     @Override
@@ -39,11 +39,11 @@ public class TFCVineBlock extends VineBlock
     {
         super.randomTick(state, worldIn, pos, random);
         // Adjust the season based on the current time
-        Season oldSeason = state.getValue(SEASON_NO_SPRING);
+        Season oldSeason = state.get(SEASON_NO_SPRING);
         Season newSeason = getSeasonForState();
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.setValue(SEASON_NO_SPRING, newSeason));
+            worldIn.setBlockAndUpdate(pos, state.with(SEASON_NO_SPRING, newSeason));
         }
     }
 
@@ -51,7 +51,7 @@ public class TFCVineBlock extends VineBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, getSeasonForState());
+        return super.getStateForPlacement(context).with(SEASON_NO_SPRING, getSeasonForState());
     }
 
     @Override

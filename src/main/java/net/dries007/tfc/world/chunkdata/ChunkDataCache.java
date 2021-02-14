@@ -24,8 +24,8 @@ import net.dries007.tfc.util.Helpers;
 /**
  * Cache of chunk data
  * Used for various purposes:
- * {@link ChunkDataCache#CLIENT} and {@link ChunkDataCache#SERVER} are logical sided caches, used for when chunk data is needed without a world context. Care must be taken to choose the cache for the correct logical side
- * {@link ChunkDataCache#WORLD_GEN} is used for chunk data during world generation, as it's being generated. It is cleared once the chunk is completely generated
+ * {  ChunkDataCache#CLIENT} and {  ChunkDataCache#SERVER} are logical sided caches, used for when chunk data is needed without a world context. Care must be taken to choose the cache for the correct logical side
+ * {  ChunkDataCache#WORLD_GEN} is used for chunk data during world generation, as it's being generated. It is cleared once the chunk is completely generated
  */
 public final class ChunkDataCache
 {
@@ -44,8 +44,8 @@ public final class ChunkDataCache
     /**
      * This is a cache of incomplete chunk data used by world generation
      * It is generated in stages:
-     * - {@link ChunkData.Status#CLIMATE} during biome generation to generate climate variants
-     * - {@link ChunkData.Status#ROCKS} during surface generation, later used for feature generation
+     * - {  ChunkData.Status#CLIMATE} during biome generation to generate climate variants
+     * - {  ChunkData.Status#ROCKS} during surface generation, later used for feature generation
      * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
      */
     public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen");

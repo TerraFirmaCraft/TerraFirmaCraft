@@ -24,7 +24,7 @@ public class SupportManager extends DataManager<Support>
     public static final SupportManager INSTANCE = new SupportManager();
 
     /**
-     * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link SupportManager#isSupported(IBlockReader, BlockPos)}
+     * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {  SupportManager#isSupported(IBlockReader, BlockPos)}
      */
     public static Set<BlockPos> findUnsupportedPositions(IBlockReader worldIn, BlockPos from, BlockPos to)
     {
@@ -40,13 +40,13 @@ public class SupportManager extends DataManager<Support>
         {
             if (!listSupported.contains(searchingPoint))
             {
-                listUnsupported.add(searchingPoint.immutable()); // Adding blocks that wasn't found supported
+                listUnsupported.add(searchingPoint.toImmutable()); // Adding blocks that wasn't found supported
             }
             BlockState supportState = worldIn.getBlockState(searchingPoint);
             INSTANCE.get(supportState).ifPresent(support -> {
                 for (BlockPos supported : support.getSupportedArea(searchingPoint))
                 {
-                    listSupported.add(supported.immutable()); // Adding all supported blocks by this support
+                    listSupported.add(supported.toImmutable()); // Adding all supported blocks by this support
                     listUnsupported.remove(supported); // Remove if this block was added earlier
                 }
             });
@@ -84,7 +84,7 @@ public class SupportManager extends DataManager<Support>
 
     public Iterable<BlockPos> getMaximumSupportedAreaAround(BlockPos minPoint, BlockPos maxPoint)
     {
-        return BlockPos.betweenClosed(minPoint.offset(-maxSupportHorizontal, -maxSupportDown, -maxSupportHorizontal), maxPoint.offset(maxSupportHorizontal, maxSupportUp, maxSupportHorizontal));
+        return BlockPos.getAllInBoxMutable(minPoint.add(-maxSupportHorizontal, -maxSupportDown, -maxSupportHorizontal), maxPoint.add(maxSupportHorizontal, maxSupportUp, maxSupportHorizontal));
     }
 
     @Override

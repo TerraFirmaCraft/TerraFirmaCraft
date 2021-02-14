@@ -30,9 +30,9 @@ public class WaterPlantPlacer extends BlockPlacer
         {
             IFluidLoggable block = (IFluidLoggable) state.getBlock();
             BlockState setState = block.getStateWithFluid(state, worldIn.getFluidState(pos).getType());
-            if (setState.getValue(block.getFluidProperty()).getFluid() == Fluids.EMPTY)
+            if (setState.get(block.getFluidProperty()).getFluid() == Fluids.EMPTY)
                 return;
-            worldIn.setBlock(pos, setState.setValue(TFCBlockStateProperties.AGE_3, random.nextInt(4)), 2);
+            worldIn.setBlockState(pos, setState.with(TFCBlockStateProperties.AGE_3, random.nextInt(4)), 2);
         }
     }
 

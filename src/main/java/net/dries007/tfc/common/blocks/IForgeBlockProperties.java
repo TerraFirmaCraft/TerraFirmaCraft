@@ -16,8 +16,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.extensions.IForgeBlock;
 
 /**
- * This implements some of the more annoying methods in {@link IForgeBlock} which would otherwise require implementing across all manner of vanilla subclasses.
- * Since forge has made the decision that blocks should have behavioral control rather than add entries to {@link net.minecraft.block.AbstractBlock.Properties}, we mimic the same structure here.
+ * This implements some of the more annoying methods in {  IForgeBlock} which would otherwise require implementing across all manner of vanilla subclasses.
+ * Since forge has made the decision that blocks should have behavioral control rather than add entries to {  net.minecraft.block.AbstractBlock.Properties}, we mimic the same structure here.
  */
 public interface IForgeBlockProperties extends IForgeBlock
 {

@@ -12,7 +12,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * {@link INamedContainerProvider} for static screen / container pairs that are not attached to a TE or other object which makes sense to implement this on.
+ * {  INamedContainerProvider} for static screen / container pairs that are not attached to a TE or other object which makes sense to implement this on.
  */
 public class TFCContainerProviders
 {

@@ -51,7 +51,7 @@ public final class HeatCapability
     }
 
     /**
-     * Call this from within {@link IHeat#getTemperature()}
+     * Call this from within {  IHeat#getTemperature()}
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {

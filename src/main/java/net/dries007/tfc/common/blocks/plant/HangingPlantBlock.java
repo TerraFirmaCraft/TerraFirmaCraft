@@ -51,13 +51,13 @@ public abstract class HangingPlantBlock extends PlantBlock
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {
-            BlockState attach = worldIn.getBlockState(currentPos.relative(direction));
+            BlockState attach = worldIn.getBlockState(currentPos.offset(direction));
             if (attach.getMaterial() == Material.LEAVES)
             {
-                return stateIn.setValue(HANGING, direction == Direction.UP);
+                return stateIn.with(HANGING, direction == Direction.UP);
             }
         }
-        return Blocks.AIR.defaultBlockState();
+        return Blocks.AIR.getDefaultState();
     }
 
     @Override
@@ -65,7 +65,7 @@ public abstract class HangingPlantBlock extends PlantBlock
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {
-            if (worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
+            if (worldIn.getBlockState(pos.offset(direction)).getMaterial() == Material.LEAVES)
             {
                 return true;
             }
@@ -77,13 +77,13 @@ public abstract class HangingPlantBlock extends PlantBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        if (context.getLevel().getBlockState(context.getClickedPos().relative(Direction.UP)).getMaterial() == Material.LEAVES)
+        if (context.getWorld().getBlockState(context.getPos().offset(Direction.UP)).getMaterial() == Material.LEAVES)
         {
-            return defaultBlockState().setValue(HANGING, true);
+            return defaultBlockState().with(HANGING, true);
         }
-        if (context.getLevel().getBlockState(context.getClickedPos().relative(Direction.DOWN)).getMaterial() == Material.LEAVES)
+        if (context.getWorld().getBlockState(context.getPos().offset(Direction.DOWN)).getMaterial() == Material.LEAVES)
         {
-            return defaultBlockState().setValue(HANGING, false);
+            return defaultBlockState().with(HANGING, false);
         }
         return null;
     }
@@ -91,7 +91,7 @@ public abstract class HangingPlantBlock extends PlantBlock
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (state.getValue(HANGING))
+        if (state.get(HANGING))
         {
             return super.getShape(state, worldIn, pos, context);
         }

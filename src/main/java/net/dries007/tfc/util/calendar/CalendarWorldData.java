@@ -18,7 +18,7 @@ public class CalendarWorldData extends WorldSavedData
 
     public static CalendarWorldData get(ServerWorld world)
     {
-        return world.getDataStorage().computeIfAbsent(CalendarWorldData::new, NAME);
+        return world.getSavedData().getOrCreate(CalendarWorldData::new, NAME);
     }
 
     private final Calendar calendar;
@@ -36,17 +36,16 @@ public class CalendarWorldData extends WorldSavedData
     }
 
     @Override
-    public void load(CompoundNBT nbt)
-    {
+    public void read(CompoundNBT nbt) {
         calendar.read(nbt.getCompound("calendar"));
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
-    {
+    public CompoundNBT write(CompoundNBT nbt) {
         nbt.put("calendar", Calendars.SERVER.write());
         return nbt;
     }
+
 
     /**
      * Since this updates every tick, and doesn't store a local copy always assume it needs saving to disk

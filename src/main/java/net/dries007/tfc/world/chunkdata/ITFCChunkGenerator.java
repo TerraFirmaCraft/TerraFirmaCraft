@@ -24,7 +24,7 @@ public interface ITFCChunkGenerator
     ChunkDataProvider getChunkDataProvider();
 
     /**
-     * Override in {@link net.minecraft.world.gen.ChunkGenerator} to return a narrower type
+     * Override in {  net.minecraft.world.gen.ChunkGenerator} to return a narrower type
      *
      * @return The biome provider / source for this generator
      */

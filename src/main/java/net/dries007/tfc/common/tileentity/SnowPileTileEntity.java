@@ -26,7 +26,7 @@ public class SnowPileTileEntity extends TFCTileEntity
     {
         super(type);
 
-        this.internalState = Blocks.AIR.defaultBlockState();
+        this.internalState = Blocks.AIR.getDefaultState();
     }
 
     public void setInternalState(BlockState state)
@@ -37,12 +37,12 @@ public class SnowPileTileEntity extends TFCTileEntity
 
     public BlockState getDestroyedState(BlockState prevState)
     {
-        int prevLayers = prevState.getValue(SnowBlock.LAYERS);
+        int prevLayers = prevState.get(SnowBlock.LAYERS);
         if (prevLayers == 1)
         {
             return internalState;
         }
-        return prevState.setValue(SnowBlock.LAYERS, prevLayers - 1);
+        return prevState.with(SnowBlock.LAYERS, prevLayers - 1);
     }
 
     @Override

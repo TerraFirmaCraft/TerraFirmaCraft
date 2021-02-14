@@ -37,7 +37,7 @@ public class CavePatchFeature extends Feature<BlockClusterFeatureConfig>
             mutablePos.move(Direction.UP);
             final BlockState state = config.stateProvider.getState(rand, mutablePos);
 
-            if (world.isEmptyBlock(mutablePos) && state.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            if (world.isEmptyBlock(mutablePos) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
                 config.blockPlacer.place(world, mutablePos, state, rand);
                 placedAny = true;

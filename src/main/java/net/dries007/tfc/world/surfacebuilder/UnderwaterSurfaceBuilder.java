@@ -62,7 +62,7 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
                     surfaceDepth = maxSurfaceDepth;
                     if (maxSurfaceDepth <= 0)
                     {
-                        topState = Blocks.AIR.defaultBlockState();
+                        topState = Blocks.AIR.getDefaultState();
                         underState = defaultBlock;
                     }
                     else if (y < seaLevel - 1)

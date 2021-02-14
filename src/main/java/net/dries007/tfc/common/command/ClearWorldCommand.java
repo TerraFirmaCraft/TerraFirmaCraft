@@ -59,9 +59,9 @@ public final class ClearWorldCommand
     {
         source.sendSuccess(new TranslationTextComponent(STARTING), true);
 
-        final World world = source.getLevel();
+        final World world = source.getWorld();
         final BlockPos center = new BlockPos(source.getPosition());
-        final BlockState air = Blocks.AIR.defaultBlockState();
+        final BlockState air = Blocks.AIR.getDefaultState();
 
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final Predicate<BlockState> predicate = preset.make(source.getServer());
@@ -79,7 +79,7 @@ public final class ClearWorldCommand
                     BlockState state = world.getBlockState(mutablePos);
                     if (!state.isAir() && predicate.test(state))
                     {
-                        world.setBlock(mutablePos, air, 2 | 16);
+                        world.setBlockState(mutablePos, air, 2 | 16);
                         blocksRemoved++;
                     }
                 }

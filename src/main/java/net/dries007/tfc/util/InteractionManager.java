@@ -41,8 +41,8 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
  * This exists due to problems in handling right click events
- * Forge provides a right click block event. This works for intercepting would-be calls to {@link net.minecraft.block.BlockState#use(World, PlayerEntity, Hand, BlockRayTraceResult)}
- * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {@link net.minecraft.item.ItemStack#onItemUse(ItemUseContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority
+ * Forge provides a right click block event. This works for intercepting would-be calls to {  net.minecraft.block.BlockState#use(World, PlayerEntity, Hand, BlockRayTraceResult)}
+ * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {  net.minecraft.item.ItemStack#onItemUse(ItemUseContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority
  *
  * This is in lieu of a system such as https://github.com/MinecraftForge/MinecraftForge/pull/6615
  */
@@ -55,23 +55,23 @@ public final class InteractionManager
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
-            final World world = context.getLevel();
+            final World world = context.getWorld();
             final PlayerEntity player = context.getPlayer();
-            if (!world.isClientSide() && player != null)
+            if (!!world.isRemote() && player != null)
             {
-                final BlockPos basePos = context.getClickedPos();
+                final BlockPos basePos = context.getPos();
                 final Direction facing = context.getHorizontalDirection();
-                final BlockState bed = TFCBlocks.THATCH_BED.get().defaultBlockState();
+                final BlockState bed = TFCBlocks.THATCH_BED.get().getDefaultState();
                 for (Direction direction : new Direction[] {facing, facing.getClockWise(), facing.getOpposite(), facing.getCounterClockWise()})
                 {
-                    final BlockPos headPos = basePos.relative(direction, 1);
-                    if (world.getBlockState(basePos).is(TFCTags.Blocks.THATCH_BED_THATCH) && world.getBlockState(headPos).is(TFCTags.Blocks.THATCH_BED_THATCH))
+                    final BlockPos headPos = basePos.offset(direction, 1);
+                    if (world.getBlockState(basePos).isIn(TFCTags.Blocks.THATCH_BED_THATCH) && world.getBlockState(headPos).isIn(TFCTags.Blocks.THATCH_BED_THATCH))
                     {
                         final BlockPos playerPos = player.blockPosition();
                         if (playerPos != headPos && playerPos != basePos)
                         {
-                            world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
-                            world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
+                            world.setBlockState(basePos, bed.with(ThatchBedBlock.PART, BedPart.FOOT).with(ThatchBedBlock.FACING, direction), 18);
+                            world.setBlockState(headPos, bed.with(ThatchBedBlock.PART, BedPart.HEAD).with(ThatchBedBlock.FACING, direction.getOpposite()), 18);
                             stack.shrink(1);
                             return ActionResultType.SUCCESS;
                         }
@@ -91,10 +91,10 @@ public final class InteractionManager
             else
             {
                 final BlockItemUseContext blockContext = new BlockItemUseContext(context);
-                final World world = context.getLevel();
-                final BlockPos pos = context.getClickedPos();
+                final World world = context.getWorld();
+                final BlockPos pos = context.getPos();
                 final BlockState stateAt = world.getBlockState(blockContext.getClickedPos());
-                if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                if (stateAt.isIn(TFCTags.Blocks.CAN_BE_SNOW_PILED))
                 {
                     SnowPileBlock.convertToPile(world, pos, stateAt);
                     BlockState placedState = world.getBlockState(pos);
@@ -105,7 +105,7 @@ public final class InteractionManager
                         stack.shrink(1);
                     }
 
-                    ActionResultType result = ActionResultType.sidedSuccess(world.isClientSide);
+                    ActionResultType result = ActionResultType.sidedSuccess(!world.isRemote);
                     if (player != null && result.consumesAction())
                     {
                         player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
@@ -149,7 +149,7 @@ public final class InteractionManager
 
     public static void register(ITag<Item> tag, OnItemUseAction action)
     {
-        ACTIONS.add(new Entry(action, stack -> stack.getItem().is(tag), tag::getValues));
+        ACTIONS.add(new Entry(action, stack -> stack.getItem().isIn(tag), tag::getValues));
     }
 
     public static Optional<ActionResultType> onItemUse(ItemStack stack, ItemUseContext context)

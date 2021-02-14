@@ -75,14 +75,14 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         double maxRadiusSquared = 0;
         for (BlockPos pos : positions)
         {
-            double distSquared = pos.distSqr(centerPos);
+            double distSquared = pos.distanceSq(centerPos);
             if (distSquared > maxRadiusSquared)
             {
                 maxRadiusSquared = distSquared;
             }
             if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
             {
-                collapsePositions.add(pos.above()); // Check the above position
+                collapsePositions.add(pos.up()); // Check the above position
             }
         }
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
@@ -90,7 +90,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
 
     public void tick(World world)
     {
-        if (!world.isClientSide())
+        if (world.isRemote)
         {
             if (!collapsesInProgress.isEmpty() && RANDOM.nextInt(10) == 0)
             {
@@ -101,12 +101,12 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     {
                         // Check the current position for collapsing
                         BlockState stateAt = world.getBlockState(posAt);
-                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.down()) && posAt.distanceSq(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
                             if (CollapseRecipe.collapseBlock(world, posAt, stateAt))
                             {
                                 // This column has started to collapse. Mark the next block above as unstable for the "follow up"
-                                updatedPositions.add(posAt.above());
+                                updatedPositions.add(posAt.up());
                             }
                         }
                     }
@@ -163,7 +163,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
         nbt.put("landslideTicks", landslideNbt);
 
-        LongArrayNBT isolatedNbt = new LongArrayNBT(isolatedPositions.stream().mapToLong(BlockPos::asLong).toArray());
+        LongArrayNBT isolatedNbt = new LongArrayNBT(isolatedPositions.stream().mapToLong(BlockPos::toLong).toArray());
         nbt.put("isolatedPositions", isolatedNbt);
 
         ListNBT collapseNbt = new ListNBT();
@@ -191,7 +191,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             }
 
             long[] isolatedNbt = nbt.getLongArray("isolatedPositions");
-            Arrays.stream(isolatedNbt).mapToObj(BlockPos::of).forEach(isolatedPositions::add);
+            Arrays.stream(isolatedNbt).mapToObj(BlockPos::fromLong).forEach(isolatedPositions::add);
 
             ListNBT collapseNbt = nbt.getList("collapsesInProgress", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < collapseNbt.size(); i++)
@@ -211,7 +211,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     {
         for (Direction direction : Direction.values())
         {
-            if (!world.isEmptyBlock(pos.relative(direction)))
+            if (!world.isAirBlock(pos.offset(direction)))
             {
                 return false;
             }

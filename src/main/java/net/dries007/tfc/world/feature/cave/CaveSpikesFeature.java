@@ -37,21 +37,21 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
     {
         // The direction that the spike is pointed
         Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
-        BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));
+        BlockState wallState = worldIn.getBlockState(pos.offset(direction.getOpposite()));
         Rock wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
         if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
         {
-            place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
+            place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).getDefaultState(), wallRock.getBlock(Rock.BlockType.RAW).getDefaultState(), direction, rand);
         }
         else
         {
             // Switch directions and try again
             direction = direction.getOpposite();
-            wallState = worldIn.getBlockState(pos.relative(direction));
+            wallState = worldIn.getBlockState(pos.offset(direction));
             wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
             if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
             {
-                place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
+                place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).getDefaultState(), wallRock.getBlock(Rock.BlockType.RAW).getDefaultState(), direction, rand);
             }
         }
         return true;
@@ -69,26 +69,26 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 
     protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
     {
-        if (!raw.is(BlockTags.BASE_STONE_OVERWORLD))
+        if (!raw.isIn(BlockTags.BASE_STONE_OVERWORLD))
             return;
         // Build a spike starting downwards from the target block
         if (sizeWeight < 0.2f)
         {
-            replaceBlock(worldIn, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlock(worldIn, pos, spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(worldIn, pos.offset(direction, 1), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
         else if (sizeWeight < 0.7f)
         {
-            replaceBlock(worldIn, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlock(worldIn, pos, spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
+            replaceBlock(worldIn, pos.offset(direction, 1), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(worldIn, pos.offset(direction, 2), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
         else
         {
             replaceBlockWithoutFluid(worldIn, pos, raw);
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
-            replaceBlock(worldIn, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 3), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlock(worldIn, pos.offset(direction, 1), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
+            replaceBlock(worldIn, pos.offset(direction, 2), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(worldIn, pos.offset(direction, 3), spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
     }
 
@@ -103,11 +103,11 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         }
         else if (block == Blocks.WATER)
         {
-            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
+            setBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
         }
         else if (block == Blocks.LAVA)
         {
-            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
+            setBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
         }
     }
 

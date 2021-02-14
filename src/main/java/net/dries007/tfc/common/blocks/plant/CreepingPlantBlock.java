@@ -67,16 +67,16 @@ public abstract class CreepingPlantBlock extends PlantBlock
     {
         super(properties);
 
-        shapeCache = getStateDefinition().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.getValue(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
+        shapeCache = getStateDefinition().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.get(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
 
-        registerDefaultState(defaultBlockState().setValue(UP, false).setValue(DOWN, false).setValue(EAST, false).setValue(WEST, false).setValue(NORTH, false).setValue(SOUTH, false));
+        registerDefaultState(defaultBlockState().with(UP, false).with(DOWN, false).with(EAST, false).with(WEST, false).with(NORTH, false).with(SOUTH, false));
     }
 
     @Override
     public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
-        return isEmpty(stateIn) ? Blocks.AIR.defaultBlockState() : stateIn;
+        stateIn = stateIn.with(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
+        return isEmpty(stateIn) ? Blocks.AIR.getDefaultState() : stateIn;
     }
 
     @Override
@@ -85,7 +85,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
+            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -119,7 +119,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return updateStateFromSides(context.getLevel(), context.getClickedPos(), updateStateWithCurrentMonth(defaultBlockState()));
+        return updateStateFromSides(context.getWorld(), context.getPos(), updateStateWithCurrentMonth(defaultBlockState()));
     }
 
     private BlockState updateStateFromSides(IWorld world, BlockPos pos, BlockState state)
@@ -129,19 +129,19 @@ public abstract class CreepingPlantBlock extends PlantBlock
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = world.getBlockState(mutablePos).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
+            boolean ground = world.getBlockState(mutablePos).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
-            state = state.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
+            state = state.with(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;
         }
-        return hasEarth ? state : Blocks.AIR.defaultBlockState();
+        return hasEarth ? state : Blocks.AIR.getDefaultState();
     }
 
     private boolean isEmpty(BlockState state)
     {
         for (BooleanProperty property : SHAPES_BY_PROPERTY.keySet())
         {
-            if (state.getValue(property))
+            if (state.get(property))
             {
                 return false;
             }

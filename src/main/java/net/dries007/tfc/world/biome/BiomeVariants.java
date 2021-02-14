@@ -15,10 +15,10 @@ import net.minecraftforge.fml.RegistryObject;
 import net.dries007.tfc.world.noise.INoise2D;
 
 /**
- * This is a version of {@link RegistryObject} for biomes.
+ * This is a version of {  RegistryObject} for biomes.
  * Since we have variants in both temperature and rainfall, we use this as the "biome main type" object.
- * To get the variant holder from the biome, use {@link TFCBiome#getVariants()}
- * To get the biome from the variants, use one of the {@link BiomeVariants#get()} methods.
+ * To get the variant holder from the biome, use {  TFCBiome#getVariants()}
+ * To get the biome from the variants, use one of the {  BiomeVariants#get()} methods.
  */
 public class BiomeVariants
 {

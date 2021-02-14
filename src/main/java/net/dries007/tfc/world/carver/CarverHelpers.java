@@ -53,7 +53,7 @@ public final class CarverHelpers
                     for (int z = 0; z < 16; z++)
                     {
                         final BlockState state = section.getBlockState(x, localY, z);
-                        if (state.getFluidState().is(FluidTags.WATER))
+                        if (state.getFluidState().isIn(FluidTags.WATER))
                         {
                             // Update a region around the water block in the mask
                             for (int xi = -2; xi <= 2; xi++)

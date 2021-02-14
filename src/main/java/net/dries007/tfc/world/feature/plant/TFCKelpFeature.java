@@ -44,10 +44,10 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.set(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, mutablePos));
             mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+            if (!world.getBlockState(mutablePos).isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 return false;
             mutablePos.move(Direction.UP);
-            if (world.isWaterAt(mutablePos) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable))
+            if (world.hasWater(mutablePos) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable))
             {
                 placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, getWetBlock(world, mutablePos, config.getBodyState()), getWetBlock(world, mutablePos, config.getHeadState()));
                 placedAny = true;
@@ -60,15 +60,15 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (world.isWaterAt(mutablePos) && body.canSurvive(world, mutablePos))
+            if (world.hasWater(mutablePos) && body.canBeReplacedByLeaves(world, mutablePos))
             {
-                if (i == height || !world.isWaterAt(mutablePos.above()))
+                if (i == height || !world.hasWater(mutablePos.up()))
                 {
-                    if (!world.getBlockState(mutablePos.below()).is(head.getBlock()))
-                        world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 16);
+                    if (!world.getBlockState(mutablePos.down()).isIn(head.getBlock()))
+                        world.setBlockState(mutablePos, head.with(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 16);
                     return;
                 }
-                world.setBlock(mutablePos, body, 16);
+                world.setBlockState(mutablePos, body, 16);
             }
             mutablePos.move(Direction.UP);
         }
@@ -80,7 +80,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         {
             IFluidLoggable block = (IFluidLoggable) state.getBlock();
             BlockState setState = block.getStateWithFluid(state, world.getFluidState(pos).getType());
-            if (setState.getValue(block.getFluidProperty()).getFluid() != Fluids.EMPTY)
+            if (setState.get(block.getFluidProperty()).getFluid() != Fluids.EMPTY)
                 return setState;
         }
         return state;

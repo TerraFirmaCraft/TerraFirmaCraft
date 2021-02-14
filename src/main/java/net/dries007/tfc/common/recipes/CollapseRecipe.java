@@ -62,7 +62,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean tryTriggerCollapse(World world, BlockPos pos)
     {
-        if (!world.isClientSide() && world.isAreaLoaded(pos, 32))
+        if (!!world.isRemote() && world.isAreaLoaded(pos, 32))
         {
             if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
@@ -89,7 +89,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(IWorld world, BlockPos pos)
     {
-        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
+        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
     }
 
     /**
@@ -110,17 +110,17 @@ public class CollapseRecipe extends SimpleBlockRecipe
             boolean foundEmpty = false; // If we've found a space to collapse into
             for (int y = 0; y <= 8; y++)
             {
-                BlockPos posAt = pos.above(y);
+                BlockPos posAt = pos.up(y);
                 BlockState stateAt = world.getBlockState(posAt);
                 if (foundEmpty && TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()))
                 {
                     // Check for a possible collapse
-                    if (posAt.distSqr(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                    if (posAt.distanceSq(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
                         if (collapseBlock(world, posAt, stateAt))
                         {
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
-                            secondaryPositions.add(posAt.above());
+                            secondaryPositions.add(posAt.up());
                             break;
                         }
                     }

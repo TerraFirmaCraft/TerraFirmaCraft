@@ -62,7 +62,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
     {
-        if (!world.isClientSide() && TFCConfig.SERVER.enableBlockLandslides.get())
+        if (!!world.isRemote() && TFCConfig.SERVER.enableBlockLandslides.get())
         {
             BlockPos fallPos = getLandSlidePos(world, pos);
             if (fallPos != null)
@@ -93,7 +93,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
         {
             return null;
         }
-        else if (TFCFallingBlockEntity.canFallThrough(world, pos.below()))
+        else if (TFCFallingBlockEntity.canFallThrough(world, pos.down()))
         {
             return pos;
         }
@@ -118,8 +118,8 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     else
                     {
                         // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
-                        BlockPos posSide = pos.relative(side);
-                        if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.below()))
+                        BlockPos posSide = pos.offset(side);
+                        if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.down()))
                         {
                             possibleDirections.add(posSide);
                         }
@@ -137,7 +137,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
 
     public static boolean isSupportedOnSide(IBlockReader world, BlockPos pos, Direction side)
     {
-        BlockPos sidePos = pos.relative(side);
+        BlockPos sidePos = pos.offset(side);
         BlockState sideState = world.getBlockState(sidePos);
         return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }

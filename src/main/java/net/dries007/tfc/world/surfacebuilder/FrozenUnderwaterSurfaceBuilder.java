@@ -28,7 +28,7 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
- * Modified from {@link net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
+ * Modified from {  net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
  */
 public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig> implements IContextSurfaceBuilder<SurfaceBuilderConfig>
 {
@@ -50,8 +50,8 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
     @SuppressWarnings("deprecation")
     public void applyWithContext(IWorld worldIn, ChunkData chunkData, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double surfaceNoise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
-        final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
-        final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
+        final BlockState packedIce = Blocks.PACKED_ICE.getDefaultState();
+        final BlockState snowBlock = Blocks.SNOW_BLOCK.getDefaultState();
 
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;
@@ -61,7 +61,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
-        double icebergValue = Math.min(Math.abs(surfaceNoise), icebergNoise.getValue(x * 0.1D, z * 0.1D, false) * 15.0D);
+        double icebergValue = Math.min(Math.abs(surfaceNoise), icebergNoise.get(x * 0.1D, z * 0.1D, false) * 15.0D);
         icebergValue += (thresholdTemperature - maxAnnualTemperature) * 0.2f;
         if (maxAnnualTemperature > thresholdTemperature)
         {
@@ -69,7 +69,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         }
         if (icebergValue > 1.8D)
         {
-            final double icebergRoofValue = Math.abs(icebergRoofNoise.getValue(x * 0.09765625D, z * 0.09765625D, false));
+            final double icebergRoofValue = Math.abs(icebergRoofNoise.get(x * 0.09765625D, z * 0.09765625D, false));
             final double maxIcebergRoofValue = Math.ceil(icebergRoofValue * 40.0D) + 14.0D;
 
             icebergMaxY = icebergValue * icebergValue * 1.2D;
@@ -118,9 +118,9 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
             {
                 surfaceFlag = -1;
             }
-            else if (!stateAt.is(defaultBlock.getBlock()))
+            else if (!stateAt.isIn(defaultBlock.getBlock()))
             {
-                if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
+                if (stateAt.isIn(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
                 {
                     chunkIn.setBlockState(mutablePos, snowBlock, false);
                     ++currentSnowLayers;
@@ -130,7 +130,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
             {
                 if (normalSurfaceDepth <= 0)
                 {
-                    topState = Blocks.AIR.defaultBlockState();
+                    topState = Blocks.AIR.getDefaultState();
                     underState = defaultBlock;
                 }
                 else if (y >= seaLevel - 4 && y <= seaLevel + 1)

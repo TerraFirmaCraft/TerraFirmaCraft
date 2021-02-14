@@ -52,10 +52,10 @@ public class TFCVinesFeature extends Feature<VineConfig>
                     {
                         mutablePos.move(direction);
                         BlockState foundState = world.getBlockState(mutablePos);
-                        if (direction != Direction.DOWN && (foundState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON) || foundState.is(BlockTags.LOGS) || foundState.is(BlockTags.LEAVES)))
+                        if (direction != Direction.DOWN && (foundState.isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON) || foundState.isIn(BlockTags.LOGS) || foundState.isIn(BlockTags.LEAVES)))
                         {
                             mutablePos.move(direction.getOpposite());
-                            world.setBlock(mutablePos, state.setValue(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                            world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyForFace(direction), true), 2);
                             if (direction != Direction.UP)
                                 dirs.add(direction);
                             break;
@@ -71,7 +71,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
                             {
                                 for (Direction direction : dirs)
                                 {
-                                    world.setBlock(mutablePos, state.setValue(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                                    world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyForFace(direction), true), 2);
                                 }
                             }
                         }

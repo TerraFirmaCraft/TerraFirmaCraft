@@ -26,7 +26,7 @@ public final class VolcanoNoise
     }
 
     /**
-     * Represents a mapping from a volcano distance map (obtained via {@link VolcanoNoise#cellNoise(long)}) to a scalar value representing how close to a volcano we are, in  [0, 1].
+     * Represents a mapping from a volcano distance map (obtained via {  VolcanoNoise#cellNoise(long)}) to a scalar value representing how close to a volcano we are, in  [0, 1].
      *
      * @param distance The square distance to the volcano
      * @return A value in [0, 1], where 0 = not close to a volcano, (0, 1) = nearing a volcano, and 1 = near the center of the volcano
@@ -75,7 +75,7 @@ public final class VolcanoNoise
      * The noise affecting the distance that volcanoes use for both easing and height maps
      *
      * @param seed The world seed
-     * @return A noise function which, when added to the distance noise from {@link VolcanoNoise#cellNoise(long)}, produces the actual distance used for further noise calculations
+     * @return A noise function which, when added to the distance noise from {  VolcanoNoise#cellNoise(long)}, produces the actual distance used for further noise calculations
      */
     public static INoise2D distanceVariationNoise(long seed)
     {

@@ -48,7 +48,7 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
             {
                 return false;
             }
-            if (world.getBlockState(mutablePos).getBlock().is(Blocks.CAVE_AIR))
+            if (world.getBlockState(mutablePos).getBlock().isIn(Blocks.CAVE_AIR))
             {
                 for (int j = 0; j < 7; j++)
                 {
@@ -60,11 +60,11 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
                 }
                 BlockState finalState = world.getBlockState(mutablePos);
                 mutablePos.move(Direction.UP);
-                if (finalState.is(BlockTags.BASE_STONE_OVERWORLD))
+                if (finalState.isIn(BlockTags.BASE_STONE_OVERWORLD))
                 {
                     placeDisc(world, mutablePos, rand);
                 }
-                else if (finalState.is(BlockTags.ICE) && rand.nextFloat() < 0.03F)
+                else if (finalState.isIn(BlockTags.ICE) && rand.nextFloat() < 0.03F)
                 {
                     placeDisc(world, mutablePos, rand);
                 }
@@ -85,7 +85,7 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
                 if (world.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
-                    if (world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    if (world.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(world, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
                         world.getLiquidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
@@ -94,7 +94,7 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
             }
             if (rand.nextFloat() < 0.03F)//large spikes
             {
-                if (mutablePos.getY() < 96 && world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                if (mutablePos.getY() < 96 && world.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
                     if (world.isEmptyBlock(mutablePos))
@@ -195,7 +195,7 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
         final float radiusSquared = radius * radius;
         final int size = MathHelper.ceil(radius);
         final BlockPos pos = mutablePos.immutable();
-        final BlockState ice = Blocks.ICE.defaultBlockState();
+        final BlockState ice = Blocks.ICE.getDefaultState();
         for (int x = -size; x <= size; x++)
         {
             for (int y = -size; y <= size; y++)
@@ -217,11 +217,11 @@ public class IceCaveFeature extends Feature<NoFeatureConfig>
     {
         if (rand.nextFloat() < 0.4F)
         {
-            return Blocks.PACKED_ICE.defaultBlockState();
+            return Blocks.PACKED_ICE.getDefaultState();
         }
         else
         {
-            return Blocks.BLUE_ICE.defaultBlockState();
+            return Blocks.BLUE_ICE.getDefaultState();
         }
     }
 }

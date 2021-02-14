@@ -73,7 +73,7 @@ public final class Helpers
     private static final Random RANDOM = new Random();
 
     /**
-     * Default {@link ResourceLocation}, except with a TFC namespace
+     * Default {  ResourceLocation}, except with a TFC namespace
      */
     public static ResourceLocation identifier(String name)
     {
@@ -120,11 +120,11 @@ public final class Helpers
         if (obj.has(path))
         {
             Map<K, V> objects = new HashMap<>();
-            JsonObject objectsJson = JSONUtils.getAsJsonObject(obj, path);
+            JsonObject objectsJson = JSONUtils.getJsonObject(obj, path);
             for (K expectedKey : keyValues)
             {
                 String jsonKey = keyStringMapper.apply(expectedKey);
-                ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
+                ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
                 V registryObject = registry.getValue(id);
                 if (registryObject == null)
                 {
@@ -137,7 +137,7 @@ public final class Helpers
                 String jsonKey = keyStringMapper.apply(optionalKey);
                 if (objectsJson.has(jsonKey))
                 {
-                    ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
+                    ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
                     V registryObject = registry.getValue(id);
                     if (registryObject == null)
                     {
@@ -175,7 +175,7 @@ public final class Helpers
     }
 
     /**
-     * Maps a {@link Supplier} to an {@link Optional} by swallowing any runtime exceptions.
+     * Maps a {  Supplier} to an {  Optional} by swallowing any runtime exceptions.
      */
     public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
     {
@@ -190,7 +190,7 @@ public final class Helpers
     }
 
     /**
-     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
+     * Like {  Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
      */
     public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
     {
@@ -268,24 +268,24 @@ public final class Helpers
     }
 
     /**
-     * Normally, one would just call {@link IWorld#isClientSide()}
+     * Normally, one would just call {  IWorld#isClientSide()}
      * HOWEVER
      * There exists a BIG HUGE PROBLEM in very specific scenarios with this
      * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link IWorld#isClientSide()}
+     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {  IWorld#isClientSide()}
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
     public static boolean isClientSide(IWorldReader world)
     {
-        return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
+        return world instanceof World ? !(world instanceof ServerWorld) : !world.isRemote();
     }
 
     @Nullable
     @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
+        TileEntity te = world.getTileEntity(pos);
         if (tileEntityClass.isInstance(te))
         {
             return (T) te;
@@ -296,7 +296,7 @@ public final class Helpers
     @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
+        TileEntity te = world.getTileEntity(pos);
         if (tileEntityClass.isInstance(te))
         {
             return (T) te;
@@ -305,7 +305,7 @@ public final class Helpers
     }
 
     /**
-     * This returns the previous result of {@link ServerWorld#getBlockRandomPos(int, int, int, int)}.
+     * This returns the previous result of {  ServerWorld#getBlockRandomPos(int, int, int, int)}.
      */
     public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
     {
@@ -318,7 +318,7 @@ public final class Helpers
         FluidState fluid = world.getFluidState(pos);
         if (state.getBlock() instanceof IFluidLoggable)
         {
-            return ((IFluidLoggable) state.getBlock()).getStateWithFluid(state, fluid.getType());
+            return ((IFluidLoggable) state.getBlock()).getStateWithFluid(state, fluid.getFluid());
         }
         return state;
     }
@@ -333,11 +333,11 @@ public final class Helpers
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
     {
-        Vector3d motion = entity.getDeltaMovement();
-        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
+        Vector3d motion = entity.getMotion();
+        entity.setMotion(motion.mul(factor, motion.y < 0 ? factor : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
-            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f);
+            entity.onLivingFall(entity.fallDistance - fallDamageReduction, 1.0f);
         }
         entity.fallDistance = 0;
     }
@@ -350,28 +350,29 @@ public final class Helpers
     }
 
     /**
-     * Copy pasta from {@link net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
+     * Copy pasta from {  net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
      */
     @Nullable
     public static BlockPos findValidSpawnLocation(ServerWorld world, ChunkPos chunkPos)
     {
         final Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); ++x)
+        for (int x = chunkPos.getXStart(); x <= chunkPos.getXEnd(); ++x)
         {
-            for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); ++z)
+            for (int z = chunkPos.getZStart(); z <= chunkPos.getZEnd(); ++z)
             {
-                mutablePos.set(x, 0, z);
+                mutablePos.setPos(x, 0, z);
 
                 final Biome biome = world.getBiome(mutablePos);
-                final int motionBlockingHeight = chunk.getHeight(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
-                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
-                final int oceanFloorHeight = chunk.getHeight(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15);
-                if (worldSurfaceHeight >= oceanFloorHeight && biome.getMobSettings().playerSpawnFriendly())
+                final Heightmap motionBlockingHeight = chunk.getHeightmap(Heightmap.Type.MOTION_BLOCKING);//, x & 15, z & 15);
+                final Heightmap worldSurfaceHeight = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE);// x & 15, z & 15);
+                final Heightmap oceanFloorHeight = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR);// x & 15, z & 15);
+                if (worldSurfaceHeight.getHeight(x&15,z&15) >= oceanFloorHeight.getHeight(x&15,z&15)
+                    && biome.getMobSpawnInfo().isValidSpawnBiomeForPlayer())
                 {
-                    for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
+                    for (int y = 1 + motionBlockingHeight.getHeight(x&15,z&15); y >= oceanFloorHeight.getHeight(x&15,z&15); y--)
                     {
-                        mutablePos.set(x, y, z);
+                        mutablePos.setPos(x, y, z);
 
                         final BlockState state = world.getBlockState(mutablePos);
                         if (!state.getFluidState().isEmpty())
@@ -381,7 +382,7 @@ public final class Helpers
 
                         if (BlockTags.VALID_SPAWN.contains(state.getBlock()))
                         {
-                            return mutablePos.above().immutable();
+                            return mutablePos.up().toImmutable();
                         }
                     }
                 }
@@ -403,7 +404,7 @@ public final class Helpers
     {
         if (copyTo.hasProperty(property))
         {
-            return copyTo.setValue(property, copyFrom.getValue(property));
+            return copyTo.with(property, copyFrom.get(property));
         }
         return copyTo;
     }
@@ -413,7 +414,7 @@ public final class Helpers
         PlayerEntity player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
         if (player != null)
         {
-            stack.hurtAndBreak(amount, player, entity -> {});
+            stack.damageItem(amount, player, entity -> {});
         }
         else
         {
@@ -422,24 +423,24 @@ public final class Helpers
     }
 
     /**
-     * A replacement for {@link ItemStack#hurtAndBreak(int, LivingEntity, Consumer)} when an entity is not present
+     * A replacement for {  ItemStack#hurtAndBreak(int, LivingEntity, Consumer)} when an entity is not present
      */
     public static void damageItem(ItemStack stack, int amount)
     {
-        if (stack.isDamageableItem())
+        if (stack.isDamageable())
         {
             // There's no player here so we can't safely do anything.
             //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-            if (stack.hurt(amount, RANDOM, null))
+            if (stack.attemptDamageItem(amount, RANDOM, null))
             {
                 stack.shrink(1);
-                stack.setDamageValue(0);
+                stack.setDamage(0);
             }
         }
     }
 
     /**
-     * Copied from {@link World#destroyBlock(BlockPos, boolean, Entity, int)}
+     * Copied from {  World#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
     @SuppressWarnings("deprecation")
@@ -451,17 +452,17 @@ public final class Helpers
             FluidState fluidstate = worldIn.getFluidState(pos);
             if (!(state.getBlock() instanceof AbstractFireBlock))
             {
-                worldIn.levelEvent(2001, pos, Block.getId(state));
+                worldIn.playEvent(2001, pos, Block.getStateId(state));
             }
 
             if (worldIn instanceof ServerWorld)
             {
-                TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+                TileEntity tileEntity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
 
                 // Copied from Block.getDrops()
                 LootContext.Builder lootContext = new LootContext.Builder((ServerWorld) worldIn)
-                    .withRandom(worldIn.random)
-                    .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos))
+                    .withRandom(worldIn.rand)
+                    .withParameter(LootParameters..ORIGIN, Vector3d.atCenterOf(pos))
                     .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
                     .withOptionalParameter(LootParameters.THIS_ENTITY, null)
                     .withOptionalParameter(LootParameters.BLOCK_ENTITY, tileEntity);
@@ -469,7 +470,7 @@ public final class Helpers
                 state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
                 state.spawnAfterBreak((ServerWorld) worldIn, pos, ItemStack.EMPTY);
             }
-            worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+            worldIn.setBlockState(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
     }
 }

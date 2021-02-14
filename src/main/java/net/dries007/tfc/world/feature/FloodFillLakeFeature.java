@@ -40,7 +40,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
     public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getXStart() - 14, chunkPos.getZStart() - 14, chunkPos.getXEnd() + 14, chunkPos.getZEnd() + 14); // Leeway so we can check outside this box
 
         final Set<BlockPos> filled = new HashSet<>();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -54,7 +54,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         pos = mutablePos.immutable();
 
         // Initial placement is surface level, so start filling one block above
-        final BlockPos startPos = pos.above();
+        final BlockPos startPos = pos.up();
         final BlockState fill = config.getState();
         final Fluid fluid = fill.getFluidState().getType();
         if (floodFill(worldIn, startPos, box, filled, mutablePos, config))
@@ -64,7 +64,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
             {
                 for (BlockPos filledPos : filled)
                 {
-                    worldIn.setBlock(filledPos, fill, 2);
+                    worldIn.setBlockState(filledPos, fill, 2);
                     worldIn.getLiquidTicks().scheduleTick(filledPos, fluid, 0);
 
                     // If we're at the bottom
@@ -75,7 +75,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                         if (stateDown.getBlock() instanceof IGrassBlock)
                         {
                             BlockState dirtState = ((IGrassBlock) stateDown.getBlock()).getDirt();
-                            worldIn.setBlock(mutablePos, dirtState, 2);
+                            worldIn.setBlockState(mutablePos, dirtState, 2);
                         }
                     }
                 }
@@ -100,7 +100,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 
         // Initial result is valid, overfill upwards
         Set<BlockPos> nextFilled = new HashSet<>(filled);
-        startPos = startPos.above();
+        startPos = startPos.up();
         int prevSize = filled.size();
 
         while (floodFillLayer(worldIn, startPos, box, nextFilled, mutablePos, config))
@@ -111,7 +111,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                 // The last move upwards added no new filled area. We abort here to not endlessly advance upwards
                 return true;
             }
-            startPos = startPos.above();
+            startPos = startPos.up();
         }
         return true;
     }

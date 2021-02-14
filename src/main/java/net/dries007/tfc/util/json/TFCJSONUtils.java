@@ -32,7 +32,7 @@ public class TFCJSONUtils
     {
         if (json.isJsonObject())
         {
-            return Helpers.readBlockState(JSONUtils.getAsString(json.getAsJsonObject(), "block"));
+            return Helpers.readBlockState(JSONUtils.getString(json.getJsonObject(), "block"));
         }
         else
         {
@@ -77,8 +77,8 @@ public class TFCJSONUtils
             {
                 if (element.isJsonObject())
                 {
-                    JsonObject obj = element.getAsJsonObject();
-                    float weight = JSONUtils.getAsFloat(obj, "weight", 1);
+                    JsonObject obj = element.getJsonObject();
+                    float weight = JSONUtils.getFloat(obj, "weight", 1);
                     states.add(weight, elementDeserializer.apply(obj));
                 }
                 else

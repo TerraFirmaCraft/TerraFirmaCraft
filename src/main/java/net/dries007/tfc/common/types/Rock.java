@@ -42,11 +42,11 @@ public class Rock
     public Rock(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        String rockCategoryName = JSONUtils.getAsString(json, "category");
+        String rockCategoryName = JSONUtils.getString(json, "category");
         this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category: " + rockCategoryName));
-        String desertSandColorName = JSONUtils.getAsString(json, "desert_sand_color");
+        String desertSandColorName = JSONUtils.getString(json, "desert_sand_color");
         this.desertSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(desertSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color: " + desertSandColorName));
-        String beachSandColorName = JSONUtils.getAsString(json, "beach_sand_color");
+        String beachSandColorName = JSONUtils.getString(json, "beach_sand_color");
         this.beachSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(beachSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown beach sand color: " + beachSandColorName));
         this.naturallyGenerating = JSONUtils.getAsBoolean(json, "naturally_generated", true);
 
@@ -182,7 +182,7 @@ public class Rock
 
         public StairsBlock createStairs(Default rock)
         {
-            Supplier<BlockState> state = () -> TFCBlocks.ROCK_BLOCKS.get(rock).get(this).get().defaultBlockState();
+            Supplier<BlockState> state = () -> TFCBlocks.ROCK_BLOCKS.get(rock).get(this).get().getDefaultState();
             AbstractBlock.Properties properties = AbstractBlock.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE);
             if (mossy() == this)
             {

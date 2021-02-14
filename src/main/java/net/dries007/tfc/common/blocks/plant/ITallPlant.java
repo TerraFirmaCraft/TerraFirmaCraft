@@ -14,7 +14,7 @@ public interface ITallPlant
 {
     default Part getPlantPart(IBlockReader world, BlockPos pos)
     {
-        if (world.getBlockState(pos.below()).getBlock() != this)
+        if (world.getBlockState(pos.down()).getBlock() != this)
         {
             return Part.LOWER;
         }

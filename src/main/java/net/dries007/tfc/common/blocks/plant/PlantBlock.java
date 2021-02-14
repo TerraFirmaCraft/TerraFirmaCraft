@@ -46,7 +46,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(getPlant().getStageProperty(), 0).setValue(AGE, 0));
+        registerDefaultState(getStateDefinition().any().with(getPlant().getStageProperty(), 0).with(AGE, 0));
     }
 
     @Override
@@ -62,7 +62,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get())
         {
-            state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
+            state = state.with(AGE, Math.min(state.get(AGE) + 1, 3));
         }
         world.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
     }
@@ -70,9 +70,9 @@ public abstract class PlantBlock extends TFCBushBlock
     /**
      * Gets the plant metadata for this block.
      *
-     * The stage property is isolated and referenced via this as it is needed in the {@link net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateContainer.Builder)}.
+     * The stage property is isolated and referenced via this as it is needed in the {  net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {  Block#createBlockStateDefinition(StateContainer.Builder)}.
      *
-     * See the various {@link PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
+     * See the various {  PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
      */
     public abstract IPlant getPlant();
 
@@ -90,6 +90,6 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected BlockState updateStateWithCurrentMonth(BlockState stateIn)
     {
-        return stateIn.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear()));
+        return stateIn.with(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear()));
     }
 }

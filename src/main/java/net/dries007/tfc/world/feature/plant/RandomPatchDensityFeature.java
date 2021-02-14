@@ -48,9 +48,9 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
             mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
             BlockState state = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
-            if ((world.isEmptyBlock(mutablePos) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
+            if ((world.isEmptyBlock(mutablePos) && blockstate.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.AGE_3, rand.nextInt(4)), rand); //randomize age
+                config.blockPlacer.place(world, mutablePos, blockstate.with(TFCBlockStateProperties.AGE_3, rand.nextInt(4)), rand); //randomize age
                 ++i;
             }
         }

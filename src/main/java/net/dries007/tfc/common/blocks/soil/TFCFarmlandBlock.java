@@ -53,13 +53,13 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         final BlockState defaultState = defaultBlockState();
-        return defaultState.canSurvive(context.getLevel(), context.getClickedPos()) ? defaultState : getDirt();
+        return defaultState.canBeReplacedByLeaves(context.getWorld(), context.getPos()) ? defaultState : getDirt();
     }
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos))
+        if (!state.canBeReplacedByLeaves(worldIn, pos))
         {
             // Turn to TFC farmland dirt
             turnToDirt(state, worldIn, pos);
@@ -82,7 +82,7 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     @Override
     public BlockState getDirt()
     {
-        return dirt.get().defaultBlockState();
+        return dirt.get().getDefaultState();
     }
 
     @Override

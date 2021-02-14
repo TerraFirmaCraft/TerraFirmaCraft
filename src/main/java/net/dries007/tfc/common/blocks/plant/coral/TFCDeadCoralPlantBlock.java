@@ -15,7 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
 /**
- * {@link net.minecraft.block.DeadCoralPlantBlock}
+ * {  net.minecraft.block.DeadCoralPlantBlock}
  */
 public class TFCDeadCoralPlantBlock extends TFCAbstractCoralPlantBlock
 {

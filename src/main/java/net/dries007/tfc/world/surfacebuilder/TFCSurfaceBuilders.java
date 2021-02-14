@@ -56,7 +56,7 @@ public class TFCSurfaceBuilders
     public static final Lazy<SurfaceBuilderConfig> BASALT_CONFIG = config(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.RAW));
 
     /**
-     * Tries to apply a {@link IContextSurfaceBuilder} if it exists, otherwise delegates to the standard method.
+     * Tries to apply a {  IContextSurfaceBuilder} if it exists, otherwise delegates to the standard method.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static <C extends ISurfaceBuilderConfig> void applySurfaceBuilderWithContext(ConfiguredSurfaceBuilder<C> configuredSurfaceBuilder, IWorld worldIn, Random random, ChunkData chunkData, IChunk chunk, Biome biome, int posX, int posZ, int posY, double noise, long seed, BlockState defaultBlock, BlockState defaultFluid, int seaLevel)
@@ -99,6 +99,6 @@ public class TFCSurfaceBuilders
 
     private static Lazy<SurfaceBuilderConfig> config(Supplier<? extends Block> top, Supplier<? extends Block> under, Supplier<? extends Block> underwater)
     {
-        return Lazy.of(() -> new SurfaceBuilderConfig(top.get().defaultBlockState(), under.get().defaultBlockState(), underwater.get().defaultBlockState()));
+        return Lazy.of(() -> new SurfaceBuilderConfig(top.get().getDefaultState(), under.get().getDefaultState(), underwater.get().getDefaultState()));
     }
 }

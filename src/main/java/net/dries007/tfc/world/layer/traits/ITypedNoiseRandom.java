@@ -10,7 +10,7 @@ import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.area.LazyArea;
 
 /**
- * Like {@link IExtendedNoiseRandom}
+ * Like {  IExtendedNoiseRandom}
  */
 public interface ITypedNoiseRandom<A> extends IExtendedNoiseRandom<FastArea>
 {

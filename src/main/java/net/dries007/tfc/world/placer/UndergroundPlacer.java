@@ -27,7 +27,7 @@ public class UndergroundPlacer extends BlockPlacer
     {
         if (worldIn.getBlockState(pos).getBlock() == Blocks.CAVE_AIR && worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) > pos.getY())
         {
-            worldIn.setBlock(pos, state, 3);
+            worldIn.setBlockState(pos, state, 3);
         }
     }
 

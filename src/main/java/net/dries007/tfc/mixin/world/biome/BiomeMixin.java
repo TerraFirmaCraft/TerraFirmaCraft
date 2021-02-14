@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class BiomeMixin
 {
     /**
-     * Redirect a call to {@link Biome#getTemperature(BlockPos)} with one that has a world and position context
+     * Redirect a call to {  Biome#getTemperature(BlockPos)} with one that has a world and position context
      *
      * In vanilla this is either called from ServerWorld, or from world generation with ISeedReader - both of which are able to cast up to IWorld.
      * For cases where this cast is not valid we just default to the vanilla temperature.
@@ -32,7 +32,7 @@ public abstract class BiomeMixin
     }
 
     /**
-     * Redirect a call to {@link Biome#getTemperature(BlockPos)} with one that has a world and position context
+     * Redirect a call to {  Biome#getTemperature(BlockPos)} with one that has a world and position context
      *
      * In vanilla this is either called from ServerWorld, or from world generation with ISeedReader - both of which are able to cast up to IWorld.
      * FFor cases where this cast is not valid we just default to the vanilla temperature.

@@ -51,12 +51,12 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        World world = context.getLevel();
-        BlockState state = defaultBlockState().setValue(AGE, world.getRandom().nextInt(25));
-        FluidState fluidState = world.getFluidState(context.getClickedPos());
+        World world = context.getWorld();
+        BlockState state = defaultBlockState().with(AGE, world.getRandom().nextInt(25));
+        FluidState fluidState = world.getFluidState(context.getPos());
         if (getFluidProperty().canContain(fluidState.getType()))
         {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
         return null;
     }
@@ -64,11 +64,11 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == growthDirection.getOpposite() && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
-        if (facing != growthDirection || !facingState.is(this) && !facingState.is(getBodyBlock()))
+        if (facing != growthDirection || !facingState.isIn(this) && !facingState.isIn(getBodyBlock()))
         {
             //Not sure if this is necessary
             Fluid fluid = stateIn.getFluidState().getType();
@@ -77,7 +77,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {
-            return this.getBodyBlock().defaultBlockState().setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+            return this.getBodyBlock().getDefaultState().with(getFluidProperty(), stateIn.get(getFluidProperty()));
         }
     }
 

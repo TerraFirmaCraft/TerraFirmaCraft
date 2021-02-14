@@ -24,7 +24,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.CoralWallFanBlock}
+ * {  net.minecraft.block.CoralWallFanBlock}
  */
 public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
 {
@@ -49,7 +49,7 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
     {
         if (!scanForWater(state, worldIn, pos))
         {
-            worldIn.setBlock(pos, deadBlock.get().defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, state.getValue(FACING)), 2);
+            worldIn.setBlockState(pos, deadBlock.get().getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, state.get(FACING)), 2);
         }
 
     }
@@ -57,13 +57,13 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
         else
         {
-            if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+            if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
                 worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
             }

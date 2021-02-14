@@ -7,7 +7,7 @@
 package net.dries007.tfc.world;
 
 /**
- * An {@link IBlockReplacer} which is able to initialize custom noise layers to be used during placement.
+ * An {  IBlockReplacer} which is able to initialize custom noise layers to be used during placement.
  */
 public abstract class SeedBlockReplacer implements IBlockReplacer
 {

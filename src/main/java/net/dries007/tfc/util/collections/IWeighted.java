@@ -15,7 +15,7 @@ import com.mojang.serialization.Codec;
 public interface IWeighted<E> extends Iterable<E>
 {
     /**
-     * Empty instance, do not use directly. See {@link IWeighted#empty()}
+     * Empty instance, do not use directly. See {  IWeighted#empty()}
      */
     IWeighted<?> EMPTY = new IWeighted<Object>()
     {
@@ -64,7 +64,7 @@ public interface IWeighted<E> extends Iterable<E>
     };
 
     /**
-     * Creates a codec for an {@link IWeighted} from a simpler representation
+     * Creates a codec for an {  IWeighted} from a simpler representation
      */
     static <E> Codec<IWeighted<E>> codec(Codec<List<Pair<E, Double>>> codec)
     {

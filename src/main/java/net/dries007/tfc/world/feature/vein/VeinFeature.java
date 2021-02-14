@@ -46,7 +46,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         {
             for (V vein : veins)
             {
-                place(worldIn, random, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), vein, config);
+                place(worldIn, random, chunkPos.getXStart(), chunkPos.getZStart(), vein, config);
             }
             return true;
         }
@@ -80,7 +80,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         final BlockState oreState = getStateToGenerate(stoneState, random, config);
                         if (oreState != null)
                         {
-                            world.setBlock(mutablePos, oreState, 3);
+                            world.setBlockState(mutablePos, oreState, 3);
                             maxVeinY = y;
                         }
                     }
@@ -98,10 +98,10 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         mutablePos.set(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = world.getBlockState(mutablePos);
                         final BlockState state = indicator.getStateToGenerate(random);
-                        if (stateAt.isAir() && state.canSurvive(world, mutablePos))
+                        if (stateAt.isAir() && state.canBeReplacedByLeaves(world, mutablePos))
                         {
-                            world.setBlock(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)), 3);
-                            //world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            world.setBlockState(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)), 3);
+                            //world.setBlockState(mutablePos.up(20), Blocks.GOLD_BLOCK.getDefaultState(), 3);
                         }
                     }
                 }

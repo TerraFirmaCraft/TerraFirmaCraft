@@ -25,7 +25,7 @@ public class ParentedSurfaceBuilderConfig extends SurfaceBuilderConfig
 
     public ParentedSurfaceBuilderConfig(Supplier<ConfiguredSurfaceBuilder<?>> parent)
     {
-        super(Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState());
+        super(Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState());
         this.parent = parent;
     }
 

@@ -37,7 +37,7 @@ public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
      */
     public static void convertToPile(IWorld world, BlockPos pos, BlockState state)
     {
-        world.setBlock(pos, TFCBlocks.SNOW_PILE.get().defaultBlockState(), 3);
+        world.setBlockState(pos, TFCBlocks.SNOW_PILE.get().getDefaultState(), 3);
         Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class).setInternalState(state);
     }
 
@@ -67,7 +67,7 @@ public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
         playerWillDestroy(world, pos, state, player);
         SnowPileTileEntity te = Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class);
         BlockState newState = te.getDestroyedState(state);
-        return world.setBlock(pos, newState, world.isClientSide ? 11 : 3);
+        return world.setBlockState(pos, newState, !world.isRemote ? 11 : 3);
     }
 
     @Override

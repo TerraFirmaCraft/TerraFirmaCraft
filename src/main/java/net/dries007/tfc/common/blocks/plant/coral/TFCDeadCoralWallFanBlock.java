@@ -29,7 +29,7 @@ import net.minecraft.world.IWorldReader;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link DeadCoralWallFanBlock}
+ * {  DeadCoralWallFanBlock}
  */
 public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
 {
@@ -43,27 +43,27 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
     public TFCDeadCoralWallFanBlock(AbstractBlock.Properties builder)
     {
         super(builder);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().with(FACING, Direction.NORTH));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return SHAPES.get(state.getValue(FACING));
+        return SHAPES.get(state.get(FACING));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {
-        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+        return state.with(FACING, rot.rotate(state.get(FACING)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirrorIn)
     {
-        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+        return state.rotate(mirrorIn.getRotation(state.get(FACING)));
     }
 
     @Override
@@ -75,19 +75,19 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+        if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
         {
             worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
         }
 
-        return facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : stateIn;
+        return facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : stateIn;
     }
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        Direction direction = state.getValue(FACING);
-        BlockPos blockpos = pos.relative(direction.getOpposite());
+        Direction direction = state.get(FACING);
+        BlockPos blockpos = pos.offset(direction.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         return blockstate.isFaceSturdy(worldIn, blockpos, direction);
     }
@@ -97,16 +97,16 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         BlockState blockstate = super.getStateForPlacement(context);
-        IWorldReader iworldreader = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
+        IWorldReader iworldreader = context.getWorld();
+        BlockPos blockpos = context.getPos();
         Direction[] directions = context.getNearestLookingDirections();
 
         for (Direction d : directions)
         {
             if (d.getAxis().isHorizontal())
             {
-                blockstate = blockstate.setValue(FACING, d.getOpposite());
-                if (blockstate.canSurvive(iworldreader, blockpos))
+                blockstate = blockstate.with(FACING, d.getOpposite());
+                if (blockstate.canBeReplacedByLeaves(iworldreader, blockpos))
                 {
                     return blockstate;
                 }

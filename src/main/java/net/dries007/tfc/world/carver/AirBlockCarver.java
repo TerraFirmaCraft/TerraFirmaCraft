@@ -42,7 +42,7 @@ public class AirBlockCarver extends BlockCarver
         {
             airCarvingMask.set(maskIndex);
 
-            final BlockPos posUp = pos.above();
+            final BlockPos posUp = pos.up();
             final BlockState stateAt = chunk.getBlockState(pos);
             final BlockState stateAbove = chunk.getBlockState(posUp);
 
@@ -50,11 +50,11 @@ public class AirBlockCarver extends BlockCarver
             {
                 if (pos.getY() < 11)
                 {
-                    chunk.setBlockState(pos, Blocks.LAVA.defaultBlockState(), false);
+                    chunk.setBlockState(pos, Blocks.LAVA.getDefaultState(), false);
                 }
                 else
                 {
-                    chunk.setBlockState(pos, Blocks.CAVE_AIR.defaultBlockState(), false);
+                    chunk.setBlockState(pos, Blocks.CAVE_AIR.getDefaultState(), false);
                 }
 
                 // Support adjacent blocks
@@ -62,11 +62,11 @@ public class AirBlockCarver extends BlockCarver
                 setSupported(chunk, posUp, stateAbove, rockData);
 
                 // Check below state for replacements
-                BlockPos posDown = pos.below();
+                BlockPos posDown = pos.down();
                 BlockState stateBelow = chunk.getBlockState(posDown);
                 if (exposedBlockReplacements.containsKey(stateBelow.getBlock()))
                 {
-                    chunk.setBlockState(posDown, exposedBlockReplacements.get(stateBelow.getBlock()).defaultBlockState(), false);
+                    chunk.setBlockState(posDown, exposedBlockReplacements.get(stateBelow.getBlock()).getDefaultState(), false);
                 }
                 return true;
 
@@ -78,6 +78,6 @@ public class AirBlockCarver extends BlockCarver
     @Override
     protected boolean isSupportable(BlockState state)
     {
-        return state.getFluidState().is(FluidTags.LAVA) || super.isSupportable(state);
+        return state.getFluidState().isIn(FluidTags.LAVA) || super.isSupportable(state);
     }
 }

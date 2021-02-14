@@ -29,9 +29,9 @@ public final class TreeCommand
             .then(Commands.argument("pos", BlockPosArgument.blockPos())
                 .then(Commands.argument("wood", EnumArgument.enumArgument(Wood.Default.class))
                     .then(Commands.argument("variant", EnumArgument.enumArgument(Variant.class))
-                        .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), context.getArgument("variant", Variant.class)))
+                        .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), context.getArgument("variant", Variant.class)))
                     )
-                    .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), Variant.NORMAL))
+                    .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), Variant.NORMAL))
                 )
             );
     }

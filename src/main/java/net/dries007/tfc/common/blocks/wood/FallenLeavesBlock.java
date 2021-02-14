@@ -35,7 +35,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     {
         super(properties, VERY_FLAT, null);
 
-        registerDefaultState(defaultBlockState().setValue(SEASON, Season.SUMMER));
+        registerDefaultState(defaultBlockState().with(SEASON, Season.SUMMER));
     }
 
     @Override
@@ -49,11 +49,11 @@ public class FallenLeavesBlock extends GroundcoverBlock
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         // Adjust the season based on the current time
-        Season oldSeason = state.getValue(SEASON);
+        Season oldSeason = state.get(SEASON);
         Season newSeason = getSeasonForState();
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.setValue(SEASON, newSeason));
+            worldIn.setBlockAndUpdate(pos, state.with(SEASON, newSeason));
         }
     }
 
@@ -61,7 +61,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return super.getStateForPlacement(context).setValue(SEASON, getSeasonForState());
+        return super.getStateForPlacement(context).with(SEASON, getSeasonForState());
     }
 
     @Override

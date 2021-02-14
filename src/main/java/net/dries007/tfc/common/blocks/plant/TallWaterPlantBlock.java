@@ -48,24 +48,24 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
+        registerDefaultState(getStateDefinition().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
     }
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        if (state.getValue(PART) == Part.LOWER)
+        BlockState belowState = worldIn.getBlockState(pos.down());
+        if (state.get(PART) == Part.LOWER)
         {
-            return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+            return belowState.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return belowState.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
-            return belowState.getBlock() == this && belowState.getValue(PART) == Part.LOWER;
+            return belowState.getBlock() == this && belowState.get(PART) == Part.LOWER;
         }
     }
 
@@ -73,16 +73,16 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos pos = context.getClickedPos();
-        FluidState fluidState = context.getLevel().getFluidState(pos);
+        BlockPos pos = context.getPos();
+        FluidState fluidState = context.getWorld().getFluidState(pos);
         BlockState state = updateStateWithCurrentMonth(defaultBlockState());
 
         if (getFluidProperty().canContain(fluidState.getType()))
         {
-            state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            state = state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
 
-        return pos.getY() < 255 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? state : null;
+        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canBeReplaced(context) ? state : null;
     }
 
     @Override
@@ -104,9 +104,9 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     {
         int age = random.nextInt(4);
         BlockState lowerState = getStateWithFluid(defaultBlockState(), world.getFluidState(pos).getType());
-        if (lowerState.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
+        if (lowerState.get(getFluidProperty()).getFluid() == Fluids.EMPTY)
             return;
-        world.setBlock(pos, lowerState.setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
-        world.setBlock(pos.above(), getStateWithFluid(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.above()).getType()), flags);
+        world.setBlockState(pos, lowerState.with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).with(TFCBlockStateProperties.AGE_3, age), flags);
+        world.setBlockState(pos.up(), getStateWithFluid(defaultBlockState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.up()).getType()), flags);
     }
 }

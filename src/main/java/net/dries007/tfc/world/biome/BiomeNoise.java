@@ -182,7 +182,7 @@ public final class BiomeNoise
     }
 
     /**
-     * Like {@link BiomeNoise#riverCarving(long)}, except also applies additional cellular noise to create "columns"
+     * Like {  BiomeNoise#riverCarving(long)}, except also applies additional cellular noise to create "columns"
      */
     public static Pair<INoise2D, INoise2D> lakeCarving(long seed)
     {

@@ -52,7 +52,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -63,7 +63,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             Block block = facingState.getBlock();
             if (block != this && block != abstracttopplantblock)
             {
-                return abstracttopplantblock.getStateForPlacement(worldIn).setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+                return abstracttopplantblock.getStateForPlacement(worldIn).with(getFluidProperty(), stateIn.get(getFluidProperty()));
             }
         }
         if (this.scheduleFluidTicks)

@@ -24,7 +24,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 
 /**
- * This is a big copy pasta from {@link net.minecraft.world.gen.feature.LakesFeature} with the following changes:
+ * This is a big copy pasta from {  net.minecraft.world.gen.feature.LakesFeature} with the following changes:
  * - It only works with water, since this is going to be used primarily for surface lakes
  * - It handles TFC dirt / grass transformations correctly
  */
@@ -41,7 +41,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
     {
         while (pos.getY() > 5 && worldIn.isEmptyBlock(pos))
         {
-            pos = pos.below();
+            pos = pos.down();
         }
 
         if (pos.getY() <= 4)
@@ -50,7 +50,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
         }
         else
         {
-            pos = pos.below(4);
+            pos = pos.down(4);
             if (worldIn.startsForFeature(SectionPos.of(pos), Structure.VILLAGE).findAny().isPresent())
             {
                 return false;
@@ -103,7 +103,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                                     return false;
                                 }
 
-                                if (y < 4 && !material.isSolid() && !worldIn.getBlockState(pos.offset(x, y, z)).is(Blocks.WATER))
+                                if (y < 4 && !material.isSolid() && !worldIn.getBlockState(pos.offset(x, y, z)).isIn(Blocks.WATER))
                                 {
                                     return false;
                                 }
@@ -120,7 +120,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                         {
                             if (noise[(x * 16 + z) * 8 + y])
                             {
-                                worldIn.setBlock(pos.offset(x, y, z), y >= 4 ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(), 2);
+                                worldIn.setBlockState(pos.offset(x, y, z), y >= 4 ? Blocks.AIR.getDefaultState() : Blocks.WATER.getDefaultState(), 2);
                             }
                         }
                     }
@@ -139,7 +139,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                                 if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(LightType.SKY, pos.offset(x, y, z)) > 0)
                                 {
                                     BlockState grassState = ((IDirtBlock) dirtState.getBlock()).getGrass();
-                                    worldIn.setBlock(dirtPos, grassState, 2);
+                                    worldIn.setBlockState(dirtPos, grassState, 2);
                                     worldIn.getBlockTicks().scheduleTick(dirtPos, grassState.getBlock(), 0);
                                 }
                             }

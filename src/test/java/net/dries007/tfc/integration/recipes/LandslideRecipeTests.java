@@ -101,7 +101,7 @@ public class LandslideRecipeTests
     @IntegrationTest("landslide_with_piston")
     public void testPistonOpenClose4TicksVanilla(IntegrationTestHelper helper)
     {
-        helper.setBlockState(new BlockPos(2, 4, 1), Blocks.WHITE_CONCRETE_POWDER.defaultBlockState());
+        helper.setBlockState(new BlockPos(2, 4, 1), Blocks.WHITE_CONCRETE_POWDER.getDefaultState());
         helper.runAfter(4, () -> helper.pullLever(new BlockPos(0, 4, 0)))
             .thenRun(4, () -> helper.pullLever(new BlockPos(0, 4, 0)));
         helper.assertAirAt(new BlockPos(2, 4, 1), "block should've fallen once piston moved");

@@ -72,7 +72,6 @@ public final class ForgeEventHandler
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerWorld, IServerWorldInfo, boolean, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     @SubscribeEvent
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
@@ -82,14 +81,14 @@ public final class ForgeEventHandler
         {
             final ServerWorld world = (ServerWorld) event.getWorld();
             final IServerWorldInfo settings = event.getSettings();
-            final ChunkGenerator generator = world.getChunkSource().getGenerator();
+            final ChunkGenerator generator = world.getChunkProvider().getChunkGenerator();
             if (generator instanceof ITFCChunkGenerator)
             {
                 final ITFCBiomeProvider biomeProvider = ((ITFCChunkGenerator) generator).getBiomeSource();
                 final Random random = new Random(world.getSeed());
                 final int spawnDistance = biomeProvider.getSpawnDistance();
 
-                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(biomeProvider.getSpawnCenterX(), generator.getSeaLevel(), biomeProvider.getSpawnCenterZ(), spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
+                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(biomeProvider.getSpawnCenterX(), generator.getSeaLevel(), biomeProvider.getSpawnCenterZ(), spawnDistance, spawnDistance / 256, biome -> biome.getMobSpawnInfo().isValidSpawnBiomeForPlayer(), random);
                 ChunkPos chunkPos;
                 if (pos == null)
                 {
@@ -98,7 +97,7 @@ public final class ForgeEventHandler
                 }
                 chunkPos = new ChunkPos(pos);
 
-                settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(), 8), 0.0F);
+                settings.setSpawn(chunkPos.asBlockPos().add(8,generator.getGroundHeight(),8), 0.0F);
                 boolean foundExactSpawn = false;
                 int x = 0, z = 0;
                 int xStep = 0;
@@ -133,11 +132,6 @@ public final class ForgeEventHandler
                     LOGGER.warn("Unable to find a suitable spawn location!");
                 }
 
-                if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
-                {
-                    LOGGER.warn("No bonus chest for you, you cheaty cheater!");
-                }
-
                 event.setCanceled(true);
             }
         }
@@ -148,7 +142,7 @@ public final class ForgeEventHandler
     {
         if (!event.getObject().isEmpty())
         {
-            World world = event.getObject().getLevel();
+            World world = event.getObject().getWorld();
             ChunkPos chunkPos = event.getObject().getPos();
             ChunkData data;
             if (!Helpers.isClientSide(world))
@@ -232,13 +226,13 @@ public final class ForgeEventHandler
     {
         // Resource reload listeners
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
-        resourceManager.registerReloadListener(RockManager.INSTANCE);
-        resourceManager.registerReloadListener(MetalManager.INSTANCE);
-        resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatManager.INSTANCE);
+        resourceManager.addReloadListener(RockManager.INSTANCE);
+        resourceManager.addReloadListener(MetalManager.INSTANCE);
+        resourceManager.addReloadListener(MetalItemManager.INSTANCE);
+        resourceManager.addReloadListener(SupportManager.INSTANCE);
+        resourceManager.addReloadListener(HeatManager.INSTANCE);
 
-        resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
+        resourceManager.addReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
     @SubscribeEvent
@@ -283,7 +277,7 @@ public final class ForgeEventHandler
             for (Direction direction : event.getNotifiedSides())
             {
                 // Check each notified block for a potential gravity block
-                final BlockPos pos = event.getPos().relative(direction);
+                final BlockPos pos = event.getPos().offset(direction);
                 final BlockState state = world.getBlockState(pos);
 
                 if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
@@ -332,7 +326,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
-        if (!event.getWorld().isClientSide)
+        if (event.getWorld().isRemote())
         {
             event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
         }
@@ -359,13 +353,13 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
+        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).getDimensionKey() == World.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {
                 // Natural regeneration should be disabled, allows TFC to have custom regeneration
-                world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
+                world.getGameRules().get(GameRules.NATURAL_REGENERATION).set(false, world.getServer());
                 LOGGER.info("Updating gamerule naturalRegeneration to false!");
             }
         }
@@ -386,15 +380,15 @@ public final class ForgeEventHandler
         Block originalBlock = event.getOriginalState().getBlock();
         if (originalBlock == Blocks.STONE)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.GABBRO).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.GABBRO).get(Rock.BlockType.HARDENED).get().getDefaultState());
         }
         else if (originalBlock == Blocks.COBBLESTONE)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.RHYOLITE).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.RHYOLITE).get(Rock.BlockType.HARDENED).get().getDefaultState());
         }
         else if (originalBlock == Blocks.BASALT)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().getDefaultState());
         }
     }
 }

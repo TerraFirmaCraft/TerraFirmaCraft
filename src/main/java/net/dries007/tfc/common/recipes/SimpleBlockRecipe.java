@@ -85,11 +85,11 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             BlockState state;
             if (!copyInputState)
             {
-                state = Helpers.readBlockState(JSONUtils.getAsString(json, "result"));
+                state = Helpers.readBlockState(JSONUtils.getString(json, "result"));
             }
             else
             {
-                state = Blocks.AIR.defaultBlockState();
+                state = Blocks.AIR.getDefaultState();
             }
             return factory.create(recipeId, ingredient, state, copyInputState);
         }
@@ -103,11 +103,11 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             BlockState state;
             if (!copyInputState)
             {
-                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
+                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).getDefaultState();
             }
             else
             {
-                state = Blocks.AIR.defaultBlockState();
+                state = Blocks.AIR.getDefaultState();
             }
             return factory.create(recipeId, ingredient, state, copyInputState);
         }

@@ -102,7 +102,7 @@ public abstract class DataManager<T> extends JsonReloadListener
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet())
         {
             ResourceLocation name = entry.getKey();
-            JsonObject json = JSONUtils.convertToJsonObject(entry.getValue(), "root");
+            JsonObject json = JSONUtils.getJsonObject(entry.get(), "root");
             try
             {
                 if (CraftingHelper.processConditions(json, "conditions"))

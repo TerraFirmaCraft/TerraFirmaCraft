@@ -52,8 +52,8 @@ public abstract class SnowBlockMixin extends Block
         if (cir.getReturnValueZ())
         {
             // Snow should not survive on ice (this adds to the big existing conditional
-            BlockState belowState = worldIn.getBlockState(pos.below());
-            if (belowState.is(TFCBlocks.SEA_ICE.get()))
+            BlockState belowState = worldIn.getBlockState(pos.down());
+            if (belowState.isIn(TFCBlocks.SEA_ICE.get()))
             {
                 cir.setReturnValue(false);
             }
@@ -61,9 +61,9 @@ public abstract class SnowBlockMixin extends Block
         else
         {
             // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
-            if (state.getValue(SnowBlock.LAYERS) == 1)
+            if (state.get(SnowBlock.LAYERS) == 1)
             {
-                BlockState stateDown = worldIn.getBlockState(pos.below());
+                BlockState stateDown = worldIn.getBlockState(pos.down());
                 if (stateDown.getBlock() instanceof ILeavesBlock)
                 {
                     cir.setReturnValue(true);
@@ -76,10 +76,10 @@ public abstract class SnowBlockMixin extends Block
     private void inject$updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos, CallbackInfoReturnable<BlockState> cir)
     {
         // If we can't survive, see if we can survive with only one layer, to allow the above leaves check to pass instead
-        if (cir.getReturnValue().is(Blocks.AIR) && stateIn.getValue(SnowBlock.LAYERS) > 1)
+        if (cir.getReturnValue().isIn(Blocks.AIR) && stateIn.get(SnowBlock.LAYERS) > 1)
         {
-            BlockState state = stateIn.setValue(SnowBlock.LAYERS, 1);
-            if (state.canSurvive(worldIn, currentPos))
+            BlockState state = stateIn.with(SnowBlock.LAYERS, 1);
+            if (state.canBeReplacedByLeaves(worldIn, currentPos))
             {
                 cir.setReturnValue(state);
             }
@@ -95,12 +95,12 @@ public abstract class SnowBlockMixin extends Block
             BlockState prevState = worldIn.getBlockState(pos);
             if (prevState == state && Climate.getTemperature(worldIn, pos) > Climate.SNOW_MELT_TEMPERATURE)
             {
-                int layers = state.getValue(SnowBlock.LAYERS);
-                if (layers != 8 || !worldIn.getBlockState(pos.above()).is(this)) // If the above block is also layers, that should decay first
+                int layers = state.get(SnowBlock.LAYERS);
+                if (layers != 8 || !worldIn.getBlockState(pos.up()).isIn(this)) // If the above block is also layers, that should decay first
                 {
                     if (layers > 1)
                     {
-                        worldIn.setBlockAndUpdate(pos, state.setValue(SnowBlock.LAYERS, layers - 1));
+                        worldIn.setBlockAndUpdate(pos, state.with(SnowBlock.LAYERS, layers - 1));
                     }
                     else
                     {
@@ -129,11 +129,11 @@ public abstract class SnowBlockMixin extends Block
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
-        final int prevLayers = state.getValue(SnowBlock.LAYERS);
+        final int prevLayers = state.get(SnowBlock.LAYERS);
         if (prevLayers > 1)
         {
-            return world.setBlock(pos, state.setValue(SnowBlock.LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+            return world.setBlockState(pos, state.with(SnowBlock.LAYERS, prevLayers - 1), !world.isRemote ? 11 : 3);
         }
-        return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+        return world.setBlockState(pos, fluid.createLegacyBlock(), !world.isRemote ? 11 : 3);
     }
 }

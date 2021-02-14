@@ -36,7 +36,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getXStart() - 14, chunkPos.getZStart() - 14, chunkPos.getXEnd() + 14, chunkPos.getZEnd() + 14); // Leeway so we can check outside this box
 
         // Basic pathfinding down the slope
         final Set<BlockPos> chosen = new HashSet<>();
@@ -126,7 +126,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
         if (!chosen.isEmpty())
         {
             // We have found a path and can generate a magma rivulet
-            final BlockState air = Blocks.AIR.defaultBlockState();
+            final BlockState air = Blocks.AIR.getDefaultState();
             for (BlockPos chosenPos : chosen)
             {
                 // At each position, break the top block, and replace two blocks underneath with magma

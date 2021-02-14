@@ -48,7 +48,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(AGE))
+        switch (state.get(AGE))
         {
             case 0:
                 return SHORTEST_GRASS_SHAPE;

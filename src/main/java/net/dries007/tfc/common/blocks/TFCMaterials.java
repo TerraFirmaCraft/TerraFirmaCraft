@@ -19,7 +19,7 @@ public class TFCMaterials
     public static final Material NON_SOLID_STONE = new Builder(MaterialColor.STONE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
 
     /**
-     * This is an exact copy of {@link Material.Builder} except with all builder methods set to public
+     * This is an exact copy of {  Material.Builder} except with all builder methods set to public
      */
     public static class Builder
     {

@@ -46,14 +46,14 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
                         final BlockState stateReplacement = config.getState(stateAt);
                         if (stateReplacement != null)
                         {
-                            world.setBlock(mutablePos, stateReplacement, 2);
+                            world.setBlockState(mutablePos, stateReplacement, 2);
                             placed = true;
                         }
                     }
                 }
             }
         }
-        //if (placed) world.setBlock(pos.above(10), Blocks.REDSTONE_BLOCK.defaultBlockState(), 2);
+        //if (placed) world.setBlockState(pos.up(10), Blocks.REDSTONE_BLOCK.getDefaultState(), 2);
         return placed;
     }
 }

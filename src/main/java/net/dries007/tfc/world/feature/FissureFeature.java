@@ -35,11 +35,11 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
-        final BlockPos pos = startPos.below(); // start slightly below the surface
+        final BlockPos pos = startPos.down(); // start slightly below the surface
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
-        final BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).defaultBlockState();
+        final BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).getDefaultState();
 
         int depth = 2 + rand.nextInt(3);
         int radius = 1 + rand.nextInt(2);
@@ -49,7 +49,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
         {
             for (BlockPos clear : clearPositions)
             {
-                setBlock(worldIn, clear.above(y), Blocks.AIR.defaultBlockState());
+                setBlock(worldIn, clear.up(y), Blocks.AIR.getDefaultState());
             }
         }
 
@@ -101,7 +101,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
         Set<BlockPos> blocks = new HashSet<>();
         for (int y = 0; y < depth; y++)
         {
-            BlockPos centerHeight = center.below(y);
+            BlockPos centerHeight = center.down(y);
             double rSq = Math.pow(radius, 2);
             for (int x = -radius + centerHeight.getX(); x <= +radius + centerHeight.getX(); x++)
             {
@@ -121,7 +121,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
                                     while (off < maxOffset && random.nextFloat() < 0.35f)
                                     {
                                         off++;
-                                        blocks.add(b.relative(facing));
+                                        blocks.add(b.offset(facing));
                                     }
                                 }
                             }
@@ -132,9 +132,9 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
         }
         // Now, let's make a "tunnel" all way down so this is gonna look a bit more like a fissure
         int tunnelDepth = depth + 20 + random.nextInt(60);
-        int tunnelY = center.below(tunnelDepth).getY();
+        int tunnelY = center.down(tunnelDepth).getY();
         if (tunnelY < 20) tunnelY = 20;
-        BlockPos tunnelPos = center.below(depth);
+        BlockPos tunnelPos = center.down(depth);
         blocks.add(tunnelPos);
         radius = 8;
         while (tunnelPos.getY() > tunnelY)
@@ -142,23 +142,23 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
             int value = random.nextInt(8); // 50% down, 12.5% each side
             if (value < 1)
             {
-                tunnelPos = tunnelPos.relative(Direction.NORTH);
+                tunnelPos = tunnelPos.offset(Direction.NORTH);
             }
             else if (value < 2)
             {
-                tunnelPos = tunnelPos.relative(Direction.SOUTH);
+                tunnelPos = tunnelPos.offset(Direction.SOUTH);
             }
             else if (value < 3)
             {
-                tunnelPos = tunnelPos.relative(Direction.EAST);
+                tunnelPos = tunnelPos.offset(Direction.EAST);
             }
             else if (value < 4)
             {
-                tunnelPos = tunnelPos.relative(Direction.WEST);
+                tunnelPos = tunnelPos.offset(Direction.WEST);
             }
             else
             {
-                tunnelPos = tunnelPos.below();
+                tunnelPos = tunnelPos.down();
             }
             // Keep it under control
             if (tunnelPos.getX() > center.getX() + radius)
@@ -180,7 +180,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
             blocks.add(tunnelPos);
             for (Direction horiz : Direction.Plane.HORIZONTAL)
             {
-                blocks.add(tunnelPos.relative(horiz));
+                blocks.add(tunnelPos.offset(horiz));
             }
         }
         return blocks;
@@ -194,12 +194,12 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
         for (Direction facing : Direction.values())
         {
             if (facing == Direction.UP) continue;
-            if (worldIn.getBlockState(pos.relative(facing)) == fillBlock) continue;
-            BlockPos rockPos = pos.relative(facing);
+            if (worldIn.getBlockState(pos.offset(facing)) == fillBlock) continue;
+            BlockPos rockPos = pos.offset(facing);
             int filledBlocks = 0;
             for (Direction facing2 : Direction.values())
             {
-                BlockPos facingPos = rockPos.relative(facing2);
+                BlockPos facingPos = rockPos.offset(facing2);
                 if (fillBlockPos.contains(facingPos))
                 {
                     filledBlocks++;

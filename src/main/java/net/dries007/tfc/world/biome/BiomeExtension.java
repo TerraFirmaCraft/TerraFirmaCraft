@@ -12,7 +12,7 @@ import net.minecraft.world.biome.Biome;
 /**
  * This is a wrapper class around extra data, which is assigned to particular biomes
  * Some functionality of biomes is also redirected (through mixins) to call this extension where possible.
- * This extension is tracked in {@link TFCBiomes} by registry key.
+ * This extension is tracked in {  TFCBiomes} by registry key.
  */
 public class BiomeExtension
 {

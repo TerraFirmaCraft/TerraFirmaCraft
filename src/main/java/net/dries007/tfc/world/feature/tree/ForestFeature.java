@@ -133,7 +133,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
-        if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.down()).isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
             setBlock(worldIn, mutablePos, entry.getLog());
             for (Direction facing : Direction.values())
@@ -141,7 +141,7 @@ public class ForestFeature extends Feature<ForestConfig>
                 if (facing != Direction.DOWN)
                 {
                     BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                    if (worldIn.isEmptyBlock(offsetPos) || worldIn.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT))
+                    if (worldIn.isEmptyBlock(offsetPos) || worldIn.getBlockState(offsetPos).isIn(TFCTags.Blocks.PLANT))
                         setBlock(worldIn, offsetPos, entry.getLeaves());
                 }
             }
@@ -168,11 +168,11 @@ public class ForestFeature extends Feature<ForestConfig>
                 BlockState setState = random.nextInt(2) == 1 ? leafState : twigState;
                 mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
                 mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
-                if ((worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
+                if ((worldIn.isEmptyBlock(mutablePos) || worldIn.hasWater(mutablePos)) && worldIn.getBlockState(mutablePos.down()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
                 {
                     setBlock(worldIn, mutablePos, setState
-                        .setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType()))
-                        .setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)));
+                        .with(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType()))
+                        .with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)));
                 }
             }
         }

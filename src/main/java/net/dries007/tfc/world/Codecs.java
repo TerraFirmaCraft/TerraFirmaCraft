@@ -52,7 +52,7 @@ public final class Codecs
     public static final Codec<SurfaceBuilderConfig> LENIENT_SURFACE_BUILDER_CONFIG = RecordCodecBuilder.create(instance -> instance.group(
         LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTopMaterial),
         LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnderMaterial)
-    ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.defaultBlockState())));
+    ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.getDefaultState())));
 
     public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
 
@@ -79,7 +79,7 @@ public final class Codecs
     }
 
     /**
-     * Creates a codec for an optimized weighted list, using {@link IWeighted}. The representation is a list of elements with a weight and an element key.
+     * Creates a codec for an optimized weighted list, using {  IWeighted}. The representation is a list of elements with a weight and an element key.
      */
     public static <E> Codec<IWeighted<E>> weightedCodec(Codec<E> elementCodec, String elementKey)
     {
@@ -110,14 +110,14 @@ public final class Codecs
             Map<V, List<K>> inverseMap = new HashMap<>();
             for (Map.Entry<K, V> entry : map.entrySet())
             {
-                inverseMap.computeIfAbsent(entry.getValue(), v -> new ArrayList<>()).add(entry.getKey());
+                inverseMap.computeIfAbsent(entry.get(), v -> new ArrayList<>()).add(entry.getKey());
             }
-            return inverseMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
+            return inverseMap.entrySet().stream().map(e -> Pair.of(e.get(), e.getKey())).collect(Collectors.toList());
         });
     }
 
     /**
-     * Like {@link Helpers#mapKeyListCodec(Codec)} but for a injective map k -> v
+     * Like {  Helpers#mapKeyListCodec(Codec)} but for a injective map k -> v
      *
      * @param codec A codec for each key, value element.
      */
@@ -125,7 +125,7 @@ public final class Codecs
     {
         return codec.listOf().xmap(
             list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
-            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
+            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.get())).collect(Collectors.toList())
         );
     }
 }

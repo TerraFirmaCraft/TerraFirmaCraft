@@ -21,15 +21,14 @@ public class IsIsolatedCondition implements ILootCondition
     private IsIsolatedCondition() {}
 
     @Override
-    public LootConditionType getType()
+    public boolean test(LootContext context)
     {
-        return TFCLoot.IS_ISOLATED;
+        return context.has(TFCLoot.ISOLATED);
     }
 
     @Override
-    public boolean test(LootContext context)
-    {
-        return context.hasParam(TFCLoot.ISOLATED);
+    public LootConditionType func_230419_b_() {
+        return TFCLoot.IS_ISOLATED;
     }
 
     public static class Serializer implements ILootSerializer<IsIsolatedCondition>

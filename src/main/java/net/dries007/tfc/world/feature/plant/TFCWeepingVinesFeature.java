@@ -39,7 +39,7 @@ public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
             mutablePos.move(Direction.UP);
             BlockState aboveState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
-            if ((aboveState.is(BlockTags.LEAVES) || aboveState.is(BlockTags.LOGS) || aboveState.is(BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
+            if ((aboveState.isIn(BlockTags.LEAVES) || aboveState.isIn(BlockTags.LOGS) || aboveState.isIn(BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
             {
                 placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
                 placedAny = true;
@@ -55,12 +55,12 @@ public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
         {
             if (world.isEmptyBlock(mutablePos))//if it's empty, we can grow
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.below()))//if we guarantee the next iteration will fail, set the end block
+                if (i == height || !world.isEmptyBlock(mutablePos.down()))//if we guarantee the next iteration will fail, set the end block
                 {
-                    world.setBlock(mutablePos, headState.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
+                    world.setBlockState(mutablePos, headState.with(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
                     break;
                 }
-                world.setBlock(mutablePos, bodyState, 2);
+                world.setBlockState(mutablePos, bodyState, 2);
             }
             mutablePos.move(Direction.DOWN);
         }

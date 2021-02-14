@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 /**
- * This is a reentrant wrapper for a provided {@link Runnable}. It is designed where the runnable is set as a change listener for a value, but both direct access (through {@link ReentrantRunnable#runBlocking(Runnable)} and non-recursive updating is desired
+ * This is a reentrant wrapper for a provided {  Runnable}. It is designed where the runnable is set as a change listener for a value, but both direct access (through {  ReentrantRunnable#runBlocking(Runnable)} and non-recursive updating is desired
  */
 public class ReentrantRunnable implements Runnable
 {

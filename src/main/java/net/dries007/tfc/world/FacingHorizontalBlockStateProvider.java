@@ -37,6 +37,6 @@ public class FacingHorizontalBlockStateProvider extends BlockStateProvider
     public BlockState getState(Random random, BlockPos pos)
     {
         Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-        return this.state.setValue(HorizontalBlock.FACING, facing);
+        return this.state.with(HorizontalBlock.FACING, facing);
     }
 }

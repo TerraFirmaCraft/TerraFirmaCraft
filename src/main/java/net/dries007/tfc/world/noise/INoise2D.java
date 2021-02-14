@@ -134,7 +134,7 @@ public interface INoise2D
     }
 
     /**
-     * Applies a transformation to the input coordinates. This is similar to {@link INoise2D#warped(INoise2D, INoise2D)} except it does not add values to the coordinates. This makes it useful for clamp / scale operations on the input coordinates.
+     * Applies a transformation to the input coordinates. This is similar to {  INoise2D#warped(INoise2D, INoise2D)} except it does not add values to the coordinates. This makes it useful for clamp / scale operations on the input coordinates.
      *
      * @param transformX the x transformation
      * @param transformY the y transformation

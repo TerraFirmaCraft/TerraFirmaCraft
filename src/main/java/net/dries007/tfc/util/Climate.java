@@ -61,7 +61,7 @@ public final class Climate
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
 
     /**
-     * Gets the equivalent to {@link Biome#getTemperature(BlockPos)} for TFC biomes.
+     * Gets the equivalent to {  Biome#getTemperature(BlockPos)} for TFC biomes.
      * Called from injected code.
      */
     public static float getVanillaBiomeTemperature(Biome biome, @Nullable IWorld world, BlockPos pos)
@@ -85,7 +85,7 @@ public final class Climate
     /**
      * Used to calculate the actual temperature at a world and position.
      * Will be valid when used on both logical sides.
-     * MUST NOT be used by world generation, it should use {@link Climate#calculateTemperature(BlockPos, float, Calendar)} instead, with the average temperature obtained through the correct chunk data source
+     * MUST NOT be used by world generation, it should use {  Climate#calculateTemperature(BlockPos, float, Calendar)} instead, with the average temperature obtained through the correct chunk data source
      */
     public static float getTemperature(IWorld world, BlockPos pos)
     {
@@ -118,7 +118,7 @@ public final class Climate
     }
 
     /**
-     * The reverse of {@link Climate#toVanillaTemperature(float)}
+     * The reverse of {  Climate#toVanillaTemperature(float)}
      */
     public static float toActualTemperature(float vanillaTemperature)
     {

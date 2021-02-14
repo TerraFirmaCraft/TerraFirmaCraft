@@ -56,7 +56,7 @@ version = envVersion == null ? "dev" : envVersion
 def mappingsOfficial = (project.hasProperty('use_official_mappings') && Boolean.valueOf(use_official_mappings)) ||
         System.getenv("USE_OFFICIAL_MAPPINGS") != null || // Detect in an actions buildscript
         System.getenv("JITPACK") != null // Detect in a jitpack publishing environment
-def mappingsChannel = mappingsOfficial ? 'official' : 'snapshot'
+def mappingsChannel = 'snapshot'//mappingsOfficial ? 'official' : 'snapshot'
 def mappingsVersion = mappingsOfficial ? minecraft_version : mappings_version
 
 println 'Using mappings: ' + mappingsChannel + ' / ' + mappingsVersion

@@ -76,7 +76,7 @@ public final class TimeCommand
                     .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendars.SERVER.getCalendarDayTime()))
                 )
                 .then(Commands.literal("gametime")
-                    .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getLevel().getGameTime()))
+                    .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getWorld().getGameTime()))
                 )
                 .then(Commands.literal("day")
                     .executes(context -> sendQueryResults(context.getSource(), DAY, Calendars.SERVER.getTotalDays()))

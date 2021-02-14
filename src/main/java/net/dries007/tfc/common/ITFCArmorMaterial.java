@@ -16,21 +16,21 @@ public interface ITFCArmorMaterial extends IArmorMaterial
     /**
      * Returns the crushing modifier this armor has
      *
-     * @return float value with the modifier. To check how damage calculation is done, see {@link DamageType}
+     * @return float value with the modifier. To check how damage calculation is done, see {  DamageType}
      */
     float getCrushingModifier();
 
     /**
      * Returns the crushing modifier this armor has
      *
-     * @return float value with the modifier. To check how damage calculation is done, see {@link DamageType}
+     * @return float value with the modifier. To check how damage calculation is done, see {  DamageType}
      */
     float getPiercingModifier();
 
     /**
      * Returns the crushing modifier this armor has
      *
-     * @return float value with the modifier. To check how damage calculation is done, see {@link DamageType}
+     * @return float value with the modifier. To check how damage calculation is done, see {  DamageType}
      */
     float getSlashingModifier();
 }

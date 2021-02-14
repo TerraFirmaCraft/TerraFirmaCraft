@@ -54,7 +54,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     {
         super(properties);
 
-        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+        registerDefaultState(defaultBlockState().with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -71,9 +71,9 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
-        if (direction.getOpposite() == stateIn.getValue(FACING) && !facingState.is(BlockTags.LOGS))
+        if (direction.getOpposite() == stateIn.get(FACING) && !facingState.isIn(BlockTags.LOGS))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
         return stateIn;
     }
@@ -81,14 +81,14 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     @Override
     public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
     {
-        BlockState attachedState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        return attachedState.is(BlockTags.LOGS);
+        BlockState attachedState = world.getBlockState(pos.offset(state.get(FACING).getOpposite()));
+        return attachedState.isIn(BlockTags.LOGS);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return SHAPES.get(state.getValue(FACING));
+        return SHAPES.get(state.get(FACING));
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         Direction direction = context.getClickedFace();
         if (direction.getAxis() != Direction.Axis.Y)
         {
-            return updateStateWithCurrentMonth(defaultBlockState()).setValue(FACING, direction);
+            return updateStateWithCurrentMonth(defaultBlockState()).with(FACING, direction);
         }
         return null;
     }

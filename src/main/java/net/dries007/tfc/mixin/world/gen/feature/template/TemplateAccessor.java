@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface TemplateAccessor
 {
     /**
-     * Used by {@link TreeFeature#placeTemplateInWorld(Template, PlacementSettings, IWorld, BlockPos)} for a optimized implementation
+     * Used by {  TreeFeature#placeTemplateInWorld(Template, PlacementSettings, IWorld, BlockPos)} for a optimized implementation
      */
     @Accessor("palettes")
     List<Template.Palette> accessor$getPalettes();

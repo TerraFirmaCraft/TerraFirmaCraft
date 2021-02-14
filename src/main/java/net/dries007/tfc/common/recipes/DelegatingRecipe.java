@@ -63,7 +63,7 @@ public abstract class DelegatingRecipe<C extends IInventory> implements IDelegat
         @SuppressWarnings("unchecked")
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            IRecipe<?> internal = RecipeManager.fromJson(DELEGATE, JSONUtils.getAsJsonObject(json, "recipe"));
+            IRecipe<?> internal = RecipeManager.fromJson(DELEGATE, JSONUtils.getJsonObject(json, "recipe"));
             return factory.apply(recipeId, (IRecipe<C>) internal);
         }
 

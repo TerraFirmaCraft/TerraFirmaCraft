@@ -42,9 +42,9 @@ public class RandomPatchWaterLandFeature extends Feature<BlockClusterFeatureConf
             BlockState belowState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
             boolean flag1 = world.isEmptyBlock(mutablePos);
-            boolean flag2 = world.isWaterAt(mutablePos);
+            boolean flag2 = world.hasWater(mutablePos);
             boolean flag3 = (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState);
-            if ((world.isEmptyBlock(mutablePos) || world.isWaterAt(mutablePos)) && state.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            if ((world.isEmptyBlock(mutablePos) || world.hasWater(mutablePos)) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
                 if (state.getBlock() instanceof IFluidLoggable)
                 {

@@ -19,7 +19,7 @@ import net.minecraft.world.gen.feature.LiquidsConfig;
 import com.mojang.serialization.Codec;
 
 /**
- * A cleaned up version of {@link net.minecraft.world.gen.feature.SpringFeature}
+ * A cleaned up version of {  net.minecraft.world.gen.feature.SpringFeature}
  */
 public class SpringFeature extends Feature<LiquidsConfig>
 {
@@ -60,7 +60,7 @@ public class SpringFeature extends Feature<LiquidsConfig>
 
                     if (rockCount == config.rockCount && holeCount == config.holeCount)
                     {
-                        worldIn.setBlock(pos, config.state.createLegacyBlock(), 2);
+                        worldIn.setBlockState(pos, config.state.createLegacyBlock(), 2);
                         worldIn.getLiquidTicks().scheduleTick(pos, config.state.getType(), 0);
                         return true;
                     }

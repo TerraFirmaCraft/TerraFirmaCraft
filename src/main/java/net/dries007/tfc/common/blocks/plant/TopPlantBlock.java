@@ -34,9 +34,9 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     @Override
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
-        if (state.getValue(AGE) < 25 && ForgeHooks.onCropsGrowPre(worldIn, pos.relative(growthDirection), worldIn.getBlockState(pos.relative(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
+        if (state.get(AGE) < 25 && ForgeHooks.onCropsGrowPre(worldIn, pos.offset(growthDirection), worldIn.getBlockState(pos.offset(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
         {
-            BlockPos blockpos = pos.relative(growthDirection);
+            BlockPos blockpos = pos.offset(growthDirection);
             if (canGrowInto(worldIn.getBlockState(blockpos)))
             {
                 worldIn.setBlockAndUpdate(blockpos, state.cycle(AGE));
@@ -48,7 +48,7 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     @Override // lifted from AbstractPlantBlock to add leaves to it
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockPos blockpos = pos.relative(growthDirection.getOpposite());
+        BlockPos blockpos = pos.offset(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         Block block = blockstate.getBlock();
         if (!canAttachToBlock(block))
@@ -57,7 +57,7 @@ public class TopPlantBlock extends AbstractTopPlantBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
         }
     }
 

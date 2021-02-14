@@ -25,7 +25,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public interface IHeat extends ICapabilitySerializable<CompoundNBT>
 {
     /**
-     * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally
+     * Gets the current temperature. Should call {  HeatCapability#adjustTemp(float, float, long)} internally
      *
      * @return the temperature.
      */

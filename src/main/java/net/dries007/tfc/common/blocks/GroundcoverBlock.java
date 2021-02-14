@@ -77,19 +77,19 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         this.shape = shape;
         this.pickBlock = pickBlock;
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
+        registerDefaultState(getStateDefinition().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, Direction.EAST));
     }
 
     @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        final FluidState fluidState = context.getWorld().getFluidState(context.getPos());
 
-        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState state = defaultBlockState().with(FACING, context.getHorizontalDirection().getOpposite());
         if (getFluidProperty().canContain(fluidState.getType()))
         {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
         return state;
     }
@@ -104,13 +104,13 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
         else
         {
-            final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
+            final Fluid containedFluid = stateIn.get(getFluidProperty()).getFluid();
             if (containedFluid != Fluids.EMPTY)
             {
                 worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
@@ -126,7 +126,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         worldIn.destroyBlock(pos, false);
         if (!player.isCreative() && worldIn instanceof ServerWorld)
         {
-            TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+            TileEntity tileEntity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
             getDrops(state, (ServerWorld) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
         }
         return ActionResultType.SUCCESS;
@@ -143,7 +143,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.below()).isFaceSturdy(worldIn, pos, Direction.UP);
+        return worldIn.getBlockState(pos.down()).isFaceSturdy(worldIn, pos, Direction.UP);
     }
 
     @Override

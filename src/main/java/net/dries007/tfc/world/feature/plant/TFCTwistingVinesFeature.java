@@ -38,7 +38,7 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            if (!world.getBlockState(mutablePos).isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 return false;
             mutablePos.move(Direction.UP);
             if (world.isEmptyBlock(mutablePos))
@@ -56,12 +56,12 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         {
             if (world.isEmptyBlock(mutablePos))
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.above()))
+                if (i == height || !world.isEmptyBlock(mutablePos.up()))
                 {
-                    world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
+                    world.setBlockState(mutablePos, head.with(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
                     break;
                 }
-                world.setBlock(mutablePos, body, 2);
+                world.setBlockState(mutablePos, body, 2);
             }
             mutablePos.move(Direction.UP);
         }

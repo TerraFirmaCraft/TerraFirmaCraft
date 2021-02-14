@@ -44,37 +44,37 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        registerDefaultState(stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(stateDefinition.any().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return getStateForPlacement(context.getLevel(), context.getClickedPos());
+        return getStateForPlacement(context.getWorld(), context.getPos());
     }
 
     public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
     {
-        Block downBlock = world.getBlockState(pos.below()).getBlock();
-        Block upBlock = world.getBlockState(pos.above()).getBlock();
+        Block downBlock = world.getBlockState(pos.down()).getBlock();
+        Block upBlock = world.getBlockState(pos.up()).getBlock();
         Block northBlock = world.getBlockState(pos.north()).getBlock();
         Block eastBlock = world.getBlockState(pos.east()).getBlock();
         Block southBlock = world.getBlockState(pos.south()).getBlock();
         Block westBlock = world.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
-            .setValue(DOWN, downBlock.is(TFCTags.Blocks.KELP_TREE) || downBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-            .setValue(UP, upBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(NORTH, northBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(EAST, eastBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(SOUTH, southBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(WEST, westBlock.is(TFCTags.Blocks.KELP_TREE));
+            .with(DOWN, downBlock.isIn(TFCTags.Blocks.KELP_TREE) || downBlock.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+            .with(UP, upBlock.isIn(TFCTags.Blocks.KELP_TREE))
+            .with(NORTH, northBlock.isIn(TFCTags.Blocks.KELP_TREE))
+            .with(EAST, eastBlock.isIn(TFCTags.Blocks.KELP_TREE))
+            .with(SOUTH, southBlock.isIn(TFCTags.Blocks.KELP_TREE))
+            .with(WEST, westBlock.isIn(TFCTags.Blocks.KELP_TREE));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
             updateFluid(worldIn, stateIn, currentPos);
@@ -83,8 +83,8 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         else
         {
             updateFluid(worldIn, stateIn, currentPos);
-            boolean flag = facingState.is(TFCTags.Blocks.KELP_TREE) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
-            return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
+            boolean flag = facingState.isIn(TFCTags.Blocks.KELP_TREE) || (facing == Direction.DOWN && facingState.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
+            return stateIn.with(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos))
+        if (!state.canBeReplacedByLeaves(worldIn, pos))
         {
             worldIn.destroyBlock(pos, true);
         }
@@ -105,28 +105,28 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     }
 
     /**
-     * {@link ChorusPlantBlock#canSurvive}
+     * {  ChorusPlantBlock#canSurvive}
      */
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = worldIn.getBlockState(pos.down());
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            BlockPos relativePos = pos.relative(direction);
-            if (worldIn.getBlockState(relativePos).getBlock().is(TFCTags.Blocks.KELP_BRANCH))
+            BlockPos relativePos = pos.offset(direction);
+            if (worldIn.getBlockState(relativePos).getBlock().isIn(TFCTags.Blocks.KELP_BRANCH))
             {
 
-                Block below = worldIn.getBlockState(relativePos.below()).getBlock();
-                if (below.is(TFCTags.Blocks.KELP_BRANCH) || below.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                Block below = worldIn.getBlockState(relativePos.down()).getBlock();
+                if (below.isIn(TFCTags.Blocks.KELP_BRANCH) || below.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     return true;
                 }
             }
         }
         Block blockIn = belowState.getBlock();
-        return blockIn.is(TFCTags.Blocks.KELP_BRANCH) || blockIn.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+        return blockIn.isIn(TFCTags.Blocks.KELP_BRANCH) || blockIn.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
     }
 
     @Override
@@ -146,7 +146,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     private void updateFluid(IWorld world, BlockState state, BlockPos pos)
     {
-        final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
+        final Fluid containedFluid = state.get(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
             world.getLiquidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickDelay(world));

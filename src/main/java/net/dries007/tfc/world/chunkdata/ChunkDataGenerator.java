@@ -84,7 +84,7 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     public void generate(ChunkData data, ChunkData.Status status)
     {
         ChunkPos pos = data.getPos();
-        int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
+        int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
         switch (status)
         {
             case EMPTY:

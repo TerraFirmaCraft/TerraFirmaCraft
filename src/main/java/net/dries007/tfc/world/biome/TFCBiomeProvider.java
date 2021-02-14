@@ -100,7 +100,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     }
 
     /**
-     * A version of {@link BiomeProvider#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
+     * A version of {  BiomeProvider#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
      * - It does not query the climate layers - requiring less chunk data generation and is faster.
      * - It's slightly optimized for finding a random biome, and using mutable positions.
      */
@@ -133,7 +133,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     }
 
     /**
-     * In {@link net.minecraft.world.biome.BiomeContainer}, we can see that the x, y, z positions are not absolute block coordinates.
+     * In {  net.minecraft.world.biome.BiomeContainer}, we can see that the x, y, z positions are not absolute block coordinates.
      * Rather, since MC now samples biomes once per 4x4x4 area basis, these are not accurate for our chunk data purposes
      * So, we need to make them accurate.
      */

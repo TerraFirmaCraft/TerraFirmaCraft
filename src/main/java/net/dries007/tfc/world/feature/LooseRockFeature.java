@@ -46,11 +46,11 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
         final BlockState stateAt = worldIn.getBlockState(pos);
-        final BlockState state = getStateToPlace(rock.getBlock(Rock.BlockType.LOOSE).defaultBlockState(), stateAt);
+        final BlockState state = getStateToPlace(rock.getBlock(Rock.BlockType.LOOSE).getDefaultState(), stateAt);
 
-        if (state != null && state.canSurvive(worldIn, pos))
+        if (state != null && state.canBeReplacedByLeaves(worldIn, pos))
         {
-            setBlock(worldIn, pos, state.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(rand)));
+            setBlock(worldIn, pos, state.with(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(rand)));
             return true;
         }
         return false;
@@ -70,7 +70,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
             final Fluid fluid = stateAt.getFluidState().getType();
             if (property.canContain(fluid) && fluid.isSame(Fluids.EMPTY))
             {
-                return state.setValue(property, property.keyFor(fluid));
+                return state.with(property, property.keyFor(fluid));
             }
         }
         return null;

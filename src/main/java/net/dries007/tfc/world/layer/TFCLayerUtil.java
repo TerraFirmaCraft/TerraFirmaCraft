@@ -66,7 +66,7 @@ public class TFCLayerUtil
 
     /**
      * These are the int IDs that are used for biome layer generation
-     * They are mapped to {@link BiomeVariants} through the internal registry
+     * They are mapped to {  BiomeVariants} through the internal registry
      */
     public static final int OCEAN;
     public static final int OCEAN_REEF;

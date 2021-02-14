@@ -27,7 +27,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.CoralPlantBlock}
+ * {  net.minecraft.block.CoralPlantBlock}
  */
 public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
 {
@@ -53,7 +53,7 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
     {
         if (!scanForWater(state, worldIn, pos))
         {
-            worldIn.setBlock(pos, deadBlock.get().defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 2);
+            worldIn.setBlockState(pos, deadBlock.get().getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 2);
         }
 
     }
@@ -61,14 +61,14 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
         else
         {
             this.tryScheduleDieTick(stateIn, worldIn, currentPos);
-            if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+            if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
                 worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
             }

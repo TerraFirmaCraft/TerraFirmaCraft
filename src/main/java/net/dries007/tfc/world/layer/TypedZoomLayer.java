@@ -13,7 +13,7 @@ import net.dries007.tfc.world.layer.traits.ITypedNoiseRandom;
 import net.dries007.tfc.world.layer.traits.TypedArea;
 
 /**
- * Modified version of {@link net.minecraft.world.gen.layer.ZoomLayer} for {@link TypedArea}
+ * Modified version of {  net.minecraft.world.gen.layer.ZoomLayer} for {  TypedArea}
  */
 public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
 {

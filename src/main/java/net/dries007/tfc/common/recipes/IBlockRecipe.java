@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * A simple {@link IRecipe} extension for {@link BlockRecipeWrapper}
+ * A simple {  IRecipe} extension for {  BlockRecipeWrapper}
  */
 public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
 {
@@ -39,7 +39,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     /**
-     * Specific parameter version of {@link net.minecraft.item.crafting.IRecipe#matches(IInventory, World)} for block recipes
+     * Specific parameter version of {  net.minecraft.item.crafting.IRecipe#matches(IInventory, World)} for block recipes
      */
     default boolean matches(World worldIn, BlockPos pos, BlockState state)
     {
@@ -47,15 +47,15 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     /**
-     * Specific parameter version of {@link net.minecraft.item.crafting.IRecipe#getCraftingResult(IInventory)} for block recipes.
+     * Specific parameter version of {  net.minecraft.item.crafting.IRecipe#getCraftingResult(IInventory)} for block recipes.
      */
     default BlockState getBlockCraftingResult(BlockRecipeWrapper wrapper)
     {
-        return getBlockRecipeOutput().defaultBlockState();
+        return getBlockRecipeOutput().getDefaultState();
     }
 
     /**
-     * Specific parameter version of {@link IRecipe#getRecipeOutput()} for block recipes.
+     * Specific parameter version of {  IRecipe#getRecipeOutput()} for block recipes.
      */
     default Block getBlockRecipeOutput()
     {

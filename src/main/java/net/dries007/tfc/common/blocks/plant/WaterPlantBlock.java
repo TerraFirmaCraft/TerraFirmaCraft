@@ -45,19 +45,19 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(getStateDefinition().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos pos = context.getClickedPos();
-        FluidState fluidState = context.getLevel().getFluidState(pos);
+        BlockPos pos = context.getPos();
+        FluidState fluidState = context.getWorld().getFluidState(pos);
         BlockState state = updateStateWithCurrentMonth(defaultBlockState());
         if (getFluidProperty().canContain(fluidState.getType()))
         {
-            state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            state = state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
         return state;
     }
@@ -65,8 +65,8 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.getValue(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
+        BlockState belowState = worldIn.getBlockState(pos.down());
+        return belowState.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.get(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.state.IntegerProperty;
 import net.dries007.tfc.util.calendar.Month;
 
 /**
- * Marker interface for {@link PlantBlock} subclasses.
+ * Marker interface for {  PlantBlock} subclasses.
  * See the various static create(IPlant, Properties) methods in these blocks to create plants.
  */
 public interface IPlant

@@ -34,7 +34,7 @@ public interface IForging extends ICapabilityProvider
     ResourceLocation getRecipeName();
 
     /** todo: requires anvil recipes
-     * Sets the recipe name from an {@link AnvilRecipe}. If null, sets the recipe name to null
+     * Sets the recipe name from an {  AnvilRecipe}. If null, sets the recipe name to null
      */
     /*
     default void setRecipe(@Nullable AnvilRecipe recipe)
@@ -51,7 +51,7 @@ public interface IForging extends ICapabilityProvider
     void setRecipe(@Nullable ResourceLocation recipeName);
 
     /**
-     * Gets the last three steps, wrapped in a {@link ForgeSteps} instance.
+     * Gets the last three steps, wrapped in a {  ForgeSteps} instance.
      * The return value is nonnull, however the individual steps might be
      */
     ForgeSteps getSteps();
@@ -64,7 +64,7 @@ public interface IForging extends ICapabilityProvider
     void addStep(@Nullable ForgeStep step);
 
     /**
-     * Resets the object's {@link IForging} components. Used if an item falls out of an anvil without getting worked
+     * Resets the object's {  IForging} components. Used if an item falls out of an anvil without getting worked
      * Purpose is to preserve stackability on items that haven't been worked yet.
      */
     void reset();

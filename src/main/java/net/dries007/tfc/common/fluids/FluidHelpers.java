@@ -38,10 +38,10 @@ public class FluidHelpers
 
     /**
      * If the two fluids are allowed to be considered for mixing
-     * This is more lenient than {@link FlowingFluid#isSame(Fluid)} but must assume a few things:
-     * - only works with fluids which are an instance of {@link FlowingFluid} (should be all fluids)
+     * This is more lenient than {  FlowingFluid#isSame(Fluid)} but must assume a few things:
+     * - only works with fluids which are an instance of {  FlowingFluid} (should be all fluids)
      * - assumes that fluid source / flowing handling works like vanilla
-     * - fluids must be added to the {@link net.dries007.tfc.common.TFCTags.Fluids#MIXABLE} tag
+     * - fluids must be added to the {  net.dries007.tfc.common.TFCTags.Fluids#MIXABLE} tag
      *
      * @param fluid A fluid
      * @return true if the fluid should use fluid mixing mechanics
@@ -52,7 +52,7 @@ public class FluidHelpers
     }
 
     /**
-     * This is the main logic from {@link FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
+     * This is the main logic from {  FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {  FlowingFluid} classes (namely, vanilla water) to be modified.
      *
      * @param self               The fluid instance this would've been called upon
      * @param worldIn            The world
@@ -73,7 +73,7 @@ public class FluidHelpers
 
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            BlockPos offsetPos = pos.relative(direction);
+            BlockPos offsetPos = pos.offset(direction);
             BlockState offsetState = worldIn.getBlockState(offsetPos);
             FluidState offsetFluid = offsetState.getFluidState();
 
@@ -99,7 +99,7 @@ public class FluidHelpers
         {
             // There are two adjacent source blocks (although potentially of different kinds) - check if the below block is also a source, or if it's a solid block
             // If true, then this block should be converted to a source block as well
-            BlockState belowState = worldIn.getBlockState(pos.below());
+            BlockState belowState = worldIn.getBlockState(pos.down());
             FluidState belowFluid = belowState.getFluidState();
 
             if (belowFluid.isSource() && belowFluid.getType() instanceof FlowingFluid && adjacentSourceBlocksByFluid.getInt(belowFluid.getType()) >= 2)
@@ -132,7 +132,7 @@ public class FluidHelpers
         // At this point, we haven't been able to convert into a source block
         // Check the block above to see if that is flowing downwards into this one (creating a level 8, falling, flowing block)
         // A fluid above, flowing down, will always replace an existing fluid block
-        BlockPos abovePos = pos.above();
+        BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
         if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
@@ -154,7 +154,7 @@ public class FluidHelpers
     }
 
     /**
-     * Copy pasta from {@link net.minecraft.block.FlowingFluidBlock#shouldSpreadLiquid(World, BlockPos, BlockState)}
+     * Copy pasta from {  net.minecraft.block.FlowingFluidBlock#shouldSpreadLiquid(World, BlockPos, BlockState)}
      * Used for lava-like or lava-logged blocks that need to share the same behavior.
      * This uses vanilla mechanics to determine the block as TFC will modify them via event later
      *
@@ -162,22 +162,22 @@ public class FluidHelpers
      */
     public static boolean reactLavaWithNeighbors(World worldIn, BlockPos pos, FluidState fluidStateAt)
     {
-        boolean soulSoilBelow = worldIn.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
+        boolean soulSoilBelow = worldIn.getBlockState(pos.down()).isIn(Blocks.SOUL_SOIL);
         for (Direction direction : Direction.values())
         {
             if (direction != Direction.DOWN)
             {
-                BlockPos adjacentPos = pos.relative(direction);
-                if (worldIn.getFluidState(adjacentPos).is(FluidTags.WATER))
+                BlockPos adjacentPos = pos.offset(direction);
+                if (worldIn.getFluidState(adjacentPos).isIn(FluidTags.WATER))
                 {
-                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.OBSIDIAN.defaultBlockState()));
+                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.OBSIDIAN.getDefaultState()));
                     worldIn.levelEvent(1501, pos, 0);
                     return true;
                 }
 
-                if (soulSoilBelow && worldIn.getBlockState(adjacentPos).is(Blocks.BLUE_ICE))
+                if (soulSoilBelow && worldIn.getBlockState(adjacentPos).isIn(Blocks.BLUE_ICE))
                 {
-                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.BASALT.defaultBlockState()));
+                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.BASALT.getDefaultState()));
                     worldIn.levelEvent(1501, pos, 0);
                     return true;
                 }

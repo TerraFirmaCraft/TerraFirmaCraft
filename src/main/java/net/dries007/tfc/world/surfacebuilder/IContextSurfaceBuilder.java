@@ -19,7 +19,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Indicates that a surface builder requires more (or possibly just different) context in order to generate.
- * In order to support this with a custom world generator, call {@link TFCSurfaceBuilders#applyIfPresent(ConfiguredSurfaceBuilder, Random, ChunkData, IChunk, Biome, int, int, int, double, long, BlockState, BlockState, int)} during surface building rather than {@link Biome#buildSurfaceAt(Random, IChunk, int, int, int, double, BlockState, BlockState, int, long)}
+ * In order to support this with a custom world generator, call {  TFCSurfaceBuilders#applyIfPresent(ConfiguredSurfaceBuilder, Random, ChunkData, IChunk, Biome, int, int, int, double, long, BlockState, BlockState, int)} during surface building rather than {  Biome#buildSurfaceAt(Random, IChunk, int, int, int, double, BlockState, BlockState, int, long)}
  *
  * @param <C> The config type. MUST be a supertype of the surface builder config type.
  */
@@ -27,7 +27,7 @@ public interface IContextSurfaceBuilder<C extends ISurfaceBuilderConfig>
 {
     /**
      * @param worldIn   The world, for querying biome extensions
-     * @param chunkData Chunk data, generated to at least {@link ChunkData.Status#ROCKS}
+     * @param chunkData Chunk data, generated to at least {  ChunkData.Status#ROCKS}
      */
     void applyWithContext(IWorld worldIn, ChunkData chunkData, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, C config);
 }

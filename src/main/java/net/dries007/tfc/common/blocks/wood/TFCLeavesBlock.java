@@ -71,7 +71,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false).setValue(SEASON_NO_SPRING, Season.SUMMER));
+        registerDefaultState(stateDefinition.any().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         int distance = getDistance(facingState) + 1;
-        if (distance != 1 || stateIn.getValue(getDistanceProperty()) != distance)
+        if (distance != 1 || stateIn.get(getDistanceProperty()) != distance)
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -111,7 +111,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         // Adjust the season based on the current time
-        Season oldSeason = state.getValue(SEASON_NO_SPRING);
+        Season oldSeason = state.get(SEASON_NO_SPRING);
         Season newSeason = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
         if (newSeason == Season.SPRING)
         {
@@ -119,7 +119,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         }
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.setValue(SEASON_NO_SPRING, newSeason));
+            worldIn.setBlockAndUpdate(pos, state.with(SEASON_NO_SPRING, newSeason));
         }
     }
 
@@ -130,7 +130,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         int distance = updateDistance(worldIn, pos);
         if (distance > maxDecayDistance)
         {
-            if (!state.getValue(PERSISTENT))
+            if (!state.get(PERSISTENT))
             {
                 // Send a message, help the dev's figure out which trees need larger leaf decay radii:
                 LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
@@ -138,12 +138,12 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
             }
             else
             {
-                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
+                worldIn.setBlockState(pos, state.with(getDistanceProperty(), maxDecayDistance), 3);
             }
         }
         else
         {
-            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            worldIn.setBlockState(pos, state.with(getDistanceProperty(), distance), 3);
         }
     }
 
@@ -166,9 +166,9 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
+        Season season = Calendars.get(context.getWorld()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
-        return defaultBlockState().setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
+        return defaultBlockState().with(SEASON_NO_SPRING, newSeason).with(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override
@@ -207,7 +207,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         else
         {
             // Check against this leaf block only, not any leaves
-            return neighbor.getBlock() == this ? neighbor.getValue(getDistanceProperty()) : maxDecayDistance;
+            return neighbor.getBlock() == this ? neighbor.get(getDistanceProperty()) : maxDecayDistance;
         }
     }
 }

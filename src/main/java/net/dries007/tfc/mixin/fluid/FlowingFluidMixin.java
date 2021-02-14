@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * This modifies vanilla fluid behavior (enabled via the "mixing" fluid tag), in order to play nicely with {@link MixingFluid}.
+ * This modifies vanilla fluid behavior (enabled via the "mixing" fluid tag), in order to play nicely with {  MixingFluid}.
  */
 @Mixin(FlowingFluid.class)
 public abstract class FlowingFluidMixin extends Fluid

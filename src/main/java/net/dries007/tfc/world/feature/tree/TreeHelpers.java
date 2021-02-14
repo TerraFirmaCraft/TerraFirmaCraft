@@ -36,7 +36,7 @@ public final class TreeHelpers
     private static final Mirror[] MIRROR_VALUES = Mirror.values();
 
     /**
-     * A variant of {@link Template#placeInWorld(IServerWorld, BlockPos, PlacementSettings, Random)} that is much simpler and faster for use in tree generation
+     * A variant of {  Template#placeInWorld(IServerWorld, BlockPos, PlacementSettings, Random)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
     @SuppressWarnings("deprecation")
@@ -55,7 +55,7 @@ public final class TreeHelpers
                     // No world, can't rotate with world context
                     @SuppressWarnings("deprecation")
                     BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
-                    worldIn.setBlock(posAt, stateReplace, 2);
+                    worldIn.setBlockState(posAt, stateReplace, 2);
                 }
             }
         }
@@ -80,7 +80,7 @@ public final class TreeHelpers
                     mutablePos.set(x, y, z);
                     transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                     mutablePos.move(pos);
-                    world.setBlock(mutablePos, trunk.state, 3);
+                    world.setBlockState(mutablePos, trunk.state, 3);
                 }
             }
         }
@@ -89,7 +89,7 @@ public final class TreeHelpers
 
     public static TemplateManager getTemplateManager(ISeedReader worldIn)
     {
-        return worldIn.getLevel().getServer().getStructureManager();
+        return worldIn.getWorld().getServer().getStructureManager();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class TreeHelpers
     public static PlacementSettings getPlacementSettings(ChunkPos chunkPos, Random random)
     {
         return new PlacementSettings()
-            .setBoundingBox(new MutableBoundingBox(chunkPos.getMinBlockX() - 16, 0, chunkPos.getMinBlockZ() - 16, chunkPos.getMaxBlockX() + 16, 256, chunkPos.getMaxBlockZ() + 16))
+            .setBoundingBox(new MutableBoundingBox(chunkPos.getXStart() - 16, 0, chunkPos.getZStart() - 16, chunkPos.getXEnd() + 16, 256, chunkPos.getZEnd() + 16))
             .setRandom(random)
             .addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR)
             .setRotation(randomRotation(random))
@@ -116,7 +116,7 @@ public final class TreeHelpers
     }
 
     /**
-     * {@link Template#transform(BlockPos, Mirror, Rotation, BlockPos)} but simplified
+     * {  Template#transform(BlockPos, Mirror, Rotation, BlockPos)} but simplified
      */
     public static BlockPos transform(BlockPos pos, Mirror mirrorIn, Rotation rotationIn)
     {
@@ -148,7 +148,7 @@ public final class TreeHelpers
     }
 
     /**
-     * {@link Template#transform(BlockPos, Mirror, Rotation, BlockPos)} but simplified, and works with mutable positions
+     * {  Template#transform(BlockPos, Mirror, Rotation, BlockPos)} but simplified, and works with mutable positions
      */
     public static void transformMutable(BlockPos.Mutable pos, Mirror mirrorIn, Rotation rotationIn)
     {

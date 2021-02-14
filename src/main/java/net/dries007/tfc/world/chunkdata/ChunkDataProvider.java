@@ -16,8 +16,8 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
- * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link IChunkDataGenerator}.
- * In order to customize the chunk data generation, see {@link IChunkDataGenerator}
+ * This acts as a bridge between the {  ChunkGenerator}, TFC's chunk data caches and tracking, and the {  IChunkDataGenerator}.
+ * In order to customize the chunk data generation, see {  IChunkDataGenerator}
  */
 public final class ChunkDataProvider
 {
@@ -60,7 +60,7 @@ public final class ChunkDataProvider
 
     /**
      * Gets the chunk data for a chunk, during world generation.
-     * The default implementation generates chunk data using TFC semantics, and stores generated data in {@link ChunkDataCache#WORLD_GEN}
+     * The default implementation generates chunk data using TFC semantics, and stores generated data in {  ChunkDataCache#WORLD_GEN}
      * Implementors are free to return any form of data.
      *
      * @param pos            The chunk position
@@ -74,7 +74,7 @@ public final class ChunkDataProvider
 
     /**
      * Gets the chunk data for a chunk, during world generation.
-     * The default implementation generates chunk data using TFC semantics, and stores generated data in {@link ChunkDataCache#WORLD_GEN}
+     * The default implementation generates chunk data using TFC semantics, and stores generated data in {  ChunkDataCache#WORLD_GEN}
      * Implementors are free to return any form of data.
      *
      * @param pos            The chunk position

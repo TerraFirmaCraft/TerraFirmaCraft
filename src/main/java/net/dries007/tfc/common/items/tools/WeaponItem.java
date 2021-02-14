@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Generic class for weapons that shouldn't override vanilla's {@link SwordItem}
+ * Generic class for weapons that shouldn't override vanilla's {  SwordItem}
  * Possible reasons to avoid extending it: Sweeping effect, enchantments, other mods would think it is a sword.
  *
  * Also, TFC material damage is multiplicative instead of additive.

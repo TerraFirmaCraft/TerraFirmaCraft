@@ -81,7 +81,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             {
                 // First tick, replace the existing block
                 BlockPos blockpos = blockPosition();
-                if (level.getBlockState(blockpos).getBlock().is(block))
+                if (level.getBlockState(blockpos).getBlock().isIn(block))
                 {
                     level.removeBlock(blockpos, false);
                 }
@@ -125,9 +125,9 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!level.isEmptyBlock(posAt.below()) && canFallThrough(level, posAt.below(), level.getBlockState(posAt.below())))
+                        else if (!level.isEmptyBlock(posAt.down()) && canFallThrough(level, posAt.down(), level.getBlockState(posAt.down())))
                         {
-                            level.destroyBlock(posAt.below(), true);
+                            level.destroyBlock(posAt.down(), true);
                             failedBreakCheck = true;
                             return;
                         }
@@ -141,11 +141,11 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         remove();
                         if (!dontSetBlock)
                         {
-                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
+                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canBeReplacedByLeaves(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.down())))
                             {
                                 if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
                                 {
-                                    ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
+                                    ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.with(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
                                 }
 
                                 if (level.setBlockAndUpdate(posAt, fallingBlockState))
@@ -163,7 +163,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                     // Sets the tile entity if it exists
                                     if (blockData != null && fallingBlockState.hasTileEntity())
                                     {
-                                        TileEntity tileEntity = level.getBlockEntity(posAt);
+                                        TileEntity tileEntity = level.getTileEntity(posAt);
                                         if (tileEntity != null)
                                         {
                                             CompoundNBT tileEntityData = tileEntity.save(new CompoundNBT());

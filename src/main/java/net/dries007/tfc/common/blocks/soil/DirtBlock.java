@@ -45,7 +45,7 @@ public class DirtBlock extends Block implements IDirtBlock
 
     public BlockState getGrass()
     {
-        return grass.get().defaultBlockState();
+        return grass.get().getDefaultState();
     }
 
     @Nullable
@@ -54,11 +54,11 @@ public class DirtBlock extends Block implements IDirtBlock
     {
         if (toolType == ToolType.HOE && TFCConfig.SERVER.enableFarmlandCreation.get() && farmland != null)
         {
-            return farmland.get().defaultBlockState();
+            return farmland.get().getDefaultState();
         }
         else if (toolType == ToolType.SHOVEL && TFCConfig.SERVER.enableGrassPathCreation.get() && grassPath != null)
         {
-            return grassPath.get().defaultBlockState();
+            return grassPath.get().getDefaultState();
         }
         return state;
     }

@@ -27,7 +27,7 @@ import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 /**
- * A wrapper around {@link IAreaFactory}
+ * A wrapper around {  IAreaFactory}
  */
 public class LayerFactory<T>
 {

@@ -14,7 +14,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 
 /**
- * This is a structure which provides O(1), {@link HashMap} access of the wrapped {@code Map<Predicate<V>, R>}
+ * This is a structure which provides O(1), {  HashMap} access of the wrapped {@code Map<Predicate<V>, R>}
  * It does this by using the "indirect key", or {@code K}. By using two constructs:
  * - The key mapper, a {@code Function<V, K>}.
  * - And the key extractor, a{@code Function<R, Iterable<K>>}.
@@ -22,7 +22,7 @@ import net.minecraft.world.World;
  * - For any K, V, R, {@code (keyMapper.apply(V) == K) -> (keyExtractor.apply(R).contains(K))}
  * <p>
  * This was benchmarked using VisualVM, with a recipe list of ~1000 recipes (not uncommon), using Landslide Recipes, over >10,000 invocations.
- * - {@link net.minecraft.item.crafting.RecipeManager#getRecipeFor(IRecipeType, IInventory, World)} took 847 us / recipe
+ * - {  net.minecraft.item.crafting.RecipeManager#(IRecipeType, IInventory, World)} took 847 us / recipe
  * - Using a LRU cache of size 1, delegating to the above took 273 us / recipe
  * - this took 11 us / recipe.
  */

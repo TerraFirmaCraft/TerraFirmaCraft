@@ -12,7 +12,7 @@ import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 /**
- * Operates on the {@link TFCLayerUtil#OCEAN_REEF_MARKER} markers
+ * Operates on the {  TFCLayerUtil#OCEAN_REEF_MARKER} markers
  * Borders reef - land with ocean, and adds ocean to reef - deep ocean borders
  */
 public enum ReefBorderLayer implements ICastleTransformer

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 /**
- * Adds accessors for the internal fields on {@link WorldDecoratingHelper} as that class is needlessly limiting, and our climate decorator needs access to chunk data.
+ * Adds accessors for the internal fields on {  WorldDecoratingHelper} as that class is needlessly limiting, and our climate decorator needs access to chunk data.
  */
 @Mixin(WorldDecoratingHelper.class)
 public interface WorldDecoratingHelperAccessor

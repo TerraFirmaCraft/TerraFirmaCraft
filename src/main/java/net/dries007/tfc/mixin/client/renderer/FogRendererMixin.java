@@ -29,7 +29,7 @@ public abstract class FogRendererMixin
     private static final BlockPos.Mutable POS = new BlockPos.Mutable();
 
     /**
-     * Replace the call to {@link Biome#getWaterFogColor()} with one that has a position context
+     * Replace the call to {  Biome#getWaterFogColor()} with one that has a position context
      */
     @Redirect(method = "setupColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getWaterFogColor()I"))
     private static int redirect$getWaterFogColor(Biome biome, ActiveRenderInfo activeRenderInfoIn)
@@ -43,7 +43,7 @@ public abstract class FogRendererMixin
     }
 
     /**
-     * Replace a call to {@link Biome#getFogColor()} with one that has a position context
+     * Replace a call to {  Biome#getFogColor()} with one that has a position context
      */
     @SuppressWarnings("UnresolvedMixinReference")
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getFogColor()I"))

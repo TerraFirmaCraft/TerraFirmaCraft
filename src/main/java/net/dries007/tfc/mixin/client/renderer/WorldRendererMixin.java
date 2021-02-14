@@ -29,7 +29,7 @@ public abstract class WorldRendererMixin
     private ClientWorld level;
 
     /**
-     * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
+     * Redirect the call to {  Biome#getTemperature(BlockPos)} with one that has a position and world context
      */
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
     private float redirect$renderSnowAndRain$getTemperature(Biome biome, BlockPos pos)
@@ -38,7 +38,7 @@ public abstract class WorldRendererMixin
     }
 
     /**
-     * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context
+     * Redirect the call to {  Biome#getPrecipitation()} with one that has a position and world context
      */
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
     private Biome.RainType redirect$renderSnowAndRain$getPrecipitation(Biome biome, LightTexture lightmapIn, float partialTicks, double xIn, double yIn, double zIn)
@@ -48,7 +48,7 @@ public abstract class WorldRendererMixin
     }
 
     /**
-     * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
+     * Redirect the call to {  Biome#getTemperature(BlockPos)} with one that has a position and world context
      */
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
     private float redirect$tickRain$getTemperature(Biome biome, BlockPos pos)
@@ -57,7 +57,7 @@ public abstract class WorldRendererMixin
     }
 
     /**
-     * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context
+     * Redirect the call to {  Biome#getPrecipitation()} with one that has a position and world context
      */
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
     private Biome.RainType redirect$tickRain$getPrecipitation(Biome biome, ActiveRenderInfo activeRenderInfo)

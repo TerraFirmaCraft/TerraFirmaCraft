@@ -51,38 +51,38 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().setValue(PART, Part.LOWER));
+        registerDefaultState(stateDefinition.any().with(PART, Part.LOWER));
     }
 
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        Part part = stateIn.getValue(PART);
-        if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
+        Part part = stateIn.get(PART);
+        if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(PART) != part)
         {
-            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
     }
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        if (state.getValue(PART) == Part.LOWER)
+        if (state.get(PART) == Part.LOWER)
         {
-            return super.canSurvive(state, worldIn, pos);
+            return super.canBeReplacedByLeaves(state, worldIn, pos);
         }
         else
         {
-            BlockState blockstate = worldIn.getBlockState(pos.below());
+            BlockState blockstate = worldIn.getBlockState(pos.down());
             if (state.getBlock() != this)
             {
-                return super.canSurvive(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return super.canBeReplacedByLeaves(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
-            return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
+            return blockstate.getBlock() == this && blockstate.get(PART) == Part.LOWER;
         }
     }
 
@@ -90,14 +90,14 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos pos = context.getClickedPos();
-        return pos.getY() < 255 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
+        BlockPos pos = context.getPos();
+        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
     }
 
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
+        worldIn.setBlockAndUpdate(pos.up(), defaultBlockState().with(PART, Part.UPPER));
     }
 
     @Override
@@ -107,13 +107,13 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         {
             if (player.isCreative())
             {
-                if (state.getValue(PART) == Part.UPPER)
+                if (state.get(PART) == Part.UPPER)
                 {
-                    BlockPos blockpos = pos.below();
+                    BlockPos blockpos = pos.down();
                     BlockState blockstate = worldIn.getBlockState(blockpos);
-                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == Part.LOWER)
+                    if (blockstate.getBlock() == state.getBlock() && blockstate.get(PART) == Part.LOWER)
                     {
-                        worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                        worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
                         worldIn.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
                     }
                 }
@@ -128,7 +128,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        Part part = state.getValue(PART);
+        Part part = state.get(PART);
         if (part == Part.LOWER)
             return PLANT_SHAPE;
         return SHORTER_PLANT_SHAPE;
@@ -150,7 +150,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
         int age = random.nextInt(3) + 1;
-        world.setBlock(pos, updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
-        world.setBlock(pos.above(), updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlockState(pos, updateStateWithCurrentMonth(defaultBlockState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).with(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlockState(pos.up(), updateStateWithCurrentMonth(defaultBlockState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age)), flags);
     }
 }

@@ -26,7 +26,7 @@ public interface ITFCBiomeProvider
     int getSpawnCenterZ();
 
     /**
-     * An optional implementation, see {@link TFCBiomeProvider}
+     * An optional implementation, see {  TFCBiomeProvider}
      */
     @Nullable
     default BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> predicate, Random rand)

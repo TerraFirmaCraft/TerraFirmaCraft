@@ -52,14 +52,14 @@ public class TFCTree extends Tree
     public boolean growTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
         ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY));
-        worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);
+        worldIn.setBlockState(blockPosIn, Blocks.AIR.getDefaultState(), 4);
         if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {
             return true;
         }
         else
         {
-            worldIn.setBlock(blockPosIn, blockStateIn, 4);
+            worldIn.setBlockState(blockPosIn, blockStateIn, 4);
             return false;
         }
     }

@@ -26,9 +26,9 @@ public class Support
         this.id = id;
 
         this.ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-        this.supportUp = JSONUtils.getAsInt(json, "support_up", 0);
-        this.supportDown = JSONUtils.getAsInt(json, "support_down", 0);
-        this.supportHorizontal = JSONUtils.getAsInt(json, "support_horizontal", 0);
+        this.supportUp = JSONUtils.getInt(json, "support_up", 0);
+        this.supportDown = JSONUtils.getInt(json, "support_down", 0);
+        this.supportHorizontal = JSONUtils.getInt(json, "support_horizontal", 0);
 
         if (supportUp < 0 || supportDown < 0 || supportHorizontal < 0)
         {
@@ -68,7 +68,7 @@ public class Support
     }
 
     public Iterable<BlockPos> getSupportedArea(BlockPos center)
-    {
-        return BlockPos.betweenClosed(center.offset(-supportHorizontal, -supportDown, -supportHorizontal), center.offset(supportHorizontal, supportUp, supportHorizontal));
+    {//betweenClosed
+        return BlockPos.getAllInBoxMutable(center.add(-supportHorizontal, -supportDown, -supportHorizontal), center.add(supportHorizontal, supportUp, supportHorizontal));
     }
 }

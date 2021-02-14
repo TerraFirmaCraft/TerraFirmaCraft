@@ -23,15 +23,15 @@ public class DispenserBehaviors
 {
     private static final IDispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
 
-    private static final IDispenseItemBehavior BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior()
-    {
+    private static final IDispenseItemBehavior BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior();
+    /*{
         @Override
-        public ItemStack execute(IBlockSource source, ItemStack stack)
+        public ItemStack dispenceStack(IBlockSource source, ItemStack stack)
         {
             BucketItem bucket = (BucketItem) stack.getItem();
-            BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-            World world = source.getLevel();
-            if (bucket.emptyBucket(null, world, pos, null))
+            BlockPos pos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+            World world = source.getWorld();
+            if (bucket.canPlayerBreakBlockWhileHolding(null, world, pos, null))
             {
                 bucket.checkExtraContent(world, stack, pos);
                 return new ItemStack(Items.BUCKET);
@@ -41,17 +41,17 @@ public class DispenserBehaviors
                 return DEFAULT.dispense(source, stack);
             }
         }
-    };
+    };*/
 
     /**
-     * {@link DispenserBlock#registerBehavior(IItemProvider, IDispenseItemBehavior)} is not thread safe
+     * {DispenserBlock#registerBehavior(IItemProvider, IDispenseItemBehavior)} is not thread safe
      */
     public static void syncSetup()
     {
         // Bucket emptying
-        DispenserBlock.registerBehavior(TFCItems.SALT_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
-        DispenserBlock.registerBehavior(TFCItems.SPRING_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerDispenseBehavior(TFCItems.SALT_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerDispenseBehavior(TFCItems.SPRING_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
 
-        TFCItems.METAL_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), BUCKET_BEHAVIOR));
+        TFCItems.METAL_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerDispenseBehavior(reg.get(), BUCKET_BEHAVIOR));
     }
 }

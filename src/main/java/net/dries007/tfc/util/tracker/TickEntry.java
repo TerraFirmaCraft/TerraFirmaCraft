@@ -16,7 +16,7 @@ public class TickEntry
 
     public TickEntry(CompoundNBT nbt)
     {
-        this(BlockPos.of(nbt.getLong("pos")), nbt.getInt("ticks"));
+        this(BlockPos.fromLong(nbt.getLong("pos")), nbt.getInt("ticks"));
     }
 
     public TickEntry(BlockPos pos, int ticks)
@@ -39,7 +39,7 @@ public class TickEntry
     public CompoundNBT serializeNBT()
     {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putLong("pos", pos.asLong());
+        nbt.putLong("pos", pos.toLong());
         nbt.putInt("ticks", ticks);
         return nbt;
     }

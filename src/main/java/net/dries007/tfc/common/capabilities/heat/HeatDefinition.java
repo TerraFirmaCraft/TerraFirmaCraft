@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 /**
- * This is a definition (reloaded via {@link HeatManager}) of a heat that is applied to an item stack.
+ * This is a definition (reloaded via {  HeatManager}) of a heat that is applied to an item stack.
  */
 public class HeatDefinition
 {
@@ -31,10 +31,10 @@ public class HeatDefinition
     public HeatDefinition(ResourceLocation id, JsonObject obj)
     {
         this.id = id;
-        float heatCapacity = JSONUtils.getAsFloat(obj, "heat_capacity");
-        float forgingTemp = JSONUtils.getAsFloat(obj, "forging_temperature", 0);
-        float weldingTemp = JSONUtils.getAsFloat(obj, "welding_temperature", 0);
-        this.ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(obj, "ingredient"));
+        float heatCapacity = JSONUtils.getFloat(obj, "heat_capacity");
+        float forgingTemp = JSONUtils.getFloat(obj, "forging_temperature", 0);
+        float weldingTemp = JSONUtils.getFloat(obj, "welding_temperature", 0);
+        this.ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(obj, "ingredient"));
         this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
     }
 

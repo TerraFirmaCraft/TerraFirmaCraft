@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class ClientWorldMixin
 {
     /**
-     * Replace a call to {@link Biome#getSkyColor()} with one that has a position and world context
+     * Replace a call to {  Biome#getSkyColor()} with one that has a position and world context
      */
     @Redirect(method = "getSkyColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getSkyColor()I"))
     private int getSkyColor(Biome biome, BlockPos pos)

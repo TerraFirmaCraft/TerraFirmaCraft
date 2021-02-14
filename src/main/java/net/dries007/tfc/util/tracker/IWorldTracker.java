@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Interface for the capability attached to {@link net.minecraft.world.World}s
+ * Interface for the capability attached to {  net.minecraft.world.World}s
  *
  * Used in various places to record world-specific data, and perform later updates on world ticks
  */

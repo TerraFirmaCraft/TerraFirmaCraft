@@ -44,7 +44,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
                     break;
                 }
             }
-            if (spike.canSurvive(world, mutablePos) && world.isEmptyBlock(mutablePos))
+            if (spike.canBeReplacedByLeaves(world, mutablePos) && world.isEmptyBlock(mutablePos))
             {
                 placeSpike(world, mutablePos, spike, rand, config);
                 placedAny = true;
@@ -63,11 +63,11 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
             if (!world.isEmptyBlock(mutablePos))
             {
                 // Make the previous state the tip, and exit
-                setBlock(world, mutablePos.move(0, 1, 0), spike.setValue(ThinSpikeBlock.TIP, true));
+                setBlock(world, mutablePos.move(0, 1, 0), spike.with(ThinSpikeBlock.TIP, true));
                 return;
             }
         }
         // Add the tip
-        setBlock(world, mutablePos, spike.setValue(ThinSpikeBlock.TIP, true));
+        setBlock(world, mutablePos, spike.with(ThinSpikeBlock.TIP, true));
     }
 }

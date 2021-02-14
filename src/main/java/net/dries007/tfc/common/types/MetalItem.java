@@ -29,14 +29,14 @@ public class MetalItem
     public MetalItem(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(json, "ingredient"));
-        ResourceLocation metalId = new ResourceLocation(JSONUtils.getAsString(json, "metal"));
+        ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(json, "ingredient"));
+        ResourceLocation metalId = new ResourceLocation(JSONUtils.getString(json, "metal"));
         metal = MetalManager.INSTANCE.get(metalId);
         if (metal == null)
         {
             throw new JsonSyntaxException("Invalid metal specified: " + metalId.toString());
         }
-        amount = JSONUtils.getAsInt(json, "amount");
+        amount = JSONUtils.getInt(json, "amount");
     }
 
     public ResourceLocation getId()

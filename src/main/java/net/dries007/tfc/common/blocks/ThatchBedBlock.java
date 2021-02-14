@@ -86,8 +86,8 @@ public class ThatchBedBlock extends BedBlock
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        Direction facing = state.getValue(FACING);
-        if (!(world.getBlockState(pos.relative(facing)).is(TFCBlocks.THATCH_BED.get())) || world.getBlockState(pos.below()).isAir(world, pos))
+        Direction facing = state.get(FACING);
+        if (!(world.getBlockState(pos.offset(facing)).isIn(TFCBlocks.THATCH_BED.get())) || world.getBlockState(pos.down()).isAir(world, pos))
         {
             world.destroyBlock(pos, true);
         }

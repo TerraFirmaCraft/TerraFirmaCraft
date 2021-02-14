@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 
 /**
- * Generic class for tools that shouldn't override vanilla's {@link ToolItem}
+ * Generic class for tools that shouldn't override vanilla's {  ToolItem}
  * Main issue here is that TFC damage is not additive like vanilla but instead multiplicative
  *
  * For comparison:

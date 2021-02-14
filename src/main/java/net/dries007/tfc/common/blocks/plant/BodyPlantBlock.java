@@ -56,7 +56,7 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
     @Override // lifted from AbstractPlantBlock to add leaves to it
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockPos blockpos = pos.relative(growthDirection.getOpposite());
+        BlockPos blockpos = pos.offset(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         Block block = blockstate.getBlock();
         if (!canAttachToBlock(block))
@@ -65,7 +65,7 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
         }
     }
 }

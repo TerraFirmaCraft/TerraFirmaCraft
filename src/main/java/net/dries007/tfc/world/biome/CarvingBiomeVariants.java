@@ -12,7 +12,7 @@ import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.world.noise.INoise2D;
 
 /**
- * An extension of {@link BiomeVariants} for variants that carve sea level caverns
+ * An extension of {  BiomeVariants} for variants that carve sea level caverns
  */
 public class CarvingBiomeVariants extends BiomeVariants
 {

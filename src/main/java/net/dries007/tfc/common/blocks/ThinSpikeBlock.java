@@ -65,7 +65,7 @@ public class ThinSpikeBlock extends Block
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(TIP, false));
+        registerDefaultState(getStateDefinition().any().with(TIP, false));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        BlockPos posDown = pos.below();
+        BlockPos posDown = pos.down();
         BlockState otherState = worldIn.getBlockState(posDown);
         if (otherState.getBlock() == this)
         {
@@ -94,18 +94,18 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockPos abovePos = pos.above();
+        BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
-        return (aboveState.getBlock() == this && !aboveState.getValue(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
+        return (aboveState.getBlock() == this && !aboveState.get(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !facingState.is(this))
+        if (facing == Direction.DOWN && !facingState.isIn(this))
         {
-            return stateIn.setValue(TIP, true);
+            return stateIn.with(TIP, true);
         }
         return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
@@ -114,7 +114,7 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return state.getValue(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
+        return state.get(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
     }
 
     @Override

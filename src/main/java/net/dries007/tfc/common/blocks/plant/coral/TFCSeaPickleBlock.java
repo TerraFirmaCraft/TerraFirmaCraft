@@ -32,7 +32,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.SeaPickleBlock}
+ * {  net.minecraft.block.SeaPickleBlock}
  */
 public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 {
@@ -46,37 +46,37 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     public TFCSeaPickleBlock(AbstractBlock.Properties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(PICKLES, 1));
+        registerDefaultState(getStateDefinition().any().with(PICKLES, 1));
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
-        if (blockstate.is(this))
+        BlockState blockstate = context.getWorld().getBlockState(context.getPos());
+        if (blockstate.isIn(this))
         {
-            return blockstate.setValue(PICKLES, Math.min(4, blockstate.getValue(PICKLES) + 1));
+            return blockstate.with(PICKLES, Math.min(4, blockstate.get(PICKLES) + 1));
         }
         else
         {
-            FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+            FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
             boolean flag = fluidstate.getType() == TFCFluids.SALT_WATER.getSource();
-            return defaultBlockState().setValue(getFluidProperty(), flag ? getFluidProperty().keyFor(TFCFluids.SALT_WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
+            return defaultBlockState().with(getFluidProperty(), flag ? getFluidProperty().keyFor(TFCFluids.SALT_WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
         }
     }
 
     public static boolean isDead(BlockState state)
     {
         FluidProperty property = ((TFCSeaPickleBlock) state.getBlock()).getFluidProperty();
-        return state.getValue(property) == property.keyFor(Fluids.EMPTY);
+        return state.get(property) == property.keyFor(Fluids.EMPTY);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext)
     {
-        return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(PICKLES) < 4 || super.canBeReplaced(state, useContext);
+        return useContext.getItemInHand().getItem() == this.asItem() && state.get(PICKLES) < 4 || super.canBeReplaced(state, useContext);
     }
 
     protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
@@ -88,7 +88,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockPos blockpos = pos.below();
+        BlockPos blockpos = pos.down();
         return mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
     }
 
@@ -96,7 +96,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(PICKLES))
+        switch (state.get(PICKLES))
         {
             case 1:
             default:
@@ -114,13 +114,13 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return Blocks.AIR.getDefaultState();
         }
         else
         {
-            if (stateIn.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
+            if (stateIn.get(getFluidProperty()).getFluid() != Fluids.EMPTY)
             {
                 worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
             }

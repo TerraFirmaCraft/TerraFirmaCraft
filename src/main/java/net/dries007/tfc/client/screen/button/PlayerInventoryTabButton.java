@@ -58,12 +58,12 @@ public class PlayerInventoryTabButton extends Button
         // Because forge is ass and removed the event for "button clicked", and I don't care to deal with the shit in MinecraftForge#5548, this will do for now
         this.tickCallback = new Runnable()
         {
-            boolean recipeBookVisible = screen.getRecipeBookComponent().isVisible();
+            boolean recipeBookVisible = screen.getRecipeGui().isVisible();
 
             @Override
             public void run()
             {
-                boolean newRecipeBookVisible = screen.getRecipeBookComponent().isVisible();
+                boolean newRecipeBookVisible = screen.getRecipeGui().isVisible();
                 if (newRecipeBookVisible != recipeBookVisible)
                 {
                     recipeBookVisible = newRecipeBookVisible;
@@ -78,7 +78,7 @@ public class PlayerInventoryTabButton extends Button
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bind(TEXTURE);
+        minecraft.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.disableDepthTest();
 
         tickCallback.run();

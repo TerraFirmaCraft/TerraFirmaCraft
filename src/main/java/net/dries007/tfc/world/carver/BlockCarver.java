@@ -106,9 +106,9 @@ public abstract class BlockCarver implements IContextCarver
     @SuppressWarnings("deprecation")
     protected void setSupported(IChunk chunk, BlockPos pos, BlockState state, RockData rockData)
     {
-        if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())
+        if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.up()).isAir())
         {
-            chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.HARDENED).defaultBlockState(), false);
+            chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.HARDENED).getDefaultState(), false);
         }
     }
 }

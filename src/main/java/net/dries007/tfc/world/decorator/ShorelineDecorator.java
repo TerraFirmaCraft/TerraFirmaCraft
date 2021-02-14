@@ -44,12 +44,12 @@ public class ShorelineDecorator extends Placement<NearWaterConfig>
                     return Stream.empty();
                 mutablePos.move(Direction.DOWN);
                 state = helper.getBlockState(mutablePos);
-                if (state.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || state.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                if (state.isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON) || state.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     for (Direction d : Direction.Plane.HORIZONTAL)
                     {
                         mutablePos.move(d);
-                        if (helper.getBlockState(mutablePos).getFluidState().is(FluidTags.WATER))
+                        if (helper.getBlockState(mutablePos).getFluidState().isIn(FluidTags.WATER))
                         {
                             return Stream.of(pos);
                         }

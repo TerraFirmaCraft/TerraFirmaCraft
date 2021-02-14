@@ -44,7 +44,7 @@ public class CalendarEventHandler
      * Responsible for primary time tracking for player time
      * Synced to client every second
      *
-     * @param event {@link TickEvent.ServerTickEvent}
+     * @param event {  TickEvent.ServerTickEvent}
      */
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event)
@@ -60,7 +60,7 @@ public class CalendarEventHandler
     {
         World world = event.world;
         // todo: verify this is the correct overworld dimension check
-        if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.dimension() == World.OVERWORLD)
+        if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.getDimensionKey() == World.OVERWORLD)
         {
             Calendars.SERVER.onOverworldTick((ServerWorld) world);
         }
@@ -69,14 +69,14 @@ public class CalendarEventHandler
     /**
      * This allows beds to function correctly with TFCs calendar
      *
-     * @param event {@link PlayerWakeUpEvent}
+     * @param event {  PlayerWakeUpEvent}
      */
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateWorld())
+        if (event.getEntity().getCommandSource().getWorld().isRemote && !event.updateWorld())
         {
-            long currentDayTime = event.getEntity().getCommandSenderWorld().getDayTime();
+            long currentDayTime = event.getEntity().getCommandSource().getWorld().getDayTime();
             if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
             {
                 long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
@@ -92,7 +92,7 @@ public class CalendarEventHandler
     /**
      * Fired on server only when a player logs out
      *
-     * @param event {@link PlayerEvent.PlayerLoggedOutEvent}
+     * @param event {  PlayerEvent.PlayerLoggedOutEvent}
      */
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
@@ -120,7 +120,7 @@ public class CalendarEventHandler
     /**
      * Fired on server only when a player logs in
      *
-     * @param event {@link PlayerEvent.PlayerLoggedInEvent}
+     * @param event {  PlayerEvent.PlayerLoggedInEvent}
      */
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
@@ -133,7 +133,7 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getPlayerCount() > 0);
+                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
             }
         }
     }

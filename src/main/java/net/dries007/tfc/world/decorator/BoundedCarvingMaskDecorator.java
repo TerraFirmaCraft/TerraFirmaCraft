@@ -36,7 +36,7 @@ public class BoundedCarvingMaskDecorator extends Placement<BoundedCarvingMaskCon
                 final int x = i & 15;
                 final int z = i >> 4 & 15;
                 final int y = i >> 8;
-                return new BlockPos(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
+                return new BlockPos(chunkPos.getXStart() + x, y, chunkPos.getZStart() + z);
             });
     }
 }

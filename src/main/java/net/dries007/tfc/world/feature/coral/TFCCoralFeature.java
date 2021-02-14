@@ -36,7 +36,7 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
 
     public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
-        BlockState coralBlockState = BlockTags.CORAL_BLOCKS.getRandomElement(rand).defaultBlockState();
+        BlockState coralBlockState = BlockTags.CORAL_BLOCKS.getRandomElement(rand).getDefaultState();
         return placeFeature(reader, rand, pos, coralBlockState);
     }
 
@@ -44,29 +44,29 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
 
     protected boolean placeCoralBlock(IWorld world, Random rand, BlockPos pos, BlockState coralBlockState)
     {
-        BlockPos abovePos = pos.above();
+        BlockPos abovePos = pos.up();
         BlockState blockstate = world.getBlockState(pos);
-        if ((blockstate.is(TFCBlocks.SALT_WATER.get()) || blockstate.is(TFCTags.Blocks.CORALS)) && world.getBlockState(abovePos).is(TFCBlocks.SALT_WATER.get()))
+        if ((blockstate.isIn(TFCBlocks.SALT_WATER.get()) || blockstate.isIn(TFCTags.Blocks.CORALS)) && world.getBlockState(abovePos).isIn(TFCBlocks.SALT_WATER.get()))
         {
-            world.setBlock(pos, coralBlockState, 3);
+            world.setBlockState(pos, coralBlockState, 3);
             if (rand.nextFloat() < 0.25F)
             {
-                world.setBlock(abovePos, salty(TFCTags.Blocks.CORALS.getRandomElement(rand).defaultBlockState()), 2);
+                world.setBlockState(abovePos, salty(TFCTags.Blocks.CORALS.getRandomElement(rand).getDefaultState()), 2);
             }
             else if (rand.nextFloat() < 0.05F)
             {
-                world.setBlock(abovePos, salty(TFCBlocks.SEA_PICKLE.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
+                world.setBlockState(abovePos, salty(TFCBlocks.SEA_PICKLE.get().getDefaultState().with(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
             }
 
             for (Direction direction : Direction.Plane.HORIZONTAL)
             {
                 if (rand.nextFloat() < 0.2F)
                 {
-                    BlockPos relativePos = pos.relative(direction);
-                    if (world.getBlockState(relativePos).is(Blocks.WATER))
+                    BlockPos relativePos = pos.offset(direction);
+                    if (world.getBlockState(relativePos).isIn(Blocks.WATER))
                     {
-                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).defaultBlockState()).setValue(TFCDeadCoralWallFanBlock.FACING, direction);
-                        world.setBlock(relativePos, wallCoralState, 2);
+                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).getDefaultState()).with(TFCDeadCoralWallFanBlock.FACING, direction);
+                        world.setBlockState(relativePos, wallCoralState, 2);
                     }
                 }
             }
@@ -81,6 +81,6 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
 
     private BlockState salty(BlockState state)
     {
-        return state.setValue(TFCBlockStateProperties.SALT_WATER, TFCBlockStateProperties.SALT_WATER.keyFor(TFCFluids.SALT_WATER.getSource()));
+        return state.with(TFCBlockStateProperties.SALT_WATER, TFCBlockStateProperties.SALT_WATER.keyFor(TFCFluids.SALT_WATER.getSource()));
     }
 }

@@ -104,8 +104,8 @@ public final class TerraFirmaCraft
         event.enqueueWork(DispenserBehaviors::syncSetup);
 
         // World gen registry objects
-        Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR_CODEC, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
+        Registry.register(Registry.BIOME_PROVIDER_CODEC, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
     }
 
     @SubscribeEvent

@@ -105,7 +105,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
 
         public int getAmount(FluidState state)
         {
-            return state.getValue(LEVEL);
+            return state.get(LEVEL);
         }
 
         protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)

@@ -9,7 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 /**
  * Values for plate tectonics
  *
- * These must match the compile time constants in {@link net.dries007.tfc.world.layer.TFCLayerUtil}
+ * These must match the compile time constants in {  net.dries007.tfc.world.layer.TFCLayerUtil}
  */
 public enum PlateTectonicsClassification
 {

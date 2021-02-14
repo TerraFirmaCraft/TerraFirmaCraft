@@ -50,11 +50,11 @@ public class TFCIcebergFeature extends IcebergFeature
                     {
                         if (placeWater)
                         {
-                            this.setBlock(worldIn, blockpos, TFCBlocks.SALT_WATER.get().defaultBlockState());
+                            this.setBlockState(worldIn, blockpos, TFCBlocks.SALT_WATER.get().getDefaultState());
                         }
                         else
                         {
-                            this.setBlock(worldIn, blockpos, Blocks.AIR.defaultBlockState());
+                            this.setBlockState(worldIn, blockpos, Blocks.AIR.getDefaultState());
                             this.removeFloatingSnowLayer(worldIn, blockpos);
                         }
                     }
@@ -67,17 +67,17 @@ public class TFCIcebergFeature extends IcebergFeature
     public void setIcebergBlock(BlockPos pos, IWorld worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
     {
         BlockState blockstate = worldIn.getBlockState(pos);
-        if (blockstate.getMaterial() == Material.AIR || blockstate.is(Blocks.SNOW_BLOCK) || blockstate.is(Blocks.ICE) || blockstate.is(TFCBlocks.SALT_WATER.get()))
+        if (blockstate.getMaterial() == Material.AIR || blockstate.isIn(Blocks.SNOW_BLOCK) || blockstate.isIn(Blocks.ICE) || blockstate.isIn(TFCBlocks.SALT_WATER.get()))
         {
             boolean flag = !boolean_ || random.nextDouble() > 0.05D;
             int i = boolean_ ? 3 : 2;
-            if (boolean1_ && !blockstate.is(TFCBlocks.SALT_WATER.get()) && (double) int_ <= (double) random.nextInt(Math.max(1, int1_ / i)) + (double) int1_ * 0.6D && flag)
+            if (boolean1_ && !blockstate.isIn(TFCBlocks.SALT_WATER.get()) && (double) int_ <= (double) random.nextInt(Math.max(1, int1_ / i)) + (double) int1_ * 0.6D && flag)
             {
-                this.setBlock(worldIn, pos, Blocks.SNOW_BLOCK.defaultBlockState());
+                this.setBlockState(worldIn, pos, Blocks.SNOW_BLOCK.getDefaultState());
             }
             else
             {
-                this.setBlock(worldIn, pos, state);
+                this.setBlockState(worldIn, pos, state);
             }
         }
     }

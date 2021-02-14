@@ -52,8 +52,8 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
 
         // Alternating red + brown sand layers
         Random random = new Random(seed);
-        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().defaultBlockState();
-        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().defaultBlockState();
+        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().getDefaultState();
+        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().getDefaultState();
         boolean state = random.nextBoolean();
         for (int i = 0; i < sandLayers.length; i++)
         {
