@@ -474,7 +474,105 @@ def generate(rm: ResourceManager):
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
     rm.item_model('giant_kelp_flower', 'tfc:item/giant_kelp_flower')
 
-    # Wood Blocks
+    for berry in BERRIES:
+        rm.item_model('food/' + berry).with_lang(lang(berry))
+
+    rm.blockstate('dead_bush', variants={
+        'stage=0': {'model': 'tfc:block/berry_bush/dead_bush_0'},
+        'stage=1': {'model': 'tfc:block/berry_bush/dead_bush_1'},
+        'stage=2': {'model': 'tfc:block/berry_bush/dead_bush_2'}
+    }).with_lang(lang('Dead Bush')).with_tag('alive_or_dead_bush')
+    rm.blockstate('dead_cane', variants={
+        'facing=east,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 90},
+        'facing=north,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0'},
+        'facing=south,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 180},
+        'facing=west,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 270},
+        'facing=east,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 90},
+        'facing=north,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1'},
+        'facing=south,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 180},
+        'facing=west,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 270},
+        'facing=east,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 90},
+        'facing=north,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2'},
+        'facing=south,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 180},
+        'facing=west,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 270}
+    }).with_lang(lang('Dead Cane')).with_tag('alive_or_dead_bush')
+    for berry in ('blackberry', 'raspberry', 'blueberry', 'elderberry'):
+        rm.blockstate('%s_bush' % berry, variants={
+            'lifecycle=healthy,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_0' % berry},
+            'lifecycle=healthy,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_1' % berry},
+            'lifecycle=healthy,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_2' % berry},
+            'lifecycle=dormant,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_0' % berry},
+            'lifecycle=dormant,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_1' % berry},
+            'lifecycle=dormant,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_2' % berry},
+            'lifecycle=fruiting,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_0' % berry},
+            'lifecycle=fruiting,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_1' % berry},
+            'lifecycle=fruiting,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_2' % berry},
+            'lifecycle=flowering,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_0' % berry},
+            'lifecycle=flowering,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_1' % berry},
+            'lifecycle=flowering,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_2' % berry},
+        }).with_lang(lang('%s Bush', berry))
+        rm.blockstate('%s_bush_cane' % berry, variants={
+            'lifecycle=healthy,facing=east,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 90},
+            'lifecycle=healthy,facing=north,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry},
+            'lifecycle=healthy,facing=south,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 180},
+            'lifecycle=healthy,facing=west,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 270},
+            'lifecycle=healthy,facing=east,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 90},
+            'lifecycle=healthy,facing=north,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry},
+            'lifecycle=healthy,facing=south,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 180},
+            'lifecycle=healthy,facing=west,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 270},
+            'lifecycle=healthy,facing=east,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 90},
+            'lifecycle=healthy,facing=north,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry},
+            'lifecycle=healthy,facing=south,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 180},
+            'lifecycle=healthy,facing=west,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 270},
+            'lifecycle=dormant,facing=east,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 90},
+            'lifecycle=dormant,facing=north,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry},
+            'lifecycle=dormant,facing=south,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 180},
+            'lifecycle=dormant,facing=west,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 270},
+            'lifecycle=dormant,facing=east,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 90},
+            'lifecycle=dormant,facing=north,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry},
+            'lifecycle=dormant,facing=south,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 180},
+            'lifecycle=dormant,facing=west,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 270},
+            'lifecycle=dormant,facing=east,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 90},
+            'lifecycle=dormant,facing=north,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry},
+            'lifecycle=dormant,facing=south,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 180},
+            'lifecycle=dormant,facing=west,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 270},
+            'lifecycle=fruiting,facing=east,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 90},
+            'lifecycle=fruiting,facing=north,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry},
+            'lifecycle=fruiting,facing=south,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 180},
+            'lifecycle=fruiting,facing=west,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 270},
+            'lifecycle=fruiting,facing=east,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 90},
+            'lifecycle=fruiting,facing=north,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry},
+            'lifecycle=fruiting,facing=south,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 180},
+            'lifecycle=fruiting,facing=west,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 270},
+            'lifecycle=fruiting,facing=east,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 90},
+            'lifecycle=fruiting,facing=north,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry},
+            'lifecycle=fruiting,facing=south,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 180},
+            'lifecycle=fruiting,facing=west,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 270},
+            'lifecycle=flowering,facing=east,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 90},
+            'lifecycle=flowering,facing=north,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry},
+            'lifecycle=flowering,facing=south,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 180},
+            'lifecycle=flowering,facing=west,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 270},
+            'lifecycle=flowering,facing=east,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 90},
+            'lifecycle=flowering,facing=north,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry},
+            'lifecycle=flowering,facing=south,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 180},
+            'lifecycle=flowering,facing=west,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 270},
+            'lifecycle=flowering,facing=east,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 90},
+            'lifecycle=flowering,facing=north,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry},
+            'lifecycle=flowering,facing=south,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 180},
+            'lifecycle=flowering,facing=west,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 270},
+        }).with_lang(lang('%s Cane', berry))
+        rm.item_model('%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
+        for state in ('', 'flowering_', 'dry_', 'fruiting_'):
+            bush_textures = {'cane': 'tfc:block/berry_bush/' + state + '%s_cane' % berry, 'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry}
+            for i in range(0, 3):
+                rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures=bush_textures)
+                rm.block_model('berry_bush/' + state + berry + '_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures=bush_textures)
+            rm.block_tag('berry_bush', '%s_bush' % berry, '%s_bush_cane' % berry)
+    for i in range(0, 3):
+        rm.block_model('berry_bush/dead_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
+        rm.block_model('berry_bush/dead_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
+
+# Wood Blocks
     for wood in WOODS.keys():
         # Logs
         for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):

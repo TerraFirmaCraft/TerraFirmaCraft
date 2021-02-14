@@ -2,6 +2,7 @@ package net.dries007.tfc.common.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -12,6 +13,12 @@ public class TickCounterTileEntity extends TFCTileEntity
     public TickCounterTileEntity()
     {
         super(TFCTileEntities.TICK_COUNTER.get());
+        resetCounter();
+    }
+
+    protected TickCounterTileEntity(TileEntityType<?> type)
+    {
+        super(type);
         resetCounter();
     }
 
