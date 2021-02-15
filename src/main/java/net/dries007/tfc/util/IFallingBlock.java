@@ -36,7 +36,7 @@ public interface IFallingBlock
     static boolean canFallThrough(World world, BlockPos pos, Material fallingBlockMaterial)
     {
         IBlockState targetState = world.getBlockState(pos);
-        if (SOFT_MATERIALS.contains(fallingBlockMaterial) && HARD_MATERIALS.contains(targetState.getMaterial()))
+        if ((SOFT_MATERIALS.contains(fallingBlockMaterial) && HARD_MATERIALS.contains(targetState.getMaterial())) || targetState.getBlockHardness(world, pos) == -1.0F)
         {
             return false;
         }
