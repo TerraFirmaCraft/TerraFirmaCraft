@@ -103,13 +103,13 @@ public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
     }
 
     @Override
-    public int getParentX(int x)
+    public int getOffsetX(int x)
     {
         return x >> 1;
     }
 
     @Override
-    public int getParentY(int z)
+    public int getOffsetZ(int z)
     {
         return z >> 1;
     }
@@ -117,8 +117,8 @@ public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
     @Override
     public A apply(ITypedNoiseRandom<A> context, TypedArea<A> area, int x, int z)
     {
-        A baseValue = area.get(getParentX(x), getParentY(z));
-        context.initRandom((x >> 1) << 1, (z >> 1) << 1);
+        A baseValue = area.get(getOffsetX(x), getOffsetZ(z));
+        context.pickRandom((x >> 1) << 1, (z >> 1) << 1);
         int xOffset = x & 1;
         int zOffset = z & 1;
         if (xOffset == 0 && zOffset == 0)
@@ -127,21 +127,21 @@ public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
         }
         else
         {
-            A valuePlusZ = area.get(getParentX(x), getParentY(z + 1));
+            A valuePlusZ = area.get(getOffsetX(x), getOffsetZ(z + 1));
             if (xOffset == 0)
             {
                 return pickRandom(context, baseValue, valuePlusZ);
             }
             else
             {
-                A valuePlusX = area.get(getParentX(x + 1), getParentY(z));
+                A valuePlusX = area.get(getOffsetX(x + 1), getOffsetZ(z));
                 if (zOffset == 0)
                 {
                     return pickRandom(context, baseValue, valuePlusX);
                 }
                 else
                 {
-                    A valuePlusBoth = area.get(getParentX(x + 1), getParentY(z + 1));
+                    A valuePlusBoth = area.get(getOffsetX(x + 1), getOffsetZ(z + 1));
                     return pick(context, baseValue, valuePlusX, valuePlusZ, valuePlusBoth);
                 }
             }

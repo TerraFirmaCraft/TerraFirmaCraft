@@ -158,7 +158,7 @@ public class TFCLayerUtil
 
     public static BiomeVariants getFromLayerId(int id)
     {
-        return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
+        return Objects.requireNonNull(REGISTRY.getByValue(id), "Layer ID = " + id + " was null!");
     }
 
     public static IAreaFactory<FastArea> createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings, IArtist<ITypedAreaFactory<Plate>> plateArtist, IArtist<IAreaFactory<? extends IArea>> layerArtist)
@@ -187,59 +187,59 @@ public class TFCLayerUtil
 
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
         layerArtist.draw("plate_boundary", 1, mainLayer);
-        mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("plate_boundary", 2, mainLayer);
-        mainLayer = PlateBoundaryModifierLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = PlateBoundaryModifierLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("plate_boundary", 3, mainLayer);
 
         // Plates -> Biomes
-        mainLayer = PlateBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = PlateBiomeLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 1, mainLayer);
 
         // Initial Biomes -> Lake Setup
-        lakeLayer = InlandLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        lakeLayer = InlandLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("lake", 1, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(0), lakeLayer);
+        lakeLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(0), lakeLayer);
         layerArtist.draw("lake", 2, lakeLayer);
 
         // Lakes
-        lakeLayer = AddLakesLayer.LARGE.run(layerContext.get(), lakeLayer);
+        lakeLayer = AddLakesLayer.LARGE.apply(layerContext.get(), lakeLayer);
         layerArtist.draw("lake", 3, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(1), lakeLayer);
+        lakeLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(1), lakeLayer);
         layerArtist.draw("lake", 4, lakeLayer);
-        lakeLayer = AddLakesLayer.SMALL.run(layerContext.get(), lakeLayer);
+        lakeLayer = AddLakesLayer.SMALL.apply(layerContext.get(), lakeLayer);
         layerArtist.draw("lake", 5, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(2), lakeLayer);
+        lakeLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(2), lakeLayer);
         layerArtist.draw("lake", 6, lakeLayer);
 
         // Biome level features - ocean borders, lakes, island chains, edge biomes, shores
         // Apply lakes back to biomes
-        mainLayer = OceanBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = OceanBorderLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 2, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(0), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(0), mainLayer);
         layerArtist.draw("biomes", 3, mainLayer);
-        mainLayer = ArchipelagoLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ArchipelagoLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 4, mainLayer);
-        mainLayer = ReefBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ReefBorderLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 5, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(1), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(1), mainLayer);
         layerArtist.draw("biomes", 6, mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 7, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(zoomLayerContext.apply(2), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(zoomLayerContext.apply(2), mainLayer);
         layerArtist.draw("biomes", 8, mainLayer);
-        mainLayer = MixLakeLayer.INSTANCE.run(layerContext.get(), mainLayer, lakeLayer);
+        mainLayer = MixLakeLayer.INSTANCE.apply(layerContext.get(), mainLayer, lakeLayer);
         layerArtist.draw("biomes", 9, mainLayer);
-        mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ShoreLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 10, mainLayer);
 
         for (int i = 0; i < 4; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.apply(layerContext.get(), mainLayer);
             layerArtist.draw("biomes", 11 + i, mainLayer);
         }
 
-        mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 15, mainLayer);
 
         // River Setup
@@ -251,31 +251,31 @@ public class TFCLayerUtil
         ).terraces(5);
 
         // River Noise
-        riverLayer = new FloatNoiseLayer(riverNoise).run(layerContext.get());
+        riverLayer = new FloatNoiseLayer(riverNoise).apply(layerContext.get());
         layerArtist.draw("river", 1, riverLayer);
 
         for (int i = 0; i < 4; i++)
         {
-            riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+            riverLayer = ZoomLayer.NORMAL.apply(layerContext.get(), riverLayer);
             layerArtist.draw("river", 2 + i, riverLayer);
         }
 
         // River shape and modifications
-        riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = RiverLayer.INSTANCE.apply(layerContext.get(), riverLayer);
         layerArtist.draw("river", 6, riverLayer);
-        riverLayer = RiverAcuteVertexLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = RiverAcuteVertexLayer.INSTANCE.apply(layerContext.get(), riverLayer);
         layerArtist.draw("river", 7, riverLayer);
-        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.apply(layerContext.get(), riverLayer);
         layerArtist.draw("river", 8, riverLayer);
-        riverLayer = SmoothLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = SmoothLayer.INSTANCE.apply(layerContext.get(), riverLayer);
         layerArtist.draw("river", 9, riverLayer);
 
         // Apply rivers
-        mainLayer = MixRiverLayer.INSTANCE.run(layerContext.get(), mainLayer, riverLayer);
+        mainLayer = MixRiverLayer.INSTANCE.apply(layerContext.get(), mainLayer, riverLayer);
         layerArtist.draw("biomes", 16, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 17, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.apply(layerContext.get(), mainLayer);
         layerArtist.draw("biomes", 18, mainLayer);
 
         return mainLayer;
@@ -288,23 +288,23 @@ public class TFCLayerUtil
 
         IAreaFactory<FastArea> mainLayer;
 
-        mainLayer = ForestInitLayer.INSTANCE.run(layerContext.get());
+        mainLayer = ForestInitLayer.INSTANCE.apply(layerContext.get());
         artist.draw("forest", 1, mainLayer);
-        mainLayer = ForestRandomizeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ForestRandomizeLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 2, mainLayer);
-        mainLayer = ZoomLayer.FUZZY.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.FUZZY.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 3, mainLayer);
-        mainLayer = ForestRandomizeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ForestRandomizeLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 4, mainLayer);
-        mainLayer = ZoomLayer.FUZZY.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.FUZZY.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 5, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 6, mainLayer);
-        mainLayer = ForestEdgeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ForestEdgeLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 7, mainLayer);
-        mainLayer = ForestRandomizeSmallLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ForestRandomizeSmallLayer.INSTANCE.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 8, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(layerContext.get(), mainLayer);
         artist.draw("forest", 9, mainLayer);
 
         return mainLayer;
@@ -326,7 +326,7 @@ public class TFCLayerUtil
 
         for (int i = 0; i < 5; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.apply(layerContext.get(), mainLayer);
         }
 
         return mainLayer;
@@ -344,7 +344,7 @@ public class TFCLayerUtil
         // Seed Areas
         for (int j = 0; j < 3; j++)
         {
-            seedLayer = new RockLayer(numRocks).run(contextFactory.get());
+            seedLayer = new RockLayer(numRocks).apply(contextFactory.get());
 
             // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
             // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
@@ -353,18 +353,18 @@ public class TFCLayerUtil
             // 3x => 99.54%
             // 4x => 99.55%
             // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
-            seedLayer = new RandomizeNeighborsLayer(numRocks).run(contextFactory.get(), seedLayer);
+            seedLayer = new RandomizeNeighborsLayer(numRocks).apply(contextFactory.get(), seedLayer);
 
             for (int i = 0; i < 2; i++)
             {
-                seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.get(), seedLayer);
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
-                seedLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), seedLayer);
+                seedLayer = ExactZoomLayer.INSTANCE.apply(contextFactory.get(), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), seedLayer);
+                seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.get(), seedLayer);
             }
 
             for (int i = 0; i < layerSettings.getRockLayerScale(); i++)
             {
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), seedLayer);
             }
 
             completedLayers.add(seedLayer);

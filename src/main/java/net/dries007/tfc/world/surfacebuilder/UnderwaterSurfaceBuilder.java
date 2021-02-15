@@ -31,14 +31,14 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
 
     @Override
     @SuppressWarnings("deprecation")
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         // Use underwater config for all locations
         // Otherwise this is identical to normal surface builder
         config = getUnderwaterConfig(x, z, seed);
 
         BlockState topState;
-        BlockState underState = config.getUnderMaterial();
+        BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int maxSurfaceDepth = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
@@ -67,12 +67,12 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
                     }
                     else if (y < seaLevel - 1)
                     {
-                        topState = underState = config.getUnderwaterMaterial();
+                        topState = underState = config.getUnderWaterMaterial();
                     }
                     else
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        topState = config.getTop();
+                        underState = config.getUnder();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);
@@ -89,9 +89,9 @@ public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilde
 
     public SurfaceBuilderConfig getUnderwaterConfig(int x, int z, long seed)
     {
-        initNoise(seed);
+        setSeed(seed);
         float variantValue = variantNoise.noise(x, z);
-        return variantValue > 0 ? SurfaceBuilder.CONFIG_FULL_SAND : SurfaceBuilder.CONFIG_GRAVEL;
+        return variantValue > 0 ? SurfaceBuilder.SAND_CONFIG : SurfaceBuilder.GRAVEL_CONFIG;
     }
 
     @Override

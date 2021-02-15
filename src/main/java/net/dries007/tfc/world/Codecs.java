@@ -42,7 +42,7 @@ public final class Codecs
      */
     @SuppressWarnings("deprecation")
     public static final Codec<BlockState> LENIENT_BLOCKSTATE = Codec.either(
-        nonDefaultedRegistryCodec(Registry.BLOCK).xmap(Block::defaultBlockState, BlockState::getBlock),
+        nonDefaultedRegistryCodec(Registry.BLOCK).xmap(Block::getDefaultState, BlockState::getBlock),
         BlockState.CODEC
     ).xmap(Helpers::resolveEither, Either::right);
 
@@ -50,11 +50,11 @@ public final class Codecs
      * Additional codecs for existing configs.
      */
     public static final Codec<SurfaceBuilderConfig> LENIENT_SURFACE_BUILDER_CONFIG = RecordCodecBuilder.create(instance -> instance.group(
-        LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTopMaterial),
-        LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnderMaterial)
+        LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTop),
+        LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnder)
     ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.getDefaultState())));
 
-    public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
+    public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.STONE_STONE_GRAVEL_CONFIG);
 
     public static final Codec<BlockStateFeatureConfig> LENIENT_BLOCK_STATE_FEATURE_CONFIG = LENIENT_BLOCKSTATE.fieldOf("state").xmap(BlockStateFeatureConfig::new, c -> c.state).codec();
 
@@ -65,7 +65,7 @@ public final class Codecs
     public static <R> Codec<R> nonDefaultedRegistryCodec(Registry<R> registry)
     {
         return ResourceLocation.CODEC.flatXmap(
-            id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error("Unknown registry entry: " + id + " for registry: " + registry.key())),
+            id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error("Unknown registry entry: " + id + " for registry: " + registry.getRegistryKey())),
             value -> DataResult.success(registry.getKey(value))
         );
     }
@@ -110,9 +110,9 @@ public final class Codecs
             Map<V, List<K>> inverseMap = new HashMap<>();
             for (Map.Entry<K, V> entry : map.entrySet())
             {
-                inverseMap.computeIfAbsent(entry.get(), v -> new ArrayList<>()).add(entry.getKey());
+                inverseMap.computeIfAbsent(entry.getValue(), v -> new ArrayList<>()).add(entry.getKey());
             }
-            return inverseMap.entrySet().stream().map(e -> Pair.of(e.get(), e.getKey())).collect(Collectors.toList());
+            return inverseMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
         });
     }
 
@@ -125,7 +125,7 @@ public final class Codecs
     {
         return codec.listOf().xmap(
             list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
-            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.get())).collect(Collectors.toList())
+            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
         );
     }
 }

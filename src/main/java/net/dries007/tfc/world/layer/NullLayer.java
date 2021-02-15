@@ -17,7 +17,7 @@ public enum NullLayer implements IAreaTransformer0
     INSTANCE;
 
     @Override
-    public int applyPixel(INoiseRandom context, int x, int z)
+    public int apply(INoiseRandom context, int x, int z)
     {
         return TFCLayerUtil.NULL_MARKER;
     }

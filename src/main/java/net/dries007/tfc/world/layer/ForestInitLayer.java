@@ -18,7 +18,7 @@ public enum ForestInitLayer implements IAreaTransformer0
     }
 
     @Override
-    public int applyPixel(INoiseRandom context, int x, int z)
+    public int apply(INoiseRandom context, int x, int z)
     {
         final float noise = forestBaseNoise.noise(x, z);
         if (noise < 0)

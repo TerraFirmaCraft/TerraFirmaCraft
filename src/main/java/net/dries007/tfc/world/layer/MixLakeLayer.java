@@ -21,10 +21,10 @@ public enum MixLakeLayer implements IAreaTransformer2, IDimOffset0Transformer
     INSTANCE;
 
     @Override
-    public int applyPixel(INoiseRandom context, IArea mainArea, IArea lakeArea, int x, int z)
+    public int apply(INoiseRandom context, IArea mainArea, IArea lakeArea, int x, int z)
     {
-        int mainValue = mainArea.get(getParentX(x), getParentY(z));
-        int lakeValue = lakeArea.get(getParentX(x), getParentY(z));
+        int mainValue = mainArea.getValue(getOffsetX(x), getOffsetZ(z));
+        int lakeValue = lakeArea.getValue(getOffsetX(x), getOffsetZ(z));
         if (lakeValue == LAKE_MARKER && TFCLayerUtil.hasLake(mainValue))
         {
             return TFCLayerUtil.lakeFor(mainValue);

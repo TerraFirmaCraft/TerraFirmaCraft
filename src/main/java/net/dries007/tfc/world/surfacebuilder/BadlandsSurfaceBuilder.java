@@ -32,12 +32,12 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         float heightVariation = heightVariationNoise.noise(x, z);
         if (startHeight > heightVariation)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+            TFCSurfaceBuilders.NORMAL.get().buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
         }
         else
         {
@@ -73,7 +73,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
         // Lazy because this queries a noise layer
         Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
 
-        BlockState underState = config.getUnderMaterial();
+        BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int maxSurfaceDepth = (int) (noise / 3.0D + random.nextDouble() * 0.25D);
@@ -101,7 +101,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
                     surfaceDepth = maxSurfaceDepth;
                     if (y < seaLevel - 1)
                     {
-                        underState = underWaterConfig.get().getUnderwaterMaterial();
+                        underState = underWaterConfig.get().getUnderWaterMaterial();
                     }
                     else
                     {

@@ -15,19 +15,19 @@ public enum ExactZoomLayer implements IAreaTransformer1
     INSTANCE;
 
     @Override
-    public int applyPixel(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
+    public int apply(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
     {
-        return area.get(getParentX(x), getParentY(z));
+        return area.getValue(getOffsetX(x), getOffsetZ(z));
     }
 
     @Override
-    public int getParentX(int x)
+    public int getOffsetX(int x)
     {
         return x >> 1;
     }
 
     @Override
-    public int getParentY(int z)
+    public int getOffsetZ(int z)
     {
         return z >> 1;
     }

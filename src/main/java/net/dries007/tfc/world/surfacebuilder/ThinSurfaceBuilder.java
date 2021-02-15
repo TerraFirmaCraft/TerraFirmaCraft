@@ -27,13 +27,13 @@ public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         // Lazy because this queries a noise layer
         Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
 
         BlockState topState;
-        BlockState underState = config.getUnderMaterial();
+        BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int maxSurfaceDepth = (int) (noise / 3.0D + random.nextDouble() * 0.25D);
@@ -62,12 +62,12 @@ public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     if (y < seaLevel - 1)
                     {
                         // Dynamic under water material
-                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
+                        topState = underState = underWaterConfig.get().getUnderWaterMaterial();
                     }
                     else
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        topState = config.getTop();
+                        underState = config.getUnder();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

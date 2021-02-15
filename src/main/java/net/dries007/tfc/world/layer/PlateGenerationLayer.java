@@ -31,7 +31,7 @@ public class PlateGenerationLayer implements ITypedAreaTransformer0<Plate>
         plateNoise.noise(x, z);
         float centerX = plateNoise.getCenterX();
         float centerZ = plateNoise.getCenterY();
-        context.initRandom(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
+        context.pickRandom(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
         for (int j = 0; j < 10; j++) context.random(1);
         boolean oceanic = context.random(100) < oceanPercent;
         float angle = 2 * PI * context.random(100) / 100f;

@@ -93,6 +93,6 @@ public class LayerFactory<T>
 
     public T get(int x, int z)
     {
-        return mappingFunction.apply(area.get().get(x, z));
+        return mappingFunction.apply(area.get().getValue(x, z));
     }
 }

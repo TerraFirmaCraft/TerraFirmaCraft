@@ -27,7 +27,7 @@ public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConf
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)

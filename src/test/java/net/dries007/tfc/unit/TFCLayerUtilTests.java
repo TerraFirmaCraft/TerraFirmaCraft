@@ -138,7 +138,7 @@ public class TFCLayerUtilTests
         IArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
 
         Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceFloat((x, z) -> {
-            int value = biomeArea.get(((int) x) >> 2, ((int) z) >> 2);
+            int value = biomeArea.getValue(((int) x) >> 2, ((int) z) >> 2);
             BiomeVariants biome = TFCLayerUtil.getFromLayerId(value);
             if (biome.isVolcanic())
             {

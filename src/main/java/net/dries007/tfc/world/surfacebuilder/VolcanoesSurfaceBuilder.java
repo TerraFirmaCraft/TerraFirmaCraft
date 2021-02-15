@@ -51,7 +51,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
     {
         throw new UnsupportedOperationException("VolcanoesSurfaceBuilder must be used with a chunk generator which supports IContextSurfaceBuilder!");
     }

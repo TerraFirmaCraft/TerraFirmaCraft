@@ -61,21 +61,21 @@ public class TFCSurfaceBuilders
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static <C extends ISurfaceBuilderConfig> void applySurfaceBuilderWithContext(ConfiguredSurfaceBuilder<C> configuredSurfaceBuilder, IWorld worldIn, Random random, ChunkData chunkData, IChunk chunk, Biome biome, int posX, int posZ, int posY, double noise, long seed, BlockState defaultBlock, BlockState defaultFluid, int seaLevel)
     {
-        configuredSurfaceBuilder.surfaceBuilder.initNoise(seed);
-        if (configuredSurfaceBuilder.surfaceBuilder instanceof IContextSurfaceBuilder)
+        configuredSurfaceBuilder.builder.setSeed(seed);
+        if (configuredSurfaceBuilder.builder instanceof IContextSurfaceBuilder)
         {
             // Need an ugly cast here to verify the config type
-            ((IContextSurfaceBuilder) configuredSurfaceBuilder.surfaceBuilder).applyWithContext(worldIn, chunkData, random, chunk, biome, posX, posZ, posY, noise, defaultBlock, defaultFluid, seaLevel, seed, configuredSurfaceBuilder.config);
+            ((IContextSurfaceBuilder) configuredSurfaceBuilder.builder).applyWithContext(worldIn, chunkData, random, chunk, biome, posX, posZ, posY, noise, defaultBlock, defaultFluid, seaLevel, seed, configuredSurfaceBuilder.config);
         }
         else
         {
-            configuredSurfaceBuilder.surfaceBuilder.apply(random, chunk, biome, posX, posZ, posY, noise, defaultBlock, defaultFluid, seaLevel, seed, configuredSurfaceBuilder.config);
+            configuredSurfaceBuilder.builder.buildSurface(random, chunk, biome, posX, posZ, posY, noise, defaultBlock, defaultFluid, seaLevel, seed, configuredSurfaceBuilder.config);
         }
     }
 
     public static <C extends ISurfaceBuilderConfig> void applySurfaceBuilder(ConfiguredSurfaceBuilder<C> surfaceBuilder, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed)
     {
-        applySurfaceBuilder(surfaceBuilder.surfaceBuilder, random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, surfaceBuilder.config);
+        applySurfaceBuilder(surfaceBuilder.builder, random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, surfaceBuilder.config);
     }
 
     /**
@@ -83,8 +83,8 @@ public class TFCSurfaceBuilders
      */
     public static <C extends ISurfaceBuilderConfig> void applySurfaceBuilder(SurfaceBuilder<C> surfaceBuilder, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, C config)
     {
-        surfaceBuilder.initNoise(seed);
-        surfaceBuilder.apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+        surfaceBuilder.setSeed(seed);
+        surfaceBuilder.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
     }
 
     private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Function<Codec<C>, S> factory, Codec<C> codec)

@@ -41,7 +41,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         throw new UnsupportedOperationException("GlacierSurfaceBuilder must be used with a chunk generator which supports IContextSurfaceBuilder!");
     }
@@ -61,7 +61,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
-        double icebergValue = Math.min(Math.abs(surfaceNoise), icebergNoise.get(x * 0.1D, z * 0.1D, false) * 15.0D);
+        double icebergValue = Math.min(Math.abs(surfaceNoise), icebergNoise.noiseAt(x * 0.1D, z * 0.1D, false) * 15.0D);
         icebergValue += (thresholdTemperature - maxAnnualTemperature) * 0.2f;
         if (maxAnnualTemperature > thresholdTemperature)
         {
@@ -69,7 +69,7 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         }
         if (icebergValue > 1.8D)
         {
-            final double icebergRoofValue = Math.abs(icebergRoofNoise.get(x * 0.09765625D, z * 0.09765625D, false));
+            final double icebergRoofValue = Math.abs(icebergRoofNoise.noiseAt(x * 0.09765625D, z * 0.09765625D, false));
             final double maxIcebergRoofValue = Math.ceil(icebergRoofValue * 40.0D) + 14.0D;
 
             icebergMaxY = icebergValue * icebergValue * 1.2D;
@@ -93,8 +93,8 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         final int localZ = z & 15;
         final SurfaceBuilderConfig underwaterConfig = TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed);
 
-        BlockState underState = underwaterConfig.getUnderMaterial();
-        BlockState topState = underwaterConfig.getTopMaterial();
+        BlockState underState = underwaterConfig.getUnder();
+        BlockState topState = underwaterConfig.getTop();
         int normalSurfaceDepth = (int) (surfaceNoise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
         int surfaceFlag = -1;
         int currentSnowLayers = 0;
@@ -135,8 +135,8 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
                 }
                 else if (y >= seaLevel - 4 && y <= seaLevel + 1)
                 {
-                    topState = underwaterConfig.getTopMaterial();
-                    underState = underwaterConfig.getUnderMaterial();
+                    topState = underwaterConfig.getTop();
+                    underState = underwaterConfig.getUnder();
                 }
 
                 if (y < seaLevel && topState.isAir())

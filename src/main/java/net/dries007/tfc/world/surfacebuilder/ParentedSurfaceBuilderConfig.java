@@ -18,7 +18,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 public class ParentedSurfaceBuilderConfig extends SurfaceBuilderConfig
 {
     public static final Codec<ParentedSurfaceBuilderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ConfiguredSurfaceBuilder.CODEC.fieldOf("parent").forGetter(c -> c.parent)
+        ConfiguredSurfaceBuilder.field_244393_b_.fieldOf("parent").forGetter(c -> c.parent)//CODEC
     ).apply(instance, ParentedSurfaceBuilderConfig::new));
 
     private final Supplier<ConfiguredSurfaceBuilder<?>> parent;

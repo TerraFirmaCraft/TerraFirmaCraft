@@ -21,7 +21,7 @@ public class FloatNoiseLayer implements IAreaTransformer0
     }
 
     @Override
-    public int applyPixel(INoiseRandom context, int x, int z)
+    public int apply(INoiseRandom context, int x, int z)
     {
         return Float.floatToRawIntBits(noise.noise(x, z));
     }

@@ -29,8 +29,8 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
     {
         return () -> {
             TypedArea<Plate> area = plateLayer.make();
-            return context.createResult((x, z) -> {
-                context.initRandom(x, z);
+            return context.makeArea((x, z) -> {
+                context.pickRandom(x, z);
                 return apply(context, area, x, z);
             });
         };
@@ -40,11 +40,11 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
     private int apply(IExtendedNoiseRandom<?> context, TypedArea<Plate> area, int x, int z)
     {
         return apply(context,
-            area.get(getParentX(x + 1), getParentY(z + 0)),
-            area.get(getParentX(x + 2), getParentY(z + 1)),
-            area.get(getParentX(x + 1), getParentY(z + 2)),
-            area.get(getParentX(x + 0), getParentY(z + 1)),
-            area.get(getParentX(x + 1), getParentY(z + 1))
+            area.get(getOffsetX(x + 1), getOffsetZ(z + 0)),
+            area.get(getOffsetX(x + 2), getOffsetZ(z + 1)),
+            area.get(getOffsetX(x + 1), getOffsetZ(z + 2)),
+            area.get(getOffsetX(x + 0), getOffsetZ(z + 1)),
+            area.get(getOffsetX(x + 1), getOffsetZ(z + 1))
         );
     }
 

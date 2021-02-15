@@ -21,8 +21,8 @@ public abstract class SeededSurfaceBuilder<C extends SurfaceBuilderConfig> exten
         super(codec);
     }
 
-    @Override
-    public void initNoise(long seed)
+    @Override//initNoise
+    public void setSeed(long seed)
     {
         if (lastSeed != seed || !initialized)
         {

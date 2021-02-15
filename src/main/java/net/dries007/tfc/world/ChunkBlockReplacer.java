@@ -112,7 +112,7 @@ public class ChunkBlockReplacer
                 float temperature = data.getAverageTemp(x, z);
                 float rainfall = data.getRainfall(x, z);
 
-                final int maxY = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z);
+                final int maxY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z);
 
                 mutablePos.setPos(xStart + x, 0, zStart + z);
                 final Biome biome = world.getBiome(mutablePos);
@@ -138,9 +138,9 @@ public class ChunkBlockReplacer
 
                                 // Since we operate on the chunk section directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
                                 mutablePos.setPos(xStart + x, y, zStart + z);
-                                if (stateAt.hasPostProcess(chunk, mutablePos))
+                                if (stateAt.blockNeedsPostProcessing(chunk, mutablePos))
                                 {
-                                    chunk.markPosForPostprocessing(mutablePos);
+                                    chunk.markBlockForPostprocessing(mutablePos);
                                 }
                             }
                         }
