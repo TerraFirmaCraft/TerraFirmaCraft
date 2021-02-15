@@ -27,7 +27,7 @@ public class TallPlantPlacer extends BlockPlacer
         ((TFCTallGrassBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }
 
-    protected BlockPlacerType<?> type() {
+    protected BlockPlacerType<?> getBlockPlacerType() {
         return TFCBlockPlacers.TALL_PLANT.get();
     }
 }

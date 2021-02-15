@@ -14,7 +14,7 @@ public enum ForestRandomizeLayer implements IC0Transformer
     {
         if (value == FOREST_NONE)
         {
-            final int random = context.nextRandom(16);
+            final int random = context.random(16);
             if (random <= 2)
             {
                 return FOREST_SPARSE;
@@ -26,7 +26,7 @@ public enum ForestRandomizeLayer implements IC0Transformer
         }
         else if (value == FOREST_SPARSE)
         {
-            final int random = context.nextRandom(7);
+            final int random = context.random(7);
             if (random <= 3)
             {
                 return FOREST_NORMAL;
@@ -34,7 +34,7 @@ public enum ForestRandomizeLayer implements IC0Transformer
         }
         else if (value == FOREST_NORMAL || value == FOREST_OLD)
         {
-            final int random = context.nextRandom(24);
+            final int random = context.random(24);
             if (random == 1 && value != FOREST_OLD)
             {
                 return FOREST_SPARSE;

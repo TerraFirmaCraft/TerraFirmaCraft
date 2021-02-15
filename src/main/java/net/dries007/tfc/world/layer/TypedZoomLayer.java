@@ -82,12 +82,12 @@ public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
 
     private static <A> A pickRandom(INoiseRandom context, A first, A second)
     {
-        return context.nextRandom(2) == 0 ? first : second;
+        return context.random(2) == 0 ? first : second;
     }
 
     private static <A> A pickRandom(INoiseRandom context, A first, A second, A third, A fourth)
     {
-        int choice = context.nextRandom(4);
+        int choice = context.random(4);
         switch (choice)
         {
             case 0:

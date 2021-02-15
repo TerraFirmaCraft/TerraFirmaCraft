@@ -21,6 +21,6 @@ public class RockLayer implements IAreaTransformer0
     @Override
     public int applyPixel(INoiseRandom context, int x, int z)
     {
-        return context.nextRandom(totalRocks);
+        return context.random(totalRocks);
     }
 }

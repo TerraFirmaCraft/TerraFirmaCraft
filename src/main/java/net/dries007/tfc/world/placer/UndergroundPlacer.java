@@ -32,7 +32,7 @@ public class UndergroundPlacer extends BlockPlacer
     }
 
     @Override
-    protected BlockPlacerType<?> type()
+    protected BlockPlacerType<?> getBlockPlacerType()
     {
         return TFCBlockPlacers.UNDERGROUND.get();
     }

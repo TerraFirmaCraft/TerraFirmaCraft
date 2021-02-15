@@ -30,7 +30,7 @@ public enum AddLakesLayer implements IC1Transformer
     @Override
     public int apply(INoiseRandom context, int value)
     {
-        if (value == INLAND_MARKER && context.nextRandom(chance) == 0)
+        if (value == INLAND_MARKER && context.random(chance) == 0)
         {
             return LAKE_MARKER;
         }

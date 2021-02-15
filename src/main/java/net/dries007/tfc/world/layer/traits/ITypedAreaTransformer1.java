@@ -18,7 +18,7 @@ public interface ITypedAreaTransformer1<A> extends IDimTransformer
         return () -> {
             TypedArea<A> area = areaFactory.make();
             return context.createTypedResult((x, z) -> {
-                context.initRandom(x, z);
+                context.pickRandom(x, z);
                 return apply(context, area, x, z);
             });
         };

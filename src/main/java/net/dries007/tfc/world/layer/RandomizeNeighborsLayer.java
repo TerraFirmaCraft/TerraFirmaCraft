@@ -22,7 +22,7 @@ public class RandomizeNeighborsLayer extends CallbackLimitLayer implements ICast
         if (north == center || east == center || south == center || west == center)
         {
             // Pick a different random
-            return context.nextRandom(limit);
+            return context.random(limit);
         }
         return center;
     }

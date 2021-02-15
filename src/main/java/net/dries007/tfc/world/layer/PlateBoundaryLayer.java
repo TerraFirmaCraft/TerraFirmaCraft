@@ -60,7 +60,7 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
         if (!west.equals(center))
         {
             boundaryCount++;
-            if (boundary == null || context.nextRandom(boundaryCount) == 0)
+            if (boundary == null || context.random(boundaryCount) == 0)
             {
                 boundary = west;
             }
@@ -68,7 +68,7 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
         if (!south.equals(center))
         {
             boundaryCount++;
-            if (boundary != null || context.nextRandom(boundaryCount) == 0)
+            if (boundary != null || context.random(boundaryCount) == 0)
             {
                 boundary = south;
             }
@@ -76,7 +76,7 @@ public enum PlateBoundaryLayer implements IDimOffset1Transformer
         if (!east.equals(center))
         {
             boundaryCount++;
-            if (boundary != null || context.nextRandom(boundaryCount) == 0)
+            if (boundary != null || context.random(boundaryCount) == 0)
             {
                 boundary = east;
             }

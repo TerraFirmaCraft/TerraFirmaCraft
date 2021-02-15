@@ -19,12 +19,12 @@ public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
 
     private static long mixSeed(long left, long right)
     {
-        long mixRight = FastRandom.next(right, right);
-        mixRight = FastRandom.next(mixRight, right);
-        mixRight = FastRandom.next(mixRight, right);
-        long mixLeft = FastRandom.next(left, mixRight);
-        mixLeft = FastRandom.next(mixLeft, mixRight);
-        return FastRandom.next(mixLeft, mixRight);
+        long mixRight = FastRandom.mix(right, right);
+        mixRight = FastRandom.mix(mixRight, right);
+        mixRight = FastRandom.mix(mixRight, right);
+        long mixLeft = FastRandom.mix(left, mixRight);
+        mixLeft = FastRandom.mix(mixLeft, mixRight);
+        return FastRandom.mix(mixLeft, mixRight);
     }
 
     public FastAreaContext(long seed, long seedModifier)
@@ -33,32 +33,32 @@ public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
     }
 
     @Override
-    public void initRandom(long x, long z)
+    public void setPosition(long x, long z)
     {
         long value = this.seed;
-        value = FastRandom.next(value, x);
-        value = FastRandom.next(value, z);
-        value = FastRandom.next(value, x);
-        value = FastRandom.next(value, z);
+        value = FastRandom.mix(value, x);
+        value = FastRandom.mix(value, z);
+        value = FastRandom.mix(value, x);
+        value = FastRandom.mix(value, z);
         this.rval = value;
     }
 
     @Override
-    public FastArea createResult(IPixelTransformer pixelTransformer)
+    public FastArea makeArea(IPixelTransformer pixelTransformer)
     {
         return new FastArea(pixelTransformer, 256);
     }
 
     @Override
-    public int nextRandom(int bound)
+    public int random(int bound)
     {
         final int value = (int)Math.floorMod(rval >> 24, bound);
-        rval = FastRandom.next(rval, seed);
+        rval = FastRandom.mix(rval, seed);
         return value;
     }
 
     @Override
-    public ImprovedNoiseGenerator getBiomeNoise()
+    public ImprovedNoiseGenerator getNoiseGenerator()
     {
         throw new IllegalStateException("Go away");
     }

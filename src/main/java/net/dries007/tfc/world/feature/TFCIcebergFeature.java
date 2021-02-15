@@ -67,7 +67,8 @@ public class TFCIcebergFeature extends IcebergFeature
     }
 
     @Override
-    public void setIcebergBlock(BlockPos pos, IWorld worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
+    //setIcebergBlock
+    public void func_205175_a(BlockPos pos, IWorld worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
     {
         BlockState blockstate = worldIn.getBlockState(pos);
         if (blockstate.getMaterial() == Material.AIR || blockstate.isIn(Blocks.SNOW_BLOCK) || blockstate.isIn(Blocks.ICE) || blockstate.isIn(TFCBlocks.SALT_WATER.get()))

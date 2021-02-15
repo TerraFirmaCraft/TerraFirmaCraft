@@ -25,7 +25,7 @@ public enum ArchipelagoLayer implements IC0Transformer
         if (value == OCEAN_OCEAN_CONVERGING_MARKER)
         {
             // Ocean - Ocean Converging creates volcanic island chains on this marker
-            final int r = context.nextRandom(20);
+            final int r = context.random(20);
             if (r <= 1)
             {
                 return VOLCANIC_OCEANIC_MOUNTAINS;
@@ -40,7 +40,7 @@ public enum ArchipelagoLayer implements IC0Transformer
         {
             // Ocean - Ocean Diverging creates mid-ocean ridges, which become ocean biomes (shallow areas)
             // Random chance for small non-volcanic islands (plains)
-            if (context.nextRandom(30) == 0)
+            if (context.random(30) == 0)
             {
                 return PLAINS;
             }
@@ -49,7 +49,7 @@ public enum ArchipelagoLayer implements IC0Transformer
         else if (value == DEEP_OCEAN)
         {
             // Deep Oceans have a chance for a volcanic hotspot
-            if (context.nextRandom(250) == 0)
+            if (context.random(250) == 0)
             {
                 return VOLCANIC_OCEANIC_MOUNTAINS;
             }

@@ -39,7 +39,7 @@ public class FastArea implements IArea
     }
 
     @Override
-    public int get(int x, int z)
+    public int getValue(int x, int z)
     {
         final long key = ChunkPos.asLong(x, z);
         final int index = (int) HashCommon.mix(key) & mask;

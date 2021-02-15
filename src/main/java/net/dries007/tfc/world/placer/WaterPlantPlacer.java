@@ -29,14 +29,14 @@ public class WaterPlantPlacer extends BlockPlacer
         if (state.getBlock() instanceof IFluidLoggable)
         {
             IFluidLoggable block = (IFluidLoggable) state.getBlock();
-            BlockState setState = block.getStateWithFluid(state, worldIn.getFluidState(pos).getType());
+            BlockState setState = block.getStateWithFluid(state, worldIn.getFluidState(pos).getFluid());
             if (setState.get(block.getFluidProperty()).getFluid() == Fluids.EMPTY)
                 return;
             worldIn.setBlockState(pos, setState.with(TFCBlockStateProperties.AGE_3, random.nextInt(4)), 2);
         }
     }
 
-    protected BlockPlacerType<?> type()
+    protected BlockPlacerType<?> getBlockPlacerType()
     {
         return TFCBlockPlacers.WATER_PLANT.get();
     }

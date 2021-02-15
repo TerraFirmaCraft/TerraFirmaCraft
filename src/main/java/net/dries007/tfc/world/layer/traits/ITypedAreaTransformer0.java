@@ -14,7 +14,7 @@ public interface ITypedAreaTransformer0<A>
     default ITypedAreaFactory<A> apply(ITypedNoiseRandom<A> context)
     {
         return () -> context.createTypedResult((x, z) -> {
-            context.initRandom(x, z);
+            context.pickRandom(x, z);
             return apply(context, x, z);
         });
     }

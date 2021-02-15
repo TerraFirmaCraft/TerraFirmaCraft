@@ -27,7 +27,9 @@ public class EmergentPlantPlacer extends BlockPlacer
         ((TallWaterPlantBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }
 
-    protected BlockPlacerType<?> type() {
+    @Override
+    protected BlockPlacerType<?> getBlockPlacerType() {
         return TFCBlockPlacers.EMERGENT_PLANT.get();
     }
+
 }

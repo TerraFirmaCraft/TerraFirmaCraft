@@ -14,7 +14,7 @@ public enum ForestRandomizeSmallLayer implements IC1Transformer
     {
         if (value == FOREST_NORMAL || value == FOREST_OLD)
         {
-            final int random = context.nextRandom((value == FOREST_OLD ? 40 : 25));
+            final int random = context.random((value == FOREST_OLD ? 40 : 25));
             if (random == 0)
             {
                 return FOREST_NONE;
@@ -26,7 +26,7 @@ public enum ForestRandomizeSmallLayer implements IC1Transformer
         }
         else if (value == FOREST_SPARSE || value == FOREST_NONE)
         {
-            final int random = context.nextRandom(30);
+            final int random = context.random(30);
             if (random == 0)
             {
                 return value == FOREST_SPARSE ? FOREST_NORMAL : FOREST_EDGE;
