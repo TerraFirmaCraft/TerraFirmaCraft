@@ -32,7 +32,8 @@ public class HwylaPluginTFC implements IWailaPlugin
         new HwylaBlockInterface(new PitKilnProvider()),
         new HwylaBlockInterface(new PlacedItemProvider()),
         new HwylaBlockInterface(new InfoProvider()),
-        new HwylaBlockInterface(new TreeProvider())
+        new HwylaBlockInterface(new TreeProvider()),
+        new HwylaBlockInterface(new IngotPileProvider())
     );
 
     @Override
