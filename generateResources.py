@@ -547,6 +547,48 @@ FENCE_GATE_VARIANTS = {
     'facing=east,in_wall=true,open=true': {'model': 'wall_gate_open', 'y': 270}
 }
 
+MISC_POTTED_PLANTS = ['barrel_cactus', 'foxglove', 'morning_glory', 'moss', 'ostrich_fern', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
+
+CROSS_PLANTS = {
+    'allium': 'allium_0',
+    'athyrium_fern': 'single',
+    'black_orchid': 'black_orchid_0',
+    'blood_lily': 'blood_lily_0',
+    'blue_orchid': 'blue_orchid_1',
+    'butterfly_milkweed': 'butterfly_milkweed_3',
+    'calendula': 'calendula_3',
+    'canna': 'canna_3',
+    'dandelion': 'dandelion_2',
+    'field_horsetail': 'item',
+    'goldenrod': 'goldenrod_2',
+    'grape_hyacinth': 'grape_hyacinth_1',
+    'houstonia': 'houstonia_1',
+    'labrador_tea': 'labrador_tea_4',
+    'lady_fern': 'item',
+    'meads_milkweed': 'meads_milkweed_3',
+    'nasturtium': 'nasturtium_2',
+    'oxeye_daisy': 'oxeye_daisy_3',
+    'perovskia': 'perovskia_3',
+    'poppy': 'poppy_2',
+    'porcini': 'porcini',
+    'primrose': 'primrose',
+    'pulsatilla': 'pulsatilla_3',
+    'sacred_datura': 'sacred_datura_2b',
+    'sagebrush': 'sagebrush_4',
+    'snapdragon_pink': 'snapdragon_pink_1',
+    'snapdragon_red': 'snapdragon_red_1',
+    'snapdragon_white': 'snapdragon_white_1',
+    'snapdragon_yellow': 'snapdragon_yellow_1',
+    'strelitzia': 'strelitzia_0',
+    'sword_fern': 'item',
+    'trillium': 'item',
+    'tropical_milkweed': 'tropical_milkweed_3',
+    'tulip_orange': 'tulip_orange_1',
+    'tulip_pink': 'tulip_pink_1',
+    'tulip_red': 'tulip_red_1',
+    'tulip_white': 'tulip_white_1',
+    'yucca': 'yucca_2'
+}
 
 def del_none(d):
     """
@@ -1067,6 +1109,16 @@ for cropName, data in CROPS.items():
         {
             'mature': {'false': {'textures': { texture: "tfc:blocks/crop/%s_dead_young" % cropName}}, 'true': {}}
         })
+
+for plant, asset in CROSS_PLANTS.items():
+    plant_space = plant
+    if plant in ('snapdragon_white', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_red', 'snapdragon_yellow'):
+        plant_space = 'snapdragon'
+    elif plant in ('tulip_orange', 'tulip_red', 'tulip_white', 'tulip_pink'):
+        plant_space = 'tulip'
+    blockstate(('flowerpot', plant), 'tfc:flowerpot/flower_pot_cross', {'plant': "tfc:blocks/plants/%s/%s" % (plant_space, asset)})
+for plant in MISC_POTTED_PLANTS:
+    blockstate(('flowerpot', plant), 'tfc:flowerpot/%s' % plant, {})
 
 #   _____ _
 #  |_   _| |

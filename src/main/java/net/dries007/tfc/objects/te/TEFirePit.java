@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -177,7 +178,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + airTicks;
+                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
                 if (temperature != targetTemperature)
                 {
                     float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;

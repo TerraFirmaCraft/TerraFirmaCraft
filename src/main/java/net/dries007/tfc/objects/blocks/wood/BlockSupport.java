@@ -477,15 +477,16 @@ public class BlockSupport extends Block
         int distance = -1;
         for (int i = 0; i < 5; i++)
         {
+            BlockPos offsetPos = pos.offset(face, i);
+            if (!(worldIn.getBlockState(offsetPos).getBlock() instanceof BlockSupport) && !worldIn.isAirBlock(offsetPos))
+            {
+                return 0;
+            }
             IBlockState state = worldIn.getBlockState(pos.offset(face, i + 1));
             if (state.getBlock() instanceof BlockSupport && state.getValue(AXIS) == EnumFacing.Axis.Y)
             {
                 distance = i;
                 break;
-            }
-            if (!(worldIn.getBlockState(pos.offset(face, i)).getBlock() instanceof BlockSupport) && !worldIn.isAirBlock(pos.offset(face, i)))
-            {
-                return 0;
             }
         }
 

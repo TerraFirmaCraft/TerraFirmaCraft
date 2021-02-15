@@ -15,6 +15,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -147,7 +148,7 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + airTicks;
+                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
                 if (temperature != targetTemperature)
                 {
                     float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;

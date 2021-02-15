@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -120,6 +121,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
     private static ImmutableList<BlockSupport> allSupportBlocks;
+    private static ImmutableList<BlockFlowerPotTFC> allFlowerPots;
 
     private static ImmutableList<BlockFruitTreeSapling> allFruitTreeSaplingBlocks;
     private static ImmutableList<BlockFruitTreeTrunk> allFruitTreeTrunkBlocks;
@@ -261,6 +263,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockSupport> getAllSupportBlocks()
     {
         return allSupportBlocks;
+    }
+
+    public static ImmutableList<BlockFlowerPotTFC> getAllFlowerPots()
+    {
+        return allFlowerPots;
     }
 
     public static ImmutableList<BlockFruitTreeSapling> getAllFruitTreeSaplingBlocks()
@@ -620,17 +627,26 @@ public final class BlocksTFC
         {
 
             Builder<BlockPlantTFC> b = ImmutableList.builder();
+            Builder<BlockFlowerPotTFC> pots = ImmutableList.builder();
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())
             {
                 if (plant.getPlantType() != Plant.PlantType.SHORT_GRASS && plant.getPlantType() != Plant.PlantType.TALL_GRASS)
                     b.add(register(r, "plants/" + plant.getRegistryName().getPath(), plant.getPlantType().create(plant), CT_FLORA));
+                if (plant.canBePotted())
+                    pots.add(register(r, "flowerpot/" + plant.getRegistryName().getPath(), new BlockFlowerPotTFC(plant)));
             }
             allPlantBlocks = b.build();
+            allFlowerPots = pots.build();
+
             for (BlockPlantTFC blockPlant : allPlantBlocks)
             {
                 if (blockPlant instanceof BlockFloatingWaterTFC)
                 {
                     inventoryItemBlocks.add(new ItemBlockFloatingWaterTFC((BlockFloatingWaterTFC) blockPlant));
+                }
+                else if (blockPlant.getPlant().canBePotted())
+                {
+                    normalItemBlocks.add(new ItemBlockPlant(blockPlant, blockPlant.getPlant()));
                 }
                 else
                 {
@@ -672,7 +688,6 @@ public final class BlocksTFC
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
 
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
-        // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
