@@ -24,7 +24,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock
 {
     public DeadCaneBlock(ForgeBlockProperties properties)
     {
-        super(properties, SpreadingBush.NOOP, () -> Blocks.AIR);
+        super(properties, BerryBush.NOOP, () -> Blocks.AIR);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock
             {
                 if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
                 {
-                    if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.ALIVE_OR_DEAD_BUSH))
+                    if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
                     {
                         te.setRemoved();
                         world.destroyBlock(pos, true);

@@ -22,8 +22,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
@@ -43,7 +41,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     private static final VoxelShape CANE_SOUTH = Block.box(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 8.0D);
     private static final VoxelShape CANE_NORTH = Block.box(0.0D, 3.0D, 8.0D, 16.0D, 12.0D, 16.0D);
 
-    public SpreadingCaneBlock(ForgeBlockProperties properties, SpreadingBush bush, Supplier<? extends Block> companion)
+    public SpreadingCaneBlock(ForgeBlockProperties properties, BerryBush bush, Supplier<? extends Block> companion)
     {
         super(properties, bush, companion);
     }
@@ -73,78 +71,56 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    protected void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
-        BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
-        if (te == null) return;
-
-        Lifecycle old = state.getValue(LIFECYCLE);
-        if (old != Lifecycle.HEALTHY)
+        if (lifecycle == Lifecycle.HEALTHY)
         {
-            te.resetCounter();
-        }
+            if (!te.isGrowing() || te.isRemoved()) return;
 
-        Lifecycle lifecycle = updateLifecycle(te);
-        world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, lifecycle));
-
-        int stage = state.getValue(STAGE);
-        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-        if (days >= 1)
-        {
-            int cycles = (int) days * 2;
-            for (int i = cycles; i > 0; i--)
+            if (stage == 0)
             {
-                if (lifecycle == Lifecycle.HEALTHY)
+                world.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
+            }
+            else if (stage == 1 && random.nextInt(7) == 0)
+            {
+                world.setBlockAndUpdate(pos, state.setValue(STAGE, 2));
+                if (random.nextInt(bush.getDeathFactor()) == 0)
                 {
-                    if (!te.isGrowing() || te.isRemoved()) break;
-
-                    if (stage == 0)
-                    {
-                        world.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
-                    }
-                    else if (stage == 1 && random.nextInt(7) == 0)
-                    {
-                        world.setBlockAndUpdate(pos, state.setValue(STAGE, 2));
-                        if (random.nextInt(bush.getDeathFactor()) == 0)
-                        {
-                            te.setGrowing(false);
-                        }
-                    }
-                    else if (stage == 2 && random.nextInt(7) == 0)
-                    {
-                        if (SpreadingBushBlock.canGrowOn(world.getBlockState(pos.below())))
-                        {
-                            world.setBlockAndUpdate(pos, companion.get().defaultBlockState().setValue(STAGE, 1));
-                            TickCounterTileEntity bush = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-                            if (bush != null)
-                            {
-                                bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());
-                            }
-                        }
-                        else
-                        {
-                            te.setGrowing(false);
-                        }
-                    }
-                }
-                else if (lifecycle == Lifecycle.DORMANT && !te.isGrowing())
-                {
-                    te.addDeath();
-                    if (te.willDie() && random.nextInt(3) == 0)
-                    {
-                        if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.BERRY_BUSH))
-                            world.setBlockAndUpdate(pos, TFCBlocks.DEAD_CANE.get().defaultBlockState().setValue(STAGE, stage).setValue(FACING, state.getValue(FACING)));
-                    }
+                    te.setGrowing(false);
                 }
             }
-            te.resetCounter();
+            else if (stage == 2 && random.nextInt(7) == 0)
+            {
+                if (((SpreadingCaneBlock) state.getBlock()).canSurvive(state, world, pos))
+                {
+                    world.setBlockAndUpdate(pos, companion.get().defaultBlockState().setValue(STAGE, 1));
+                    TickCounterTileEntity bush = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+                    if (bush != null)
+                    {
+                        bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());
+                    }
+                }
+                else
+                {
+                    te.setGrowing(false);
+                }
+            }
+        }
+        else if (lifecycle == Lifecycle.DORMANT && !te.isGrowing())
+        {
+            te.addDeath();
+            if (te.willDie() && random.nextInt(3) == 0)
+            {
+                if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.SPREADING_BUSH))
+                    world.setBlockAndUpdate(pos, TFCBlocks.DEAD_CANE.get().defaultBlockState().setValue(STAGE, stage).setValue(FACING, state.getValue(FACING)));
+            }
         }
     }
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ALIVE_OR_DEAD_BUSH);
+        return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 
     @Override

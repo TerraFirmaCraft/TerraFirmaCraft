@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:dead_bush",
-    "tfc:dead_cane",
-    "#tfc:berry_bush"
+    "tfc:berry_bush/dead_bush",
+    "tfc:berry_bush/dead_cane",
+    "#tfc:spreading_bush"
   ]
 }
