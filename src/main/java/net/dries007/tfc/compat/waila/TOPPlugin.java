@@ -30,7 +30,8 @@ public class TOPPlugin implements Function<ITheOneProbe, Void>
         new TOPBlockInterface(new PitKilnProvider()),
         new TOPBlockInterface(new PlacedItemProvider()),
         new TOPBlockInterface(new InfoProvider()),
-        new TOPBlockInterface(new TreeProvider())
+        new TOPBlockInterface(new TreeProvider()),
+        new TOPBlockInterface(new IngotPileProvider())
     );
 
     public static final List<TOPEntityInterface> TOP_ENTITY_INTERFACES = Collections.singletonList(
