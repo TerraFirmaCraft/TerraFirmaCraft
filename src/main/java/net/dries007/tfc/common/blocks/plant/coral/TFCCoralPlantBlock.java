@@ -70,7 +70,7 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
             this.tryScheduleDieTick(stateIn, worldIn, currentPos);
             if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);

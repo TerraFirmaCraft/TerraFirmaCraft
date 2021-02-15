@@ -29,7 +29,7 @@ public class DispenserBehaviors
         public ItemStack dispenceStack(IBlockSource source, ItemStack stack)
         {
             BucketItem bucket = (BucketItem) stack.getItem();
-            BlockPos pos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+            BlockPos pos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.HORIZONTAL_FACING));
             World world = source.getWorld();
             if (bucket.canPlayerBreakBlockWhileHolding(null, world, pos, null))
             {

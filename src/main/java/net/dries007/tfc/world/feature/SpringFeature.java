@@ -30,25 +30,25 @@ public class SpringFeature extends Feature<LiquidsConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, LiquidsConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, LiquidsConfig config)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos).move(0, 1, 0);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().setPos(pos).move(0, 1, 0);
         final BlockState stateAbove = worldIn.getBlockState(mutablePos);
-        if (config.validBlocks.contains(stateAbove.getBlock()))
+        if (config.acceptedBlocks.contains(stateAbove.getBlock()))
         {
             mutablePos.move(0, -2, 0);
             final BlockState stateBelow = worldIn.getBlockState(mutablePos);
-            if (!config.requiresBlockBelow || config.validBlocks.contains(stateBelow.getBlock()))
+            if (!config.needsBlockBelow || config.acceptedBlocks.contains(stateBelow.getBlock()))
             {
                 final BlockState stateAt = worldIn.getBlockState(pos);
-                if (stateAt.isAir() || config.validBlocks.contains(stateAt.getBlock()))
+                if (stateAt.isAir() || config.acceptedBlocks.contains(stateAt.getBlock()))
                 {
                     int rockCount = 0, holeCount = 0;
                     for (Direction direction : Direction.values())
                     {
-                        mutablePos.set(pos).move(direction);
+                        mutablePos.setPos(pos).move(direction);
                         final BlockState stateAdjacent = worldIn.getBlockState(mutablePos);
-                        if (config.validBlocks.contains(stateAdjacent.getBlock()))
+                        if (config.acceptedBlocks.contains(stateAdjacent.getBlock()))
                         {
                             rockCount++;
                         }
@@ -58,10 +58,10 @@ public class SpringFeature extends Feature<LiquidsConfig>
                         }
                     }
 
-                    if (rockCount == config.rockCount && holeCount == config.holeCount)
+                    if (rockCount == config.rockAmount && holeCount == config.holeAmount)
                     {
-                        worldIn.setBlockState(pos, config.state.createLegacyBlock(), 2);
-                        worldIn.getLiquidTicks().scheduleTick(pos, config.state.getType(), 0);
+                        worldIn.setBlockState(pos, config.state.getBlockState(), 2);
+                        worldIn.getPendingFluidTicks().scheduleTick(pos, config.state.getFluid(), 0);
                         return true;
                     }
                 }

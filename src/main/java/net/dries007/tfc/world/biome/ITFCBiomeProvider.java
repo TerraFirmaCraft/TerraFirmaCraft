@@ -31,7 +31,7 @@ public interface ITFCBiomeProvider
     @Nullable
     default BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> predicate, Random rand)
     {
-        return biomeSource().findBiomeHorizontal(x, y, z, radius, increment, predicate, rand, false);
+        return biomeSource().findBiomePosition(x, y, z, radius, increment, predicate, rand, false);
     }
 
     /**

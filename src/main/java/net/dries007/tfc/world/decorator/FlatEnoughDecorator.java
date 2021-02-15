@@ -32,7 +32,7 @@ public class FlatEnoughDecorator extends Placement<FlatEnoughConfig>
         {
             if (isFlatEnough(worldIn, pos, -y, mutablePos, config))
             {
-                return Stream.of(pos.offset(0, -y, 0));
+                return Stream.of(pos.add(0, -y, 0));
             }
         }
         return Stream.empty();
@@ -46,9 +46,9 @@ public class FlatEnoughDecorator extends Placement<FlatEnoughConfig>
         {
             for (int z = -config.radius; z <= config.radius; z++)
             {
-                mutablePos.set(pos).move(x, y, z);
-                BlockState stateAt = worldIn.getBlockState(mutablePos);
-                if (!stateAt.isAir() && stateAt.getFluidState().getType() == Fluids.EMPTY) // No direct access to world, cannot use forge method
+                mutablePos.setPos(pos).move(x, y, z);
+                BlockState stateAt = worldIn.func_242894_a(mutablePos);
+                if (!stateAt.isAir() && stateAt.getFluidState().getFluid() == Fluids.EMPTY) // No direct access to world, cannot use forge method
                 {
                     flatAmount++;
                 }

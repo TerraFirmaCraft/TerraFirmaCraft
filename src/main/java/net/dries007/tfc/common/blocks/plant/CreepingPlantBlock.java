@@ -85,7 +85,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
+            if (worldIn.getBlockState(mutablePos.setAndOffset(pos, direction)).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -128,7 +128,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         boolean hasEarth = false;
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            mutablePos.setWithOffset(pos, direction);
+            mutablePos.setAndOffset(pos, direction);
             boolean ground = world.getBlockState(mutablePos).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
             state = state.with(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), ground);

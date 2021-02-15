@@ -30,15 +30,15 @@ public class RandomPatchWaterFeature extends Feature<BlockClusterFeatureConfig>
 
     //unused: project, canReplace
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
+        BlockState blockstate = config.stateProvider.getBlockState(rand, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        for (int j = 0; j < config.tries; ++j)
+        for (int j = 0; j < config.tryCount; ++j)
         {
-            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1) - 1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setAndOffset(world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), rand.nextInt(config.ySpread + 1) - rand.nextInt(config.ySpread + 1) - 1, rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
             BlockState state = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
             if ((world.hasWater(mutablePos)) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable) && state.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))

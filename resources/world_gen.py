@@ -574,9 +574,9 @@ def plant_feature(block: str, placer: str, vertical_spread: int, horizontal_spre
         },
         'whitelist': [],
         'blacklist': [],
-        'yspread': vertical_spread,
-        'xspread': horizontal_spread,
-        'zspread': horizontal_spread
+        'ySpread': vertical_spread,
+        'xSpread': horizontal_spread,
+        'zSpread': horizontal_spread
     }
     if count is not None:
         cfg['tries'] = count
@@ -602,9 +602,9 @@ def simple_patch_feature(block: str, vertical_spread: int, horizontal_spread: in
         },
         'whitelist': [],
         'blacklist': [],
-        'yspread': vertical_spread,
-        'xspread': horizontal_spread,
-        'zspread': horizontal_spread
+        'ySpread': vertical_spread,
+        'xSpread': horizontal_spread,
+        'zSpread': horizontal_spread
     }
     if count is not None:
         cfg['tries'] = count
@@ -627,9 +627,9 @@ def cave_patch_feature(block: str, vertical_spread: int, horizontal_spread: int,
         'block_placer': placer,
         'blacklist': [],
         'whitelist': [],
-        'yspread': vertical_spread,
-        'xspread': horizontal_spread,
-        'zspread': horizontal_spread,
+        'ySpread': vertical_spread,
+        'xSpread': horizontal_spread,
+        'zSpread': horizontal_spread,
         'tries': count,
     }))
 

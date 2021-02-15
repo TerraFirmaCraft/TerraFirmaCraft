@@ -81,7 +81,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isFaceSturdy(worldIn, pos, Direction.UP);
+        return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isSolidSide(worldIn, pos, Direction.UP);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         {
             if (stateIn.get(getFluidProperty()).getFluid() != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);

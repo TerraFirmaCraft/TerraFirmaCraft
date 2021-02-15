@@ -33,7 +33,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
         final BlockPos pos = startPos.down(); // start slightly below the surface
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
@@ -49,7 +49,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
         {
             for (BlockPos clear : clearPositions)
             {
-                setBlock(worldIn, clear.up(y), Blocks.AIR.getDefaultState());
+                setBlockState(worldIn, clear.up(y), Blocks.AIR.getDefaultState());
             }
         }
 
@@ -163,19 +163,19 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
             // Keep it under control
             if (tunnelPos.getX() > center.getX() + radius)
             {
-                tunnelPos = tunnelPos.offset(-1, 0, 0);
+                tunnelPos = tunnelPos.add(-1, 0, 0);
             }
             if (tunnelPos.getX() < center.getX() - radius)
             {
-                tunnelPos = tunnelPos.offset(1, 0, 0);
+                tunnelPos = tunnelPos.add(1, 0, 0);
             }
             if (tunnelPos.getZ() > center.getZ() + radius)
             {
-                tunnelPos = tunnelPos.offset(0, 0, -1);
+                tunnelPos = tunnelPos.add(0, 0, -1);
             }
             if (tunnelPos.getZ() < center.getZ() - radius)
             {
-                tunnelPos = tunnelPos.offset(0, 0, 1);
+                tunnelPos = tunnelPos.add(0, 0, 1);
             }
             blocks.add(tunnelPos);
             for (Direction horiz : Direction.Plane.HORIZONTAL)
@@ -190,7 +190,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     // Needs more tweaking
     private void smartFill(IWorld worldIn, BlockPos pos, Set<BlockPos> fillBlockPos, BlockState rock, BlockState fillBlock)
     {
-        setBlock(worldIn, pos, fillBlock);
+        setBlockState(worldIn, pos, fillBlock);
         for (Direction facing : Direction.values())
         {
             if (facing == Direction.UP) continue;
@@ -207,11 +207,11 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
             }
             if (filledBlocks < 3)
             {
-                setBlock(worldIn, rockPos, rock);
+                setBlockState(worldIn, rockPos, rock);
             }
             else
             {
-                setBlock(worldIn, rockPos, fillBlock);
+                setBlockState(worldIn, rockPos, fillBlock);
             }
         }
     }

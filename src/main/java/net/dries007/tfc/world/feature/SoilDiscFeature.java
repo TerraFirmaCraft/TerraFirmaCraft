@@ -24,7 +24,7 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SoilDiscConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SoilDiscConfig config)
     {
         boolean placed = false;
         final int radius = config.getRadius(random);
@@ -40,7 +40,7 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
                 {
                     for (int y = pos.getY() - config.getHeight(); y <= pos.getY() + config.getHeight(); ++y)
                     {
-                        mutablePos.set(x, y, z);
+                        mutablePos.setPos(x, y, z);
 
                         final BlockState stateAt = world.getBlockState(mutablePos);
                         final BlockState stateReplacement = config.getState(stateAt);

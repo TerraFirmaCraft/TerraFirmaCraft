@@ -30,26 +30,26 @@ public class RandomPatchWaterLandFeature extends Feature<BlockClusterFeatureConf
 
     //unused: project, canReplace, y spread
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState state = config.stateProvider.getState(rand, pos);
+        BlockState state = config.stateProvider.getBlockState(rand, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        for (int j = 0; j < config.tries; ++j)
+        for (int j = 0; j < config.tryCount; ++j)
         {
-            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setAndOffset(world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, pos), rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), -1, rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
             BlockState belowState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
-            boolean flag1 = world.isEmptyBlock(mutablePos);
+            boolean flag1 = world.isAirBlock(mutablePos);
             boolean flag2 = world.hasWater(mutablePos);
             boolean flag3 = (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState);
-            if ((world.isEmptyBlock(mutablePos) || world.hasWater(mutablePos)) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            if ((world.isAirBlock(mutablePos) || world.hasWater(mutablePos)) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
                 if (state.getBlock() instanceof IFluidLoggable)
                 {
                     IFluidLoggable block = (IFluidLoggable) state.getBlock();
-                    state = block.getStateWithFluid(state, world.getFluidState(mutablePos).getType());
+                    state = block.getStateWithFluid(state, world.getFluidState(mutablePos).getFluid());
                 }
                 config.blockPlacer.place(world, mutablePos, state, rand);
                 ++i;

@@ -100,13 +100,13 @@ public final class TFCBiomes
     @Nullable
     public static BiomeExtension getExtension(Biome biome)
     {
-        return getExtension(ServerLifecycleHooks.getCurrentServer().registryAccess(), biome);
+        return getExtension(ServerLifecycleHooks.getCurrentServer().func_244267_aX(), biome);
     }
 
     @Nullable
     public static BiomeExtension getExtension(IBiomeReader world, Biome biome)
     {
-        return getExtension(world.registryAccess(), biome);
+        return getExtension(world.func_241828_r(), biome);
     }
 
     @Nullable
@@ -127,8 +127,8 @@ public final class TFCBiomes
         else
         {
             // This lookup here is the comparatively slow operation - avoid it if possible as this is happening a lot.
-            Registry<Biome> registry = registries.registryOrThrow(Registry.BIOME_REGISTRY);
-            BiomeExtension lookupExtension = registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
+            Registry<Biome> registry = registries.func_230521_a_(Registry.BIOME_KEY).get();
+            BiomeExtension lookupExtension = registry.getOptionalKey(biome).map(EXTENSIONS::get).orElse(null);
             if (lookupExtension != null)
             {
                 // Save the extension and biome to the cache
@@ -164,12 +164,12 @@ public final class TFCBiomes
             {
                 String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
                 ResourceLocation id = new ResourceLocation(MOD_ID, name);
-                RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
+                RegistryKey<Biome> key = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, id);
                 BiomeExtension extension = new BiomeExtension(key, variants);
 
                 EXTENSIONS.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);
-                TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
+                TFCBiomes.BIOMES.register(name, BiomeMaker::makeVoidBiome);
 
                 registerDefaultBiomeDictionaryTypes(key, temp, rain);
                 builder.registerTypes(key);

@@ -60,7 +60,7 @@ public class TFCCoralFinBlock extends TFCCoralFanBlock
             tryScheduleDieTick(stateIn, worldIn, currentPos);
             if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
             }
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }

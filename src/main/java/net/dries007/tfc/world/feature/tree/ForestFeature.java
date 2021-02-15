@@ -37,7 +37,7 @@ public class ForestFeature extends Feature<ForestConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.FLORA);
@@ -104,7 +104,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
-        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
@@ -119,7 +119,7 @@ public class ForestFeature extends Feature<ForestConfig>
             {
                 feature = random.nextInt(200) == 0 ? entry.getOldGrowthFeature() : entry.getFeature();
             }
-            return feature.place(worldIn, generator, random, mutablePos);
+            return feature.generate(worldIn, generator, random, mutablePos);
         }
         return false;
     }
@@ -129,20 +129,20 @@ public class ForestFeature extends Feature<ForestConfig>
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
-        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
-        if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.down()).isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (entry != null && worldIn.isAirBlock(mutablePos) && worldIn.getBlockState(mutablePos.down()).isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            setBlock(worldIn, mutablePos, entry.getLog());
+            setBlockState(worldIn, mutablePos, entry.getLog());
             for (Direction facing : Direction.values())
             {
                 if (facing != Direction.DOWN)
                 {
-                    BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                    if (worldIn.isEmptyBlock(offsetPos) || worldIn.getBlockState(offsetPos).isIn(TFCTags.Blocks.PLANT))
-                        setBlock(worldIn, offsetPos, entry.getLeaves());
+                    BlockPos offsetPos = mutablePos.add(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
+                    if (worldIn.isAirBlock(offsetPos) || worldIn.getBlockState(offsetPos).isIn(TFCTags.Blocks.PLANT))
+                        setBlockState(worldIn, offsetPos, entry.getLeaves());
                 }
             }
             return true;
@@ -155,7 +155,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
-        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
@@ -166,13 +166,13 @@ public class ForestFeature extends Feature<ForestConfig>
             for (int j = 0; j < tries; ++j)
             {
                 BlockState setState = random.nextInt(2) == 1 ? leafState : twigState;
-                mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+                mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
                 mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
-                if ((worldIn.isEmptyBlock(mutablePos) || worldIn.hasWater(mutablePos)) && worldIn.getBlockState(mutablePos.down()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
+                if ((worldIn.isAirBlock(mutablePos) || worldIn.hasWater(mutablePos)) && worldIn.getBlockState(mutablePos.down()).isSolidSide(worldIn, mutablePos, Direction.UP))
                 {
-                    setBlock(worldIn, mutablePos, setState
-                        .with(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType()))
-                        .with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)));
+                    setBlockState(worldIn, mutablePos, setState
+                        .with(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getFluid()))
+                        .with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(random)));
                 }
             }
         }

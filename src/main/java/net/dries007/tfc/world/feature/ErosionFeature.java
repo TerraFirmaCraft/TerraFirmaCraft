@@ -38,7 +38,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         ChunkPos chunkPos = new ChunkPos(pos);
         int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
@@ -59,7 +59,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                 final MutableInt tries = new MutableInt();
                 for (int y = baseHeight; y >= 0; y--)
                 {
-                    mutablePos.set(chunkX + x, y, chunkZ + z);
+                    mutablePos.setPos(chunkX + x, y, chunkZ + z);
                     BlockState stateAt = worldIn.getBlockState(mutablePos);
                     if (stateAt.isAir())
                     {
@@ -70,7 +70,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                     final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getWorld(), mutableWrapper);
                     if (recipe != null)
                     {
-                        landslidePositions.put(mutablePos.immutable(), recipe);
+                        landslidePositions.put(mutablePos.toImmutable(), recipe);
                     }
                     else
                     {
@@ -104,17 +104,17 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                     // Fix exposed and/or covered grass
                     if (stateAt.getBlock() instanceof IGrassBlock)
                     {
-                        mutablePos.set(landslidePos).move(Direction.DOWN, 1);
+                        mutablePos.setPos(landslidePos).move(Direction.DOWN, 1);
                         BlockState pastDirtState = worldIn.getBlockState(mutablePos);
                         if (pastDirtState.getBlock() instanceof DirtBlock)
                         {
                             // Replace exposed dirt with grass
                             DirtBlock dirtBlock = (DirtBlock) pastDirtState.getBlock();
                             worldIn.setBlockState(mutablePos, dirtBlock.getGrass(), 2);
-                            worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock, 0);
+                            worldIn.getPendingBlockTicks().scheduleTick(mutablePos, dirtBlock, 0);
                         }
 
-                        mutablePos.set(resultPos).move(Direction.DOWN);
+                        mutablePos.setPos(resultPos).move(Direction.DOWN);
                         BlockState pastGrassState = worldIn.getBlockState(mutablePos);
                         if (pastGrassState.getBlock() instanceof IGrassBlock)
                         {

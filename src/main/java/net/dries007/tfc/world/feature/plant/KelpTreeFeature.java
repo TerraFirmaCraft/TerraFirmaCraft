@@ -30,14 +30,14 @@ public class KelpTreeFeature extends Feature<BlockStateFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
     {
-        pos = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR_WG, pos);
+        pos = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, pos);
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
         for (int i = 0; i < 20; i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), 0, rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.setAndOffset(pos, rand.nextInt(10) - rand.nextInt(10), 0, rand.nextInt(10) - rand.nextInt(10));
             if (!world.hasWater(mutablePos) || world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable)
                 continue;
             mutablePos.move(Direction.DOWN);
@@ -52,7 +52,7 @@ public class KelpTreeFeature extends Feature<BlockStateFeatureConfig>
                     break;
             }
             mutablePos.move(Direction.DOWN, 4);
-            Fluid fluid = world.getFluidState(mutablePos).getType();
+            Fluid fluid = world.getFluidState(mutablePos).getFluid();
             KelpTreeFlowerBlock flower = (KelpTreeFlowerBlock) config.state.getBlock();
             if (!flower.getFluidProperty().canContain(fluid))
                 return false;

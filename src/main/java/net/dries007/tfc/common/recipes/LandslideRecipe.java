@@ -139,7 +139,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     {
         BlockPos sidePos = pos.offset(side);
         BlockState sideState = world.getBlockState(sidePos);
-        return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
+        return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
     LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)

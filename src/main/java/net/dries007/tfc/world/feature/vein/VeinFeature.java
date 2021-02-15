@@ -73,7 +73,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
                 for (int y = minY; y <= maxY; y++)
                 {
-                    mutablePos.set(x, y, z);
+                    mutablePos.setPos(x, y, z);
                     if (random.nextFloat() < getChanceToGenerate(x - vein.getPos().getX(), y - vein.getPos().getY(), z - vein.getPos().getZ(), vein, config))
                     {
                         final BlockState stoneState = world.getBlockState(mutablePos);
@@ -95,12 +95,12 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                     final int indicatorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
                     if (Math.abs(indicatorY - maxVeinY) < indicator.getDepth())
                     {
-                        mutablePos.set(indicatorX, indicatorY, indicatorZ);
+                        mutablePos.setPos(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = world.getBlockState(mutablePos);
                         final BlockState state = indicator.getStateToGenerate(random);
                         if (stateAt.isAir() && state.canBeReplacedByLeaves(world, mutablePos))
                         {
-                            world.setBlockState(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)), 3);
+                            world.setBlockState(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(random)), 3);
                             //world.setBlockState(mutablePos.up(20), Blocks.GOLD_BLOCK.getDefaultState(), 3);
                         }
                     }

@@ -146,7 +146,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                     boolean foundValidGrowthSpace = false;
                     for (int i1 = 0; i1 < l; ++i1)
                     {
-                        Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                        Direction direction = Direction.Plane.HORIZONTAL.random(random);
                         BlockPos relativePos = pos.offset(direction);
                         if (isEmptyWaterBlock(worldIn, relativePos) && isEmptyWaterBlock(worldIn, relativePos.down()) && allNeighborsEmpty(worldIn, relativePos, direction.getOpposite()))
                         {
@@ -206,11 +206,11 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         final Fluid containedFluid = stateIn.get(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
         }
         if (facing != Direction.UP && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
             return Blocks.AIR.getDefaultState();
         }
         return stateIn;
@@ -302,7 +302,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
             for (int k = 0; k < branchAttempts; ++k)
             {
-                Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
+                Direction direction = Direction.Plane.HORIZONTAL.random(rand);
                 BlockPos aboveRelativePos = branchPos.up(i).offset(direction);
                 if (Math.abs(aboveRelativePos.getX() - originalBranchPos.getX()) < maxHorizontalDistance && Math.abs(aboveRelativePos.getZ() - originalBranchPos.getZ()) < maxHorizontalDistance && isEmptyWaterBlock(worldIn, aboveRelativePos) && isEmptyWaterBlock(worldIn, aboveRelativePos.down()) && allNeighborsEmpty(worldIn, aboveRelativePos, direction.getOpposite()))
                 {

@@ -52,7 +52,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        world.getBlockTicks().scheduleTick(pos, this, 1);
+        world.getPendingBlockTicks().scheduleTick(pos, this, 1);
     }
 
     @Override
@@ -71,10 +71,10 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         if (belowState.getBlock() == this && belowState.get(PART).isLargerThan(state.get(PART)))
         {
             // Larger spike below. Tick that to ensure it is supported
-            worldIn.getBlockTicks().scheduleTick(belowPos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(belowPos, this, 1);
             return;
         }
-        else if (belowState.isFaceSturdy(worldIn, belowPos, Direction.UP))
+        else if (belowState.isSolidSide(worldIn, belowPos, Direction.UP))
         {
             // Full block below, this is supported
             return;
@@ -86,10 +86,10 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         if (aboveState.getBlock() == this && aboveState.get(PART).isLargerThan(state.get(PART)))
         {
             // Larger spike above. Tick to ensure that it is supported
-            worldIn.getBlockTicks().scheduleTick(abovePos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(abovePos, this, 1);
             return;
         }
-        else if (aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN))
+        else if (aboveState.isSolidSide(worldIn, abovePos, Direction.DOWN))
         {
             // Full block above, this is supported
             return;

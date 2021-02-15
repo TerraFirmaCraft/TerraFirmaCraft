@@ -76,7 +76,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     {
         if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
             updateFluid(worldIn, stateIn, currentPos);
             return stateIn;
         }
@@ -149,7 +149,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         final Fluid containedFluid = state.get(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            world.getLiquidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickDelay(world));
+            world.getPendingFluidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickDelay(world));
         }
     }
 }

@@ -43,7 +43,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     public static boolean canFallThrough(IBlockReader world, BlockPos pos, BlockState state)
     {
-        return !state.isFaceSturdy(world, pos, Direction.UP);
+        return !state.isSolidSide(world, pos, Direction.UP);
     }
 
     private final boolean dontSetBlock;
@@ -119,13 +119,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     // On ground
                     if (!failedBreakCheck)
                     {
-                        if (!level.isEmptyBlock(posAt) && canFallThrough(level, posAt, level.getBlockState(posAt)))
+                        if (!level.isAirBlock(posAt) && canFallThrough(level, posAt, level.getBlockState(posAt)))
                         {
                             level.destroyBlock(posAt, true);
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!level.isEmptyBlock(posAt.down()) && canFallThrough(level, posAt.down(), level.getBlockState(posAt.down())))
+                        else if (!level.isAirBlock(posAt.down()) && canFallThrough(level, posAt.down(), level.getBlockState(posAt.down())))
                         {
                             level.destroyBlock(posAt.down(), true);
                             failedBreakCheck = true;

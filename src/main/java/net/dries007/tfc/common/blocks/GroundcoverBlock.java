@@ -44,7 +44,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 public class GroundcoverBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
     public static final VoxelShape FLAT = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
     public static final VoxelShape SMALL = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
@@ -113,7 +113,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
             final Fluid containedFluid = stateIn.get(getFluidProperty()).getFluid();
             if (containedFluid != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
             }
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
@@ -143,7 +143,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isFaceSturdy(worldIn, pos, Direction.UP);
+        return worldIn.getBlockState(pos.down()).isSolidSide(worldIn, pos, Direction.UP);
     }
 
     @Override

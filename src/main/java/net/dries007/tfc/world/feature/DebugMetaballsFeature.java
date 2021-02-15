@@ -27,7 +27,7 @@ public class DebugMetaballsFeature extends Feature<NoFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config)
     {
         ChunkPos chunkPos = new ChunkPos(pos);
         if ((chunkPos.x & 1) == 0 && (chunkPos.z & 1) == 0)
@@ -40,7 +40,7 @@ public class DebugMetaballsFeature extends Feature<NoFeatureConfig>
                 {
                     for (int y = 0; y < 32; y++)
                     {
-                        mutablePos.set(pos).move(x - 8, y + 200, z - 8);
+                        mutablePos.setPos(pos).move(x - 8, y + 200, z - 8);
                         if (noise.noise(x - 16, y - 16, z - 16) > 0.5f)
                         {
                             world.setBlockState(mutablePos, Blocks.IRON_BLOCK.getDefaultState(), 3);

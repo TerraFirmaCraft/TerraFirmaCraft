@@ -43,7 +43,7 @@ public abstract class WorldRendererMixin
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
     private Biome.RainType redirect$renderSnowAndRain$getPrecipitation(Biome biome, LightTexture lightmapIn, float partialTicks, double xIn, double yIn, double zIn)
     {
-        mutablePos.set(xIn, yIn, zIn);
+        mutablePos.setPos(xIn, yIn, zIn);
         return Climate.getVanillaBiomePrecipitation(biome, level, mutablePos);
     }
 

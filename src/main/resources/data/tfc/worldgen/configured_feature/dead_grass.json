@@ -62,9 +62,9 @@
                   }
                 ],
                 "blacklist": [],
-                "yspread": 1,
-                "xspread": 5,
-                "zspread": 5,
+                "ySpread": 1,
+                "xSpread": 5,
+                "zSpread": 5,
                 "tries": 100
               }
             },

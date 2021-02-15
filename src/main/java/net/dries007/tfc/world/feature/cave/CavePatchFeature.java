@@ -25,19 +25,21 @@ public class CavePatchFeature extends Feature<BlockClusterFeatureConfig>
         super(codec);
     }
 
+
+
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
-        for (int i = 0; i < config.tries; ++i)
+        for (int i = 0; i < config.tryCount; ++i)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setAndOffset(pos, rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), -1, rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
             final BlockState belowState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
-            final BlockState state = config.stateProvider.getState(rand, mutablePos);
+            final BlockState state = config.stateProvider.getBlockState(rand, mutablePos);
 
-            if (world.isEmptyBlock(mutablePos) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            if (world.isAirBlock(mutablePos) && state.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
                 config.blockPlacer.place(world, mutablePos, state, rand);
                 placedAny = true;

@@ -50,7 +50,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.down());
-        return (belowState.getFluidState() != Fluids.EMPTY.defaultFluidState() && isValidFluid(belowState.getFluidState().getType()));
+        return (belowState.getFluidState() != Fluids.EMPTY.defaultFluidState() && isValidFluid(belowState.getFluidState().getFluid()));
     }
 
     /**

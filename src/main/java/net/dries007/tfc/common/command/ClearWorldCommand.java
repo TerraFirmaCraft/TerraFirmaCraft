@@ -75,7 +75,7 @@ public final class ClearWorldCommand
                 final int height = world.getHeight(Heightmap.Type.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
                 for (int y = 0; y < height; y++)
                 {
-                    mutablePos.set(center).move(x, 0, z).setY(y);
+                    mutablePos.setPos(center).move(x, 0, z).setY(y);
                     BlockState state = world.getBlockState(mutablePos);
                     if (!state.isAir() && predicate.test(state))
                     {

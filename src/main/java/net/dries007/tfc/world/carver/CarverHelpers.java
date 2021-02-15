@@ -37,7 +37,7 @@ public final class CarverHelpers
         // Sections
         for (int sectionY = 0; sectionY < 16; sectionY++)
         {
-            final ChunkSection section = chunk.getOrCreateSection(sectionY);
+            final ChunkSection section = chunk.getSection(sectionY);
             for (int localY = 0; localY < 16; localY++)
             {
                 final int y = (sectionY << 4) | localY;
@@ -53,7 +53,7 @@ public final class CarverHelpers
                     for (int z = 0; z < 16; z++)
                     {
                         final BlockState state = section.getBlockState(x, localY, z);
-                        if (state.getFluidState().isIn(FluidTags.WATER))
+                        if (state.getFluidState().isTagged(FluidTags.WATER))
                         {
                             // Update a region around the water block in the mask
                             for (int xi = -2; xi <= 2; xi++)
@@ -119,9 +119,9 @@ public final class CarverHelpers
                     final ConfiguredCarver<?> carver = lazyCarver.get();
 
                     random.setLargeFeatureSeed(worldSeed + index, x, z);
-                    if (carver.isStartChunk(random, x, z))
+                    if (carver.shouldCarve(random, x, z))
                     {
-                        carver.carve(chunk, delegateBiomeManager::getBiome, random, seaLevel, x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
+                        carver.carveRegion(chunk, delegateBiomeManager::getBiome, random, seaLevel, x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
                     }
                     index++;
                 }

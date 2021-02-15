@@ -20,7 +20,7 @@ public enum ForestType implements IStringSerializable
     NORMAL,
     OLD_GROWTH;
 
-    public static final Codec<ForestType> CODEC = IStringSerializable.fromEnum(ForestType::values, ForestType::byName);
+    public static final Codec<ForestType> CODEC = IStringSerializable.createEnumCodec(ForestType::values, ForestType::byName);
 
     private static final ForestType[] VALUES = values();
 
@@ -35,7 +35,7 @@ public enum ForestType implements IStringSerializable
     }
 
     @Override
-    public String getSerializedName()
+    public String getString()
     {
         return name().toLowerCase(Locale.ROOT);
     }

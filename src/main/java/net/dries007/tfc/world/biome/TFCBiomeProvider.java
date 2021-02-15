@@ -42,7 +42,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         Codec.INT.optionalFieldOf("spawn_center_z", 0).forGetter(c -> c.spawnCenterZ),
         LayerSettings.CODEC.forGetter(TFCBiomeProvider::getLayerSettings),
         ClimateSettings.CODEC.forGetter(c -> c.climateSettings),
-        RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
+        RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeProvider::new));
 
     // Set from codec
@@ -123,13 +123,13 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
                 {
                     if (found == 0 || rand.nextInt(found + 1) == 0)
                     {
-                        mutablePos.set(biomeX << 2, y, biomeZ << 2);
+                        mutablePos.setPos(biomeX << 2, y, biomeZ << 2);
                     }
                     found++;
                 }
             }
         }
-        return mutablePos.immutable();
+        return mutablePos.toImmutable();
     }
 
     /**
@@ -141,7 +141,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
-        final BlockPos pos = chunkPos.getWorldPosition();
+        final BlockPos pos = chunkPos.asBlockPos();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
         final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
@@ -206,15 +206,14 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     }
 
     @Override
-    protected Codec<TFCBiomeProvider> codec()
-    {
+    protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
         return CODEC;
     }
 
     @Override
-    public TFCBiomeProvider withSeed(long seedIn)
-    {
+    public BiomeProvider getBiomeProvider(long seedIn) {
         return new TFCBiomeProvider(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, layerSettings, climateSettings, biomeRegistry);
+
     }
 
     public static final class LayerSettings

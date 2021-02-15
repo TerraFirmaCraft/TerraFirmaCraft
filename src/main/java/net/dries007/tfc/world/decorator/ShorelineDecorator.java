@@ -37,7 +37,7 @@ public class ShorelineDecorator extends Placement<NearWaterConfig>
         {
             for (int z = -radius; z <= radius; z++)
             {
-                mutablePos.set(pos).move(x, 0, z);
+                mutablePos.setPos(pos).move(x, 0, z);
                 mutablePos.setY(helper.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
                 BlockState state = helper.getBlockState(mutablePos);
                 if (!state.isAir())

@@ -26,7 +26,7 @@ import net.minecraft.world.IWorldReader;
 
 public class ToolRackBlock extends Block implements IWaterLoggable
 {
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final VoxelShape RACK_EAST_AABB = Block.box(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
@@ -49,7 +49,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         }
         else if (stateIn.get(WATERLOGGED))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
         return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
@@ -130,6 +130,6 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn)
     {
         BlockState blockstate = blockReader.getBlockState(pos);
-        return !blockstate.isSignalSource() && blockstate.isFaceSturdy(blockReader, pos, directionIn);
+        return !blockstate.isSignalSource() && blockstate.isSolidSide(blockReader, pos, directionIn);
     }
 }

@@ -27,10 +27,10 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, StackedTreeConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, StackedTreeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().setPos(pos);
         final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
         final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
 
@@ -50,7 +50,7 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
             for (int i = 0; i < layerCount; i++)
             {
                 final ResourceLocation structureId = layer.templates.get(random.nextInt(layer.templates.size()));
-                final Template structure = manager.getOrCreate(structureId);
+                final Template structure = manager.getTemplate(structureId);
                 TreeHelpers.placeTemplate(structure, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
                 mutablePos.move(0, structure.getSize().getY(), 0);
             }

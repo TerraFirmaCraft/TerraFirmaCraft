@@ -37,9 +37,9 @@ public class LakeFeature extends Feature<NoFeatureConfig>
 
     @Override
     @SuppressWarnings("ALL")
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
     {
-        while (pos.getY() > 5 && worldIn.isEmptyBlock(pos))
+        while (pos.getY() > 5 && worldIn.isAirBlock(pos))
         {
             pos = pos.down();
         }
@@ -51,7 +51,8 @@ public class LakeFeature extends Feature<NoFeatureConfig>
         else
         {
             pos = pos.down(4);
-            if (worldIn.startsForFeature(SectionPos.of(pos), Structure.VILLAGE).findAny().isPresent())
+            //start from feature
+            if (worldIn.func_241827_a(SectionPos.from(pos), Structure.VILLAGE).findAny().isPresent())
             {
                 return false;
             }
@@ -97,13 +98,13 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                             boolean flag = !noise[(x * 16 + z) * 8 + y] && (x < 15 && noise[((x + 1) * 16 + z) * 8 + y] || x > 0 && noise[((x - 1) * 16 + z) * 8 + y] || z < 15 && noise[(x * 16 + z + 1) * 8 + y] || z > 0 && noise[(x * 16 + (z - 1)) * 8 + y] || y < 7 && noise[(x * 16 + z) * 8 + y + 1] || y > 0 && noise[(x * 16 + z) * 8 + (y - 1)]);
                             if (flag)
                             {
-                                Material material = worldIn.getBlockState(pos.offset(x, y, z)).getMaterial();
+                                Material material = worldIn.getBlockState(pos.add(x, y, z)).getMaterial();
                                 if (y >= 4 && material.isLiquid())
                                 {
                                     return false;
                                 }
 
-                                if (y < 4 && !material.isSolid() && !worldIn.getBlockState(pos.offset(x, y, z)).isIn(Blocks.WATER))
+                                if (y < 4 && !material.isSolid() && !worldIn.getBlockState(pos.add(x, y, z)).isIn(Blocks.WATER))
                                 {
                                     return false;
                                 }
@@ -120,7 +121,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                         {
                             if (noise[(x * 16 + z) * 8 + y])
                             {
-                                worldIn.setBlockState(pos.offset(x, y, z), y >= 4 ? Blocks.AIR.getDefaultState() : Blocks.WATER.getDefaultState(), 2);
+                                worldIn.setBlockState(pos.add(x, y, z), y >= 4 ? Blocks.AIR.getDefaultState() : Blocks.WATER.getDefaultState(), 2);
                             }
                         }
                     }
@@ -134,13 +135,13 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                         {
                             if (noise[(x * 16 + z) * 8 + y])
                             {
-                                BlockPos dirtPos = pos.offset(x, y - 1, z);
+                                BlockPos dirtPos = pos.add(x, y - 1, z);
                                 BlockState dirtState = worldIn.getBlockState(dirtPos);
-                                if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(LightType.SKY, pos.offset(x, y, z)) > 0)
+                                if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(pos.add(x, y, z)) > 0)
                                 {
                                     BlockState grassState = ((IDirtBlock) dirtState.getBlock()).getGrass();
                                     worldIn.setBlockState(dirtPos, grassState, 2);
-                                    worldIn.getBlockTicks().scheduleTick(dirtPos, grassState.getBlock(), 0);
+                                    worldIn.getPendingBlockTicks().scheduleTick(dirtPos, grassState.getBlock(), 0);
                                 }
                             }
                         }

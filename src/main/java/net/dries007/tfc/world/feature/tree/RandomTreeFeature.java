@@ -27,14 +27,14 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, RandomTreeConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, RandomTreeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().setPos(pos);
         final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
         final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
         final ResourceLocation structureId = config.structureNames.get(random.nextInt(config.structureNames.size()));
-        final Template structure = manager.getOrCreate(structureId);
+        final Template structure = manager.getTemplate(structureId);
 
         if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 2))
         {

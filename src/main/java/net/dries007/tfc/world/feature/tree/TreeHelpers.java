@@ -42,12 +42,14 @@ public final class TreeHelpers
     @SuppressWarnings("deprecation")
     public static void placeTemplate(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
+        List<Template.BlockInfo> transformedBlockInfos =
+            placementIn.func_237132_a_(((TemplateAccessor) template).accessor$getPalettes(), pos)
+                .func_237157_a_();
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
         for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {
             BlockPos posAt = blockInfo.pos;
-            if (boundingBox == null || boundingBox.isInside(posAt))
+            if (boundingBox == null || boundingBox.isVecInside(posAt))
             {
                 BlockState stateAt = worldIn.getBlockState(posAt);
                 if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
@@ -77,9 +79,9 @@ public final class TreeHelpers
             {
                 for (int y = 0; y < height; y++)
                 {
-                    mutablePos.set(x, y, z);
+                    mutablePos.setPos(x, y, z);
                     transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
-                    mutablePos.move(pos);
+                    mutablePos.setPos(pos);
                     world.setBlockState(mutablePos, trunk.state, 3);
                 }
             }
@@ -89,7 +91,7 @@ public final class TreeHelpers
 
     public static TemplateManager getTemplateManager(ISeedReader worldIn)
     {
-        return worldIn.getWorld().getServer().getStructureManager();
+        return worldIn.getWorld().getServer().getTemplateManager();
     }
 
     /**
@@ -102,7 +104,7 @@ public final class TreeHelpers
         return new PlacementSettings()
             .setBoundingBox(new MutableBoundingBox(chunkPos.getXStart() - 16, 0, chunkPos.getZStart() - 16, chunkPos.getXEnd() + 16, 256, chunkPos.getZEnd() + 16))
             .setRandom(random)
-            .addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR)
+            .addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK)
             .setRotation(randomRotation(random))
             .setMirror(randomMirror(random));
     }
@@ -164,13 +166,13 @@ public final class TreeHelpers
         switch (rotationIn)
         {
             case COUNTERCLOCKWISE_90:
-                pos.set(pos.getZ(), pos.getY(), -pos.getX());
+                pos.setPos(pos.getZ(), pos.getY(), -pos.getX());
                 break;
             case CLOCKWISE_90:
-                pos.set(-pos.getZ(), pos.getY(), pos.getX());
+                pos.setPos(-pos.getZ(), pos.getY(), pos.getX());
                 break;
             case CLOCKWISE_180:
-                pos.set(-pos.getX(), pos.getY(), -pos.getZ());
+                pos.setPos(-pos.getX(), pos.getY(), -pos.getZ());
                 break;
         }
     }

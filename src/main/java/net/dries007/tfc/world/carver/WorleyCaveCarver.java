@@ -57,7 +57,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @Override
-    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
+    public boolean carveRegion(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
     {
         // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
         if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
@@ -73,13 +73,14 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @Override
-    public boolean isStartChunk(Random rand, int chunkX, int chunkZ, WorleyCaveConfig config)
+    public boolean shouldCarve(Random rand, int chunkX, int chunkZ, WorleyCaveConfig config)
     {
         return true;
     }
 
     @Override
-    protected boolean skip(double distX, double distY, double distZ, int posY)
+    //skip
+    protected boolean func_222708_a(double distX, double distY, double distZ, int posY)
     {
         return false; // Unused
     }
@@ -147,7 +148,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
                                 for (int z0 = z * 4; z0 < (z + 1) * 4; z0++)
                                 {
                                     // set the current position
-                                    pos.set(chunkX + x0, yPos, chunkZ + z0);
+                                    pos.setPos(chunkX + x0, yPos, chunkZ + z0);
 
                                     float finalNoise = NoiseUtil.lerp(section[x0 + 16 * z0], prevSection[x0 + 16 * z0], 0.25f * y0);
                                     finalNoise *= heightFadeValue;

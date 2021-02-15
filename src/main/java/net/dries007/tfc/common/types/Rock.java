@@ -130,7 +130,7 @@ public class Rock
 
         public static final BlockType[] VALUES = values();
         public static final Map<String, BlockType> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(k -> k.name().toLowerCase(), v -> v));
-        public static final Codec<BlockType> CODEC = IStringSerializable.fromEnum(BlockType::values, BlockType::byName);
+        public static final Codec<BlockType> CODEC = IStringSerializable.createEnumCodec(BlockType::values, BlockType::byName);
 
         public static BlockType valueOf(int i)
         {

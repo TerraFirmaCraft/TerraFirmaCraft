@@ -86,7 +86,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
 
         for (int y = startHeight; y >= 0; --y)
         {
-            pos.set(localX, y, localZ);
+            pos.setPos(localX, y, localZ);
             BlockState stateAt = chunkIn.getBlockState(pos);
             if (stateAt.isAir())
             {

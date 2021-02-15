@@ -33,8 +33,8 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
     {
         super(codec_);
     }
-
-    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    @Override
+    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         BlockState coralBlockState = BlockTags.CORAL_BLOCKS.getRandomElement(rand).getDefaultState();
         return placeFeature(reader, rand, pos, coralBlockState);
@@ -65,7 +65,7 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
                     BlockPos relativePos = pos.offset(direction);
                     if (world.getBlockState(relativePos).isIn(Blocks.WATER))
                     {
-                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).getDefaultState()).with(TFCDeadCoralWallFanBlock.FACING, direction);
+                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).getDefaultState()).with(TFCDeadCoralWallFanBlock.HORIZONTAL_FACING, direction);
                         world.setBlockState(relativePos, wallCoralState, 2);
                     }
                 }

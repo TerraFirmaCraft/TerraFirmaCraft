@@ -51,7 +51,7 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
     {
         if (!scanForWater(state, worldIn, pos))
         {
-            worldIn.getBlockTicks().scheduleTick(pos, this, 60 + worldIn.getRandom().nextInt(40));
+            worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60 + worldIn.getRandom().nextInt(40));
         }
 
     }
@@ -95,7 +95,7 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
     {
         if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
         }
         return facing == Direction.DOWN && !this.canBeReplacedByLeaves(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
@@ -105,7 +105,7 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.down();
-        return worldIn.getBlockState(blockpos).isFaceSturdy(worldIn, blockpos, Direction.UP);
+        return worldIn.getBlockState(blockpos).isSolidSide(worldIn, blockpos, Direction.UP);
     }
 
     @SuppressWarnings("deprecation")

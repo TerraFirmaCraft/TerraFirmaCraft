@@ -263,7 +263,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             for (int z = 0; z < 16; z++)
             {
-                pos.set(chunkX + x, 0, chunkZ + z);
+                pos.setPos(chunkX + x, 0, chunkZ + z);
 
                 // Sample biome weights at different distances
                 ChunkArraySampler.fillSampledWeightMap(sampledBiomes16, weightMap16, 4, x, z);
@@ -442,7 +442,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         for (int sectionY = 0; sectionY < 16; sectionY++)
         {
-            final ChunkSection section = chunk.getOrCreateSection(sectionY);
+            final ChunkSection section = chunk.getSection(sectionY);
             for (int localY = 0; localY < 16; localY++)
             {
                 final int y = (sectionY << 4) | localY;
@@ -527,7 +527,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     final int bottomHeight = (int) (carvingCenter - carvingHeight * 0.5f);
                     final int topHeight = (int) (carvingCenter + carvingHeight * 0.5f);
 
-                    ChunkSection section = chunk.getOrCreateSection(bottomHeight >> 4);
+                    ChunkSection section = chunk.getSection(bottomHeight >> 4);
                     int sectionY = bottomHeight >> 4;
 
                     for (int y = bottomHeight; y <= topHeight; y++)
@@ -550,7 +550,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                         final int currentSectionY = y >> 4;
                         if (currentSectionY != sectionY)
                         {
-                            section = chunk.getOrCreateSection(currentSectionY);
+                            section = chunk.getSection(currentSectionY);
                             sectionY = currentSectionY;
                         }
                         section.setBlockState(x, y & 15, z, stateAt, false);
@@ -590,7 +590,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
      */
     protected void makeBedrock(ChunkPrimer chunk, Random random)
     {
-        final ChunkSection bottomSection = chunk.getOrCreateSection(0);
+        final ChunkSection bottomSection = chunk.getSection(0);
         final BlockState bedrock = Blocks.BEDROCK.getDefaultState();
 
         for (int x = 0; x < 16; x++)

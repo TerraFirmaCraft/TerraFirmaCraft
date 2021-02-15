@@ -29,20 +29,20 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, CaveVegetationConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, CaveVegetationConfig config)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (int i = 0; i < 128; i++)
         {
             if (rand.nextFloat() < 0.8f)//mossy cobble
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -1 * rand.nextInt(2) - 1, rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.isEmptyBlock(mutablePos))
+                mutablePos.setAndOffset(pos, rand.nextInt(15) - rand.nextInt(15), -1 * rand.nextInt(2) - 1, rand.nextInt(15) - rand.nextInt(15));
+                if (worldIn.isAirBlock(mutablePos))
                 {
                     for (int j = 0; j < 7; j++)
                     {
                         mutablePos.move(0, -1, 0);
-                        if (!worldIn.isEmptyBlock(mutablePos))
+                        if (!worldIn.isAirBlock(mutablePos))
                         {
                             break;
                         }
@@ -50,32 +50,32 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                     BlockState generateState = config.getStateToGenerate(worldIn.getBlockState(mutablePos), rand);
                     if (generateState != null)
                     {
-                        setBlock(worldIn, mutablePos, generateState);
+                        setBlockState(worldIn, mutablePos, generateState);
                     }
                 }
             }
             if (rand.nextFloat() < 0.003f)//extra springs
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.isEmptyBlock(mutablePos))
+                mutablePos.setAndOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
+                if (worldIn.isAirBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
                     if (worldIn.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                     {
-                        setBlock(worldIn, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
-                        worldIn.getLiquidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
+                        setBlockState(worldIn, mutablePos, Fluids.WATER.getDefaultState().getBlockState());
+                        worldIn.getPendingFluidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
                     }
                 }
             }
             if (rand.nextFloat() < 0.02f)//cobwebs
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
+                mutablePos.setAndOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
                 if (worldIn.getBlockState(mutablePos).isIn(BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
-                    if (worldIn.isEmptyBlock(mutablePos))
+                    if (worldIn.isAirBlock(mutablePos))
                     {
-                        setBlock(worldIn, mutablePos, Blocks.COBWEB.getDefaultState());
+                        setBlockState(worldIn, mutablePos, Blocks.COBWEB.getDefaultState());
                     }
                 }
             }

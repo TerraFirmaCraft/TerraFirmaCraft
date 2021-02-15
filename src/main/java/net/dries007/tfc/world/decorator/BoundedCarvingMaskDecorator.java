@@ -29,7 +29,7 @@ public class BoundedCarvingMaskDecorator extends Placement<BoundedCarvingMaskCon
     public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random rand, BoundedCarvingMaskConfig config, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step);
+        final BitSet carvingMask = helper.func_242892_a(chunkPos, config.step);//getCarvingStep
         return IntStream.range(config.minY << 8, config.maxY << 8)
             .filter(i -> carvingMask.get(i) && rand.nextFloat() < config.probability)
             .mapToObj(i -> {

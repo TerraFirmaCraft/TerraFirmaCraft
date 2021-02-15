@@ -41,19 +41,19 @@ public class TFCTree extends Tree
         return registry.getOptional(oldGrowthTree).orElseGet(() -> getNormalFeature(registry));
     }
 
-    @Nullable
+    /*@Nullable
     @Override
     protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
     {
         return null; // Not using vanilla's feature config
-    }
+    }*/
 
     @Override
-    public boolean growTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
+    public boolean attemptGrowTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
-        ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY));
+        ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.func_241828_r().getRegistry(Registry.CONFIGURED_FEATURE_KEY));
         worldIn.setBlockState(blockPosIn, Blocks.AIR.getDefaultState(), 4);
-        if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
+        if (feature.generate(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {
             return true;
         }
@@ -62,5 +62,11 @@ public class TFCTree extends Tree
             worldIn.setBlockState(blockPosIn, blockStateIn, 4);
             return false;
         }
+    }
+
+    @Nullable
+    @Override
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean largeHive) {
+        return null;
     }
 }

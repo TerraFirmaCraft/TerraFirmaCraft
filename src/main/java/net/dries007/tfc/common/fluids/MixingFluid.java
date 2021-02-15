@@ -119,7 +119,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         }
         else
         {
-            return adjacentState.getFluidState().getType().isSame(this) || this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
+            return adjacentState.getFluidState().getFluid().isSame(this) || this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
         }
     }
 
@@ -343,7 +343,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 state = fluidAt;
                 BlockState blockstate = fluidAt.createLegacyBlock();
                 worldIn.setBlockState(pos, blockstate, 2);
-                worldIn.getLiquidTicks().scheduleTick(pos, fluidAt.getType(), spreadDelay);
+                worldIn.getPendingFluidTicks().scheduleTick(pos, fluidAt.getType(), spreadDelay);
                 worldIn.updateNeighborsAt(pos, blockstate.getBlock());
             }
         }

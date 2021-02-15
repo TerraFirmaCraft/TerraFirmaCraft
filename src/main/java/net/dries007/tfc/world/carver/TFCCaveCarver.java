@@ -41,17 +41,18 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
     }
 
     @Override
-    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config)
+    public boolean carveRegion(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config)
     {
         if (!initialized)
         {
             throw new IllegalStateException("Not properly initialized! Cannot use TFCCaveCarver with a chunk generator that does not respect IContextCarver");
         }
-        return super.carve(chunkIn, biomePos, rand, seaLevel, chunkXOffset, chunkZOffset, chunkX, chunkZ, carvingMask, config);
+        return super.carveRegion(chunkIn, biomePos, rand, seaLevel, chunkXOffset, chunkZOffset, chunkX, chunkZ, carvingMask, config);
     }
 
+    //getCaveY
     @Override
-    protected int getCaveY(Random random)
+    protected int func_230361_b_(Random random)
     {
         // Lower level caves are composed mostly of worley caves, higher level caves are vanilla.
         return 32 + random.nextInt(120);
@@ -60,7 +61,7 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
     @Override
     protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int seaLevel, int chunkX, int chunkZ, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
     {
-        mutablePos1.set(actualX, y, actualZ);
+        mutablePos1.setPos(actualX, y, actualZ);
         return blockCarver.carve(chunkIn, mutablePos1, random, seaLevel);
     }
 }

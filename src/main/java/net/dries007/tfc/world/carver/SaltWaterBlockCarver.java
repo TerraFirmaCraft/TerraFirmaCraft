@@ -44,7 +44,7 @@ public class SaltWaterBlockCarver extends BlockCarver
                     if (random.nextFloat() < 0.25f)
                     {
                         chunk.setBlockState(pos, Blocks.MAGMA_BLOCK.getDefaultState(), false);
-                        chunk.getBlockTicks().scheduleTick(pos, Blocks.MAGMA_BLOCK, 0);
+                        chunk.getBlocksToBeTicked().scheduleTick(pos, Blocks.MAGMA_BLOCK, 0);
                     }
                     else
                     {
@@ -63,11 +63,11 @@ public class SaltWaterBlockCarver extends BlockCarver
                     for (Direction direction : Direction.Plane.HORIZONTAL)
                     {
                         // Always schedule update ticks if we're on a chunk edge as we cannot check if it's necessary
-                        int neighborX = pos.getX() + direction.getStepX();
-                        int neighborZ = pos.getZ() + direction.getStepZ();
+                        int neighborX = pos.getX() + direction.getXOffset();
+                        int neighborZ = pos.getZ() + direction.getZOffset();
                         if ((neighborX >> 4) != pos.getX() >> 4 || (neighborZ >> 4) != pos.getZ() >> 4 || chunk.getBlockState(pos.offset(direction, 1)).isAir())
                         {
-                            chunk.getLiquidTicks().scheduleTick(pos, TFCFluids.SALT_WATER.getSource(), 0);
+                            chunk.getFluidsToBeTicked().scheduleTick(pos, TFCFluids.SALT_WATER.getSource(), 0);
                             break;
                         }
                     }

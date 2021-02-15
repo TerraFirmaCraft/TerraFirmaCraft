@@ -33,7 +33,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getXStart() - 14, chunkPos.getZStart() - 14, chunkPos.getXEnd() + 14, chunkPos.getZEnd() + 14); // Leeway so we can check outside this box
@@ -71,8 +71,8 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
                 for (Direction direction : Direction.Plane.HORIZONTAL)
                 {
                     // Check positions in each direction
-                    mutablePos.setWithOffset(lastPos, direction);
-                    if (!box.isInside(mutablePos))
+                    mutablePos.setAndMove(lastPos, direction);
+                    if (!box.isVecInside(mutablePos))
                     {
                         continue; // Outside of the bounding box, skip!
                     }
@@ -108,10 +108,10 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
                     }
 
                     // One direction, so proceed
-                    mutablePos.setWithOffset(lastPos, chosenDirection).setY(chosenHeight);
+                    mutablePos.setAndMove(lastPos, chosenDirection).setY(chosenHeight);
                     if (!chosen.contains(mutablePos))
                     {
-                        lastPos = mutablePos.immutable();
+                        lastPos = mutablePos.toImmutable();
                         chosen.add(lastPos);
                     }
                     else
@@ -131,12 +131,12 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
             {
                 // At each position, break the top block, and replace two blocks underneath with magma
                 // The recorded positions are one above the topmost block due to how getHeight works
-                mutablePos.setWithOffset(chosenPos, Direction.DOWN);
-                setBlock(world, mutablePos, air);
+                mutablePos.setAndMove(chosenPos, Direction.DOWN);
+                setBlockState(world, mutablePos, air);
                 mutablePos.move(Direction.DOWN);
-                setBlock(world, mutablePos, config.state);
+                setBlockState(world, mutablePos, config.state);
                 mutablePos.move(Direction.DOWN);
-                setBlock(world, mutablePos, config.state);
+                setBlockState(world, mutablePos, config.state);
             }
             return true;
         }

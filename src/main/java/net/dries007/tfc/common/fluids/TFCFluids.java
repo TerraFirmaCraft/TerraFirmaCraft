@@ -171,7 +171,7 @@ public final class TFCFluids
 
         public BlockState getSourceBlock()
         {
-            return getSource().defaultFluidState().createLegacyBlock();
+            return getSource().getDefaultState().getBlockState();
         }
     }
 }

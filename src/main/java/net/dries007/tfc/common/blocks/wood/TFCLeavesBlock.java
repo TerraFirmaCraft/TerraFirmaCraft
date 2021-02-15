@@ -87,7 +87,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         int distance = getDistance(facingState) + 1;
         if (distance != 1 || stateIn.get(getDistanceProperty()) != distance)
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
         return stateIn;
     }
@@ -188,7 +188,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction direction : Direction.values())
         {
-            mutablePos.set(pos).move(direction);
+            mutablePos.setPos(pos).move(direction);
             distance = Math.min(distance, getDistance(worldIn.getBlockState(mutablePos)) + 1);
             if (distance == 1)
             {

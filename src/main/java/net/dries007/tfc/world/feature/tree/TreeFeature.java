@@ -47,7 +47,7 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
             {
                 for (int z = -radius; z <= radius; z++)
                 {
-                    mutablePos.set(pos);
+                    mutablePos.setPos(pos);
                     mutablePos.move(x, y, z);
                     BlockState stateAt = world.getBlockState(mutablePos);
                     if (!stateAt.isAir())

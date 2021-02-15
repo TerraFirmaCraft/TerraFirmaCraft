@@ -27,11 +27,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
 public class TFCFeatures
-{
+{//all CODEC
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MOD_ID);
 
-    public static final RegistryObject<CaveSpikesFeature> CAVE_SPIKE = register("cave_spike", CaveSpikesFeature::new, NoFeatureConfig.CODEC);
-    public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKE = register("large_cave_spike", LargeCaveSpikesFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<CaveSpikesFeature> CAVE_SPIKE = register("cave_spike", CaveSpikesFeature::new, NoFeatureConfig.field_236558_a_);
+    public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKE = register("large_cave_spike", LargeCaveSpikesFeature::new, NoFeatureConfig.field_236558_a_);
     public static final RegistryObject<ThinSpikeFeature> THIN_SPIKE = register("thin_spike", ThinSpikeFeature::new, ThinSpikeConfig.CODEC);
     public static final RegistryObject<RivuletFeature> RIVULET = register("rivulet", RivuletFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
 
@@ -40,41 +40,41 @@ public class TFCFeatures
     public static final RegistryObject<PipeVeinFeature> PIPE_VEIN = register("pipe_vein", PipeVeinFeature::new, PipeVeinConfig.CODEC);
 
     public static final RegistryObject<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);
-    public static final RegistryObject<FissureFeature> FISSURE = register("fissure", FissureFeature::new, BlockStateFeatureConfig.CODEC);
-    public static final RegistryObject<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<FissureFeature> FISSURE = register("fissure", FissureFeature::new, BlockStateFeatureConfig.field_236455_a_);
+    public static final RegistryObject<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoFeatureConfig.field_236558_a_);
 
-    public static final RegistryObject<RandomPatchWaterLandFeature> WATER_LAND_PATCH = register("water_land_patch", RandomPatchWaterLandFeature::new, BlockClusterFeatureConfig.CODEC);
-    public static final RegistryObject<RandomPatchDensityFeature> RANDOM_PATCH_DENSITY = register("random_patch_density", RandomPatchDensityFeature::new, BlockClusterFeatureConfig.CODEC);
-    public static final RegistryObject<EmergentPatchFeature> EMERGENT_PATCH = register("emergent_patch", EmergentPatchFeature::new, BlockClusterFeatureConfig.CODEC);
-    public static final RegistryObject<RandomPatchWaterFeature> WATER_PATCH = register("water_patch", RandomPatchWaterFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<RandomPatchWaterLandFeature> WATER_LAND_PATCH = register("water_land_patch", RandomPatchWaterLandFeature::new, BlockClusterFeatureConfig.field_236587_a_);
+    public static final RegistryObject<RandomPatchDensityFeature> RANDOM_PATCH_DENSITY = register("random_patch_density", RandomPatchDensityFeature::new, BlockClusterFeatureConfig.field_236587_a_);
+    public static final RegistryObject<EmergentPatchFeature> EMERGENT_PATCH = register("emergent_patch", EmergentPatchFeature::new, BlockClusterFeatureConfig.field_236587_a_);
+    public static final RegistryObject<RandomPatchWaterFeature> WATER_PATCH = register("water_patch", RandomPatchWaterFeature::new, BlockClusterFeatureConfig.field_236587_a_);
     public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, TallPlantConfig.CODEC);
     public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, TallPlantConfig.CODEC);
     public static final RegistryObject<TFCKelpFeature> KELP = register("kelp", TFCKelpFeature::new, TallPlantConfig.CODEC);
     public static final RegistryObject<KelpTreeFeature> KELP_TREE = register("kelp_tree", KelpTreeFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
-    public static final RegistryObject<TFCCoralClawFeature> CORAL_CLAW = register("coral_claw", TFCCoralClawFeature::new, NoFeatureConfig.CODEC);
-    public static final RegistryObject<TFCCoralMushroomFeature> CORAL_MUSHROOM = register("coral_mushroom", TFCCoralMushroomFeature::new, NoFeatureConfig.CODEC);
-    public static final RegistryObject<TFCCoralTreeFeature> CORAL_TREE = register("coral_tree", TFCCoralTreeFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<TFCCoralClawFeature> CORAL_CLAW = register("coral_claw", TFCCoralClawFeature::new, NoFeatureConfig.field_236558_a_);
+    public static final RegistryObject<TFCCoralMushroomFeature> CORAL_MUSHROOM = register("coral_mushroom", TFCCoralMushroomFeature::new, NoFeatureConfig.field_236558_a_);
+    public static final RegistryObject<TFCCoralTreeFeature> CORAL_TREE = register("coral_tree", TFCCoralTreeFeature::new, NoFeatureConfig.field_236558_a_);
     public static final RegistryObject<CaveVegetationFeature> CAVE_VEGETATION = register("cave_vegetation", CaveVegetationFeature::new, CaveVegetationConfig.CODEC);
-    public static final RegistryObject<CavePatchFeature> CAVE_PATCH = register("cave_patch", CavePatchFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<CavePatchFeature> CAVE_PATCH = register("cave_patch", CavePatchFeature::new, BlockClusterFeatureConfig.field_236587_a_);
     public static final RegistryObject<TFCVinesFeature> VINES = register("vines", TFCVinesFeature::new, VineConfig.CODEC);
-    public static final RegistryObject<IceCaveFeature> ICE_CAVE = register("ice_cave", IceCaveFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<IceCaveFeature> ICE_CAVE = register("ice_cave", IceCaveFeature::new, NoFeatureConfig.field_236558_a_);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = register("random_tree", RandomTreeFeature::new, RandomTreeConfig.CODEC);
     public static final RegistryObject<StackedTreeFeature> STACKED_TREE = register("stacked_tree", StackedTreeFeature::new, StackedTreeConfig.CODEC);
 
-    public static final RegistryObject<ErosionFeature> EROSION = register("erosion", ErosionFeature::new, NoFeatureConfig.CODEC);
-    public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<ErosionFeature> EROSION = register("erosion", ErosionFeature::new, NoFeatureConfig.field_236558_a_);
+    public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoFeatureConfig.field_236558_a_);
 
-    public static final RegistryObject<LakeFeature> LAKE = register("lake", LakeFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<LakeFeature> LAKE = register("lake", LakeFeature::new, NoFeatureConfig.field_236558_a_);
     public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = register("flood_fill_lake", FloodFillLakeFeature::new, FloodFillLakeConfig.CODEC);
-    public static final RegistryObject<SpringFeature> SPRING = register("spring", SpringFeature::new, LiquidsConfig.CODEC);
+    public static final RegistryObject<SpringFeature> SPRING = register("spring", SpringFeature::new, LiquidsConfig.field_236649_a_);
 
     public static final RegistryObject<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);
-    public static final RegistryObject<TFCIcebergFeature> ICEBERG = register("iceberg", TFCIcebergFeature::new, BlockStateFeatureConfig.CODEC);
+    public static final RegistryObject<TFCIcebergFeature> ICEBERG = register("iceberg", TFCIcebergFeature::new, BlockStateFeatureConfig.field_236455_a_);
 
-    public static final RegistryObject<DebugMetaballsFeature> DEBUG_METABALLS = register("debug_metaballs", DebugMetaballsFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<DebugMetaballsFeature> DEBUG_METABALLS = register("debug_metaballs", DebugMetaballsFeature::new, NoFeatureConfig.field_236558_a_);
 
     private static <C extends IFeatureConfig, F extends Feature<C>> RegistryObject<F> register(String name, Function<Codec<C>, F> factory, Codec<C> codec)
     {

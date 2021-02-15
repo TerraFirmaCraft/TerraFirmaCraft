@@ -47,8 +47,8 @@ public class ForestConfig implements IFeatureConfig
             Codecs.LENIENT_BLOCKSTATE.fieldOf("leaves").forGetter(c -> c.leaves),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("twig").forGetter(c -> c.twig),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("fallen_leaves").forGetter(c -> c.fallen_leaves),
-            ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
-            ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
+            ConfiguredFeature.field_236264_b_.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
+            ConfiguredFeature.field_236264_b_.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));
 
         private final float minRainfall;

@@ -33,7 +33,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         // The direction that the spike is pointed
         Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
@@ -99,15 +99,15 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR)
         {
-            setBlock(world, pos, state);
+            replaceBlock(world, pos, state);
         }
         else if (block == Blocks.WATER)
         {
-            setBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
+            replaceBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
         }
         else if (block == Blocks.LAVA)
         {
-            setBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
+            replaceBlock(world, pos, state.with(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
         }
     }
 
@@ -116,7 +116,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)
         {
-            setBlock(world, pos, state);
+            replaceBlock(world, pos, state);
         }
     }
 }

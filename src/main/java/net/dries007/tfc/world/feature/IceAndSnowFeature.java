@@ -50,7 +50,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
     {
         initSeed(worldIn.getSeed());
 
@@ -65,7 +65,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
         {
             for (int z = chunkPos.getZStart(); z <= chunkPos.getZEnd(); z++)
             {
-                mutablePos.set(x, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, x, z), z);
+                mutablePos.setPos(x, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, x, z), z);
 
                 final float noise = temperatureNoise.noise(x, z);
                 final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER);
@@ -100,11 +100,11 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
                 stateAt = worldIn.getBlockState(mutablePos);
                 fluidAt = stateAt.getFluidState();
 
-                if (biome.shouldFreeze(worldIn, mutablePos, true))
+                if (biome.doesWaterFreeze(worldIn, mutablePos, true))
                 {
                     worldIn.setBlockState(mutablePos, Blocks.ICE.getDefaultState(), 2);
                 }
-                else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
+                else if (fluidAt.getFluid() == TFCFluids.SALT_WATER.getSource())
                 {
                     final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + MathHelper.clamp(temperature * 0.1f, -0.2f, 0.2f);
                     if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)

@@ -30,13 +30,13 @@ public class FacingHorizontalBlockStateProvider extends BlockStateProvider
     @Override
     protected BlockStateProviderType<?> type()
     {
-        return TFCBlockStateProviderTypes.FACING_PROVIDER.get();
+        return TFCBlockStateProviderTypes.HORIZONTAL_FACING_PROVIDER.get();
     }
 
     @Override
     public BlockState getState(Random random, BlockPos pos)
     {
-        Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-        return this.state.with(HorizontalBlock.FACING, facing);
+        Direction facing = Direction.Plane.HORIZONTAL.random(random);
+        return this.state.with(HorizontalBlock.HORIZONTAL_FACING, facing);
     }
 }

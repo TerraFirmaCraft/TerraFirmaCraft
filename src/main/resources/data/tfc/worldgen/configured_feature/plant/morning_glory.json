@@ -33,9 +33,9 @@
                 },
                 "whitelist": [],
                 "blacklist": [],
-                "yspread": 1,
-                "xspread": 6,
-                "zspread": 6
+                "ySpread": 1,
+                "xSpread": 6,
+                "zSpread": 6
               }
             },
             "decorator": {

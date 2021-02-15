@@ -86,7 +86,7 @@ public class ThinSpikeBlock extends Block
         BlockState otherState = worldIn.getBlockState(posDown);
         if (otherState.getBlock() == this)
         {
-            worldIn.getBlockTicks().scheduleTick(posDown, this, 0);
+            worldIn.getPendingBlockTicks().scheduleTick(posDown, this, 0);
         }
     }
 
@@ -96,7 +96,7 @@ public class ThinSpikeBlock extends Block
     {
         BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
-        return (aboveState.getBlock() == this && !aboveState.get(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
+        return (aboveState.getBlock() == this && !aboveState.get(TIP)) || aboveState.isSolidSide(worldIn, abovePos, Direction.DOWN);
     }
 
     @Override

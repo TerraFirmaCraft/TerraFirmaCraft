@@ -10,6 +10,7 @@ import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerChunkProvider;
@@ -26,15 +27,15 @@ public final class ChunkDataProvider
      */
     public static ChunkDataProvider getOrThrow()
     {
-        return getOrThrow(ServerLifecycleHooks.getCurrentServer().overworld());
+        return getOrThrow(ServerLifecycleHooks.getCurrentServer().getWorld(World.OVERWORLD));
     }
 
     public static ChunkDataProvider getOrThrow(IWorld world)
     {
-        AbstractChunkProvider chunkProvider = world.getChunkSource();
+        AbstractChunkProvider chunkProvider = world.getChunkProvider();
         if (chunkProvider instanceof ServerChunkProvider)
         {
-            return getOrThrow(((ServerChunkProvider) chunkProvider).getGenerator());
+            return getOrThrow(((ServerChunkProvider) chunkProvider).getChunkGenerator());
         }
         throw new IllegalStateException("Tried to access ChunkDataProvider but no ServerChunkProvider was found on world: " + world);
     }

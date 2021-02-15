@@ -54,8 +54,8 @@ public class EpiphytePlantBlockTests
         {
             helper.runAfter(10, () -> helper.setBlockState(pos.offset(direction, 2), log))
                 .thenRun(10, () -> helper.destroyBlock(pos.offset(direction, 2)))
-                .thenRun(10, () -> helper.setBlockState(pos.offset(direction).offset(direction.getClockWise()), log))
-                .thenRun(10, () -> helper.destroyBlock(pos.offset(direction).offset(direction.getClockWise())))
+                .thenRun(10, () -> helper.setBlockState(pos.offset(direction).offset(direction.rotateY()), log))
+                .thenRun(10, () -> helper.destroyBlock(pos.offset(direction).offset(direction.rotateY())))
                 .thenRun(10, () -> {});
             helper.assertBlockAt(pos.offset(direction), this::isEpiphyte, "Expected epiphyte to not break");
         }

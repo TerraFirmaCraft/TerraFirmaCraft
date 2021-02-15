@@ -94,7 +94,7 @@ public class ChunkBlockReplacer
 
         // Vanilla water -> Salt Water (Or Unchanged)
         final BlockState saltWater = TFCFluids.SALT_WATER.getSourceBlock();
-        final BlockState freshWater = Fluids.WATER.defaultFluidState().createLegacyBlock();
+        final BlockState freshWater = Fluids.WATER.getDefaultState().getBlockState();
         register(Blocks.WATER, (rockData, x, y, z, rainfall, temperature, salty) -> salty ? saltWater : freshWater);
     }
 
@@ -114,14 +114,14 @@ public class ChunkBlockReplacer
 
                 final int maxY = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z);
 
-                mutablePos.set(xStart + x, 0, zStart + z);
+                mutablePos.setPos(xStart + x, 0, zStart + z);
                 final Biome biome = world.getBiome(mutablePos);
                 final boolean saltWater = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().isSalty();
 
                 int y = 0;
                 for (int sectionY = 0; sectionY < 16 && y < maxY; sectionY++)
                 {
-                    final ChunkSection section = chunk.getOrCreateSection(sectionY);
+                    final ChunkSection section = chunk.getSection(sectionY);
                     for (int localY = 0; localY < 16 && y < maxY; localY++)
                     {
                         y = (sectionY << 4) | localY;
@@ -137,7 +137,7 @@ public class ChunkBlockReplacer
                                 section.setBlockState(x, localY, z, stateAt, false);
 
                                 // Since we operate on the chunk section directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
-                                mutablePos.set(xStart + x, y, zStart + z);
+                                mutablePos.setPos(xStart + x, y, zStart + z);
                                 if (stateAt.hasPostProcess(chunk, mutablePos))
                                 {
                                     chunk.markPosForPostprocessing(mutablePos);

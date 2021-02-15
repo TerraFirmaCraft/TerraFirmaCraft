@@ -32,9 +32,9 @@ public class TFCVinesFeature extends Feature<VineConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, VineConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, VineConfig config)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.Mutable mutablePos = pos.toMutable();
         BlockState state = config.getState();
         List<Direction> dirs = new ArrayList<>(4);
         int r = config.getRadius();
@@ -43,10 +43,10 @@ public class TFCVinesFeature extends Feature<VineConfig>
         {
             for (int y = config.getMinHeight(); y < config.getMaxHeight(); ++y)
             {
-                mutablePos.set(pos);
+                mutablePos.setPos(pos);
                 mutablePos.move(rand.nextInt(r) - rand.nextInt(r), 0, rand.nextInt(r) - rand.nextInt(r));
                 mutablePos.setY(y);
-                if (world.isEmptyBlock(mutablePos))
+                if (world.isAirBlock(mutablePos))
                 {
                     for (Direction direction : DIRECTIONS)
                     {
@@ -55,7 +55,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
                         if (direction != Direction.DOWN && (foundState.isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON) || foundState.isIn(BlockTags.LOGS) || foundState.isIn(BlockTags.LEAVES)))
                         {
                             mutablePos.move(direction.getOpposite());
-                            world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                            world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyFor(direction), true), 2);
                             if (direction != Direction.UP)
                                 dirs.add(direction);
                             break;
@@ -67,11 +67,11 @@ public class TFCVinesFeature extends Feature<VineConfig>
                         for (int k = 0; k < 6 + rand.nextInt(13); k++)
                         {
                             mutablePos.move(Direction.DOWN);
-                            if (world.isEmptyBlock(mutablePos))
+                            if (world.isAirBlock(mutablePos))
                             {
                                 for (Direction direction : dirs)
                                 {
-                                    world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                                    world.setBlockState(mutablePos, state.with(TFCVineBlock.getPropertyFor(direction), true), 2);
                                 }
                             }
                         }

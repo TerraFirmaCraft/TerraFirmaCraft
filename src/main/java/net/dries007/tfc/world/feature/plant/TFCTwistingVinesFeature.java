@@ -29,21 +29,21 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
         int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
+            mutablePos.setAndOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.move(Direction.DOWN);
             if (!world.getBlockState(mutablePos).isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 return false;
             mutablePos.move(Direction.UP);
-            if (world.isEmptyBlock(mutablePos))
+            if (world.isAirBlock(mutablePos))
             {
-                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
+                placeColumn(world, rand, world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos).toMutable(), rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
                 placedAny = true;
             }
         }
@@ -54,9 +54,9 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (world.isEmptyBlock(mutablePos))
+            if (world.isAirBlock(mutablePos))
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.up()))
+                if (i == height || !world.isAirBlock(mutablePos.up()))
                 {
                     world.setBlockState(mutablePos, head.with(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
                     break;

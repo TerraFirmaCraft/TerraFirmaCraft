@@ -28,9 +28,9 @@
                 },
                 "whitelist": [],
                 "blacklist": [],
-                "yspread": 6,
-                "xspread": 5,
-                "zspread": 5
+                "ySpread": 6,
+                "xSpread": 5,
+                "zSpread": 5
               }
             },
             "decorator": {

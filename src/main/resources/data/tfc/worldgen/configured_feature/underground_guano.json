@@ -21,9 +21,9 @@
                 },
                 "blacklist": [],
                 "whitelist": [],
-                "yspread": 5,
-                "xspread": 5,
-                "zspread": 5,
+                "ySpread": 5,
+                "xSpread": 5,
+                "zSpread": 5,
                 "tries": 60
               }
             },

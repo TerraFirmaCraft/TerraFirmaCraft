@@ -40,7 +40,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
             if (!worldIn.isClientSide())
             {
                 worldIn.setBlockState(pos, state.with(getFluidProperty(), getFluidProperty().keyFor(fluidStateIn.getType())), 3);
-                worldIn.getLiquidTicks().scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(worldIn));
             }
             return true;
         }

@@ -28,19 +28,19 @@ public class EmergentPatchFeature extends Feature<BlockClusterFeatureConfig>
 
     //unused: project, canReplace
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
-        BlockPos blockpos = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, pos);
+        BlockState blockstate = config.stateProvider.getBlockState(rand, pos);
+        BlockPos blockpos = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        for (int j = 0; j < config.tries; ++j)
+        for (int j = 0; j < config.tryCount; ++j)
         {
-            mutablePos.setWithOffset(blockpos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1) - 1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setAndOffset(blockpos, rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), rand.nextInt(config.ySpread + 1) - rand.nextInt(config.ySpread + 1) - 1, rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
             BlockState state = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP, 2);
-            boolean foundTopBlockSpace = world.isEmptyBlock(mutablePos);
+            boolean foundTopBlockSpace = world.isAirBlock(mutablePos);
             mutablePos.move(Direction.DOWN);
             if ((foundTopBlockSpace && world.hasWater(mutablePos)) && blockstate.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
             {

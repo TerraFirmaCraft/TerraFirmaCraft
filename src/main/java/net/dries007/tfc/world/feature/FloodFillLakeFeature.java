@@ -37,7 +37,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getXStart() - 14, chunkPos.getZStart() - 14, chunkPos.getXEnd() + 14, chunkPos.getZEnd() + 14); // Leeway so we can check outside this box
@@ -46,17 +46,17 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
         // First, make sure we're currently at the lowest point in the column.
-        mutablePos.set(pos);
-        while (worldIn.isEmptyBlock(mutablePos) && mutablePos.getY() > 11)
+        mutablePos.setPos(pos);
+        while (worldIn.isAirBlock(mutablePos) && mutablePos.getY() > 11)
         {
             mutablePos.move(0, -1, 0);
         }
-        pos = mutablePos.immutable();
+        pos = mutablePos.toImmutable();
 
         // Initial placement is surface level, so start filling one block above
         final BlockPos startPos = pos.up();
         final BlockState fill = config.getState();
-        final Fluid fluid = fill.getFluidState().getType();
+        final Fluid fluid = fill.getFluidState().getFluid();
         if (floodFill(worldIn, startPos, box, filled, mutablePos, config))
         {
             // Minimum size, don't fill awkward tiny lakes
@@ -65,10 +65,10 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                 for (BlockPos filledPos : filled)
                 {
                     worldIn.setBlockState(filledPos, fill, 2);
-                    worldIn.getLiquidTicks().scheduleTick(filledPos, fluid, 0);
+                    worldIn.getPendingFluidTicks().scheduleTick(filledPos, fluid, 0);
 
                     // If we're at the bottom
-                    mutablePos.set(filledPos).move(0, -1, 0);
+                    mutablePos.setPos(filledPos).move(0, -1, 0);
                     if (!filled.contains(mutablePos))
                     {
                         BlockState stateDown = worldIn.getBlockState(mutablePos);
@@ -135,16 +135,16 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
             BlockPos posAt = queue.removeFirst();
             for (Direction direction : directions)
             {
-                mutablePos.set(posAt).move(direction);
+                mutablePos.setPos(posAt).move(direction);
                 if (!filled.contains(mutablePos) && mutablePos.getY() <= maximumY)
                 {
                     final BlockState stateAt = worldIn.getBlockState(mutablePos);
                     if (isFloodFillable(stateAt, config))
                     {
-                        if (box.isInside(mutablePos))
+                        if (box.isVecInside(mutablePos))
                         {
                             // Valid flood fill location
-                            BlockPos posNext = mutablePos.immutable();
+                            BlockPos posNext = mutablePos.toImmutable();
                             queue.addFirst(posNext);
                             filled.add(posNext);
                         }
@@ -162,6 +162,6 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 
     private boolean isFloodFillable(BlockState state, FloodFillLakeConfig config)
     {
-        return !state.getMaterial().isSolid() && config.shouldReplace(state.getFluidState().getType());
+        return !state.getMaterial().isSolid() && config.shouldReplace(state.getFluidState().getFluid());
     }
 }

@@ -59,7 +59,7 @@ public class ClientForgeEventHandler
         {
             //noinspection ConstantConditions
             BlockPos pos = new BlockPos(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
-            if (mc.level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4))
+            if (mc.level.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
             {
                 list.add("");
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);

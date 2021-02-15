@@ -40,7 +40,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
@@ -50,7 +50,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
 
         if (state != null && state.canBeReplacedByLeaves(worldIn, pos))
         {
-            setBlock(worldIn, pos, state.with(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).with(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(rand)));
+            setBlockState(worldIn, pos, state.with(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(rand)));
             return true;
         }
         return false;
@@ -67,8 +67,8 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
         if (state.getBlock() instanceof IFluidLoggable)
         {
             final FluidProperty property = ((IFluidLoggable) state.getBlock()).getFluidProperty();
-            final Fluid fluid = stateAt.getFluidState().getType();
-            if (property.canContain(fluid) && fluid.isSame(Fluids.EMPTY))
+            final Fluid fluid = stateAt.getFluidState().getFluid();
+            if (property.canContain(fluid) && fluid.isEquivalentTo(Fluids.EMPTY))
             {
                 return state.with(property, property.keyFor(fluid));
             }

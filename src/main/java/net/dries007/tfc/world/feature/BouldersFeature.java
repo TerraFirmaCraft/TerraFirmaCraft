@@ -28,18 +28,18 @@ public class BouldersFeature extends Feature<BoulderConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
         final BlockState baseState = rock.getBlock(config.getBaseType()).getDefaultState();
         final BlockState decorationState = rock.getBlock(config.getDecorationType()).getDefaultState();
-        place(worldIn, baseState, decorationState, pos, rand);
+        generate(worldIn, baseState, decorationState, pos, rand);
         return true;
     }
 
-    private void place(ISeedReader worldIn, BlockState baseState, BlockState decorationState, BlockPos pos, Random rand)
+    private void generate(ISeedReader worldIn, BlockState baseState, BlockState decorationState, BlockPos pos, Random rand)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
@@ -53,14 +53,14 @@ public class BouldersFeature extends Feature<BoulderConfig>
                 {
                     if (x * x + y * y + z * z <= radiusSquared)
                     {
-                        mutablePos.set(pos).move(x, y, z);
+                        mutablePos.setPos(pos).move(x, y, z);
                         if (rand.nextFloat() < 0.4f)
                         {
-                            setBlock(worldIn, mutablePos, decorationState);
+                            setBlockState(worldIn, mutablePos, decorationState);
                         }
                         else
                         {
-                            setBlock(worldIn, mutablePos, baseState);
+                            setBlockState(worldIn, mutablePos, baseState);
                         }
                     }
                 }

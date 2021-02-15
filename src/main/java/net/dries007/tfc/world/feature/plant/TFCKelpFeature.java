@@ -32,17 +32,17 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
-        if (!((TFCKelpTopBlock) (config.getHeadState().getBlock())).getFluidProperty().canContain(world.getBlockState(pos).getFluidState().getType()))
+        if (!((TFCKelpTopBlock) (config.getHeadState().getBlock())).getFluidProperty().canContain(world.getBlockState(pos).getFluidState().getFluid()))
             return false;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
         int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
-            mutablePos.set(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, mutablePos));
+            mutablePos.setAndOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
+            mutablePos.setPos(world.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos));
             mutablePos.move(Direction.DOWN);
             if (!world.getBlockState(mutablePos).isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 return false;
@@ -79,7 +79,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         if (state.getBlock() instanceof IFluidLoggable)
         {
             IFluidLoggable block = (IFluidLoggable) state.getBlock();
-            BlockState setState = block.getStateWithFluid(state, world.getFluidState(pos).getType());
+            BlockState setState = block.getStateWithFluid(state, world.getFluidState(pos).getFluid());
             if (setState.get(block.getFluidProperty()).getFluid() != Fluids.EMPTY)
                 return setState;
         }

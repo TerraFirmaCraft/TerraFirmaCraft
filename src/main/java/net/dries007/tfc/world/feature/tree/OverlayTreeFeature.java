@@ -27,14 +27,14 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, OverlayTreeConfig config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, OverlayTreeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().setPos(pos);
         final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
         final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
-        final Template structureBase = manager.getOrCreate(config.base);
-        final Template structureOverlay = manager.getOrCreate(config.overlay);
+        final Template structureBase = manager.getTemplate(config.base);
+        final Template structureOverlay = manager.getTemplate(config.overlay);
 
         if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 3))
         {

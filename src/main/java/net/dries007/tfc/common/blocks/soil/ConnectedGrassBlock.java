@@ -83,7 +83,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        worldIn.getBlockTicks().scheduleTick(pos, this, 0);
+        worldIn.getPendingBlockTicks().scheduleTick(pos, this, 0);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
+            worldIn.getPendingBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
         }
     }
 
@@ -100,7 +100,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
+            worldIn.getPendingBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
         }
         super.onRemove(state, worldIn, pos, newState, isMoving);
     }

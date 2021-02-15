@@ -32,9 +32,9 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
 
     //unused: project, canReplace
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config)
     {
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
+        BlockState blockstate = config.stateProvider.getBlockState(rand, pos);
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         ChunkData data = ChunkData.get(world, mutablePos);
@@ -42,13 +42,13 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
         ForestType type = data.getForestType();
         if (type != ForestType.SPARSE && type != ForestType.NONE)
             density += 0.3f;
-        int tries = Math.min((int) (config.tries * density), 128);
+        int tries = Math.min((int) (config.tryCount * density), 128);
         for (int j = 0; j < tries; ++j)
         {
-            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos), rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), -1, rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            mutablePos.setAndOffset(world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos), rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), -1, rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
             BlockState state = world.getBlockState(mutablePos);
             mutablePos.move(Direction.UP);
-            if ((world.isEmptyBlock(mutablePos) && blockstate.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
+            if ((world.isAirBlock(mutablePos) && blockstate.canBeReplacedByLeaves(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
             {
                 config.blockPlacer.place(world, mutablePos, blockstate.with(TFCBlockStateProperties.AGE_3, rand.nextInt(4)), rand); //randomize age
                 ++i;

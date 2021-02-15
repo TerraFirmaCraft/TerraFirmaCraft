@@ -36,14 +36,14 @@ public class TFCCoralClawFeature extends TFCCoralFeature
         }
         else
         {
-            Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
+            Direction direction = Direction.Plane.HORIZONTAL.random(rand);
             int directionTries = rand.nextInt(2) + 2;
-            List<Direction> dirs = Lists.newArrayList(direction, direction.getClockWise(), direction.getCounterClockWise());
+            List<Direction> dirs = Lists.newArrayList(direction, direction.rotateY(), direction.rotateYCCW());
             Collections.shuffle(dirs, rand);
 
             for (Direction d : dirs.subList(0, directionTries))
             {
-                BlockPos.Mutable mutablePos = blockPos_.mutable();
+                BlockPos.Mutable mutablePos = blockPos_.toMutable();
                 int j = rand.nextInt(2) + 1;
                 mutablePos.move(d);
                 int k;
@@ -57,7 +57,7 @@ public class TFCCoralClawFeature extends TFCCoralFeature
                 {
                     mutablePos.move(Direction.UP);
                     Direction[] upOrSide = new Direction[] {d, Direction.UP};
-                    direction2 = Util.getRandom(upOrSide, rand);
+                    direction2 = Util.getRandomObject(upOrSide, rand);
                     k = rand.nextInt(3) + 3;
                 }
 

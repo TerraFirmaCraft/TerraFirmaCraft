@@ -28,18 +28,18 @@ public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean placedAny = false;
         int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(radius) - rand.nextInt(radius));
+            mutablePos.setAndOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.move(Direction.UP);
             BlockState aboveState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
-            if ((aboveState.isIn(BlockTags.LEAVES) || aboveState.isIn(BlockTags.LOGS) || aboveState.isIn(BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
+            if ((aboveState.isIn(BlockTags.LEAVES) || aboveState.isIn(BlockTags.LOGS) || aboveState.isIn(BlockTags.BASE_STONE_OVERWORLD)) && world.isAirBlock(mutablePos))
             {
                 placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
                 placedAny = true;
@@ -53,9 +53,9 @@ public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
     {
         for (int i = 0; i <= height; ++i)//this assumes that we found a valid place to attach
         {
-            if (world.isEmptyBlock(mutablePos))//if it's empty, we can grow
+            if (world.isAirBlock(mutablePos))//if it's empty, we can grow
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.down()))//if we guarantee the next iteration will fail, set the end block
+                if (i == height || !world.isAirBlock(mutablePos.down()))//if we guarantee the next iteration will fail, set the end block
                 {
                     world.setBlockState(mutablePos, headState.with(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
                     break;

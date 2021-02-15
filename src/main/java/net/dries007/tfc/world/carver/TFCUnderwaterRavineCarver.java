@@ -36,7 +36,7 @@ public class TFCUnderwaterRavineCarver extends UnderwaterCanyonWorldCarver imple
     }
 
     @Override
-    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config)
+    public boolean carveRegion(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config)
     {
         if (!initialized)
         {
@@ -63,7 +63,7 @@ public class TFCUnderwaterRavineCarver extends UnderwaterCanyonWorldCarver imple
     @Override
     protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int seaLevel, int chunkX, int chunkZ, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
     {
-        mutablePos1.set(actualX, y, actualZ);
+        mutablePos1.setPos(actualX, y, actualZ);
         return blockCarver.carve(chunkIn, mutablePos1, random, seaLevel);
     }
 }

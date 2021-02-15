@@ -33,7 +33,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
  */
 public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
 {
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
         Direction.NORTH, Block.box(0.0D, 4.0D, 5.0D, 16.0D, 12.0D, 16.0D),
         Direction.SOUTH, Block.box(0.0D, 4.0D, 0.0D, 16.0D, 12.0D, 11.0D),
@@ -77,7 +77,7 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
     {
         if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
         }
 
         return facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : stateIn;
@@ -89,7 +89,7 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
         Direction direction = state.get(FACING);
         BlockPos blockpos = pos.offset(direction.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
-        return blockstate.isFaceSturdy(worldIn, blockpos, direction);
+        return blockstate.isSolidSide(worldIn, blockpos, direction);
     }
 
     @Nullable

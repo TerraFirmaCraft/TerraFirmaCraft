@@ -30,7 +30,7 @@ public class TFCCoralMushroomFeature extends TFCCoralFeature
         int j = rand.nextInt(3) + 3;
         int k = rand.nextInt(3) + 3;
         int l = rand.nextInt(3) + 1;
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.Mutable mutablePos = pos.toMutable();
 
         for (int x = 0; x <= j; ++x)
         {
@@ -38,7 +38,7 @@ public class TFCCoralMushroomFeature extends TFCCoralFeature
             {
                 for (int z = 0; z <= k; ++z)
                 {
-                    mutablePos.set(x + pos.getX(), y + pos.getY(), z + pos.getZ());
+                    mutablePos.setPos(x + pos.getX(), y + pos.getY(), z + pos.getZ());
                     mutablePos.move(Direction.DOWN, l);
                     if ((x != 0 && x != j || y != 0 && y != i) && (z != 0 && z != k || y != 0 && y != i) && (x != 0 && x != j || z != 0 && z != k) && (x == 0 || x == j || y == 0 || y == i || z == 0 || z == k) && !(rand.nextFloat() < 0.1F) && !placeCoralBlock(world, rand, mutablePos, state))
                     {

@@ -78,6 +78,6 @@ public class AirBlockCarver extends BlockCarver
     @Override
     protected boolean isSupportable(BlockState state)
     {
-        return state.getFluidState().isIn(FluidTags.LAVA) || super.isSupportable(state);
+        return state.getFluidState().isTagged(FluidTags.LAVA) || super.isSupportable(state);
     }
 }

@@ -29,7 +29,7 @@ public class TFCCoralTreeFeature extends TFCCoralFeature
     @Override
     protected boolean placeFeature(IWorld world, Random rand, BlockPos pos, BlockState state)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.Mutable mutablePos = pos.toMutable();
         int i = rand.nextInt(3) + 1;
 
         for (int j = 0; j < i; ++j)
@@ -41,14 +41,14 @@ public class TFCCoralTreeFeature extends TFCCoralFeature
             mutablePos.move(Direction.UP);
         }
 
-        BlockPos blockpos = mutablePos.immutable();
+        BlockPos blockpos = mutablePos.toImmutable();
         int directionTries = rand.nextInt(3) + 2;
         List<Direction> dirs = Lists.newArrayList(Direction.Plane.HORIZONTAL);
         Collections.shuffle(dirs, rand);
 
         for (Direction d : dirs.subList(0, directionTries))
         {
-            mutablePos.set(blockpos);
+            mutablePos.setPos(blockpos);
             mutablePos.move(d);
             int tries = rand.nextInt(5) + 2;
             int placedCoralBlocks = 0;

@@ -97,11 +97,10 @@ public class ClimateConfig implements IPlacementConfig
         MONTHLY,
         ACTUAL;
 
-        public static final Codec<TemperatureType> CODEC = IStringSerializable.fromEnum(TemperatureType::values, name -> TemperatureType.valueOf(name.toUpperCase()));
+        public static final Codec<TemperatureType> CODEC = IStringSerializable.createEnumCodec(TemperatureType::values, name -> TemperatureType.valueOf(name.toUpperCase()));
 
         @Override
-        public String getSerializedName()
-        {
+        public String getString() {
             return name().toLowerCase();
         }
     }
