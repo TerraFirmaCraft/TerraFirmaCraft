@@ -52,6 +52,7 @@ import net.dries007.tfc.world.classic.genlayers.datalayers.ph.GenPHLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
+import net.dries007.tfc.world.classic.spawner.WorldEntitySpawnerTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
