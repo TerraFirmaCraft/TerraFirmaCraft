@@ -25,7 +25,7 @@ public class DeadBerryBushBlock extends SpreadingBushBlock
 {
     public DeadBerryBushBlock(ForgeBlockProperties properties)
     {
-        super(properties, SpreadingBush.NOOP, () -> Blocks.AIR);
+        super(properties, BerryBush.NOOP, () -> Blocks.AIR);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class DeadBerryBushBlock extends SpreadingBushBlock
             {
                 if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
                 {
-                    if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.ALIVE_OR_DEAD_BUSH))
+                    if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
                     {
                         te.setRemoved();
                         world.destroyBlock(pos, true);

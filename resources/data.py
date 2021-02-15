@@ -118,7 +118,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch', 'tfc:pit_kiln')
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
-    rm.block_tag('alive_or_dead_bush', '#tfc:berry_bush')
+    rm.block_tag('any_spreading_bush', '#tfc:spreading_bush')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
