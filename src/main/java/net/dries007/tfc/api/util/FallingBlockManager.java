@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.api.util;
 
 import java.util.*;
@@ -379,19 +384,23 @@ public class FallingBlockManager
     public static class Specification
     {
 
-        public static final FallDropsProvider DEFAULT_DROPS_PROVIDER = (world, pos, state, teData, fallTime, fallDistance) -> Collections.singletonList(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
-        public static final CollapseChecker DEFAULT_COLLAPSE_CHECKER = (world, collapsePos) -> world.getBlockState(collapsePos.down()).getMaterial().isReplaceable();
+        public static final IFallDropsProvider DEFAULT_DROPS_PROVIDER = (world, pos, state, teData, fallTime, fallDistance) -> Collections.singletonList(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
+        public static final ICollapseChecker DEFAULT_COLLAPSE_CHECKER = (world, collapsePos) -> world.getBlockState(collapsePos.down()).getMaterial().isReplaceable();
+
+        public static final Specification VERTICAL_AND_HORIZONTAL = new Specification(true, () -> TFCSounds.DIRT_SLIDE_SHORT);
+        public static final Specification VERTICAL_ONLY = new Specification(false, () -> TFCSounds.DIRT_SLIDE_SHORT);
+        public static final Specification COLLAPSABLE = new Specification(false, true, () -> TFCSounds.ROCK_SLIDE_LONG);
 
         private final boolean canFallHorizontally;
         private final Supplier<SoundEvent> soundEventDelegate;
-        private final FallDropsProvider fallDropsProvider;
+        private final IFallDropsProvider fallDropsProvider;
 
         private final boolean collapsable;
-        private CollapseChecker collapseChecker;
+        private ICollapseChecker collapseChecker;
 
         @Nullable private IBlockState resultingState; // Defaults to base IBlockState, null here as a reference as states can be pretty big in memory
-        @Nullable private BeginFallCallback beginFallCallback;
-        @Nullable private EndFallCallback endFallCallback;
+        @Nullable private IBeginFallCallback beginFallCallback;
+        @Nullable private IEndFallCallback endFallCallback;
 
         public Specification(Specification specification)
         {
@@ -415,7 +424,7 @@ public class FallingBlockManager
             this(canFallHorizontally, collapsable, soundEventDelegate, DEFAULT_DROPS_PROVIDER);
         }
 
-        public Specification(boolean canFallHorizontally, boolean collapsable, Supplier<SoundEvent> soundEventDelegate, FallDropsProvider fallDropsProvider)
+        public Specification(boolean canFallHorizontally, boolean collapsable, Supplier<SoundEvent> soundEventDelegate, IFallDropsProvider fallDropsProvider)
         {
             this.canFallHorizontally = canFallHorizontally;
             this.collapsable = collapsable;
@@ -432,17 +441,17 @@ public class FallingBlockManager
             this.resultingState = state;
         }
 
-        public void setBeginFallCallback(BeginFallCallback callback)
+        public void setBeginFallCallback(IBeginFallCallback callback)
         {
             this.beginFallCallback = callback;
         }
 
-        public void setEndFallCallback(EndFallCallback callback)
+        public void setEndFallCallback(IEndFallCallback callback)
         {
             this.endFallCallback = callback;
         }
 
-        public void setCollapseCondition(CollapseChecker collapseChecker)
+        public void setCollapseCondition(ICollapseChecker collapseChecker)
         {
             this.collapseChecker = collapseChecker;
         }
@@ -501,25 +510,25 @@ public class FallingBlockManager
         }
 
         @FunctionalInterface
-        public interface FallDropsProvider
+        public interface IFallDropsProvider
         {
             Iterable<ItemStack> getDropsFromFall(World world, BlockPos pos, IBlockState state, @Nullable NBTTagCompound teData, int fallTime, float fallDistance);
         }
 
         @FunctionalInterface
-        public interface BeginFallCallback
+        public interface IBeginFallCallback
         {
             void beginFall(World world, BlockPos startPos);
         }
 
         @FunctionalInterface
-        public interface EndFallCallback
+        public interface IEndFallCallback
         {
             void endFall(World world, BlockPos endPos);
         }
 
         @FunctionalInterface
-        public interface CollapseChecker
+        public interface ICollapseChecker
         {
             boolean canCollapse(World world, BlockPos collapsePos);
         }

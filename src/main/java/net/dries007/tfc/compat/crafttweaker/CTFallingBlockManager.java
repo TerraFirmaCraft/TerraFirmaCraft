@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.compat.crafttweaker;
 
 import java.util.ArrayList;
@@ -21,10 +26,13 @@ import crafttweaker.api.world.IBlockPos;
 import crafttweaker.api.world.IWorld;
 import crafttweaker.mc1120.block.MCBlockState;
 import net.dries007.tfc.api.util.FallingBlockManager;
+import net.dries007.tfc.api.util.FallingBlockManager.Specification;
 import net.dries007.tfc.client.TFCSounds;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import static net.dries007.tfc.api.util.FallingBlockManager.getSpecification;
 
 @ZenRegister
 @ZenClass("mods.terrafirmacraft.fallingblock.FallingBlockManager")
@@ -40,7 +48,7 @@ public class CTFallingBlockManager
     @ZenMethod
     public static void registerFallable(IBlockState state, IBlockState existingState)
     {
-        FallingBlockManager.Specification existingSpec = FallingBlockManager.getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
+        Specification existingSpec = getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
         if (existingSpec == null)
         {
             throw new IllegalArgumentException(existingState + " is not in the current specification definitions.");
@@ -57,7 +65,7 @@ public class CTFallingBlockManager
     @ZenMethod
     public static void registerFallable(IBlockDefinition block, IBlockState existingState)
     {
-        FallingBlockManager.Specification existingSpec = FallingBlockManager.getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
+        Specification existingSpec = getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
         if (existingSpec == null)
         {
             throw new IllegalArgumentException(existingState + " is not in the current specification definitions.");
@@ -84,7 +92,7 @@ public class CTFallingBlockManager
         {
             throw new IllegalArgumentException(blockId + " is not a valid Block.");
         }
-        FallingBlockManager.Specification existingSpec = FallingBlockManager.getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
+        Specification existingSpec = getSpecification((net.minecraft.block.state.IBlockState) existingState.getInternal());
         if (existingSpec == null)
         {
             throw new IllegalArgumentException(existingState + " is not in the current specification definitions.");
@@ -127,7 +135,7 @@ public class CTFallingBlockManager
         }
 
         @ZenMethod
-        public static CTSpecification create(boolean canFallHorizontally, boolean canCaveIn, String soundEventId, @Optional CTFallDropsProvider dropsProvider)
+        public static CTSpecification create(boolean canFallHorizontally, boolean canCaveIn, String soundEventId, @Optional ICTFallDropsProvider dropsProvider)
         {
             return new CTSpecification(canFallHorizontally, canCaveIn, new ResourceLocation(soundEventId), dropsProvider);
         }
@@ -135,11 +143,11 @@ public class CTFallingBlockManager
         @ZenMethod
         public static CTSpecification get(IBlockState state)
         {
-            FallingBlockManager.Specification spec = FallingBlockManager.getSpecification((net.minecraft.block.state.IBlockState) state.getInternal());
+            Specification spec = getSpecification((net.minecraft.block.state.IBlockState) state.getInternal());
             return spec == null ? null : new CTSpecification(spec);
         }
 
-        private static FallingBlockManager.Specification.FallDropsProvider transform(CTFallDropsProvider ctProvider)
+        private static Specification.IFallDropsProvider transform(ICTFallDropsProvider ctProvider)
         {
             return (world, pos, state, teData, fallTime, fallDistance) -> {
                 IItemStack[] drops = ctProvider.getDropsFromFall(CraftTweakerMC.getIWorld(world), CraftTweakerMC.getIBlockPos(pos), CraftTweakerMC.getBlockState(state), CraftTweakerMC.getIData(teData), fallTime, fallDistance);
@@ -152,9 +160,9 @@ public class CTFallingBlockManager
             };
         }
 
-        final FallingBlockManager.Specification internalSpec;
+        final Specification internalSpec;
 
-        CTSpecification(FallingBlockManager.Specification internalSpec)
+        CTSpecification(Specification internalSpec)
         {
             this.internalSpec = internalSpec;
         }
@@ -166,17 +174,17 @@ public class CTFallingBlockManager
 
         CTSpecification(boolean canFallHorizontally, boolean canCaveIn, Supplier<SoundEvent> soundEvent)
         {
-            this.internalSpec = new FallingBlockManager.Specification(canFallHorizontally, canCaveIn, soundEvent, FallingBlockManager.Specification.DEFAULT_DROPS_PROVIDER);
+            this.internalSpec = new Specification(canFallHorizontally, canCaveIn, soundEvent, Specification.DEFAULT_DROPS_PROVIDER);
         }
 
-        CTSpecification(boolean canFallHorizontally, boolean canCaveIn, ResourceLocation soundEventId, CTFallDropsProvider dropsProvider)
+        CTSpecification(boolean canFallHorizontally, boolean canCaveIn, ResourceLocation soundEventId, ICTFallDropsProvider dropsProvider)
         {
             this(canFallHorizontally, canCaveIn, () -> SoundEvent.REGISTRY.getObject(soundEventId), dropsProvider);
         }
 
-        CTSpecification(boolean canFallHorizontally, boolean canCaveIn, Supplier<SoundEvent> soundEvent, CTFallDropsProvider drops)
+        CTSpecification(boolean canFallHorizontally, boolean canCaveIn, Supplier<SoundEvent> soundEvent, ICTFallDropsProvider drops)
         {
-            this.internalSpec = new FallingBlockManager.Specification(canFallHorizontally, canCaveIn, soundEvent, transform(drops));
+            this.internalSpec = new Specification(canFallHorizontally, canCaveIn, soundEvent, transform(drops));
         }
 
         @ZenMethod
@@ -203,19 +211,19 @@ public class CTFallingBlockManager
         }
 
         @ZenMethod
-        public void whenBeginningFall(CTBeginFallCallback beginFall)
+        public void whenBeginningFall(ICTBeginFallCallback beginFall)
         {
             this.internalSpec.setBeginFallCallback((world, pos) -> beginFall.beginFall(CraftTweakerMC.getIWorld(world), CraftTweakerMC.getIBlockPos(pos)));
         }
 
         @ZenMethod
-        public void whenEndingFall(CTEndFallCallback endFall)
+        public void whenEndingFall(ICTEndFallCallback endFall)
         {
             this.internalSpec.setEndFallCallback((world, pos) -> endFall.endFall(CraftTweakerMC.getIWorld(world), CraftTweakerMC.getIBlockPos(pos)));
         }
 
         @ZenMethod
-        public void whenCavingIn(CTCollapseChecker collapseChecker)
+        public void whenCavingIn(ICTCollapseChecker collapseChecker)
         {
             if (!this.internalSpec.isCollapsable())
             {
@@ -249,7 +257,7 @@ public class CTFallingBlockManager
         @ZenRegister
         @FunctionalInterface
         @ZenClass("mods.terrafirmacraft.fallingblock.FallDropsProvider")
-        public interface CTFallDropsProvider
+        public interface ICTFallDropsProvider
         {
             IItemStack[] getDropsFromFall(IWorld world, IBlockPos pos, IBlockState state, IData teData, int fallTime, float fallDistance);
         }
@@ -257,7 +265,7 @@ public class CTFallingBlockManager
         @ZenRegister
         @FunctionalInterface
         @ZenClass("mods.terrafirmacraft.fallingblock.BeginFallCallback")
-        public interface CTBeginFallCallback
+        public interface ICTBeginFallCallback
         {
             void beginFall(IWorld world, IBlockPos startPos);
         }
@@ -265,7 +273,7 @@ public class CTFallingBlockManager
         @ZenRegister
         @FunctionalInterface
         @ZenClass("mods.terrafirmacraft.fallingblock.EndFallCallback")
-        public interface CTEndFallCallback
+        public interface ICTEndFallCallback
         {
             void endFall(IWorld world, IBlockPos endPos);
         }
@@ -273,7 +281,7 @@ public class CTFallingBlockManager
         @ZenRegister
         @FunctionalInterface
         @ZenClass("mods.terrafirmacraft.fallingblock.CollapseChecker")
-        public interface CTCollapseChecker
+        public interface ICTCollapseChecker
         {
             boolean canCollapse(IWorld world, IBlockPos collapsePos);
         }
