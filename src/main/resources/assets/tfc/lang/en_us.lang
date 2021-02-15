@@ -5040,6 +5040,7 @@ waila.tfc.flux_stone=Flux
 waila.tfc.temperature=Air Temperature: %dºC
 waila.tfc.rainfall=Rainfall: %d
 waila.tfc.metal.output=Contains %d units of %s
+waila.tfc.quern.handstone_durability=Handstone Durability: %d / %d
 
 # Patchouli
 tfc.patchouli.landing_text=A guide for TFC-TNG, a total conversion mod for 1.12.2
