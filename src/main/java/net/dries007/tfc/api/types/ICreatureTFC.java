@@ -12,9 +12,11 @@ import java.util.function.BiConsumer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.world.classic.spawner.WorldEntitySpawnerTFC;
+
 /**
  * Interface for creature spawning mechanics
- * See {@link net.dries007.tfc.world.classic.WorldEntitySpawnerTFC}
+ * See {@link WorldEntitySpawnerTFC}
  */
 public interface ICreatureTFC
 {
