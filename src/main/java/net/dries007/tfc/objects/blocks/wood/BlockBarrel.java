@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneComparator;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -182,6 +183,8 @@ public class BlockBarrel extends Block implements IItemSize
     {
         if (!world.isRemote)
         {
+            if (world.getBlockState(fromPos).getBlock() instanceof BlockRedstoneComparator)
+                return;
             boolean powered = world.isBlockPowered(pos);
             if (powered || block.getDefaultState().canProvidePower())
             {
@@ -201,6 +204,7 @@ public class BlockBarrel extends Block implements IItemSize
         {
             tile.onBreakBlock(worldIn, pos, state);
         }
+        worldIn.updateComparatorOutputLevel(pos, this);
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -326,5 +330,19 @@ public class BlockBarrel extends Block implements IItemSize
             tile.saveToItemStack(stack);
         }
         return stack;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean hasComparatorInputOverride(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos)
+    {
+        return state.getValue(SEALED) ? 15 : 0;
     }
 }
