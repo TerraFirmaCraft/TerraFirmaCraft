@@ -572,7 +572,7 @@ def generate(rm: ResourceManager):
     for i in range(0, 3):
         rm.block_model('berry_bush/dead_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
         rm.block_model('berry_bush/dead_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
-    for berry in ('gooseberry', 'snowberry', 'bunchberry', 'cloudberry', 'wintergreen_berry', 'strawberry'):
+    for berry in ('gooseberry', 'snowberry', 'bunchberry', 'cloudberry', 'wintergreen_berry', 'strawberry', 'cranberry'):
         rm.blockstate('berry_bush/%s_bush' % berry, variants={
             'lifecycle=healthy,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_0' % berry},
             'lifecycle=healthy,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_1' % berry},

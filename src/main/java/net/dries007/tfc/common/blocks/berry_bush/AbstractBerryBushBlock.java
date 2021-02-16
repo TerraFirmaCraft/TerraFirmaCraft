@@ -108,7 +108,7 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
             int cycles = (int) days * 2;
             for (int i = cycles; i > 0; i--)
             {
-                cycle(te, world, pos, state, stage, lifecycle, random);
+                this.cycle(te, world, pos, state, stage, lifecycle, random);
             }
             te.resetCounter();
         }
@@ -117,7 +117,7 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     /**
      * A means of performing X amount of random ticks to catch up with the calendar.
      */
-    protected void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
 
     }
@@ -167,7 +167,7 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON)  || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
     }
 
     @Override

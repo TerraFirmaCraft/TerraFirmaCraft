@@ -138,6 +138,7 @@ def generate(rm: ResourceManager):
 
     # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
+    rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
 
 def metal_item(ingredient: str, metal: str, amount: int):
     return {
