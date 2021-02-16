@@ -50,7 +50,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
-        if (state.getValue(LIFECYCLE) == Lifecycle.DORMANT && state.getValue(STAGE) == 2)
+        if (state.getValue(STAGE) == 2)
         {
             ItemStack held = player.getItemInHand(handIn);
             if (held.getItem().is(Tags.Items.SHEARS))
@@ -58,12 +58,25 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
                 BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
                 if (te != null)
                 {
-                    te.setGrowing(true);
-                    te.resetDeath();
-                    held.hurt(1, worldIn.getRandom(), null);
-                    Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
-                    worldIn.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
-                    return ActionResultType.SUCCESS;
+                    if (state.getValue(LIFECYCLE) == Lifecycle.DORMANT)
+                    {
+                        te.setGrowing(true);
+                        te.resetDeath();
+                        held.hurt(1, worldIn.getRandom(), null);
+                        Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
+                        worldIn.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
+                        return ActionResultType.SUCCESS;
+                    }
+                    else if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
+                    {
+
+                        held.hurt(1, worldIn.getRandom(), null);
+                        Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
+                        if (worldIn.getRandom().nextInt(3) != 0)
+                            Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock().asItem()));
+                        worldIn.destroyBlock(pos, true, null);
+                        return ActionResultType.SUCCESS;
+                    }
                 }
             }
         }

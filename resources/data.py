@@ -46,6 +46,7 @@ def generate(rm: ResourceManager):
         if 'tool' in metal_data.types:
             for tool in ('hammer', 'chisel', 'axe', 'pickaxe', 'shovel'):
                 rm.item_tag('tfc:%ss' % tool, 'tfc:metal/%s/%s' % (tool, metal))
+            rm.item_tag('forge:shears', 'tfc:metal/shears/%s' % metal)
     # Grill
     rm.data(('tfc', 'metal_items', 'wrought_iron', 'grill'), metal_item('tfc:wrought_iron_grill', 'tfc:wrought_iron', 100))
     rm.data(('tfc', 'item_heats', 'wrought_iron', 'grill'), item_heat('tfc:wrought_iron_grill', 0.35, 1535))
