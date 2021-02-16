@@ -1,0 +1,53 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:berry_bushes",
+                  "config": {
+                    "state": "tfc:berry_bush/cloudberry_bush"
+                  }
+                },
+                "decorator": {
+                  "type": "minecraft:chance",
+                  "config": {
+                    "chance": 15
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 3,
+                "max_temperature": 17,
+                "min_rainfall": 80,
+                "max_rainfall": 370,
+                "min_forest": "normal",
+                "max_forest": "old_growth",
+                "fuzzy": false
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
+    }
+  }
+}

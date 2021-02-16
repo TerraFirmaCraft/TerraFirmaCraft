@@ -383,6 +383,18 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(5, 19, 160, 440, True, fuzzy=True), decorate_carving_mask(0.002, 0, 130), decorate_range(64, 130)))
     rm.feature(('plant', 'reindeer_lichen_cover'), wg.configure_decorated(plant_feature('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 'minecraft:simple_block_placer', 1, 6), decorate_climate(-7, 7, 110, 390, True, fuzzy=True), decorate_carving_mask(0.002, 0, 130), decorate_range(64, 130)))
 
+    for berry, info in BERRIES.items():
+        config = {
+            'min_temperature': info.min_temp,
+            'max_temperature': info.max_temp,
+            'min_rainfall': info.min_rain,
+            'max_rainfall': info.max_rain,
+            'min_forest': info.min_forest,
+            'max_forest': info.max_forest,
+            'fuzzy': False
+        }
+        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:berry_bush/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
 
     rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {'probability': 0.2}), decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:count_noise_biased', {
@@ -770,6 +782,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % berry for berry in BERRIES]
 
     if volcano_features:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']

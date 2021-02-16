@@ -15,6 +15,8 @@ public class BerryBushTileEntity extends TickCounterTileEntity
         super(TFCTileEntities.BERRY_BUSH.get());
         harvested = true;
         useTicks = 0;
+        deathTicks = 0;
+        isGrowing = true;
     }
 
     @Override
