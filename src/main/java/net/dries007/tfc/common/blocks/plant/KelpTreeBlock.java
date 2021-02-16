@@ -44,7 +44,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        setDefaultState(stateDefinition.any().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -105,11 +105,11 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     }
 
     /**
-     * {  ChorusPlantBlock#canSurvive}
+     * {  ChorusPlantBlock#isValidPosition}
      */
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.down());
         for (Direction direction : Direction.Plane.HORIZONTAL)

@@ -46,7 +46,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     {
         super(properties);
 
-        setDefaultState(stateDefinition.any().with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override

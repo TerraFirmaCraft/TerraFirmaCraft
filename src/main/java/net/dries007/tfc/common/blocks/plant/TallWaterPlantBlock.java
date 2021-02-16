@@ -48,11 +48,11 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     {
         super(properties);
 
-        setDefaultState(getDefaultState().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
+        setDefaultState(getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.down());
         if (state.get(PART) == Part.LOWER)

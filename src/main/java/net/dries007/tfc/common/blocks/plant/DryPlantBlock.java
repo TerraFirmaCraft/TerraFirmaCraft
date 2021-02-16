@@ -33,11 +33,11 @@ public abstract class DryPlantBlock extends PlantBlock
     {
         super(properties);
 
-        setDefaultState(getDefaultState().any().with(getPlant().getStageProperty(), 0).with(AGE, 0));
+        setDefaultState(getDefaultState().with(getPlant().getStageProperty(), 0).with(AGE, 0));
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.down());
         return belowState.isIn(BlockTags.SAND) || belowState.isIn(Tags.Blocks.SAND) || belowState.isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON);

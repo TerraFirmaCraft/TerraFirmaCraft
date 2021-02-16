@@ -46,7 +46,7 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.offset(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);

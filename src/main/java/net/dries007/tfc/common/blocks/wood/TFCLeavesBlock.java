@@ -71,7 +71,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        setDefaultState(stateDefinition.any().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
+        setDefaultState(stateDefinition.with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     /**

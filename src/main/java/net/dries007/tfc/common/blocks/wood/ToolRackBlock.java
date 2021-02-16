@@ -63,7 +63,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         Direction direction = state.get(FACING);
         return canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);

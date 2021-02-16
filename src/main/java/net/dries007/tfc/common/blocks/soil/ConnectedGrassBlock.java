@@ -63,7 +63,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         this.grassPath = grassPath;
         this.farmland = farmland;
 
-        setDefaultState(stateDefinition.any().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
+        setDefaultState(stateDefinition.with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
     }
 
     @Override

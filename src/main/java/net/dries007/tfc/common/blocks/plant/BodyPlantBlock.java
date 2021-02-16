@@ -41,30 +41,30 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
     }
 
     @Override
-    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state)
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state)
     {
         return false;
     }
-
+    //TODO
     @Override
-    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state)
+    public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state)
     {
 
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.offset(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         Block block = blockstate.getBlock();
-        if (!canAttachToBlock(block))
+        if (!canGrowOn(block))
         {
             return false;
         }
         else
         {
-            return block == getTopPlantBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
+            return block == getTopPlantBlock() || block == getBodyPlantBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
         }
     }
 }

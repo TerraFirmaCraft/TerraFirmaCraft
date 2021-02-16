@@ -61,7 +61,7 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {

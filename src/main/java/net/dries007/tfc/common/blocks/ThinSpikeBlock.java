@@ -65,7 +65,7 @@ public class ThinSpikeBlock extends Block
     {
         super(properties);
 
-        setDefaultState(getDefaultState().any().with(TIP, false));
+        setDefaultState(getDefaultState().with(TIP, false));
     }
 
     @Override

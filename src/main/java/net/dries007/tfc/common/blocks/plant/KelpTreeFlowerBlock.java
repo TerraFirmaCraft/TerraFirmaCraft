@@ -62,7 +62,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     {
         super(builder);
         this.bodyBlock = bodyBlock;
-        setDefaultState(stateDefinition.any().with(AGE, 0).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.with(AGE, 0).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -218,7 +218,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 

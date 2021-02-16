@@ -51,7 +51,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super(properties);
 
-        setDefaultState(stateDefinition.any().with(PART, Part.LOWER));
+        setDefaultState(stateDefinition.with(PART, Part.LOWER));
     }
 
     @Override
@@ -69,7 +69,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         if (state.get(PART) == Part.LOWER)
         {

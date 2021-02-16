@@ -46,8 +46,8 @@ public abstract class SnowBlockMixin extends Block
         super(properties);
     }
 
-    @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
-    private void inject$canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
+    @Inject(method = "isValidPosition", at = @At(value = "RETURN"), cancellable = true)
+    private void inject$isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
         if (cir.getReturnValueZ())
         {
