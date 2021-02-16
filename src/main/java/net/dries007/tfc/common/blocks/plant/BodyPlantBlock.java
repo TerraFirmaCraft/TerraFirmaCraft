@@ -28,15 +28,14 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
         super(properties, direction, shape, false);
         this.headBlock = headBlock;
     }
-
     @Override
-    protected AbstractTopPlantBlock getHeadBlock()
+    protected AbstractTopPlantBlock getTopPlantBlock()
     {
         return (AbstractTopPlantBlock) headBlock.get();
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
@@ -65,7 +64,7 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
+            return block == getTopPlantBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
         }
     }
 }

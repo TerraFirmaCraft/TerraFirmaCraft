@@ -57,7 +57,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
         //This is where vanilla assumes (wrongly) that the abstract block has correct waterlogged handling
-        AbstractTopPlantBlock abstracttopplantblock = this.getHeadBlock();
+        AbstractTopPlantBlock abstracttopplantblock = this.getTopPlantBlock();
         if (facing == this.growthDirection)
         {
             Block block = facingState.getBlock();
@@ -99,7 +99,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
         return false;
     }
 
-    protected AbstractTopPlantBlock getHeadBlock()
+    protected AbstractTopPlantBlock getTopPlantBlock()
     {
         return (AbstractTopPlantBlock) headBlock.get();
     }
