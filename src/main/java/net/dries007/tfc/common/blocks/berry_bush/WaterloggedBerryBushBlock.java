@@ -1,7 +1,6 @@
 package net.dries007.tfc.common.blocks.berry_bush;
 
 import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -31,7 +30,6 @@ import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -68,6 +66,10 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         if (lifecycle == Lifecycle.DORMANT && !fluid.is(FluidTags.WATER))
         {
             te.setGrowing(false); // need to be waterlogged over the winter
+        }
+        else if (lifecycle == Lifecycle.FLOWERING && fluid.is(FluidTags.WATER))
+        {
+            te.setGrowing(false); // if we're flowering and STILL waterlogged, just kill it!
         }
         else if (lifecycle == Lifecycle.FRUITING && fluid.is(FluidTags.WATER))
         {

@@ -3,17 +3,25 @@ package net.dries007.tfc.common.blocks.berry_bush;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
+import net.dries007.tfc.util.Helpers;
 
 public class StationaryBerryBushBlock extends AbstractBerryBushBlock
 {
@@ -61,6 +69,30 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
                 world.setBlockAndUpdate(pos, deadState.setValue(STAGE, stage));
             }
         }
+    }
+
+    @Override
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    {
+        if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
+        if (state.getValue(STAGE) == 2 && state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
+        {
+            ItemStack held = player.getItemInHand(handIn);
+            if (held.getItem().is(Tags.Items.SHEARS))
+            {
+                BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+                if (te != null)
+                {
+                    held.hurt(1, worldIn.getRandom(), null);
+                    Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
+                    if (worldIn.getRandom().nextInt(3) != 0)
+                        Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock().asItem()));
+                    worldIn.destroyBlock(pos, true, null);
+                    return ActionResultType.SUCCESS;
+                }
+            }
+        }
+        return super.use(state, worldIn, pos, player, handIn, hit);
     }
 
     private void propagate(World world, BlockPos pos, Random rand)
