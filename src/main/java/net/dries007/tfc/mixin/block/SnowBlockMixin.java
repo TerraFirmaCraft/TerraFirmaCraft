@@ -100,11 +100,11 @@ public abstract class SnowBlockMixin extends Block
                 {
                     if (layers > 1)
                     {
-                        worldIn.setBlockAndUpdate(pos, state.with(SnowBlock.LAYERS, layers - 1));
+                        worldIn.setBlockState(pos, state.with(SnowBlock.LAYERS, layers - 1));
                     }
                     else
                     {
-                        dropResources(state, worldIn, pos);
+                        this.getExpDrop(state, worldIn, pos,1,1);
                         worldIn.removeBlock(pos, false);
                     }
                 }
@@ -128,12 +128,12 @@ public abstract class SnowBlockMixin extends Block
     @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
     {
-        playerWillDestroy(world, pos, state, player);
+        this.onPlayerDestroy(world, pos, state);
         final int prevLayers = state.get(SnowBlock.LAYERS);
         if (prevLayers > 1)
         {
             return world.setBlockState(pos, state.with(SnowBlock.LAYERS, prevLayers - 1), !world.isRemote ? 11 : 3);
         }
-        return world.setBlockState(pos, fluid.createLegacyBlock(), !world.isRemote ? 11 : 3);
+        return world.setBlockState(pos, fluid.getBlockState(), !world.isRemote ? 11 : 3);
     }
 }

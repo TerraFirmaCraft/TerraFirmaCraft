@@ -23,11 +23,11 @@ public class Coral
 {
     public enum Color
     {
-        TUBE(MaterialColor.COLOR_BLUE),
-        BRAIN(MaterialColor.COLOR_PINK),
-        BUBBLE(MaterialColor.COLOR_PURPLE),
-        FIRE(MaterialColor.COLOR_RED),
-        HORN(MaterialColor.COLOR_YELLOW);
+        TUBE(MaterialColor.BLUE),
+        BRAIN(MaterialColor.PINK),
+        BUBBLE(MaterialColor.PURPLE),
+        FIRE(MaterialColor.RED),
+        HORN(MaterialColor.YELLOW);
 
         private final MaterialColor material;
 
@@ -39,12 +39,12 @@ public class Coral
 
     public enum BlockType
     {
-        DEAD_CORAL((color, type) -> new TFCDeadCoralPlantBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().noCollission().instabreak())),
-        CORAL((color, type) -> new TFCCoralPlantBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL), AbstractBlock.Properties.of(Material.WATER_PLANT, color.material).noCollission().instabreak().sound(SoundType.WET_GRASS))),
-        DEAD_CORAL_FAN((color, type) -> new TFCCoralFanBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().noCollission().instabreak())),
-        CORAL_FAN((color, type) -> new TFCCoralFinBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_FAN), AbstractBlock.Properties.of(Material.WATER_PLANT, color.material).noCollission().instabreak().sound(SoundType.WET_GRASS))),
-        DEAD_CORAL_WALL_FAN((color, type) -> new TFCDeadCoralWallFanBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().noCollission().instabreak().lootFrom(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_FAN)))),
-        CORAL_WALL_FAN((color, type) -> new TFCCoralWallFanBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_WALL_FAN), AbstractBlock.Properties.of(Material.WATER_PLANT, color.material).noCollission().instabreak().sound(SoundType.WET_GRASS).lootFrom(TFCBlocks.CORAL.get(color).get(CORAL_FAN))));
+        DEAD_CORAL((color, type) -> new TFCDeadCoralPlantBlock(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY).setRequiresTool().doesNotBlockMovement().zeroHardnessAndResistance())),
+        CORAL((color, type) -> new TFCCoralPlantBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL), AbstractBlock.Properties.create(Material.OCEAN_PLANT, color.material).doesNotBlockMovement().zeroHardnessAndResistance().sound(SoundType.WET_GRASS))),
+        DEAD_CORAL_FAN((color, type) -> new TFCCoralFanBlock(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY).setRequiresTool().doesNotBlockMovement().zeroHardnessAndResistance())),
+        CORAL_FAN((color, type) -> new TFCCoralFinBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_FAN), AbstractBlock.Properties.create(Material.OCEAN_PLANT, color.material).doesNotBlockMovement().zeroHardnessAndResistance().sound(SoundType.WET_GRASS))),
+        DEAD_CORAL_WALL_FAN((color, type) -> new TFCDeadCoralWallFanBlock(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY).setRequiresTool().doesNotBlockMovement().zeroHardnessAndResistance().lootFrom(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_FAN)))),
+        CORAL_WALL_FAN((color, type) -> new TFCCoralWallFanBlock(TFCBlocks.CORAL.get(color).get(DEAD_CORAL_WALL_FAN), AbstractBlock.Properties.create(Material.OCEAN_PLANT, color.material).doesNotBlockMovement().zeroHardnessAndResistance().sound(SoundType.WET_GRASS).lootFrom(TFCBlocks.CORAL.get(color).get(CORAL_FAN))));
 
         public boolean needsItem()
         {

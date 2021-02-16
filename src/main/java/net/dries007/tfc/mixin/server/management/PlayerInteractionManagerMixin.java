@@ -40,9 +40,9 @@ public abstract class PlayerInteractionManagerMixin
             {
                 stackIn.setCount(startCount);
             }
-            if (result.consumesAction())
+            if (result.isSuccessOrConsume())
             {
-                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(playerIn, blockRaytraceResultIn.getBlockPos(), stackIn);
+                CriteriaTriggers.RIGHT_CLICK_BLOCK_WITH_ITEM.test(playerIn, blockRaytraceResultIn.getPos(), stackIn);
             }
             cir.setReturnValue(result);
         });

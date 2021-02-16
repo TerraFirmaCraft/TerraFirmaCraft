@@ -34,10 +34,10 @@ public abstract class FogRendererMixin
     @Redirect(method = "setupColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getWaterFogColor()I"))
     private static int redirect$getWaterFogColor(Biome biome, ActiveRenderInfo activeRenderInfoIn)
     {
-        IWorld world = Minecraft.getInstance().level;
+        IWorld world = Minecraft.getInstance().world;
         if (world != null && TFCBiomes.getExtension(world, biome) != null)
         {
-            return TFCColors.getWaterFogColor(activeRenderInfoIn.getBlockPosition());
+            return TFCColors.getWaterFogColor(activeRenderInfoIn.getBlockPos());
         }
         return biome.getWaterFogColor();
     }
@@ -51,7 +51,7 @@ public abstract class FogRendererMixin
     {
         if (world != null && TFCBiomes.getExtension(world, biome) != null)
         {
-            POS.set(biomeX << 2, biomeY << 2, biomeZ << 2);
+            POS.setPos(biomeX << 2, biomeY << 2, biomeZ << 2);
             return TFCColors.getFogColor(POS);
         }
         return biome.getFogColor();

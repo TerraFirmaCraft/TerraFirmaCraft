@@ -41,10 +41,10 @@ public class SwitchInventoryTabPacket
             ServerPlayerEntity player = context.get().getSender();
             if (player != null)
             {
-                player.doCloseContainer();
+                player.closeContainer();
                 if (type == Type.INVENTORY)
                 {
-                    player.containerMenu = player.inventoryMenu;
+                    player.openContainer = player.container;
                 }
                 else if (type == Type.CALENDAR)
                 {

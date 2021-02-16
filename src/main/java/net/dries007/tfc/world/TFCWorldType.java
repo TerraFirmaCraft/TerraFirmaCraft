@@ -22,7 +22,10 @@ public class TFCWorldType
 {
     public static final DeferredRegister<ForgeWorldType> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.WORLD_TYPES, MOD_ID);
 
-    public static final RegistryObject<ForgeWorldType> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldType((biomeRegistry, dimensionSettingsRegistry, seed) -> TFCChunkGenerator.createDefaultPreset(() -> dimensionSettingsRegistry.getOrThrow(DimensionSettings.OVERWORLD), biomeRegistry, seed)));
+    public static final RegistryObject<ForgeWorldType> WORLD_TYPE = WORLD_TYPES.register("tng",
+        () -> new ForgeWorldType((biomeRegistry, dimensionSettingsRegistry, seed)
+            -> TFCChunkGenerator.createDefaultPreset(() ->
+        dimensionSettingsRegistry.getOrThrow(DimensionSettings.field_242734_c/*overworld*/), biomeRegistry, seed)));
 
     /**
      * Override the default world type, in a safe, mixin free, and API providing manner :D

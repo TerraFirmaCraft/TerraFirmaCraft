@@ -288,7 +288,7 @@ public enum Plant implements IPlant
 
         private static AbstractBlock.Properties solidTallPlant()
         {
-            return AbstractBlock.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().instabreak().sound(SoundType.WEEPING_VINES);
+            return AbstractBlock.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().zeroHardnessAndResistance().sound(SoundType.WEEPING_VINES);
         }
 
         private static AbstractBlock.Properties nonSolidTallPlant(Plant plant)

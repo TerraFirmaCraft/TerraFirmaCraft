@@ -50,14 +50,14 @@ public abstract class WorldSettingsImportMixin<T> extends DelegatingDynamicOps<T
     private <E> DataResult<Pair<E, OptionalInt>> inject$readAndRegisterElement(WorldSettingsImport.IResourceAccess resourceAccess, DynamicOps<JsonElement> dynamicOps, RegistryKey<? extends Registry<E>> rootKey, RegistryKey<E> elementKey, Decoder<E> decoder, RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation keyIdentifier)
     {
         // Call the original parse function and return the result. This redirect is simply used as an argument getter and injection point
-        DataResult<Pair<E, OptionalInt>> dataResult = resources.parseElement(dynamicOps, rootKey, elementKey, decoder);
+        DataResult<Pair<E, OptionalInt>> dataResult = resources.decode(dynamicOps, rootKey, elementKey, decoder);
 
         // At this point we can do a couple extra checks, and spit out some more useful error information
         if (TFCConfig.COMMON.enableDevTweaks.get() && !dataResult.result().isPresent())
         {
             // There was some form of error! We need to log this and not just silently eat it
             String error = dataResult.error().map(DataResult.PartialResult::message).orElse("No error :(");
-            TerraFirmaCraft.LOGGER.error("[Possible DFU FU] A data result was empty. This error may be swallowed! Root = {}, Object = {}, Error = {}", rootKey.location(), elementKey.location(), error);
+            TerraFirmaCraft.LOGGER.error("[Possible DFU FU] A data result was empty. This error may be swallowed! Root = {}, Object = {}, Error = {}", rootKey.getLocation(), elementKey.getLocation(), error);
         }
 
         return dataResult;

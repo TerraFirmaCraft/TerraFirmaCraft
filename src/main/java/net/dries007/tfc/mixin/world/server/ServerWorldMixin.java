@@ -43,7 +43,7 @@ public abstract class ServerWorldMixin extends World
     @Inject(method = "tickChunk", at = @At("RETURN"))
     private void inject$tickChunk(Chunk chunkIn, int randomTickSpeed, CallbackInfo ci)
     {
-        EnvironmentHelpers.onEnvironmentTick((ServerWorld) (Object) this, chunkIn, random);
+        EnvironmentHelpers.onEnvironmentTick((ServerWorld) (Object) this, chunkIn, rand);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class ServerWorldMixin extends World
     private Biome.RainType redirect$tickChunk$getPrecipitation(Biome biome, Chunk chunkIn)
     {
         ChunkPos chunkPos = chunkIn.getPos();
-        BlockPos pos = Helpers.getPreviousRandomPos(chunkPos.getXStart(), 0, chunkPos.getZStart(), 15, randValue).down();
+        BlockPos pos = Helpers.getPreviousRandomPos(chunkPos.getXStart(), 0, chunkPos.getZStart(), 15, this.rand.nextInt()).down();
         return Climate.getPrecipitation(this, pos);
     }
 }

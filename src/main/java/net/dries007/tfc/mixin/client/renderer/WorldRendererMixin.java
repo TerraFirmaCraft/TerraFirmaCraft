@@ -62,6 +62,6 @@ public abstract class WorldRendererMixin
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
     private Biome.RainType redirect$tickRain$getPrecipitation(Biome biome, ActiveRenderInfo activeRenderInfo)
     {
-        return Climate.getVanillaBiomePrecipitation(biome, level, activeRenderInfo.getBlockPosition());
+        return Climate.getVanillaBiomePrecipitation(biome, level, activeRenderInfo.getBlockPos());
     }
 }
