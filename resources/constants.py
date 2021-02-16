@@ -11,6 +11,7 @@ OreGrade = NamedTuple('OreGrade', weight=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, amount=int)
+Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -334,7 +335,21 @@ SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 's
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
 OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
-BERRIES = ['blackberry', 'blueberry', 'bunchberry', 'cloudberry', 'cranberry', 'elderberry', 'gooseberry', 'raspberry', 'snowberry', 'strawberry', 'wintergreen_berry']
+
+BERRIES: Dict[str, Berry] = {
+    'blackberry': Berry(7, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'raspberry': Berry(5, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'blueberry': Berry(7, 25, 100, 400, 'spreading', 'edge', 'edge'),
+    'elderberry': Berry(10, 29, 100, 400, 'spreading', 'edge', 'edge'),
+    'bunchberry': Berry(15, 30, 100, 400, 'stationary', 'edge', 'normal'),
+    'gooseberry': Berry(5, 27, 100, 400, 'stationary', 'none', 'sparse'),
+    'snowberry': Berry(-5, 18, 100, 400, 'stationary', 'normal', 'old_growth'),
+    'cloudberry': Berry(3, 17, 80, 370, 'stationary', 'normal', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'none', 'sparse'),
+    'wintergreen_berry': Berry(-5, 17, 100, 400, 'stationary', 'old_growth', 'old_growth'),
+    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
+}
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

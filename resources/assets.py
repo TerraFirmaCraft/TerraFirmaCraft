@@ -475,7 +475,7 @@ def generate(rm: ResourceManager):
     rm.item_model('giant_kelp_flower', 'tfc:item/giant_kelp_flower')
 
     # Berry Stuff
-    for berry in BERRIES:
+    for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
 
     rm.blockstate('berry_bush/dead_bush', variants={

@@ -34,6 +34,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public abstract class AbstractBerryBushBlock extends BushBlock implements IForgeBlockProperties
 {
@@ -90,6 +91,15 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     {
         BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
         if (te == null) return;
+
+        if (random.nextInt(3) == 0)
+        {
+            ChunkData chunkData = ChunkData.get(world, pos);
+            if (!bush.isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
+            {
+                te.setGrowing(false);
+            }
+        }
 
         Lifecycle old = state.getValue(LIFECYCLE);
         if (old != Lifecycle.HEALTHY)
@@ -225,5 +235,10 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         {
             return this.name().toLowerCase();
         }
+    }
+
+    public BerryBush getBush()
+    {
+        return bush;
     }
 }
