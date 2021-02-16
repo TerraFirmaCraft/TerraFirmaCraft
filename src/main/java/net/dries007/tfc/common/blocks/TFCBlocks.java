@@ -180,6 +180,10 @@ public final class TFCBlocks
         register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new StationaryBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush()), FLORA)
     );
 
+    public static final Map<BerryBush.Default, RegistryObject<Block>> WATERLOGGED_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isWaterlogged, berry ->
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new WaterloggedBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush()), FLORA)
+    );
+
     public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("berry_bush/dead_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
     public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
 

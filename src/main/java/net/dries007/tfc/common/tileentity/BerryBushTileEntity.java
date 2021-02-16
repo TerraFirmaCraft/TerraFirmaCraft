@@ -13,10 +13,8 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     public BerryBushTileEntity()
     {
         super(TFCTileEntities.BERRY_BUSH.get());
-        isGrowing = true;
         harvested = true;
         useTicks = 0;
-        deathTicks = 0;
     }
 
     @Override
@@ -42,6 +40,7 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     public void setGrowing(boolean growing)
     {
         isGrowing = growing;
+        markForSync();
     }
 
     public boolean isGrowing()

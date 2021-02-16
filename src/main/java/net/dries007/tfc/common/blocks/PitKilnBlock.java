@@ -152,6 +152,7 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
         {
             te.onBreak();
         }
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override

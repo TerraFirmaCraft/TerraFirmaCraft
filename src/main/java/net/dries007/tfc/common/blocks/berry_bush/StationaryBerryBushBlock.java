@@ -3,25 +3,29 @@ package net.dries007.tfc.common.blocks.berry_bush;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 
 public class StationaryBerryBushBlock extends AbstractBerryBushBlock
 {
+    private static final VoxelShape HALF_PLANT = box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
+
     public StationaryBerryBushBlock(ForgeBlockProperties properties, BerryBush bush)
     {
         super(properties, bush);
     }
 
     @Override
-    protected void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -51,7 +55,10 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
             te.addDeath();
             if (te.willDie() && random.nextInt(5) == 0)
             {
-                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, stage));
+                BlockState deadState = TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState();
+                if (state.getFluidState().getType() == Fluids.WATER)
+                    deadState = deadState.setValue(TFCBlockStateProperties.FRESH_WATER, TFCBlockStateProperties.FRESH_WATER.keyFor(Fluids.WATER));
+                world.setBlockAndUpdate(pos, deadState.setValue(STAGE, stage));
             }
         }
     }
@@ -72,5 +79,11 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
                 }
             }
         }
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return HALF_PLANT;
     }
 }

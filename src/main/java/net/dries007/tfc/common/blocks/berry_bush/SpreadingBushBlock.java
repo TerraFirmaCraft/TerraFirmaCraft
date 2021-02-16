@@ -33,7 +33,7 @@ public class SpreadingBushBlock extends AbstractBerryBushBlock implements IForge
     }
 
     @Override
-    protected void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {

@@ -164,6 +164,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
         if (te != null)
             te.onBreak();
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     public static boolean canSurvive(IWorldReader world, BlockPos pos)

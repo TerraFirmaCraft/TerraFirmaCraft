@@ -116,6 +116,7 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
         InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
         if (te != null)
             te.onBreak();
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override

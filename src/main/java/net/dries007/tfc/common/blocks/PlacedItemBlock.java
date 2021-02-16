@@ -115,6 +115,7 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
             te.onBreak();
             te.setRemoved();
         }
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override
