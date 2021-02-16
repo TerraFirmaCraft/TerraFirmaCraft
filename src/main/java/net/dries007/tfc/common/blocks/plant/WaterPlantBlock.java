@@ -44,8 +44,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     protected WaterPlantBlock(Properties properties)
     {
         super(properties);
-
-        registerDefaultState(getStateDefinition().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -54,10 +53,10 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         BlockPos pos = context.getPos();
         FluidState fluidState = context.getWorld().getFluidState(pos);
-        BlockState state = updateStateWithCurrentMonth(defaultBlockState());
-        if (getFluidProperty().canContain(fluidState.getType()))
+        BlockState state = updateStateWithCurrentMonth(getDefaultState());
+        if (getFluidProperty().canContain(fluidState.getFluid()))
         {
-            state = state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            state = state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getFluid()));
         }
         return state;
     }

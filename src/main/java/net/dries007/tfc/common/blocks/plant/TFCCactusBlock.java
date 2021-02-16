@@ -59,13 +59,13 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        return VoxelShapes.block();
+        return VoxelShapes.fullCube();
     }
 
     @Override

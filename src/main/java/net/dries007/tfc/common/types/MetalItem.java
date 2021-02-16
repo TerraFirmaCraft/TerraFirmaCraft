@@ -56,7 +56,7 @@ public class MetalItem
 
     public Collection<Item> getValidItems()
     {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+        return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     public boolean isValid(ItemStack stack)

@@ -20,12 +20,12 @@ import net.dries007.tfc.common.tileentity.FarmlandTileEntity;
 
 public enum SoilBlockType
 {
-    DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
-    GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    GRASS_PATH((self, variant) -> new TFCGrassPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
-    CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
-    CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    FARMLAND((self, variant) -> new TFCFarmlandBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).tileEntity(FarmlandTileEntity::new), variant));
+    DIRT((self, variant) -> new DirtBlock(Block.Properties.create(Material.DIRT, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
+    GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), self.transform(), variant)),
+    GRASS_PATH((self, variant) -> new TFCGrassPathBlock(Block.Properties.create(Material.DIRT).hardnessAndResistance(0.65F).sound(SoundType.PLANT), self.transform(), variant)),
+    CLAY((self, variant) -> new DirtBlock(Block.Properties.create(Material.DIRT, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
+    CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), self.transform(), variant)),
+    FARMLAND((self, variant) -> new TFCFarmlandBlock(new ForgeBlockProperties(AbstractBlock.Properties.create(Material.DIRT).hardnessAndResistance(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).tileEntity(FarmlandTileEntity::new), variant));
 
     public static final SoilBlockType[] VALUES = values();
 

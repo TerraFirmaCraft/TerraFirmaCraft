@@ -43,7 +43,7 @@ import net.dries007.tfc.config.TFCConfig;
 public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggable
 {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
-    private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
     private final Supplier<? extends Block> bodyBlock;
 
     public static KelpTreeFlowerBlock create(AbstractBlock.Properties builder, Supplier<? extends Block> plant, FluidProperty fluid)
@@ -62,7 +62,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     {
         super(builder);
         this.bodyBlock = bodyBlock;
-        registerDefaultState(stateDefinition.any().with(AGE, 0).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.any().with(AGE, 0).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -175,14 +175,14 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     private void placeGrownFlower(World worldIn, BlockPos pos, int age)
     {
         Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
-        worldIn.setBlockState(pos, defaultBlockState().with(getFluidProperty(), getFluidProperty().keyFor(fluid)).with(AGE, age), 2);
+        worldIn.setBlockState(pos, getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(fluid)).with(AGE, age), 2);
         worldIn.levelEvent(1033, pos, 0);
     }
 
     private void placeDeadFlower(World worldIn, BlockPos pos)
     {
         Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
-        worldIn.setBlockState(pos, defaultBlockState().with(getFluidProperty(), getFluidProperty().keyFor(fluid)).with(AGE, 5), 2);
+        worldIn.setBlockState(pos, getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(fluid)).with(AGE, 5), 2);
         worldIn.levelEvent(1034, pos, 0);
     }
 
@@ -206,7 +206,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         final Fluid containedFluid = stateIn.get(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickRate(worldIn));
         }
         if (facing != Direction.UP && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -315,7 +315,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         }
         if (!willContinue)
         {
-            worldIn.setBlockState(branchPos.up(i), defaultBlockState().with(AGE, rand.nextInt(10) == 1 ? 3 : 5).with(getFluidProperty(), getFluidProperty().keyFor(fluid)), 2);
+            worldIn.setBlockState(branchPos.up(i), getDefaultState().with(AGE, rand.nextInt(10) == 1 ? 3 : 5).with(getFluidProperty(), getFluidProperty().keyFor(fluid)), 2);
         }
     }
 

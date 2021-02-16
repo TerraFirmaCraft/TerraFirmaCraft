@@ -38,7 +38,7 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockState state = defaultBlockState();
+        BlockState state = getDefaultState();
         if (!state.canBeReplacedByLeaves(context.getWorld(), context.getPos()))
         {
             return Block.pushEntitiesUp(state, getDirt(), context.getWorld(), context.getPos());

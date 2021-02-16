@@ -31,10 +31,10 @@ public abstract class EpiphytePlantBlock extends PlantBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    protected static final VoxelShape NORTH_SHAPE = box(0.0, 0.0, 4.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape SOUTH_SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 12.0);
-    protected static final VoxelShape WEST_SHAPE = box(4.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape EAST_SHAPE = box(0.0, 0.0, 0.0, 12.0, 16.0, 16.0);
+    protected static final VoxelShape NORTH_SHAPE = makeCuboidShape(0.0, 0.0, 4.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape SOUTH_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 12.0);
+    protected static final VoxelShape WEST_SHAPE = makeCuboidShape(4.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape EAST_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 12.0, 16.0, 16.0);
 
     protected static final Map<Direction, VoxelShape> SHAPES = ImmutableMap.of(Direction.NORTH, NORTH_SHAPE, Direction.SOUTH, SOUTH_SHAPE, Direction.WEST, WEST_SHAPE, Direction.EAST, EAST_SHAPE);
 
@@ -54,7 +54,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     {
         super(properties);
 
-        registerDefaultState(defaultBlockState().with(FACING, Direction.NORTH));
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         Direction direction = context.getClickedFace();
         if (direction.getAxis() != Direction.Axis.Y)
         {
-            return updateStateWithCurrentMonth(defaultBlockState()).with(FACING, direction);
+            return updateStateWithCurrentMonth(getDefaultState()).with(FACING, direction);
         }
         return null;
     }

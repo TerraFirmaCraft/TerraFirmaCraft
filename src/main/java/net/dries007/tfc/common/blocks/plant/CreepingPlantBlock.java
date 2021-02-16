@@ -40,12 +40,12 @@ public abstract class CreepingPlantBlock extends PlantBlock
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    protected static final VoxelShape UP_SHAPE = box(0.0, 14.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape DOWN_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
-    protected static final VoxelShape NORTH_SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
-    protected static final VoxelShape EAST_SHAPE = box(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape SOUTH_SHAPE = box(0.0, 0.0, 14.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape WEST_SHAPE = box(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
+    protected static final VoxelShape UP_SHAPE = makeCuboidShape(0.0, 14.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape DOWN_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+    protected static final VoxelShape NORTH_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
+    protected static final VoxelShape EAST_SHAPE = makeCuboidShape(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape SOUTH_SHAPE = makeCuboidShape(0.0, 0.0, 14.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape WEST_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
 
     protected static final Map<BooleanProperty, VoxelShape> SHAPES_BY_PROPERTY = ImmutableMap.<BooleanProperty, VoxelShape>builder().put(UP, UP_SHAPE).put(DOWN, DOWN_SHAPE).put(NORTH, NORTH_SHAPE).put(SOUTH, SOUTH_SHAPE).put(EAST, EAST_SHAPE).put(WEST, WEST_SHAPE).build();
 
@@ -67,9 +67,9 @@ public abstract class CreepingPlantBlock extends PlantBlock
     {
         super(properties);
 
-        shapeCache = getStateDefinition().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.get(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
+        shapeCache = getDefaultState().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.get(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
 
-        registerDefaultState(defaultBlockState().with(UP, false).with(DOWN, false).with(EAST, false).with(WEST, false).with(NORTH, false).with(SOUTH, false));
+        setDefaultState(getDefaultState().with(UP, false).with(DOWN, false).with(EAST, false).with(WEST, false).with(NORTH, false).with(SOUTH, false));
     }
 
     @Override
@@ -119,7 +119,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return updateStateFromSides(context.getWorld(), context.getPos(), updateStateWithCurrentMonth(defaultBlockState()));
+        return updateStateFromSides(context.getWorld(), context.getPos(), updateStateWithCurrentMonth(getDefaultState()));
     }
 
     private BlockState updateStateFromSides(IWorld world, BlockPos pos, BlockState state)

@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
  */
 public class TFCDeadCoralPlantBlock extends TFCAbstractCoralPlantBlock
 {
-    protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
     public TFCDeadCoralPlantBlock(AbstractBlock.Properties properties)
     {

@@ -80,9 +80,9 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    public int getTickDelay(IWorldReader world)
+    public int getTickRate(IWorldReader world)
     {
-        return lava.getTickDelay(world);
+        return lava.getTickRate(world);
     }
 
     @Override

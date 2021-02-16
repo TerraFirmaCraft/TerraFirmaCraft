@@ -57,13 +57,13 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)
     {
-        super(properties.hasPostProcess(TFCBlocks::always));
+        super(properties.setNeedsPostProcessing(TFCBlocks::always));
 
         this.dirt = dirt;
         this.grassPath = grassPath;
         this.farmland = farmland;
 
-        registerDefaultState(stateDefinition.any().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
+        setDefaultState(stateDefinition.any().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
     }
 
     @Override
@@ -151,7 +151,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         BlockState stateUp = context.getWorld().getBlockState(context.getPos().up());
-        return updateStateFromNeighbors(context.getWorld(), context.getPos(), defaultBlockState()).with(SNOWY, stateUp.isIn(Blocks.SNOW_BLOCK) || stateUp.isIn(Blocks.SNOW));
+        return updateStateFromNeighbors(context.getWorld(), context.getPos(), getDefaultState()).with(SNOWY, stateUp.isIn(Blocks.SNOW_BLOCK) || stateUp.isIn(Blocks.SNOW));
     }
 
     @Override

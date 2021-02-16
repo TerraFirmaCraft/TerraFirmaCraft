@@ -52,7 +52,7 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        final BlockState defaultState = defaultBlockState();
+        final BlockState defaultState = getDefaultState();
         return defaultState.canBeReplacedByLeaves(context.getWorld(), context.getPos()) ? defaultState : getDirt();
     }
 

@@ -32,7 +32,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
 {
     private final Supplier<? extends Block> deadBlock;
-    protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
     public TFCCoralPlantBlock(Supplier<? extends Block> deadBlock, AbstractBlock.Properties properties)
     {
@@ -42,7 +42,7 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         tryScheduleDieTick(state, worldIn, pos);
     }
@@ -59,7 +59,7 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -70,10 +70,10 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
             this.tryScheduleDieTick(stateIn, worldIn, currentPos);
             if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickRate(worldIn));
             }
 
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 

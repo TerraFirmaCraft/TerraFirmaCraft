@@ -29,10 +29,10 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final VoxelShape RACK_EAST_AABB = Block.box(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
-    public static final VoxelShape RACK_WEST_AABB = Block.box(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
-    public static final VoxelShape RACK_SOUTH_AABB = Block.box(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
-    public static final VoxelShape RACK_NORTH_AABB = Block.box(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
+    public static final VoxelShape RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
 
     public ToolRackBlock(Properties properties)
     {
@@ -49,9 +49,9 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         }
         else if (stateIn.get(WATERLOGGED))
         {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
             }
         }
 
-        contextualState = defaultBlockState();
+        contextualState = getDefaultState();
         IWorldReader world = context.getWorld();
         BlockPos pos = context.getPos();
         FluidState fluidState = world.getFluidState(context.getPos());
@@ -113,7 +113,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
                 contextualState = contextualState.with(FACING, direction.getOpposite());
                 if (contextualState.canBeReplacedByLeaves(world, pos))
                 {
-                    return contextualState.with(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+                    return contextualState.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
                 }
             }
         }

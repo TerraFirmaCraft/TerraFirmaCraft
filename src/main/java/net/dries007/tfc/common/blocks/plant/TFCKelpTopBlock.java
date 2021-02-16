@@ -52,11 +52,11 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         World world = context.getWorld();
-        BlockState state = defaultBlockState().with(AGE, world.getRandom().nextInt(25));
+        BlockState state = getDefaultState().with(AGE, world.getRandom().nextInt(25));
         FluidState fluidState = world.getFluidState(context.getPos());
-        if (getFluidProperty().canContain(fluidState.getType()))
+        if (getFluidProperty().canContain(fluidState.getFluid()))
         {
-            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getFluid()));
         }
         return null;
     }
@@ -72,8 +72,8 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         {
             //Not sure if this is necessary
             Fluid fluid = stateIn.getFluidState().getFluid();
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, fluid, fluid.getTickDelay(worldIn));
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, fluid, fluid.getTickRate(worldIn));
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {

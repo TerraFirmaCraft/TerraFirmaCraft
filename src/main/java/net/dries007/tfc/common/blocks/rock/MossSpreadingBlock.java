@@ -33,7 +33,7 @@ public class MossSpreadingBlock extends Block
 
     public MossSpreadingBlock(Properties properties)
     {
-        super(properties.randomTicks());
+        super(properties.tickRandomly());
     }
 
     @Override

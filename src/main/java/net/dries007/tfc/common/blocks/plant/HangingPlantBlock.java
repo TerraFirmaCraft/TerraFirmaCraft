@@ -27,7 +27,7 @@ import net.minecraft.world.IWorldReader;
 public abstract class HangingPlantBlock extends PlantBlock
 {
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
-    protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+    protected static final VoxelShape NOT_HANGING_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
     public static HangingPlantBlock create(IPlant plant, Properties properties)
     {
@@ -79,11 +79,11 @@ public abstract class HangingPlantBlock extends PlantBlock
     {
         if (context.getWorld().getBlockState(context.getPos().offset(Direction.UP)).getMaterial() == Material.LEAVES)
         {
-            return defaultBlockState().with(HANGING, true);
+            return getDefaultState().with(HANGING, true);
         }
         if (context.getWorld().getBlockState(context.getPos().offset(Direction.DOWN)).getMaterial() == Material.LEAVES)
         {
-            return defaultBlockState().with(HANGING, false);
+            return getDefaultState().with(HANGING, false);
         }
         return null;
     }

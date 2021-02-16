@@ -33,7 +33,7 @@ public class TFCCoralFinBlock extends TFCCoralFanBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         tryScheduleDieTick(state, worldIn, pos);
     }
@@ -49,7 +49,7 @@ public class TFCCoralFinBlock extends TFCCoralFanBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -60,9 +60,9 @@ public class TFCCoralFinBlock extends TFCCoralFanBlock
             tryScheduleDieTick(stateIn, worldIn, currentPos);
             if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
             }
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 }

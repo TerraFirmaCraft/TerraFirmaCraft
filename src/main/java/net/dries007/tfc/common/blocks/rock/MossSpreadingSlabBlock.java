@@ -17,7 +17,7 @@ public class MossSpreadingSlabBlock extends SlabBlock
 {
     public MossSpreadingSlabBlock(Properties properties)
     {
-        super(properties.randomTicks());
+        super(properties.tickRandomly());
     }
 
     @Override

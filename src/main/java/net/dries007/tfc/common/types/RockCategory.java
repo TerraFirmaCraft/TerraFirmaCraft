@@ -72,18 +72,18 @@ public enum RockCategory implements Predicate<Rock>
 
     public enum ItemType
     {
-        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        AXE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        HAMMER_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        HOE(rock -> new HoeItem(rock.getItemTier(), -1, -3.0f, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        HOE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        JAVELIN(rock -> new JavelinItem(rock.getItemTier(), 0.7F, -1.8F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        JAVELIN_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        KNIFE(rock -> new TFCToolItem(rock.getItemTier(), 0.54F, -1.5F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        KNIFE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        SHOVEL(rock -> new TFCShovelItem(rock.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        SHOVEL_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS)));
+        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        AXE_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS))),
+        HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        HAMMER_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS))),
+        HOE(rock -> new HoeItem(rock.getItemTier(), -1, -3.0f, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        HOE_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS))),
+        JAVELIN(rock -> new JavelinItem(rock.getItemTier(), 0.7F, -1.8F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        JAVELIN_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS))),
+        KNIFE(rock -> new TFCToolItem(rock.getItemTier(), 0.54F, -1.5F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        KNIFE_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS))),
+        SHOVEL(rock -> new TFCShovelItem(rock.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        SHOVEL_HEAD(rock -> new Item((new Item.Properties()).group(ItemGroup.MATERIALS)));
 
         private final NonNullFunction<RockCategory, Item> itemFactory;
 

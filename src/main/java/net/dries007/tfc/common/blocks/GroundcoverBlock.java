@@ -46,11 +46,11 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-    public static final VoxelShape FLAT = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    public static final VoxelShape SMALL = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
-    public static final VoxelShape MEDIUM = box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
-    public static final VoxelShape PIXEL_HIGH = box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
-    public static final VoxelShape TWIG = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    public static final VoxelShape FLAT = makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    public static final VoxelShape SMALL = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
+    public static final VoxelShape MEDIUM = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
+    public static final VoxelShape PIXEL_HIGH = makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    public static final VoxelShape TWIG = makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
 
     public static GroundcoverBlock twig(Properties properties)
     {
@@ -67,7 +67,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion(), cover.getShape(), cover.getVanillaItem());
+        this(Properties.create(Material.PLANTS).hardnessAndResistance(0.05F, 0.0F).sound(SoundType.NETHER_WART).notSolid(), cover.getShape(), cover.getVanillaItem());
     }
 
     public GroundcoverBlock(Properties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
@@ -77,7 +77,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         this.shape = shape;
         this.pickBlock = pickBlock;
 
-        registerDefaultState(getStateDefinition().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, Direction.EAST));
+        setDefaultState(getDefaultState().any().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, Direction.EAST));
     }
 
     @Nonnull
@@ -86,10 +86,10 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     {
         final FluidState fluidState = context.getWorld().getFluidState(context.getPos());
 
-        BlockState state = defaultBlockState().with(FACING, context.getHorizontalDirection().getOpposite());
-        if (getFluidProperty().canContain(fluidState.getType()))
+        BlockState state = getDefaultState().with(FACING, context.getHorizontalDirection().getOpposite());
+        if (getFluidProperty().canContain(fluidState.getFluid()))
         {
-            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getFluid()));
         }
         return state;
     }
@@ -113,9 +113,9 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
             final Fluid containedFluid = stateIn.get(getFluidProperty()).getFluid();
             if (containedFluid != Fluids.EMPTY)
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickRate(worldIn));
             }
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 

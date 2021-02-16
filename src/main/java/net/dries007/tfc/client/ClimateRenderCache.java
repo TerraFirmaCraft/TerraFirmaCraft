@@ -39,7 +39,7 @@ public enum ClimateRenderCache
         PlayerEntity player = Minecraft.getInstance().player;
         if (world != null && player != null)
         {
-            BlockPos pos = player.blockPosition();
+            BlockPos pos = player.getPosition();
             ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
 
             ticks = Calendars.CLIENT.getTicks();

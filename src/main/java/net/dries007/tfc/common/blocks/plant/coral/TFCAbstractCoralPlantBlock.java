@@ -39,12 +39,12 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.SALT_WATER;
-    private static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
+    private static final VoxelShape AABB = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
 
     public TFCAbstractCoralPlantBlock(AbstractBlock.Properties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any());
+        setDefaultState(getDefaultState().getBlockState());
     }
 
     protected void tryScheduleDieTick(BlockState state, IWorld worldIn, BlockPos pos)
@@ -66,7 +66,7 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
         {
             for (Direction direction : Direction.values())
             {
-                if (worldIn.getFluidState(pos.offset(direction)).isIn(FluidTags.WATER))
+                if (worldIn.getFluidState(pos.offset(direction)).isTagged(FluidTags.WATER))
                 {
                     return true;
                 }
@@ -79,7 +79,7 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-        return this.getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor((fluidstate.isIn(FluidTags.WATER) && fluidstate.getAmount() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
+        return this.getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor((fluidstate.isTagged(FluidTags.WATER) && fluidstate.getLevel() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
     }
 
     @Override
@@ -91,18 +91,18 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
         {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickRate(worldIn));
         }
-        return facing == Direction.DOWN && !this.canBeReplacedByLeaves(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return facing == Direction.DOWN && !this.canBeReplacedByLeaves(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.down();
         return worldIn.getBlockState(blockpos).isSolidSide(worldIn, blockpos, Direction.UP);
@@ -110,13 +110,13 @@ public class TFCAbstractCoralPlantBlock extends Block implements IFluidLoggable
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(getFluidProperty());
     }

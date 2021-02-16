@@ -36,17 +36,17 @@ import net.dries007.tfc.common.fluids.TFCFluids;
  */
 public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 {
-    public static final IntegerProperty PICKLES = BlockStateProperties.PICKLES;
+    public static final IntegerProperty PICKLES = BlockStateProperties.PICKLES_1_4;
     public static final FluidProperty FLUID = TFCBlockStateProperties.SALT_WATER;
-    protected static final VoxelShape ONE_AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 6.0D, 10.0D);
-    protected static final VoxelShape TWO_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 6.0D, 13.0D);
-    protected static final VoxelShape THREE_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
-    protected static final VoxelShape FOUR_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 7.0D, 14.0D);
+    protected static final VoxelShape ONE_AABB = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 6.0D, 10.0D);
+    protected static final VoxelShape TWO_AABB = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 6.0D, 13.0D);
+    protected static final VoxelShape THREE_AABB = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
+    protected static final VoxelShape FOUR_AABB = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 7.0D, 14.0D);
 
     public TFCSeaPickleBlock(AbstractBlock.Properties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().with(PICKLES, 1));
+        setDefaultState(getDefaultState().with(PICKLES, 1));
     }
 
     @Nullable
@@ -61,8 +61,8 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         else
         {
             FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-            boolean flag = fluidstate.getType() == TFCFluids.SALT_WATER.getSource();
-            return defaultBlockState().with(getFluidProperty(), flag ? getFluidProperty().keyFor(TFCFluids.SALT_WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
+            boolean flag = fluidstate.getFluid() == TFCFluids.SALT_WATER.getSource();
+            return getDefaultState().with(getFluidProperty(), flag ? getFluidProperty().keyFor(TFCFluids.SALT_WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
         }
     }
 
@@ -74,19 +74,19 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext)
+    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext)
     {
-        return useContext.getItemInHand().getItem() == this.asItem() && state.get(PICKLES) < 4 || super.canBeReplaced(state, useContext);
+        return useContext.getPlayer().getHeldItemMainhand().getItem() == this.asItem() && state.get(PICKLES) < 4 || super.isReplaceable(state, useContext);
     }
 
     protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isSolidSide(worldIn, pos, Direction.UP);
+        return !state.getCollisionShape(worldIn, pos).project(Direction.UP).isEmpty() || state.isSolidSide(worldIn, pos, Direction.UP);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.down();
         return mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
@@ -112,7 +112,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -122,10 +122,10 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         {
             if (stateIn.get(getFluidProperty()).getFluid() != Fluids.EMPTY)
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickRate(worldIn));
             }
 
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 
@@ -143,7 +143,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PICKLES, getFluidProperty());
     }

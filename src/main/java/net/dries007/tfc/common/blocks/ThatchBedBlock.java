@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 
 public class ThatchBedBlock extends BedBlock
 {
-    private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
+    private static final VoxelShape BED_SHAPE = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
 
     public ThatchBedBlock(Properties properties)
     {

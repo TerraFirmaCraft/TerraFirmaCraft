@@ -27,15 +27,15 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 {
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_3;
 
-    private static final VoxelShape ONE = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
-    private static final VoxelShape TWO = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    private static final VoxelShape THREE = box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
+    private static final VoxelShape ONE = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
+    private static final VoxelShape TWO = makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    private static final VoxelShape THREE = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
 
     public LooseRockBlock(Properties properties)
     {
         super(properties, VoxelShapes.empty(), null);
 
-        registerDefaultState(defaultBlockState().with(COUNT, 1));
+        setDefaultState(getDefaultState().with(COUNT, 1));
     }
 
     @Override

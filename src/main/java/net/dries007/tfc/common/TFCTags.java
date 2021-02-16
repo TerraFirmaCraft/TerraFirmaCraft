@@ -46,7 +46,7 @@ public class TFCTags
 
         private static ITag.INamedTag<Block> create(String id)
         {
-            return BlockTags.bind(Helpers.identifier(id).toString());
+            return BlockTags.makeWrapperTag(Helpers.identifier(id).toString());
         }
     }
 
@@ -56,7 +56,7 @@ public class TFCTags
 
         private static ITag.INamedTag<Fluid> create(String id)
         {
-            return FluidTags.bind(Helpers.identifier(id).toString());
+            return FluidTags.makeWrapperTag(Helpers.identifier(id).toString());
         }
     }
 
@@ -66,7 +66,7 @@ public class TFCTags
 
         private static ITag.INamedTag<Item> create(String id)
         {
-            return ItemTags.bind(Helpers.identifier(id).toString());
+            return ItemTags.makeWrapperTag(Helpers.identifier(id).toString());
         }
     }
 }

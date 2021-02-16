@@ -17,7 +17,7 @@ public class MossSpreadingWallBlock extends WallBlock
 {
     public MossSpreadingWallBlock(Properties properties)
     {
-        super(properties.randomTicks());
+        super(properties.tickRandomly());
     }
 
     @Override

@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
  */
 public class TFCCoralFanBlock extends TFCAbstractCoralPlantBlock
 {
-    private static final VoxelShape AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
+    private static final VoxelShape AABB = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
 
     public TFCCoralFanBlock(AbstractBlock.Properties builder)
     {

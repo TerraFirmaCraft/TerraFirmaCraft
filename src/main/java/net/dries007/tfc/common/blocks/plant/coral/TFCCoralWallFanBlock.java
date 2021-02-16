@@ -38,7 +38,7 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         tryScheduleDieTick(state, worldIn, pos);
     }
@@ -55,7 +55,7 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -65,11 +65,11 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
         {
             if (stateIn.get(getFluidProperty()).getFluid().isIn(FluidTags.WATER))
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickRate(worldIn));
             }
 
             this.tryScheduleDieTick(stateIn, worldIn, currentPos);
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 }

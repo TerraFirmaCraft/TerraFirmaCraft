@@ -32,8 +32,8 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
     protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
-    protected static final VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
+    protected static final VoxelShape PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
     public static TFCTallGrassBlock create(IPlant plant, Properties properties)
     {
@@ -51,7 +51,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().with(PART, Part.LOWER));
+        setDefaultState(stateDefinition.any().with(PART, Part.LOWER));
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         Part part = stateIn.get(PART);
         if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(PART) != part)
         {
-            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else
         {
@@ -97,7 +97,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockAndUpdate(pos.up(), defaultBlockState().with(PART, Part.UPPER));
+        worldIn.setBlockAndUpdate(pos.up(), getDefaultState().with(PART, Part.UPPER));
     }
 
     @Override
@@ -150,7 +150,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
         int age = random.nextInt(3) + 1;
-        world.setBlockState(pos, updateStateWithCurrentMonth(defaultBlockState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).with(TFCBlockStateProperties.AGE_3, age)), flags);
-        world.setBlockState(pos.up(), updateStateWithCurrentMonth(defaultBlockState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlockState(pos, updateStateWithCurrentMonth(getDefaultState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).with(TFCBlockStateProperties.AGE_3, age)), flags);
+        world.setBlockState(pos.up(), updateStateWithCurrentMonth(getDefaultState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age)), flags);
     }
 }

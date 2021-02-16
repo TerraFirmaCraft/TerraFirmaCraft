@@ -76,16 +76,16 @@ public final class TFCItems
     // Misc
 
     public static final Map<Coral.Color, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
-        register("coral/" + color.toString().toLowerCase() + "_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+        register("coral/" + color.toString().toLowerCase() + "_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).group(FLORA)))
     );
     public static final Map<Coral.Color, RegistryObject<Item>> DEAD_CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
-        register("coral/" + color.toString().toLowerCase() + "_dead_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+        register("coral/" + color.toString().toLowerCase() + "_dead_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).group(FLORA)))
     );
 
 
     public static final Map<HideItemType, Map<HideItemType.Size, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItemType.class, type ->
         Helpers.mapOfKeys(HideItemType.Size.class, size ->
-            register((size.name() + '_' + type.name() + "_hide").toLowerCase(), () -> new Item(new Item.Properties().tab(MISC)))
+            register((size.name() + '_' + type.name() + "_hide").toLowerCase(), () -> new Item(new Item.Properties().group(MISC)))
         )
     );
 
@@ -99,16 +99,16 @@ public final class TFCItems
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        register("bucket/metal/" + metal.name().toLowerCase(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
+        register("bucket/metal/" + metal.name().toLowerCase(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).group(MISC)))
     );
 
-    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
-    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).group(MISC)));
+    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).group(MISC)));
 
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
-        return register(name, () -> new Item(new Item.Properties().tab(group)));
+        return register(name, () -> new Item(new Item.Properties().group(group)));
     }
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item)

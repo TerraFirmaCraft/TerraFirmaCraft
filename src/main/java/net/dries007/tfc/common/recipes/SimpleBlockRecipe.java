@@ -81,7 +81,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-            boolean copyInputState = JSONUtils.getAsBoolean(json, "copy_input", false);
+            boolean copyInputState = JSONUtils.getBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
             {

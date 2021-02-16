@@ -80,7 +80,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             if (time++ == 0)
             {
                 // First tick, replace the existing block
-                BlockPos blockpos = blockPosition();
+                BlockPos blockpos = getPosition();
                 if (level.getBlockState(blockpos).getBlock().isIn(block))
                 {
                     level.removeBlock(blockpos, false);
@@ -101,7 +101,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
             if (!level.isClientSide)
             {
-                BlockPos posAt = blockPosition();
+                BlockPos posAt = getPosition();
                 if (!onGround)
                 {
                     failedBreakCheck = false;

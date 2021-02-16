@@ -38,15 +38,15 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.ROCK_SPIKE_PART;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER_AND_LAVA;
 
-    public static final VoxelShape BASE_SHAPE = box(2, 0, 2, 14, 16, 14);
-    public static final VoxelShape MIDDLE_SHAPE = box(4, 0, 4, 12, 16, 12);
-    public static final VoxelShape TIP_SHAPE = box(6, 0, 6, 10, 16, 10);
+    public static final VoxelShape BASE_SHAPE = makeCuboidShape(2, 0, 2, 14, 16, 14);
+    public static final VoxelShape MIDDLE_SHAPE = makeCuboidShape(4, 0, 4, 12, 16, 12);
+    public static final VoxelShape TIP_SHAPE = makeCuboidShape(6, 0, 6, 10, 16, 10);
 
     public RockSpikeBlock(Properties properties)
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.any().with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override

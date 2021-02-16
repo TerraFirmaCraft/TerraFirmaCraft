@@ -17,10 +17,10 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 
 public abstract class TFCSeagrassBlock extends WaterPlantBlock
 {
-    protected static final VoxelShape GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    protected static final VoxelShape SHORTER_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
-    protected static final VoxelShape SHORT_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
-    protected static final VoxelShape SHORTEST_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
+    protected static final VoxelShape GRASS_SHAPE = makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape SHORTER_GRASS_SHAPE = makeCuboidShape(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
+    protected static final VoxelShape SHORT_GRASS_SHAPE = makeCuboidShape(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
+    protected static final VoxelShape SHORTEST_GRASS_SHAPE = makeCuboidShape(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
 
     public static TFCSeagrassBlock create(IPlant plant, FluidProperty fluid, AbstractBlock.Properties properties)
     {

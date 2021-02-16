@@ -33,7 +33,7 @@ public abstract class DryPlantBlock extends PlantBlock
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().with(getPlant().getStageProperty(), 0).with(AGE, 0));
+        setDefaultState(getDefaultState().any().with(getPlant().getStageProperty(), 0).with(AGE, 0));
     }
 
     @Override

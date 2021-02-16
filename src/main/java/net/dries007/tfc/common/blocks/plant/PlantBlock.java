@@ -27,7 +27,7 @@ public abstract class PlantBlock extends TFCBushBlock
 {
     public static final IntegerProperty AGE = TFCBlockStateProperties.AGE_3;
 
-    protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape PLANT_SHAPE = makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public static PlantBlock create(IPlant plant, Properties properties)
     {
@@ -46,7 +46,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().with(getPlant().getStageProperty(), 0).with(AGE, 0));
+        super.setDefaultState(super.getDefaultState().getValues().putIfAbsent(getPlant().getStageProperty(), 0)(AGE, 0));
     }
 
     @Override
@@ -85,7 +85,7 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return updateStateWithCurrentMonth(defaultBlockState());
+        return updateStateWithCurrentMonth(getDefaultState());
     }
 
     protected BlockState updateStateWithCurrentMonth(BlockState stateIn)

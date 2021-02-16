@@ -20,10 +20,10 @@ public enum SandBlockType
     BROWN(new Color(112, 113, 89).getRGB(), MaterialColor.DIRT),
     WHITE(new Color(202, 202, 201).getRGB(), MaterialColor.QUARTZ),
     BLACK(new Color(56, 56, 56).getRGB(), MaterialColor.TERRACOTTA_BLACK),
-    RED(new Color(125, 99, 84).getRGB(), MaterialColor.TERRACOTTA_RED),
+    RED(new Color(125, 99, 84).getRGB(), MaterialColor.RED_TERRACOTTA),
     YELLOW(new Color(215, 196, 140).getRGB(), MaterialColor.SAND),
     GREEN(new Color(106, 116, 81).getRGB(), MaterialColor.COLOR_GREEN),
-    PINK(new Color(150, 101, 97).getRGB(), MaterialColor.TERRACOTTA_PINK);
+    PINK(new Color(150, 101, 97).getRGB(), MaterialColor.PINK_TERRACOTTA);
 
     private static final SandBlockType[] VALUES = values();
 
@@ -48,6 +48,6 @@ public enum SandBlockType
 
     public Block create()
     {
-        return new TFCSandBlock(dustColor, AbstractBlock.Properties.of(Material.SAND, materialColor).strength(0.5F).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).harvestLevel(0));
+        return new TFCSandBlock(dustColor, AbstractBlock.Properties.create(Material.SAND, materialColor).hardnessAndResistance(0.5F).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).harvestLevel(0));
     }
 }

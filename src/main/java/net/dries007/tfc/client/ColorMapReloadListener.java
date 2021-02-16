@@ -32,7 +32,7 @@ public class ColorMapReloadListener extends ReloadListener<int[]>
     {
         try
         {
-            return ColorMapLoader.getPixels(resourceManagerIn, textureLocation);
+            return ColorMapLoader.loadColors(resourceManagerIn, textureLocation);
         }
         catch (IOException ioexception)
         {

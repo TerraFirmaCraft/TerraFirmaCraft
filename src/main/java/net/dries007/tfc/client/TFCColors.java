@@ -214,7 +214,7 @@ public final class TFCColors
     {
         final BlockPos.Mutable cursor = new BlockPos.Mutable();
         return (biome, x, z) -> {
-            cursor.set(x, TFCChunkGenerator.SEA_LEVEL, z);
+            cursor.setPos(x, TFCChunkGenerator.SEA_LEVEL, z);
             return colorAccessor.applyAsInt(cursor);
         };
     }

@@ -31,7 +31,7 @@ public class TFCVineBlock extends VineBlock
     {
         super(properties);
 
-        registerDefaultState(defaultBlockState().with(SEASON_NO_SPRING, Season.SUMMER));
+        setDefaultState(getDefaultState().with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     @Override

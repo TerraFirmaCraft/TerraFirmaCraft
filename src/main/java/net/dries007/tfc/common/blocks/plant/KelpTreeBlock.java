@@ -44,7 +44,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        registerDefaultState(stateDefinition.any().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(stateDefinition.any().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -61,7 +61,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         Block eastBlock = world.getBlockState(pos.east()).getBlock();
         Block southBlock = world.getBlockState(pos.south()).getBlock();
         Block westBlock = world.getBlockState(pos.west()).getBlock();
-        return defaultBlockState()
+        return getDefaultState()
             .with(DOWN, downBlock.isIn(TFCTags.Blocks.KELP_TREE) || downBlock.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
             .with(UP, upBlock.isIn(TFCTags.Blocks.KELP_TREE))
             .with(NORTH, northBlock.isIn(TFCTags.Blocks.KELP_TREE))
@@ -149,7 +149,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         final Fluid containedFluid = state.get(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            world.getPendingFluidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickDelay(world));
+            world.getPendingFluidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickRate(world));
         }
     }
 }

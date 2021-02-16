@@ -71,7 +71,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        registerDefaultState(stateDefinition.any().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
+        setDefaultState(stateDefinition.any().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     {
         Season season = Calendars.get(context.getWorld()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
-        return defaultBlockState().with(SEASON_NO_SPRING, newSeason).with(PERSISTENT, context.getPlayer() != null);
+        return getDefaultState().with(SEASON_NO_SPRING, newSeason).with(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override

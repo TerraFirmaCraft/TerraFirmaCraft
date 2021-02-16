@@ -240,11 +240,11 @@ public enum Plant implements IPlant
     public enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
-        CACTUS((plant, type) -> TFCCactusBlock.create(plant, solid().strength(0.25F).sound(SoundType.WOOL))),
+        CACTUS((plant, type) -> TFCCactusBlock.create(plant, solid().hardnessAndResistance(0.25F).sound(SoundType.CROP))),
         DRY((plant, type) -> DryPlantBlock.create(plant, nonSolid(plant))),
-        CREEPING((plant, type) -> CreepingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))), // Post process ensures shape is updated after world gen
-        HANGING((plant, type) -> HangingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
-        EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
+        CREEPING((plant, type) -> CreepingPlantBlock.create(plant, nonSolid(plant).setNeedsPostProcessing(TFCBlocks::always))), // Post process ensures shape is updated after world gen
+        HANGING((plant, type) -> HangingPlantBlock.create(plant, nonSolid(plant).setNeedsPostProcessing(TFCBlocks::always))),
+        EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).setNeedsPostProcessing(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
         VINE((plant, type) -> new TFCVineBlock(nonSolid(plant))),
@@ -278,52 +278,52 @@ public enum Plant implements IPlant
          */
         private static AbstractBlock.Properties solid()
         {
-            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT).tickRandomly();
         }
 
         private static AbstractBlock.Properties nonSolid(Plant plant)
         {
-            return solid().speedFactor(plant.speedFactor).noCollission();
+            return solid().speedFactor(plant.speedFactor).notSolid();
         }
 
         private static AbstractBlock.Properties solidTallPlant()
         {
-            return AbstractBlock.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().zeroHardnessAndResistance().sound(SoundType.WEEPING_VINES);
+            return AbstractBlock.Properties.create(Material.PLANTS, MaterialColor.CYAN).tickRandomly().zeroHardnessAndResistance().sound(SoundType.WEEPING_VINES);
         }
 
         private static AbstractBlock.Properties nonSolidTallPlant(Plant plant)
         {
-            return solidTallPlant().noCollission().speedFactor(plant.speedFactor);
+            return solidTallPlant().notSolid().speedFactor(plant.speedFactor);
         }
 
         private static AbstractBlock.Properties kelp(Plant plant)
         {
-            return AbstractBlock.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+            return AbstractBlock.Properties.create(Material.WOOD, MaterialColor.GREEN).notSolid().tickRandomly().speedFactor(plant.speedFactor).hardnessAndResistance(1.0f).sound(SoundType.WET_GRASS);
         }
 
         private static VoxelShape getBodyShape()
         {
-            return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+            return Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
         }
 
         private static VoxelShape getThinBodyShape()
         {
-            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+            return Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
         }
 
         private static VoxelShape getWeepingShape()
         {
-            return Block.box(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+            return Block.makeCuboidShape(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
         }
 
         private static VoxelShape getTwistingShape()
         {
-            return Block.box(4.0D, 0.0D, 4.0D, 12.0D, 15.0D, 12.0D);
+            return Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 15.0D, 12.0D);
         }
 
         private static VoxelShape getTwistingThinShape()
         {
-            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
+            return Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
         }
 
         private final BiFunction<Plant, BlockType, ? extends Block> factory;

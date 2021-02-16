@@ -29,13 +29,13 @@ public class FallenLeavesBlock extends GroundcoverBlock
 {
     public static final EnumProperty<Season> SEASON = TFCBlockStateProperties.SEASON_NO_SPRING;
 
-    private static final VoxelShape VERY_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    private static final VoxelShape VERY_FLAT = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public FallenLeavesBlock(Properties properties)
     {
         super(properties, VERY_FLAT, null);
 
-        registerDefaultState(defaultBlockState().with(SEASON, Season.SUMMER));
+        setDefaultState(getDefaultState().with(SEASON, Season.SUMMER));
     }
 
     @Override
