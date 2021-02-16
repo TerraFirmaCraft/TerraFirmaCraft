@@ -358,11 +358,23 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
     /**
      * Return whether this block can drop from an explosion. STATELESS! :(
      * Would drop from explosion if unsealed, but can't tell.
+     * 
+     * ^^^
+     * See {@link this#dropBlockAsItemWithChance(World, BlockPos, IBlockState, float, int)}
      */
     @Override
     public boolean canDropFromExplosion(Explosion explosionIn)
     {
-        return false;
+        return true;
+    }
+    
+    @Override
+    public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune)
+    {
+        if (state.getBlock() == this && !state.getValue(SEALED))
+        {
+            super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+        }
     }
 
     @Override
