@@ -35,7 +35,7 @@ public enum ClimateRenderCache
      */
     public void onClientTick()
     {
-        World world = Minecraft.getInstance().level;
+        World world = Minecraft.getInstance().world;
         PlayerEntity player = Minecraft.getInstance().player;
         if (world != null && player != null)
         {

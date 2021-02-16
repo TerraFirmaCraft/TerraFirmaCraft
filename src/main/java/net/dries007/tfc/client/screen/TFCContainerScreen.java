@@ -17,6 +17,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 public abstract class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {
+
     protected final ResourceLocation texture;
 
     public TFCContainerScreen(C container, PlayerInventory playerInventory, ITextComponent name, ResourceLocation texture)
@@ -30,20 +31,20 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        renderTooltip(matrixStack, mouseX, mouseY);
+        renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
-    @Override
+    /*@Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         drawDefaultBackground(matrixStack);
-    }
+    }*/
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})
     protected void drawDefaultBackground(MatrixStack matrixStack)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bind(texture);
-        blit(matrixStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
+        minecraft.getTextureManager().bindTexture(texture);
+        blit(matrixStack, guiLeft, guiTop, 0, 0, 0, width, height, 256, 256);
     }
 }

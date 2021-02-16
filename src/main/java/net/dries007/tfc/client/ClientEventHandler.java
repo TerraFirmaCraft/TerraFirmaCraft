@@ -59,14 +59,14 @@ public final class ClientEventHandler
         LOGGER.debug("Client Setup");
 
         // Screens
-        ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
-        ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
-        ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+        ScreenManager.registerFactory(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
+        ScreenManager.registerFactory(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+        ScreenManager.registerFactory(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
 
         // Render Types
-        final RenderType cutout = RenderType.cutout();
-        final RenderType cutoutMipped = RenderType.cutoutMipped();
-        final RenderType translucent = RenderType.translucent();
+        final RenderType cutout = RenderType.getCutout();
+        final RenderType cutoutMipped = RenderType.getCutoutMipped();
+        final RenderType translucent = RenderType.getTranslucent();
 
         // Rock blocks
         TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
@@ -167,13 +167,13 @@ public final class ClientEventHandler
         // Grass and foliage (which we replace vanilla's anyway, but use our own for better indexing)
         // Foliage winter and fall (for deciduous trees which have leaves which change color during those seasons)
 
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setSkyColors, TFCColors.SKY_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFogColors, TFCColors.FOG_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setWaterColors, TFCColors.WATER_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setWaterFogColors, TFCColors.WATER_FOG_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setGrassColors, TFCColors.GRASS_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
-        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setSkyColors, TFCColors.SKY_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFogColors, TFCColors.FOG_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setWaterColors, TFCColors.WATER_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setWaterFogColors, TFCColors.WATER_FOG_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setGrassColors, TFCColors.GRASS_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
     }
 }
