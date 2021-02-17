@@ -38,7 +38,7 @@ public class ThatchBlock extends Block implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
         Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
     }

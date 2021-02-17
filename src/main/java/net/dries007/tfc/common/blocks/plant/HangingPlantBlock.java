@@ -47,7 +47,7 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {
@@ -102,9 +102,9 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(HANGING);
     }
 }

@@ -37,9 +37,9 @@ public class TopPlantBlock extends AbstractTopPlantBlock
         if (state.get(AGE) < 25 && ForgeHooks.onCropsGrowPre(worldIn, pos.offset(growthDirection), worldIn.getBlockState(pos.offset(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
         {
             BlockPos blockpos = pos.offset(growthDirection);
-            if (canGrowInto(worldIn.getBlockState(blockpos)))
+            if (canGrowIn(worldIn.getBlockState(blockpos)))
             {
-                worldIn.setBlockAndUpdate(blockpos, state.cycle(AGE));
+                worldIn.setBlockState(blockpos, state.func_235896_a_(AGE));
                 ForgeHooks.onCropsGrowPost(worldIn, blockpos, worldIn.getBlockState(blockpos));
             }
         }
@@ -51,37 +51,37 @@ public class TopPlantBlock extends AbstractTopPlantBlock
         BlockPos blockpos = pos.offset(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         Block block = blockstate.getBlock();
-        if (!canAttachToBlock(block))
+        if (!this.canGrowOn(block))
         {
             return false;
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
+            return block == getTopPlantBlock() || block == getBodyPlantBlock() || blockstate.isIn(BlockTags.LEAVES) || blockstate.isSolidSide(worldIn, blockpos, growthDirection);
         }
     }
 
     @Override
-    protected int getBlocksToGrowWhenBonemealed(Random rand)
+    protected int getGrowthAmount(Random rand)
     {
         return 0;
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
 
     @Override
-    protected Block getBodyBlock()
+    protected Block getBodyPlantBlock()
     {
         return bodyBlock.get();
     }
 
     @Override
-    protected boolean canGrowInto(BlockState state)
+    protected boolean canGrowIn(BlockState state)
     {
-        return PlantBlockHelper.isValidGrowthState(state);
+        return PlantBlockHelper.isAir(state);
     }
 }

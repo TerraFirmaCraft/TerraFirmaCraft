@@ -39,7 +39,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    public boolean ticksRandomly(BlockState state)
     {
         return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
     }
@@ -53,7 +53,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
         Season newSeason = getSeasonForState();
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.with(SEASON, newSeason));
+            worldIn.setBlockState(pos, state.with(SEASON, newSeason));
         }
     }
 
@@ -65,9 +65,9 @@ public class FallenLeavesBlock extends GroundcoverBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEASON));
+        super.fillStateContainer(builder.add(SEASON));
     }
 
     @Override

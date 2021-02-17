@@ -61,14 +61,14 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!isValidPosition(state, worldIn, pos))
         {
             worldIn.destroyBlock(pos, false);
         }
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
         if (direction.getOpposite() == stateIn.get(FACING) && !facingState.isIn(BlockTags.LOGS))
@@ -79,7 +79,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
     {
         BlockState attachedState = world.getBlockState(pos.offset(state.get(FACING).getOpposite()));
         return attachedState.isIn(BlockTags.LOGS);
@@ -92,16 +92,16 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(FACING));
+        super.fillStateContainer(builder.add(FACING));
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        Direction direction = context.getClickedFace();
+        Direction direction = context.getNearestLookingDirection();
         if (direction.getAxis() != Direction.Axis.Y)
         {
             return updateStateWithCurrentMonth(getDefaultState()).with(FACING, direction);

@@ -69,9 +69,9 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(getFluidProperty());
     }
 

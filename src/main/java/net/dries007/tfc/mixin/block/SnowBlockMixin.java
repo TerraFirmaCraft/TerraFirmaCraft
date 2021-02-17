@@ -73,7 +73,7 @@ public abstract class SnowBlockMixin extends Block
     }
 
     @Inject(method = "updateShape", at = @At(value = "RETURN"), cancellable = true)
-    private void inject$updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos, CallbackInfoReturnable<BlockState> cir)
+    private void inject$updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos, CallbackInfoReturnable<BlockState> cir)
     {
         // If we can't survive, see if we can survive with only one layer, to allow the above leaves check to pass instead
         if (cir.getReturnValue().isIn(Blocks.AIR) && stateIn.get(SnowBlock.LAYERS) > 1)

@@ -44,7 +44,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        setDefaultState(stateDefinition.with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(getDefaultState().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -72,7 +72,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -84,7 +84,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         {
             updateFluid(worldIn, stateIn, currentPos);
             boolean flag = facingState.isIn(TFCTags.Blocks.KELP_TREE) || (facing == Direction.DOWN && facingState.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
-            return stateIn.with(PROPERTY_BY_DIRECTION.get(facing), flag);
+            return stateIn.with(FACING_TO_PROPERTY_MAP.get(facing), flag);
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     }
 
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
     {
         updateFluid(worldIn, state, pos);
     }
@@ -137,9 +137,9 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(getFluidProperty());
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }

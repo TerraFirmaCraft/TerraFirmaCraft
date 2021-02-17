@@ -50,17 +50,17 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.down());
-        return (belowState.getFluidState() != Fluids.EMPTY.defaultFluidState() && isValidFluid(belowState.getFluidState().getFluid()));
+        return (belowState.getFluidState() != Fluids.EMPTY.getDefaultState() && isValidFluid(belowState.getFluidState().getFluid()));
     }
 
     /**
-     * {  LilyPadBlock#entityInside}
+     * {  LilyPadBlock#onEntityCollision}
      */
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        super.entityInside(state, worldIn, pos, entityIn);
+        super.onEntityCollision(state, worldIn, pos, entityIn);
         if (worldIn instanceof ServerWorld && entityIn instanceof BoatEntity)
         {
             worldIn.destroyBlock(new BlockPos(pos), true, entityIn);
@@ -75,6 +75,6 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
 
     private boolean isValidFluid(Fluid fluidIn)
     {
-        return fluidIn.isSame(fluid.get());
+        return fluidIn.isEquivalentTo(fluid.get());
     }
 }

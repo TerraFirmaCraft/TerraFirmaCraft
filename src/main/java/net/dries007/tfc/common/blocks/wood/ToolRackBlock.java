@@ -41,7 +41,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -93,8 +93,8 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         BlockState contextualState;
         if (!context.replacingClickedOnBlock())
         {
-            contextualState = context.getWorld().getBlockState(context.getPos().offset(context.getClickedFace().getOpposite()));
-            if (contextualState.getBlock() == this && contextualState.get(FACING) == context.getClickedFace())
+            contextualState = context.getWorld().getBlockState(context.getPos().offset(context.getNearestLookingDirection().getOpposite()));
+            if (contextualState.getBlock() == this && contextualState.get(FACING) == context.getNearestLookingDirection())
             {
                 return null;
             }
@@ -122,7 +122,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, WATERLOGGED);
     }

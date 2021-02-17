@@ -51,11 +51,11 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super(properties);
 
-        setDefaultState(stateDefinition.with(PART, Part.LOWER));
+        setDefaultState(getDefaultState().with(PART, Part.LOWER));
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         Part part = stateIn.get(PART);
         if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(PART) != part)
@@ -97,11 +97,11 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockAndUpdate(pos.up(), getDefaultState().with(PART, Part.UPPER));
+        worldIn.setBlockState(pos.up(), getDefaultState().with(PART, Part.UPPER));
     }
 
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
     {
         if (!worldIn.isClientSide)
         {
@@ -114,7 +114,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
                     if (blockstate.getBlock() == state.getBlock() && blockstate.get(PART) == Part.LOWER)
                     {
                         worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-                        worldIn.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                        worldIn.playEvent(player, 2001, blockpos, Block.getId(blockstate));
                     }
                 }
             }
@@ -141,9 +141,9 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(PART);
     }
 

@@ -62,13 +62,13 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
-        if (facing != growthDirection || !facingState.isIn(this) && !facingState.isIn(getBodyBlock()))
+        if (facing != growthDirection || !facingState.isIn(this) && !facingState.isIn(getBodyPlantBlock()))
         {
             //Not sure if this is necessary
             Fluid fluid = stateIn.getFluidState().getFluid();
@@ -77,12 +77,12 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {
-            return this.getBodyBlock().getDefaultState().with(getFluidProperty(), stateIn.get(getFluidProperty()));
+            return this.getBodyPlantBlock().getDefaultState().with(getFluidProperty(), stateIn.get(getFluidProperty()));
         }
     }
 
     @Override
-    protected boolean canGrowInto(BlockState state)
+    protected boolean canGrowIn(BlockState state)
     {
         Fluid fluid = state.getFluidState().getFluid();
         return getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
@@ -102,9 +102,9 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(getFluidProperty());
     }
 
@@ -121,7 +121,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected AbstractBodyPlantBlock getBodyBlock()
+    protected AbstractBodyPlantBlock getBodyPlantBlock()
     {
         return (AbstractBodyPlantBlock) bodyBlock.get();
     }

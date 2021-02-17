@@ -83,7 +83,7 @@ public class FluidTests
             helper.setBlockState(new BlockPos(1, 1, 1), sourceBlock(TFCFluids.SALT_WATER));
             helper.setBlockState(new BlockPos(3, 1, 1), sourceBlock(TFCFluids.SALT_WATER));
         });
-        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getType() == TFCFluids.SALT_WATER.getSource(), "Salt water should replace spring water and create source");
+        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getFluid() == TFCFluids.SALT_WATER.getSource(), "Salt water should replace spring water and create source");
     }
 
     @IntegrationTest("create_sources_blocked")
@@ -94,7 +94,7 @@ public class FluidTests
             helper.setBlockState(new BlockPos(1, 1, 1), sourceBlock(TFCFluids.SALT_WATER));
             helper.setBlockState(new BlockPos(3, 1, 1), sourceBlock(TFCFluids.SALT_WATER));
         });
-        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getType() == TFCFluids.SALT_WATER.getSource(), "Salt water should replace spring water and create source");
+        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getFluid() == TFCFluids.SALT_WATER.getSource(), "Salt water should replace spring water and create source");
     }
 
     @IntegrationTest("create_sources_blocked")
@@ -105,7 +105,7 @@ public class FluidTests
             helper.setBlockState(new BlockPos(1, 1, 1), waterSource());
             helper.setBlockState(new BlockPos(3, 1, 1), waterSource());
         });
-        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getType() == Fluids.WATER.getSource(), "Salt water should replace spring water and create source");
+        helper.assertFluidAt(new BlockPos(2, 1, 1), state -> state.isSource() && state.getFluid() == Fluids.WATER.getSource(), "Salt water should replace spring water and create source");
     }
 
     @IntegrationTest("fluid_mixing")

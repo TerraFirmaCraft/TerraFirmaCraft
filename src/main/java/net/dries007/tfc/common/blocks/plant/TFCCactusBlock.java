@@ -38,7 +38,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState blockstate = worldIn.getBlockState(pos.down());
         if (state.get(PART) == Part.LOWER)
@@ -57,7 +57,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
         entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
     }

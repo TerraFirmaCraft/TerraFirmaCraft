@@ -63,11 +63,11 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         this.grassPath = grassPath;
         this.farmland = farmland;
 
-        setDefaultState(stateDefinition.with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
+        setDefaultState(getDefaultState().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false).with(SNOWY, false));
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.UP)
         {
@@ -113,7 +113,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
             if (worldIn.isAreaLoaded(pos, 3))
             {
                 // Turn to not-grass
-                worldIn.setBlockAndUpdate(pos, getDirt());
+                worldIn.setBlockState(pos, getDirt());
             }
         }
         else
@@ -130,7 +130,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
                         BlockState grassState = ((IDirtBlock) stateAt.getBlock()).getGrass();
                         if (canPropagate(grassState, worldIn, posAt))
                         {
-                            worldIn.setBlockAndUpdate(posAt, updateStateFromNeighbors(worldIn, posAt, grassState));
+                            worldIn.setBlockState(posAt, updateStateFromNeighbors(worldIn, posAt, grassState));
                         }
                     }
                 }
@@ -155,7 +155,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST, SNOWY);
     }

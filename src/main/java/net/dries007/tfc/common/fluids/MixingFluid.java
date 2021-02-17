@@ -79,7 +79,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      */
     public boolean isSourceBlockOfThisType(FluidState stateIn)
     {
-        return stateIn.getType().isSame(this) && stateIn.isSource();
+        return stateIn.getFluid().isSame(this) && stateIn.isSource();
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 FluidState fluidstate = entry.get();
                 BlockPos blockpos = pos.offset(direction);
                 BlockState blockstate = world.getBlockState(blockpos);
-                if (canSpreadTo(world, pos, blockState, direction, blockpos, blockstate, world.getFluidState(blockpos), fluidstate.getType()))
+                if (canSpreadTo(world, pos, blockState, direction, blockpos, blockstate, world.getFluidState(blockpos), fluidstate.getFluid()))
                 {
                     spreadTo(world, blockpos, blockstate, direction, fluidstate);
                 }
@@ -167,7 +167,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             FluidState fluidstate = getNewLiquid(worldIn, posBelow, blockStateBelow);
 
             // This checks if the block border is passable, and that the below fluid state returns true to being replaced with this fluid state
-            if (canSpreadTo(worldIn, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, worldIn.getFluidState(posBelow), fluidstate.getType()))
+            if (canSpreadTo(worldIn, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, worldIn.getFluidState(posBelow), fluidstate.getFluid()))
             {
                 // Try and spread directly below
                 spreadTo(worldIn, posBelow, blockStateBelow, Direction.DOWN, fluidstate);
@@ -180,7 +180,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                     spreadToSides(worldIn, pos, stateIn, blockStateAt);
                 }
             }
-            else if (stateIn.isSource() || !this.isWaterHole(worldIn, fluidstate.getType(), pos, blockStateAt, posBelow, blockStateBelow))
+            else if (stateIn.isSource() || !this.isWaterHole(worldIn, fluidstate.getFluid(), pos, blockStateAt, posBelow, blockStateBelow))
             {
                 // Source blocks, if they can't spread downwards, will always spread sideways (this happens one tick after they spread downwards)
                 // Flowing blocks will only spread sideways if they can't fall downwards, either to a water hole, or directly falling down (the above if chain)
@@ -285,7 +285,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             FluidState newAdjacentFluid = getNewLiquid(world, adjacentPos, adjacentState);
 
             // If we can pass into the adjacent position
-            if (this.canPassThrough(world, newAdjacentFluid.getType(), pos, blockState, direction, adjacentPos, adjacentState, adjacentFluid))
+            if (this.canPassThrough(world, newAdjacentFluid.getFluid(), pos, blockState, direction, adjacentPos, adjacentState, adjacentFluid))
             {
                 BlockPos adjacentBelowPos = adjacentPos.down();
                 boolean canDropDown = nearbyHoles.computeIfAbsent(relativeKey, key -> {
@@ -343,7 +343,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 state = fluidAt;
                 BlockState blockstate = fluidAt.createLegacyBlock();
                 worldIn.setBlockState(pos, blockstate, 2);
-                worldIn.getPendingFluidTicks().scheduleTick(pos, fluidAt.getType(), spreadDelay);
+                worldIn.getPendingFluidTicks().scheduleTick(pos, fluidAt.getFluid(), spreadDelay);
                 worldIn.updateNeighborsAt(pos, blockstate.getBlock());
             }
         }

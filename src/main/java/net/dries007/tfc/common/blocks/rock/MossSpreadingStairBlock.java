@@ -22,7 +22,7 @@ public class MossSpreadingStairBlock extends StairsBlock
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    public boolean ticksRandomly(BlockState state)
     {
         return true;
     }

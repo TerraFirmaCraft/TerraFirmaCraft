@@ -44,7 +44,7 @@ public class SeaIceBlock extends IceBlock
             Material material = worldIn.getBlockState(pos.down()).getMaterial();
             if (material.blocksMotion() || material.isLiquid())
             {
-                worldIn.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().getDefaultState());
+                worldIn.setBlockState(pos, TFCBlocks.SALT_WATER.get().getDefaultState());
             }
         }
     }
@@ -59,7 +59,7 @@ public class SeaIceBlock extends IceBlock
         else
         {
             // Use salt water here
-            worldIn.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().getDefaultState());
+            worldIn.setBlockState(pos, TFCBlocks.SALT_WATER.get().getDefaultState());
             worldIn.neighborChanged(pos, TFCBlocks.SALT_WATER.get(), pos);
         }
     }

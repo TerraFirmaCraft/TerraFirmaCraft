@@ -46,7 +46,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     {
         super(properties);
 
-        setDefaultState(stateDefinition.with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(getDefaultState().with(PART, Part.BASE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PART, getFluidProperty());
     }
@@ -146,7 +146,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         BASE, MIDDLE, TIP;
 
         @Override
-        public String getSerializedName()
+        public String getString()
         {
             return name().toLowerCase();
         }

@@ -43,7 +43,7 @@ public class TFCVineBlock extends VineBlock
         Season newSeason = getSeasonForState();
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.with(SEASON_NO_SPRING, newSeason));
+            worldIn.setBlockState(pos, state.with(SEASON_NO_SPRING, newSeason));
         }
     }
 
@@ -55,9 +55,9 @@ public class TFCVineBlock extends VineBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEASON_NO_SPRING));
+        super.fillStateContainer(builder.add(SEASON_NO_SPRING));
     }
 
     private Season getSeasonForState()

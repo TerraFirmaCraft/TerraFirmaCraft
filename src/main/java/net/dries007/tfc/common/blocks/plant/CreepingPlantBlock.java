@@ -61,31 +61,37 @@ public abstract class CreepingPlantBlock extends PlantBlock
         };
     }
 
-    protected final Map<BlockState, VoxelShape> shapeCache;
+    protected final Map<BlockState, VoxelShape> shapeCache=null;
 
     protected CreepingPlantBlock(Properties properties)
     {
         super(properties);
 
-        shapeCache = getDefaultState().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.get(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
+        /*shapeCache = getDefaultState().get(Collectors.toMap(state -> state,
+            state -> SHAPES_BY_PROPERTY.entrySet().stream()
+                .findAny().stream()
+                .filter(entry -> state.get(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .reduce(VoxelShapes::or)
+                .orElseGet(VoxelShapes::empty)));*/
 
         setDefaultState(getDefaultState().with(UP, false).with(DOWN, false).with(EAST, false).with(WEST, false).with(NORTH, false).with(SOUTH, false));
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.with(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
+        stateIn = stateIn.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(direction), facingState.isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
         return isEmpty(stateIn) ? Blocks.AIR.getDefaultState() : stateIn;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (Direction direction : UPDATE_SHAPE_ORDER)
+        for (Direction direction : UPDATE_ORDER)
         {
-            if (worldIn.getBlockState(mutablePos.setAndOffset(pos, direction)).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
+            if (worldIn.getBlockState(mutablePos.setAndMove(pos, direction)).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -97,7 +103,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!isValidPosition(state, worldIn, pos))
         {
             worldIn.destroyBlock(pos, false);
         }
@@ -110,9 +116,9 @@ public abstract class CreepingPlantBlock extends PlantBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
+        super.fillStateContainer(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
     }
 
     @Nonnull
@@ -126,12 +132,12 @@ public abstract class CreepingPlantBlock extends PlantBlock
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         boolean hasEarth = false;
-        for (Direction direction : UPDATE_SHAPE_ORDER)
+        for (Direction direction : UPDATE_ORDER)
         {
-            mutablePos.setAndOffset(pos, direction);
+            mutablePos.setAndMove(pos, direction);
             boolean ground = world.getBlockState(mutablePos).isIn(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
-            state = state.with(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
+            state = state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(direction), ground);
             hasEarth |= ground;
         }
         return hasEarth ? state : Blocks.AIR.getDefaultState();

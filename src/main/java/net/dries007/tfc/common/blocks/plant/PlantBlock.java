@@ -46,7 +46,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        super.setDefaultState(super.getDefaultState().getValues().putIfAbsent(getPlant().getStageProperty(), 0)(AGE, 0));
+        super.setDefaultState(super.getDefaultState().with(getPlant().getStageProperty(), 0).with(AGE, 0));
     }
 
     @Override
@@ -64,20 +64,20 @@ public abstract class PlantBlock extends TFCBushBlock
         {
             state = state.with(AGE, Math.min(state.get(AGE) + 1, 3));
         }
-        world.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
+        world.setBlockState(pos, updateStateWithCurrentMonth(state));
     }
 
     /**
      * Gets the plant metadata for this block.
      *
-     * The stage property is isolated and referenced via this as it is needed in the {  net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {  Block#createBlockStateDefinition(StateContainer.Builder)}.
+     * The stage property is isolated and referenced via this as it is needed in the {  net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {  Block#fillStateContainer(StateContainer.Builder)}.
      *
      * See the various {  PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
      */
     public abstract IPlant getPlant();
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(getPlant().getStageProperty(), AGE);
     }

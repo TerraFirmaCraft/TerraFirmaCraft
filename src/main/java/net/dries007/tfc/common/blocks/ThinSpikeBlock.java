@@ -72,7 +72,7 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!isValidPosition(state, worldIn, pos))
         {
             worldIn.destroyBlock(pos, false);
         }
@@ -92,7 +92,7 @@ public class ThinSpikeBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
@@ -101,7 +101,7 @@ public class ThinSpikeBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !facingState.isIn(this))
         {
@@ -125,7 +125,7 @@ public class ThinSpikeBlock extends Block
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(TIP);
     }

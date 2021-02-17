@@ -93,9 +93,9 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(getFluidProperty());
     }
 
@@ -103,10 +103,10 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
         int age = random.nextInt(4);
-        BlockState lowerState = getStateWithFluid(getDefaultState(), world.getFluidState(pos).getType());
+        BlockState lowerState = getStateWithFluid(getDefaultState(), world.getFluidState(pos).getFluid());
         if (lowerState.get(getFluidProperty()).getFluid() == Fluids.EMPTY)
             return;
         world.setBlockState(pos, lowerState.with(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).with(TFCBlockStateProperties.AGE_3, age), flags);
-        world.setBlockState(pos.up(), getStateWithFluid(getDefaultState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.up()).getType()), flags);
+        world.setBlockState(pos.up(), getStateWithFluid(getDefaultState().with(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).with(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.up()).getFluid()), flags);
     }
 }

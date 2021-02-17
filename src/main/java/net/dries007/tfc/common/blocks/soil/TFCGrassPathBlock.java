@@ -49,7 +49,7 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        worldIn.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), worldIn, pos));
+        worldIn.setBlockState(pos, Block.pushEntitiesUp(state, getDirt(), worldIn, pos));
     }
 
     @Override

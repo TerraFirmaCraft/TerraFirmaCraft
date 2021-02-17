@@ -71,7 +71,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        setDefaultState(stateDefinition.with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
+        setDefaultState(getDefaultState().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         int distance = getDistance(facingState) + 1;
         if (distance != 1 || stateIn.get(getDistanceProperty()) != distance)
@@ -119,7 +119,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         }
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockAndUpdate(pos, state.with(SEASON_NO_SPRING, newSeason));
+            worldIn.setBlockState(pos, state.with(SEASON_NO_SPRING, newSeason));
         }
     }
 
@@ -149,7 +149,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
@@ -158,7 +158,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    public boolean ticksRandomly(BlockState state)
     {
         return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
     }
@@ -172,7 +172,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
     }

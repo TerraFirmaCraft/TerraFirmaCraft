@@ -50,7 +50,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == this.growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
         {
@@ -81,9 +81,9 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
+        super.fillStateContainer(builder);
         builder.add(getFluidProperty());
     }
 

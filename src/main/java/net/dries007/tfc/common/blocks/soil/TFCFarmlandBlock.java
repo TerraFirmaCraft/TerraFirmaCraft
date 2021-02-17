@@ -30,7 +30,7 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
 
     public static void turnToDirt(BlockState state, World worldIn, BlockPos pos)
     {
-        worldIn.setBlockAndUpdate(pos, pushEntitiesUp(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
+        worldIn.setBlockState(pos, pushEntitiesUp(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
     }
 
     private final ForgeBlockProperties properties;

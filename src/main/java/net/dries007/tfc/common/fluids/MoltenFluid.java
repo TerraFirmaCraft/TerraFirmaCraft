@@ -56,7 +56,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected boolean isRandomlyTicking()
+    protected boolean ticksRandomly()
     {
         return true;
     }
@@ -64,7 +64,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     @Override
     protected void beforeDestroyingBlock(IWorld worldIn, BlockPos pos, BlockState state)
     {
-        worldIn.levelEvent(1501, pos, 0);
+        worldIn.playEvent(1501, pos, 0);
     }
 
     @Override

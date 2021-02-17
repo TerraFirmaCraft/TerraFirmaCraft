@@ -51,9 +51,9 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(COUNT));
+        super.fillStateContainer(builder.add(COUNT));
     }
 
     @Override
