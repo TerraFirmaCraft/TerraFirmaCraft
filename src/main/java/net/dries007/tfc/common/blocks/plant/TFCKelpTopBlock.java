@@ -64,7 +64,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing == growthDirection.getOpposite() && !stateIn.onReplaced(placedByLeaves(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -89,7 +89,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected boolean canAttachToBlock(Block blockIn)
+    protected boolean canGrowOn(Block blockIn)
     {
         return blockIn != Blocks.MAGMA_BLOCK;
     }
@@ -137,6 +137,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     {
         VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
         Vector3d vector3d = state.getOffset(worldIn, pos);
-        return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
+        return voxelshape.withOffset(vector3d.x, vector3d.y, vector3d.z);
     }
 }

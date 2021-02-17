@@ -33,13 +33,13 @@ public interface IGrassBlock extends ISoilBlock
         {
             return true;
         }
-        else if (stateUp.getFluidState().getAmount() == 8)
+        else if (stateUp.getFluidState().getLevel() == 8)
         {
             return false;
         }
         else
-        {
-            return LightEngine.getLightBlockInto(world, state, pos, stateUp, posUp, Direction.UP, stateUp.getLightBlock(world, posUp)) < world.getMaxLightLevel();
+        {//get light block into
+            return LightEngine.func_215613_a(world, state, pos, stateUp, posUp, Direction.UP, stateUp.getLightValue(world, posUp)) < world.getMaxLightLevel();
         }
     }
 
@@ -52,6 +52,6 @@ public interface IGrassBlock extends ISoilBlock
     default boolean canPropagate(BlockState state, IWorldReader world, BlockPos pos)
     {
         BlockPos posUp = pos.up();
-        return canBeGrass(state, world, pos) && !world.getFluidState(posUp).isIn(FluidTags.WATER);
+        return canBeGrass(state, world, pos) && !world.getFluidState(posUp).isTagged(FluidTags.WATER);
     }
 }

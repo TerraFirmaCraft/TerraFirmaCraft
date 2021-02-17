@@ -73,7 +73,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 
                 BlockState stateAt = worldIn.getBlockState(mutablePos);
                 FluidState fluidAt;
-                if (stateAt.isAir() && snowState.canBeReplacedByLeaves(worldIn, mutablePos))
+                if (stateAt.isAir() && snowState.blockNeedsPostProcessing(worldIn, mutablePos))
                 {
                     if (temperature + noise < 0)
                     {

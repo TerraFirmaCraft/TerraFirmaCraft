@@ -12,7 +12,7 @@ import net.minecraft.block.material.PushReaction;
 
 public class TFCMaterials
 {
-    public static final Material MOLTEN_METAL = new Builder(MaterialColor.FIRE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
+    public static final Material MOLTEN_METAL = new Builder(MaterialColor.RED).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
     public static final Material SALT_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
     public static final Material SPRING_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
 

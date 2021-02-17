@@ -80,7 +80,7 @@ public class ThinSpikeBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         BlockPos posDown = pos.down();
         BlockState otherState = worldIn.getBlockState(posDown);

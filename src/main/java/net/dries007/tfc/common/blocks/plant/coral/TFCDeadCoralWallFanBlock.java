@@ -80,7 +80,7 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickRate(worldIn));
         }
 
-        return facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : stateIn;
+        return facing.getOpposite() == stateIn.get(FACING) && !stateIn.blockNeedsPostProcessing(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : stateIn;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
             if (d.getAxis().isHorizontal())
             {
                 blockstate = blockstate.with(FACING, d.getOpposite());
-                if (blockstate.canBeReplacedByLeaves(iworldreader, blockpos))
+                if (blockstate.blockNeedsPostProcessing(iworldreader, blockpos))
                 {
                     return blockstate;
                 }

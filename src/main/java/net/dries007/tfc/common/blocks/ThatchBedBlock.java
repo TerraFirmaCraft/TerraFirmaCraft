@@ -29,6 +29,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import static net.dries007.tfc.common.blocks.GroundcoverBlock.FACING;
+
 public class ThatchBedBlock extends BedBlock
 {
     private static final VoxelShape BED_SHAPE = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
@@ -39,25 +41,25 @@ public class ThatchBedBlock extends BedBlock
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (!worldIn.isClientSide())
+        if (worldIn.isRemote())
         {
-            if (canSetSpawn(worldIn))
+            if (canSpawnInBlock())
             {
                 if (!worldIn.isThundering())
                 {
-                    player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.use"), true);
+                    player.sendStatusMessage(new TranslationTextComponent("tfc.thatch_bed.use"), true);
                 }
                 else
                 {
-                    player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.thundering"), true);
+                    player.sendStatusMessage(new TranslationTextComponent("tfc.thatch_bed.thundering"), true);
                 }
                 return ActionResultType.SUCCESS;
             }
             else
             {
-                worldIn.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.Mode.DESTROY);
+                worldIn.createExplosion(null, DamageSource.IN_FIRE, null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.Mode.DESTROY);
             }
         }
         return ActionResultType.FAIL;
@@ -71,13 +73,13 @@ public class ThatchBedBlock extends BedBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderShape(BlockState state)
+    public BlockRenderType getRenderType(BlockState state)
     {
         return BlockRenderType.MODEL;
     }
 
     @Override
-    public TileEntity newBlockEntity(IBlockReader worldIn)
+    public TileEntity createNewTileEntity(IBlockReader worldIn)
     {
         return null; // Need to override as the super class is a ITileEntityProvider
     }

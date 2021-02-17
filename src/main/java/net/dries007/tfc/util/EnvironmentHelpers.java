@@ -101,7 +101,7 @@ public final class EnvironmentHelpers
         {
             // Vanilla snow block stacking
             BlockState newState = state.with(SnowBlock.LAYERS, state.get(SnowBlock.LAYERS) + 1);
-            if (newState.canBeReplacedByLeaves(world, pos))
+            if (newState.isReplaceable(world, pos))
             {
                 world.setBlockState(pos, newState, 3);
             }
@@ -113,7 +113,7 @@ public final class EnvironmentHelpers
             SnowPileBlock.convertToPile(world, pos, state);
             return true;
         }
-        else if (state.isAir() && Blocks.SNOW.getDefaultState().canBeReplacedByLeaves(world, pos))
+        else if (state.isAir() && Blocks.SNOW.getDefaultState().isReplaceable(world, pos))
         {
             // Vanilla snow placement (single layers)
             world.setBlockState(pos, Blocks.SNOW.getDefaultState(), 3);
@@ -155,7 +155,7 @@ public final class EnvironmentHelpers
             {
                 BlockPos adjPos = pos.offset(direction);
                 BlockState adjState = world.getBlockState(adjPos);
-                if (((adjState.isIn(Blocks.SNOW) || adjState.isIn(TFCBlocks.SNOW_PILE.get())) && adjState.get(SnowBlock.LAYERS) < state.get(SnowBlock.LAYERS)) || (adjState.isAir() && Blocks.SNOW.getDefaultState().canBeReplacedByLeaves(world, adjPos)))
+                if (((adjState.isIn(Blocks.SNOW) || adjState.isIn(TFCBlocks.SNOW_PILE.get())) && adjState.get(SnowBlock.LAYERS) < state.get(SnowBlock.LAYERS)) || (adjState.isAir() && Blocks.SNOW.getDefaultState().isReplaceable(world, adjPos)))
                 {
                     found++;
                     if (targetPos == null || random.nextInt(found) == 0)

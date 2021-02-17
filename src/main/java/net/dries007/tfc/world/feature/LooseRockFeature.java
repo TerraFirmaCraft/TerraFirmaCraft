@@ -48,7 +48,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
         final BlockState stateAt = worldIn.getBlockState(pos);
         final BlockState state = getStateToPlace(rock.getBlock(Rock.BlockType.LOOSE).getDefaultState(), stateAt);
 
-        if (state != null && state.canBeReplacedByLeaves(worldIn, pos))
+        if (state != null && state.blockNeedsPostProcessing(worldIn, pos))
         {
             setBlockState(worldIn, pos, state.with(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(rand)));
             return true;

@@ -86,7 +86,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     {
         final FluidState fluidState = context.getWorld().getFluidState(context.getPos());
 
-        BlockState state = getDefaultState().with(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
         if (getFluidProperty().canContain(fluidState.getFluid()))
         {
             return state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getFluid()));
@@ -104,7 +104,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (!stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             return Blocks.AIR.getDefaultState();
         }
@@ -121,7 +121,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         worldIn.destroyBlock(pos, false);
         if (!player.isCreative() && worldIn instanceof ServerWorld)

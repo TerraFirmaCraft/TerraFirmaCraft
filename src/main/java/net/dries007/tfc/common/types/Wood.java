@@ -53,7 +53,7 @@ public class Wood
         PINE(true, MaterialColor.GRAY_TERRACOTTA, MaterialColor.GRAY_TERRACOTTA, MaterialColor.COLOR_GRAY, 0, 7),
         ROSEWOOD(false, MaterialColor.COLOR_RED, MaterialColor.COLOR_RED, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 9),
         SEQUOIA(true, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, 0, 7),
-        SPRUCE(true, MaterialColor.PINK_TERRACOTTA, MaterialColor.PINK_TERRACOTTA, MaterialColor.TERRACOTTA_BLACK, 0, 7),
+        SPRUCE(true, MaterialColor.PINK_TERRACOTTA, MaterialColor.PINK_TERRACOTTA, MaterialColor.BLACK_TERRACOTTA, 0, 7),
         SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 0, 7),
         WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 7),
         WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 0, 7);

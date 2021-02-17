@@ -19,10 +19,10 @@ public enum SandBlockType
 {
     BROWN(new Color(112, 113, 89).getRGB(), MaterialColor.DIRT),
     WHITE(new Color(202, 202, 201).getRGB(), MaterialColor.QUARTZ),
-    BLACK(new Color(56, 56, 56).getRGB(), MaterialColor.TERRACOTTA_BLACK),
+    BLACK(new Color(56, 56, 56).getRGB(), MaterialColor.BLACK_TERRACOTTA),
     RED(new Color(125, 99, 84).getRGB(), MaterialColor.RED_TERRACOTTA),
     YELLOW(new Color(215, 196, 140).getRGB(), MaterialColor.SAND),
-    GREEN(new Color(106, 116, 81).getRGB(), MaterialColor.COLOR_GREEN),
+    GREEN(new Color(106, 116, 81).getRGB(), MaterialColor.GREEN),
     PINK(new Color(150, 101, 97).getRGB(), MaterialColor.PINK_TERRACOTTA);
 
     private static final SandBlockType[] VALUES = values();

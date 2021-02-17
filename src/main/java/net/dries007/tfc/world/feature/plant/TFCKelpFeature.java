@@ -60,7 +60,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (world.hasWater(mutablePos) && body.canBeReplacedByLeaves(world, mutablePos))
+            if (world.hasWater(mutablePos) && body.isReplaceable(world, mutablePos))
             {
                 if (i == height || !world.hasWater(mutablePos.up()))
                 {

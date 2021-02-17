@@ -37,7 +37,7 @@ public abstract class FallingBlockMixin extends Block
      * Ticks are scheduled elsewhere but we do not bother catching them as they will just no-op here.
      */
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void inject$onPlace(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo ci)
+    private void inject$onBlockAdded(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo ci)
     {
         if (LandslideRecipe.getRecipe(worldIn, new BlockRecipeWrapper(pos, state)) != null)
         {

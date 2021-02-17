@@ -47,7 +47,7 @@ public class FloraNoiseTests
         long seed = System.currentTimeMillis();
 
         ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
-        Registry<ConfiguredFeature<?, ?>> registry = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+        Registry<ConfiguredFeature<?, ?>> registry = ServerLifecycleHooks.getCurrentServer().func_244267_aX().getRegistry(Registry.CONFIGURED_FEATURE_KEY);
 
         assertNotNull(generator);
         assertNotNull(registry);

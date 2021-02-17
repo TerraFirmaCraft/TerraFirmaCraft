@@ -25,13 +25,13 @@ public final class TreeCommand
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("tree")
-            .requires(source -> source.hasPermission(2))
+            .requires(source -> source.hasPermissionLevel(2))
             .then(Commands.argument("pos", BlockPosArgument.blockPos())
                 .then(Commands.argument("wood", EnumArgument.enumArgument(Wood.Default.class))
                     .then(Commands.argument("variant", EnumArgument.enumArgument(Variant.class))
-                        .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), context.getArgument("variant", Variant.class)))
+                        .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getLoadedBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), context.getArgument("variant", Variant.class)))
                     )
-                    .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), Variant.NORMAL))
+                    .executes(context -> placeTree(context.getSource().getWorld(), BlockPosArgument.getLoadedBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), Variant.NORMAL))
                 )
             );
     }
@@ -39,9 +39,9 @@ public final class TreeCommand
     private static int placeTree(ServerWorld world, BlockPos pos, Wood.Default wood, Variant variant)
     {
         TFCTree tree = wood.getTree();
-        Registry<ConfiguredFeature<?, ?>> registry = world.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+        Registry<ConfiguredFeature<?, ?>> registry = world.func_241828_r().getRegistry(Registry.CONFIGURED_FEATURE_KEY);
         ConfiguredFeature<?, ?> feature = variant == Variant.NORMAL ? tree.getNormalFeature(registry) : tree.getOldGrowthFeature(registry);
-        feature.place(world, world.getChunkSource().getGenerator(), world.getRandom(), pos);
+        feature.generate(world, world.getChunkProvider().getChunkGenerator(), world.getRandom(), pos);
         return Command.SINGLE_SUCCESS;
     }
 

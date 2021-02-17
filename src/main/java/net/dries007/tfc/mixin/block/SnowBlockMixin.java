@@ -79,7 +79,7 @@ public abstract class SnowBlockMixin extends Block
         if (cir.getReturnValue().isIn(Blocks.AIR) && stateIn.get(SnowBlock.LAYERS) > 1)
         {
             BlockState state = stateIn.with(SnowBlock.LAYERS, 1);
-            if (state.canBeReplacedByLeaves(worldIn, currentPos))
+            if (state.blockNeedsPostProcessing(worldIn, currentPos))
             {
                 cir.setReturnValue(state);
             }

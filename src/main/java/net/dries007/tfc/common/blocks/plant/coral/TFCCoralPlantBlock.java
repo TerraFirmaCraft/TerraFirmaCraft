@@ -61,7 +61,7 @@ public class TFCCoralPlantBlock extends TFCAbstractCoralPlantBlock
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing == Direction.DOWN && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             return Blocks.AIR.getDefaultState();
         }

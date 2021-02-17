@@ -30,7 +30,7 @@ public class TFCBlockStateProperties
     public static final EnumProperty<Season> SEASON = EnumProperty.create("season", Season.class);
     public static final EnumProperty<Season> SEASON_NO_SPRING = EnumProperty.create("season", Season.class, Season.SUMMER, Season.FALL, Season.WINTER);
 
-    public static final IntegerProperty DISTANCE_7 = BlockStateProperties.DISTANCE;
+    public static final IntegerProperty DISTANCE_7 = BlockStateProperties.DISTANCE_0_7;
     public static final IntegerProperty DISTANCE_8 = IntegerProperty.create("distance", 1, 8);
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);
     public static final IntegerProperty DISTANCE_10 = IntegerProperty.create("distance", 1, 10);
@@ -44,7 +44,7 @@ public class TFCBlockStateProperties
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
 
-    public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
+    public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE_0_1;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);
     public static final IntegerProperty STAGE_3 = IntegerProperty.create("stage", 0, 3);
     public static final IntegerProperty STAGE_4 = IntegerProperty.create("stage", 0, 4);

@@ -52,7 +52,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -63,10 +63,10 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             Block block = facingState.getBlock();
             if (block != this && block != abstracttopplantblock)
             {
-                return abstracttopplantblock.getStateForPlacement(worldIn).with(getFluidProperty(), stateIn.get(getFluidProperty()));
+                return abstracttopplantblock.grow(worldIn).with(getFluidProperty(), stateIn.get(getFluidProperty()));
             }
         }
-        if (this.scheduleFluidTicks)
+        if (this.ticksRandomly)
         {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
@@ -116,6 +116,6 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     {
         VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
         Vector3d vector3d = state.getOffset(worldIn, pos);
-        return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
+        return voxelshape.withOffset(vector3d.x, vector3d.y, vector3d.z);
     }
 }

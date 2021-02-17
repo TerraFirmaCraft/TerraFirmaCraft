@@ -45,7 +45,7 @@ public final class ClearWorldCommand
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("clearworld")
-            .requires(source -> source.hasPermission(2))
+            .requires(source -> source.hasPermissionLevel(2))
             .then(Commands.argument("radius", IntegerArgumentType.integer(1, 250))
                 .then(Commands.argument("preset", EnumArgument.enumArgument(Preset.class))
                     .executes(cmd -> clearWorld(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "radius"), cmd.getArgument("preset", Preset.class)))
@@ -57,10 +57,10 @@ public final class ClearWorldCommand
     @SuppressWarnings("deprecation")
     private static int clearWorld(CommandSource source, int radius, Preset preset)
     {
-        source.sendSuccess(new TranslationTextComponent(STARTING), true);
+        source.sendFeedback(new TranslationTextComponent(STARTING), true);
 
         final World world = source.getWorld();
-        final BlockPos center = new BlockPos(source.getPosition());
+        final BlockPos center = new BlockPos(source.getPos());
         final BlockState air = Blocks.AIR.getDefaultState();
 
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -85,7 +85,7 @@ public final class ClearWorldCommand
                 }
             }
         }
-        source.sendSuccess(new TranslationTextComponent(DONE, blocksRemoved), true);
+        source.sendFeedback(new TranslationTextComponent(DONE, blocksRemoved), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -111,7 +111,7 @@ public final class ClearWorldCommand
             return state -> blocks.contains(state.getBlock());
         }),
         NOT_ORE(server -> {
-            final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+            final Registry<ConfiguredFeature<?, ?>> registry = server.func_244267_aX().getRegistry(Registry.CONFIGURED_FEATURE_KEY);//registryAccess
             Set<Block> blocks = registry.stream()
                 .filter(feature -> feature.feature instanceof VeinFeature<?, ?>)
                 .flatMap(feature -> ((VeinConfig) feature.config).getOreStates().stream())

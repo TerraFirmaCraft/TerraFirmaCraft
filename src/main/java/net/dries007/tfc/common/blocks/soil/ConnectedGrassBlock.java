@@ -84,10 +84,11 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         worldIn.getPendingBlockTicks().scheduleTick(pos, this, 0);
+
     }
 
     @Override
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -96,13 +97,13 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             worldIn.getPendingBlockTicks().scheduleTick(pos.offset(direction).up(), this, 0);
         }
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -118,11 +119,11 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         }
         else
         {
-            if (worldIn.getMaxLocalRawBrightness(pos.up()) >= 9)
+            if (worldIn.getBrightness(pos.up()) >= 9)
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    BlockPos posAt = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
+                    BlockPos posAt = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
                     BlockState stateAt = worldIn.getBlockState(posAt);
                     if (stateAt.getBlock() instanceof IDirtBlock)
                     {

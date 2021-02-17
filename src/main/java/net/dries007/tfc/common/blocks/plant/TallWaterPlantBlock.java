@@ -82,7 +82,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
             state = state.with(getFluidProperty(), getFluidProperty().keyFor(fluidState.getFluid()));
         }
 
-        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canBeReplaced(context) ? state : null;
+        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).isReplaceable(context) ? state : null;
     }
 
     @Override

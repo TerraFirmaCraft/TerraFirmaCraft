@@ -43,7 +43,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             return Blocks.AIR.getDefaultState();
         }
@@ -58,7 +58,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
             if (direction.getAxis().isHorizontal())
             {
                 contextualState = contextualState.with(FACING, direction.getOpposite());
-                if (contextualState.canBeReplacedByLeaves(world, pos))
+                if (contextualState.blockNeedsPostProcessing(world, pos))
                 {
                     return contextualState.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
                 }
@@ -130,6 +130,6 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn)
     {
         BlockState blockstate = blockReader.getBlockState(pos);
-        return !blockstate.isSignalSource() && blockstate.isSolidSide(blockReader, pos, directionIn);
+        return !blockstate.isSolid() && blockstate.isSolidSide(blockReader, pos, directionIn);
     }
 }

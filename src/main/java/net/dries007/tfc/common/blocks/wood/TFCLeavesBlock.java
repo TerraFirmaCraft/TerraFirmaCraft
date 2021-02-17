@@ -94,7 +94,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
         return 1;
     }

@@ -141,7 +141,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         remove();
                         if (!dontSetBlock)
                         {
-                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canBeReplacedByLeaves(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.down())))
+                            if (hitBlockState.isReplaceable(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.isReplaceable(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.down())))
                             {
                                 if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getFluid() == Fluids.WATER)
                                 {

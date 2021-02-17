@@ -74,7 +74,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (!stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
             updateFluid(worldIn, stateIn, currentPos);
@@ -92,7 +92,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canBeReplacedByLeaves(worldIn, pos))
+        if (!state.blockNeedsPostProcessing(worldIn, pos))
         {
             worldIn.destroyBlock(pos, true);
         }

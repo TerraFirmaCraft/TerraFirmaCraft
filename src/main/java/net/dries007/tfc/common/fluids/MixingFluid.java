@@ -138,7 +138,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         else if (!(block instanceof DoorBlock) && !block.isIn(BlockTags.SIGNS) && block != Blocks.LADDER && block != Blocks.SUGAR_CANE && block != Blocks.BUBBLE_COLUMN)
         {
             Material material = state.getMaterial();
-            if (material != Material.PORTAL && material != Material.STRUCTURAL_AIR && material != Material.WATER_PLANT && material != Material.REPLACEABLE_WATER_PLANT)
+            if (material != Material.PORTAL && material != Material.STRUCTURAL_AIR && material != Material.OCEAN_PLANT && material != Material.REPLACEABLE_WATER_PLANT)
             {
                 return !material.blocksMotion();
             }

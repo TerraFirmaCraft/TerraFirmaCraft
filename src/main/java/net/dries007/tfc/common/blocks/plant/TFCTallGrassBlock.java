@@ -60,7 +60,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         Part part = stateIn.get(PART);
         if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(PART) != part)
         {
-            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canBeReplacedByLeaves(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.blockNeedsPostProcessing(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else
         {
@@ -73,14 +73,14 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         if (state.get(PART) == Part.LOWER)
         {
-            return super.canBeReplacedByLeaves(state, worldIn, pos);
+            return super.isValidPosition(state, worldIn, pos);
         }
         else
         {
             BlockState blockstate = worldIn.getBlockState(pos.down());
             if (state.getBlock() != this)
             {
-                return super.canBeReplacedByLeaves(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return super.isValidPosition(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
             return blockstate.getBlock() == this && blockstate.get(PART) == Part.LOWER;
         }
@@ -91,11 +91,11 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         BlockPos pos = context.getPos();
-        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
+        return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).isReplaceable(context) ? super.getStateForPlacement(context) : null;
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         worldIn.setBlockState(pos.up(), getDefaultState().with(PART, Part.UPPER));
     }
@@ -103,7 +103,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
     {
-        if (!worldIn.isClientSide)
+        if (worldIn.isRemote)
         {
             if (player.isCreative())
             {
@@ -114,13 +114,13 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
                     if (blockstate.getBlock() == state.getBlock() && blockstate.get(PART) == Part.LOWER)
                     {
                         worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-                        worldIn.playEvent(player, 2001, blockpos, Block.getId(blockstate));
+                        worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
                     }
                 }
             }
             else
             {
-                dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
+                spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
             }
         }
     }

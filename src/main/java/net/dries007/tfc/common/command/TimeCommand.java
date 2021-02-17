@@ -29,7 +29,7 @@ public final class TimeCommand
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("time")
-            .requires(source -> source.hasPermission(2))
+            .requires(source -> source.hasPermissionLevel(2))
             .then(Commands.literal("set")
                 .then(Commands.literal("monthlength")
                     .then(Commands.argument("value", IntegerArgumentType.integer(1))
@@ -98,7 +98,7 @@ public final class TimeCommand
 
     private static int setTime(MinecraftServer server, int dayTime)
     {
-        for (ServerWorld world : server.getAllLevels())
+        for (ServerWorld world : server.getWorlds())
         {
             long dayTimeJump = dayTime - (world.getDayTime() % ICalendar.TICKS_IN_DAY);
             if (dayTimeJump < 0)
@@ -119,7 +119,7 @@ public final class TimeCommand
 
     private static int sendQueryResults(CommandSource source, String translationKey, long value)
     {
-        source.sendSuccess(new TranslationTextComponent(translationKey, (int) value), false);
+        source.sendFeedback(new TranslationTextComponent(translationKey, (int) value), false);
         return Command.SINGLE_SUCCESS;
     }
 }

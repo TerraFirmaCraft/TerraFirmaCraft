@@ -26,11 +26,11 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 
 public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForgeBlockProperties
 {
-    public static final IntegerProperty MOISTURE = BlockStateProperties.MOISTURE;
+    public static final IntegerProperty MOISTURE = BlockStateProperties.MOISTURE_0_7;
 
     public static void turnToDirt(BlockState state, World worldIn, BlockPos pos)
     {
-        worldIn.setBlockState(pos, pushEntitiesUp(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
+        worldIn.setBlockState(pos, nudgeEntitiesWithNewState(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
     }
 
     private final ForgeBlockProperties properties;
@@ -53,13 +53,13 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         final BlockState defaultState = getDefaultState();
-        return defaultState.canBeReplacedByLeaves(context.getWorld(), context.getPos()) ? defaultState : getDirt();
+        return defaultState.blockNeedsPostProcessing(context.getWorld(), context.getPos()) ? defaultState : getDirt();
     }
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canBeReplacedByLeaves(worldIn, pos))
+        if (!state.blockNeedsPostProcessing(worldIn, pos))
         {
             // Turn to TFC farmland dirt
             turnToDirt(state, worldIn, pos);
@@ -73,11 +73,11 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
         // todo: trigger TE updates for moisture?
     }
 
-    @Override
+    /*@Override
     public void fallOn(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         // No-op
-    }
+    }*/
 
     @Override
     public BlockState getDirt()

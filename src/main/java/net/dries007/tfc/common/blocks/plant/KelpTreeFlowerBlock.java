@@ -69,7 +69,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canBeReplacedByLeaves(worldIn, pos))
+        if (!state.blockNeedsPostProcessing(worldIn, pos))
         {
             worldIn.destroyBlock(pos, true);
         }
@@ -208,7 +208,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickRate(worldIn));
         }
-        if (facing != Direction.UP && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing != Direction.UP && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
             return Blocks.AIR.getDefaultState();

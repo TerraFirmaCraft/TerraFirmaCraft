@@ -98,7 +98,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         mutablePos.setPos(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = world.getBlockState(mutablePos);
                         final BlockState state = indicator.getStateToGenerate(random);
-                        if (stateAt.isAir() && state.canBeReplacedByLeaves(world, mutablePos))
+                        if (stateAt.isAir() && state.isReplaceable(world, mutablePos))
                         {
                             world.setBlockState(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(random)), 3);
                             //world.setBlockState(mutablePos.up(20), Blocks.GOLD_BLOCK.getDefaultState(), 3);

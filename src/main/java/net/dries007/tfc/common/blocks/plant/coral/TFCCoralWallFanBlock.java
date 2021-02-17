@@ -57,7 +57,7 @@ public class TFCCoralWallFanBlock extends TFCDeadCoralWallFanBlock
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.canBeReplacedByLeaves(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
         {
             return Blocks.AIR.getDefaultState();
         }

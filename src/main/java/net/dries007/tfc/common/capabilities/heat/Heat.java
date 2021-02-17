@@ -9,6 +9,7 @@ package net.dries007.tfc.common.capabilities.heat;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -66,7 +67,7 @@ public enum Heat
                 {
                     if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
                         continue;
-                    base.append("\u2605");
+                    base.append(new StringTextComponent("\u2605"));
                 }
             }
             return base;
@@ -81,7 +82,7 @@ public enum Heat
         IFormattableTextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
-            tooltip.withStyle(heat.format);
+            tooltip.mergeStyle(heat.format);
         }
         return tooltip;
     }
@@ -93,7 +94,7 @@ public enum Heat
         IFormattableTextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
-            tooltip.withStyle(heat.alternate);
+            tooltip.mergeStyle(heat.alternate);
         }
         return tooltip;
     }

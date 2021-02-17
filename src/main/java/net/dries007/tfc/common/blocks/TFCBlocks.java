@@ -63,7 +63,7 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.create(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL).harvestLevel(0)), EARTH);
+    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.create(Material.EARTH, MaterialColor.BLACK_TERRACOTTA).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND).harvestLevel(0)), EARTH);
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT).harvestTool(ToolType.SHOVEL).harvestLevel(0), PEAT, null, null), EARTH);
 
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
@@ -74,11 +74,11 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), block -> new BlockItem(block, new Item.Properties().group(EARTH)), type.shouldCreateBlockItem())
     );
 
-    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(AbstractBlock.Properties.create(Material.ICE).friction(0.98f).tickRandomly().hardnessAndResistance(0.5f).sound(SoundType.GLASS).notSolid().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
-    public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW).harvestTool(ToolType.SHOVEL).harvestLevel(0)).tileEntity(SnowPileTileEntity::new)), EARTH);
+    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(AbstractBlock.Properties.create(Material.ICE).speedFactor(0.98f).tickRandomly().hardnessAndResistance(0.5f).sound(SoundType.GLASS).notSolid().setAllowsSpawn(TFCBlocks::onlyPolarBears)), EARTH);
+    public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.from(Blocks.SNOW).harvestTool(ToolType.SHOVEL).harvestLevel(0)).tileEntity(SnowPileTileEntity::new)), EARTH);
     public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new ThinSpikeBlock(Properties.create(Material.ICE).noDrops().hardnessAndResistance(0.4f).sound(SoundType.GLASS).notSolid()));
 
-    public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.create(Material.GLASS).noDrops().hardnessAndResistance(0.2f).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.create(Material.GLASS).noDrops().hardnessAndResistance(0.2f).sound(SoundType.BONE)));
 
     // Ores
 
@@ -152,13 +152,13 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.create(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
-        .lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.get(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).notSolid()), FLORA);
+    public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.create(Material.OCEAN_PLANT, MaterialColor.GREEN)
+        .setLightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.get(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME).notSolid()), FLORA);
 
     // Misc
 
     public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.create(Material.PLANTS).hardnessAndResistance(0.6F, 0.4F).notSolid().sound(SoundType.PLANT)).flammable(50, 100)), MISC);
-    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.create(Material.REPLACEABLE_PLANT).hardnessAndResistance(0.6F, 0.4F)), MISC);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.create(Material.PLANTS).hardnessAndResistance(0.6F, 0.4F)), MISC);
 
     // Fluids
 

@@ -44,7 +44,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
                     break;
                 }
             }
-            if (spike.canBeReplacedByLeaves(world, mutablePos) && world.isAirBlock(mutablePos))
+            if (spike.isReplaceable(world, mutablePos) && world.isAirBlock(mutablePos))
             {
                 placeSpike(world, mutablePos, spike, rand, config);
                 placedAny = true;

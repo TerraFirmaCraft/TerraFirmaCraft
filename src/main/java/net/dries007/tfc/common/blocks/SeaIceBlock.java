@@ -30,19 +30,19 @@ public class SeaIceBlock extends IceBlock
      * Override to change a reference to water to salt water
      */
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        super.playerDestroy(worldIn, player, pos, state, te, stack);
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
         {
-            if (worldIn.dimensionType().ultraWarm())
+            if (worldIn.getDimensionType().isUltrawarm())
             {
                 worldIn.removeBlock(pos, false);
                 return;
             }
 
             Material material = worldIn.getBlockState(pos.down()).getMaterial();
-            if (material.blocksMotion() || material.isLiquid())
+            if (material.blocksMovement() || material.isLiquid())
             {
                 worldIn.setBlockState(pos, TFCBlocks.SALT_WATER.get().getDefaultState());
             }
@@ -50,9 +50,9 @@ public class SeaIceBlock extends IceBlock
     }
 
     @Override
-    protected void melt(BlockState state, World worldIn, BlockPos pos)
+    protected void turnIntoWater(BlockState state, World worldIn, BlockPos pos)
     {
-        if (worldIn.dimensionType().ultraWarm())
+        if (worldIn.getDimensionType().isUltrawarm())
         {
             worldIn.removeBlock(pos, false);
         }
