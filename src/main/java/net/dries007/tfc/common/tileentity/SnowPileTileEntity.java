@@ -46,14 +46,14 @@ public class SnowPileTileEntity extends TFCTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void read(BlockState state, CompoundNBT nbt)
     {
         internalState = NBTUtil.readBlockState(nbt.getCompound("internalState"));
         super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
         nbt.put("internalState", NBTUtil.writeBlockState(internalState));
         return super.save(nbt);

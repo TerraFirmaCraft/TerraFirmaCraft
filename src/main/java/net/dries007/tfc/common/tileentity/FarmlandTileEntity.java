@@ -30,7 +30,7 @@ public class FarmlandTileEntity extends TFCTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void read(BlockState state, CompoundNBT nbt)
     {
         nitrogen = nbt.getFloat("nitrogen");
         phosphorous = nbt.getFloat("phosphorous");
@@ -39,7 +39,7 @@ public class FarmlandTileEntity extends TFCTileEntity
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
         nbt.putFloat("nitrogen", nitrogen);
         nbt.putFloat("phosphorous", phosphorous);

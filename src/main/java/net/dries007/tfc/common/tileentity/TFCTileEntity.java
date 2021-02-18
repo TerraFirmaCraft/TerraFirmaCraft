@@ -34,25 +34,25 @@ public abstract class TFCTileEntity extends TileEntity
     @Override
     public SUpdateTileEntityPacket getUpdatePacket()
     {
-        return new SUpdateTileEntityPacket(getBlockPos(), 1, save(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(getBlockPos(), 1, write(new CompoundNBT()));
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return save(super.getUpdateTag());
+        return write(super.getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
-        load(getBlockState(), pkt.getTag());
+        read(getBlockState(), pkt.getTag());
     }
 
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT nbt)
     {
-        load(state, nbt);
+        read(state, nbt);
     }
 
     /**
@@ -64,8 +64,8 @@ public abstract class TFCTileEntity extends TileEntity
     {
         if (level != null)
         {
-            BlockState state = level.getBlockState(worldPosition);
-            level.sendBlockUpdated(worldPosition, state, state, 3);
+            BlockState state = world.getBlockState(worldPosition);
+            world.sendBlockUpdated(worldPosition, state, state, 3);
             setChanged();
         }
     }
@@ -91,7 +91,7 @@ public abstract class TFCTileEntity extends TileEntity
         if (level != null)
         {
             getBlockState();
-            level.blockEntityChanged(worldPosition, this);
+            world.blockEntityChanged(worldPosition, this);
         }
     }
 
@@ -100,9 +100,9 @@ public abstract class TFCTileEntity extends TileEntity
         SUpdateTileEntityPacket packet = getUpdatePacket();
         BlockPos pos = getBlockPos();
 
-        if (packet != null && level instanceof ServerWorld)
+        if (packet != null && world instanceof ServerWorld)
         {
-            ((ServerChunkProvider) level.getChunkSource()).chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
+            ((ServerChunkProvider) world.getChunkSource()).chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
     }
 }
