@@ -592,6 +592,28 @@ def generate(rm: ResourceManager):
             for i in range(0, 3):
                 rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
 
+    for fruit in FRUITS:
+        for prefix in ('', 'growing_'):
+            rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
+                ({'model': 'tfc:block/fruit_tree/%s_branch_core' % fruit}),
+                ({'down': True}, {'model': 'tfc:block/fruit_tree/%s_branch_down' % fruit}),
+                ({'up': True}, {'model': 'tfc:block/fruit_tree/%s_branch_up' % fruit}),
+                ({'north': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 90}),
+                ({'south': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 270}),
+                ({'west': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit}),
+                ({'east': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 180})
+            ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
+        for part in ('down', 'side', 'up', 'core'):
+            rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
+        rm.blockstate('fruit_tree/%s_leaves' % fruit, model='tfc:block/fruit_tree/%s_leaves' % fruit).with_lang('%s Leaves', fruit).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves')
+        rm.block_model('tfc:fruit_tree/%s_leaves' % fruit, parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s_leaves' % fruit})
+
+        rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit))
+        for i in range(2, 4 + 1):
+            rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
+        rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
+        rm.item_model(('fruit_tree', '%s_sapling' % fruit), 'tfc:block/fruit_tree/%s_sapling' % fruit)
+
     # Wood Blocks
     for wood in WOODS.keys():
         # Logs

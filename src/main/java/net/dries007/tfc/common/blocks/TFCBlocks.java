@@ -33,6 +33,7 @@ import net.dries007.tfc.common.blocks.berry_bush.*;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.blocks.devices.GrillBlock;
 import net.dries007.tfc.common.blocks.devices.PotBlock;
+import net.dries007.tfc.common.blocks.fruit_tree.*;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -186,6 +187,22 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("berry_bush/dead_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
     public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
+
+    public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
+        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion())), FLORA)
+    );
+
+    public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
+        register("fruit_tree/" + tree.name().toLowerCase() + "_branch", () -> new FruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f))), FLORA)
+    );
+
+    public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
+        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(BranchTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)), FLORA)
+    );
+
+    public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
+        register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
+    );
 
     // Alabaster
 

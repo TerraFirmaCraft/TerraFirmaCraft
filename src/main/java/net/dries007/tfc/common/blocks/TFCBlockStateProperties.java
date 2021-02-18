@@ -58,6 +58,8 @@ public class TFCBlockStateProperties
     public static final IntegerProperty STAGE_11 = IntegerProperty.create("stage", 0, 11);
     public static final IntegerProperty STAGE_12 = IntegerProperty.create("stage", 0, 12);
 
+    public static final IntegerProperty SAPLINGS = IntegerProperty.create("saplings", 1, 4);
+
     public static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
 
     public static final IntegerProperty AGE_3 = IntegerProperty.create("age", 0, 3);
@@ -69,6 +71,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final BooleanProperty WILD = BooleanProperty.create("wild");
+    public static final BooleanProperty GROWING = BooleanProperty.create("growing");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");
