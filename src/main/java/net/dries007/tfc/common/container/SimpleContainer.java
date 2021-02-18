@@ -31,26 +31,26 @@ public class SimpleContainer extends Container
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int index)
+    public ItemStack transferStackInSlot(PlayerEntity player, int index)
     {
         ItemStack stackCopy = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
-        if (slot != null && slot.hasItem())
+        if (slot != null && slot.getHasStack())
         {
-            ItemStack stack = slot.getItem();
+            ItemStack stack = slot.getStack();
             stackCopy = stack.copy();
 
             if (index < 27)
             {
-                if (!this.moveItemStackTo(stack, 27, 36, false))
+                if (!this.mergeItemStack(stack, 27, 36, false))
                 {
                     return ItemStack.EMPTY;
                 }
             }
             else
             {
-                if (!this.moveItemStackTo(stack, 0, 27, false))
+                if (!this.mergeItemStack(stack, 0, 27, false))
                 {
                     return ItemStack.EMPTY;
                 }
@@ -58,11 +58,11 @@ public class SimpleContainer extends Container
 
             if (stack.isEmpty())
             {
-                slot.set(ItemStack.EMPTY);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
-                slot.setChanged();
+                slot.onSlotChanged();
             }
 
             if (stack.getCount() == stackCopy.getCount())
@@ -73,7 +73,7 @@ public class SimpleContainer extends Container
             ItemStack stackTake = slot.onTake(player, stack);
             if (index == 0)
             {
-                player.drop(stackTake, false);
+                player.dropItem(stackTake, false);
             }
         }
 
@@ -81,7 +81,7 @@ public class SimpleContainer extends Container
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn)
+    public boolean canInteractWith(PlayerEntity playerIn)
     {
         return true;
     }

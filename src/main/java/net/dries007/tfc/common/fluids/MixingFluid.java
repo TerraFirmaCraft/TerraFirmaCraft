@@ -31,10 +31,12 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.dries007.tfc.mixin.fluid.FlowingFluidAccessor;
 
+import static net.minecraft.block.CauldronBlock.LEVEL;
+
 public abstract class MixingFluid extends ForgeFlowingFluid
 {
     /**
-     * @see net.minecraft.fluid.FlowingFluid#getCacheKey(BlockPos, BlockPos)
+     * net.minecraft.fluid.FlowingFluid#getCacheKey(BlockPos, BlockPos)
      */
     public static short getCacheKey(BlockPos from, BlockPos to)
     {
@@ -52,7 +54,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * @param worldIn The world
      * @param pos     A position
      * @return The number of adjacent source blocks of this fluid
-     * @see net.minecraft.fluid.FlowingFluid#sourceNeighborCount(IWorldReader, BlockPos)
+     *  et.minecraft.fluid.FlowingFluid#sourceNeighborCount(IWorldReader, BlockPos)
      */
     public int sourceNeighborCount(IWorldReader worldIn, BlockPos pos)
     {
@@ -75,11 +77,11 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      *
      * @param stateIn A fluid state
      * @return If the fluid state is a source block of this fluid
-     * @see net.minecraft.fluid.FlowingFluid#isSourceBlockOfThisType(FluidState)
+     * net.minecraft.fluid.FlowingFluid#isSourceBlockOfThisType(FluidState)
      */
     public boolean isSourceBlockOfThisType(FluidState stateIn)
     {
-        return stateIn.getFluid().isSame(this) && stateIn.isSource();
+        return stateIn.getFluid().isEquivalentTo(this) && stateIn.isSource();
     }
 
     /**
@@ -87,7 +89,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      */
     public void spreadToSides(IWorld world, BlockPos pos, FluidState fluidState, BlockState blockState)
     {
-        int adjacentAmount = fluidState.getAmount() - getDropOff(world);
+        int adjacentAmount = fluidState.getLevel() - this.getSlopeFindDistance(world);//drop off
         if (fluidState.get(FALLING))
         {
             // Falling indicates this fluid is being fed from above - this is then going to spread like a source block (8 - drop off)
@@ -96,16 +98,16 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         if (adjacentAmount > 0)
         {
             // Calculate where the fluid should spread based on each direction
-            Map<Direction, FluidState> map = getSpread(world, pos, blockState);
+            Map<Direction, FluidState> map = func_205572_b(world, pos, blockState);
             for (Map.Entry<Direction, FluidState> entry : map.entrySet())
             {
                 Direction direction = entry.getKey();
-                FluidState fluidstate = entry.get();
+                FluidState fluidstate = entry.getValue();
                 BlockPos blockpos = pos.offset(direction);
                 BlockState blockstate = world.getBlockState(blockpos);
-                if (canSpreadTo(world, pos, blockState, direction, blockpos, blockstate, world.getFluidState(blockpos), fluidstate.getFluid()))
+                if (canFlow(world, pos, blockState, direction, blockpos, blockstate, world.getFluidState(blockpos), fluidstate.getFluid()))
                 {
-                    spreadTo(world, blockpos, blockstate, direction, fluidstate);
+                    flowInto(world, blockpos, blockstate, direction, fluidstate);
                 }
             }
         }
@@ -119,7 +121,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         }
         else
         {
-            return adjacentState.getFluidState().getFluid().isSame(this) || this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
+            return adjacentState.getFluidState().getFluid().isEquivalentTo(this) || this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
         }
     }
 
@@ -133,14 +135,14 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         Block block = state.getBlock();
         if (block instanceof ILiquidContainer)
         {
-            return ((ILiquidContainer) block).canPlaceLiquid(worldIn, pos, state, fluidIn);
+            return ((ILiquidContainer) block).canContainFluid(worldIn, pos, state, fluidIn);
         }
         else if (!(block instanceof DoorBlock) && !block.isIn(BlockTags.SIGNS) && block != Blocks.LADDER && block != Blocks.SUGAR_CANE && block != Blocks.BUBBLE_COLUMN)
         {
             Material material = state.getMaterial();
-            if (material != Material.PORTAL && material != Material.STRUCTURAL_AIR && material != Material.OCEAN_PLANT && material != Material.REPLACEABLE_WATER_PLANT)
+            if (material != Material.PORTAL && material != Material.AIR && material != Material.OCEAN_PLANT && material != Material.WATER)
             {
-                return !material.blocksMotion();
+                return !material.blocksMovement();
             }
             else
             {
@@ -154,7 +156,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected void spread(IWorld worldIn, BlockPos pos, FluidState stateIn)
+    protected void flowAround(IWorld worldIn, BlockPos pos, FluidState stateIn)
     {
         // Only spread if the current state has actual fluid
         if (!stateIn.isEmpty())
@@ -164,13 +166,13 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             BlockState blockStateBelow = worldIn.getBlockState(posBelow);
 
             // First, try and flow downwards. Calculate a fluid state directly below this one
-            FluidState fluidstate = getNewLiquid(worldIn, posBelow, blockStateBelow);
+            FluidState fluidstate = calculateCorrectFlowingState(worldIn, posBelow, blockStateBelow);
 
             // This checks if the block border is passable, and that the below fluid state returns true to being replaced with this fluid state
-            if (canSpreadTo(worldIn, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, worldIn.getFluidState(posBelow), fluidstate.getFluid()))
+            if (canFlow(worldIn, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, worldIn.getFluidState(posBelow), fluidstate.getFluid()))
             {
                 // Try and spread directly below
-                spreadTo(worldIn, posBelow, blockStateBelow, Direction.DOWN, fluidstate);
+                flowInto(worldIn, posBelow, blockStateBelow, Direction.DOWN, fluidstate);
 
                 // Count the number of adjacent blocks horizontally
                 // A fluid (regardless of source vs. flowing) will always spread to the sides when there are three or more neighboring source blocks
@@ -195,16 +197,16 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, IWorldReader, BlockPos, BlockState, boolean, int)
      */
     @Override
-    protected FluidState getNewLiquid(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn)
+    protected FluidState calculateCorrectFlowingState(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn)
     {
-        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canConvertToSource(), getDropOff(worldIn));
+        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canSourcesMultiply(), getSlopeFindDistance(worldIn));
     }
 
     /**
      * This is the recursive helper method for {  net.minecraft.fluid.FlowingFluid#getSpread(IWorldReader, BlockPos, BlockState)}
      */
-    @Override
-    public int getSlopeDistance(IWorldReader world, BlockPos pos, int currentDistance, Direction directionFrom, BlockState state, BlockPos posFrom, Short2ObjectMap<Pair<BlockState, FluidState>> nearbyStates, Short2BooleanMap nearbyHoles)
+    @Override//get slope distance
+    public int func_205571_a(IWorldReader world, BlockPos pos, int currentDistance, Direction directionFrom, BlockState state, BlockPos posFrom, Short2ObjectMap<Pair<BlockState, FluidState>> nearbyStates, Short2BooleanMap nearbyHoles)
     {
         int minimumDistance = 1000;
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -225,12 +227,12 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 FluidState adjacentFluid = pair.getSecond();
 
                 // If we can pass into the adjacent position
-                if (this.canPassThrough(world, getFlowing(), pos, state, direction, adjacentPos, adjacentState, adjacentFluid))
+                if (this.canPassThrough(world, getFlowingFluid(), pos, state, direction, adjacentPos, adjacentState, adjacentFluid))
                 {
                     boolean canDropDown = nearbyHoles.computeIfAbsent(relativeKey, (int3_) -> {
                         BlockPos adjacentBelowPos = adjacentPos.down();
                         BlockState adjacentBelowState = world.getBlockState(adjacentBelowPos);
-                        return this.isWaterHole(world, getFlowing(), adjacentPos, adjacentState, adjacentBelowPos, adjacentBelowState);
+                        return this.isWaterHole(world, getFlowingFluid(), adjacentPos, adjacentState, adjacentBelowPos, adjacentBelowState);
                     });
 
                     if (canDropDown)
@@ -243,7 +245,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                     if (currentDistance < getSlopeFindDistance(world))
                     {
                         // Recursively look for other slopes
-                        int nextSlopeDistance = getSlopeDistance(world, adjacentPos, currentDistance + 1, direction.getOpposite(), adjacentState, posFrom, nearbyStates, nearbyHoles);
+                        int nextSlopeDistance = func_205571_a(world, adjacentPos, currentDistance + 1, direction.getOpposite(), adjacentState, posFrom, nearbyStates, nearbyHoles);
                         if (nextSlopeDistance < minimumDistance)
                         {
                             // Found a minimum distance shorter than the current one
@@ -257,8 +259,8 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         return minimumDistance;
     }
 
-    @Override
-    public Map<Direction, FluidState> getSpread(IWorldReader world, BlockPos pos, BlockState blockState)
+    @Override//get Spread
+    public Map<Direction, FluidState> func_205572_b(IWorldReader world, BlockPos pos, BlockState blockState)
     {
         int minimumFlowDistance = 1000;
         Map<Direction, FluidState> adjacentFluidStates = Maps.newEnumMap(Direction.class);
@@ -282,7 +284,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             FluidState adjacentFluid = nearbyStatePair.getSecond();
 
             // Compute the fluid that should exist at the adjacent position
-            FluidState newAdjacentFluid = getNewLiquid(world, adjacentPos, adjacentState);
+            FluidState newAdjacentFluid = calculateCorrectFlowingState(world, adjacentPos, adjacentState);
 
             // If we can pass into the adjacent position
             if (this.canPassThrough(world, newAdjacentFluid.getFluid(), pos, blockState, direction, adjacentPos, adjacentState, adjacentFluid))
@@ -290,7 +292,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 BlockPos adjacentBelowPos = adjacentPos.down();
                 boolean canDropDown = nearbyHoles.computeIfAbsent(relativeKey, key -> {
                     BlockState adjacentBelowState = world.getBlockState(adjacentBelowPos);
-                    return this.isWaterHole(world, getFlowing(), adjacentPos, adjacentState, adjacentBelowPos, adjacentBelowState);
+                    return this.isWaterHole(world, getFlowingFluid(), adjacentPos, adjacentState, adjacentBelowPos, adjacentBelowState);
                 });
                 int flowDistance;
                 if (canDropDown)
@@ -299,7 +301,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 }
                 else
                 {
-                    flowDistance = getSlopeDistance(world, adjacentPos, 1, direction.getOpposite(), adjacentState, pos, nearbyStates, nearbyHoles);
+                    flowDistance = func_205571_a(world, adjacentPos, 1, direction.getOpposite(), adjacentState, pos, nearbyStates, nearbyHoles);
                 }
 
                 // Found a shorter path than the existing one - clear all previous
@@ -328,8 +330,8 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         {
             // Flowing fluid ticks
             // Inside this statement, we know we're in a non-waterlogged block, as flowing fluids cannot be waterlogged.
-            FluidState fluidAt = getNewLiquid(worldIn, pos, worldIn.getBlockState(pos));
-            int spreadDelay = getSpreadDelay(worldIn, pos, state, fluidAt);
+            FluidState fluidAt = calculateCorrectFlowingState(worldIn, pos, worldIn.getBlockState(pos));
+            int spreadDelay = this.func_215667_a(worldIn, pos, state, fluidAt);//get spread delay
             if (fluidAt.isEmpty())
             {
                 // The current state should have no fluid in it - set the block to empty, and then call spread with an empty fluid (mojang why?)
@@ -341,13 +343,13 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 // The new fluid state is not the same as the existing one. In vanilla, this could happen if the state height was changed, or if it was converted into a source block.
                 // In tfc, this may also happen when a fluid with a larger amount replaces this one.
                 state = fluidAt;
-                BlockState blockstate = fluidAt.createLegacyBlock();
+                BlockState blockstate = fluidAt.getBlockState();
                 worldIn.setBlockState(pos, blockstate, 2);
                 worldIn.getPendingFluidTicks().scheduleTick(pos, fluidAt.getFluid(), spreadDelay);
-                worldIn.updateNeighborsAt(pos, blockstate.getBlock());
+                worldIn.notifyNeighborsOfStateChange(pos, blockstate.getBlock());
             }
         }
-        spread(worldIn, pos, state);
+        flowAround(worldIn, pos, state);
     }
 
     public static class Flowing extends MixingFluid
@@ -362,14 +364,14 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             return false;
         }
 
-        public int getAmount(FluidState state)
+        public int getLevel(FluidState state)
         {
             return state.get(LEVEL);
         }
 
-        protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)
+        protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)
         {
-            super.createFluidStateDefinition(builder.add(LEVEL));
+            super.fillStateContainer(builder.add(LEVEL));
         }
     }
 
@@ -385,7 +387,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             return true;
         }
 
-        public int getAmount(FluidState state)
+        public int getLevel(FluidState state)
         {
             return 8;
         }

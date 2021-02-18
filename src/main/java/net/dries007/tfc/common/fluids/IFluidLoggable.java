@@ -37,7 +37,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
         final Fluid containedFluid = state.get(getFluidProperty()).getFluid();
         if (containedFluid == Fluids.EMPTY && getFluidProperty().getPossibleFluids().contains(fluidStateIn.getFluid()))
         {
-            if (!worldIn.isClientSide())
+            if (worldIn.isRemote())
             {
                 worldIn.setBlockState(pos, state.with(getFluidProperty(), getFluidProperty().keyFor(fluidStateIn.getFluid())), 3);
                 worldIn.getPendingFluidTicks().scheduleTick(pos, fluidStateIn.getFluid(), fluidStateIn.getFluid().getTickRate(worldIn));
@@ -66,7 +66,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
         final Fluid containedFluid = state.get(getFluidProperty()).getFluid();
         if (containedFluid instanceof FlowingFluid)
         {
-            return ((FlowingFluid) containedFluid).getSource(false);
+            return ((FlowingFluid) containedFluid).getStillFluidState(false);
         }
         return containedFluid.getDefaultState();
     }

@@ -35,7 +35,7 @@ public class FarmlandTileEntity extends TFCTileEntity
         nitrogen = nbt.getFloat("nitrogen");
         phosphorous = nbt.getFloat("phosphorous");
         potassium = nbt.getFloat("potassium");
-        super.load(state, nbt);
+        super.read(state, nbt);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FarmlandTileEntity extends TFCTileEntity
         nbt.putFloat("nitrogen", nitrogen);
         nbt.putFloat("phosphorous", phosphorous);
         nbt.putFloat("potassium", potassium);
-        return super.save(nbt);
+        return super.write(nbt);
     }
 
     public float getNitrogen()

@@ -22,7 +22,7 @@ public class TFCEntities
 {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MOD_ID);
 
-    public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>of(TFCFallingBlockEntity::new, EntityClassification.MISC).sized(0.98f, 0.98f));
+    public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>create(TFCFallingBlockEntity::new, EntityClassification.MISC).size(0.98f, 0.98f));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -35,7 +35,7 @@ public class TFCEntities
             // This is a hack to avoid the data fixer lookup and error message when it can't find one
             // This could be resolved by MinecraftForge#7636 which would put it behind a config option - hopefully, defaulting to true.
             final String id = MOD_ID + ":" + name;
-            final EntityType<E> type = builder.noSave().build(id);
+            final EntityType<E> type = builder.build(id);//TODO noSave
             ((EntityTypeAccessor) type).accessor$setSerialize(serialize);
             return type;
         });

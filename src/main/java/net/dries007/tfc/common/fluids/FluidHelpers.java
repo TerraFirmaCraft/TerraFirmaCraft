@@ -28,7 +28,7 @@ public class FluidHelpers
 {
     public static boolean isSame(FluidState state, Fluid expected)
     {
-        return state.getFluid().isSame(expected);
+        return state.getFluid().isEquivalentTo(expected);
     }
 
     public static boolean canMixFluids(Fluid left, Fluid right)
@@ -61,7 +61,7 @@ public class FluidHelpers
      * @param canConvertToSource The result of {@code self.canConvertToSource()} as it's protected
      * @param dropOff            The result of {@code self.getDropOff(worldIn)} as it's protected
      * @return The fluid state that should exist at that position
-     * @see FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)
+     * FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)
      */
     public static FluidState getNewFluidWithMixing(FlowingFluid self, IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
@@ -87,9 +87,9 @@ public class FluidHelpers
                     adjacentSourceBlocksByFluid.mergeInt((FlowingFluid) offsetFluid.getFluid(), 1, Integer::sum);
                 }
                 // Also record the maximum adjacent fluid, breaking ties with the current fluid
-                if (offsetFluid.getAmount() > maxAdjacentFluidAmount || (offsetFluid.getAmount() == maxAdjacentFluidAmount && self.isSame(offsetFluid.getFluid())))
+                if (offsetFluid.getLevel() > maxAdjacentFluidAmount || (offsetFluid.getLevel() == maxAdjacentFluidAmount && self.isEquivalentTo(offsetFluid.getFluid())))
                 {
-                    maxAdjacentFluidAmount = offsetFluid.getAmount();
+                    maxAdjacentFluidAmount = offsetFluid.getLevel();
                     maxAdjacentFluid = (FlowingFluid) offsetFluid.getFluid();
                 }
             }
@@ -105,7 +105,7 @@ public class FluidHelpers
             if (belowFluid.isSource() && belowFluid.getFluid() instanceof FlowingFluid && adjacentSourceBlocksByFluid.getInt(belowFluid.getFluid()) >= 2)
             {
                 // Try and create a source block of the same type as the below
-                return ((FlowingFluid) belowFluid.getFluid()).getSource(false);
+                return ((FlowingFluid) belowFluid.getFluid()).getStillFluidState(false);
             }
             else if (belowState.getMaterial().isSolid())
             {
@@ -122,9 +122,9 @@ public class FluidHelpers
                 }
 
                 // Three adjacent (if not same), or two (if same)
-                if (maximumAdjacentSourceBlocks >= 3 || (maximumAdjacentSourceBlocks >= 2 && self.isSame(maximumAdjacentSourceFluid)))
+                if (maximumAdjacentSourceBlocks >= 3 || (maximumAdjacentSourceBlocks >= 2 && self.isEquivalentTo(maximumAdjacentSourceFluid)))
                 {
-                    return maximumAdjacentSourceFluid.getSource(false);
+                    return maximumAdjacentSourceFluid.getStillFluidState(false);
                 }
             }
         }
@@ -137,7 +137,7 @@ public class FluidHelpers
         FluidState aboveFluid = aboveState.getFluidState();
         if (!aboveFluid.isEmpty() && aboveFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
         {
-            return ((FlowingFluid) aboveFluid.getFluid()).getFlowing(8, true);
+            return ((FlowingFluid) aboveFluid.getFluid()).getFlowingFluidState(8, true);
         }
         else
         {
@@ -149,7 +149,7 @@ public class FluidHelpers
                 return Fluids.EMPTY.getDefaultState();
             }
             // Cause the maximum adjacent fluid to flow into this block
-            return maxAdjacentFluid.getFlowing(selfFluidAmount, false);
+            return maxAdjacentFluid.getFlowingFluidState(selfFluidAmount, false);
         }
     }
 
@@ -168,7 +168,7 @@ public class FluidHelpers
             if (direction != Direction.DOWN)
             {
                 BlockPos adjacentPos = pos.offset(direction);
-                if (worldIn.getFluidState(adjacentPos).isIn(FluidTags.WATER))
+                if (worldIn.getFluidState(adjacentPos).isTagged(FluidTags.WATER))
                 {
                     worldIn.setBlockState(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.OBSIDIAN.getDefaultState()));
                     worldIn.playEvent(1501, pos, 0);

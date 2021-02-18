@@ -80,14 +80,14 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         key = valuesById.get(Objects.requireNonNull(fluid.getRegistryName()).getPath());
         if (key == null)
         {
-            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + fluid.getRegistryName() + "] which was not present in property " + getName() + " / " + getPossibleValues());
+            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + fluid.getRegistryName() + "] which was not present in property " + getName() + " / " + getAllowedValues());
         }
         cachedValues.put(fluid, key);
         return key;
     }
 
     @Override
-    public Collection<FluidKey> getPossibleValues()
+    public Collection<FluidKey> getAllowedValues()
     {
         return values;
     }
@@ -98,8 +98,10 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         return value.name.getPath();
     }
 
+
+
     @Override
-    public Optional<FluidKey> getValue(String value)
+    public Optional<FluidKey> parseValue(String value)
     {
         return Optional.ofNullable(valuesById.get(value));
     }

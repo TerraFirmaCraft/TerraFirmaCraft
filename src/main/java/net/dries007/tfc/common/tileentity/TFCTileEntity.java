@@ -34,7 +34,7 @@ public abstract class TFCTileEntity extends TileEntity
     @Override
     public SUpdateTileEntityPacket getUpdatePacket()
     {
-        return new SUpdateTileEntityPacket(getBlockPos(), 1, write(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(getPos(), 1, write(new CompoundNBT()));
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class TFCTileEntity extends TileEntity
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
-        read(getBlockState(), pkt.getTag());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override
@@ -62,9 +62,9 @@ public abstract class TFCTileEntity extends TileEntity
      */
     public void markForBlockUpdate()
     {
-        if (level != null)
+        if (world != null)
         {
-            BlockState state = world.getBlockState(worldPosition);
+            BlockState state = world.getBlockState(pos);
             world.sendBlockUpdated(worldPosition, state, state, 3);
             setChanged();
         }
@@ -79,7 +79,7 @@ public abstract class TFCTileEntity extends TileEntity
     public void markForSync()
     {
         sendVanillaUpdatePacket();
-        setChanged();
+        markDirtyFast();
     }
 
     /**
@@ -88,21 +88,21 @@ public abstract class TFCTileEntity extends TileEntity
      */
     protected void markDirtyFast()
     {
-        if (level != null)
+        if (world != null)
         {
             getBlockState();
-            world.blockEntityChanged(worldPosition, this);
+            world.setTileEntity(pos, this);
         }
     }
 
     protected void sendVanillaUpdatePacket()
     {
         SUpdateTileEntityPacket packet = getUpdatePacket();
-        BlockPos pos = getBlockPos();
+        BlockPos pos = getPos();
 
         if (packet != null && world instanceof ServerWorld)
         {
-            ((ServerChunkProvider) world.getChunkSource()).chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
+            ((ServerChunkProvider) world.getChunkProvider()).chunkManager.getTrackingPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.sendPacket(packet));
         }
     }
 }

@@ -32,12 +32,12 @@ public class TFCTileEntities
     @SuppressWarnings("ConstantConditions")
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> factory, Supplier<? extends Block> block)
     {
-        return TILE_ENTITIES.register(name, () -> TileEntityType.Builder.of(factory, block.get()).build(null));
+        return TILE_ENTITIES.register(name, () -> TileEntityType.Builder.create(factory, block.get()).build(null));
     }
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> factory, Collection<? extends Supplier<? extends Block>> blocks)
     {
-        return TILE_ENTITIES.register(name, () -> TileEntityType.Builder.of(factory, blocks.stream().map(Supplier::get).toArray(Block[]::new)).build(null));
+        return TILE_ENTITIES.register(name, () -> TileEntityType.Builder.create(factory, blocks.stream().map(Supplier::get).toArray(Block[]::new)).build(null));
     }
 }
