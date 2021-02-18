@@ -38,7 +38,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public abstract class AbstractBerryBushBlock extends BushBlock implements IForgeBlockProperties
 {
-    protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    public static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_2;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.BERRY_BUSH_LIFE;

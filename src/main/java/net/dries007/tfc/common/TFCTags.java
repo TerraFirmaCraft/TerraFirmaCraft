@@ -38,6 +38,8 @@ public class TFCTags
         public static final ITag.INamedTag<Block> CORALS = create("corals");
         public static final ITag.INamedTag<Block> SPREADING_BUSH = create("spreading_bush");
         public static final ITag.INamedTag<Block> ANY_SPREADING_BUSH = create("any_spreading_bush");
+        public static final ITag.INamedTag<Block> FRUIT_TREE_BRANCH = create("fruit_tree_branch");
+        public static final ITag.INamedTag<Block> FRUIT_TREE_LEAVES = create("fruit_tree_leaves");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 

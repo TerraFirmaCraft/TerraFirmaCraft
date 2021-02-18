@@ -350,6 +350,8 @@ BERRIES: Dict[str, Berry] = {
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
+FRUITS = ('banana', 'cherry', 'green_apple', 'red_apple', 'lemon', 'olive', 'orange', 'peach', 'plum', 'red_apple')
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

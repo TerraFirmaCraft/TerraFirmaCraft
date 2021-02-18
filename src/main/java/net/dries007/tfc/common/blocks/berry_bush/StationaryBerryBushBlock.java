@@ -86,7 +86,7 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
                     held.hurt(1, worldIn.getRandom(), null);
                     Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
                     if (worldIn.getRandom().nextInt(3) != 0)
-                        Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock().asItem()));
+                        Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock()));
                     worldIn.destroyBlock(pos, true, null);
                     return ActionResultType.SUCCESS;
                 }

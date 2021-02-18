@@ -45,7 +45,7 @@ public class BerryBushFeature extends Feature<BlockStateFeatureConfig>
 
             if (bushState.hasProperty(WaterloggedBerryBushBlock.WILD))
                 bushState = bushState.setValue(WaterloggedBerryBushBlock.WILD, true);
-            world.setBlock(pos, bushState.setValue(AbstractBerryBushBlock.LIFECYCLE, AbstractBerryBushBlock.Lifecycle.HEALTHY), 3);
+            world.setBlock(mutablePos, bushState.setValue(AbstractBerryBushBlock.LIFECYCLE, AbstractBerryBushBlock.Lifecycle.HEALTHY), 3);
 
             BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
             if (te != null)
