@@ -37,7 +37,7 @@ public abstract class BiomeMixin
      * In vanilla this is either called from ServerWorld, or from world generation with ISeedReader - both of which are able to cast up to IWorld.
      * FFor cases where this cast is not valid we just default to the vanilla temperature.
      */
-    @Redirect(method = "shouldFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
+    @Redirect(method = "doesWaterFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
     private float redirect$shouldFreeze$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
     {
         return Climate.getVanillaBiomeTemperature(biome, worldIn instanceof IWorld ? (IWorld) worldIn : null, pos);

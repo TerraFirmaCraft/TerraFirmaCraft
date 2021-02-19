@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ClientWorld.ClientWorldInfo.class)
 public class ClientWorldInfoMixin
 {
-    @Shadow @Final private boolean isFlat;
+    @Shadow @Final private boolean flatWorld;
 
     /**
      * Override horizon height (where the fog color changes from sky to black/dark, as in vanilla it's hardcoded to the sea level
@@ -30,7 +30,7 @@ public class ClientWorldInfoMixin
     {
         if (TFCConfig.CLIENT.assumeTFCWorld.get())
         {
-            cir.setReturnValue(this.isFlat ? 0 : (double) TFCChunkGenerator.SEA_LEVEL);
+            cir.setReturnValue(this.flatWorld ? 0 : (double) TFCChunkGenerator.SEA_LEVEL);
         }
     }
 }

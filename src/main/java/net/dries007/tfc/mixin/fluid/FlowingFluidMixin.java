@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.MixingFluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,17 +27,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class FlowingFluidMixin extends Fluid
 {
     @Shadow
-    protected abstract boolean canConvertToSource();
+    protected abstract boolean canSourcesMultiply();
 
     @Shadow
-    protected abstract int getDropOff(IWorldReader worldIn);
+    protected abstract int getLevelDecreasePerBlock(IWorldReader worldIn);
 
     @Inject(method = "getNewLiquid", at = @At("HEAD"), cancellable = true)
     private void inject$getNewLiquid(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, CallbackInfoReturnable<FluidState> cir)
     {
         if (FluidHelpers.canMixFluids(this))
         {
-            cir.setReturnValue(FluidHelpers.getNewFluidWithMixing((FlowingFluid) (Object) this, worldIn, pos, blockStateIn, canConvertToSource(), getDropOff(worldIn)));
+            cir.setReturnValue(FluidHelpers.getNewFluidWithMixing((FlowingFluid) (Object) this, worldIn, pos, blockStateIn, canSourcesMultiply(), getLevelDecreasePerBlock(worldIn)));
         }
     }
 }

@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IceBlock.class)
 public abstract class IceBlockMixin extends BreakableBlock
 {
-    @Shadow protected abstract void melt(BlockState state, World worldIn, BlockPos pos);
+    @Shadow protected abstract void turnIntoWater(BlockState state, World worldIn, BlockPos pos);
 
     private IceBlockMixin(Properties properties)
     {
@@ -45,7 +45,7 @@ public abstract class IceBlockMixin extends BreakableBlock
             BlockState prevState = worldIn.getBlockState(pos);
             if (prevState == state && Climate.getTemperature(worldIn, pos) > Climate.ICE_MELT_TEMPERATURE)
             {
-                melt(state, worldIn, pos);
+                turnIntoWater(state, worldIn, pos);
             }
         }
     }

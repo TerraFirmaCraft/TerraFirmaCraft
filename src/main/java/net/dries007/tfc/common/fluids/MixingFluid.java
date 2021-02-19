@@ -89,7 +89,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      */
     public void spreadToSides(IWorld world, BlockPos pos, FluidState fluidState, BlockState blockState)
     {
-        int adjacentAmount = fluidState.getLevel() - this.getSlopeFindDistance(world);//drop off
+        int adjacentAmount = fluidState.getLevel() - this.getLevelDecreasePerBlock(world);//drop off
         if (fluidState.get(FALLING))
         {
             // Falling indicates this fluid is being fed from above - this is then going to spread like a source block (8 - drop off)
@@ -199,7 +199,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     @Override
     protected FluidState calculateCorrectFlowingState(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn)
     {
-        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canSourcesMultiply(), getSlopeFindDistance(worldIn));
+        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canSourcesMultiply(), getLevelDecreasePerBlock(worldIn));
     }
 
     /**
