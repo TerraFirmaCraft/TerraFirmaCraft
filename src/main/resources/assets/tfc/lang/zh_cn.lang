@@ -215,6 +215,7 @@ tfc.food_traits.preserved=储存
 tfc.food_traits.vinegar=酸渍
 tfc.food_traits.charcoal_grilled=木炭烤制
 tfc.food_traits.wood_grilled=原木烤制
+tfc.food_traits.burnt_to_a_crisp=一堆黑灰，恶心死了
 tfc.tooltip.barrel_recipe_pickling=腌制中
 tfc.tooltip.barrel_recipe_brining=盐渍中
 tfc.tooltip.barrel_recipe_vinegar=酸渍中
@@ -239,6 +240,7 @@ tfc.key.stack=堆叠食物
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=生成模糊化半径
 createWorld.customize.custom.flatbedrock=平坦基岩
+createWorld.customize.custom.smallrocklayer=岩层尺寸
 createWorld.customize.custom.ravineRarity=沟壑稀有度
 createWorld.customize.custom.ravineHeight=沟壑高度
 createWorld.customize.custom.ravineVariability=沟壑变异度
