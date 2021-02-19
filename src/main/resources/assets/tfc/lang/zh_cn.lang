@@ -3152,8 +3152,8 @@ tile.tfc.double_slab.wood.rosewood.name=蔷薇木双台阶
 tile.tfc.double_slab.wood.blackwood.name=黑檀木双台阶
 tile.tfc.double_slab.wood.palm.name=棕榈木双台阶
 
-tile.tfc.wood.sapling.ash.name=白蜡树苗
-tile.tfc.wood.sapling.aspen.name=白杨树苗
+tile.tfc.wood.sapling.ash.name=黑梣木树苗
+tile.tfc.wood.sapling.aspen.name=山杨木树苗
 tile.tfc.wood.sapling.birch.name=白桦木树苗
 tile.tfc.wood.sapling.chestnut.name=栗木树苗
 tile.tfc.wood.sapling.douglas_fir.name=花旗松木树苗
@@ -3635,7 +3635,7 @@ item.tfc.gem.opal.normal.name=普通的蛋白石
 item.tfc.gem.ruby.normal.name=普通的红宝石
 item.tfc.gem.sapphire.normal.name=普通的蓝宝石
 item.tfc.gem.topaz.normal.name=普通的黄玉
-item.tfc.gem.tourmaline.normal.name=普通的电气石
+item.tfc.gem.tourmaline.normal.name=普通的碧玺
 
 item.tfc.gem.agate.flawed.name=微瑕的玛瑙
 item.tfc.gem.amethyst.flawed.name=微瑕的紫水晶
@@ -3649,7 +3649,7 @@ item.tfc.gem.opal.flawed.name=微瑕的蛋白石
 item.tfc.gem.ruby.flawed.name=微瑕的红宝石
 item.tfc.gem.sapphire.flawed.name=微瑕的蓝宝石
 item.tfc.gem.topaz.flawed.name=微瑕的黄玉
-item.tfc.gem.tourmaline.flawed.name=微瑕的电气石
+item.tfc.gem.tourmaline.flawed.name=微瑕的碧玺
 
 item.tfc.gem.agate.flawless.name=无瑕的玛瑙
 item.tfc.gem.amethyst.flawless.name=无瑕的紫水晶
@@ -3663,7 +3663,7 @@ item.tfc.gem.opal.flawless.name=无瑕的蛋白石
 item.tfc.gem.ruby.flawless.name=无瑕的红宝石
 item.tfc.gem.sapphire.flawless.name=无瑕的蓝宝石
 item.tfc.gem.topaz.flawless.name=无瑕的黄玉
-item.tfc.gem.tourmaline.flawless.name=无瑕的电气石
+item.tfc.gem.tourmaline.flawless.name=无瑕的碧玺
 
 item.tfc.gem.agate.chipped.name=破裂的玛瑙
 item.tfc.gem.amethyst.chipped.name=破裂的紫水晶
@@ -3677,7 +3677,7 @@ item.tfc.gem.opal.chipped.name=破裂的蛋白石
 item.tfc.gem.ruby.chipped.name=破裂的红宝石
 item.tfc.gem.sapphire.chipped.name=破裂的蓝宝石
 item.tfc.gem.topaz.chipped.name=破裂的黄玉
-item.tfc.gem.tourmaline.chipped.name=破裂的电气石
+item.tfc.gem.tourmaline.chipped.name=破裂的碧玺
 
 item.tfc.gem.agate.exquisite.name=精致的玛瑙
 item.tfc.gem.amethyst.exquisite.name=精致的紫水晶
@@ -3691,7 +3691,7 @@ item.tfc.gem.opal.exquisite.name=精致的蛋白石
 item.tfc.gem.ruby.exquisite.name=精致的红宝石
 item.tfc.gem.sapphire.exquisite.name=精致的蓝宝石
 item.tfc.gem.topaz.exquisite.name=精致的黄玉
-item.tfc.gem.tourmaline.exquisite.name=精致的电气石
+item.tfc.gem.tourmaline.exquisite.name=精致的碧玺
 
 item.tfc.metal.ingot.bismuth.name=铋锭
 item.tfc.metal.ingot.bismuth_bronze.name=铋铜锭
