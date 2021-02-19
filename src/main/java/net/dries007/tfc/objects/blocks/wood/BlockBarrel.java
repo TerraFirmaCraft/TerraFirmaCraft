@@ -301,13 +301,13 @@ public class BlockBarrel extends Block implements IItemSize
         return new TEBarrel();
     }
 
+    /**
+        Handle drops via {@link this#breakBlock(World, BlockPos, IBlockState)}
+     */
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        if (!state.getValue(SEALED))
-        {
-            super.getDrops(drops, world, pos, state, fortune);
-        }
+        // NO-OP
     }
 
     @Override
