@@ -24,6 +24,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
+import static net.minecraft.block.CauldronBlock.LEVEL;
+
 public abstract class MoltenFluid extends ForgeFlowingFluid
 {
     private final LavaFluid lava;
@@ -50,9 +52,9 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
-    protected IParticleData getDripParticle()
+    protected IParticleData getDripParticleData()
     {
-        return lava.getDripParticle();
+        return lava.getDripParticleData();
     }
 
     @Override
@@ -62,7 +64,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected void beforeDestroyingBlock(IWorld worldIn, BlockPos pos, BlockState state)
+    protected void beforeReplacingBlock(IWorld worldIn, BlockPos pos, BlockState state)
     {
         worldIn.playEvent(1501, pos, 0);
     }
@@ -74,9 +76,9 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected int getDropOff(IWorldReader worldIn)
+    protected int getLevelDecreasePerBlock(IWorldReader worldIn)
     {
-        return lava.getDropOff(worldIn);
+        return lava.getLevelDecreasePerBlock(worldIn);
     }
 
     @Override
@@ -85,10 +87,10 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
         return lava.getTickRate(world);
     }
 
-    @Override
-    protected int getSpreadDelay(World worldIn, BlockPos pos, FluidState fluidState_, FluidState fluidState1_)
+    @Override//spread delay
+    protected int func_215667_a(World worldIn, BlockPos pos, FluidState fluidState_, FluidState fluidState1_)
     {
-        return lava.getSpreadDelay(worldIn, pos, fluidState_, fluidState1_);
+        return lava.func_215667_a(worldIn, pos, fluidState_, fluidState1_);
     }
 
     public static class Flowing extends MoltenFluid
@@ -103,14 +105,14 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
             return false;
         }
 
-        public int getAmount(FluidState state)
+        public int getLevel(FluidState state)
         {
             return state.get(LEVEL);
         }
 
-        protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)
+        protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)
         {
-            super.createFluidStateDefinition(builder.add(LEVEL));
+            super.fillStateContainer(builder.add(LEVEL));
         }
     }
 
@@ -126,7 +128,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
             return true;
         }
 
-        public int getAmount(FluidState state)
+        public int getLevel(FluidState state)
         {
             return 8;
         }

@@ -104,7 +104,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
             }
             else if (element.isJsonObject())
             {
-                JsonObject obj = element.getJsonObject();
+                JsonObject obj = element.getAsJsonObject();
                 if (obj.has("tag") && obj.has("block"))
                 {
                     throw new JsonParseException("Block ingredient cannot be both tag and block");
@@ -203,7 +203,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
                         {
                             for (Map.Entry<Property<?>, Comparable<?>> entry : parser.getProperties().entrySet())
                             {
-                                if (!stateIn.get(entry.getKey()).equals(entry.get()))
+                                if (!stateIn.get(entry.getKey()).equals(entry.getKey()))
                                 {
                                     return false;
                                 }
@@ -224,7 +224,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
 
         private IBlockIngredient createTag(String tagName) throws JsonParseException
         {
-            ITag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
+            ITag<Block> tag = BlockTags.createOptional(new ResourceLocation(tagName));//.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag != null)
             {
                 return new IBlockIngredient()
@@ -238,7 +238,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
                     @Override
                     public Collection<Block> getValidBlocks()
                     {
-                        return tag.getValues();
+                        return tag.getAllElements();
                     }
                 };
             }

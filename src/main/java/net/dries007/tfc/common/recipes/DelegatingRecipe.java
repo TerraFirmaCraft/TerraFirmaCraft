@@ -61,25 +61,25 @@ public abstract class DelegatingRecipe<C extends IInventory> implements IDelegat
 
         @Override
         @SuppressWarnings("unchecked")
-        public R fromJson(ResourceLocation recipeId, JsonObject json)
+        public R read(ResourceLocation recipeId, JsonObject json)
         {
-            IRecipe<?> internal = RecipeManager.fromJson(DELEGATE, JSONUtils.getJsonObject(json, "recipe"));
+            IRecipe<?> internal = RecipeManager.deserializeRecipe(DELEGATE, JSONUtils.getJsonObject(json, "recipe"));
             return factory.apply(recipeId, (IRecipe<C>) internal);
         }
 
         @Nullable
         @Override
         @SuppressWarnings("unchecked")
-        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public R read(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            IRecipe<?> internal = SUpdateRecipesPacket.fromNetwork(buffer);
+            IRecipe<?> internal = SUpdateRecipesPacket.func_218772_c(buffer);//from network
             return factory.apply(recipeId, (IRecipe<C>) internal);
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, R recipe)
+        public void write(PacketBuffer buffer, R recipe)
         {
-            SUpdateRecipesPacket.toNetwork(recipe.getInternal(), buffer);
+            SUpdateRecipesPacket.func_218771_a(recipe.getInternal(), buffer);//to network
         }
     }
 }

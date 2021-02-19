@@ -65,8 +65,8 @@ public abstract class TFCTileEntity extends TileEntity
         if (world != null)
         {
             BlockState state = world.getBlockState(pos);
-            world.sendBlockUpdated(worldPosition, state, state, 3);
-            setChanged();
+            world.notifyBlockUpdate(getPos(), state, state, 3);
+            markDirty();
         }
     }
 

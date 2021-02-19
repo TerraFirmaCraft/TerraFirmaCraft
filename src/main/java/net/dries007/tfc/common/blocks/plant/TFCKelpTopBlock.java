@@ -64,7 +64,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == growthDirection.getOpposite() && !stateIn.onReplaced(placedByLeaves(worldIn, currentPos))
+        if (facing == growthDirection.getOpposite() && !stateIn.isValidPosition(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }

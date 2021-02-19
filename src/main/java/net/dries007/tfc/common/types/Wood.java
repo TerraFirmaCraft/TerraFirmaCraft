@@ -38,25 +38,25 @@ public class Wood
      */
     public enum Default
     {
-        ACACIA(false, MaterialColor.ORANGE_TERRACOTTA, MaterialColor.ORANGE_TERRACOTTA, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 7),
-        ASH(false, MaterialColor.PINK_TERRACOTTA, MaterialColor.PINK_TERRACOTTA, MaterialColor.ORANGE_TERRACOTTA, 0, 8),
-        ASPEN(false, MaterialColor.GREEN_TERRACOTTA, MaterialColor.GREEN_TERRACOTTA, MaterialColor.TERRACOTTA_WHITE, 0, 7),
-        BIRCH(false, MaterialColor.BROWN, MaterialColor.BROWN, MaterialColor.TERRACOTTA_WHITE, 0, 7),
-        BLACKWOOD(false, MaterialColor.BLACK, MaterialColor.BLACK, MaterialColor.COLOR_BROWN, 0, 7),
-        CHESTNUT(false, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, MaterialColor.COLOR_LIGHT_GREEN, 0, 8),
-        DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 0, 7),
-        HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 0, 7),
-        KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 0, 7),
-        MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.GRAY_TERRACOTTA, 0, 8),
-        OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8),
-        PALM(true, MaterialColor.ORANGE_TERRACOTTA, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_BROWN, 0, 7),
-        PINE(true, MaterialColor.GRAY_TERRACOTTA, MaterialColor.GRAY_TERRACOTTA, MaterialColor.COLOR_GRAY, 0, 7),
-        ROSEWOOD(false, MaterialColor.COLOR_RED, MaterialColor.COLOR_RED, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 9),
+        ACACIA(false, MaterialColor.YELLOW_TERRACOTTA, MaterialColor.YELLOW_TERRACOTTA, MaterialColor.LIGHT_GRAY, 0, 7),
+        ASH(false, MaterialColor.PINK_TERRACOTTA, MaterialColor.PINK_TERRACOTTA, MaterialColor.YELLOW_TERRACOTTA, 0, 8),
+        ASPEN(false, MaterialColor.GREEN_TERRACOTTA, MaterialColor.GREEN_TERRACOTTA, MaterialColor.WOOL, 0, 7),
+        BIRCH(false, MaterialColor.BROWN, MaterialColor.BROWN, MaterialColor.WOOL, 0, 7),
+        BLACKWOOD(false, MaterialColor.BLACK, MaterialColor.BLACK, MaterialColor.BROWN, 0, 7),
+        CHESTNUT(false, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, MaterialColor.LIME, 0, 8),
+        DOUGLAS_FIR(false, MaterialColor.YELLOW, MaterialColor.YELLOW, MaterialColor.BROWN, 0, 7),
+        HICKORY(false, MaterialColor.BROWN, MaterialColor.BROWN, MaterialColor.GRAY, 0, 7),
+        KAPOK(true, MaterialColor.PINK, MaterialColor.PINK, MaterialColor.BROWN, 0, 7),
+        MAPLE(false, MaterialColor.GOLD, MaterialColor.GOLD, MaterialColor.GRAY_TERRACOTTA, 0, 8),
+        OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.BROWN, 0, 8),
+        PALM(true, MaterialColor.YELLOW_TERRACOTTA, MaterialColor.GOLD, MaterialColor.BROWN, 0, 7),
+        PINE(true, MaterialColor.GRAY_TERRACOTTA, MaterialColor.GRAY_TERRACOTTA, MaterialColor.GRAY, 0, 7),
+        ROSEWOOD(false, MaterialColor.RED, MaterialColor.RED, MaterialColor.LIGHT_GRAY, 0, 9),
         SEQUOIA(true, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, MaterialColor.RED_TERRACOTTA, 0, 7),
         SPRUCE(true, MaterialColor.PINK_TERRACOTTA, MaterialColor.PINK_TERRACOTTA, MaterialColor.BLACK_TERRACOTTA, 0, 7),
-        SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 0, 7),
-        WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 7),
-        WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 0, 7);
+        SYCAMORE(false, MaterialColor.YELLOW, MaterialColor.YELLOW, MaterialColor.LIME, 0, 7),
+        WHITE_CEDAR(true, MaterialColor.WOOL, MaterialColor.WOOL, MaterialColor.LIGHT_GRAY, 0, 7),
+        WILLOW(false, MaterialColor.GREEN, MaterialColor.GREEN, MaterialColor.BROWN, 0, 7);
 
         private final boolean conifer;
         private final MaterialColor mainColor;

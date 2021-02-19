@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
@@ -70,7 +71,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 int radX = (RANDOM.nextInt(5) + 4) / 2;
                 int radY = (RANDOM.nextInt(3) + 2) / 2;
                 int radZ = (RANDOM.nextInt(5) + 4) / 2;
-                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
+                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) // 9x5x9 max
                 {
                     if (canStartCollapse(world, checking))
                     {
@@ -105,7 +106,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
         List<BlockPos> secondaryPositions = new ArrayList<>();
 
         // Initially only scan on the bottom layer, and advance upwards
-        for (BlockPos pos : BlockPos.betweenClosed(centerPos.offset(-radius, -4, -radius), centerPos.offset(radius, -4, radius)))
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPos.add(-radius, -4, -radius), centerPos.add(radius, -4, radius)))
         {
             boolean foundEmpty = false; // If we've found a space to collapse into
             for (int y = 0; y <= 8; y++)
@@ -151,7 +152,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
         {
             BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
             world.setBlockState(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState));
+            world.addEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState));
             return true;
         }
         return false;
@@ -161,6 +162,8 @@ public class CollapseRecipe extends SimpleBlockRecipe
     {
         super(id, ingredient, outputState, copyInputState);
     }
+
+
 
     @Override
     public IRecipeSerializer<?> getSerializer()

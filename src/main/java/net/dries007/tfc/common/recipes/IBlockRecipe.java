@@ -27,13 +27,13 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     @Override
-    default ItemStack getResultItem()
+    default ItemStack getRecipeOutput()
     {
         return new ItemStack(getBlockRecipeOutput());
     }
 
     @Override
-    default ItemStack assemble(BlockRecipeWrapper inv)
+    default ItemStack getCraftingResult(BlockRecipeWrapper inv)
     {
         return new ItemStack(getBlockCraftingResult(inv).getBlock());
     }

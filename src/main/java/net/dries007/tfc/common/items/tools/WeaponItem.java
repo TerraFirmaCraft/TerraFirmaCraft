@@ -38,10 +38,10 @@ public class WeaponItem extends TieredItem
     {
         super(tier, builder);
         this.attackSpeed = attackSpeed;
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();//.getAttackDamageBonus();
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
-            .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
-            .put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
+            .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
+            .put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
             .build();
     }
 
@@ -56,24 +56,24 @@ public class WeaponItem extends TieredItem
     }
 
     @Override
-    public boolean canAttackBlock(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
+    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
     {
         return !player.isCreative();
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
-        stack.hurtAndBreak(1, attacker, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+        stack.damageItem(1, attacker, (entity) -> entity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         return true;
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        if (state.getDestroySpeed(worldIn, pos) != 0.0F)
+        if (state.getBlockHardness(worldIn, pos) != 0.0F)
         {
-            stack.hurtAndBreak(2, entityLiving, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+            stack.damageItem(2, entityLiving, (entity) -> entity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         }
         return true;
     }

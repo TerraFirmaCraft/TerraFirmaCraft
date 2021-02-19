@@ -60,7 +60,7 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 
         public void update(int x, int y, int z, BlockState state)
         {
-            this.cursor.set(x, y, z);
+            this.cursor.setPos(x, y, z);
             this.state = state;
         }
     }

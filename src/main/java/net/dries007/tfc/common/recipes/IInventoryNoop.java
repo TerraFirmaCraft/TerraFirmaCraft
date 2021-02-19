@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public interface IInventoryNoop extends IInventory
 {
     @Override
-    default int getContainerSize()
+    default int getSizeInventory()
     {
         return 0;
     }
@@ -25,35 +25,35 @@ public interface IInventoryNoop extends IInventory
     }
 
     @Override
-    default ItemStack getItem(int index)
+    default ItemStack getStackInSlot(int index)
     {
         return ItemStack.EMPTY;
     }
 
     @Override
-    default ItemStack removeItem(int index, int count)
+    default ItemStack decrStackSize(int index, int count)
     {
         return ItemStack.EMPTY;
     }
 
     @Override
-    default ItemStack removeItemNoUpdate(int index)
+    default ItemStack removeStackFromSlot(int index)
     {
         return ItemStack.EMPTY;
     }
 
     @Override
-    default void setItem(int index, ItemStack stack) {}
+    default void setInventorySlotContents(int index, ItemStack stack) {}
 
     @Override
-    default void setChanged() {}
+    default void markDirty() {}
 
     @Override
-    default boolean stillValid(PlayerEntity player)
+    default boolean isUsableByPlayer(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    default void clearContent() {}
+    default void clear() {}
 }

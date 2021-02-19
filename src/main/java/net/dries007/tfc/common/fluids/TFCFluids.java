@@ -72,7 +72,7 @@ public final class TFCFluids
             .density(3000)
             .viscosity(6000)
             .temperature(1300)
-            .sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA),
+            .sound(SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundEvents.ITEM_BUCKET_EMPTY_LAVA),
         MoltenFluid.Source::new,
         MoltenFluid.Flowing::new
     ));
@@ -85,7 +85,7 @@ public final class TFCFluids
             .translationKey("fluid.tfc.salt_water")
             .overlay(WATER_OVERLAY)
             .color(ALPHA_MASK | 0x3F76E4)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+            .sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
@@ -98,7 +98,7 @@ public final class TFCFluids
             .translationKey("fluid.tfc.spring_water")
             .color(ALPHA_MASK | 0x4ECBD7)
             .overlay(WATER_OVERLAY)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+            .sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
@@ -124,10 +124,10 @@ public final class TFCFluids
         // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
         // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
         final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();
-        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.get().get()));
-        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.get().get()));
+        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue().get()));
+        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue().get()));
 
-        propertiesBox.with(Lazy.of(() -> {
+        propertiesBox.setValue(Lazy.of(() -> {
             ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
             builder.accept(lazyProperties);
             return lazyProperties;

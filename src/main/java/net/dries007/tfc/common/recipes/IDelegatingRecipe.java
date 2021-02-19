@@ -24,21 +24,21 @@ public interface IDelegatingRecipe<C extends IInventory> extends IRecipe<C>
     }
 
     @Override
-    default ItemStack assemble(C inv)
+    default ItemStack getCraftingResult(C inv)
     {
-        return getInternal().assemble(inv);
+        return getInternal().getCraftingResult(inv);
     }
 
     @Override
-    default boolean canCraftInDimensions(int width, int height)
+    default boolean canFit(int width, int height)
     {
-        return getInternal().canCraftInDimensions(width, height);
+        return getInternal().canFit(width, height);
     }
 
     @Override
-    default ItemStack getResultItem()
+    default ItemStack getRecipeOutput()
     {
-        return getInternal().getResultItem();
+        return getInternal().getRecipeOutput();
     }
 
     @Override
@@ -54,9 +54,9 @@ public interface IDelegatingRecipe<C extends IInventory> extends IRecipe<C>
     }
 
     @Override
-    default boolean isSpecial()
+    default boolean isDynamic()
     {
-        return getInternal().isSpecial();
+        return getInternal().isDynamic();
     }
 
     @Override
@@ -66,8 +66,8 @@ public interface IDelegatingRecipe<C extends IInventory> extends IRecipe<C>
     }
 
     @Override
-    default ItemStack getToastSymbol()
+    default ItemStack getIcon()
     {
-        return getInternal().getToastSymbol();
+        return getInternal().getIcon();
     }
 }

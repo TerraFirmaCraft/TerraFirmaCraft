@@ -78,7 +78,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         }
 
         @Override
-        public R fromJson(ResourceLocation recipeId, JsonObject json)
+        public R read(ResourceLocation recipeId, JsonObject json)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
             boolean copyInputState = JSONUtils.getBoolean(json, "copy_input", false);
@@ -96,7 +96,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
 
         @Nullable
         @Override
-        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public R read(ResourceLocation recipeId, PacketBuffer buffer)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(buffer);
             boolean copyInputState = buffer.readBoolean();
@@ -113,7 +113,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, R recipe)
+        public void write(PacketBuffer buffer, R recipe)
         {
             IBlockIngredient.Serializer.INSTANCE.write(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);

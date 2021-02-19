@@ -23,6 +23,6 @@ public class SaltWaterAttributes extends FluidAttributes
     @Override
     public int getColor(IBlockDisplayReader world, BlockPos pos)
     {
-        return world.getBlockTint(pos, TFCColors.SALT_WATER) | TFCFluids.ALPHA_MASK;
+        return world.getBlockColor(pos, TFCColors.SALT_WATER) | TFCFluids.ALPHA_MASK;
     }
 }

@@ -16,13 +16,13 @@ import net.minecraft.item.crafting.IRecipe;
 public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
 {
     @Override
-    default ItemStack assemble(C inv)
+    default ItemStack getCraftingResult(C inv)
     {
-        return getResultItem().copy();
+        return getCraftingResult(inv).copy();
     }
 
     @Override
-    default boolean canCraftInDimensions(int width, int height)
+    default boolean canFit(int width, int height)
     {
         return true;
     }
@@ -33,7 +33,7 @@ public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
      * This then prevents "Unknown recipe category" log spam for every recipe in {  net.minecraft.client.util.ClientRecipeBook#categorizeAndGroupRecipes(Iterable)}
      */
     @Override
-    default boolean isSpecial()
+    default boolean isDynamic()
     {
         return true;
     }

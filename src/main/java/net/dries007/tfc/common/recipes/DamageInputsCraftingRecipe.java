@@ -26,10 +26,10 @@ public class DamageInputsCraftingRecipe extends DelegatingRecipe<CraftingInvento
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
     {
-        NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
+        NonNullList<ItemStack> items = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
         for (int i = 0; i < items.size(); ++i)
         {
-            ItemStack stack = inv.getItem(i);
+            ItemStack stack = inv.getStackInSlot(i);
             if (stack.isDamageable())
             {
                 Helpers.damageCraftingItem(stack, 1);

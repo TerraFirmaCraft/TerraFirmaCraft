@@ -78,7 +78,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     }
                     world.setBlockState(fallPos, fallingState);
                     world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
-                    world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
+                    world.addEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }
                 return true;
             }
