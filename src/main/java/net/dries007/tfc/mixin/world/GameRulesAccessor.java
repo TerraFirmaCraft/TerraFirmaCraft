@@ -22,6 +22,6 @@ public interface GameRulesAccessor
     /**
      * This is used in order to get and modify game rule callbacks. This is used to run additional callbacks on the doDaylightCycle game rule.
      */
-    @Accessor("GAME_RULE_TYPES")
+    @Accessor("GAME_RULES")
     static Map<GameRules.RuleKey<?>, GameRules.RuleType<?>> accessor$getGameRuleTypes() { return null; }
 }

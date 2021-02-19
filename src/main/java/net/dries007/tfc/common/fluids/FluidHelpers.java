@@ -79,7 +79,7 @@ public class FluidHelpers
 
             // Look for adjacent fluids that are the same, for purposes of flow into this fluid
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
-            if (offsetFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
+            if (offsetFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$doesSideHaveHoles(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
             {
                 if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(worldIn, offsetPos, offsetState, canConvertToSource))
                 {
@@ -135,7 +135,7 @@ public class FluidHelpers
         BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
-        if (!aboveFluid.isEmpty() && aboveFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
+        if (!aboveFluid.isEmpty() && aboveFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$doesSideHaveHoles(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
         {
             return ((FlowingFluid) aboveFluid.getFluid()).getFlowingFluidState(8, true);
         }

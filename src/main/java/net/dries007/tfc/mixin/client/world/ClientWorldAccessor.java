@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(ClientWorld.class)
 public interface ClientWorldAccessor
 {
-    @Accessor("tintCaches")
+    @Accessor("colorCaches")
     Object2ObjectArrayMap<ColorResolver, ColorCache> getTintCaches();
 }

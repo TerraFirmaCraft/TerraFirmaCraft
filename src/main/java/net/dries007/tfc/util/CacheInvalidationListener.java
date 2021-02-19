@@ -60,6 +60,6 @@ public enum CacheInvalidationListener implements IFutureReloadListener
     @SuppressWarnings("unchecked")
     private <C extends IInventory, R extends IRecipe<C>> Collection<R> getRecipes(MinecraftServer server, IRecipeType<R> recipeType)
     {
-        return (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
+        return (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$getRecipes(recipeType).values();
     }
 }

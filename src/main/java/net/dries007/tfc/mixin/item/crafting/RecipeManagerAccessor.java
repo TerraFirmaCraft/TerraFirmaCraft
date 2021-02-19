@@ -23,6 +23,6 @@ public interface RecipeManagerAccessor
     /**
      * For more performant querying of recipes, this gets all recipes of a type. Used by recipe caches.
      */
-    @Invoker("byType")
-    <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> call$byType(IRecipeType<T> recipeTypeIn);
+    @Invoker("getRecipes")
+    <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> call$getRecipes(IRecipeType<T> recipeTypeIn);
 }

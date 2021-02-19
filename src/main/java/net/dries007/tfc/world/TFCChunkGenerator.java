@@ -182,7 +182,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Biome biome = this.biomeProvider.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
         for (Supplier<StructureFeature<?, ?>> supplier : biome.getGenerationSettings().getStructures())
         {
-            ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
+            ((ChunkGeneratorAccessor) this).invoke$func_242705_a(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
         }
     }
 

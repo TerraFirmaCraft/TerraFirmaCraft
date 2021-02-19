@@ -38,7 +38,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, C config)
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, C config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final List<V> veins = getNearbyVeins(worldIn, chunkPos, config.getChunkRadius(), config);
@@ -46,7 +46,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         {
             for (V vein : veins)
             {
-                place(worldIn, random, chunkPos.getXStart(), chunkPos.getZStart(), vein, config);
+                generate(worldIn, random, chunkPos.getXStart(), chunkPos.getZStart(), vein, config);
             }
             return true;
         }
@@ -54,16 +54,16 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @SuppressWarnings("deprecation")
-    protected void place(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
+    protected void generate(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final MutableBoundingBox box = getBoundingBox(config);
-        box.move(vein.getPos());
+        box.func_236989_a_(vein.getPos());//move
 
         // Intersect the bounding box with the chunk allowed region
-        int minX = Math.max(blockX, box.x0), maxX = Math.min(blockX + 15, box.x1);
-        int minY = Math.max(config.getMinY(), box.y0), maxY = Math.min(config.getMaxY(), box.y1);
-        int minZ = Math.max(blockZ, box.z0), maxZ = Math.min(blockZ + 15, box.z1);
+        int minX = Math.max(blockX, box.minX), maxX = Math.min(blockX + 15, box.maxX);
+        int minY = Math.max(config.getMinY(), box.minY), maxY = Math.min(config.getMaxY(), box.maxY);
+        int minZ = Math.max(blockZ, box.minZ), maxZ = Math.min(blockZ + 15, box.maxZ);
 
         for (int x = minX; x <= maxX; x++)
         {
@@ -98,7 +98,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         mutablePos.setPos(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = world.getBlockState(mutablePos);
                         final BlockState state = indicator.getStateToGenerate(random);
-                        if (stateAt.isAir() && state.isReplaceable(world, mutablePos))
+                        if (stateAt.isAir() && state.isValidPosition(world, mutablePos))
                         {
                             world.setBlockState(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state).with(HorizontalBlock.HORIZONTAL_FACING, Direction.Plane.HORIZONTAL.random(random)), 3);
                             //world.setBlockState(mutablePos.up(20), Blocks.GOLD_BLOCK.getDefaultState(), 3);
@@ -130,10 +130,10 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
     protected final void getVeinsAtChunk(ISeedReader world, int chunkPosX, int chunkPosZ, List<V> veins, C config)
     {
-        long seed = FastRandom.next(world.getSeed(), config.getSalt());
-        seed = FastRandom.next(seed, chunkPosX);
-        seed = FastRandom.next(seed, chunkPosZ);
-        seed = FastRandom.next(seed, config.getSalt());
+        long seed = FastRandom.mix(world.getSeed(), config.getSalt());
+        seed = FastRandom.mix(seed, chunkPosX);
+        seed = FastRandom.mix(seed, chunkPosZ);
+        seed = FastRandom.mix(seed, config.getSalt());
         chunkRandom.setSeed(seed);
         if (chunkRandom.nextInt(config.getRarity()) == 0)
         {

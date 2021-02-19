@@ -18,6 +18,6 @@ public interface ConfiguredCarverAccessor
     /**
      * The accessor has been inline / removed and it is needed to provide additional carving context
      */
-    @Accessor("worldCarver")
+    @Accessor("carver")
     WorldCarver<?> accessor$getWorldCarver();
 }

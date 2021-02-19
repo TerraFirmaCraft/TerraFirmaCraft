@@ -21,6 +21,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ChunkGenerator.class)
 public interface ChunkGeneratorAccessor
 {
-    @Invoker("createStructure")
-    void invoke$createStructure(StructureFeature<?, ?> structureFeature, DynamicRegistries dynamicRegistries, StructureManager structureManager, IChunk chunk, TemplateManager templateManager, long seed, ChunkPos chunkPos, Biome biome);
+    @Invoker("func_242705_a")//create structure
+    void invoke$func_242705_a(StructureFeature<?, ?> structureFeature, DynamicRegistries dynamicRegistries, StructureManager structureManager, IChunk chunk, TemplateManager templateManager, long seed, ChunkPos chunkPos, Biome biome);
 }

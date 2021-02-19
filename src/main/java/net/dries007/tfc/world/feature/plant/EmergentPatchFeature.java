@@ -42,7 +42,7 @@ public class EmergentPatchFeature extends Feature<BlockClusterFeatureConfig>
             mutablePos.move(Direction.UP, 2);
             boolean foundTopBlockSpace = world.isAirBlock(mutablePos);
             mutablePos.move(Direction.DOWN);
-            if ((foundTopBlockSpace && world.hasWater(mutablePos)) && blockstate.isReplaceable(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
+            if ((foundTopBlockSpace && world.hasWater(mutablePos)) && blockstate.isValidPosition(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state))
             {
                 config.blockPlacer.place(world, mutablePos, blockstate, rand);
                 ++i;

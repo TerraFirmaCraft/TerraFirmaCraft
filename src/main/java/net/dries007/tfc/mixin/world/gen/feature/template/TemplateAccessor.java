@@ -23,6 +23,6 @@ public interface TemplateAccessor
     /**
      * Used by {  TreeFeature#placeTemplateInWorld(Template, PlacementSettings, IWorld, BlockPos)} for a optimized implementation
      */
-    @Accessor("palettes")
+    @Accessor("blocks")
     List<Template.Palette> accessor$getPalettes();
 }

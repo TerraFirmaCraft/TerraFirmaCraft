@@ -29,11 +29,11 @@ public interface ITallPlant
         @Override
         public String toString()
         {
-            return this.getSerializedName();
+            return this.getString();
         }
 
         @Override
-        public String getSerializedName()
+        public String getString()
         {
             return name().toLowerCase();
         }

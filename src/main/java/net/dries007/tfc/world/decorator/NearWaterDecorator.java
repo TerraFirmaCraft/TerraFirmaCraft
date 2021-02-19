@@ -37,8 +37,8 @@ public class NearWaterDecorator extends Placement<NearWaterConfig>
                 {
                     mutablePos.setPos(pos).move(x, y, z);
 
-                    final BlockState state = helper.getBlockState(mutablePos);
-                    if (state.getFluidState().isIn(FluidTags.WATER))
+                    final BlockState state = helper.func_242894_a(mutablePos);
+                    if (state.getFluidState().isTagged(FluidTags.WATER))
                     {
                         return Stream.of(pos);
                     }

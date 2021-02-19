@@ -38,18 +38,19 @@ public class ShorelineDecorator extends Placement<NearWaterConfig>
             for (int z = -radius; z <= radius; z++)
             {
                 mutablePos.setPos(pos).move(x, 0, z);
-                mutablePos.setY(helper.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
-                BlockState state = helper.getBlockState(mutablePos);
+                //get height
+                mutablePos.setY(helper.func_242893_a(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+                BlockState state = helper.func_242894_a(mutablePos);//get block state
                 if (!state.isAir())
                     return Stream.empty();
                 mutablePos.move(Direction.DOWN);
-                state = helper.getBlockState(mutablePos);
+                state = helper.func_242894_a(mutablePos);
                 if (state.isIn(TFCTags.Blocks.BUSH_PLANTABLE_ON) || state.isIn(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     for (Direction d : Direction.Plane.HORIZONTAL)
                     {
                         mutablePos.move(d);
-                        if (helper.getBlockState(mutablePos).getFluidState().isIn(FluidTags.WATER))
+                        if (helper.func_242894_a(mutablePos).getFluidState().isTagged(FluidTags.WATER))
                         {
                             return Stream.of(pos);
                         }

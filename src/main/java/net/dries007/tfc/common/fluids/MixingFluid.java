@@ -115,7 +115,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
 
     public boolean isWaterHole(IBlockReader world, Fluid fluid, BlockPos pos, BlockState state, BlockPos adjacentPos, BlockState adjacentState)
     {
-        if (!((FlowingFluidAccessor) this).invoke$canPassThroughWall(Direction.DOWN, world, pos, state, adjacentPos, adjacentState))
+        if (!((FlowingFluidAccessor) this).invoke$doesSideHaveHoles(Direction.DOWN, world, pos, state, adjacentPos, adjacentState))
         {
             return false;
         }
@@ -127,7 +127,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
 
     public boolean canPassThrough(IBlockReader world, Fluid fluid, BlockPos pos, BlockState state, Direction direction, BlockPos adjacentPos, BlockState adjacentState, FluidState otherFluid)
     {
-        return !this.isSourceBlockOfThisType(otherFluid) && ((FlowingFluidAccessor) this).invoke$canPassThroughWall(direction, world, pos, state, adjacentPos, adjacentState) && this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
+        return !this.isSourceBlockOfThisType(otherFluid) && ((FlowingFluidAccessor) this).invoke$doesSideHaveHoles(direction, world, pos, state, adjacentPos, adjacentState) && this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
     }
 
     public boolean canHoldFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)

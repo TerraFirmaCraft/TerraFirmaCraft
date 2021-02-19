@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(DimensionRenderInfo.class)
 public interface DimensionRenderInfoAccessor
 {
-    @Accessor(value = "EFFECTS")
+    @Accessor(value = "field_239208_a_") //effects
     static Object2ObjectMap<ResourceLocation, DimensionRenderInfo> accessor$Effects() { return null; }
 
-    @Accessor(value = "cloudLevel")
+    @Accessor(value = "field_239210_c_") // cloud level
     void accessor$setCloudLevel(float cloudLevel);
 }

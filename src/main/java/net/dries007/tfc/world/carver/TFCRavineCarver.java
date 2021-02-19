@@ -48,7 +48,7 @@ public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
         float pitch = (rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
         float width = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
         int branchAmount = 112 - rand.nextInt(28);
-        ((CanyonWorldCarverAccessor) this).call$genCanyon(chunkIn, biomePos, rand.nextLong(), seaLevel, chunkX, chunkZ, xOffset, yOffset, zOffset, width, yaw, pitch, 0, branchAmount, 3.0D, carvingMask);
+        ((CanyonWorldCarverAccessor) this).call$func_227204_a_(chunkIn, biomePos, rand.nextLong(), seaLevel, chunkX, chunkZ, xOffset, yOffset, zOffset, width, yaw, pitch, 0, branchAmount, 3.0D, carvingMask);
         return true;
     }
 

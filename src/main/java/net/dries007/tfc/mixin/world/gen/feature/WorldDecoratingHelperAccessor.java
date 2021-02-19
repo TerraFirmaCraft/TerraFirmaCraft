@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(WorldDecoratingHelper.class)
 public interface WorldDecoratingHelperAccessor
 {
-    @Accessor(value = "level")
+    @Accessor(value = "field_242889_a")//level
     ISeedReader accessor$getLevel();
 
-    @Accessor(value = "generator")
+    @Accessor(value = "chunkGenerator")
     ChunkGenerator accessor$getGenerator();
 }

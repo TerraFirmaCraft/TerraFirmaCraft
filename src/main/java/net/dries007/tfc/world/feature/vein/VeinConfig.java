@@ -68,11 +68,11 @@ public class VeinConfig implements IFeatureConfig
         this.minY = minY;
         this.maxY = maxY;
         this.salt = salt.orElseGet(() -> {
-            long seed = FastRandom.next(size, Float.floatToIntBits(density));
-            seed = FastRandom.next(seed, minY);
-            seed = FastRandom.next(seed, maxY);
-            seed = FastRandom.next(seed, rarity);
-            seed = FastRandom.next(seed, rarity);
+            long seed = FastRandom.mix(size, Float.floatToIntBits(density));
+            seed = FastRandom.mix(seed, minY);
+            seed = FastRandom.mix(seed, maxY);
+            seed = FastRandom.mix(seed, rarity);
+            seed = FastRandom.mix(seed, rarity);
             return seed;
         });
     }

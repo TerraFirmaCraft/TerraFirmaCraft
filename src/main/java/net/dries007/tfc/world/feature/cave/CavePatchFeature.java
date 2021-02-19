@@ -39,7 +39,7 @@ public class CavePatchFeature extends Feature<BlockClusterFeatureConfig>
             mutablePos.move(Direction.UP);
             final BlockState state = config.stateProvider.getBlockState(rand, mutablePos);
 
-            if (world.isAirBlock(mutablePos) && state.isReplaceable(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
+            if (world.isAirBlock(mutablePos) && state.isValidPosition(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(belowState.getBlock())) && !config.blacklist.contains(belowState))
             {
                 config.blockPlacer.place(world, mutablePos, state, rand);
                 placedAny = true;

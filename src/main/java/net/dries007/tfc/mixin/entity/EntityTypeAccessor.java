@@ -17,6 +17,6 @@ public interface EntityTypeAccessor
     /**
      * This is used to avoid a stupid log message during entity type registration
      */
-    @Accessor("serialize")
+    @Accessor("serializable")
     void accessor$setSerialize(boolean serialize);
 }

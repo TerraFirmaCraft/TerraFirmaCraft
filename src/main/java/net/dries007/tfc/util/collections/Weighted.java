@@ -48,7 +48,7 @@ public class Weighted<E> implements IWeighted<E>
     public E get(Random random)
     {
         double value = random.nextDouble() * totalWeight;
-        return backingMap.higherEntry(value).get();
+        return backingMap.higherEntry(value).getValue();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Weighted<E> implements IWeighted<E>
     @Override
     public List<Pair<E, Double>> weightedValues()
     {
-        return backingMap.entrySet().stream().map(e -> Pair.of(e.get(), e.getKey())).collect(Collectors.toList());
+        return backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
     }
 
     @Override

@@ -65,7 +65,7 @@ public abstract class TFCCoralFeature extends Feature<NoFeatureConfig>
                     BlockPos relativePos = pos.offset(direction);
                     if (world.getBlockState(relativePos).isIn(Blocks.WATER))
                     {
-                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).getDefaultState()).with(TFCDeadCoralWallFanBlock.HORIZONTAL_FACING, direction);
+                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).getDefaultState()).with(TFCDeadCoralWallFanBlock.FACING, direction);
                         world.setBlockState(relativePos, wallCoralState, 2);
                     }
                 }
