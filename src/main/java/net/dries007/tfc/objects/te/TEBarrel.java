@@ -436,7 +436,6 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
                 }
                 surplus.clear();
             }
-            saveToItemStack(barrelStack);
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
         }
     }
