@@ -25,8 +25,8 @@ public abstract class BiomeMixin
      * In vanilla this is either called from ServerWorld, or from world generation with ISeedReader - both of which are able to cast up to IWorld.
      * For cases where this cast is not valid we just default to the vanilla temperature.
      */
-    @Redirect(method = "shouldSnow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
-    private float redirect$shouldSnow$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
+    @Redirect(method = "doesSnowGenerate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
+    private float redirect$doesSnowGenerate$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
     {
         return Climate.getVanillaBiomeTemperature(biome, worldIn instanceof IWorld ? (IWorld) worldIn : null, pos);
     }
@@ -38,7 +38,7 @@ public abstract class BiomeMixin
      * FFor cases where this cast is not valid we just default to the vanilla temperature.
      */
     @Redirect(method = "doesWaterFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
-    private float redirect$shouldFreeze$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
+    private float redirect$doesWaterFreeze$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
     {
         return Climate.getVanillaBiomeTemperature(biome, worldIn instanceof IWorld ? (IWorld) worldIn : null, pos);
     }

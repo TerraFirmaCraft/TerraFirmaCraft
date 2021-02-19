@@ -46,11 +46,11 @@ public abstract class WorldSettingsImportMixin<T> extends DelegatingDynamicOps<T
         super(dynamicOps);
     }
 
-    @Redirect(method = "decode", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/WorldSettingsImport$IResourceAccess;parseElement(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"), require = 0)
+    @Redirect(method = "readAndRegisterElement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/WorldSettingsImport$IResourceAccess;decode(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"), require = 0)
     private <E> DataResult<Pair<E, OptionalInt>> inject$readAndRegisterElement(WorldSettingsImport.IResourceAccess resourceAccess, DynamicOps<JsonElement> dynamicOps, RegistryKey<? extends Registry<E>> rootKey, RegistryKey<E> elementKey, Decoder<E> decoder, RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation keyIdentifier)
     {
         // Call the original parse function and return the result. This redirect is simply used as an argument getter and injection point
-        DataResult<Pair<E, OptionalInt>> dataResult = resourceAccess.decode(dynamicOps, rootKey, elementKey, decoder);
+        DataResult<Pair<E, OptionalInt>> dataResult = this.resourceAccess.decode(dynamicOps, rootKey, elementKey, decoder);
 
         // At this point we can do a couple extra checks, and spit out some more useful error information
         if (TFCConfig.COMMON.enableDevTweaks.get() && !dataResult.result().isPresent())

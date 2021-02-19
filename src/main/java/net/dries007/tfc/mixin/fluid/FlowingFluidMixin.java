@@ -32,8 +32,8 @@ public abstract class FlowingFluidMixin extends Fluid
     @Shadow
     protected abstract int getLevelDecreasePerBlock(IWorldReader worldIn);
 
-    @Inject(method = "getNewLiquid", at = @At("HEAD"), cancellable = true)
-    private void inject$getNewLiquid(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, CallbackInfoReturnable<FluidState> cir)
+    @Inject(method = "calculateCorrectFlowingState", at = @At("HEAD"), cancellable = true)
+    private void inject$calculateCorrectFlowingState(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, CallbackInfoReturnable<FluidState> cir)
     {
         if (FluidHelpers.canMixFluids(this))
         {

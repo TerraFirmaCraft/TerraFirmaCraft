@@ -40,8 +40,8 @@ public abstract class ServerWorldMixin extends World
      * Hook into chunk random ticks, allow for snow placement modification.
      * Could be replaced by https://github.com/MinecraftForge/MinecraftForge/pull/7235
      */
-    @Inject(method = "tickChunk", at = @At("RETURN"))
-    private void inject$tickChunk(Chunk chunkIn, int randomTickSpeed, CallbackInfo ci)
+    @Inject(method = "tickEnvironment", at = @At("RETURN"))
+    private void inject$tickEnvironment(Chunk chunkIn, int randomTickSpeed, CallbackInfo ci)
     {
         EnvironmentHelpers.onEnvironmentTick((ServerWorld) (Object) this, chunkIn, rand);
     }
@@ -50,7 +50,7 @@ public abstract class ServerWorldMixin extends World
      * Redirect a call to {  Biome#getPrecipitation()} with one that has world and position context.
      * The position is inferred by reverse engineering {  ServerWorld#getBlockRandomPos(int, int, int, int)}
      */
-    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
+    @Redirect(method = "tickEnvironment", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
     private Biome.RainType redirect$tickChunk$getPrecipitation(Biome biome, Chunk chunkIn)
     {
         ChunkPos chunkPos = chunkIn.getPos();
