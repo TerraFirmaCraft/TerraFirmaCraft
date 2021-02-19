@@ -16,7 +16,7 @@ public class TFCShieldItem extends ShieldItem
 
     public TFCShieldItem(IItemTier tier, Properties builder)
     {
-        super(builder.defaultDurability(tier.getUses()));
+        super(builder.defaultMaxDamage(tier.getMaxUses()));
         this.tier = tier;
     }
 
@@ -26,13 +26,13 @@ public class TFCShieldItem extends ShieldItem
     }
 
     @Override
-    public int getEnchantmentValue()
+    public int getItemEnchantability()
     {
-        return this.tier.getEnchantmentValue();
+        return this.tier.getEnchantability();
     }
 
     @Override
-    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
         return false;
     }

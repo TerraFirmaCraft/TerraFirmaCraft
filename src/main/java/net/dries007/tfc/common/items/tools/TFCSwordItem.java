@@ -32,7 +32,7 @@ public class TFCSwordItem extends SwordItem
     public TFCSwordItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(tier, 0, attackSpeed, builder);
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
         this.attackSpeed = attackSpeed;
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
             .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
@@ -46,7 +46,7 @@ public class TFCSwordItem extends SwordItem
     }
 
     @Override
-    public float getDamage()
+    public float getAttackDamage()
     {
         return attackDamage;
     }

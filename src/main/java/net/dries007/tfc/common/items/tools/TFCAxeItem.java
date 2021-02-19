@@ -32,7 +32,7 @@ public class TFCAxeItem extends AxeItem
     public TFCAxeItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(tier, 0, attackSpeed, builder);
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
         this.attackSpeed = attackSpeed;
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
             .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))

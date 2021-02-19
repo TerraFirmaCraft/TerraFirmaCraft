@@ -16,7 +16,7 @@ public class TFCShearsItem extends ShearsItem
 {
     public TFCShearsItem(IItemTier tier, Properties builder)
     {
-        super(builder.defaultDurability(tier.getUses()));
+        super(builder.defaultMaxDamage(tier.getMaxUses()));
     }
 
     // todo implement

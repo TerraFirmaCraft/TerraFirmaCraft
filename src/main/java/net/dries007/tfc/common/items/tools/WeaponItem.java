@@ -38,7 +38,7 @@ public class WeaponItem extends TieredItem
     {
         super(tier, builder);
         this.attackSpeed = attackSpeed;
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();//.getAttackDamageBonus();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();//.getAttackDamage();
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
             .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
             .put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION))

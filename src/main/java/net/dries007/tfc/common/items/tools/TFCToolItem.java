@@ -35,7 +35,7 @@ public class TFCToolItem extends ToolItem
     public TFCToolItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(0, attackSpeed, tier, Collections.emptySet(), builder);
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
         this.attackSpeed = attackSpeed;
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
             .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
