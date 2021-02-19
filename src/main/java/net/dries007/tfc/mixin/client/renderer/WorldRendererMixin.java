@@ -32,7 +32,7 @@ public abstract class WorldRendererMixin
      * Redirect the call to {  Biome#getTemperature(BlockPos)} with one that has a position and world context
      */
     @Redirect(method = "renderRainSnow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
-    private float redirect$renderSnowAndRain$getTemperature(Biome biome, BlockPos pos)
+    private float redirect$renderRainSnow$getTemperature(Biome biome, BlockPos pos)
     {
         return Climate.getVanillaBiomeTemperature(biome, world, pos);
     }
@@ -41,7 +41,7 @@ public abstract class WorldRendererMixin
      * Redirect the call to {  Biome#getPrecipitation()} with one that has a position and world context
      */
     @Redirect(method = "renderRainSnow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
-    private Biome.RainType redirect$renderSnowAndRain$getPrecipitation(Biome biome, LightTexture lightmapIn, float partialTicks, double xIn, double yIn, double zIn)
+    private Biome.RainType redirect$renderRainSnow$getPrecipitation(Biome biome, LightTexture lightmapIn, float partialTicks, double xIn, double yIn, double zIn)
     {
         mutablePos.setPos(xIn, yIn, zIn);
         return Climate.getVanillaBiomePrecipitation(biome, world, mutablePos);
@@ -50,8 +50,8 @@ public abstract class WorldRendererMixin
     /**
      * Redirect the call to {  Biome#getTemperature(BlockPos)} with one that has a position and world context
      */
-    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
-    private float redirect$tickRain$getTemperature(Biome biome, BlockPos pos)
+    @Redirect(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
+    private float redirect$addRainParticles$getTemperature(Biome biome, BlockPos pos)
     {
         return Climate.getVanillaBiomeTemperature(biome, world, pos);
     }
@@ -59,8 +59,8 @@ public abstract class WorldRendererMixin
     /**
      * Redirect the call to {  Biome#getPrecipitation()} with one that has a position and world context
      */
-    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
-    private Biome.RainType redirect$tickRain$getPrecipitation(Biome biome, ActiveRenderInfo activeRenderInfo)
+    @Redirect(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation()Lnet/minecraft/world/biome/Biome$RainType;"))
+    private Biome.RainType redirect$addRainParticles$getPrecipitation(Biome biome, ActiveRenderInfo activeRenderInfo)
     {
         return Climate.getVanillaBiomePrecipitation(biome, world, activeRenderInfo.getBlockPos());
     }

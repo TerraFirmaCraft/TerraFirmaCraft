@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerController.class)
 public abstract class PlayerControllerMixin
 {
-    @Inject(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onItemUse(Lnet/minecraft/item/ItemUseContext;)Lnet/minecraft/util/ActionResultType;"), require = 2, cancellable = true)
-    private void inject$useItemOn(ClientPlayerEntity player, ClientWorld worldIn, Hand handIn, BlockRayTraceResult resultIn, CallbackInfoReturnable<ActionResultType> cir)
+    @Inject(method = "func_217292_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onItemUse(Lnet/minecraft/item/ItemUseContext;)Lnet/minecraft/util/ActionResultType;"), require = 2, cancellable = true)
+    private void inject$func_217292_a(ClientPlayerEntity player, ClientWorld worldIn, Hand handIn, BlockRayTraceResult resultIn, CallbackInfoReturnable<ActionResultType> cir)
     {
         final ItemStack stack = player.getHeldItem(handIn);
         final int startCount = stack.getCount();

@@ -31,7 +31,7 @@ public abstract class FogRendererMixin
     /**
      * Replace the call to {  Biome#getWaterFogColor()} with one that has a position context
      */
-    @Redirect(method = "setupColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getWaterFogColor()I"))
+    //@Redirect(method = "getWaterFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getWaterFogColor()I"))
     private static int redirect$getWaterFogColor(Biome biome, ActiveRenderInfo activeRenderInfoIn)
     {
         IWorld world = Minecraft.getInstance().world;

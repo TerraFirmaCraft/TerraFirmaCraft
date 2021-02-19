@@ -25,12 +25,13 @@ public class ClientWorldInfoMixin
     /**
      * Override horizon height (where the fog color changes from sky to black/dark, as in vanilla it's hardcoded to the sea level
      */
-    @Inject(method = "getHorizonHeight", at = @At("HEAD"), cancellable = true)
-    private void inject$getHorizonHeight(CallbackInfoReturnable<Double> cir)
+    @Inject(method = "getVoidFogHeight", at = @At("HEAD"), cancellable = true)
+    private void inject$getVoidFogHeight(CallbackInfoReturnable<Double> cir)
     {
         if (TFCConfig.CLIENT.assumeTFCWorld.get())
         {
-            cir.setReturnValue(this.flatWorld ? 0 : (double) TFCChunkGenerator.SEA_LEVEL);
+            //cir.setReturnValue(this.flatWorld ? 0 : (double) TFCChunkGenerator.SEA_LEVEL);
+            cir.setReturnValue(0.0);
         }
     }
 }

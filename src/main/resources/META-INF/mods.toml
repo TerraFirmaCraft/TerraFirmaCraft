@@ -8,7 +8,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[mods]]
 modId = "tfc" # mandatory
 version = "${file.jarVersion}" #mandatory
-displayName = "TerraFirmaCraft" #mandatory
+displayName = "RDI ImmerSurv" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -16,11 +16,11 @@ displayName = "TerraFirmaCraft" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
+credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, Davickk, SampsonnZ and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
 # A text field displayed in the mod UI
 authors = "AlcatrazEscapee" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description = '''TerraFirmaCraft - The Next Generation'''
+description = '''RDI ImmerSurv - The 1.16 port of TerraFirmaCraft'''
 
 # dependencies
 [[dependencies.tfc]]
