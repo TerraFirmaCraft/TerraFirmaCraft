@@ -44,7 +44,7 @@ public class TFCBlockStateProperties
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
 
-    public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE_0_1;
+    public static final IntegerProperty STAGE_1 = IntegerProperty.create("stage", 0, 1);//BlockStateProperties.STAGE_0_1;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);
     public static final IntegerProperty STAGE_3 = IntegerProperty.create("stage", 0, 3);
     public static final IntegerProperty STAGE_4 = IntegerProperty.create("stage", 0, 4);

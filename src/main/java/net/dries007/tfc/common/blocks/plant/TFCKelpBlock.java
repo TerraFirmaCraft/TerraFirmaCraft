@@ -16,6 +16,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -52,7 +53,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.blockNeedsPostProcessing(worldIn, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !stateIn.isValidPosition(worldIn, currentPos))
         {
             worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -63,7 +64,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             Block block = facingState.getBlock();
             if (block != this && block != abstracttopplantblock)
             {
-                return abstracttopplantblock.grow(worldIn).with(getFluidProperty(), stateIn.get(getFluidProperty()));
+                return abstracttopplantblock.grow(worldIn).with(getFluidProperty(), stateIn.get(getFluidProperty())).with(BlockStateProperties.WATERLOGGED,true);
             }
         }
         if (this.ticksRandomly)

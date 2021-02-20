@@ -19,8 +19,10 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -45,7 +47,6 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-
     public static final VoxelShape FLAT = makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
     public static final VoxelShape SMALL = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
     public static final VoxelShape MEDIUM = makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
@@ -77,7 +78,8 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         this.shape = shape;
         this.pickBlock = pickBlock;
 
-        setDefaultState(getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, Direction.EAST));
+        setDefaultState(getDefaultState().with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).with(FACING, Direction.EAST)
+        );
     }
 
     @Nonnull

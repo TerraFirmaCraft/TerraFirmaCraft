@@ -29,8 +29,8 @@ public abstract class LootContextBuilderMixin
     /**
      * This specifically ignores the first empty set check, by just not computing the extra parameters
      */
-    @Redirect(method = "create", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Sets;difference(Ljava/util/Set;Ljava/util/Set;)Lcom/google/common/collect/Sets$SetView;", remap = false, ordinal = 0))
-    private Sets.SetView<LootParameter<?>> redirect$create$difference(Set<?> set1, Set<?> set2)
+    @Redirect(method = "build", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Sets;difference(Ljava/util/Set;Ljava/util/Set;)Lcom/google/common/collect/Sets$SetView;", remap = false, ordinal = 0))
+    private Sets.SetView<LootParameter<?>> redirect$build$difference(Set<?> set1, Set<?> set2)
     {
         return EMPTY;
     }

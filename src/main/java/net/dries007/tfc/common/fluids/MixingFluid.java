@@ -98,7 +98,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         if (adjacentAmount > 0)
         {
             // Calculate where the fluid should spread based on each direction
-            Map<Direction, FluidState> map = func_205572_b(world, pos, blockState);
+            Map<Direction, FluidState> map = this.func_205572_b(world, pos, blockState);
             for (Map.Entry<Direction, FluidState> entry : map.entrySet())
             {
                 Direction direction = entry.getKey();
@@ -194,12 +194,12 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     /**
      * Modified to use mixing mechanics, in such a way that can be exposed to other subclasses
      *
-     * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, IWorldReader, BlockPos, BlockState, boolean, int)
+     * @see FluidHelpers#calculateCorrectFlowingState(FlowingFluid, IWorldReader, BlockPos, BlockState, boolean, int)
      */
     @Override
     protected FluidState calculateCorrectFlowingState(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn)
     {
-        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canSourcesMultiply(), getLevelDecreasePerBlock(worldIn));
+        return FluidHelpers.calculateCorrectFlowingState(this, worldIn, pos, blockStateIn, this.canSourcesMultiply(), getSlopeFindDistance(worldIn));
     }
 
     /**
@@ -354,6 +354,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
 
     public static class Flowing extends MixingFluid
     {
+
         public Flowing(Properties properties)
         {
             super(properties);
@@ -366,7 +367,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
 
         public int getLevel(FluidState state)
         {
-            return state.get(LEVEL);
+            return 1;/*state.get(LEVEL);*/
         }
 
         protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)

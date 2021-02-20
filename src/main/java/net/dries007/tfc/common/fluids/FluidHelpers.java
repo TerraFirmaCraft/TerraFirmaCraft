@@ -63,7 +63,7 @@ public class FluidHelpers
      * @return The fluid state that should exist at that position
      * FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)
      */
-    public static FluidState getNewFluidWithMixing(FlowingFluid self, IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
+    public static FluidState calculateCorrectFlowingState(FlowingFluid self, IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;
@@ -135,11 +135,11 @@ public class FluidHelpers
         BlockPos abovePos = pos.up();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
-        if (!aboveFluid.isEmpty() && aboveFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$doesSideHaveHoles(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
+        /*if (!aboveFluid.isEmpty() && aboveFluid.getFluid() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$doesSideHaveHoles(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
         {
             return ((FlowingFluid) aboveFluid.getFluid()).getFlowingFluidState(8, true);
         }
-        else
+        else*/
         {
             // Nothing above that can flow downwards, so use the highest adjacent fluid amount, after subtracting the drop off (1 for water, 2 for lava)
             int selfFluidAmount = maxAdjacentFluidAmount - dropOff;

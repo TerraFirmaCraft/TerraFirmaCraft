@@ -27,6 +27,7 @@ import net.minecraft.world.IWorldReader;
 public class ToolRackBlock extends Block implements IWaterLoggable
 {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final VoxelShape RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);

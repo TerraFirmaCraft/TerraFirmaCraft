@@ -8,13 +8,16 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -28,7 +31,13 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggable
-{
+{    public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
+    public static final BooleanProperty EAST = BlockStateProperties.EAST;
+    public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
+    public static final BooleanProperty WEST = BlockStateProperties.WEST;
+    public static final BooleanProperty UP = BlockStateProperties.UP;
+    public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static KelpTreeBlock create(AbstractBlock.Properties builder, FluidProperty fluid)
     {
         return new KelpTreeBlock(builder)
@@ -44,7 +53,14 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     protected KelpTreeBlock(AbstractBlock.Properties builder)
     {
         super(0.3125F, builder);
-        setDefaultState(getDefaultState().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE).with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        setDefaultState(getDefaultState().with(NORTH, Boolean.FALSE)
+            .with(EAST, Boolean.FALSE)
+            .with(SOUTH, Boolean.FALSE)
+            .with(WEST, Boolean.FALSE)
+            .with(UP, Boolean.FALSE)
+            .with(DOWN, Boolean.FALSE)
+            .with(WATERLOGGED,Boolean.FALSE)
+            .with(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -67,6 +83,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
             .with(NORTH, northBlock.isIn(TFCTags.Blocks.KELP_TREE))
             .with(EAST, eastBlock.isIn(TFCTags.Blocks.KELP_TREE))
             .with(SOUTH, southBlock.isIn(TFCTags.Blocks.KELP_TREE))
+            .with(WATERLOGGED,Boolean.FALSE)
             .with(WEST, westBlock.isIn(TFCTags.Blocks.KELP_TREE));
     }
 
@@ -141,7 +158,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
     {
         super.fillStateContainer(builder);
         builder.add(getFluidProperty());
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN,WATERLOGGED);
     }
 
     private void updateFluid(IWorld world, BlockState state, BlockPos pos)

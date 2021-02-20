@@ -104,25 +104,25 @@ public class ChunkBlockReplacer
         final int xStart = chunk.getPos().getXStart();
         final int zStart = chunk.getPos().getZStart();
         final RockData rockData = data.getRockData();
-
-        for (int x = 0; x < 16; x++)
+        final int oneChunk=16;
+        for (int x = 0; x < oneChunk; x++)
         {
-            for (int z = 0; z < 16; z++)
+            for (int z = 0; z < oneChunk; z++)
             {
                 float temperature = data.getAverageTemp(x, z);
                 float rainfall = data.getRainfall(x, z);
 
                 final int maxY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z);
 
-                mutablePos.setPos(xStart + x, 0, zStart + z);
+                mutablePos.add(xStart + x, 0, zStart + z);
                 final Biome biome = world.getBiome(mutablePos);
                 final boolean saltWater = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().isSalty();
 
                 int y = 0;
-                for (int sectionY = 0; sectionY < 16 && y < maxY; sectionY++)
+                for (int sectionY = 0; sectionY < oneChunk && y < maxY; sectionY++)
                 {
                     final ChunkSection section = chunk.getSection(sectionY);
-                    for (int localY = 0; localY < 16 && y < maxY; localY++)
+                    for (int localY = 0; localY < oneChunk && y < maxY; localY++)
                     {
                         y = (sectionY << 4) | localY;
 
@@ -133,7 +133,7 @@ public class ChunkBlockReplacer
                             IBlockReplacer replacer = replacements.get(stateAt.getBlock());
                             if (replacer != null)
                             {
-                                stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature, saltWater);
+                                //stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature, saltWater);
                                 section.setBlockState(x, localY, z, stateAt, false);
 
                                 // Since we operate on the chunk section directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
