@@ -66,7 +66,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     protected CreepingPlantBlock(Properties properties)
     {
         super(properties);
-
+        // these lines of code may not working on 1.16
         /*shapeCache = getDefaultState().get(Collectors.toMap(state -> state,
             state -> SHAPES_BY_PROPERTY.entrySet().stream()
                 .findAny().stream()
