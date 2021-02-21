@@ -193,11 +193,11 @@ public final class TFCBlocks
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_branch", () -> new FruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f))), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_branch", () -> new FruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f))))
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(BranchTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)), FLORA)
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitTree.Default.class, tree ->

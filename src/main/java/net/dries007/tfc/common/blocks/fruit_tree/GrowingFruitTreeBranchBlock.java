@@ -1,15 +1,17 @@
 package net.dries007.tfc.common.blocks.fruit_tree;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.BooleanProperty;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -17,11 +19,10 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.tileentity.BranchTileEntity;
+import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -30,8 +31,8 @@ import net.dries007.tfc.util.Helpers;
  */
 public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
 {
-    //public static final BooleanProperty GROWING = TFCBlockStateProperties.GROWING;
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
+    public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
+    public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
 
     private final FruitTree fruitTree;
     private final Supplier<? extends Block> body;
@@ -43,25 +44,24 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         this.fruitTree = fruitTree;
         this.body = body;
         this.leaves = leaves;
-        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, false).setValue(AGE, 2));
+        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, false).setValue(STAGE, 0));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
-        BranchTileEntity te = Helpers.getTileEntity(world, pos, BranchTileEntity.class);
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te == null) return;
 
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
-        if (canGrowInto(world, abovePos) && abovePos.getY() < world.getMaxBuildHeight() - 1/* && TFCConfig.SERVER.plantGrowthChance.get() > random.nextDouble()*/)
+        if (canGrowInto(world, abovePos) && abovePos.getY() < world.getMaxBuildHeight() - 1)
         {
-            int age = state.getValue(AGE);
-            if (age < 5)
+            int stage = state.getValue(STAGE);
+            if (stage < 3)
             {
                 boolean willGrowUpward = false;
-                boolean groundFound = false;
                 BlockState belowState = world.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
                 if (belowBlock.is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
@@ -75,18 +75,13 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                     for (int k = 0; k < 4; ++k)
                     {
                         mutablePos.setWithOffset(pos, 0, -1 * (j + 1), 0);
-                        BlockState belowBlockOffset = world.getBlockState(mutablePos);
-                        if (belowBlockOffset.getBlock() != body)
+                        if (world.getBlockState(mutablePos).getBlock() != body)
                         {
-                            if (belowBlockOffset.isFaceSturdy(world, mutablePos, Direction.UP)) // was just checking for end stone
-                            {
-                                groundFound = true;
-                            }
                             break;
                         }
                         ++j;
                     }
-                    if (j < 2) // || (j < 2 || j <= random.nextInt(groundFound ? 5 : 4))
+                    if (j < 2)
                     {
                         willGrowUpward = true;
                     }
@@ -99,38 +94,41 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                 if (willGrowUpward && allNeighborsEmpty(world, abovePos, null) && canGrowInto(world, pos.above(2)))
                 {
                     placeBody(world, pos);
-                    this.placeGrownFlower(world, abovePos, age);
+                    placeGrownFlower(world, abovePos, stage, state.getValue(SAPLINGS));
                 }
-                else if (age < 4)
+                else if (stage < 2)
                 {
-                    int tries = groundFound ? 2 * te.getSaplings() + 2 : 3; // was just 4 and then ++ if ground found
-                    boolean foundValidGrowthSpace = false;
+                    int branches = Math.max(0, state.getValue(SAPLINGS) - stage);
                     BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-                    for (int i1 = 0; i1 < tries; ++i1)
+                    List<Direction> directions = Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList());
+                    while (branches > 0)
                     {
-                        Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                        mutablePos.setWithOffset(pos, direction);
-                        if (canGrowIntoLocations(world, mutablePos, mutablePos.below()) && allNeighborsEmpty(world, mutablePos, direction.getOpposite()))
+                        Direction test = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                        if (directions.contains(test))
                         {
-                            this.placeGrownFlower(world, mutablePos, age + 1);
-                            foundValidGrowthSpace = true;
+                            mutablePos.setWithOffset(pos, test);
+                            if (canGrowIntoLocations(world, mutablePos, mutablePos.below()) && allNeighborsEmpty(world, mutablePos, test.getOpposite()))
+                            {
+                                placeGrownFlower(world, mutablePos, stage + 1, state.getValue(SAPLINGS));
+                            }
+                            directions.remove(test);
+                            branches--;
                         }
                     }
-                    if (foundValidGrowthSpace)
-                    {
-                        placeBody(world, pos);
-                    }
-                    else
-                    {
-                        this.placeDeadFlower(world, pos);
-                    }
+                    placeBody(world, pos);
                 }
                 else
                 {
-                    this.placeDeadFlower(world, pos);
+                    placeBody(world, pos);
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state)
+    {
+        return state.getValue(STAGE) < 3;
     }
 
     private static boolean canGrowIntoLocations(IWorldReader world, BlockPos... pos)
@@ -152,15 +150,9 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
-    private void placeGrownFlower(World worldIn, BlockPos pos, int age)
+    private void placeGrownFlower(World worldIn, BlockPos pos, int stage, int saplings)
     {
-        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(AGE, age), 2);
-        addLeaves(worldIn, pos);
-    }
-
-    private void placeDeadFlower(World worldIn, BlockPos pos)
-    {
-        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(AGE, 5), 2);
+        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 2);
         addLeaves(worldIn, pos);
     }
 
@@ -255,20 +247,36 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         }
         if (!willContinue)
         {
-            worldIn.setBlock(branchPos.above(i), defaultBlockState().setValue(AGE, rand.nextInt(10) == 1 ? 3 : 5), 2);
+            worldIn.setBlock(branchPos.above(i), defaultBlockState().setValue(STAGE, 2), 2);
         }
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        return state.getValue(AGE) < 5;
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            te.setRemoved(); // we have to ensure that the tile is destroyed when the block is or stuff gets really badas
+        }
+    }
+
+    @Override
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    {
+        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            te.resetCounter();
+        }
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
-        builder.add(AGE);
+        builder.add(STAGE, SAPLINGS);
     }
 }
