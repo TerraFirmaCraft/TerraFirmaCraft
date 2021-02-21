@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.util.Helpers;
 
@@ -59,7 +60,7 @@ public class TEPlacedItemFlat extends TEBase
     @SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
-        return 1024.0D;
+        return ConfigTFC.Client.RENDER.placedItemFlatDistance * ConfigTFC.Client.RENDER.placedItemFlatDistance;
     }
 
     @Override

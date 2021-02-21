@@ -882,6 +882,10 @@ config.tfc.client.grassColor.seasonColorAutumn.tooltip=The autumn color ARGB cod
 config.tfc.client.grassColor.seasonColorWinter=Seasonal Color: Winter
 config.tfc.client.grassColor.seasonColorWinter.tooltip=The winter color ARGB code in hexadecimal.
 
+## Render
+config.tfc.client.render=Render Settings
+config.tfc.client.render.placedItemFlatDistance=Render distance for flat placed items.
+
 ## Animals
 config.tfc.animals=Animals Settings
 config.tfc.animals.tooltip=Various animals configuration like gestation periods, number of children and spawn rarity.
