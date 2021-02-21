@@ -25,9 +25,10 @@ public class PacketSimpleMessage implements IMessage
     {
         ANVIL(() -> ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar),
         VESSEL(() -> ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar);
-        private BooleanSupplier displayToToolbar;
 
-        private MessageCategory(BooleanSupplier displayToToolbar)
+        private final BooleanSupplier displayToToolbar;
+
+        MessageCategory(BooleanSupplier displayToToolbar)
         {
             this.displayToToolbar = displayToToolbar;
         }
