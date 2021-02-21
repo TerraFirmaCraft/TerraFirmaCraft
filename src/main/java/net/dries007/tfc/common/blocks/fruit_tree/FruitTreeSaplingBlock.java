@@ -19,18 +19,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
-import net.dries007.tfc.common.tileentity.BranchTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -79,12 +76,7 @@ public class FruitTreeSaplingBlock extends TFCBushBlock implements IForgeBlockPr
         {
             if (!world.isClientSide() && te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 7)
             {
-                world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true));
-                BranchTileEntity branch = Helpers.getTileEntity(world, pos, BranchTileEntity.class);
-                if (branch != null)
-                {
-                    branch.addSaplings(state.getValue(SAPLINGS));
-                }
+                world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, state.getValue(SAPLINGS)));
             }
         }
     }

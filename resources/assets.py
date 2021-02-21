@@ -606,7 +606,7 @@ def generate(rm: ResourceManager):
         for part in ('down', 'side', 'up', 'core'):
             rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
         rm.blockstate('fruit_tree/%s_leaves' % fruit, model='tfc:block/fruit_tree/%s_leaves' % fruit).with_lang('%s Leaves', fruit).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves')
-        rm.block_model('tfc:fruit_tree/%s_leaves' % fruit, parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s_leaves' % fruit})
+        rm.block_model('tfc:fruit_tree/%s_leaves' % fruit, parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s_leaves' % fruit}).with_lang(lang('%s Leaves', fruit))
 
         rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit))
         for i in range(2, 4 + 1):
