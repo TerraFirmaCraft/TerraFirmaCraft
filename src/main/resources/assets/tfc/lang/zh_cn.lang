@@ -888,6 +888,10 @@ config.tfc.client.grassColor.seasonColorAutumn.tooltip=秋天草色的 ARGB 码�
 config.tfc.client.grassColor.seasonColorWinter=季节性草色：冬
 config.tfc.client.grassColor.seasonColorWinter.tooltip=冬天草色的 ARGB 码，十六进制。
 
+## Render
+config.tfc.client.render=渲染设置
+config.tfc.client.render.placedItemFlatDistance=放置在地上的物品的渲染距离。
+
 ## Animals
 config.tfc.animals=动物设置
 config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，生成稀有度。
