@@ -32,6 +32,7 @@ public class TOPPlugin implements Function<ITheOneProbe, Void>
         new TOPBlockInterface(new InfoProvider()),
         new TOPBlockInterface(new TreeProvider()),
         new TOPBlockInterface(new IngotPileProvider()),
+        new TOPBlockInterface(new LogPileProvider()),
         new TOPBlockInterface(new QuernProvider())
     );
 
