@@ -21,11 +21,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariantFallable;
-import net.dries007.tfc.util.ICollapsableBlock;
-import net.dries007.tfc.util.IFallingBlock;
 
 public class WorldTracker implements ICapabilitySerializable<NBTTagCompound>
 {
@@ -51,16 +50,17 @@ public class WorldTracker implements ICapabilitySerializable<NBTTagCompound>
             {
                 for (CollapseData collapse : collapsesInProgress)
                 {
-                    Set<BlockPos> updatedPositions = new HashSet<>();
+                    Set<BlockPos> updatedPositions = new ObjectOpenHashSet<>();
                     for (BlockPos posAt : collapse.nextPositions)
                     {
                         // Check the current position for collapsing
                         IBlockState stateAt = world.getBlockState(posAt);
-                        if (stateAt.getBlock() instanceof ICollapsableBlock && IFallingBlock.canFallThrough(world, posAt.down(), Material.ROCK) && ((ICollapsableBlock) stateAt.getBlock()).canCollapse(world, posAt) && posAt.distanceSq(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < ConfigTFC.General.FALLABLE.propagateCollapseChance)
+                        FallingBlockManager.Specification specAt = FallingBlockManager.getSpecification(stateAt);
+                        if (specAt != null && specAt.isCollapsable() && FallingBlockManager.canFallThrough(world, posAt.down(), Material.ROCK) && specAt.canCollapse(world, posAt) && posAt.distanceSq(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < ConfigTFC.General.FALLABLE.propagateCollapseChance)
                         {
-                            BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) stateAt.getBlock()).getFallingVariant();
-                            world.setBlockState(posAt, fallingBlock.getDefaultState());
-                            fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
+                            IBlockState fallState = specAt.getResultingState(stateAt);
+                            world.setBlockState(posAt, fallState);
+                            FallingBlockManager.checkFalling(world, posAt, fallState, true);
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                             updatedPositions.add(posAt.up());
                         }

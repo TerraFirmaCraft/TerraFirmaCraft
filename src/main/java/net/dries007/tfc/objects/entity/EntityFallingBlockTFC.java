@@ -6,103 +6,119 @@
 package net.dries007.tfc.objects.entity;
 
 import java.util.List;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.base.Optional;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.util.IFallingBlock;
 
-
-@ParametersAreNonnullByDefault
-public class EntityFallingBlockTFC extends Entity
+public class EntityFallingBlockTFC extends EntityFallingBlock implements IEntityAdditionalSpawnData
 {
-    private static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityFallingBlockTFC.class, DataSerializers.BLOCK_POS);
-    private static final DataParameter<Optional<IBlockState>> BLOCK = EntityDataManager.createKey(EntityFallingBlockTFC.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 
-    private IFallingBlock falling;
-    private int fallTime;
-    private NBTTagCompound teData;
-    private boolean failedBreakCheck;
+    private FallingBlockManager.Specification currentSpecification; // Server-side only variable
 
-    @SuppressWarnings("unused")
-    public EntityFallingBlockTFC(World worldIn)
+    @SideOnly(Side.CLIENT)
+    private IBlockState renderState;
+
+    public EntityFallingBlockTFC(World world)
     {
-        super(worldIn);
+        super(world);
     }
 
-    public EntityFallingBlockTFC(World world, BlockPos start, IFallingBlock falling, IBlockState state)
+    public EntityFallingBlockTFC(World world, BlockPos pos, IBlockState fallingBlockState)
     {
-        this(world);
-        this.falling = falling;
-        setSize(0.98F, 0.98F);
-        setPosition(start.getX() + 0.5f, start.getY() + (double) ((1.0F - height) / 2.0F), start.getZ() + 0.5f);
-        motionX = 0.0D;
-        motionY = 0.0D;
-        motionZ = 0.0D;
-        prevPosX = posX;
-        prevPosY = posY;
-        prevPosZ = posY;
-        dataManager.set(ORIGIN, start);
-        dataManager.set(BLOCK, Optional.of(state));
+        this(world, pos.getX(), pos.getY(), pos.getZ(), fallingBlockState);
     }
 
-    public IBlockState getState()
+    public EntityFallingBlockTFC(World world, double x, double y, double z, IBlockState fallingBlockState)
     {
-        return dataManager.get(BLOCK).orNull();
+        super(world);
+        this.currentSpecification = FallingBlockManager.getSpecification(fallingBlockState);
+        this.fallTile = fallingBlockState;
+        BlockPos pos = new BlockPos(this);
+        if (currentSpecification.getResultingState() == null)
+        {
+            TileEntity tile = this.world.getTileEntity(pos);
+            if (tile != null)
+            {
+                this.tileEntityData = tile.serializeNBT(); // Original EntityFallingBlock doesn't even save tile entity data... what...
+            }
+        }
+        this.preventEntitySpawning = true;
+        this.setSize(0.98F, 0.98F);
+        this.setPosition(x + 0.5f, y + (double) ((1.0F - height) / 2.0F), z + 0.5f);
+        this.motionX = 0.0D;
+        this.motionY = 0.0D;
+        this.motionZ = 0.0D;
+        this.prevPosX = x;
+        this.prevPosY = y;
+        this.prevPosZ = z;
+        this.setOrigin(pos);
     }
 
-    public BlockPos getOrigin()
-    {
-        return dataManager.get(ORIGIN);
-    }
-
+    @Nullable
     @Override
-    protected void entityInit()
+    public IBlockState getBlock()
     {
-        dataManager.register(ORIGIN, BlockPos.ORIGIN);
-        dataManager.register(BLOCK, Optional.absent());
+        return this.renderState == null ? this.fallTile : this.renderState;
     }
 
     @Override
     public void onUpdate()
     {
-        IBlockState state = getState();
-        if (state == null) return;
-
-        Block block = state.getBlock();
+        Block block = fallTile.getBlock();
 
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
 
-        // First tick only, make block air if it's still the same block we started from otherwise, die.
+        BlockPos pos = new BlockPos(this);
+
+        if (this.currentSpecification == null) // For existing compatibility
+        {
+            this.currentSpecification = FallingBlockManager.getSpecification(fallTile);
+            if (this.currentSpecification == null)
+            {
+                setDead(); // This will occur when a FALLABLE is removed.
+                return;
+            }
+        }
+
         if (fallTime++ == 0)
         {
-            BlockPos pos = new BlockPos(this);
-            if (world.getBlockState(pos) == state)
+            IBlockState checkState = world.getBlockState(pos);
+            if (FallingBlockManager.getSpecification(checkState) == currentSpecification)
             {
+                world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(false));
                 world.setBlockToAir(pos);
+                world.destroyBlock(pos, false);
+                world.getGameRules().setOrCreateGameRule("doTileDrops", Boolean.toString(true));
+                if (!world.isRemote)
+                {
+                    currentSpecification.beginFall(world, pos);
+                }
             }
             else if (!world.isRemote)
             {
@@ -118,82 +134,71 @@ public class EntityFallingBlockTFC extends Entity
 
         move(MoverType.SELF, motionX, motionY, motionZ);
 
-        motionX *= 0.9800000190734863D;
-        motionY *= 0.9800000190734863D;
-        motionZ *= 0.9800000190734863D;
-
-        final BlockPos pos = new BlockPos(this); // Post move position
-
-        if (!onGround)
+        if (!world.isRemote)
         {
-            // Still falling
-            failedBreakCheck = false;
-            if ((fallTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || fallTime > 600))
+            if (!onGround)
             {
-                if (!world.isRemote)
+                if (fallTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || fallTime > 600)
                 {
+                    currentSpecification.endFall(world, pos);
+                    setDead();
+
                     if (world.getGameRules().getBoolean("doEntityDrops"))
                     {
-                        falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                        dropItems(pos);
                     }
-                    setDead();
                 }
             }
-        }
-        else
-        {
-            // On ground
-            if (!failedBreakCheck)
+            else
             {
-                if (!world.isAirBlock(pos) && IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
+                final IBlockState current = world.getBlockState(pos);
+                Material material = currentSpecification.getResultingState(fallTile).getMaterial();
+
+                if (!current.getBlock().isAir(current, world, pos) && FallingBlockManager.canFallThrough(world, pos, material, current))
                 {
                     world.destroyBlock(pos, true);
-                    failedBreakCheck = true;
                     return;
                 }
-                else if (!world.isAirBlock(pos.down()) && IFallingBlock.canFallThrough(world, pos.down(), state.getMaterial()))
+
+                BlockPos downPos = pos.down();
+                IBlockState downState = world.getBlockState(downPos);
+
+                if (!downState.getBlock().isAir(downState, world, downPos) && FallingBlockManager.canFallThrough(world, downPos, material, downState))
                 {
-                    world.destroyBlock(pos.down(), true);
-                    failedBreakCheck = true;
+                    world.destroyBlock(downPos, true);
                     return;
                 }
-                else if (ConfigTFC.General.FALLABLE.destroyOres && world.getBlockState(pos.down()).getBlock() instanceof BlockOreTFC)
+                else if (ConfigTFC.General.FALLABLE.destroyOres && downState.getBlock() instanceof BlockOreTFC)
                 {
-                    world.destroyBlock(pos.down(), false);
-                    failedBreakCheck = true;
+                    world.destroyBlock(downPos, false);
                     return;
                 }
-            }
 
-            final IBlockState current = world.getBlockState(pos);
+                motionX *= 0.699999988079071D;
+                motionZ *= 0.699999988079071D;
+                motionY *= -0.5D;
 
-            motionX *= 0.699999988079071D;
-            motionZ *= 0.699999988079071D;
-            motionY *= -0.5D;
-
-            if (current.getBlock() != Blocks.PISTON_EXTENSION)
-            {
-                setDead();
-
-                if (IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
+                if (current.getBlock() != Blocks.PISTON_EXTENSION)
                 {
-                    if (!world.isRemote)
+                    currentSpecification.endFall(world, pos);
+                    setDead();
+
+                    if (FallingBlockManager.canFallThrough(world, pos, material, current))
                     {
                         world.destroyBlock(pos, true);
-                        world.setBlockState(pos, state, 3);
-
-                        // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
-                        if (teData != null && block.hasTileEntity(state))
+                        world.setBlockState(pos, currentSpecification.getResultingState(fallTile), 3);
+                        // Only persist TE data when resulting state is the same as the beginning state
+                        if (tileEntityData != null && block.hasTileEntity(fallTile))
                         {
                             TileEntity te = world.getTileEntity(pos);
                             if (te != null)
                             {
                                 NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());
-                                for (String s : teData.getKeySet())
+                                for (String s : tileEntityData.getKeySet())
                                 {
                                     if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
                                     {
-                                        currentTeData.setTag(s, teData.getTag(s).copy());
+                                        currentTeData.setTag(s, tileEntityData.getTag(s).copy());
                                     }
                                 }
                                 te.readFromNBT(currentTeData);
@@ -201,30 +206,29 @@ public class EntityFallingBlockTFC extends Entity
                             }
                         }
                     }
-                }
-                else if (world.getGameRules().getBoolean("doEntityDrops") && !world.isRemote)
-                {
-                    falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                    else if (world.getGameRules().getBoolean("doEntityDrops"))
+                    {
+                        dropItems(pos);
+                    }
                 }
             }
-            else
-            {
-                return;
-            }
-
         }
+
+        motionX *= 0.9800000190734863D;
+        motionY *= 0.9800000190734863D;
+        motionZ *= 0.9800000190734863D;
+
     }
 
-    @Override
-    protected boolean canTriggerWalking()
+    private void dropItems(BlockPos pos)
     {
-        return false;
+        currentSpecification.getDrops(world, pos, currentSpecification.getResultingState(fallTile), tileEntityData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
     }
 
     @Override
     public void fall(float distance, float damageMultiplier)
     {
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox());
         for (Entity entity : list)
         {
             if (ConfigTFC.General.FALLABLE.hurtEntities && distance > 1.0F && entity instanceof EntityLivingBase)
@@ -239,70 +243,51 @@ public class EntityFallingBlockTFC extends Entity
     }
 
     @Override
-    public boolean canBeCollidedWith()
+    protected void writeEntityToNBT(NBTTagCompound compound)
     {
-        return !isDead;
+        compound.setInteger("State", Block.getStateId(fallTile == null ? Blocks.AIR.getDefaultState() : fallTile));
+        compound.setInteger("Time", this.fallTime);
+        if (this.tileEntityData != null)
+        {
+            compound.setTag("TileEntityData", this.tileEntityData);
+        }
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound)
     {
-        IBlockState state = NBTUtil.readBlockState(compound.getCompoundTag("State"));
-        this.falling = (IFallingBlock) state.getBlock();
-        if (compound.hasKey("State"))
+        this.fallTile = Block.getStateById(compound.getInteger("State"));
+        this.fallTime = compound.getInteger("Time");
+        this.shouldDropItem = true; // Unused
+        if (compound.hasKey("TileEntityData", 10))
         {
-            dataManager.set(BLOCK, Optional.of(state));
-        }
-        fallTime = compound.getInteger("FallTime");
-        if (compound.hasKey("TileEntityData"))
-        {
-            teData = compound.getCompoundTag("TileEntityData");
-        }
-
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound compound)
-    {
-        IBlockState state = getState();
-        if (state != null)
-        {
-            compound.setTag("State", NBTUtil.writeBlockState(new NBTTagCompound(), state));
-        }
-        compound.setInteger("FallTime", fallTime);
-        if (teData != null)
-        {
-            compound.setTag("TileEntityData", teData);
+            this.tileEntityData = compound.getCompoundTag("TileEntityData");
         }
     }
 
     @Override
-    public boolean canBeAttackedWithItem()
+    public void writeSpawnData(ByteBuf buffer)
     {
-        return false;
+        if (fallTile != null) {
+            buffer.writeBoolean(true);
+            buffer.writeInt(Block.getStateId(fallTile));
+        } else {
+            buffer.writeBoolean(false);
+        }
     }
 
     @Override
-    public void addEntityCrashInfo(CrashReportCategory category)
+    public void readSpawnData(ByteBuf additionalData)
     {
-        super.addEntityCrashInfo(category);
-
-        category.addCrashSection("Origin", getOrigin());
-        category.addCrashSection("State", getState());
-        category.addCrashSection("FallTime", fallTime);
-        category.addCrashSection("TileEntityData", teData);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean canRenderOnFire()
-    {
-        return false;
+        if (additionalData.readBoolean()) {
+            fallTile = Block.getStateById(additionalData.readInt());
+            renderState = FallingBlockManager.getSpecification(fallTile).getResultingState(fallTile);
+        }
     }
 
     @Override
-    public boolean ignoreItemEntityData()
+    public String getName()
     {
-        return true;
+        return I18n.format("entity.falling_block.name", fallTile.getBlock().getLocalizedName());
     }
 }

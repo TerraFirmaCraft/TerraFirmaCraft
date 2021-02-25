@@ -7,6 +7,7 @@ package net.dries007.tfc.api.types;
 
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -15,11 +16,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.util.FallingBlockManager.Specification;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 
 
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
@@ -125,42 +127,47 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, FALL_VERTICAL, false),
-        ANVIL(Material.ROCK, FALL_VERTICAL, false),
-        SPIKE(Material.ROCK, NO_FALL, false),
-        SMOOTH(Material.ROCK, FALL_VERTICAL, false),
-        COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
-        BRICKS(Material.ROCK, NO_FALL, false),
-        SAND(Material.SAND, FALL_HORIZONTAL, false),
-        GRAVEL(Material.SAND, FALL_HORIZONTAL, false),
-        DIRT(Material.GROUND, FALL_HORIZONTAL, false),
-        GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
-        CLAY(Material.CLAY, FALL_VERTICAL, false),
-        CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
-        PATH(Material.GROUND, FALL_VERTICAL, false);
+        RAW(Material.ROCK, false, Specification.COLLAPSABLE),
+        ANVIL(Material.ROCK, false, Specification.COLLAPSABLE),
+        SPIKE(Material.ROCK, false, null),
+        SMOOTH(Material.ROCK, false, Specification.COLLAPSABLE),
+        COBBLE(Material.ROCK, false, new Specification(true, () -> TFCSounds.ROCK_SLIDE_SHORT)),
+        BRICKS(Material.ROCK, false, null),
+        SAND(Material.SAND, false, Specification.VERTICAL_AND_HORIZONTAL),
+        GRAVEL(Material.SAND, false, Specification.VERTICAL_AND_HORIZONTAL),
+        DIRT(Material.GROUND, false, Specification.VERTICAL_AND_HORIZONTAL),
+        GRASS(Material.GRASS, true, Specification.VERTICAL_AND_HORIZONTAL),
+        DRY_GRASS(Material.GRASS, true, Specification.VERTICAL_AND_HORIZONTAL),
+        CLAY(Material.CLAY, false, Specification.VERTICAL_ONLY),
+        CLAY_GRASS(Material.GRASS, true, Specification.VERTICAL_ONLY),
+        FARMLAND(Material.GROUND, false, Specification.VERTICAL_ONLY),
+        PATH(Material.GROUND, false, Specification.VERTICAL_ONLY);
 
         public final Material material;
         public final boolean isGrass;
 
-        private final FallingBlockType gravType;
+        @Nullable private final Specification fallingSpecification;
 
-        Type(Material material, FallingBlockType gravType, boolean isGrass)
+        Type(Material material, boolean isGrass, @Nullable Specification fallingSpecification)
         {
             this.material = material;
-            this.gravType = gravType;
             this.isGrass = isGrass;
+            this.fallingSpecification = fallingSpecification;
         }
 
         public boolean canFall()
         {
-            return gravType != NO_FALL;
+            return fallingSpecification != null;
         }
 
         public boolean canFallHorizontal()
         {
-            return gravType == FALL_HORIZONTAL;
+            return fallingSpecification != null && fallingSpecification.canFallHorizontally();
+        }
+
+        public boolean canFallHorizontally()
+        {
+            return fallingSpecification != null && fallingSpecification.canFallHorizontally();
         }
 
         public Type getNonGrassVersion()
@@ -190,12 +197,12 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
             }
             throw new IllegalArgumentException("You cannot get grass from rock types.");
         }
+
+        @Nullable
+        public Specification getFallingSpecification()
+        {
+            return fallingSpecification;
+        }
     }
 
-    public enum FallingBlockType
-    {
-        NO_FALL,
-        FALL_VERTICAL,
-        FALL_HORIZONTAL
-    }
 }
