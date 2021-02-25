@@ -318,7 +318,7 @@ public class TEAnvilTFC extends TEInventory
     /**
      * Attempts to weld the two items in the input slots.
      *
-     * @param player The player that clicked the anvil
+     * @param player The player that clicked the anvil (must be server player . . .)
      * @return true if the weld was successful
      */
     public boolean attemptWelding(EntityPlayer player)

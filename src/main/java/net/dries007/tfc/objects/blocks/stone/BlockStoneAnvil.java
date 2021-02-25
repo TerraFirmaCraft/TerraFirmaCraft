@@ -172,7 +172,7 @@ public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlo
             // Welding requires a hammer in main hand
             else if (te.isItemValid(SLOT_HAMMER, heldItem))
             {
-                if (te.attemptWelding(playerIn))
+                if (!worldIn.isRemote && te.attemptWelding(playerIn))
                 {
                     // Valid welding occurred.
                     worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
