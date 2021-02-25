@@ -21,6 +21,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -29,6 +30,7 @@ import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.PowderKegExplosion;
 
 import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 
@@ -235,6 +237,14 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
 
     private void explode()
     {
-        world.createExplosion(igniter, pos.getX(), pos.getY(), pos.getZ(), getStrength(), true);
+        // world.createExplosion(igniter, pos.getX(), pos.getY(), pos.getZ(), getStrength(), true);
+        PowderKegExplosion explosion = new PowderKegExplosion(world, igniter, pos.getX(), pos.getY(), pos.getZ(), getStrength());
+        if (ForgeEventFactory.onExplosionStart(world, explosion))
+        {
+            return;
+        }
+        explosion.doExplosionA();
+        explosion.doExplosionB(true);
     }
+
 }
