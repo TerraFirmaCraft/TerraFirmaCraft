@@ -940,6 +940,10 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".client.grassColor")
         public static final GrassColorCFG GRASS_COLOR = new GrassColorCFG();
 
+        @Config.Comment("Render settings")
+        @Config.LangKey("config." + MOD_ID + ".client.render")
+        public static final RenderCFG RENDER = new RenderCFG();
+
         public static final class TooltipCFG
         {
             @Config.Comment({"Show ItemStack tool classes when advanced tooltips are enabled. (F3+H)"})
@@ -1039,6 +1043,13 @@ public final class ConfigTFC
             @Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 3355FFBB")
             @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSpring")
             public String seasonColorSpring = "3355FFBB";
+        }
+
+        public static class RenderCFG
+        {
+            @Config.Comment("Render distance for flat placed items (rocks, sticks). Default: 32 Blocks")
+            @Config.LangKey("config." + MOD_ID + ".client.render.placedItemFlatDistance")
+            public int placedItemFlatDistance = 32;
         }
     }
 
