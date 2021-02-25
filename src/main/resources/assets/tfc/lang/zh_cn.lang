@@ -169,6 +169,7 @@ tfc.tooltip.hold_shift_for_climate_info=按住 (Shift) 查看气候信息
 tfc.tooltip.climate_info=气候信息：
 tfc.tooltip.climate_info_rainfall=降水量：%s - %s
 tfc.tooltip.climate_info_temperature=温度：%s℃ - %s℃
+tfc.tooltip.forging_in_progress=锻造中
 
 
 ## Animal Tooltips / Messages
@@ -214,6 +215,7 @@ tfc.food_traits.preserved=储存
 tfc.food_traits.vinegar=酸渍
 tfc.food_traits.charcoal_grilled=木炭烤制
 tfc.food_traits.wood_grilled=原木烤制
+tfc.food_traits.burnt_to_a_crisp=一堆黑灰，恶心死了
 tfc.tooltip.barrel_recipe_pickling=腌制中
 tfc.tooltip.barrel_recipe_brining=盐渍中
 tfc.tooltip.barrel_recipe_vinegar=酸渍中
@@ -238,6 +240,7 @@ tfc.key.stack=堆叠食物
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=生成模糊化半径
 createWorld.customize.custom.flatbedrock=平坦基岩
+createWorld.customize.custom.smallrocklayer=岩层尺寸
 createWorld.customize.custom.ravineRarity=沟壑稀有度
 createWorld.customize.custom.ravineHeight=沟壑高度
 createWorld.customize.custom.ravineVariability=沟壑变异度
@@ -885,6 +888,10 @@ config.tfc.client.grassColor.seasonColorAutumn.tooltip=秋天草色的 ARGB 码�
 config.tfc.client.grassColor.seasonColorWinter=季节性草色：冬
 config.tfc.client.grassColor.seasonColorWinter.tooltip=冬天草色的 ARGB 码，十六进制。
 
+## Render
+config.tfc.client.render=渲染设置
+config.tfc.client.render.placedItemFlatDistance=放置在地上的物品的渲染距离。
+
 ## Animals
 config.tfc.animals=动物设置
 config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，生成稀有度。
@@ -1331,6 +1338,7 @@ tile.tfc.ice.name=冰
 tile.tfc.sea_ice.name=海冰
 tile.tfc.nest_box.name=巢箱
 tile.tfc.powderkeg.name=火药桶
+tile.tfc.flower_pot.name=花盆
 
 ## Decoration blocks
 tile.tfc.alabaster.bricks.cyan.name=青色雪花石膏砖块
@@ -3148,8 +3156,8 @@ tile.tfc.double_slab.wood.rosewood.name=蔷薇木双台阶
 tile.tfc.double_slab.wood.blackwood.name=黑檀木双台阶
 tile.tfc.double_slab.wood.palm.name=棕榈木双台阶
 
-tile.tfc.wood.sapling.ash.name=白蜡树苗
-tile.tfc.wood.sapling.aspen.name=白杨树苗
+tile.tfc.wood.sapling.ash.name=黑梣木树苗
+tile.tfc.wood.sapling.aspen.name=山杨木树苗
 tile.tfc.wood.sapling.birch.name=白桦木树苗
 tile.tfc.wood.sapling.chestnut.name=栗木树苗
 tile.tfc.wood.sapling.douglas_fir.name=花旗松木树苗
@@ -3631,7 +3639,7 @@ item.tfc.gem.opal.normal.name=普通的蛋白石
 item.tfc.gem.ruby.normal.name=普通的红宝石
 item.tfc.gem.sapphire.normal.name=普通的蓝宝石
 item.tfc.gem.topaz.normal.name=普通的黄玉
-item.tfc.gem.tourmaline.normal.name=普通的电气石
+item.tfc.gem.tourmaline.normal.name=普通的碧玺
 
 item.tfc.gem.agate.flawed.name=微瑕的玛瑙
 item.tfc.gem.amethyst.flawed.name=微瑕的紫水晶
@@ -3645,7 +3653,7 @@ item.tfc.gem.opal.flawed.name=微瑕的蛋白石
 item.tfc.gem.ruby.flawed.name=微瑕的红宝石
 item.tfc.gem.sapphire.flawed.name=微瑕的蓝宝石
 item.tfc.gem.topaz.flawed.name=微瑕的黄玉
-item.tfc.gem.tourmaline.flawed.name=微瑕的电气石
+item.tfc.gem.tourmaline.flawed.name=微瑕的碧玺
 
 item.tfc.gem.agate.flawless.name=无瑕的玛瑙
 item.tfc.gem.amethyst.flawless.name=无瑕的紫水晶
@@ -3659,7 +3667,7 @@ item.tfc.gem.opal.flawless.name=无瑕的蛋白石
 item.tfc.gem.ruby.flawless.name=无瑕的红宝石
 item.tfc.gem.sapphire.flawless.name=无瑕的蓝宝石
 item.tfc.gem.topaz.flawless.name=无瑕的黄玉
-item.tfc.gem.tourmaline.flawless.name=无瑕的电气石
+item.tfc.gem.tourmaline.flawless.name=无瑕的碧玺
 
 item.tfc.gem.agate.chipped.name=破裂的玛瑙
 item.tfc.gem.amethyst.chipped.name=破裂的紫水晶
@@ -3673,7 +3681,7 @@ item.tfc.gem.opal.chipped.name=破裂的蛋白石
 item.tfc.gem.ruby.chipped.name=破裂的红宝石
 item.tfc.gem.sapphire.chipped.name=破裂的蓝宝石
 item.tfc.gem.topaz.chipped.name=破裂的黄玉
-item.tfc.gem.tourmaline.chipped.name=破裂的电气石
+item.tfc.gem.tourmaline.chipped.name=破裂的碧玺
 
 item.tfc.gem.agate.exquisite.name=精致的玛瑙
 item.tfc.gem.amethyst.exquisite.name=精致的紫水晶
@@ -3687,7 +3695,7 @@ item.tfc.gem.opal.exquisite.name=精致的蛋白石
 item.tfc.gem.ruby.exquisite.name=精致的红宝石
 item.tfc.gem.sapphire.exquisite.name=精致的蓝宝石
 item.tfc.gem.topaz.exquisite.name=精致的黄玉
-item.tfc.gem.tourmaline.exquisite.name=精致的电气石
+item.tfc.gem.tourmaline.exquisite.name=精致的碧玺
 
 item.tfc.metal.ingot.bismuth.name=铋锭
 item.tfc.metal.ingot.bismuth_bronze.name=铋铜锭
@@ -4692,6 +4700,8 @@ entity.blackbeartfc.name=黑熊
 entity.cougartfc.name=山狮
 entity.coyotetfc.name=郊狼
 
+entity.falling_block.name=下落的%s
+
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
 death.attack.food_poison=%1$s 死于食物中毒
@@ -5052,6 +5062,7 @@ waila.tfc.flux_stone=助焊石
 waila.tfc.temperature=空气温度：%dºC
 waila.tfc.rainfall=降水量：%d
 waila.tfc.metal.output=含 %d 单元的 %s
+waila.tfc.quern.handstone_durability=磨盘耐久度：%d / %d
 
 # Patchouli
 tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！群峦传说简中本地化组倾情奉献。
