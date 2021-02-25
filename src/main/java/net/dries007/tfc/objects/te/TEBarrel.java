@@ -29,6 +29,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.FluidTankCallback;
@@ -410,41 +413,30 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
     @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
+        ItemStack barrelStack = new ItemStack(state.getBlock());
+
         if (state.getValue(SEALED))
         {
-            ItemStack barrelStack = new ItemStack(state.getBlock());
-
-            if (recipe != null)
-            {
-                // Drop the sealed barrel with inventory only if it's a valid recipe.
-                saveToItemStack(barrelStack);
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
-            }
-            else
-            {
-                // Drop the sealed barrel minus inventory if there is no recipe.
-                int slotsToDrop = inventory.getSlots();
-                for (int i = 0; i < slotsToDrop; i++)
-                {
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
-                    inventory.setStackInSlot(i, new ItemStack(Items.AIR, 0));
-                }
-                if (!surplus.isEmpty())
-                {
-                    for (ItemStack surplusToDrop : surplus)
-                    {
-                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), surplusToDrop);
-                    }
-                    surplus.clear();
-                }
-                saveToItemStack(barrelStack);
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
-            }
+            saveToItemStack(barrelStack);
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
         }
         else
         {
-            // Drop contents only, actual barrel will be dropped normally
-            super.onBreakBlock(world, pos, state);
+            int slotsToDrop = inventory.getSlots();
+            for (int i = 0; i < slotsToDrop; i++)
+            {
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                inventory.setStackInSlot(i, new ItemStack(Items.AIR, 0));
+            }
+            if (!surplus.isEmpty())
+            {
+                for (ItemStack surplusToDrop : surplus)
+                {
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), surplusToDrop);
+                }
+                surplus.clear();
+            }
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
         }
     }
 
@@ -456,6 +448,11 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
             case SLOT_FLUID_CONTAINER_IN:
                 return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             case SLOT_ITEM:
+                IItemSize size = CapabilityItemSize.getIItemSize(stack);
+                if (size != null)
+                {
+                    return size.getSize(stack).isSmallerThan(Size.HUGE);
+                }
                 return true;
             default:
                 return false;

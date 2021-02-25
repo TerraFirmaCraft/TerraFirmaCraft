@@ -26,6 +26,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -45,6 +47,7 @@ import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 import static net.dries007.tfc.objects.te.TEBarrel.BARREL_MAX_FLUID_TEMPERATURE;
 
@@ -130,22 +133,25 @@ public class ItemBlockBarrel extends ItemBlockTFC
             {
                 if (inventory.isEmpty())
                 {
-                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_empty"));
+                    tooltip.add(TextFormatting.BLUE + I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_empty"));
                 }
                 else
                 {
-                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    tooltip.add(TextFormatting.BLUE + I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                 }
             }
             else
             {
-                tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_fluid", fluidStack.amount, fluidStack.getLocalizedName()));
+                tooltip.add(TextFormatting.BLUE + I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_fluid", fluidStack.amount, fluidStack.getLocalizedName()));
 
                 if (!inventory.isEmpty())
                 {
-                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    tooltip.add(TextFormatting.BLUE + I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                 }
             }
+
+            String formattedDate = ICalendarFormatted.getTimeAndDate(stack.getTagCompound().getLong("sealedCalendarTick"), CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+            tooltip.add(TextFormatting.DARK_GREEN + new TextComponentTranslation("waila.tfc.barrel.sealed", formattedDate).getFormattedText());
         }
     }
 
