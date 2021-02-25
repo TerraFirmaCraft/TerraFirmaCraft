@@ -37,10 +37,12 @@ public class LogPileProvider implements IWailaBlock
                 ItemStack slotStack = inventory.getStackInSlot(i);
                 if (!slotStack.isEmpty())
                 {
-                    if(icon.isEmpty()) {
+                    if (icon.isEmpty())
+                    {
                         icon = slotStack.copy();
                     }
-                    else if(slotStack.isItemEqual(icon)) {
+                    else if (slotStack.isItemEqual(icon))
+                    {
                         icon.grow(slotStack.getCount());
                     }
                 }
