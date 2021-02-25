@@ -60,6 +60,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
@@ -92,6 +93,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.compat.patchouli.TFCPatchouliPlugin;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
@@ -130,6 +132,69 @@ public final class CommonEventHandler
 {
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onNeighborNotify(BlockEvent.NeighborNotifyEvent event)
+    {
+        IBlockState state = event.getState();
+        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(state);
+        if (spec != null && !spec.isCollapsable())
+        {
+            if (FallingBlockManager.checkFalling(event.getWorld(), event.getPos(), state))
+            {
+                event.getWorld().playSound(null, event.getPos(), spec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
+        }
+        else
+        {
+            for (EnumFacing notifiedSide : event.getNotifiedSides())
+            {
+                BlockPos offsetPos = event.getPos().offset(notifiedSide);
+                IBlockState notifiedState = event.getWorld().getBlockState(offsetPos);
+                FallingBlockManager.Specification notifiedSpec = FallingBlockManager.getSpecification(notifiedState);
+                if (notifiedSpec != null && !notifiedSpec.isCollapsable())
+                {
+                    if (FallingBlockManager.checkFalling(event.getWorld(), offsetPos, notifiedState))
+                    {
+                        event.getWorld().playSound(null, offsetPos, notifiedSpec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event)
+    {
+        if (event.getWorld().isRemote)
+        {
+            return;
+        }
+        IBlockState state = event.getPlacedBlock();
+        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(state);
+        if (spec != null && !spec.isCollapsable())
+        {
+            if (FallingBlockManager.checkFalling(event.getWorld(), event.getPos(), state))
+            {
+                event.getWorld().playSound(null, event.getPos(), spec.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onExplosionDetonate(ExplosionEvent.Detonate event)
+    {
+        if (ConfigTFC.General.FALLABLE.explosionCausesCollapse)
+        {
+            for (BlockPos pos : event.getAffectedBlocks())
+            {
+                if (FallingBlockManager.checkCollapsingArea(event.getWorld(), pos))
+                {
+                    break;
+                }
+            }
+        }
+    }
+
     /**
      * Fill thirst after drinking vanilla water bottles or milk
      */
@@ -153,13 +218,11 @@ public final class CommonEventHandler
     /**
      * Update harvesting tool before it takes damage
      */
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void breakEvent(BlockEvent.BreakEvent event)
     {
         final EntityPlayer player = event.getPlayer();
         final ItemStack heldItem = player == null ? ItemStack.EMPTY : player.getHeldItemMainhand();
-        final IBlockState state = event.getState();
-        final Block block = state.getBlock();
 
         if (player != null)
         {
@@ -168,6 +231,12 @@ public final class CommonEventHandler
             {
                 cap.setHarvestingTool(player.getHeldItemMainhand());
             }
+        }
+
+        FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(event.getState());
+        if (spec != null)
+        {
+            FallingBlockManager.checkCollapsingArea(event.getWorld(), event.getPos());
         }
     }
 

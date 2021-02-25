@@ -35,10 +35,10 @@ import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.recipes.ChiselRecipe;
 import net.dries007.tfc.api.recipes.ChiselRecipe.Mode;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.objects.blocks.stone.BlockRockSmooth;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.container.ContainerEmpty;
-import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -206,13 +206,17 @@ public class ItemMetalChisel extends ItemMetalTool
             if (!worldIn.isRemote)
             {
                 // replace the block with a new block
-                IBlockState oldState = worldIn.getBlockState(pos);
-                if (oldState.getBlock() instanceof ICollapsableBlock && !BlockSupport.isBeingSupported(worldIn, pos) && ConfigTFC.General.FALLABLE.chiselCausesCollapse)
+                if (ConfigTFC.General.FALLABLE.chiselCausesCollapse)
                 {
-                    worldIn.setBlockToAir(pos); // Set block to air before attempting a collapse mechanic
-                    if (((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos))
+                    IBlockState oldState = worldIn.getBlockState(pos);
+                    FallingBlockManager.Specification oldSpec = FallingBlockManager.getSpecification(oldState);
+                    if (oldSpec != null && oldSpec.isCollapsable() && !BlockSupport.isBeingSupported(worldIn, pos))
                     {
-                        return EnumActionResult.SUCCESS; // Collapse mechanic triggered, cancel chisel!
+                        worldIn.setBlockToAir(pos); // Set block to air before attempting a collapse mechanic
+                        if (FallingBlockManager.checkCollapsingArea(worldIn, pos))
+                        {
+                            return EnumActionResult.SUCCESS; // Collapse mechanic triggered, cancel chisel!
+                        }
                     }
                 }
                 if (newState.getProperties().containsKey(BlockRockSmooth.CAN_FALL))

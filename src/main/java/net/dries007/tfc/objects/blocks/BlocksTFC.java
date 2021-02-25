@@ -30,6 +30,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.objects.blocks.agriculture.*;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.*;
@@ -407,6 +408,43 @@ public final class BlocksTFC
                     normalItemBlocks.add(new ItemBlockTFC(x));
                 }
             });
+        }
+
+        {
+            // Add resultingState to the registered collapsable blocks.
+            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+            {
+                for (Rock.Type type : Rock.Type.values())
+                {
+                    FallingBlockManager.Specification spec = type.getFallingSpecification();
+                    switch (type)
+                    {
+                        case ANVIL:
+                            if (!rock.getRockCategory().hasAnvil())
+                            {
+                                break;
+                            }
+                        case RAW:
+                            spec = new FallingBlockManager.Specification(spec);
+                            spec.setResultingState(BlockRockVariant.get(rock, COBBLE).getDefaultState());
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, RAW), spec);
+                            break;
+                        case SMOOTH:
+                            spec = new FallingBlockManager.Specification(spec);
+                            spec.setResultingState(BlockRockVariant.get(rock, COBBLE).getDefaultState());
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, SMOOTH).getDefaultState().withProperty(BlockRockSmooth.CAN_FALL, true), spec);
+                            break;
+                        default:
+                            Rock.Type nonGrassType = type.getNonGrassVersion();
+                            if (nonGrassType != type)
+                            {
+                                spec = new FallingBlockManager.Specification(spec);
+                                spec.setResultingState(BlockRockVariant.get(rock, nonGrassType).getDefaultState());
+                            }
+                            FallingBlockManager.registerFallable(BlockRockVariant.get(rock, type), spec);
+                    }
+                }
+            }
         }
 
         {

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.util.IFallingBlock;
+import net.dries007.tfc.api.util.FallingBlockManager;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -64,12 +64,16 @@ public class BlockPathTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN) && !(worldIn.getBlockState(pos.up()).getBlock() instanceof IFallingBlock))
+        super.neighborChanged(state, world, pos, blockIn, fromPos);
+        if (fromPos.getY() == pos.getY() + 1)
         {
-            turnToDirt(worldIn, pos);
+            IBlockState upState = world.getBlockState(fromPos);
+            if (upState.isSideSolid(world, fromPos, EnumFacing.DOWN) && FallingBlockManager.getSpecification(upState) == null)
+            {
+                turnToDirt(world, pos);
+            }
         }
     }
 
@@ -77,7 +81,8 @@ public class BlockPathTFC extends BlockRockVariantFallable
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
-        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN))
+        BlockPos upPos = pos.up();
+        if (worldIn.getBlockState(upPos).isSideSolid(worldIn, upPos, EnumFacing.DOWN))
         {
             turnToDirt(worldIn, pos);
         }
