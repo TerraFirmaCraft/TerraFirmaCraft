@@ -3,6 +3,7 @@ package net.dries007.tfc.objects.items.itemblock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 
@@ -16,10 +17,10 @@ public class ItemBlockSaplingTFC extends ItemBlockTFC
     @Override
     public boolean onEntityItemUpdate(EntityItem entityItem)
     {
-        if (!entityItem.world.isRemote && entityItem.getAge() >= entityItem.lifespan)
+        if (!entityItem.world.isRemote && entityItem.age >= entityItem.lifespan && !entityItem.getItem().isEmpty())
         {
             final BlockPos pos = entityItem.getPosition();
-            if (entityItem.world.mayPlace(block, pos, false, EnumFacing.UP, null) && entityItem.world.setBlockState(pos, block.getDefaultState()))
+            if (placeAndDecreaseCount(entityItem, pos))
             {
                 entityItem.setDead();
                 return true;
@@ -27,7 +28,7 @@ public class ItemBlockSaplingTFC extends ItemBlockTFC
             for (EnumFacing face : EnumFacing.HORIZONTALS)
             {
                 final BlockPos offsetPos = pos.offset(face);
-                if (entityItem.world.mayPlace(block, offsetPos, false, EnumFacing.UP, null) && entityItem.world.setBlockState(offsetPos, block.getDefaultState()))
+                if (placeAndDecreaseCount(entityItem, offsetPos))
                 {
                     entityItem.setDead();
                     return true;
@@ -35,6 +36,14 @@ public class ItemBlockSaplingTFC extends ItemBlockTFC
             }
         }
         return false;
+    }
+
+    private boolean placeAndDecreaseCount(EntityItem entityItem, BlockPos pos) {
+        if (entityItem.world.mayPlace(block, pos, false, EnumFacing.UP, null) && entityItem.world.setBlockState(pos, block.getDefaultState()))
+        {
+            entityItem.getItem().shrink(1);
+        }
+        return entityItem.getItem().isEmpty();
     }
 
 }
