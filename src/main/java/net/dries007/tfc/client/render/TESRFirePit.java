@@ -95,7 +95,7 @@ public class TESRFirePit extends TileEntitySpecialRenderer<TEFirePit>
         if (te.hasWorld())
         {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getValue(BlockFirePit.ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
+            if (state.getBlock() instanceof BlockFirePit && state.getValue(BlockFirePit.ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
             {
                 IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                 if (cap != null)
