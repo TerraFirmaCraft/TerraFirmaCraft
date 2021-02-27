@@ -30,6 +30,7 @@ import net.minecraftforge.common.IPlantable;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.util.FallingBlockManager;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -170,10 +171,13 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
     {
-        super.neighborChanged(state, world, pos, block, fromPos);
-        if (fromPos.getY() == pos.getY() + 1 && world.getBlockState(fromPos).isSideSolid(world, fromPos, EnumFacing.DOWN))
+        if (fromPos.getY() == pos.getY() + 1)
         {
-            turnToDirt(world, pos);
+            IBlockState up = world.getBlockState(fromPos);
+            if (up.isSideSolid(world, fromPos, EnumFacing.DOWN) && FallingBlockManager.getSpecification(up) == null)
+            {
+                turnToDirt(world, pos);
+            }
         }
     }
 

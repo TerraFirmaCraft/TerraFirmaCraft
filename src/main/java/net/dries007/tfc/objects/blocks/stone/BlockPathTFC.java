@@ -66,11 +66,10 @@ public class BlockPathTFC extends BlockRockVariantFallable
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.neighborChanged(state, world, pos, blockIn, fromPos);
         if (fromPos.getY() == pos.getY() + 1)
         {
-            IBlockState upState = world.getBlockState(fromPos);
-            if (upState.isSideSolid(world, fromPos, EnumFacing.DOWN) && FallingBlockManager.getSpecification(upState) == null)
+            IBlockState up = world.getBlockState(fromPos);
+            if (up.isSideSolid(world, fromPos, EnumFacing.DOWN) && FallingBlockManager.getSpecification(up) == null)
             {
                 turnToDirt(world, pos);
             }
@@ -78,13 +77,13 @@ public class BlockPathTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        super.onBlockAdded(worldIn, pos, state);
         BlockPos upPos = pos.up();
-        if (worldIn.getBlockState(upPos).isSideSolid(worldIn, upPos, EnumFacing.DOWN))
+        IBlockState up = world.getBlockState(upPos);
+        if (up.isSideSolid(world, upPos, EnumFacing.DOWN) && FallingBlockManager.getSpecification(up) == null)
         {
-            turnToDirt(worldIn, pos);
+            turnToDirt(world, pos);
         }
     }
 
