@@ -234,7 +234,7 @@ public final class CommonEventHandler
         }
 
         FallingBlockManager.Specification spec = FallingBlockManager.getSpecification(event.getState());
-        if (spec != null)
+        if (spec != null && spec.isCollapsable())
         {
             FallingBlockManager.checkCollapsingArea(event.getWorld(), event.getPos());
         }
