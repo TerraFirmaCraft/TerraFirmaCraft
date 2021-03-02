@@ -103,6 +103,7 @@ tfc.tooltip.powderkeg_amount=Contains %1$dx %2$s
 tfc.tooltip.powderkeg_empty=Empty
 tfc.tooltip.small_vessel_empty=Empty
 tfc.tooltip.small_vessel_item=%1$dx %2$s
+tfc.tooltip.small_vessel_unit_total=%s: %d units / §6%f%%
 tfc.tooltip.weldable=Can Weld
 tfc.tooltip.workable=Can Work
 tfc.tooltip.danger=Danger!!
