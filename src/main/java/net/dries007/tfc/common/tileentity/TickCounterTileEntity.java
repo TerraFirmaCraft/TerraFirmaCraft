@@ -29,13 +29,11 @@ public class TickCounterTileEntity extends TFCTileEntity
     public void resetCounter()
     {
         lastUpdateTick = Calendars.SERVER.getTicks();
-        markForSync();
     }
 
     public void reduceCounter(long amount)
     {
         lastUpdateTick += amount;
-        markForSync();
     }
 
     @Override

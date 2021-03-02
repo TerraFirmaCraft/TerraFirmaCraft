@@ -8,16 +8,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.TFCTags;
@@ -56,7 +52,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te == null) return;
+        if (te == null || world.isClientSide()) return;
 
         ChunkData chunkData = ChunkData.get(world, pos);
         if (!fruitTree.getBase().isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
@@ -72,7 +68,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     {
         super.tick(state, world, pos, rand);
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te == null || world.isEmptyBlock(pos)) return;
+        if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
 
         long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
         if (days >= 1)
