@@ -172,43 +172,43 @@ public final class TFCBlocks
     );
 
     public static final Map<BerryBush.Default, RegistryObject<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isSpreading, berry ->
-        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new SpreadingBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush(), TFCBlocks.SPREADING_CANES.get(berry)), FLORA)
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new SpreadingBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush(), TFCBlocks.SPREADING_CANES.get(berry)), FLORA)
     );
 
     public static final Map<BerryBush.Default, RegistryObject<Block>> SPREADING_CANES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isSpreading, berry ->
-        register("berry_bush/" + berry.name().toLowerCase() + "_bush_cane", () -> new SpreadingCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush(), TFCBlocks.SPREADING_BUSHES.get(berry)))
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush_cane", () -> new SpreadingCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush(), TFCBlocks.SPREADING_BUSHES.get(berry)))
     );
 
     public static final Map<BerryBush.Default, RegistryObject<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isStationary, berry ->
-        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new StationaryBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush()), FLORA)
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new StationaryBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush()), FLORA)
     );
 
     public static final Map<BerryBush.Default, RegistryObject<Block>> WATERLOGGED_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isWaterlogged, berry ->
-        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new WaterloggedBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new), berry.getBush()), FLORA)
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new WaterloggedBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush()), FLORA)
     );
 
-    public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("berry_bush/dead_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
-    public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
+    public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("berry_bush/dead_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
+    public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new), tree.getFruitTree()), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(90, 60), tree.getFruitTree()), FLORA)
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_branch", () -> new FruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f))))
+        register("fruit_tree/" + tree.name().toLowerCase() + "_branch", () -> new FruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).flammable(60, 30)))
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)))
+        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)))
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
     );
 
     private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}, 8, 8);
-    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new), BANANA));
-    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
+    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(60, 30), BANANA));
+    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
 
     // Alabaster
 

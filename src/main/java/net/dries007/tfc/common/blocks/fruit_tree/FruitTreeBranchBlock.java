@@ -76,7 +76,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos))
+        if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
         {
             worldIn.destroyBlock(pos, true);
         }

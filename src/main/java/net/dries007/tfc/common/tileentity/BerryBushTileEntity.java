@@ -42,7 +42,6 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     public void setGrowing(boolean growing)
     {
         isGrowing = growing;
-        markForSync();
     }
 
     public boolean isGrowing()
