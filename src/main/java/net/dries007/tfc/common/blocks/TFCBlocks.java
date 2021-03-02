@@ -51,6 +51,8 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;
+import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.*;
+import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.DORMANT;
 
 
 /**
@@ -189,7 +191,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new)));
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion())), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new), tree.getFruitTree()), FLORA)
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
@@ -197,12 +199,16 @@ public final class TFCBlocks
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_growing_branch", () -> new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_BRANCHES.get(tree), TFCBlocks.FRUIT_TREE_LEAVES.get(tree)))
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
         register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
     );
+
+    private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}, 8, 8);
+    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new), BANANA));
+    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
 
     // Alabaster
 

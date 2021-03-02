@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/fruit_tree/banana_branch",
+		"particle": "tfc:block/fruit_tree/banana_branch"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 16, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 10]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 6, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 6, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 6, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#0"},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#0"}
+			}
+		}
+	]
+}

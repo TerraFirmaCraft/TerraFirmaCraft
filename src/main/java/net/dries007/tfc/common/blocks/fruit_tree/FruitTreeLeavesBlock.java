@@ -2,9 +2,15 @@ package net.dries007.tfc.common.blocks.fruit_tree;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -16,27 +22,35 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.Season;
+import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
+import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
-public class FruitTreeLeavesBlock extends Block implements IForgeBlockProperties, ILeavesBlock
+public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IForgeBlockProperties, ILeavesBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
-    private final ForgeBlockProperties properties;
+    public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    public FruitTreeLeavesBlock(ForgeBlockProperties properties)
+    private final ForgeBlockProperties properties;
+    private final FruitTree tree;
+
+    public FruitTreeLeavesBlock(ForgeBlockProperties properties, FruitTree tree)
     {
-        super(properties.properties());
+        super(properties, tree.getBase());
         this.properties = properties;
-        registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false));
+        this.tree = tree;
+        registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
     }
 
     @Override
@@ -46,16 +60,14 @@ public class FruitTreeLeavesBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
-    {
-
-    }
-
-    @Override
     public boolean isRandomlyTicking(BlockState state)
     {
         return !state.getValue(PERSISTENT);
+    }
+
+    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    {
+
     }
 
     @Override
@@ -79,7 +91,15 @@ public class FruitTreeLeavesBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    {
+        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        {
+            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
+        }
+    }
+
+    @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         return isValid(worldIn, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
@@ -93,15 +113,15 @@ public class FruitTreeLeavesBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return VoxelShapes.empty();
+        return VoxelShapes.block();
     }
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
+        super.createBlockStateDefinition(builder);
         builder.add(PERSISTENT);
     }
 }

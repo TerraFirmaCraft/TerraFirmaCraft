@@ -6,10 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -20,10 +18,13 @@ import net.minecraft.world.server.ServerWorld;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
 public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProperties
 {
     private final ForgeBlockProperties properties;
+
+    public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
 
     public FruitTreeBranchBlock(ForgeBlockProperties properties)
     {
@@ -48,7 +49,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
         Block westBlock = world.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
             .setValue(DOWN, downBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || downBlock.is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
-            .setValue(UP, upBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            .setValue(UP, upBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || upBlock.is(TFCTags.Blocks.FRUIT_TREE_SAPLING))
             .setValue(NORTH, northBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
             .setValue(EAST, eastBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
             .setValue(SOUTH, southBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
@@ -66,7 +67,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
         }
         else
         {
-            boolean flag = facingState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON));
+            boolean flag = facingState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || (facing == Direction.UP && facingState.is(TFCTags.Blocks.FRUIT_TREE_SAPLING)));
             return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
@@ -106,7 +107,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
     }
 
     @Override

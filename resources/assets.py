@@ -592,27 +592,54 @@ def generate(rm: ResourceManager):
             for i in range(0, 3):
                 rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
 
-    for fruit in FRUITS:
-        for prefix in ('', 'growing_'):
-            rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
-                ({'model': 'tfc:block/fruit_tree/%s_branch_core' % fruit}),
-                ({'down': True}, {'model': 'tfc:block/fruit_tree/%s_branch_down' % fruit}),
-                ({'up': True}, {'model': 'tfc:block/fruit_tree/%s_branch_up' % fruit}),
-                ({'north': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 90}),
-                ({'south': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 270}),
-                ({'west': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit}),
-                ({'east': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 180})
-            ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
-        for part in ('down', 'side', 'up', 'core'):
-            rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
-        rm.blockstate('fruit_tree/%s_leaves' % fruit, model='tfc:block/fruit_tree/%s_leaves' % fruit).with_lang('%s Leaves', fruit).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves')
-        rm.block_model('tfc:fruit_tree/%s_leaves' % fruit, parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s_leaves' % fruit}).with_lang(lang('%s Leaves', fruit))
+    for fruit in FRUITS.keys():
+        if fruit != 'banana':
+            for prefix in ('', 'growing_'):
+                rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
+                    ({'model': 'tfc:block/fruit_tree/%s_branch_core' % fruit}),
+                    ({'down': True}, {'model': 'tfc:block/fruit_tree/%s_branch_down' % fruit}),
+                    ({'up': True}, {'model': 'tfc:block/fruit_tree/%s_branch_up' % fruit}),
+                    ({'north': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 90}),
+                    ({'south': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 270}),
+                    ({'west': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit}),
+                    ({'east': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 180})
+                ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
+            for part in ('down', 'side', 'up', 'core'):
+                rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
+            rm.blockstate('fruit_tree/%s_leaves' % fruit, variants={
+                'lifecycle=flowering': {'model': 'tfc:block/fruit_tree/%s_flowering_leaves' % fruit},
+                'lifecycle=fruiting': {'model': 'tfc:block/fruit_tree/%s_fruiting_leaves' % fruit},
+                'lifecycle=dormant': {'model': 'tfc:block/fruit_tree/%s_dry_leaves' % fruit},
+                'lifecycle=healthy': {'model': 'tfc:block/fruit_tree/%s_leaves' % fruit}
+            }).with_lang('%s Leaves', fruit).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit))
+            for life in ('', '_fruiting', '_flowering', '_dry'):
+                rm.block_model('tfc:fruit_tree/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
 
-        rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit))
-        for i in range(2, 4 + 1):
-            rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
-        rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
+            rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
+            for i in range(2, 4 + 1):
+                rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
+            rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
+        else:
+            rm.blockstate('fruit_tree/banana_plant', variants={
+                'lifecycle=healthy,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
+                'lifecycle=healthy,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
+                'lifecycle=healthy,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2'},
+                'lifecycle=dormant,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
+                'lifecycle=dormant,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
+                'lifecycle=dormant,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2'},
+                'lifecycle=fruiting,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
+                'lifecycle=fruiting,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
+                'lifecycle=fruiting,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2_fruiting'},
+                'lifecycle=flowering,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
+                'lifecycle=flowering,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
+                'lifecycle=flowering,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2_flowering'},
+            }).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch')
+
+            rm.block_model(('fruit_tree', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
+            rm.blockstate(('fruit_tree', 'banana_sapling'), model='tfc:block/fruit_tree/banana_sapling').with_lang(lang('Banana Sapling')).with_tag('fruit_tree_sapling')
+
         rm.item_model(('fruit_tree', '%s_sapling' % fruit), 'tfc:block/fruit_tree/%s_sapling' % fruit)
+        rm.item_model(('food', fruit), 'tfc:item/food/%s' % fruit).with_lang(lang(fruit))
 
     # Wood Blocks
     for wood in WOODS.keys():

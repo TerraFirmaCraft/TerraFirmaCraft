@@ -394,6 +394,20 @@ def generate(rm: ResourceManager):
             'fuzzy': False
         }
         rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:berry_bush/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+    for fruit, info in FRUITS.items():
+        config = {
+            'min_temperature': info.min_temp,
+            'max_temperature': info.max_temp,
+            'min_rainfall': info.min_rain,
+            'max_rainfall': info.max_rain,
+            'max_forest': 'normal'
+        }
+        feature = 'tfc:fruit_trees'
+        state = 'tfc:fruit_tree/%s_growing_branch' % fruit
+        if fruit == 'banana':
+            feature = 'tfc:bananas'
+            state = 'tfc:fruit_tree/banana_plant'
+        rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(60)))
 
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
 
@@ -783,6 +797,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % berry for berry in BERRIES]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % fruit for fruit in FRUITS]
 
     if volcano_features:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']

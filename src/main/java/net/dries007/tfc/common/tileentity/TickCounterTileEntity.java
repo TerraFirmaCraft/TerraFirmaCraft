@@ -12,8 +12,7 @@ public class TickCounterTileEntity extends TFCTileEntity
 
     public TickCounterTileEntity()
     {
-        super(TFCTileEntities.TICK_COUNTER.get());
-        resetCounter();
+        this(TFCTileEntities.TICK_COUNTER.get());
     }
 
     protected TickCounterTileEntity(TileEntityType<?> type)

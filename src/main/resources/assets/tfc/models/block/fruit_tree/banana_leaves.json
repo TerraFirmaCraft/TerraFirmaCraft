@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/leaves",
-  "textures": {
-    "all": "tfc:block/fruit_tree/banana_leaves"
-  }
-}

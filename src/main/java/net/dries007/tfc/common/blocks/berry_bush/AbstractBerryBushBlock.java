@@ -41,7 +41,7 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     public static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_2;
-    public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.BERRY_BUSH_LIFE;
+    public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
     private final ForgeBlockProperties properties;
     protected final BerryBush bush;

@@ -12,6 +12,8 @@ Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, ma
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, amount=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
+Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
+
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -350,8 +352,17 @@ BERRIES: Dict[str, Berry] = {
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
-FRUITS = ('banana', 'cherry', 'green_apple', 'red_apple', 'lemon', 'olive', 'orange', 'peach', 'plum', 'red_apple')
-
+FRUITS: Dict[str, Fruit] = {
+    'banana': Fruit(23, 35, 280, 480),
+    'cherry': Fruit(5, 21, 100, 350),
+    'green_apple': Fruit(8, 25, 110, 280),
+    'lemon': Fruit(10, 30, 180, 470),
+    'olive': Fruit(13, 30, 150, 380),
+    'orange': Fruit(23, 36, 250, 480),
+    'peach': Fruit(9, 27, 60, 230),
+    'plum': Fruit(18, 31, 250, 400),
+    'red_apple': Fruit(9, 25, 100, 280)
+}
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

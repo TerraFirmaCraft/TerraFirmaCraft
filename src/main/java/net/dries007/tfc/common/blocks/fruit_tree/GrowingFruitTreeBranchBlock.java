@@ -12,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -24,14 +25,17 @@ import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * If I had my way, everything in this mod would be chorus fruit.
+ *
  * @author EERussianguy
  */
 public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
 {
-    public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
+    private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
 
     private final FruitTree fruitTree;
@@ -44,7 +48,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         this.fruitTree = fruitTree;
         this.body = body;
         this.leaves = leaves;
-        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, false).setValue(STAGE, 0));
+        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
     }
 
     @Override
@@ -54,6 +58,32 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te == null) return;
 
+        ChunkData chunkData = ChunkData.get(world, pos);
+        if (!fruitTree.getBase().isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
+        {
+            te.resetCounter();
+        }
+
+        super.randomTick(state, world, pos, random);
+    }
+
+    @Override
+    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+    {
+        super.tick(state, world, pos, rand);
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te == null || world.isEmptyBlock(pos)) return;
+
+        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
+        if (days >= 1)
+        {
+            grow(state, world, pos, rand, (int) days);
+            te.resetCounter();
+        }
+    }
+
+    public void grow(BlockState state, ServerWorld world, BlockPos pos, Random random, int cyclesLeft)
+    {
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
         if (canGrowInto(world, abovePos) && abovePos.getY() < world.getMaxBuildHeight() - 1)
@@ -93,8 +123,8 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
 
                 if (willGrowUpward && allNeighborsEmpty(world, abovePos, null) && canGrowInto(world, pos.above(2)))
                 {
-                    placeBody(world, pos);
-                    placeGrownFlower(world, abovePos, stage, state.getValue(SAPLINGS));
+                    placeBody(world, pos, stage);
+                    placeGrownFlower(world, abovePos, stage, state.getValue(SAPLINGS), cyclesLeft - 1);
                 }
                 else if (stage < 2)
                 {
@@ -109,17 +139,17 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                             mutablePos.setWithOffset(pos, test);
                             if (canGrowIntoLocations(world, mutablePos, mutablePos.below()) && allNeighborsEmpty(world, mutablePos, test.getOpposite()))
                             {
-                                placeGrownFlower(world, mutablePos, stage + 1, state.getValue(SAPLINGS));
+                                placeGrownFlower(world, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1);
                             }
                             directions.remove(test);
                             branches--;
                         }
                     }
-                    placeBody(world, pos);
+                    placeBody(world, pos, stage);
                 }
                 else
                 {
-                    placeBody(world, pos);
+                    placeBody(world, pos, stage);
                 }
             }
         }
@@ -150,34 +180,39 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
-    private void placeGrownFlower(World worldIn, BlockPos pos, int stage, int saplings)
+    private void placeGrownFlower(ServerWorld worldIn, BlockPos pos, int stage, int saplings, int days)
     {
-        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 2);
+        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
+        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * days);
+        }
         addLeaves(worldIn, pos);
+        worldIn.getBlockState(pos).randomTick(worldIn, pos, worldIn.random);
     }
 
-    private void placeBody(IWorld worldIn, BlockPos pos)
+    private void placeBody(IWorld worldIn, BlockPos pos, int stage)
     {
         FruitTreeBranchBlock plant = (FruitTreeBranchBlock) this.body.get();
-        worldIn.setBlock(pos, plant.getStateForPlacement(worldIn, pos), 2);
+        worldIn.setBlock(pos, plant.getStateForPlacement(worldIn, pos).setValue(STAGE, stage), 3);
         addLeaves(worldIn, pos);
     }
 
     @SuppressWarnings("deprecation")
     private void addLeaves(IWorld world, BlockPos pos)
     {
+        final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = world.getBlockState(pos.below(2));
-        if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))) return;
+        if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+            return;
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for (Direction d : Direction.values())
+        for (Direction d : NOT_DOWN)
         {
-            if (d != Direction.DOWN)
+            mutable.setWithOffset(pos, d);
+            if (canGrowInto(world, mutable))
             {
-                mutable.setWithOffset(pos, d);
-                if (canGrowInto(world, mutable))
-                {
-                    world.setBlock(mutable, this.leaves.get().defaultBlockState(), 3);
-                }
+                world.setBlock(mutable, leaves, 2);
             }
         }
     }
@@ -196,87 +231,10 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         return true;
     }
 
-    public void generatePlant(IWorld worldIn, BlockPos pos, Random rand, int maxHorizontalDistance)
-    {
-        placeBody(worldIn, pos);
-        growTreeRecursive(worldIn, pos, rand, pos, maxHorizontalDistance, 0);
-    }
-
-    public void growTreeRecursive(IWorld worldIn, BlockPos branchPos, Random rand, BlockPos originalBranchPos, int maxHorizontalDistance, int iterations)
-    {
-        int i = rand.nextInt(5) + 1;
-        if (iterations == 0)
-        {
-            ++i;
-        }
-        for (int j = 0; j < i; ++j)
-        {
-            BlockPos blockpos = branchPos.above(j + 1);
-            if (!allNeighborsEmpty(worldIn, blockpos, null))
-            {
-                return;
-            }
-            placeBody(worldIn, blockpos);
-            placeBody(worldIn, blockpos.below());
-        }
-
-        boolean willContinue = false;
-        if (iterations < 4)
-        {
-            int branchAttempts = rand.nextInt(4);
-            if (iterations == 0)
-            {
-                ++branchAttempts;
-            }
-
-            for (int k = 0; k < branchAttempts; ++k)
-            {
-                Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
-                BlockPos aboveRelativePos = branchPos.above(i).relative(direction);
-                if (Math.abs(aboveRelativePos.getX() - originalBranchPos.getX()) < maxHorizontalDistance
-                    && Math.abs(aboveRelativePos.getZ() - originalBranchPos.getZ()) < maxHorizontalDistance
-                    && canGrowIntoLocations(worldIn, aboveRelativePos, aboveRelativePos.below())
-                    && allNeighborsEmpty(worldIn, aboveRelativePos, direction.getOpposite()))
-                {
-                    willContinue = true;
-                    placeBody(worldIn, aboveRelativePos);
-                    placeBody(worldIn, aboveRelativePos.relative(direction.getOpposite()));
-                    growTreeRecursive(worldIn, aboveRelativePos, rand, originalBranchPos, maxHorizontalDistance, iterations + 1);
-                }
-            }
-        }
-        if (!willContinue)
-        {
-            worldIn.setBlock(branchPos.above(i), defaultBlockState().setValue(STAGE, 2), 2);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            te.setRemoved(); // we have to ensure that the tile is destroyed when the block is or stuff gets really badas
-        }
-    }
-
-    @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-    }
-
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
-        builder.add(STAGE, SAPLINGS);
+        builder.add(SAPLINGS);
     }
 }
