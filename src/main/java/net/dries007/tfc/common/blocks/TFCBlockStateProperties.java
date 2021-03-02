@@ -66,7 +66,7 @@ public class TFCBlockStateProperties
 
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
-    public static final EnumProperty<SpreadingBushBlock.Lifecycle> BERRY_BUSH_LIFE = EnumProperty.create("lifecycle", SpreadingBushBlock.Lifecycle.class);
+    public static final EnumProperty<SpreadingBushBlock.Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", SpreadingBushBlock.Lifecycle.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");

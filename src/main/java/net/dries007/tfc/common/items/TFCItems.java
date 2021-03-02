@@ -19,6 +19,7 @@ import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.berry_bush.Berry;
 import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
+import net.dries007.tfc.common.blocks.fruit_tree.Fruit;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.*;
@@ -100,6 +101,10 @@ public final class TFCItems
 
     public static final Map<Berry, RegistryObject<Item>> BERRIES = Helpers.mapOfKeys(Berry.class, berry ->
         register(("food/" + berry.name()).toLowerCase(), MISC)
+    );
+
+    public static final Map<Fruit, RegistryObject<Item>> FRUITS = Helpers.mapOfKeys(Fruit.class, fruit ->
+        register(("food/" + fruit.name()).toLowerCase(), MISC)
     );
 
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", MISC);

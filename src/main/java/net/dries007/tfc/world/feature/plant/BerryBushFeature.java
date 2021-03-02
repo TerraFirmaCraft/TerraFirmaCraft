@@ -33,11 +33,10 @@ public class BerryBushFeature extends Feature<BlockStateFeatureConfig>
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
     {
         BlockState bushState = config.state;
-        pos = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos);
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (int i = 0; i < 15; i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos), rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
             if (!world.isEmptyBlock(mutablePos)) continue;
             mutablePos.move(Direction.DOWN);
             if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON)) continue;
