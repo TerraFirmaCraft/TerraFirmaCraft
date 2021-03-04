@@ -56,7 +56,7 @@ public class FruitTreeFeature extends Feature<BlockStateFeatureConfig>
                     TickCounterTileEntity te = Helpers.getTileEntity(world, mutablePos, TickCounterTileEntity.class);
                     if (te != null)
                     {
-                        te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 60);
+                        te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300);
                     }
                     world.getBlockTicks().scheduleTick(mutablePos, branch.getBlock(), 1);
                     return true;

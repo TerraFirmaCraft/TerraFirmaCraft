@@ -45,7 +45,8 @@ public class TFCTileEntities
     public static final RegistryObject<TileEntityType<BurningLogPileTileEntity>> BURNING_LOG_PILE = register("burning_log_pile", BurningLogPileTileEntity::new, TFCBlocks.BURNING_LOG_PILE);
     public static final RegistryObject<TileEntityType<PlacedItemTileEntity>> PLACED_ITEM = register("placed_item", PlacedItemTileEntity::new, TFCBlocks.PLACED_ITEM);
     public static final RegistryObject<TileEntityType<PitKilnTileEntity>> PIT_KILN = register("pit_kiln", PitKilnTileEntity::new, TFCBlocks.PIT_KILN);
-    public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(Collections.singletonList(TFCBlocks.BANANA_PLANT), TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.WATERLOGGED_BUSHES.values(), TFCBlocks.FRUIT_TREE_LEAVES.values()).flatMap(Collection::stream));
+    public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(Collections.singletonList(TFCBlocks.BANANA_PLANT), TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.WATERLOGGED_BUSHES.values()).flatMap(Collection::stream));
+    public static final RegistryObject<TileEntityType<FruitTreeLeavesTileEntity>> FRUIT_TREE = register("fruit_tree", FruitTreeLeavesTileEntity::new, TFCBlocks.FRUIT_TREE_LEAVES.values().stream());
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<T> factory, Supplier<? extends Block> block)

@@ -92,20 +92,17 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
         if (te == null) return;
 
-        if (random.nextInt(3) == 0)
+        ChunkData chunkData = ChunkData.get(world, pos);
+        if (!bush.isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
         {
-            ChunkData chunkData = ChunkData.get(world, pos);
-            if (!bush.isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
-            {
-                te.setGrowing(false);
-            }
+            te.setGrowing(false);
         }
 
-        Lifecycle old = state.getValue(LIFECYCLE);
+        /*Lifecycle old = state.getValue(LIFECYCLE);
         if (old != Lifecycle.HEALTHY)
         {
             te.resetCounter(); // Prevent long calendar changes from causing runaway growth. Needs improvement.
-        }
+        }*/
 
         Lifecycle lifecycle = updateLifecycle(te);
         world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, lifecycle));

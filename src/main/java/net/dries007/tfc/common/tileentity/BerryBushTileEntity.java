@@ -2,6 +2,7 @@ package net.dries007.tfc.common.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 
 public class BerryBushTileEntity extends TickCounterTileEntity
 {
@@ -12,7 +13,12 @@ public class BerryBushTileEntity extends TickCounterTileEntity
 
     public BerryBushTileEntity()
     {
-        super(TFCTileEntities.BERRY_BUSH.get());
+        this(TFCTileEntities.BERRY_BUSH.get());
+    }
+
+    protected BerryBushTileEntity(TileEntityType<?> type)
+    {
+        super(type);
         harvested = true;
         useTicks = 0;
         deathTicks = 0;
@@ -77,6 +83,11 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     public void addDeath()
     {
         deathTicks++;
+    }
+
+    public int getDeath()
+    {
+        return deathTicks;
     }
 
     public boolean willDie()

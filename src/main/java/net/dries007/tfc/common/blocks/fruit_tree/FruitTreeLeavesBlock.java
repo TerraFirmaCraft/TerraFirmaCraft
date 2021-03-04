@@ -2,21 +2,17 @@ package net.dries007.tfc.common.blocks.fruit_tree;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -32,7 +28,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
+import net.dries007.tfc.common.tileentity.FruitTreeLeavesTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -65,9 +61,50 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
         return !state.getValue(PERSISTENT);
     }
 
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    {
+        FruitTreeLeavesTileEntity te = Helpers.getTileEntity(world, pos, FruitTreeLeavesTileEntity.class);
+        if (te == null) return;
+
+        Lifecycle old = state.getValue(LIFECYCLE); // have to put this in random tick to capture the old state
+        if (old == Lifecycle.FLOWERING || old == Lifecycle.FRUITING)
+        {
+            if (!te.isOnYear() && te.isGrowing() && old == Lifecycle.FLOWERING && super.updateLifecycle(te) == Lifecycle.FRUITING)
+            {
+                te.addDeath();
+                int probability = MathHelper.clamp(te.getDeath(), 2, 10);
+                if (random.nextInt(probability) == 0)
+                {
+                    te.setOnYear(true);
+                }
+            }
+        }
+        else
+        {
+            te.setOnYear(false); // reset when we're not in season
+        }
+        super.randomTick(state, world, pos, random);
+    }
+
     public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
+        if (te.getDeath() > 10)
+        {
+            te.setGrowing(false);
+        }
+    }
 
+    protected Lifecycle updateLifecycle(BerryBushTileEntity te)
+    {
+        Lifecycle lifecycle = super.updateLifecycle(te);
+
+        FruitTreeLeavesTileEntity fruityTE = (FruitTreeLeavesTileEntity) te;
+        if (lifecycle == Lifecycle.FRUITING && !fruityTE.isOnYear())
+        {
+            lifecycle = Lifecycle.HEALTHY;
+        }
+        return lifecycle;
     }
 
     @Override
