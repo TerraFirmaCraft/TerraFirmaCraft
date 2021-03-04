@@ -115,6 +115,28 @@ def generate(rm: ResourceManager):
                             loot_tables.set_count(1, 4)
                         ]
                     })
+                elif block_type == 'gravel':
+                    block.with_block_loot({
+                        'entries': [{
+                            'type': 'minecraft:alternatives',
+                            'children': utils.loot_entry_list([{
+                                'conditions': [silk_touch()],
+                                'name': 'tfc:rock/gravel/%s' % rock
+                            }, utils.loot_entry_list([{
+                                'type': 'minecraft:alternatives',
+                                'conditions': 'minecraft:survives_explosion',
+                                'children': [{
+                                        'type': 'minecraft:item',
+                                        'conditions': [fortune_table([0.1, 0.14285715, 0.25, 1.0])],
+                                        'name': 'minecraft:flint'
+                                    }, {
+                                        'type': 'minecraft:item',
+                                        'name': 'tfc:rock/gravel/%s' % rock
+                                    }]
+                                }])
+                            ])
+                        }]
+                    })
                 else:
                     block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
                 # Lang
@@ -194,13 +216,7 @@ def generate(rm: ResourceManager):
             block.with_block_loot('tfc:groundcover/%s' % misc)
             rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
-    # Peat
-    block = rm.blockstate('peat')
-    block.with_block_model('tfc:block/peat')
-    block.with_item_model()
-    block.with_block_loot('tfc:peat')
-    block.with_lang(lang('Peat'))
-
+    rm.blockstate('peat').with_block_model().with_item_model().with_lang('tfc:peat').with_lang(lang('Peat'))
     rm.blockstate('aggregate').with_block_model().with_item_model().with_block_loot('tfc:aggregate').with_lang(lang('Aggregate'))
     rm.blockstate('fire_bricks').with_block_model().with_item_model().with_block_loot('tfc:fire_bricks').with_lang(lang('Fire Bricks'))
     rm.blockstate('fire_clay_block').with_block_model().with_item_model().with_block_loot('tfc:fire_clay_block').with_lang(lang('Fire Clay Block'))
@@ -471,8 +487,9 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+        # todo: knife harvesting of plants
+        rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
-    rm.item_model('giant_kelp_flower', 'tfc:item/giant_kelp_flower')
 
     # Berry Stuff
     for berry in BERRIES.keys():
@@ -595,7 +612,7 @@ def generate(rm: ResourceManager):
     for fruit in FRUITS.keys():
         if fruit != 'banana':
             for prefix in ('', 'growing_'):
-                rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
+                block = rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
                     ({'model': 'tfc:block/fruit_tree/%s_branch_core' % fruit}),
                     ({'down': True}, {'model': 'tfc:block/fruit_tree/%s_branch_down' % fruit}),
                     ({'up': True}, {'model': 'tfc:block/fruit_tree/%s_branch_up' % fruit}),
@@ -604,6 +621,22 @@ def generate(rm: ResourceManager):
                     ({'west': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit}),
                     ({'east': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 180})
                 ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
+                if prefix == '':
+                    block.with_block_loot({
+                        'entries': [{
+                            'type': 'minecraft:item',
+                            'conditions': [{
+                                'condition': 'alternative',
+                                'terms': [
+                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'west': 'true'}),
+                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'east': 'true'}),
+                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'north': 'true'}),
+                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'south': 'true'})
+                                ]
+                            }],
+                            'name': 'tfc:fruit_tree/%s_sapling' % fruit
+                        }]
+                    })
             for part in ('down', 'side', 'up', 'core'):
                 rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
             rm.blockstate('fruit_tree/%s_leaves' % fruit, variants={
@@ -616,6 +649,18 @@ def generate(rm: ResourceManager):
                 rm.block_model('tfc:fruit_tree/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
 
             rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
+            rm.block_loot(('fruit_tree', '%s_sapling' % fruit), {
+                'entries': [{
+                    'name': 'tfc:fruit_tree/%s_sapling' % fruit,
+                    'functions': [
+                        {**loot_tables.set_count(1), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '1'})]},
+                        {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '2'})]},
+                        {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '3'})]},
+                        {**loot_tables.set_count(4), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '4'})]},
+                        explosion_decay()
+                    ]
+                }]
+            })
             for i in range(2, 4 + 1):
                 rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
             rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
@@ -863,4 +908,11 @@ def silk_touch() -> Dict[str, Any]:
                 'levels': {'min': 1}
             }]
         }
+    }
+
+def fortune_table(chances: List[float]) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:table_bonus',
+        'enchantment': 'minecraft:fortune',
+        'chances': chances
     }
