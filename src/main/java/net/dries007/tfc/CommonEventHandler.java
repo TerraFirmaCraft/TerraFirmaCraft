@@ -19,6 +19,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -792,6 +793,14 @@ public final class CommonEventHandler
         Entity entity = event.getEntity();
         if (event.getWorld().getWorldType() == TerraFirmaCraft.getWorldType() && event.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD)
         {
+            // Fix skeleton rider traps spawning during thunderstorms
+            if (entity instanceof EntitySkeletonHorse && ConfigTFC.General.DIFFICULTY.preventMobsOnSurface && ((EntitySkeletonHorse) entity).isTrap())
+            {
+                entity.setDropItemsWhenDead(false);
+                entity.setDead();
+                event.setCanceled(true);
+            }
+
             // Fix chickens spawning in caves (which is caused by zombie jockeys)
             if (entity instanceof EntityMob)
             {
