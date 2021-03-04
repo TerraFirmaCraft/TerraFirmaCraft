@@ -22,6 +22,7 @@ import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BananaPlantBlock extends AbstractBerryBushBlock
 {
@@ -29,7 +30,6 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
     public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
 
-    //todo: find out why the TE is randomly null
     public BananaPlantBlock(ForgeBlockProperties properties, BerryBush bush)
     {
         super(properties, bush);
@@ -40,12 +40,7 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
         if (lifecycle == Lifecycle.HEALTHY)
         {
             if (!te.isGrowing() || te.isRemoved()) return;
-
-            if (distanceToGround(world, pos, bush.getMaxHeight()) >= bush.getMaxHeight())
-            {
-                te.setGrowing(false);
-            }
-            else if (stage < 2)
+            if (stage < 2)
             {
                 BlockPos downPos = pos.below(3);
                 if (random.nextInt(3) == 0 || world.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
@@ -59,7 +54,7 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
                     BerryBushTileEntity newTe = Helpers.getTileEntity(world, abovePos, BerryBushTileEntity.class);
                     if (newTe != null)
                     {
-                        newTe.reduceCounter(te.getTicksSinceUpdate());
+                        newTe.reduceCounter(-1 * (te.getTicksSinceUpdate() - ICalendar.TICKS_IN_DAY));
                     }
                 }
                 else
@@ -67,10 +62,14 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
                     te.setGrowing(false);
                 }
             }
+            else if (!world.canSeeSky(pos.above()))
+            {
+                te.setGrowing(false);
+            }
         }
         else if (lifecycle == Lifecycle.DORMANT)
         {
-            te.setGrowing(false); // basically once it's dead it's dead
+            te.setGrowing(false);
         }
     }
 
@@ -85,7 +84,7 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-
+        // no op the superclass
     }
 
     @Override

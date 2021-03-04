@@ -191,7 +191,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
-        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(90, 60), tree.getFruitTree()), FLORA)
+        register("fruit_tree/" + tree.name().toLowerCase() + "_leaves", () -> new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(FruitTreeLeavesTileEntity::new).flammable(90, 60), tree.getFruitTree()), FLORA)
     );
 
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitTree.Default.class, tree ->

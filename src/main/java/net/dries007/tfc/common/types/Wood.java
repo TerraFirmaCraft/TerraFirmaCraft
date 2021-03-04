@@ -48,7 +48,7 @@ public class Wood
         CHESTNUT(false, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, MaterialColor.COLOR_LIGHT_GREEN, 0, 8, 7),
         DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 0, 7, 7),
         HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 0, 7, 10),
-        KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 0, 7, 7),
+        KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 0, 8, 7),
         MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.TERRACOTTA_GRAY, 0, 8, 7),
         OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8, 10),
         PALM(true, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_BROWN, 0, 7, 7),

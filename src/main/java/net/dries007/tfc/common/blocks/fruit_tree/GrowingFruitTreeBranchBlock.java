@@ -71,9 +71,10 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
 
         long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-        if (days >= 1)
+        int cycles = (int) (days / 5);
+        if (cycles >= 1)
         {
-            grow(state, world, pos, rand, (int) days);
+            grow(state, world, pos, rand, cycles);
             te.resetCounter();
         }
     }
@@ -176,13 +177,13 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
-    private void placeGrownFlower(ServerWorld worldIn, BlockPos pos, int stage, int saplings, int days)
+    private void placeGrownFlower(ServerWorld worldIn, BlockPos pos, int stage, int saplings, int cycles)
     {
         worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
         TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
         if (te != null)
         {
-            te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * days);
+            te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * cycles * 5);
         }
         addLeaves(worldIn, pos);
         worldIn.getBlockState(pos).randomTick(worldIn, pos, worldIn.random);
@@ -202,13 +203,13 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         BlockState downState = world.getBlockState(pos.below(2));
         if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
             return;
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction d : NOT_DOWN)
         {
-            mutable.setWithOffset(pos, d);
-            if (canGrowInto(world, mutable))
+            mutablePos.setWithOffset(pos, d);
+            if (world.isEmptyBlock(mutablePos))
             {
-                world.setBlock(mutable, leaves, 2);
+                world.setBlock(mutablePos, leaves, 2);
             }
         }
     }
