@@ -42,6 +42,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
@@ -288,7 +290,7 @@ public class ItemSmallVessel extends ItemPottery
             else
             {
                 boolean hasContent = false;
-                Map<Metal, Integer> materials = new HashMap<>();
+                Object2IntMap<Metal> materials = new Object2IntOpenHashMap<>();
                 boolean onlySmeltables = true;
                 for (ItemStack slot : super.stacks)
                 {
@@ -316,7 +318,7 @@ public class ItemSmallVessel extends ItemPottery
                         int totalAmount = materials.values().stream().reduce(0, Integer::sum);
                         for (Entry<Metal, Integer> entry : materials.entrySet())
                         {
-                            int metalAmount = entry.getValue().intValue();
+                            int metalAmount = entry.getValue();
                             text.add(textPosition, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_unit_total", I18n.format(entry.getKey().getTranslationKey()), metalAmount, Math.round((float) metalAmount / totalAmount * 1000) / 10f));
                         }
                         text.add(textPosition, ""); // Separator between the contents of the vessel and the above units text, not needed but I feel that it helps visually
