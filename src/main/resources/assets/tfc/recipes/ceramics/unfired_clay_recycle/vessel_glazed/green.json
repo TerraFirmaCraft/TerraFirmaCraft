@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/unfired/vessel_glazed",
+      "data": 2
+    }
+  ],
+  "result": {
+    "item": "minecraft:clay_ball",
+    "count": 3
+  }
+}
