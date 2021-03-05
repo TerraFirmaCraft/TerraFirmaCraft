@@ -1063,8 +1063,12 @@ public final class CommonEventHandler
                 for (int j = -2; j <= 2; j++)
                 {
                     BlockPos chunkPos = basePos.add(16 * i, 0, 16 * j);
-                    ChunkDataTFC data = ChunkDataTFC.get(event.player.getEntityWorld(), chunkPos);
-                    data.addSpawnProtection(1);
+                    World world = event.player.getEntityWorld();
+                    if (world.isBlockLoaded(basePos))
+                    {
+                        ChunkDataTFC data = ChunkDataTFC.get(world, chunkPos);
+                        data.addSpawnProtection(1);
+                    }
                 }
             }
         }
