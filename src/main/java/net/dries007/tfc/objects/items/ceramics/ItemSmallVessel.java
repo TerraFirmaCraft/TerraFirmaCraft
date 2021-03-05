@@ -7,7 +7,11 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,6 +49,8 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -282,16 +288,41 @@ public class ItemSmallVessel extends ItemPottery
             else
             {
                 boolean hasContent = false;
+                Map<Metal, Integer> materials = new HashMap<>();
+                boolean onlySmeltables = true;
                 for (ItemStack slot : super.stacks)
                 {
                     if (!slot.isEmpty())
                     {
+                        IMetalItem itemMetal = CapabilityMetalItem.getMetalItem(slot);
+                        if (itemMetal != null)
+                        {
+                            materials.merge(itemMetal.getMetal(slot), itemMetal.getSmeltAmount(slot) * slot.getCount(), Integer::sum);
+                        }
+                        else
+                        {
+                            onlySmeltables = false;
+                        }
                         text.add(1, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
                         hasContent = true;
                     }
                 }
 
-                if (!hasContent)
+                if (hasContent)
+                {
+                    if (onlySmeltables)
+                    {
+                        int textPosition = (int) super.stacks.stream().filter(itemstack -> !ItemStack.EMPTY.equals(itemstack)).count() + 1;
+                        int totalAmount = materials.values().stream().reduce(0, Integer::sum);
+                        for (Entry<Metal, Integer> entry : materials.entrySet())
+                        {
+                            int metalAmount = entry.getValue().intValue();
+                            text.add(textPosition, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_unit_total", I18n.format(entry.getKey().getTranslationKey()), metalAmount, Math.round((float) metalAmount / totalAmount * 1000) / 10f));
+                        }
+                        text.add(textPosition, ""); // Separator between the contents of the vessel and the above units text, not needed but I feel that it helps visually
+                    }
+                }
+                else
                 {
                     text.add(1, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_empty"));
                 }
