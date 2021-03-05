@@ -1069,7 +1069,7 @@ public final class CommonEventHandler
             }
         }
 
-        if (event.phase == TickEvent.Phase.START && !event.player.isCreative() && event.player.ticksExisted % 20 == 0)
+        if (event.phase == TickEvent.Phase.START && !(event.player.isCreative() || event.player.isSpectator()) && event.player.ticksExisted % 20 == 0)
         {
             // Update overburdened state
             int hugeHeavyCount = countPlayerOverburdened(event.player.inventory);
