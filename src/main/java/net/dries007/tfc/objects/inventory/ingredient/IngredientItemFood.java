@@ -56,6 +56,12 @@ public class IngredientItemFood implements IIngredient<ItemStack>
         return innerIngredient.consume(input);
     }
 
+    @Override
+    public int getAmount()
+    {
+        return innerIngredient.getAmount();
+    }
+
     private boolean isRotten(ItemStack stack)
     {
         IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
