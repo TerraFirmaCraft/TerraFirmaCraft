@@ -81,7 +81,7 @@ public class TESluice extends TEBase implements ITickable
                             Ore ore = veinList.get(Constants.RNG.nextInt(veinList.size())).getType().getOre();
                             ItemStack output = new ItemStack(ItemSmallOre.get(ore));
                             Helpers.spawnItemStack(world, getFrontWaterPos(), output);
-                            chunkData.addWork();
+                            chunkData.addWork(3);
                         }
                     }
                     else if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.gemChance)
@@ -100,7 +100,7 @@ public class TESluice extends TEBase implements ITickable
                             }
                             Gem.Grade grade = Gem.Grade.randomGrade(Constants.RNG);
                             Helpers.spawnItemStack(world, getFrontWaterPos(), ItemGem.get(dropGem, grade, 1));
-                            chunkData.addWork();
+                            chunkData.addWork(3);
                         }
                     }
                     consumeSoil();

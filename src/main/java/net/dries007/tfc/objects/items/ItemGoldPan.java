@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,8 +32,10 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
+import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
+import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -149,13 +152,15 @@ public class ItemGoldPan extends ItemTFC
                 if (world.getBlockState(pos).getMaterial() == Material.WATER)
                 {
                     // Only pan for native nuggets in sand + gravel - TODO: loot tables
-                    if (stack.getItemDamage() == 1 || stack.getItemDamage() == 2)
+                    int damage = stack.getItemDamage();
+                    final BlockPos position = player.getPosition();
+                    if (!world.isRemote)
                     {
-                        if (!world.isRemote)
+                        Chunk chunk = world.getChunk(position);
+                        ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(chunk);
+                        if (chunkDataTFC.canWork(6))
                         {
-                            Chunk chunk = world.getChunk(player.getPosition());
-                            ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(chunk);
-                            if (chunkDataTFC.canWork(6))
+                            if (damage == 1 || damage == 2)
                             {
                                 Random rand = new Random(world.getSeed() + chunk.getPos().x * 241179128412L + chunk.getPos().z * 327910215471L);
                                 TFCRegistries.ORES.getValuesCollection()
@@ -165,19 +170,35 @@ public class ItemGoldPan extends ItemTFC
                                     .forEach(x -> {
                                         if (Constants.RNG.nextDouble() < x.getPanChance())
                                         {
-                                            Helpers.spawnItemStack(world, player.getPosition(), new ItemStack(ItemSmallOre.get(x)));
+                                            Helpers.spawnItemStack(world, position, new ItemStack(ItemSmallOre.get(x)));
                                         }
                                     });
-                                chunkDataTFC.addWork(6);
                                 // player.inventory.setInventorySlotContents(player.inventory.currentItem, stack); //only way to get it to refresh! <- do we really *need* this?
                             }
-                            else
+                            else if (damage == 3 || damage == 4)
                             {
-                                player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
+                                Rock rock = chunkDataTFC.getRockHeight(position);
+                                if (Constants.RNG.nextDouble() < 0.35)
+                                {
+                                    Helpers.spawnItemStack(world, position, new ItemStack(ItemRock.get(rock), 1));
+                                }
+                                else if (damage == 3 && Constants.RNG.nextDouble() < 0.1)
+                                {
+                                    Helpers.spawnItemStack(world, position, new ItemStack(Items.BONE, 1));
+                                }
+                                else if (damage != 3 && Constants.RNG.nextDouble() < 0.1)
+                                {
+                                    Helpers.spawnItemStack(world, position, new ItemStack(Items.STICK, 1));
+                                }
                             }
+                            chunkDataTFC.addWork(6);
                         }
-                        stack.setItemDamage(0); // Set damage to an empty pan no matter what
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
+                        }
                     }
+                    stack.setItemDamage(0); // Set damage to an empty pan no matter what
                     if (Constants.RNG.nextFloat() < 0.01) // 1/100 chance, same as 1.7.10
                     {
                         stack.shrink(1);
