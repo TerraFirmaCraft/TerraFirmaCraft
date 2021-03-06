@@ -5,17 +5,33 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.items.ItemHandlerHelper;
+
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.dries007.tfc.api.types.Metal;
 
 public class PowderKegExplosion extends Explosion
 {
@@ -40,6 +56,8 @@ public class PowderKegExplosion extends Explosion
             world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, x, y, z, 1.0d, 0.d, 0.0d);
         }
 
+        boolean isSmall = affectedBlockPositions.size() < 128;
+        List<ItemStack> allDrops = new ArrayList<>();
         for (BlockPos blockpos : affectedBlockPositions)
         {
             IBlockState iblockstate = world.getBlockState(blockpos);
@@ -68,13 +86,63 @@ public class PowderKegExplosion extends Explosion
 
             if (iblockstate.getMaterial() != Material.AIR)
             {
-                if (block.canDropFromExplosion(this))
+                if (isSmall)
                 {
-                    block.dropBlockAsItemWithChance(world, blockpos, world.getBlockState(blockpos), 1f, 0); // 100% chance
+                    block.dropBlockAsItemWithChance(world, blockpos, iblockstate, 1f, 0);
+                }
+                else
+                {
+                    // noinspection deprecation
+                    List<ItemStack> drops = block.getDrops(world, blockpos, iblockstate, 0);
+                    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, blockpos, iblockstate, 0, 1f, false, null);
+                    if (world.rand.nextFloat() <= chance)
+                    {
+                        for (ItemStack stack : drops)
+                        {
+                            //noinspection all
+                            allDrops.add(stack); //addAll is unsupported
+                        }
+                    }
                 }
                 block.onBlockExploded(world, blockpos, this);
             }
         }
+        if (!isSmall)
+        {
+            List<ItemStack> squish = squish(allDrops);
+            for (ItemStack drop : squish)
+            {
+                int index = world.rand.nextInt(affectedBlockPositions.size());
+                BlockPos dropPos = affectedBlockPositions.get(index);
+                Block.spawnAsEntity(world, dropPos, drop);
+            }
+        }
+
     }
 
+    private List<ItemStack> squish(List<ItemStack> list)
+    {
+        List<ItemStack> drops = NonNullList.create();
+        Object2IntMap<Item> map = new Object2IntOpenHashMap<>();
+        for (ItemStack stack : list)
+        {
+            Item item = stack.getItem();
+            int count = stack.getCount();
+            int current = map.getOrDefault(item, 0);
+            map.put(item, count + current);
+        }
+        for (Map.Entry<Item, Integer> entry : map.entrySet())
+        {
+            int count = entry.getValue();
+            Item item = entry.getKey();
+            int stackLimit = item.getItemStackLimit(new ItemStack(item));
+            while (count > 0)
+            {
+                int amountToDrop = Math.min(count, stackLimit);
+                drops.add(new ItemStack(item, amountToDrop));
+                count -= amountToDrop;
+            }
+        }
+        return drops;
+    }
 }
