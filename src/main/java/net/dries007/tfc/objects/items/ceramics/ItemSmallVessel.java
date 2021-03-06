@@ -318,8 +318,12 @@ public class ItemSmallVessel extends ItemPottery
                         int totalAmount = materials.values().stream().reduce(0, Integer::sum);
                         for (Entry<Metal, Integer> entry : materials.entrySet())
                         {
-                            int metalAmount = entry.getValue();
-                            text.add(textPosition, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_unit_total", I18n.format(entry.getKey().getTranslationKey()), metalAmount, Math.round((float) metalAmount / totalAmount * 1000) / 10f));
+                            Metal key = entry.getKey();
+                            if (key != null)
+                            {
+                                int metalAmount = entry.getValue();
+                                text.add(textPosition, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_unit_total", I18n.format(key.getTranslationKey()), metalAmount, Math.round((float) metalAmount / totalAmount * 1000) / 10f));
+                            }
                         }
                         text.add(textPosition, ""); // Separator between the contents of the vessel and the above units text, not needed but I feel that it helps visually
                     }
