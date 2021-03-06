@@ -42,6 +42,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.container.ContainerInventoryCrafting;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.items.ItemAnimalHide;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
@@ -350,6 +351,10 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.placed_item").getFormattedText());
         registry.addIngredientInfo(new ItemStack(Items.COAL, 1, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.charcoal_pit").getFormattedText());
 
+        for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())
+        {
+            registry.addIngredientInfo(new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, size)), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.hide_scraping").getFormattedText());
+        }
 
         //Custom handlers
         registry.handleRecipes(SaltingRecipe.class, SaltingRecipeWrapper::new, VanillaRecipeCategoryUid.CRAFTING);
