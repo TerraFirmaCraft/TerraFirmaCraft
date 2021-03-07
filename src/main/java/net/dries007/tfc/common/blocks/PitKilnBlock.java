@@ -77,15 +77,13 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
             if (stage < STRAW_END && held.getItem().is(TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4)
             {
                 world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
-                te.addStraw(held.copy().split(4), stage);
-                held.shrink(player.isCreative() ? 0 : 4);
+                te.addStraw(held.split(4), stage + 1);
                 Helpers.playSound(world, pos, SoundEvents.GRASS_PLACE);
             }
             else if (stage < LIT - 1 && held.getItem().is(TFCTags.Items.PIT_KILN_LOGS))
             {
                 world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
-                te.addLog(held.copy(), stage - LOG_START + 1);
-                held.shrink(player.isCreative() ? 0 : 1);
+                te.addLog(held.split(1), stage - LOG_START + 1);
                 Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
             }
             else if (held.isEmpty())
@@ -98,21 +96,17 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
                     if (stage >= LOG_START)
                     {
                         dropStack = logItems.get(stage - LOG_START).copy();
-                        dropStack.setCount(1);
                         logItems.set(stage - LOG_START, ItemStack.EMPTY);
                     }
                     else
                     {
                         dropStack = strawItems.get(stage).copy();
-                        dropStack.setCount(4);
                         logItems.set(stage, ItemStack.EMPTY);
                     }
-
                     if (!dropStack.isEmpty())
                     {
                         ItemHandlerHelper.giveItemToPlayer(player, dropStack);
                     }
-
                     if (stage == 0)
                     {
                         PitKilnTileEntity.convertPitKilnToPlacedItem(world, pos);
@@ -148,11 +142,12 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
     {
         InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (te != null)
+        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
         {
-            te.onBreak();
+            if (te != null)
+                te.onBreak();
+            world.removeBlockEntity(pos);
         }
-        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override

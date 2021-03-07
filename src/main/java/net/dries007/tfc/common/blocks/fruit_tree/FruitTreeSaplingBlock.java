@@ -30,10 +30,13 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockProperties
 {
@@ -82,8 +85,16 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
         {
             if (!world.isClientSide() && te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
             {
-                boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
-                world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                ChunkData data = ChunkData.get(world, pos);
+                if (!tree.getBase().isValidConditions(data.getRainfall(pos), data.getAverageTemp(pos)))
+                {
+                    world.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
+                }
+                else
+                {
+                    boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
+                    world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                }
             }
         }
     }

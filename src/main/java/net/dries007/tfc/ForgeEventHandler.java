@@ -422,38 +422,39 @@ public final class ForgeEventHandler
         World world = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
+        Block block = state.getBlock();
 
         if (!world.isClientSide())
         {
-            if (state.is(TFCBlocks.FIREPIT.get()) || state.is(TFCBlocks.POT.get()) || state.is(TFCBlocks.GRILL.get()))
+            if (block.is(TFCBlocks.FIREPIT.get()) || block.is(TFCBlocks.POT.get()) || block.is(TFCBlocks.GRILL.get()))
             {
                 world.setBlock(pos, state.setValue(TFCBlockStateProperties.LIT, true), 2);
                 event.setCanceled(true);
             }
-            else if (state.is(TFCBlocks.TORCH.get()) || state.is(TFCBlocks.WALL_TORCH.get()))
+            else if (block.is(TFCBlocks.TORCH.get()) || block.is(TFCBlocks.WALL_TORCH.get()))
             {
                 TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
                 if (te != null)
                     te.resetCounter();
                 event.setCanceled(true);
             }
-            else if (state.is(TFCBlocks.DEAD_TORCH.get()))
+            else if (block.is(TFCBlocks.DEAD_TORCH.get()))
             {
                 world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
                 event.setCanceled(true);
             }
-            else if (state.is(TFCBlocks.DEAD_WALL_TORCH.get()))
+            else if (block.is(TFCBlocks.DEAD_WALL_TORCH.get()))
             {
                 Direction direction = state.getValue(DeadWallTorchBlock.FACING);
                 world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
                 event.setCanceled(true);
             }
-            else if (state.is(TFCBlocks.LOG_PILE.get()))
+            else if (block.is(TFCBlocks.LOG_PILE.get()))
             {
                 BurningLogPileBlock.tryLightLogPile(world, pos);
                 event.setCanceled(true);
             }
-            else if (state.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+            else if (block.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
             {
                 PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
                 if (kiln != null)

@@ -166,8 +166,11 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
     public void onBreak()
     {
         if (level == null) return;
-        strawItems.forEach(i -> InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i));
-        logItems.forEach(i -> InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i));
+        int x = worldPosition.getX();
+        int y = worldPosition.getY();
+        int z = worldPosition.getZ();
+        strawItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
+        logItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
         super.onBreak();
     }
 
