@@ -1,11 +1,12 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "variants": {
+    "facing=north": {
+      "model": "minecraft:block/horn_coral_wall_fan"
+    },
     "facing=east": {
       "model": "minecraft:block/horn_coral_wall_fan",
       "y": 90
-    },
-    "facing=north": {
-      "model": "minecraft:block/horn_coral_wall_fan"
     },
     "facing=south": {
       "model": "minecraft:block/horn_coral_wall_fan",

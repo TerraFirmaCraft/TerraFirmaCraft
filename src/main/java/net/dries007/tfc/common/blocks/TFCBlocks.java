@@ -146,9 +146,9 @@ public final class TFCBlocks
         register(("plant/" + plant.name()).toLowerCase(), plant::create, block -> plant.createBlockItem(block, new Item.Properties().tab(FLORA)), plant.needsItem())
     );
 
-    public static final Map<Coral.Color, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.Color.class, color ->
+    public static final Map<Coral, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.class, color ->
         Helpers.mapOfKeys(Coral.BlockType.class, type ->
-            register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), block -> type.createBlockItem(block, new Item.Properties().tab(FLORA)), type.needsItem())
+            register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), type.createBlockItem(new Item.Properties().tab(FLORA)), type.needsItem())
         )
     );
 

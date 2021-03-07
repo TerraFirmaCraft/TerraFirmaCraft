@@ -1,4 +1,5 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "": {
       "model": "minecraft:block/dead_brain_coral_fan"

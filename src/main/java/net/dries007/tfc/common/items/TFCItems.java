@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -61,6 +60,16 @@ public final class TFCItems
         )
     );
 
+    // Flora
+
+    public static final Map<Coral, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.class, color ->
+        register("coral/" + color.toString().toLowerCase() + "_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+    );
+
+    public static final Map<Coral, RegistryObject<Item>> DEAD_CORAL_FANS = Helpers.mapOfKeys(Coral.class, color ->
+        register("coral/" + color.toString().toLowerCase() + "_dead_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+    );
+
     // Rock Stuff
 
     public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
@@ -74,14 +83,6 @@ public final class TFCItems
     );
 
     // Misc
-
-    public static final Map<Coral.Color, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
-        register("coral/" + color.toString().toLowerCase() + "_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
-    );
-    public static final Map<Coral.Color, RegistryObject<Item>> DEAD_CORAL_FANS = Helpers.mapOfKeys(Coral.Color.class, color ->
-        register("coral/" + color.toString().toLowerCase() + "_dead_coral_fan", () -> new WallOrFloorItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
-    );
-
 
     public static final Map<HideItemType, Map<HideItemType.Size, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItemType.class, type ->
         Helpers.mapOfKeys(HideItemType.Size.class, size ->

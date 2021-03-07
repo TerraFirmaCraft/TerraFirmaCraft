@@ -559,18 +559,30 @@ def generate(rm: ResourceManager):
     # Misc Items
     rm.item_model('mortar').with_lang(lang('mortar')).with_tag('tfc:mortar')
 
+    def corals(color: str, dead: bool):
+        # vanilla and tfc have a different convention for dead/color order
+        left = 'dead_' + color if dead else color
+        right = color + '_dead' if dead else color
+
+        rm.blockstate('coral/%s_coral' % right, 'minecraft:block/%s_coral' % left)
+        rm.blockstate('coral/%s_coral_fan' % right, 'minecraft:block/%s_coral_fan' % left)
+        rm.blockstate('coral/%s_coral_wall_fan' % right, variants=dict(
+            ('facing=%s' % d, {'model': 'minecraft:block/%s_coral_wall_fan' % left, 'y': r})
+            for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
+        ))
+
+        for variant in ('coral', 'coral_fan', 'coral_wall_fan'):
+            rm.item_model('coral/%s_%s' % (right, variant), 'minecraft:block/%s_%s' % (left, variant))
+            rm.lang('block.tfc.coral.%s_%s' % (right, variant), lang('%s %s', left, variant))
+
+        if not dead:
+            # Tag contents are used for selecting a random coral to place by features
+            rm.block_tag('wall_corals', 'coral/%s_coral_wall_fan' % color)
+            rm.block_tag('corals', 'coral/%s_coral' % color, 'coral/%s_coral_fan' % color)
+
     for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
-        for block_type in ('coral', 'coral_fan', 'coral_wall_fan'):
-            for life in ('dead_', ''):
-                second_type = block_type
-                if block_type == 'coral_wall_fan' and life != 'dead_':
-                    rm.block_tag('wall_corals', ('coral', color + '_' + life + block_type))
-                    second_type = 'coral_fan'
-                rm.item_model(('coral', color + '_' + life + block_type), 'minecraft:block/' + life + color + '_' + second_type)
-                if block_type == 'coral' or block_type == 'coral_fan':
-                    if life != 'dead_':
-                        rm.block_tag('corals', ('coral', color + '_' + life + block_type))
-                    rm.lang('block.tfc.coral.' + color + '_' + life + block_type, lang('%s %s %s', life, color, block_type))
+        corals(color, False)
+        corals(color, True)
 
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:
