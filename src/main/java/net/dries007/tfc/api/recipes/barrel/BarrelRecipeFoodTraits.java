@@ -57,13 +57,17 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
     @Override
     public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
     {
+        int multiplier = getMultiplier(inputFluid, inputStack);
         ItemStack stack = inputStack.copy();
+        stack.setCount(multiplier);
+
+        ItemStack remainder = Helpers.consumeItem(inputStack.copy(), multiplier);
         IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (food != null)
         {
             CapabilityFood.applyTrait(food, trait);
         }
-        return Helpers.listOf(stack);
+        return Helpers.listOf(stack, remainder);
     }
 
     @SideOnly(Side.CLIENT)

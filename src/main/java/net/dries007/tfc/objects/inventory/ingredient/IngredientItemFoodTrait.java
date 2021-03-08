@@ -56,6 +56,12 @@ public class IngredientItemFoodTrait implements IIngredient<ItemStack>
         return innerIngredient.consume(input);
     }
 
+    @Override
+    public int getAmount()
+    {
+        return this.innerIngredient.getAmount();
+    }
+
     private boolean hasTrait(ItemStack stack)
     {
         IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
