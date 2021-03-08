@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:block/brain_coral_fan"
+    "layer0": "minecraft:block/brain_coral_wall_fan"
   }
 }

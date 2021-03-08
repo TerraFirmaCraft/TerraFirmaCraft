@@ -22,6 +22,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -29,9 +30,9 @@ import net.minecraft.world.IWorldReader;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link DeadCoralWallFanBlock}
+ * {@link net.minecraft.block.DeadCoralWallFanBlock}
  */
-public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
+public class CoralWallFanBlock extends TFCCoralPlantBlock
 {
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
@@ -40,16 +41,10 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
         Direction.WEST, Block.box(5.0D, 4.0D, 0.0D, 16.0D, 12.0D, 16.0D),
         Direction.EAST, Block.box(0.0D, 4.0D, 0.0D, 11.0D, 12.0D, 16.0D)));
 
-    public TFCDeadCoralWallFanBlock(AbstractBlock.Properties builder)
+    public CoralWallFanBlock(AbstractBlock.Properties builder)
     {
-        super(builder);
+        super(VoxelShapes.empty(), builder);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return SHAPES.get(state.getValue(FACING));
     }
 
     @Override
@@ -66,10 +61,37 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
         return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        BlockState state = super.getStateForPlacement(context);
+        if (state == null)
+        {
+            return null;
+        }
+        IWorldReader world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Direction[] directions = context.getNearestLookingDirections();
+
+        for (Direction d : directions)
+        {
+            if (d.getAxis().isHorizontal())
+            {
+                state = state.setValue(FACING, d.getOpposite());
+                if (state.canSurvive(world, pos))
+                {
+                    return state;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, FLUID);
+        super.createBlockStateDefinition(builder.add(FACING));
     }
 
     @Override
@@ -92,26 +114,9 @@ public class TFCDeadCoralWallFanBlock extends TFCCoralFanBlock
         return blockstate.isFaceSturdy(worldIn, blockpos, direction);
     }
 
-    @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        BlockState blockstate = super.getStateForPlacement(context);
-        IWorldReader iworldreader = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
-        Direction[] directions = context.getNearestLookingDirections();
-
-        for (Direction d : directions)
-        {
-            if (d.getAxis().isHorizontal())
-            {
-                blockstate = blockstate.setValue(FACING, d.getOpposite());
-                if (blockstate.canSurvive(iworldreader, blockpos))
-                {
-                    return blockstate;
-                }
-            }
-        }
-        return null;
+        return SHAPES.get(state.getValue(FACING));
     }
 }
