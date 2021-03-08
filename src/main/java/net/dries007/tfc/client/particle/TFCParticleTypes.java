@@ -13,4 +13,5 @@ public class TFCParticleTypes
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 
     public static final RegistryObject<BasicParticleType> BUBBLE = PARTICLE_TYPES.register("bubble", () -> new BasicParticleType(false));
+    public static final RegistryObject<BasicParticleType> STEAM = PARTICLE_TYPES.register("steam", () -> new BasicParticleType(false));
 }

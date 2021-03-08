@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -32,6 +33,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticleTypes;
 import net.dries007.tfc.client.render.GrillTileEntityRenderer;
 import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
@@ -212,6 +214,8 @@ public final class ClientEventHandler
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
 
-        Minecraft.getInstance().particleEngine.register(TFCParticleTypes.BUBBLE.get(), BubbleParticle.Factory::new);
+        ParticleManager particleEngine = Minecraft.getInstance().particleEngine;
+        particleEngine.register(TFCParticleTypes.BUBBLE.get(), BubbleParticle.Factory::new);
+        particleEngine.register(TFCParticleTypes.STEAM.get(), SteamParticle.Factory::new);
     }
 }

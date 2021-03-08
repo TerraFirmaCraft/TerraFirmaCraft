@@ -22,6 +22,7 @@ public class BubbleParticle extends SpriteTexturedParticle
         this.lifetime = 3 + random.nextInt(3);
     }
 
+    @Override
     public void tick()
     {
         xo = x;
