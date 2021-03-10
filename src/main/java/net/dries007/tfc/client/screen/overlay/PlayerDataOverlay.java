@@ -23,6 +23,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.config.HealthDisplayFormat;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -42,16 +44,19 @@ public final class PlayerDataOverlay
         if (clientPlayer == null) return;
         PlayerEntity player = clientPlayer.inventory.player;
 
-        ForgeIngameGui.renderFood = false;
-        ForgeIngameGui.renderHealth = false;
-        ForgeIngameGui.renderArmor = true;
-        ForgeIngameGui.renderExperiance = false;
+        ForgeIngameGui.renderFood = TFCConfig.CLIENT.useVanillaHunger.get();
+        ForgeIngameGui.renderHealth = TFCConfig.CLIENT.useVanillaHealth.get();
+        ForgeIngameGui.renderExperiance = TFCConfig.CLIENT.useVanillaHealth.get() && TFCConfig.CLIENT.hideThirstBar.get(); // only allow vanilla exp in this case
+        HealthDisplayFormat healthDisplayFormat = TFCConfig.CLIENT.healthDisplayFormat.get();
 
         if (event.getType() != ElementType.CROSSHAIRS) return;
 
+        if (!TFCConfig.CLIENT.hideThirstBar.get() || !TFCConfig.CLIENT.useVanillaHunger.get())
+            ForgeIngameGui.right_height += TFCConfig.CLIENT.useVanillaHunger.get() ?6 : 10;
+
         MatrixStack matrixStack = event.getMatrixStack();
 
-        float displayModifier = 50f;
+        float displayModifier = (healthDisplayFormat == HealthDisplayFormat.TFC || healthDisplayFormat == HealthDisplayFormat.TFC_CURRENT_HEALTH) ? 50f : 1f;
         float maxHealth = player.getMaxHealth() * displayModifier; // 20 * 50 = 1000
         float currentThirst = 100f;
 
@@ -73,56 +78,63 @@ public final class PlayerDataOverlay
         {
             float foodLevel = player.getFoodData().getFoodLevel();
             float percentFood = foodLevel / 20f;
-            float percentThirst = currentThirst / 100f; //todo
+            float percentThirst = currentThirst / 100f;
 
-            //hunger
-            matrixStack.pushPose();
-            matrixStack.translate(mid + 1, healthRowHeight, 0);
-            gui.blit(matrixStack, 0, 0, 0, 20, 90, 5);
-            gui.blit(matrixStack, 0, 0, 0, 25, (int) (90 * percentFood), 5);
-            matrixStack.popPose();
-
-            //thirst
-            matrixStack.pushPose();
-            matrixStack.translate(mid + 1, healthRowHeight + 5, 0);
-            gui.blit(matrixStack, 0, 0, 90, 20, 90, 5);
-            gui.blit(matrixStack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
-            matrixStack.popPose();
-
-            //health
-            ForgeIngameGui.left_height += 10;
-            matrixStack.pushPose();
-            matrixStack.translate(mid - 91, healthRowHeight, 0);
-            gui.blit(matrixStack, 0, 0, 0, 0, 90, 10);
-
-            float absorption = player.getAbsorptionAmount();
-            float percentHealth = (player.getHealth() + absorption) / 20f;
-            float currentHealth = percentHealth * maxHealth;
-            int uSurplus = 90;
-            if (percentHealth > 1) percentHealth = 1;
-
-            gui.blit(matrixStack, 0, 0, 0, 10, (int) (90 * percentHealth), 10);
-
-            if ((player.getFoodData().getSaturationLevel() > 0.0f && player.isHurt()) || player.hurtTime > 0 || player.hasEffect(Effects.REGENERATION))
-                gui.blit(matrixStack, 0, 1, 0, 30, 90, 8);
-            float surplusPercent = MathHelper.clamp(percentHealth + (absorption / 20f) - 1, 0, 1);
-            if (surplusPercent > 0)
+            if (!TFCConfig.CLIENT.useVanillaHunger.get())
             {
-                // fill up the yellow bar until you get a second full bar, then just fill it up
-                float percent = Math.min(surplusPercent, 1);
-                gui.blit(matrixStack, 0, 0, uSurplus, 10, (int) (90 * percent), 10);
+                matrixStack.pushPose();
+                matrixStack.translate(mid + 1, healthRowHeight, 0);
+                gui.blit(matrixStack, 0, 0, 0, 20, 90, 5);
+                gui.blit(matrixStack, 0, 0, 0, 25, (int) (90 * percentFood), 5);
+                matrixStack.popPose();
             }
-            matrixStack.popPose();
 
-            String healthString = String.format("%.0f / %.0f", currentHealth, maxHealth);
-            matrixStack.pushPose();
-            matrixStack.translate(mid - 45, healthRowHeight + 2.5, 0);
-            matrixStack.scale(0.8f, 0.8f, 1.0f);
-            fontRenderer.draw(matrixStack, healthString, -1 * fontRenderer.width(healthString) / 2f, 0, surplusPercent < 0.6 ? Color.white.getRGB() : Color.black.getRGB());
-            matrixStack.popPose();
+            if (!TFCConfig.CLIENT.hideThirstBar.get())
+            {
+                matrixStack.pushPose();
+                matrixStack.translate(mid + 1, healthRowHeight + 5, 0);
+                gui.blit(matrixStack, 0, 0, 90, 20, 90, 5);
+                gui.blit(matrixStack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
+                matrixStack.popPose();
+            }
 
-            RenderSystem.enableBlend();
-            RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            if (!TFCConfig.CLIENT.useVanillaHealth.get())
+            {
+                ForgeIngameGui.left_height += 10;
+                matrixStack.pushPose();
+                matrixStack.translate(mid - 91, healthRowHeight, 0);
+                gui.blit(matrixStack, 0, 0, 0, 0, 90, 10);
+
+                float absorption = player.getAbsorptionAmount();
+                float percentHealth = (player.getHealth() + absorption) / 20f;
+                float currentHealth = percentHealth * maxHealth;
+                int uSurplus = 90;
+                if (percentHealth > 1) percentHealth = 1;
+
+                gui.blit(matrixStack, 0, 0, 0, 10, (int) (90 * percentHealth), 10);
+
+                if ((player.getFoodData().getSaturationLevel() > 0.0f && player.isHurt()) || player.hurtTime > 0 || player.hasEffect(Effects.REGENERATION))
+                    gui.blit(matrixStack, 0, 1, 0, 30, 90, 8);
+                float surplusPercent = MathHelper.clamp(percentHealth + (absorption / 20f) - 1, 0, 1);
+                if (surplusPercent > 0)
+                {
+                    // fill up the yellow bar until you get a second full bar, then just fill it up
+                    float percent = Math.min(surplusPercent, 1);
+                    gui.blit(matrixStack, 0, 0, uSurplus, 10, (int) (90 * percent), 10);
+                }
+                matrixStack.popPose();
+
+                String healthString = healthDisplayFormat.format(currentHealth, maxHealth);
+                matrixStack.pushPose();
+                matrixStack.translate(mid - 45, healthRowHeight + 2.5, 0);
+                matrixStack.scale(0.8f, 0.8f, 1.0f);
+                fontRenderer.draw(matrixStack, healthString, -1 * fontRenderer.width(healthString) / 2f, 0, surplusPercent < 0.6 ? Color.white.getRGB() : Color.black.getRGB());
+                matrixStack.popPose();
+
+                RenderSystem.enableBlend();
+                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+
 
             textureManager.bind(AbstractGui.GUI_ICONS_LOCATION);
             Entity mount = player.getVehicle();
@@ -156,7 +168,7 @@ public final class PlayerDataOverlay
                 RenderSystem.enableBlend();
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             }
-            if (mount instanceof LivingEntity)
+            if (mount instanceof LivingEntity && !TFCConfig.CLIENT.useVanillaHealth.get())
             {
                 textureManager.bind(ICONS);
                 ForgeIngameGui.renderHealthMount = false;
@@ -173,7 +185,7 @@ public final class PlayerDataOverlay
                     gui.blit(matrixStack, 0, 1, 0, 30, 90, 8);
                 matrixStack.popPose();
 
-                String mountHealthString = String.format("%.0f / %.0f", mountCurrentHealth, mountMaxHealth);
+                String mountHealthString = healthDisplayFormat.format(mountCurrentHealth, mountMaxHealth);
                 matrixStack.pushPose();
                 matrixStack.translate(mid + 47, armorRowHeight + 2.5, 0);
                 matrixStack.scale(0.8f, 0.8f, 1.0f);
