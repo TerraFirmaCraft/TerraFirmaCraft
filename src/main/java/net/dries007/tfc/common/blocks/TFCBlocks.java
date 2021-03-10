@@ -206,7 +206,7 @@ public final class TFCBlocks
         register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
     );
 
-    private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}, 8, 8);
+    private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, 10, 8);
     public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(60, 30), BANANA));
     public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
 

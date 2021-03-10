@@ -678,7 +678,13 @@ def generate(rm: ResourceManager):
                 'lifecycle=flowering,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
                 'lifecycle=flowering,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
                 'lifecycle=flowering,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2_flowering'},
-            }).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch')
+            }).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
+                'entries': [{
+                    'name': 'tfc:fruit_tree/banana_sapling',
+                    'functions': [{**loot_tables.set_count(1, 2)}],
+                    'conditions': [block_state_property('tfc:fruit_tree/banana_plant', {'stage': '2'})]
+                }]
+            })
 
             rm.block_model(('fruit_tree', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
             rm.blockstate(('fruit_tree', 'banana_sapling'), model='tfc:block/fruit_tree/banana_sapling').with_lang(lang('Banana Sapling')).with_tag('fruit_tree_sapling')
