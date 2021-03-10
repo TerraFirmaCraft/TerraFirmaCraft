@@ -25,6 +25,25 @@ import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends Block implements IForgeBlockProperties
 {
+    public static void tryLightLogPile(World world, BlockPos pos)
+    {
+        LogPileTileEntity pile = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
+        if (pile != null)
+        {
+            int logs = pile.countLogs();
+            pile.clearContent(); // avoid dumping when onRemove is called
+            world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
+            Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);
+
+            BurningLogPileTileEntity newPile = Helpers.getTileEntity(world, pos, BurningLogPileTileEntity.class);
+            if (newPile != null)
+            {
+                newPile.light(logs);
+                tryLightNearby(world, pos);
+            }
+        }
+    }
+
     private static boolean isValidCoverBlock(BlockState offsetState, World world, BlockPos pos, Direction side)
     {
         if (offsetState.is(TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
@@ -34,6 +53,26 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         return !offsetState.getMaterial().isFlammable() && offsetState.isFaceSturdy(world, pos, side);
     }
 
+    private static void tryLightNearby(World world, BlockPos pos)
+    {
+        if (world.isClientSide()) return;
+        for (Direction side : Helpers.DIRECTIONS)
+        {
+            final BlockPos offsetPos = pos.relative(side);
+            BlockState offsetState = world.getBlockState(offsetPos);
+            if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
+            {
+                if (offsetState.is(TFCBlocks.LOG_PILE.get()))
+                {
+                    tryLightLogPile(world, offsetPos);
+                }
+            }
+            else
+            {
+                world.setBlockAndUpdate(offsetPos, Blocks.FIRE.defaultBlockState());
+            }
+        }
+    }
     private final ForgeBlockProperties properties;
 
     public BurningLogPileBlock(ForgeBlockProperties properties)
@@ -69,47 +108,6 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         for (int i = 0; i < rand.nextInt(3); i++)
         {
             worldIn.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, (0.5F - rand.nextFloat()) / 10, 0.1f + rand.nextFloat() / 8, (0.5F - rand.nextFloat()) / 10);
-        }
-    }
-
-    public static void tryLightLogPile(World world, BlockPos pos)
-    {
-        LogPileTileEntity pile = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
-        if (pile != null)
-        {
-            int logs = pile.countLogs();
-            pile.clearContent(); // avoid dumping when onRemove is called
-            pile.setRemoved();
-            world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
-            Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);
-
-            BurningLogPileTileEntity newPile = Helpers.getTileEntity(world, pos, BurningLogPileTileEntity.class);
-            if (newPile != null)
-            {
-                newPile.light(logs);
-                tryLightNearby(world, pos);
-            }
-        }
-    }
-
-    private static void tryLightNearby(World world, BlockPos pos)
-    {
-        if (world.isClientSide()) return;
-        for (Direction side : Direction.values())
-        {
-            final BlockPos offsetPos = pos.relative(side);
-            BlockState offsetState = world.getBlockState(offsetPos);
-            if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
-            {
-                if (offsetState.is(TFCBlocks.LOG_PILE.get()))
-                {
-                    tryLightLogPile(world, offsetPos);
-                }
-            }
-            else
-            {
-                world.setBlockAndUpdate(offsetPos, Blocks.FIRE.defaultBlockState());
-            }
         }
     }
 

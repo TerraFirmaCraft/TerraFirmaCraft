@@ -22,12 +22,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -38,6 +40,8 @@ import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
@@ -149,6 +153,15 @@ public class ClientForgeEventHandler
         {
             Calendars.CLIENT.onClientTick();
             ClimateRenderCache.INSTANCE.onClientTick();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onKeyEvent(InputEvent.KeyInputEvent event)
+    {
+        if (TFCKeyBindings.PLACE_BLOCK.isDown())
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
         }
     }
 }

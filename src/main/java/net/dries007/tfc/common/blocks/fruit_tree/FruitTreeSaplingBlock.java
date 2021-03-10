@@ -2,7 +2,6 @@ package net.dries007.tfc.common.blocks.fruit_tree;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -40,11 +39,10 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockProperties
 {
-    private final ForgeBlockProperties properties;
+    private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     protected final Supplier<? extends Block> block;
     protected final FruitTree tree;
-
-    private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
+    private final ForgeBlockProperties properties;
 
     public FruitTreeSaplingBlock(ForgeBlockProperties properties, FruitTree tree, Supplier<? extends Block> block)
     {
@@ -66,7 +64,8 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
             //todo: require knife in offhand
             if (defaultBlockState().getBlock().asItem() == held.getItem() && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
-                if (saplings > 2 && worldIn.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)) return ActionResultType.FAIL;
+                if (saplings > 2 && worldIn.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                    return ActionResultType.FAIL;
                 if (!player.isCreative())
                     held.shrink(1);
                 worldIn.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
@@ -74,6 +73,13 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
             }
         }
         return ActionResultType.FAIL;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return AbstractBerryBushBlock.PLANT_SHAPE;
     }
 
     @Override
@@ -134,21 +140,14 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        return AbstractBerryBushBlock.PLANT_SHAPE;
+        builder.add(SAPLINGS);
     }
 
     @Override
     public ForgeBlockProperties getForgeProperties()
     {
         return properties;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(SAPLINGS);
     }
 }

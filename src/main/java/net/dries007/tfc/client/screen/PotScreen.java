@@ -24,6 +24,13 @@ public class PotScreen extends TFCContainerScreen<PotContainer>
     }
 
     @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        //todo: cooking pot stage of boiling
+    }
+
+    @Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
@@ -31,13 +38,6 @@ public class PotScreen extends TFCContainerScreen<PotContainer>
         if (temp > 0)
             blit(matrixStack, leftPos + 30, topPos + 66 - Math.min(51, temp), 176, 0, 15, 5);
         //todo: cooking pot stuff
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
-    {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        //todo: cooking pot stage of boiling
     }
 
     @Override

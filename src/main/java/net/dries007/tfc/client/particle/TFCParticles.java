@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class TFCParticleTypes
+public class TFCParticles
 {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 

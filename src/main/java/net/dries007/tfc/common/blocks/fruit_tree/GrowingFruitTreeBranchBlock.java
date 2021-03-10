@@ -31,9 +31,41 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
  */
 public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
 {
-    private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
+    private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
 
+    private static boolean canGrowIntoLocations(IWorldReader world, BlockPos... pos)
+    {
+        for (BlockPos p : pos)
+        {
+            if (!canGrowInto(world, p))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static boolean canGrowInto(IWorldReader world, BlockPos pos)
+    {
+        BlockState state = world.getBlockState(pos);
+        return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
+    }
+
+    private static boolean allNeighborsEmpty(IWorldReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
+    {
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            mutablePos.set(pos).move(direction);
+            if (direction != excludingSide && !canGrowInto(worldIn, mutablePos))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     private final FruitTree fruitTree;
     private final Supplier<? extends Block> body;
     private final Supplier<? extends Block> leaves;
@@ -61,22 +93,6 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         }
 
         super.randomTick(state, world, pos, random);
-    }
-
-    @Override
-    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-    {
-        super.tick(state, world, pos, rand);
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
-
-        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-        int cycles = (int) (days / 5);
-        if (cycles >= 1)
-        {
-            grow(state, world, pos, rand, cycles);
-            te.resetCounter();
-        }
     }
 
     public void grow(BlockState state, ServerWorld world, BlockPos pos, Random random, int cyclesLeft)
@@ -158,23 +174,27 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         return state.getValue(STAGE) < 3;
     }
 
-    private static boolean canGrowIntoLocations(IWorldReader world, BlockPos... pos)
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        for (BlockPos p : pos)
-        {
-            if (!canGrowInto(world, p))
-            {
-                return false;
-            }
-        }
-        return true;
+        super.createBlockStateDefinition(builder);
+        builder.add(SAPLINGS);
     }
 
-    @SuppressWarnings("deprecation")
-    private static boolean canGrowInto(IWorldReader world, BlockPos pos)
+    @Override
+    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
     {
-        BlockState state = world.getBlockState(pos);
-        return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
+        super.tick(state, world, pos, rand);
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
+
+        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
+        int cycles = (int) (days / 5);
+        if (cycles >= 1)
+        {
+            grow(state, world, pos, rand, cycles);
+            te.resetCounter();
+        }
     }
 
     private void placeGrownFlower(ServerWorld worldIn, BlockPos pos, int stage, int saplings, int cycles)
@@ -212,26 +232,5 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                 world.setBlock(mutablePos, leaves, 2);
             }
         }
-    }
-
-    private static boolean allNeighborsEmpty(IWorldReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
-    {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (Direction direction : Direction.Plane.HORIZONTAL)
-        {
-            mutablePos.set(pos).move(direction);
-            if (direction != excludingSide && !canGrowInto(worldIn, mutablePos))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder);
-        builder.add(SAPLINGS);
     }
 }

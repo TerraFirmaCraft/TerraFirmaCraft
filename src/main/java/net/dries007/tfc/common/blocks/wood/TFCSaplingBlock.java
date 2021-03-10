@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.trees.Tree;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -65,12 +64,6 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockProperti
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return super.mayPlaceOn(state, worldIn, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
-    }
-
-    @Override
     public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
@@ -85,5 +78,11 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockProperti
             te.resetCounter();
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return super.mayPlaceOn(state, worldIn, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
     }
 }

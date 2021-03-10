@@ -83,6 +83,29 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.getValue(FACING))
+        {
+            case NORTH:
+                return CANE_NORTH;
+            case WEST:
+                return CANE_WEST;
+            case EAST:
+                return CANE_EAST;
+            case SOUTH:
+                return CANE_SOUTH;
+        }
+        return CANE_EAST;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(LIFECYCLE, STAGE, FACING);
+    }
+
+    @Override
     public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
@@ -135,29 +158,6 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
         return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 
-    @Override
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return true;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        switch (state.getValue(FACING))
-        {
-            case NORTH:
-                return CANE_NORTH;
-            case WEST:
-                return CANE_WEST;
-            case EAST:
-                return CANE_EAST;
-            case SOUTH:
-                return CANE_SOUTH;
-        }
-        return CANE_EAST;
-    }
-
     @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
@@ -166,8 +166,8 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        builder.add(LIFECYCLE, STAGE, FACING);
+        return true;
     }
 }

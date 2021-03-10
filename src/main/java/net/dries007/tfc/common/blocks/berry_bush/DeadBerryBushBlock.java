@@ -58,9 +58,9 @@ public class DeadBerryBushBlock extends AbstractBerryBushBlock implements IFluid
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        builder.add(getFluidProperty(), STAGE);
+        return ActionResultType.FAIL;
     }
 
     @Override
@@ -81,9 +81,9 @@ public class DeadBerryBushBlock extends AbstractBerryBushBlock implements IFluid
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        return ActionResultType.FAIL;
+        builder.add(getFluidProperty(), STAGE);
     }
 
     @Override

@@ -28,12 +28,6 @@ public class DeadCaneBlock extends SpreadingCaneBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(STAGE, FACING);
-    }
-
-    @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
         if (random.nextInt(15) == 0 && world.isEmptyBlock(pos.above()))
@@ -57,5 +51,11 @@ public class DeadCaneBlock extends SpreadingCaneBlock
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         return ActionResultType.FAIL;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(STAGE, FACING);
     }
 }

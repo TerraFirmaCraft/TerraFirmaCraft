@@ -45,7 +45,6 @@ import static net.minecraft.util.ActionResultType.*;
 public class FirepitBlock extends Block implements IForgeBlockProperties
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
-    private final ForgeBlockProperties properties;
     protected static final VoxelShape BASE_SHAPE = VoxelShapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
         box(5, 0, 0.5, 9, 1, 3),
@@ -73,140 +72,9 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         box(2, 0, 2, 14, 1.0, 14)
     );
 
-    public FirepitBlock(ForgeBlockProperties properties)
-    {
-        super(properties.properties());
-        this.properties = properties;
-
-        registerDefaultState(getStateDefinition().any().setValue(LIT, false));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
-    {
-        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
-        ItemStack stack = player.getItemInHand(hand);
-        boolean lit = state.getValue(LIT);
-        if (stack.sameItem(new ItemStack(TFCItems.POT.get())))
-        {
-            convertFirepitToPot(world, pos, stack, lit);
-            return CONSUME;
-        }
-        else if (stack.sameItem(new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get())))
-        {
-            convertFirepitToGrill(world, pos, stack, lit);
-            return CONSUME;
-        }
-        else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
-        {
-            tryExtinguish(world, pos, state);
-            return SUCCESS;
-        }
-        else
-        {
-            FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-            if (te != null && player instanceof ServerPlayerEntity)
-            {
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
-                return SUCCESS;
-            }
-        }
-        return FAIL;
-    }
-
-    @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
-    {
-        if (!state.getValue(LIT)) return;
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + getParticleHeightOffset();
-        double z = pos.getZ() + 0.5;
-
-        if (rand.nextInt(10) == 0)
-            world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
-        for (int i = 0; i < 1 + rand.nextInt(3); i++)
-            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.07D, 0);
-        for (int i = 0; i < rand.nextInt(4); i++)
-            world.addParticle(ParticleTypes.SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
-        if (rand.nextInt(8) == 1)
-            world.addParticle(ParticleTypes.LARGE_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
-    }
-
-    @Override
-    public void handleRain(World world, BlockPos pos)
-    {
-        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (te != null)
-            te.onRainDrop();
-    }
-
-    protected double getParticleHeightOffset()
-    {
-        return 0.35D;
-    }
-
-    @Override
-    public void stepOn(World world, BlockPos pos, Entity entity)
-    {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(LIT))
-        {
-            entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
-        }
-        super.stepOn(world, pos, entity);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (te != null)
-            te.onBreak();
-        super.onRemove(state, world, pos, newState, isMoving);
-    }
-
     public static boolean canSurvive(IWorldReader world, BlockPos pos)
     {
         return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
-    {
-        return canSurvive(world, pos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (!stateIn.canSurvive(worldIn, currentPos))
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        return stateIn;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return BASE_SHAPE;
-    }
-
-    @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(LIT);
     }
 
     protected static void tryExtinguish(World world, BlockPos pos, BlockState state)
@@ -255,5 +123,140 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
                 pot.acceptData(logs, fields);
             }
         }
+    }
+    private final ForgeBlockProperties properties;
+
+    public FirepitBlock(ForgeBlockProperties properties)
+    {
+        super(properties.properties());
+        this.properties = properties;
+
+        registerDefaultState(getStateDefinition().any().setValue(LIT, false));
+    }
+
+    @Override
+    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    {
+        if (!state.getValue(LIT)) return;
+        double x = pos.getX() + 0.5;
+        double y = pos.getY() + getParticleHeightOffset();
+        double z = pos.getZ() + 0.5;
+
+        if (rand.nextInt(10) == 0)
+            world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+        for (int i = 0; i < 1 + rand.nextInt(3); i++)
+            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.07D, 0);
+        for (int i = 0; i < rand.nextInt(4); i++)
+            world.addParticle(ParticleTypes.SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+        if (rand.nextInt(8) == 1)
+            world.addParticle(ParticleTypes.LARGE_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+    }
+
+    @Override
+    public void stepOn(World world, BlockPos pos, Entity entity)
+    {
+        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(LIT))
+        {
+            entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
+        }
+        super.stepOn(world, pos, entity);
+    }
+
+    @Override
+    public void handleRain(World world, BlockPos pos)
+    {
+        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+        if (te != null)
+            te.onRainDrop();
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(LIT);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (!stateIn.canSurvive(worldIn, currentPos))
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return stateIn;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
+        {
+            if (te != null)
+                te.onBreak();
+            world.removeBlockEntity(pos);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    {
+        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
+        ItemStack stack = player.getItemInHand(hand);
+        boolean lit = state.getValue(LIT);
+        if (stack.sameItem(new ItemStack(TFCItems.POT.get())))
+        {
+            convertFirepitToPot(world, pos, stack, lit);
+            return CONSUME;
+        }
+        else if (stack.sameItem(new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get())))
+        {
+            convertFirepitToGrill(world, pos, stack, lit);
+            return CONSUME;
+        }
+        else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+        {
+            tryExtinguish(world, pos, state);
+            return SUCCESS;
+        }
+        else
+        {
+            FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+            if (te != null && player instanceof ServerPlayerEntity)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
+                return SUCCESS;
+            }
+        }
+        return FAIL;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
+    {
+        return canSurvive(world, pos);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return BASE_SHAPE;
+    }
+
+    @Override
+    public ForgeBlockProperties getForgeProperties()
+    {
+        return properties;
+    }
+
+    protected double getParticleHeightOffset()
+    {
+        return 0.35D;
     }
 }

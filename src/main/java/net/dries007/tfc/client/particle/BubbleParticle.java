@@ -47,7 +47,6 @@ public class BubbleParticle extends SpriteTexturedParticle
         return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static class Factory implements IParticleFactory<BasicParticleType>
     {
         private final IAnimatedSprite sprite;

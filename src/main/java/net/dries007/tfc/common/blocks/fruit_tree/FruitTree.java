@@ -5,7 +5,6 @@ import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
 import net.dries007.tfc.common.items.TFCItems;
 
 import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.*;
-import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.DORMANT;
 
 public class FruitTree
 {

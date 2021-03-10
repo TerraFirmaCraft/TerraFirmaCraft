@@ -56,9 +56,9 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return !state.getValue(PERSISTENT);
+        return VoxelShapes.block();
     }
 
     @Override
@@ -87,12 +87,28 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
         super.randomTick(state, world, pos, random);
     }
 
+    @Override
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    {
+        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        {
+            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
+        }
+    }
+
     public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (te.getDeath() > 10)
         {
             te.setGrowing(false);
         }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(PERSISTENT);
     }
 
     protected Lifecycle updateLifecycle(BerryBushTileEntity te)
@@ -105,6 +121,25 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
             lifecycle = Lifecycle.HEALTHY;
         }
         return lifecycle;
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state)
+    {
+        return !state.getValue(PERSISTENT);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        return isValid(worldIn, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1;
     }
 
     @Override
@@ -125,40 +160,5 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
             if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)) return true;
         }
         return false;
-    }
-
-    @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
-    {
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
-        {
-            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
-        }
-    }
-
-    @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return isValid(worldIn, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return 1;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return VoxelShapes.block();
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder);
-        builder.add(PERSISTENT);
     }
 }

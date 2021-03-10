@@ -40,21 +40,6 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockProp
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-    {
-        if (world.isClientSide()) return;
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            if (te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTime.get() && TFCConfig.SERVER.torchTime.get() > 0)
-            {
-                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_WALL_TORCH.get().defaultBlockState().setValue(FACING, state.getValue(FACING)));
-            }
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
         if (!world.isClientSide())
@@ -67,6 +52,21 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockProp
             }
         }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+    {
+        if (world.isClientSide()) return;
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            if (te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTime.get() && TFCConfig.SERVER.torchTime.get() > 0)
+            {
+                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_WALL_TORCH.get().defaultBlockState().setValue(FACING, state.getValue(FACING)));
+            }
+        }
     }
 
     @Override

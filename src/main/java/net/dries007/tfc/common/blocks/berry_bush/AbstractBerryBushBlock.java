@@ -43,8 +43,22 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_2;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    private final ForgeBlockProperties properties;
+    /**
+     * This function is essentially min(blocks to reach the ground, provided distance value)
+     */
+    protected static int distanceToGround(World world, BlockPos pos, int distance)
+    {
+        BlockPos.Mutable mutablePos = pos.mutable();
+        for (int i = 1; i <= distance; i++)
+        {
+            mutablePos.move(Direction.DOWN);
+            if (world.getBlockState(mutablePos).isFaceSturdy(world, pos, Direction.UP))
+                return i;
+        }
+        return distance;
+    }
     protected final BerryBush bush;
+    private final ForgeBlockProperties properties;
 
     public AbstractBerryBushBlock(ForgeBlockProperties properties, BerryBush bush)
     {
@@ -87,6 +101,20 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
 
     @Override
     @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return state.getValue(STAGE) == 2 ? VoxelShapes.block() : PLANT_SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return VoxelShapes.empty();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
         BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
@@ -121,6 +149,20 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         }
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    {
+        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        {
+            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
+        }
+        if (!(entityIn.getType() == EntityType.ITEM))
+        {
+            entityIn.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
+        }
+    }
+
     /**
      * A means of performing X amount of random ticks to catch up with the calendar.
      */
@@ -129,19 +171,35 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
 
     }
 
-    /**
-     * This function is essentially min(blocks to reach the ground, provided distance value)
-     */
-    protected static int distanceToGround(World world, BlockPos pos, int distance)
+    @Override
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
-        for (int i = 1; i <= distance; i++)
+        BlockPos belowPos = pos.below();
+        BlockState belowState = worldIn.getBlockState(belowPos);
+        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+    }
+
+    @Override
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    {
+        BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+        if (te != null)
         {
-            mutablePos.move(Direction.DOWN);
-            if (world.getBlockState(mutablePos).isFaceSturdy(world, pos, Direction.UP))
-                return i;
+            te.resetCounter();
+            te.setGrowing(true);
         }
-        return distance;
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(LIFECYCLE, STAGE);
+    }
+
+    public BerryBush getBush()
+    {
+        return bush;
     }
 
     /**
@@ -169,60 +227,6 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         return cycle;
     }
 
-    @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return VoxelShapes.empty();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
-    {
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
-        {
-            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
-        }
-        if (!(entityIn.getType() == EntityType.ITEM))
-        {
-            entityIn.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return state.getValue(STAGE) == 2 ? VoxelShapes.block() : PLANT_SHAPE;
-    }
-
-    @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-            te.setGrowing(true);
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(LIFECYCLE, STAGE);
-    }
-
     public enum Lifecycle implements IStringSerializable
     {
         HEALTHY, FLOWERING, FRUITING, DORMANT;
@@ -232,10 +236,5 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         {
             return this.name().toLowerCase();
         }
-    }
-
-    public BerryBush getBush()
-    {
-        return bush;
     }
 }

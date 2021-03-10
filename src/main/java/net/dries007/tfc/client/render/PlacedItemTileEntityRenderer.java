@@ -16,7 +16,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 
-@ParametersAreNonnullByDefault
 public class PlacedItemTileEntityRenderer extends TileEntityRenderer<PlacedItemTileEntity>
 {
     public PlacedItemTileEntityRenderer(TileEntityRendererDispatcher dispatcher)

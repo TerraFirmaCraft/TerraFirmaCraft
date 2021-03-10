@@ -52,7 +52,6 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;
 import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.*;
-import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.DORMANT;
 
 
 /**
@@ -170,15 +169,12 @@ public final class TFCBlocks
             register("coral/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase(), type.create(color), type.createBlockItem(new Item.Properties().tab(FLORA)), type.needsItem())
         )
     );
-
-    public static final Map<BerryBush.Default, RegistryObject<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isSpreading, berry ->
-        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new SpreadingBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush(), TFCBlocks.SPREADING_CANES.get(berry)), FLORA)
-    );
-
     public static final Map<BerryBush.Default, RegistryObject<Block>> SPREADING_CANES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isSpreading, berry ->
         register("berry_bush/" + berry.name().toLowerCase() + "_bush_cane", () -> new SpreadingCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush(), TFCBlocks.SPREADING_BUSHES.get(berry)))
     );
-
+    public static final Map<BerryBush.Default, RegistryObject<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isSpreading, berry ->
+        register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new SpreadingBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush(), TFCBlocks.SPREADING_CANES.get(berry)), FLORA)
+    );
     public static final Map<BerryBush.Default, RegistryObject<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(BerryBush.Default.class, BerryBush.Default::isStationary, berry ->
         register("berry_bush/" + berry.name().toLowerCase() + "_bush", () -> new StationaryBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).tileEntity(BerryBushTileEntity::new).flammable(60, 30), berry.getBush()), FLORA)
     );
@@ -205,58 +201,49 @@ public final class TFCBlocks
     public static final Map<FruitTree.Default, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitTree.Default.class, tree ->
         register("fruit_tree/" + tree.name().toLowerCase() + "_sapling", () -> new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), tree.getFruitTree(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree)), FLORA)
     );
-
-    private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, 10, 8);
-    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(60, 30), BANANA));
-    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
-
-    // Alabaster
-
     public static final RegistryObject<Block> PLAIN_ALABASTER = register("alabaster/raw/alabaster", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
     public static final RegistryObject<Block> PLAIN_ALABASTER_BRICKS = register("alabaster/raw/alabaster_bricks", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
     public static final RegistryObject<Block> PLAIN_POLISHED_ALABASTER = register("alabaster/raw/polished_alabaster", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
+
+    // Alabaster
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN)
         .lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
     public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(BurningLogPileTileEntity::new)));
     public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(LogPileTileEntity::new)));
-
-    // Misc
-
     public static final Map<DyeColor, RegistryObject<Block>> RAW_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
         register(("alabaster/stained/" + color.getName()).toLowerCase() + "_raw_alabaster", () -> new Block(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.0F, 6.0F)), DECORATIONS)
     );
-
     public static final Map<DyeColor, RegistryObject<Block>> ALABASTER_BRICKS = Helpers.mapOfKeys(DyeColor.class, color ->
         register(("alabaster/stained/" + color.getName()).toLowerCase() + "_alabaster_bricks", () -> new Block(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
-
     public static final Map<DyeColor, RegistryObject<Block>> POLISHED_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
         register(("alabaster/stained/" + color.getName()).toLowerCase() + "_polished_alabaster", () -> new Block(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
 
     // Misc
-
     public static final RegistryObject<Block> AGGREGATE = register("aggregate", () -> new GravelBlock(Properties.of(Material.SAND, MaterialColor.STONE).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
     public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F)));
     public static final RegistryObject<Block> FIRE_BRICKS = register("fire_bricks", () -> new Block(Properties.of(Material.STONE, MaterialColor.COLOR_RED).requiresCorrectToolForDrops().strength(2.0F, 6.0F)), DECORATIONS);
+
+    // Misc
     public static final RegistryObject<Block> FIRE_CLAY_BLOCK = register("fire_clay_block", () -> new Block(Properties.of(Material.CLAY).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F)), DECORATIONS);
-
-    // Torch
-
     public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
     public static final RegistryObject<Block> WALL_TORCH = register("wall_torch", () -> new TFCWallTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
     public static final RegistryObject<Block> DEAD_TORCH = register("dead_torch", () -> new DeadTorchBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
+
+    // Torch
     public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
-
-    // Fluids
-
     public static final Map<Metal.Default, RegistryObject<FlowingFluidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         register("fluid/metal/" + metal.name().toLowerCase(), () -> new FlowingFluidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
     );
-
     public static final RegistryObject<FlowingFluidBlock> SALT_WATER = register("fluid/salt_water", () -> new FlowingFluidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
     public static final RegistryObject<FlowingFluidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
+
+    // Fluids
+    private static final BerryBush BANANA = new BerryBush(BerryBush.Type.STATIONARY, TFCItems.FRUITS.get(Fruit.BANANA), 23f, 35f, 280f, 480f, new AbstractBerryBushBlock.Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, 10, 8);
+    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", () -> new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).tileEntity(BerryBushTileEntity::new).flammable(60, 30), BANANA));
+    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", () -> new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).tileEntity(TickCounterTileEntity::new).flammable(60, 30), new FruitTree(BANANA, 6), BANANA_PLANT), FLORA);
 
     public static boolean always(BlockState state, IBlockReader world, BlockPos pos)
     {
@@ -268,14 +255,14 @@ public final class TFCBlocks
         return false;
     }
 
-    private static ToIntFunction<BlockState> litBlockEmission(int lightValue)
-    {
-        return (state) -> state.getValue(TFCBlockStateProperties.LIT) ? lightValue : 0;
-    }
-
     public static boolean onlyPolarBears(BlockState state, IBlockReader world, BlockPos pos, EntityType<?> type)
     {
         return type == EntityType.POLAR_BEAR; // todo: does this need to be expanded?
+    }
+
+    private static ToIntFunction<BlockState> litBlockEmission(int lightValue)
+    {
+        return (state) -> state.getValue(TFCBlockStateProperties.LIT) ? lightValue : 0;
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier)

@@ -1,7 +1,5 @@
 package net.dries007.tfc.client.render;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -17,7 +15,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.common.blocks.PitKilnBlock;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 
-@ParametersAreNonnullByDefault
 public class PitKilnTileEntityRenderer extends TileEntityRenderer<PitKilnTileEntity>
 {
     public PitKilnTileEntityRenderer(TileEntityRendererDispatcher dispatcher)

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
 import net.minecraft.item.WallOrFloorItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
@@ -19,9 +18,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TFCEventFactory;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 public class TorchItem extends WallOrFloorItem
 {
@@ -36,7 +35,7 @@ public class TorchItem extends WallOrFloorItem
         World world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         // we cancel the event every time
-        TFCEventFactory.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand());
+        StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand());
         return super.useOn(context);
     }
 
@@ -65,7 +64,7 @@ public class TorchItem extends WallOrFloorItem
         {
             if (itemEntity.getAge() > ageRequirement && random.nextFloat() < 0.01f)
             {
-                TFCEventFactory.startFire(world, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null);
+                StartFireEvent.startFire(world, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null);
                 itemEntity.kill();
             }
             else

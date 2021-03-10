@@ -29,8 +29,6 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLoggable
 {
-    private final Supplier<? extends Block> headBlock;
-
     public static TFCKelpBlock create(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
         return new TFCKelpBlock(properties, headBlock, shape, direction)
@@ -42,6 +40,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             }
         };
     }
+    private final Supplier<? extends Block> headBlock;
 
     protected TFCKelpBlock(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
@@ -81,10 +80,9 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    public AbstractBlock.OffsetType getOffsetType()
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(getFluidProperty());
+        return AbstractBlock.OffsetType.XZ;
     }
 
     @Override
@@ -99,17 +97,6 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
         return false;
     }
 
-    protected AbstractTopPlantBlock getHeadBlock()
-    {
-        return (AbstractTopPlantBlock) headBlock.get();
-    }
-
-    @Override
-    public AbstractBlock.OffsetType getOffsetType()
-    {
-        return AbstractBlock.OffsetType.XZ;
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
@@ -117,5 +104,17 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
         VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
         Vector3d vector3d = state.getOffset(worldIn, pos);
         return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(getFluidProperty());
+    }
+
+    protected AbstractTopPlantBlock getHeadBlock()
+    {
+        return (AbstractTopPlantBlock) headBlock.get();
     }
 }

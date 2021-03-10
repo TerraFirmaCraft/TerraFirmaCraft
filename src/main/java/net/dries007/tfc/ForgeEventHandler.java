@@ -10,12 +10,12 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -31,6 +31,7 @@ import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -62,6 +63,7 @@ import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CacheInvalidationListener;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -467,6 +469,9 @@ public final class ForgeEventHandler
                 event.setCanceled(true); // so torches don't start fires
             }
         }
+
+        if (!event.isCanceled() && AbstractFireBlock.canBePlacedAt(world, pos, event.getTargetedFace()))
+            world.setBlock(pos, AbstractFireBlock.getState(world, pos), 11);
     }
 
     @SubscribeEvent
@@ -480,7 +485,7 @@ public final class ForgeEventHandler
             BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
             BlockPos pos = blockResult.getBlockPos();
             World world = arrow.level;
-            TFCEventFactory.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
 
@@ -495,7 +500,7 @@ public final class ForgeEventHandler
             BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
             BlockPos pos = blockResult.getBlockPos();
             World world = fireball.level;
-            TFCEventFactory.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
 }

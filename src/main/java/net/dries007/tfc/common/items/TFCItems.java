@@ -18,7 +18,6 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.berry_bush.Berry;
-import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
 import net.dries007.tfc.common.blocks.fruit_tree.Fruit;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.fluids.TFCFluids;

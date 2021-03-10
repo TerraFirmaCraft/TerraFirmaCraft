@@ -80,6 +80,23 @@ public class ThinSpikeBlock extends Block
     }
 
     @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(TIP);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (facing == Direction.DOWN && !facingState.is(this))
+        {
+            return stateIn.setValue(TIP, true);
+        }
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
@@ -116,17 +133,6 @@ public class ThinSpikeBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (facing == Direction.DOWN && !facingState.is(this))
-        {
-            return stateIn.setValue(TIP, true);
-        }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return state.getValue(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
@@ -137,11 +143,5 @@ public class ThinSpikeBlock extends Block
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
         worldIn.destroyBlock(pos, false);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(TIP);
     }
 }

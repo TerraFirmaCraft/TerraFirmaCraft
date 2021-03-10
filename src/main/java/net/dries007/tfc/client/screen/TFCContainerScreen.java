@@ -14,14 +14,13 @@ import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dries007.tfc.common.tileentity.TFCTileEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {
-    protected final ResourceLocation texture;
     protected static final ResourceLocation SMALL_INV = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
+    protected final ResourceLocation texture;
 
     public TFCContainerScreen(C container, PlayerInventory playerInventory, ITextComponent name, ResourceLocation texture)
     {

@@ -20,7 +20,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
@@ -50,6 +49,39 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(AXIS));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (!worldIn.isClientSide() && worldIn instanceof World)
+        {
+            if (facingState.is(BlockTags.FIRE))
+            {
+                BurningLogPileBlock.tryLightLogPile((World) worldIn, currentPos);
+            }
+        }
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
+        {
+            if (te != null)
+                te.onBreak();
+            world.removeBlockEntity(pos);
+        }
     }
 
     @Override
@@ -89,39 +121,9 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (!worldIn.isClientSide() && worldIn instanceof World)
-        {
-            if (facingState.is(BlockTags.FIRE))
-            {
-                BurningLogPileBlock.tryLightLogPile((World) worldIn, currentPos);
-            }
-        }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
         return te != null ? te.getLog().copy() : ItemStack.EMPTY;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (te != null)
-            te.onBreak();
-        super.onRemove(state, world, pos, newState, isMoving);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(AXIS);
     }
 }

@@ -46,6 +46,26 @@ public class GrillBlock extends FirepitBlock
         box(2, 0, 2, 3, 11, 3),
         box(13, 0, 2, 14, 11, 3));
 
+    private static void convertGrillToFirepit(World world, BlockPos pos)
+    {
+        GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
+        if (grill != null)
+        {
+            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
+            Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK);
+            List<ItemStack> logs = grill.getLogs();
+            float[] fields = grill.getFields();
+            grill.dump();
+
+            world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
+            FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+            if (pit != null)
+            {
+                pit.acceptData(logs, fields);
+            }
+        }
+    }
+
     public GrillBlock(ForgeBlockProperties properties)
     {
         super(properties);
@@ -89,12 +109,6 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
-    protected double getParticleHeightOffset()
-    {
-        return 0.8D;
-    }
-
-    @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
         super.animateTick(state, world, pos, rand);
@@ -120,28 +134,14 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
+    protected double getParticleHeightOffset()
+    {
+        return 0.8D;
+    }
+
+    @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VoxelShapes.or(GRILL_SHAPE, BASE_SHAPE);
-    }
-
-    private static void convertGrillToFirepit(World world, BlockPos pos)
-    {
-        GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
-        if (grill != null)
-        {
-            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
-            Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK);
-            List<ItemStack> logs = grill.getLogs();
-            float[] fields = grill.getFields();
-            grill.dump();
-
-            world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
-            FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-            if (pit != null)
-            {
-                pit.acceptData(logs, fields);
-            }
-        }
     }
 }

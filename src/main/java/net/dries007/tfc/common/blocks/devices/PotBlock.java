@@ -7,7 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -22,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import net.dries007.tfc.client.particle.TFCParticleTypes;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -33,7 +32,6 @@ import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
 
-import static net.dries007.tfc.util.Helpers.offset;
 import static net.minecraft.util.ActionResultType.*;
 
 public class PotBlock extends FirepitBlock
@@ -58,6 +56,26 @@ public class PotBlock extends FirepitBlock
         box(7.5, 11, 3, 8.5, 13, 4),
         box(7.5, 13, 4, 8.5, 14, 12),
         box(7.5, 11, 12, 8.5, 13, 13));
+
+    private static void convertPotToFirepit(World world, BlockPos pos)
+    {
+        PotTileEntity pot = Helpers.getTileEntity(world, pos, PotTileEntity.class);
+        if (pot != null && !pot.hasOutput())
+        {
+            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POT.get()));
+            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
+            List<ItemStack> logs = pot.getLogs();
+            float[] fields = pot.getFields();
+            pot.dump();
+
+            world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
+            FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
+            if (pit != null)
+            {
+                pit.acceptData(logs, fields);
+            }
+        }
+    }
 
     public PotBlock(ForgeBlockProperties properties)
     {
@@ -130,7 +148,7 @@ public class PotBlock extends FirepitBlock
             double y = pos.getY();
             double z = pos.getZ() + 0.5;
             for (int i = 0; i < rand.nextInt(5) + 4; i++)
-                world.addParticle(TFCParticleTypes.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
+                world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
             //todo: steam
             world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
         }
@@ -146,25 +164,5 @@ public class PotBlock extends FirepitBlock
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VoxelShapes.or(POT_SHAPE, BASE_SHAPE);
-    }
-
-    private static void convertPotToFirepit(World world, BlockPos pos)
-    {
-        PotTileEntity pot = Helpers.getTileEntity(world, pos, PotTileEntity.class);
-        if (pot != null && !pot.hasOutput())
-        {
-            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POT.get()));
-            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
-            List<ItemStack> logs = pot.getLogs();
-            float[] fields = pot.getFields();
-            pot.dump();
-
-            world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
-            FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-            if (pit != null)
-            {
-                pit.acceptData(logs, fields);
-            }
-        }
     }
 }

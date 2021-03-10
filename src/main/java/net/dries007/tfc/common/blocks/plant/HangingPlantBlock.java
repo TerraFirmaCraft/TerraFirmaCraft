@@ -73,6 +73,19 @@ public abstract class HangingPlantBlock extends PlantBlock
         return false;
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        if (state.getValue(HANGING))
+        {
+            return super.getShape(state, worldIn, pos, context);
+        }
+        else
+        {
+            return NOT_HANGING_SHAPE;
+        }
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
@@ -86,19 +99,6 @@ public abstract class HangingPlantBlock extends PlantBlock
             return defaultBlockState().setValue(HANGING, false);
         }
         return null;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        if (state.getValue(HANGING))
-        {
-            return super.getShape(state, worldIn, pos, context);
-        }
-        else
-        {
-            return NOT_HANGING_SHAPE;
-        }
     }
 
     @Override

@@ -26,13 +26,38 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BananaPlantBlock extends AbstractBerryBushBlock
 {
+    public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
-    public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
 
     public BananaPlantBlock(ForgeBlockProperties properties, BerryBush bush)
     {
         super(properties, bush);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.getValue(STAGE))
+        {
+            case 0:
+                return TRUNK_0;
+            case 1:
+                return TRUNK_1;
+        }
+        return PLANT;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return state.getValue(STAGE) == 2 ? VoxelShapes.empty() : getShape(state, worldIn, pos, context);
+    }
+
+    @Override
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    {
+        // no op the superclass
     }
 
     public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
@@ -79,31 +104,6 @@ public class BananaPlantBlock extends AbstractBerryBushBlock
         BlockPos belowPos = pos.below();
         BlockState belowState = worldIn.getBlockState(belowPos);
         return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
-    }
-
-    @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
-    {
-        // no op the superclass
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        switch (state.getValue(STAGE))
-        {
-            case 0:
-                return TRUNK_0;
-            case 1:
-                return TRUNK_1;
-        }
-        return PLANT;
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return state.getValue(STAGE) == 2 ? VoxelShapes.empty() : getShape(state, worldIn, pos, context);
     }
 
     @Override

@@ -55,6 +55,18 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
+    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    {
+        if (state.getValue(WILD)) return; // prevent wild blocks from spreading
+        if (lifecycle == Lifecycle.HEALTHY && state.getFluidState().getType().is(FluidTags.WATER))
+        {
+            super.cycle(te, world, pos, state, stage, Lifecycle.FLOWERING, random); // cannot grow if its waterlogged so we pretend it flowers so we cant grow (without actually disabling growth forever)
+            return;
+        }
+        super.cycle(te, world, pos, state, stage, lifecycle, random);
+    }
+
+    @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
         super.randomTick(state, world, pos, random);
@@ -80,15 +92,17 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        if (state.getValue(WILD)) return; // prevent wild blocks from spreading
-        if (lifecycle == Lifecycle.HEALTHY && state.getFluidState().getType().is(FluidTags.WATER))
-        {
-            super.cycle(te, world, pos, state, stage, Lifecycle.FLOWERING, random); // cannot grow if its waterlogged so we pretend it flowers so we cant grow (without actually disabling growth forever)
-            return;
-        }
-        super.cycle(te, world, pos, state, stage, lifecycle, random);
+        BlockPos belowPos = pos.below();
+        BlockState belowState = worldIn.getBlockState(belowPos);
+        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(LIFECYCLE, STAGE, getFluidProperty(), WILD);
     }
 
     @Override
@@ -109,14 +123,6 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         }
     }
 
-    @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
@@ -124,12 +130,6 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         boolean flag = fluidstate.getType() == Fluids.WATER.getSource();
         return defaultBlockState().setValue(getFluidProperty(), flag ? getFluidProperty().keyFor(Fluids.WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(LIFECYCLE, STAGE, getFluidProperty(), WILD);
     }
 
     @Override

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.util.ForgeSoundType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,6 +31,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_STEP = create("charcoal_step");
 
     public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter");
+
+    public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_STEP, CHARCOAL_PILE_FALL);
 
     private static RegistryObject<SoundEvent> create(String name)
     {

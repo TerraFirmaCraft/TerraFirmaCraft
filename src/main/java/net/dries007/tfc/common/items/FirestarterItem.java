@@ -23,7 +23,6 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TFCEventFactory;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -32,6 +31,7 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 public class FirestarterItem extends Item
 {
@@ -126,7 +126,7 @@ public class FirestarterItem extends Item
                 }
             }
             //if can't make a firepit, try to light the block
-            TFCEventFactory.startFire(world, pos, world.getBlockState(pos), result.getDirection(), player, stack);
+            StartFireEvent.startFire(world, pos, world.getBlockState(pos), result.getDirection(), player, stack);
         }
     }
 

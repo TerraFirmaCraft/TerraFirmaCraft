@@ -2,7 +2,6 @@ package net.dries007.tfc.common.blocks;
 
 
 import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -17,12 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.StartFireEvent;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -45,20 +41,6 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-    {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTime.get() && TFCConfig.SERVER.torchTime.get() > 0)
-            {
-                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
-            }
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
         if (!world.isClientSide())
@@ -71,6 +53,20 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
             }
         }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+    {
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTime.get() && TFCConfig.SERVER.torchTime.get() > 0)
+            {
+                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
+            }
+        }
     }
 
     @Override

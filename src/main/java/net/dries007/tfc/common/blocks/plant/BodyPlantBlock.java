@@ -30,12 +30,6 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
     }
 
     @Override
-    protected AbstractTopPlantBlock getHeadBlock()
-    {
-        return (AbstractTopPlantBlock) headBlock.get();
-    }
-
-    @Override
     public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
@@ -67,5 +61,11 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
         {
             return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
         }
+    }
+
+    @Override
+    protected AbstractTopPlantBlock getHeadBlock()
+    {
+        return (AbstractTopPlantBlock) headBlock.get();
     }
 }

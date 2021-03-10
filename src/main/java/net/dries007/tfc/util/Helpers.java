@@ -72,6 +72,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
 {
+    public static final Direction[] DIRECTIONS = Direction.values();
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
 

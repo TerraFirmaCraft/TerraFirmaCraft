@@ -154,45 +154,6 @@ public enum Plant implements IPlant
         }
     }
 
-    /**
-     * This is a way for paired blocks to reference each other as suppliers
-     *
-     * @return The paired plant
-     */
-    private Plant transform()
-    {
-        switch (this)
-        {
-            case HANGING_VINES:
-                return HANGING_VINES_PLANT;
-            case HANGING_VINES_PLANT:
-                return HANGING_VINES;
-            case TREE_FERN:
-                return TREE_FERN_PLANT;
-            case TREE_FERN_PLANT:
-                return TREE_FERN;
-            case WINGED_KELP_PLANT:
-                return WINGED_KELP;
-            case WINGED_KELP:
-                return WINGED_KELP_PLANT;
-            case GIANT_KELP_FLOWER:
-                return GIANT_KELP_PLANT;
-            case LEAFY_KELP:
-                return LEAFY_KELP_PLANT;
-            case LEAFY_KELP_PLANT:
-                return LEAFY_KELP;
-            case ARUNDO:
-                return ARUNDO_PLANT;
-            case ARUNDO_PLANT:
-                return ARUNDO;
-            case LIANA:
-                return LIANA_PLANT;
-            case LIANA_PLANT:
-                return LIANA;
-        }
-        throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
-    }
-
     public Block create()
     {
         return type.factory.apply(this, type);
@@ -237,6 +198,45 @@ public enum Plant implements IPlant
         return type;
     }
 
+    /**
+     * This is a way for paired blocks to reference each other as suppliers
+     *
+     * @return The paired plant
+     */
+    private Plant transform()
+    {
+        switch (this)
+        {
+            case HANGING_VINES:
+                return HANGING_VINES_PLANT;
+            case HANGING_VINES_PLANT:
+                return HANGING_VINES;
+            case TREE_FERN:
+                return TREE_FERN_PLANT;
+            case TREE_FERN_PLANT:
+                return TREE_FERN;
+            case WINGED_KELP_PLANT:
+                return WINGED_KELP;
+            case WINGED_KELP:
+                return WINGED_KELP_PLANT;
+            case GIANT_KELP_FLOWER:
+                return GIANT_KELP_PLANT;
+            case LEAFY_KELP:
+                return LEAFY_KELP_PLANT;
+            case LEAFY_KELP_PLANT:
+                return LEAFY_KELP;
+            case ARUNDO:
+                return ARUNDO_PLANT;
+            case ARUNDO_PLANT:
+                return ARUNDO;
+            case LIANA:
+                return LIANA_PLANT;
+            case LIANA_PLANT:
+                return LIANA;
+        }
+        throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
+    }
+
     public enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
@@ -267,11 +267,6 @@ public enum Plant implements IPlant
         WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
-
-        public int getFallFoliageCoords()
-        {
-            return 200;
-        }
 
         /**
          * Default properties to avoid rewriting them out every time
@@ -325,10 +320,8 @@ public enum Plant implements IPlant
         {
             return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
         }
-
         private final BiFunction<Plant, BlockType, ? extends Block> factory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
-
         BlockType(BiFunction<Plant, BlockType, ? extends Block> factory)
         {
             this(factory, BlockItem::new);
@@ -338,6 +331,11 @@ public enum Plant implements IPlant
         {
             this.factory = factory;
             this.blockItemFactory = blockItemFactory;
+        }
+
+        public int getFallFoliageCoords()
+        {
+            return 200;
         }
     }
 }

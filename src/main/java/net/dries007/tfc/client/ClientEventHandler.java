@@ -34,7 +34,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticleTypes;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.GrillTileEntityRenderer;
 import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
 import net.dries007.tfc.client.render.PlacedItemTileEntityRenderer;
@@ -73,7 +73,7 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
 
         // Keybindings
-        ClientRegistry.registerKeyBinding(TFCKeybindings.PLACE_BLOCK);
+        ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
 
         // Render Types
         final RenderType cutout = RenderType.cutout();
@@ -215,7 +215,7 @@ public final class ClientEventHandler
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
 
         ParticleManager particleEngine = Minecraft.getInstance().particleEngine;
-        particleEngine.register(TFCParticleTypes.BUBBLE.get(), BubbleParticle.Factory::new);
-        particleEngine.register(TFCParticleTypes.STEAM.get(), SteamParticle.Factory::new);
+        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
+        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
     }
 }

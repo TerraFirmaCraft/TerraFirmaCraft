@@ -1,7 +1,5 @@
 package net.dries007.tfc.client.render;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -28,7 +26,6 @@ import net.dries007.tfc.common.tileentity.PotTileEntity;
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_START;
 
-@ParametersAreNonnullByDefault
 public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
 {
 

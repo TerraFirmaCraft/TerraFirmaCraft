@@ -22,9 +22,8 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
 public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProperties
 {
-    private final ForgeBlockProperties properties;
-
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
+    private final ForgeBlockProperties properties;
 
     public FruitTreeBranchBlock(ForgeBlockProperties properties)
     {
@@ -37,6 +36,13 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return getStateForPlacement(context.getLevel(), context.getClickedPos());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
     }
 
     public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
@@ -74,16 +80,6 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
-    {
-        if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
-        {
-            worldIn.destroyBlock(pos, true);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
@@ -104,10 +100,13 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
+        if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
+        {
+            worldIn.destroyBlock(pos, true);
+        }
     }
 
     @Override

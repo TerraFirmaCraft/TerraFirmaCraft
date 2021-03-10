@@ -10,7 +10,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.client.particle.TFCParticleTypes;
+import net.dries007.tfc.client.particle.TFCParticles;
 
 public class HotWaterBlock extends FlowingFluidBlock
 {
@@ -29,6 +29,6 @@ public class HotWaterBlock extends FlowingFluidBlock
         if (rand.nextInt(4) == 0)
             worldIn.addParticle(ParticleTypes.BUBBLE, x + rand.nextFloat() - rand.nextFloat(), y, z + rand.nextFloat() - rand.nextFloat(), 0.0D, 0.0D, 0.0D);
         if (worldIn.isEmptyBlock(pos.above()))
-            worldIn.addParticle(TFCParticleTypes.STEAM.get(), x, y, z, 0.0D, 0.0D, 0.0D);
+            worldIn.addParticle(TFCParticles.STEAM.get(), x, y, z, 0.0D, 0.0D, 0.0D);
     }
 }

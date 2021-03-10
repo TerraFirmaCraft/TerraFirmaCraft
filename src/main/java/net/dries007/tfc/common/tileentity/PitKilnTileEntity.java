@@ -48,7 +48,6 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
             });
             // Replace the block
             world.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
-            teOld.setRemoved();
 
             // Replace inventory items
             PlacedItemTileEntity teNew = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
@@ -172,6 +171,16 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         strawItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
         logItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
         super.onBreak();
+    }
+
+    public void deleteStraw(int slot)
+    {
+        strawItems.set(slot, ItemStack.EMPTY);
+    }
+
+    public void deleteLog(int slot)
+    {
+        logItems.set(slot, ItemStack.EMPTY);
     }
 
     public boolean isLit()

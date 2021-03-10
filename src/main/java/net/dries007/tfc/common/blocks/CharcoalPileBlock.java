@@ -13,8 +13,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.TFCSoundTypes;
+import net.dries007.tfc.client.TFCSounds;
 
 public class CharcoalPileBlock extends SnowBlock
 {
@@ -28,24 +27,6 @@ public class CharcoalPileBlock extends SnowBlock
     {
         BlockState blockstate = worldIn.getBlockState(pos.below());
         return Block.isFaceFull(blockstate.getCollisionShape(worldIn, pos.below()), Direction.UP) || (blockstate.getBlock() == this && blockstate.getValue(LAYERS) == 8);
-    }
-
-    @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
-    {
-        playerWillDestroy(world, pos, state, player);
-
-        if (player.isCreative())
-        {
-            return world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-        }
-
-        int prevLayers = state.getValue(LAYERS);
-        if (prevLayers == 1)
-        {
-            return true;
-        }
-        return world.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
     }
 
     @Override
@@ -76,15 +57,33 @@ public class CharcoalPileBlock extends SnowBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public SoundType getSoundType(BlockState state)
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
     {
-        return TFCSoundTypes.CHARCOAL;
+        playerWillDestroy(world, pos, state, player);
+
+        if (player.isCreative())
+        {
+            return world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        }
+
+        int prevLayers = state.getValue(LAYERS);
+        if (prevLayers == 1)
+        {
+            return true;
+        }
+        return world.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
     }
 
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(Items.CHARCOAL);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public SoundType getSoundType(BlockState state)
+    {
+        return TFCSounds.CHARCOAL;
     }
 }

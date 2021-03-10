@@ -33,6 +33,36 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
     }
 
     @Override
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    {
+        if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
+        if (state.getValue(STAGE) == 2 && state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
+        {
+            ItemStack held = player.getItemInHand(handIn);
+            if (held.getItem().is(Tags.Items.SHEARS))
+            {
+                BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+                if (te != null)
+                {
+                    held.hurt(1, worldIn.getRandom(), null);
+                    Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
+                    if (worldIn.getRandom().nextInt(3) != 0)
+                        Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock()));
+                    worldIn.destroyBlock(pos, true, null);
+                    return ActionResultType.SUCCESS;
+                }
+            }
+        }
+        return super.use(state, worldIn, pos, player, handIn, hit);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return HALF_PLANT;
+    }
+
+    @Override
     public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
@@ -71,30 +101,6 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
         }
     }
 
-    @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
-    {
-        if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
-        if (state.getValue(STAGE) == 2 && state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
-        {
-            ItemStack held = player.getItemInHand(handIn);
-            if (held.getItem().is(Tags.Items.SHEARS))
-            {
-                BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
-                if (te != null)
-                {
-                    held.hurt(1, worldIn.getRandom(), null);
-                    Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
-                    if (worldIn.getRandom().nextInt(3) != 0)
-                        Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock()));
-                    worldIn.destroyBlock(pos, true, null);
-                    return ActionResultType.SUCCESS;
-                }
-            }
-        }
-        return super.use(state, worldIn, pos, player, handIn, hit);
-    }
-
     private void propagate(World world, BlockPos pos, Random rand)
     {
         BlockPos.Mutable mutablePos = pos.mutable();
@@ -111,11 +117,5 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
                 }
             }
         }
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return HALF_PLANT;
     }
 }
