@@ -93,6 +93,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             List<ItemStack> logs = pit.getLogs();
             float[] fields = pit.getFields();
             pit.dump();
+            pit.clearContent();
 
             world.setBlock(pos, TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
@@ -113,6 +114,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             List<ItemStack> logs = pit.getLogs();
             float[] fields = pit.getFields();
             pit.dump();
+            pit.clearContent();
 
             world.setBlock(pos, TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lit), 3);
             stack.shrink(1);
@@ -166,7 +168,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
     public void handleRain(World world, BlockPos pos)
     {
         FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (te != null)
+        if (te != null && world.getBlockState(pos).getValue(LIT))
             te.onRainDrop();
     }
 

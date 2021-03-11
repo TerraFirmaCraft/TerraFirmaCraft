@@ -12,37 +12,23 @@ import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class PotScreen extends TFCContainerScreen<PotContainer>
+public class PotScreen extends TileEntityScreen<PotTileEntity, PotContainer>
 {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_cooking_pot.png");
-    private final PotTileEntity tile;
 
     public PotScreen(PotContainer container, PlayerInventory playerInventory, ITextComponent name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        this.tile = container.getTileEntity();
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
-    {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        //todo: cooking pot stage of boiling
+        inventoryLabelY += 20;
+        imageHeight += 20;
     }
 
     @Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * tile.getFields()[FirepitTileEntity.FIELD_TEMP] / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * ((FirepitTileEntity) tile).getSyncableData().get(0) / Heat.maxVisibleTemperature());
         if (temp > 0)
-            blit(matrixStack, leftPos + 30, topPos + 66 - Math.min(51, temp), 176, 0, 15, 5);
-        //todo: cooking pot stuff
-    }
-
-    @Override
-    protected void renderLabels(MatrixStack matrixStack, int x, int y)
-    {
-
+            blit(matrixStack, leftPos + 30, topPos + 84 - Math.min(51, temp), 176, 0, 15, 5);
     }
 }

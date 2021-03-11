@@ -67,6 +67,7 @@ public class PotBlock extends FirepitBlock
             List<ItemStack> logs = pot.getLogs();
             float[] fields = pot.getFields();
             pot.dump();
+            pot.clearContent();
 
             world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
             FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);

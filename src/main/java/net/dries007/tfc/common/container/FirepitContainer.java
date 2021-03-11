@@ -30,11 +30,11 @@ public class FirepitContainer extends TileEntityContainer<FirepitTileEntity>
             // fuel slots
             for (int i = 0; i < 4; i++)
             {
-                addSlot(new SlotCallback(tile, handler, i, 8, 62 - 18 * i));
+                addSlot(new SlotCallback(tile, handler, i, 8, 70 - 18 * i));
             }
-            addSlot(new SlotCallback(tile, handler, SLOT_ITEM_INPUT, 80, 20));
-            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_1, 71, 48));
-            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_2, 89, 48));
+            addSlot(new SlotCallback(tile, handler, SLOT_ITEM_INPUT, 80, 28));
+            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_1, 71, 56));
+            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_2, 89, 56));
         }, () -> LOGGER.warn("Missing capability on firepit at {}?", tile.getBlockPos()));
     }
 
@@ -42,5 +42,11 @@ public class FirepitContainer extends TileEntityContainer<FirepitTileEntity>
     protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
     {
         return !moveItemStackTo(stack, SLOT_FUEL_INPUT, SLOT_ITEM_INPUT + 1, false);
+    }
+
+    @Override
+    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    {
+        addPlayerInventorySlots(playerInv, 20);
     }
 }

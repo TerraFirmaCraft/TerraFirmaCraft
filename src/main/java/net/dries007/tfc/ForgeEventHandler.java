@@ -409,16 +409,6 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
-    public static void onEntityItemPickup(EntityItemPickupEvent event)
-    {
-        ItemStack stack = event.getItem().getItem();
-        if (stack.getItem() == TFCItems.TORCH.get())
-        {
-            stack.removeTagKey("burnTicks");
-        }
-    }
-
-    @SubscribeEvent
     public static void onFireStart(StartFireEvent event)
     {
         World world = event.getLevel();

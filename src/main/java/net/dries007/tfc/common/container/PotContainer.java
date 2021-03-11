@@ -29,7 +29,7 @@ public class PotContainer extends TileEntityContainer<PotTileEntity>
         Helpers.ifPresentOrElse(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY), handler -> {
             for (int i = 0; i < 4; i++) // Fuel
             {
-                addSlot(new SlotCallback(tile, handler, i, 8, 62 - 18 * i));
+                addSlot(new SlotCallback(tile, handler, i, 8, 70 - 18 * i));
             }
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Pot input
             {
@@ -42,5 +42,11 @@ public class PotContainer extends TileEntityContainer<PotTileEntity>
     protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots) // this uses index of the slots sequentially, not the slot IDs themselves
     {
         return !moveItemStackTo(stack, SLOT_FUEL_INPUT, SLOT_FUEL_INPUT + 1, false) && !moveItemStackTo(stack, SLOT_FUEL_INPUT + 1, SLOT_FUEL_INPUT + 6, false);
+    }
+
+    @Override
+    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    {
+        addPlayerInventorySlots(playerInv, 20);
     }
 }

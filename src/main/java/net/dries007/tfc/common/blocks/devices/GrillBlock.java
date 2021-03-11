@@ -56,6 +56,7 @@ public class GrillBlock extends FirepitBlock
             List<ItemStack> logs = grill.getLogs();
             float[] fields = grill.getFields();
             grill.dump();
+            grill.clearContent();
 
             world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
             FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);

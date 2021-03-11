@@ -11,29 +11,23 @@ import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class FirepitScreen extends TFCContainerScreen<FirepitContainer>
+public class FirepitScreen extends TileEntityScreen<FirepitTileEntity, FirepitContainer>
 {
     private static final ResourceLocation FIREPIT = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
-    private final FirepitTileEntity tile;
 
     public FirepitScreen(FirepitContainer container, PlayerInventory playerInventory, ITextComponent name)
     {
         super(container, playerInventory, name, FIREPIT);
-        tile = container.getTileEntity();
+        inventoryLabelY += 20;
+        imageHeight += 20;
     }
 
     @Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * (int) (tile.getFields()[FirepitTileEntity.FIELD_TEMP]) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * ((FirepitTileEntity) tile).getSyncableData().get(0) / Heat.maxVisibleTemperature());
         if (temp > 0)
-            blit(matrixStack, leftPos + 30, topPos + 66 - Math.min(51, temp), 176, 0, 15, 5);
-    }
-
-    @Override
-    protected void renderLabels(MatrixStack matrixStack, int x, int y)
-    {
-        // disable inventory labels cause they don't fit
+            blit(matrixStack, leftPos + 30, topPos + 84 - Math.min(51, temp), 176, 0, 15, 5);
     }
 }
