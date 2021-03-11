@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:cave_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "tfc:facing_random",
@@ -24,7 +24,8 @@
                 "yspread": 5,
                 "xspread": 5,
                 "zspread": 5,
-                "tries": 60
+                "tries": 60,
+                "project": false
               }
             },
             "decorator": {

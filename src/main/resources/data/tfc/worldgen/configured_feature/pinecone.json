@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "tfc:facing_random",

@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "tfc:facing_random",
@@ -20,46 +20,10 @@
                   "config": {}
                 },
                 "whitelist": [
-                  {
-                    "Name": "tfc:grass/silt",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/sandy_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/silty_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  }
+                  "tfc:grass/silt",
+                  "tfc:grass/loam",
+                  "tfc:grass/sandy_loam",
+                  "tfc:grass/silty_loam"
                 ],
                 "blacklist": [],
                 "yspread": 1,
