@@ -603,9 +603,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 }
                 else
                 {
-                    for (int y = 0; y <= 5; y++)
+                    for (int y = 0; y < 6; y++)
                     {
-                        if (random.nextInt(5) < y)
+                        if (random.nextInt(6) < 6 - y)
                         {
                             bottomSection.setBlockState(x, y, z, bedrock, false);
                         }
