@@ -23,15 +23,15 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:water_plant",
+                  "type": "tfc:random_age",
                   "config": {}
                 },
-                "tries": 100,
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 15,
                 "zspread": 15,
+                "tries": 100,
                 "can_replace_air": false,
                 "can_replace_water": true,
                 "project_to_ocean_floor": true

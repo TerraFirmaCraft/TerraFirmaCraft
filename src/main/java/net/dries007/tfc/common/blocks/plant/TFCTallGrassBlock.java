@@ -143,8 +143,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(PART);
+        super.createBlockStateDefinition(builder.add(PART));
     }
 
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)

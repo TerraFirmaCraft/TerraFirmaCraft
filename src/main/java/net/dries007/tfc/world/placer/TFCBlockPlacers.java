@@ -22,7 +22,6 @@ public class TFCBlockPlacers
 
     public static final RegistryObject<BlockPlacerType<TallPlantPlacer>> TALL_PLANT = register("tall_plant", TallPlantPlacer.CODEC);
     public static final RegistryObject<BlockPlacerType<EmergentPlantPlacer>> EMERGENT_PLANT = register("emergent", EmergentPlantPlacer.CODEC);
-    public static final RegistryObject<BlockPlacerType<WaterPlantPlacer>> WATER_PLANT = register("water_plant", WaterPlantPlacer.CODEC);
     public static final RegistryObject<BlockPlacerType<RandomAgePlacer>> RANDOM_AGE = register("random_age", RandomAgePlacer.CODEC);
 
     public static final RegistryObject<BlockPlacerType<UndergroundPlacer>> UNDERGROUND = register("underground", UndergroundPlacer.CODEC);
