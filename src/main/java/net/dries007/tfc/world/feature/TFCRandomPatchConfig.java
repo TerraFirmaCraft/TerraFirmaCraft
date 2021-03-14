@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.feature.plant;
+package net.dries007.tfc.world.feature;
 
 import java.util.List;
 import java.util.Set;
@@ -43,7 +43,8 @@ public class TFCRandomPatchConfig implements IFeatureConfig
         Codec.BOOL.fieldOf("can_replace_water").orElse(false).forGetter(c -> c.canReplaceWater),
         Codec.BOOL.fieldOf("can_replace_surface_water").orElse(false).forGetter(c -> c.canReplaceSurfaceWater),
         Codec.BOOL.fieldOf("project").orElse(true).forGetter(c -> c.project),
-        Codec.BOOL.fieldOf("project_to_ocean_floor").orElse(false).forGetter(c -> c.projectToOceanFloor)
+        Codec.BOOL.fieldOf("project_to_ocean_floor").orElse(false).forGetter(c -> c.projectToOceanFloor),
+        Codec.BOOL.fieldOf("only_underground").orElse(false).forGetter(c -> c.onlyUnderground)
     ).apply(instance, TFCRandomPatchConfig::new));
 
     public final BlockStateProvider stateProvider;
@@ -60,8 +61,9 @@ public class TFCRandomPatchConfig implements IFeatureConfig
     public final boolean canReplaceSurfaceWater;
     public final boolean project;
     public final boolean projectToOceanFloor;
+    public final boolean onlyUnderground;
 
-    protected TFCRandomPatchConfig(BlockStateProvider stateProvider, BlockPlacer blockPlacer, List<BlockState> whitelist, List<BlockState> blacklist, int tries, boolean useDensity, int xSpread, int ySpread, int zSpread, boolean canReplaceAir, boolean canReplaceWater, boolean canReplaceSurfaceWater, boolean project, boolean projectToOceanFloor)
+    protected TFCRandomPatchConfig(BlockStateProvider stateProvider, BlockPlacer blockPlacer, List<BlockState> whitelist, List<BlockState> blacklist, int tries, boolean useDensity, int xSpread, int ySpread, int zSpread, boolean canReplaceAir, boolean canReplaceWater, boolean canReplaceSurfaceWater, boolean project, boolean projectToOceanFloor, boolean onlyUnderground)
     {
         this.stateProvider = stateProvider;
         this.blockPlacer = blockPlacer;
@@ -77,5 +79,6 @@ public class TFCRandomPatchConfig implements IFeatureConfig
         this.canReplaceSurfaceWater = canReplaceSurfaceWater;
         this.project = project;
         this.projectToOceanFloor = projectToOceanFloor;
+        this.onlyUnderground = onlyUnderground;
     }
 }

@@ -12,12 +12,19 @@
               "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/salt_lick"
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/salt_lick",
+                    "Properties": {
+                      "facing": "north",
+                      "fluid": "empty"
+                    }
+                  }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:groundcover/salt_lick",
+                  "property": "facing"
                 },
                 "whitelist": [
                   "tfc:rock/raw/chalk",

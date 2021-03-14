@@ -9,9 +9,30 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:kelp_tree",
+              "type": "tfc:random_patch",
               "config": {
-                "state": "tfc:plant/giant_kelp_flower"
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/giant_kelp_flower",
+                    "Properties": {
+                      "age": "0",
+                      "fluid": "empty"
+                    }
+                  }
+                },
+                "block_placer": {
+                  "type": "tfc:kelp_tree"
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 2,
+                "xspread": 10,
+                "zspread": 10,
+                "tries": 20,
+                "can_replace_air": false,
+                "can_replace_water": true,
+                "project_to_ocean_floor": true
               }
             },
             "decorator": {

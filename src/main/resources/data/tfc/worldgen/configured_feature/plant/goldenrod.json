@@ -22,8 +22,9 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/goldenrod",
+                  "property": "age"
                 },
                 "whitelist": [
                   "tfc:clay_grass/silt",
@@ -35,8 +36,7 @@
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,
-                "tries": 128,
-                "use_density": true
+                "tries": 128
               }
             },
             "decorator": {

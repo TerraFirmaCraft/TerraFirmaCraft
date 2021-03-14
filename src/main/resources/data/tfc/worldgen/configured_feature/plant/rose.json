@@ -23,10 +23,8 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:tall_plant",
-                  "config": {}
+                  "type": "tfc:tall_plant"
                 },
-                "tries": 128,
                 "whitelist": [
                   "tfc:clay_grass/silt",
                   "tfc:clay_grass/loam",
@@ -37,7 +35,7 @@
                 "yspread": 1,
                 "xspread": 15,
                 "zspread": 15,
-                "use_density": true
+                "tries": 128
               }
             },
             "decorator": {

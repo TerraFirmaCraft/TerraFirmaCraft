@@ -23,15 +23,14 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:tall_plant",
-                  "config": {}
+                  "type": "tfc:tall_plant"
                 },
-                "tries": 10,
-                "whitelist": [],
                 "blacklist": [],
+                "whitelist": [],
                 "yspread": 1,
                 "xspread": 15,
                 "zspread": 15,
+                "tries": 10,
                 "use_density": true
               }
             },

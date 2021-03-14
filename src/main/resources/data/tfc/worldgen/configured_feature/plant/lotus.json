@@ -25,11 +25,12 @@
                       }
                     },
                     "block_placer": {
-                      "type": "tfc:random_age",
-                      "config": {}
+                      "type": "tfc:random_property",
+                      "block": "tfc:plant/lotus",
+                      "property": "age"
                     },
-                    "whitelist": [],
                     "blacklist": [],
+                    "whitelist": [],
                     "yspread": 1,
                     "xspread": 7,
                     "zspread": 7,

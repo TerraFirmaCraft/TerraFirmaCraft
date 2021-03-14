@@ -22,11 +22,12 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/dandelion",
+                  "property": "age"
                 },
-                "whitelist": [],
                 "blacklist": [],
+                "whitelist": [],
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,

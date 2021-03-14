@@ -4,13 +4,12 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.feature.plant;
+package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -20,8 +19,6 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.FluidProperty;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
@@ -79,6 +76,15 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
                         (config.canReplaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isEmptyFluid(stateAt)) ||
                         (config.canReplaceSurfaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isEmptyFluid(stateAt) && world.isEmptyBlock(mutablePos.above())))
                     {
+                        // Fourth check: for extra conditions such as only allowing placement underground
+                        if (config.onlyUnderground)
+                        {
+                            final int surfaceHeight = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
+                            if (!stateAt.getBlock().is(Blocks.CAVE_AIR) || pos.getY() >= surfaceHeight - 1)
+                            {
+                                continue;
+                            }
+                        }
                         config.blockPlacer.place(world, mutablePos, placementState, random);
                         placed++;
                     }

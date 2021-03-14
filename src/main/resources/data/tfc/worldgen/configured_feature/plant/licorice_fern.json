@@ -23,11 +23,12 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/licorice_fern",
+                  "property": "age"
                 },
-                "whitelist": [],
                 "blacklist": [],
+                "whitelist": [],
                 "yspread": 6,
                 "xspread": 5,
                 "zspread": 5,

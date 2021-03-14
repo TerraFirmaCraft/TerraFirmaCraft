@@ -12,12 +12,19 @@
               "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/mussel"
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/mussel",
+                    "Properties": {
+                      "facing": "north",
+                      "fluid": "empty"
+                    }
+                  }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:groundcover/mussel",
+                  "property": "facing"
                 },
                 "whitelist": [
                   "tfc:sand/brown",
@@ -53,6 +60,7 @@
                 "xspread": 15,
                 "zspread": 15,
                 "tries": 10,
+                "project_to_ocean_floor": true,
                 "can_replace_water": true
               }
             },

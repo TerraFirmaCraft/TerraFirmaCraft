@@ -24,18 +24,18 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:emergent",
-                  "config": {}
+                  "type": "tfc:emergent_plant"
                 },
-                "tries": 100,
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 7,
                 "zspread": 7,
+                "tries": 100,
                 "can_replace_air": false,
                 "can_replace_surface_water": true,
-                "project_to_ocean_floor": true
+                "project_to_ocean_floor": true,
+                "use_density": true
               }
             },
             "decorator": {
