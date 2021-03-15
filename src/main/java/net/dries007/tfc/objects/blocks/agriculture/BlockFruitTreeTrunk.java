@@ -293,7 +293,7 @@ public class BlockFruitTreeTrunk extends Block
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (!(worldIn.getBlockState(pos.down()).getBlock() instanceof BlockFruitTreeTrunk) && !BlocksTFC.isGrowableSoil(worldIn.getBlockState(pos.down())))
         {
-            worldIn.destroyBlock(pos, false);
+            worldIn.destroyBlock(pos, true);
         }
     }
 
@@ -318,23 +318,23 @@ public class BlockFruitTreeTrunk extends Block
             Block branch = BlockFruitTreeBranch.get(tree);
             if (worldIn.getBlockState(pos.up()).getBlock() == this || worldIn.getBlockState(pos.up()).getBlock() == branch)
             {
-                worldIn.destroyBlock(pos.up(), false);
+                worldIn.destroyBlock(pos.up(), true);
             }
             if (worldIn.getBlockState(pos.north()).getBlock() == branch)
             {
-                worldIn.destroyBlock(pos.up(), false);
+                worldIn.destroyBlock(pos.up(), true);
             }
             if (worldIn.getBlockState(pos.south()).getBlock() == branch)
             {
-                worldIn.destroyBlock(pos.up(), false);
+                worldIn.destroyBlock(pos.up(), true);
             }
             if (worldIn.getBlockState(pos.west()).getBlock() == branch)
             {
-                worldIn.destroyBlock(pos.up(), false);
+                worldIn.destroyBlock(pos.up(), true);
             }
             if (worldIn.getBlockState(pos.east()).getBlock() == branch)
             {
-                worldIn.destroyBlock(pos.up(), false);
+                worldIn.destroyBlock(pos.up(), true);
             }
         }
     }
