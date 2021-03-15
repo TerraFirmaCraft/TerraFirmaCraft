@@ -32,7 +32,7 @@ public class BarrelRecipeFoodPreservation extends BarrelRecipe
     private final FoodTrait trait;
     private final String tooltipName;
 
-    private BarrelRecipeFoodPreservation(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, FoodTrait trait, String tooltipName)
+    public BarrelRecipeFoodPreservation(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, FoodTrait trait, String tooltipName)
     {
         super(inputFluid, inputStack, null, ItemStack.EMPTY, -1);
         this.trait = trait;
