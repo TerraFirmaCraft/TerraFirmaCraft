@@ -131,9 +131,9 @@ public class PowderKegExplosion extends Explosion
             int current = map.getOrDefault(item, 0);
             map.put(item, count + current);
         }
-        for (Map.Entry<Item, Integer> entry : map.entrySet())
+        for (Object2IntMap.Entry<Item> entry : map.object2IntEntrySet())
         {
-            int count = entry.getValue();
+            int count = entry.getIntValue();
             Item item = entry.getKey();
             int stackLimit = item.getItemStackLimit(new ItemStack(item));
             while (count > 0)
