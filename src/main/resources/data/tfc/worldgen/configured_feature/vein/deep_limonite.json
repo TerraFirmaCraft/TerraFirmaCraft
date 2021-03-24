@@ -119,6 +119,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_limonite/limestone"
+          },
+          {
+            "weight": 11,
+            "block": "tfc:ore/ruby/limestone"
           }
         ]
       },
@@ -138,6 +142,10 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_limonite/shale"
+          },
+          {
+            "weight": 11,
+            "block": "tfc:ore/ruby/shale"
           }
         ]
       }

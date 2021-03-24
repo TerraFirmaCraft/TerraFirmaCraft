@@ -220,6 +220,25 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
     rm.feature(('tree', 'willow_large'), wg.configure('tfc:random_tree', random_config('willow', 14, 1, True)))
 
+    def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
+        ore_blocks = [{
+            'weight': vein.poor,
+            'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
+        }, {
+            'weight': vein.normal,
+            'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
+        }, {
+            'weight': vein.rich,
+            'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
+        }]
+        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
+            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
+            ore_blocks.append({
+                'weight': int(100 * p / (1 - p)),
+                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
+            })
+        return ore_blocks
+
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
         rocks = expand_rocks(vein.rocks, vein_name)
@@ -233,16 +252,7 @@ def generate(rm: ResourceManager):
                 'density': vein.density * 0.01,
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
-                    'ore': [{
-                        'weight': vein.poor,
-                        'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
-                    }, {
-                        'weight': vein.normal,
-                        'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
-                    }, {
-                        'weight': vein.rich,
-                        'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
-                    }]
+                    'ore': vein_ore_blocks(vein, rock)
                 } for rock in rocks],
                 'indicator': {
                     'rarity': 12,
