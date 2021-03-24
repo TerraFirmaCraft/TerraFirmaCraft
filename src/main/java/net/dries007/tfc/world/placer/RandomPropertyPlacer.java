@@ -8,10 +8,11 @@ package net.dries007.tfc.world.placer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.Property;
@@ -31,17 +32,39 @@ public class RandomPropertyPlacer extends BlockPlacer
     public static final Codec<RandomPropertyPlacer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.nonDefaultedRegistryCodec(Registry.BLOCK).fieldOf("block").forGetter(c -> c.block),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
-    ).apply(instance, RandomPropertyPlacer::new));
+    ).apply(instance, RandomPropertyPlacer::create));
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static RandomPropertyPlacer create(Block block, String propertyName)
+    {
+        final Property<?> property = block.getStateDefinition().getProperty(propertyName);
+        if (property == null)
+        {
+            LOGGER.error("No property: " + propertyName + " found on block: " + block.getRegistryName() + " At 'tfc:random_property' block placer.");
+            return new RandomPropertyPlacer(block, propertyName, (state, random) -> state);
+        }
+        return new RandomPropertyPlacer(block, propertyName, createPropertySetter(property));
+    }
+
+    /**
+     * Extracted into a method to it can be generic on the property type
+     */
+    private static <T extends Comparable<T>> BiFunction<BlockState, Random, BlockState> createPropertySetter(Property<T> property)
+    {
+        final List<T> values = new ArrayList<>(property.getPossibleValues());
+        return (state, random) -> state.setValue(property, values.get(random.nextInt(values.size())));
+    }
 
     private final Block block;
     private final String propertyName;
     private final BiFunction<BlockState, Random, BlockState> propertySetter;
 
-    public RandomPropertyPlacer(Block block, String propertyName)
+    public RandomPropertyPlacer(Block block, String propertyName, BiFunction<BlockState, Random, BlockState> propertySetter)
     {
         this.block = block;
         this.propertyName = propertyName;
-        this.propertySetter = createPropertySetter(Objects.requireNonNull(block.getStateDefinition().getProperty(propertyName), "No property: " + propertyName + " found on block: " + block.getRegistryName()));
+        this.propertySetter = propertySetter;
     }
 
     @Override
@@ -54,14 +77,5 @@ public class RandomPropertyPlacer extends BlockPlacer
     protected BlockPlacerType<?> type()
     {
         return TFCBlockPlacers.RANDOM_PROPERTY.get();
-    }
-
-    /**
-     * Extracted into a method to it can be generic on the property type
-     */
-    private <T extends Comparable<T>> BiFunction<BlockState, Random, BlockState> createPropertySetter(Property<T> property)
-    {
-        final List<T> values = new ArrayList<>(property.getPossibleValues());
-        return (state, random) -> state.setValue(property, values.get(random.nextInt(values.size())));
     }
 }
