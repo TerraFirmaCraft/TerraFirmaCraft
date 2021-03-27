@@ -2,31 +2,26 @@ package net.dries007.tfc.util.config;
 
 public enum HealthDisplayFormat
 {
-    TFC("TFC", "%.0f / %.0f"),
-    VANILLA("Vanilla", "%.1f / %.1f"),
-    TFC_CURRENT_HEALTH("TFC - Current Health Only", "%.0f"),
-    VANILLA_CURRENT_HEALTH("Vanilla - Current Health Only", "%.1f");
+    TFC((curr, max) -> String.format("%.0f / %.0f", curr, max)),
+    VANILLA((curr, max) -> String.format("%.1f / %.1f", curr, max)),
+    TFC_CURRENT((curr, max) -> String.format("%.0f", curr)),
+    VANILLA_CURRENT((curr, max) -> String.format("%.1f", curr));
 
-    private final String name;
-    private final String format;
+    private final Function formatFunction;
 
-    HealthDisplayFormat(String name, String format)
+    HealthDisplayFormat(Function formatFunction)
     {
-        this.name = name;
-        this.format = format;
+        this.formatFunction = formatFunction;
     }
 
-    /**
-     * Shows this text in config instead of the enum name
-     */
-    @Override
-    public String toString()
+    public String format(float currentHealth, float maxHealth)
     {
-        return name;
+        return formatFunction.apply(currentHealth, maxHealth);
     }
 
-    public String format(Object... args)
+    @FunctionalInterface
+    public interface Function
     {
-        return String.format(format, args);
+        String apply(float currentHealth, float maxHealth);
     }
 }

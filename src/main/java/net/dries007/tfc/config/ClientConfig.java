@@ -25,9 +25,9 @@ public class ClientConfig extends CachingConfig
     public final Cache.Boolean ignoreExperimentalWorldGenWarning;
     public final Cache.Boolean assumeTFCWorld;
 
-    public final Cache.Boolean useVanillaHunger;
-    public final Cache.Boolean useVanillaHealth;
-    public final Cache.Boolean hideThirstBar;
+    public final Cache.Boolean enableHungerBar;
+    public final Cache.Boolean enableHealthBar;
+    public final Cache.Boolean enableThirstBar;
     public final Cache.Object<HealthDisplayFormat> healthDisplayFormat;
 
 
@@ -48,10 +48,16 @@ public class ClientConfig extends CachingConfig
 
         innerBuilder.pop().push("display");
 
-        useVanillaHunger = wrap(builder.apply("useVanillaHunger").comment("Render vanilla hunger over the hotbar?").define("useVanillaHunger", false));
-        useVanillaHealth = wrap(builder.apply("useVanillaHunger").comment("Render vanilla health bar over the hotbar?").define("useVanillaHealth", false));
-        hideThirstBar = wrap(builder.apply("hideThirstBar").comment("Hide the TFC thirst bar?").define("hideThirstBar", false));
-        healthDisplayFormat = wrap(builder.apply("healthDisplayFormat").comment("Health display format. Options: TFC, VANILLA, TFC_CURRENT_HEALTH, VANILLA_CURRENT_HEALTH").define("healthDisplayFormat", HealthDisplayFormat.VANILLA));
+        enableHungerBar = wrap(builder.apply("enableHungerBar").comment("Replace the vanilla hunger bar with a TFC one.").define("enableHungerBar", true));
+        enableHealthBar = wrap(builder.apply("enableHealthBar").comment("Replaces the vanilla health bar with a TFC one.").define("enableHealthBar", true));
+        enableThirstBar = wrap(builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true));
+        healthDisplayFormat = wrap(builder.apply("healthDisplayFormat").comment(
+            "Health display format. This affects what number is displayed on top of the tfc-style health bar",
+            "TFC - e.g. 750 / 1000",
+            "VANILLA - e.g. 15.0 / 20.0",
+            "TFC_CURRENT - e.g. 750",
+            "VANILLA_CURRENT - e.g. 15.0"
+        ).defineEnum("healthDisplayFormat", HealthDisplayFormat.TFC));
 
         innerBuilder.pop();
     }
