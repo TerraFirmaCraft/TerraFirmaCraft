@@ -145,9 +145,22 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         return forestWeirdness;
     }
 
+    /**
+     * @return A value in [0, 1]
+     */
     public float getForestDensity()
     {
         return forestDensity;
+    }
+
+    /**
+     * Returns a standard calculated value for density.
+     * This scales the regular density by the forest type.
+     * @return a value in [0, 1]
+     */
+    public float getAdjustedForestDensity()
+    {
+        return forestDensity * 0.6f + 0.4f * forestType.ordinal() / 4f;
     }
 
     public PlateTectonicsClassification getPlateTectonicsInfo()

@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:water_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -23,15 +23,19 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:water_plant",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/star_grass",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 15,
                 "zspread": 15,
-                "tries": 128
+                "tries": 128,
+                "can_replace_air": false,
+                "can_replace_water": true,
+                "project_to_ocean_floor": true
               }
             },
             "decorator": {

@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.block.AbstractTopPlantBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.TFCKelpTopBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class TFCKelpFeature extends Feature<TallPlantConfig>
@@ -34,29 +36,31 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
 
     public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
-        if (!((TFCKelpTopBlock) (config.getHeadState().getBlock())).getFluidProperty().canContain(world.getBlockState(pos).getFluidState().getType()))
-            return false;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final int radius = config.getRadius();
+
         boolean placedAny = false;
-        int radius = config.getRadius();
+
         for (int i = 0; i < config.getTries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.set(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, mutablePos));
-            mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-                return false;
-            mutablePos.move(Direction.UP);
-            if (world.isWaterAt(mutablePos) && !(world.getBlockState(mutablePos).getBlock() instanceof IFluidLoggable))
+
+            final BlockState state = world.getBlockState(mutablePos);
+            final Fluid fluid = state.getFluidState().getType();
+            final BlockState bodyState = FluidHelpers.fillWithFluid(config.getBodyState(), fluid);
+            final BlockState headState = FluidHelpers.fillWithFluid(config.getHeadState(), fluid);
+
+            if (bodyState != null && headState != null && bodyState.canSurvive(world, mutablePos) && FluidHelpers.isEmptyFluid(state))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, getWetBlock(world, mutablePos, config.getBodyState()), getWetBlock(world, mutablePos, config.getHeadState()));
+                placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, bodyState, headState);
                 placedAny = true;
             }
         }
         return placedAny;
     }
 
-    public static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    private void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {
@@ -65,24 +69,14 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
                 if (i == height || !world.isWaterAt(mutablePos.above()))
                 {
                     if (!world.getBlockState(mutablePos.below()).is(head.getBlock()))
+                    {
                         world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 16);
+                    }
                     return;
                 }
                 world.setBlock(mutablePos, body, 16);
             }
             mutablePos.move(Direction.UP);
         }
-    }
-
-    private static BlockState getWetBlock(IWorld world, BlockPos pos, BlockState state)
-    {
-        if (state.getBlock() instanceof IFluidLoggable)
-        {
-            IFluidLoggable block = (IFluidLoggable) state.getBlock();
-            BlockState setState = block.getStateWithFluid(state, world.getFluidState(pos).getType());
-            if (setState.getValue(block.getFluidProperty()).getFluid() != Fluids.EMPTY)
-                return setState;
-        }
-        return state;
     }
 }

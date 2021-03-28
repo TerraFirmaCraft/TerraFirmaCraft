@@ -18,16 +18,16 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCBlockPlacers
 {
-    public static final DeferredRegister<BlockPlacerType<?>> BLOCK_PLACER_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_PLACER_TYPES, MOD_ID);
+    public static final DeferredRegister<BlockPlacerType<?>> BLOCK_PLACERS = DeferredRegister.create(ForgeRegistries.BLOCK_PLACER_TYPES, MOD_ID);
 
     public static final RegistryObject<BlockPlacerType<TallPlantPlacer>> TALL_PLANT = register("tall_plant", TallPlantPlacer.CODEC);
-    public static final RegistryObject<BlockPlacerType<EmergentPlantPlacer>> EMERGENT_PLANT = register("emergent", EmergentPlantPlacer.CODEC);
-    public static final RegistryObject<BlockPlacerType<WaterPlantPlacer>> WATER_PLANT = register("water_plant", WaterPlantPlacer.CODEC);
+    public static final RegistryObject<BlockPlacerType<EmergentPlantPlacer>> EMERGENT_PLANT = register("emergent_plant", EmergentPlantPlacer.CODEC);
+    public static final RegistryObject<BlockPlacerType<KelpTreePlacer>> KELP_TREE = register("kelp_tree", KelpTreePlacer.CODEC);
 
-    public static final RegistryObject<BlockPlacerType<UndergroundPlacer>> UNDERGROUND = register("underground", UndergroundPlacer.CODEC);
+    public static final RegistryObject<BlockPlacerType<RandomPropertyPlacer>> RANDOM_PROPERTY = register("random_property", RandomPropertyPlacer.CODEC);
 
     private static <P extends BlockPlacer> RegistryObject<BlockPlacerType<P>> register(String name, Codec<P> codec)
     {
-        return BLOCK_PLACER_TYPES.register(name, () -> new BlockPlacerType<>(codec));
+        return BLOCK_PLACERS.register(name, () -> new BlockPlacerType<>(codec));
     }
 }

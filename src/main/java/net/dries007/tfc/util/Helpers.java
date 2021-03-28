@@ -330,16 +330,6 @@ public final class Helpers
         return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
     }
 
-    public static BlockState getStateForPlacementWithFluid(IWorldReader world, BlockPos pos, BlockState state)
-    {
-        FluidState fluid = world.getFluidState(pos);
-        if (state.getBlock() instanceof IFluidLoggable)
-        {
-            return ((IFluidLoggable) state.getBlock()).getStateWithFluid(state, fluid.getType());
-        }
-        return state;
-    }
-
     /**
      * You know this will work, and I know this will work, but this compiler looks pretty stupid.
      */

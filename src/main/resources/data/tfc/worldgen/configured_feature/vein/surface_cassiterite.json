@@ -62,6 +62,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_cassiterite/granite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/topaz/granite"
           }
         ]
       }

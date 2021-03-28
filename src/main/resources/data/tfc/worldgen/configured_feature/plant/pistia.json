@@ -12,7 +12,7 @@
               "type": "minecraft:decorated",
               "config": {
                 "feature": {
-                  "type": "tfc:random_patch_density",
+                  "type": "tfc:random_patch",
                   "config": {
                     "state_provider": {
                       "type": "minecraft:simple_state_provider",
@@ -25,15 +25,17 @@
                       }
                     },
                     "block_placer": {
-                      "type": "minecraft:simple_block_placer",
-                      "config": {}
+                      "type": "tfc:random_property",
+                      "block": "tfc:plant/pistia",
+                      "property": "age"
                     },
-                    "whitelist": [],
                     "blacklist": [],
+                    "whitelist": [],
                     "yspread": 1,
                     "xspread": 7,
                     "zspread": 7,
-                    "tries": 100
+                    "tries": 100,
+                    "use_density": true
                   }
                 },
                 "decorator": {

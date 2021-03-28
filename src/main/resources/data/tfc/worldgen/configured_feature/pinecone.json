@@ -9,15 +9,22 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/pinecone"
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/pinecone",
+                    "Properties": {
+                      "facing": "north",
+                      "fluid": "empty"
+                    }
+                  }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:groundcover/pinecone",
+                  "property": "facing"
                 },
                 "whitelist": [],
                 "blacklist": [],

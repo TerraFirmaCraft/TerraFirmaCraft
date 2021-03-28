@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:emergent_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -24,15 +24,18 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:emergent",
-                  "config": {}
+                  "type": "tfc:emergent_plant"
                 },
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 7,
                 "zspread": 7,
-                "tries": 100
+                "tries": 100,
+                "can_replace_air": false,
+                "can_replace_surface_water": true,
+                "project_to_ocean_floor": true,
+                "use_density": true
               }
             },
             "decorator": {

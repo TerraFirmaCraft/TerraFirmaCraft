@@ -6,12 +6,17 @@
 
 package net.dries007.tfc.common.fluids;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +31,48 @@ import net.dries007.tfc.mixin.fluid.FlowingFluidAccessor;
 
 public class FluidHelpers
 {
+    /**
+     * Checks if a block state is empty other than a provided fluid
+     * @return true if the provided state is a source block of it's current fluid
+     */
+    public static boolean isEmptyFluid(BlockState state)
+    {
+        return state.getBlock().is(state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock());
+    }
+
+    /**
+     * Given a block state and a fluid, attempts to fill the block state with the fluid
+     * Returns null if the provided combination cannot be filled
+     * @param state The state to fill
+     * @param fluid The fluid to fill with
+     * @return The fluid-logged state, or null if impossible
+     */
+    @Nullable
+    public static BlockState fillWithFluid(BlockState state, Fluid fluid)
+    {
+        final Block block = state.getBlock();
+        if (block instanceof IFluidLoggable)
+        {
+            final FluidProperty property = ((IFluidLoggable) block).getFluidProperty();
+            if (property.canContain(fluid))
+            {
+                return state.setValue(property, property.keyFor(fluid));
+            }
+        }
+        else if (state.hasProperty(BlockStateProperties.WATERLOGGED))
+        {
+            if (fluid == Fluids.WATER)
+            {
+                return state.setValue(BlockStateProperties.WATERLOGGED, true);
+            }
+            else if (fluid == Fluids.EMPTY)
+            {
+                return state.setValue(BlockStateProperties.WATERLOGGED, false);
+            }
+        }
+        return null;
+    }
+
     public static boolean isSame(FluidState state, Fluid expected)
     {
         return state.getType().isSame(expected);

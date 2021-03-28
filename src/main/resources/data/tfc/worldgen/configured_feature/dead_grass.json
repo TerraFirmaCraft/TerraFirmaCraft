@@ -9,57 +9,28 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/dead_grass"
-                },
-                "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
-                },
-                "whitelist": [
-                  {
-                    "Name": "tfc:grass/silt",
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/dead_grass",
                     "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/sandy_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
-                    }
-                  },
-                  {
-                    "Name": "tfc:grass/silty_loam",
-                    "Properties": {
-                      "north": "false",
-                      "south": "false",
-                      "east": "false",
-                      "west": "false",
-                      "snowy": "false"
+                      "facing": "north",
+                      "fluid": "empty"
                     }
                   }
+                },
+                "block_placer": {
+                  "type": "tfc:random_property",
+                  "block": "tfc:groundcover/dead_grass",
+                  "property": "facing"
+                },
+                "whitelist": [
+                  "tfc:grass/silt",
+                  "tfc:grass/loam",
+                  "tfc:grass/sandy_loam",
+                  "tfc:grass/silty_loam"
                 ],
                 "blacklist": [],
                 "yspread": 1,

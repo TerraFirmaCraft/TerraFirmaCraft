@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:random_patch_density",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -22,15 +22,17 @@
                   }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/tulip_white",
+                  "property": "age"
                 },
-                "whitelist": [],
                 "blacklist": [],
+                "whitelist": [],
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,
-                "tries": 10
+                "tries": 10,
+                "use_density": true
               }
             },
             "decorator": {

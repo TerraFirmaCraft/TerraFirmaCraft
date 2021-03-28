@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:random_patch_density",
+              "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -28,14 +28,16 @@
                   }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/morning_glory",
+                  "property": "age"
                 },
-                "whitelist": [],
                 "blacklist": [],
+                "whitelist": [],
                 "yspread": 1,
                 "xspread": 6,
-                "zspread": 6
+                "zspread": 6,
+                "use_density": true
               }
             },
             "decorator": {
