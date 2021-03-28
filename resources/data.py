@@ -86,7 +86,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
-        rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.amount, wood_data.temp))
+        rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.duration, wood_data.temp))
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_logs', '#minecraft:logs')
@@ -162,10 +162,10 @@ def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
             'heat_capacity': heat_capacity
         }
 
-def fuel(ingredient: str, amount: int, temp: float, forge=False, bloomery=False):
+def fuel(ingredient: str, duration: int, temp: float, forge=False, bloomery=False):
     return {
         'ingredient': item_stack(ingredient),
-        'amount': amount,
+        'duration': duration,
         'temperature': temp,
         'isForgeFuel': forge,
         'isBloomeryFuel': bloomery

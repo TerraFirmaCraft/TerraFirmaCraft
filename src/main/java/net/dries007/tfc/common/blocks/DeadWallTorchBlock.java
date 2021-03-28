@@ -7,6 +7,8 @@ import net.minecraft.block.WallTorchBlock;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DeadWallTorchBlock extends WallTorchBlock
 {
@@ -15,6 +17,7 @@ public class DeadWallTorchBlock extends WallTorchBlock
         super(properties, particle);
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
 

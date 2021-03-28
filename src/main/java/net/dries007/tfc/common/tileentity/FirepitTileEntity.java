@@ -147,7 +147,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
                         Fuel fuel = FuelManager.get(stack);
                         if (fuel != null)
                         {
-                            burnTicks += fuel.getAmount();
+                            burnTicks += fuel.getDuration();
                             burnTemperature = fuel.getTemperature();
                         }
                     }
@@ -193,15 +193,15 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
             if (fuel != null) // will always be true
             {
                 inventory.setStackInSlot(i, ItemStack.EMPTY);
-                if (fuel.getAmount() > deltaPlayerTicks)
+                if (fuel.getDuration() > deltaPlayerTicks)
                 {
-                    burnTicks = (int) (fuel.getAmount() - deltaPlayerTicks);
+                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
                     burnTemperature = fuel.getTemperature();
                     return;
                 }
                 else
                 {
-                    deltaPlayerTicks -= fuel.getAmount();
+                    deltaPlayerTicks -= fuel.getDuration();
                     burnTicks = 0;
                 }
             }

@@ -29,11 +29,7 @@ public class TFCTileEntities
 {
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MOD_ID);
 
-    public static final Collection<RegistryObject<Block>> SAPLING_LIST = new ArrayList<>(TFCBlocks.WOODS.size());
-    static
-    {
-        TFCBlocks.WOODS.forEach((key, value) -> SAPLING_LIST.add(value.get(Wood.BlockType.SAPLING)));
-    }
+    public static final Collection<RegistryObject<Block>> SAPLING_LIST = TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)).collect(Collectors.toList());
 
     public static final RegistryObject<TileEntityType<FarmlandTileEntity>> FARMLAND = register("farmland", FarmlandTileEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values().stream());
     public static final RegistryObject<TileEntityType<SnowPileTileEntity>> SNOW_PILE = register("snow_pile", SnowPileTileEntity::new, TFCBlocks.SNOW_PILE);

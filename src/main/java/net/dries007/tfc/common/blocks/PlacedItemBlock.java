@@ -122,7 +122,7 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
         PlacedItemTileEntity te = Helpers.getTileEntity(worldIn, currentPos, PlacedItemTileEntity.class);
         if (te != null)
         {
-            if (isBlank(updateState))
+            if (isEmpty(updateState))
             {
                 return Blocks.AIR.defaultBlockState();
             }
@@ -184,7 +184,7 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
         return VoxelShapes.empty();
     }
 
-    public boolean isBlank(BlockState state)
+    public boolean isEmpty(BlockState state)
     {
         for (int i = 0; i < 4; i++)
         {

@@ -480,7 +480,10 @@ public final class Helpers
         }
     }
 
-    public static double offset(Random rand)
+    /**
+     * Lightning fast. Not actually Gaussian.
+     */
+    public static double fastGaussian(Random rand)
     {
         return (rand.nextDouble() - rand.nextDouble()) * 0.5;
     }

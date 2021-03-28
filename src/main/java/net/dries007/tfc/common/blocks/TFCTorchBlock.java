@@ -62,7 +62,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te != null)
         {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTime.get() && TFCConfig.SERVER.torchTime.get() > 0)
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
             {
                 world.setBlockAndUpdate(pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
             }

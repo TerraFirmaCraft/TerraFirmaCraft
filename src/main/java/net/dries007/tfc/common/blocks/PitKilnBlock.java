@@ -21,6 +21,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
@@ -36,11 +38,17 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
     public static final int LIT = 16;
     public static final VoxelShape[] SHAPE_BY_LAYER = Util.make(new VoxelShape[17], shapes -> {
         for (int i = 0; i < 8; i++)
+        {
             shapes[i] = Block.box(0.0D, 0.0D, 0.0D, 16.0D, i + 1, 16.0D);
+        }
         for (int i = 0; i < 4; i++)
+        {
             shapes[8 + i] = VoxelShapes.or(shapes[7 + i], Block.box(4 * i, 8.0D, 0.0D, 4 * (i + 1), 12.0D, 16.0D));
+        }
         for (int i = 0; i < 4; i++)
+        {
             shapes[12 + i] = VoxelShapes.or(shapes[11 + i], Block.box(4 * i, 12.0D, 0.0D, 4 * (i + 1), 16.0D, 16.0D));
+        }
         shapes[16] = VoxelShapes.block(); // lit stage
     });
     private final ForgeBlockProperties properties;
@@ -52,6 +60,7 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
@@ -70,7 +79,7 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(STAGE);
+        super.createBlockStateDefinition(builder.add(STAGE));
     }
 
     @Override

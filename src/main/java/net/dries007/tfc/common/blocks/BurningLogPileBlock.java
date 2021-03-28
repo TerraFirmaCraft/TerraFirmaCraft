@@ -18,6 +18,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.tileentity.BurningLogPileTileEntity;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
@@ -94,6 +97,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         tryLightNearby(world, pos);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {

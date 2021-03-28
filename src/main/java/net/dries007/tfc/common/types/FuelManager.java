@@ -11,8 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import net.minecraftforge.items.ItemStackHandler;
-
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
@@ -68,7 +66,7 @@ public class FuelManager extends DataManager<Fuel>
         Fuel def = get(stack);
         if (def != null)
         {
-            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.fuel", def.getAmount(), def.getTemperature()));
+            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.fuel", def.getDuration(), def.getTemperature()));
         }
     }
 

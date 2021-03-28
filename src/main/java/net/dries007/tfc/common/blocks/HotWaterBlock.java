@@ -10,6 +10,9 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 import net.dries007.tfc.client.particle.TFCParticles;
 
 public class HotWaterBlock extends FlowingFluidBlock
@@ -19,6 +22,7 @@ public class HotWaterBlock extends FlowingFluidBlock
         super(supplier, properties);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {

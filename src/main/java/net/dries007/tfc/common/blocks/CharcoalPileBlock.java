@@ -79,11 +79,4 @@ public class CharcoalPileBlock extends SnowBlock
     {
         return new ItemStack(Items.CHARCOAL);
     }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public SoundType getSoundType(BlockState state)
-    {
-        return TFCSounds.CHARCOAL;
-    }
 }

@@ -25,6 +25,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
@@ -39,7 +41,7 @@ import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.util.Helpers.offset;
+import static net.dries007.tfc.util.Helpers.fastGaussian;
 import static net.minecraft.util.ActionResultType.*;
 
 public class FirepitBlock extends Block implements IForgeBlockProperties
@@ -136,6 +138,7 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
@@ -147,11 +150,11 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
         if (rand.nextInt(10) == 0)
             world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
-            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.07D, 0);
+            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.07D, 0);
         for (int i = 0; i < rand.nextInt(4); i++)
-            world.addParticle(ParticleTypes.SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
         if (rand.nextInt(8) == 1)
-            world.addParticle(ParticleTypes.LARGE_SMOKE, x + offset(rand), y + rand.nextDouble(), z + offset(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.LARGE_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
     }
 
     @Override
