@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:ore/bituminous_coal"
   },
-  "amount": 2200,
+  "duration": 2200,
   "temperature": 1415,
   "isForgeFuel": true,
   "isBloomeryFuel": false

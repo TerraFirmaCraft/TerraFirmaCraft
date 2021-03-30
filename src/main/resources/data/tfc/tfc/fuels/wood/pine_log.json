@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/pine"
   },
-  "amount": 1250,
+  "duration": 1250,
   "temperature": 627,
   "isForgeFuel": false,
   "isBloomeryFuel": false

@@ -417,7 +417,7 @@ def generate(rm: ResourceManager):
         if fruit == 'banana':
             feature = 'tfc:bananas'
             state = 'tfc:fruit_tree/banana_plant'
-        rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(60)))
+        rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
 
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
 

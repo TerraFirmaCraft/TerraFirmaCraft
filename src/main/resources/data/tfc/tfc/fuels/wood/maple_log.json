@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/maple"
   },
-  "amount": 2000,
+  "duration": 2000,
   "temperature": 745,
   "isForgeFuel": false,
   "isBloomeryFuel": false

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/oak"
   },
-  "amount": 2250,
+  "duration": 2250,
   "temperature": 728,
   "isForgeFuel": false,
   "isBloomeryFuel": false

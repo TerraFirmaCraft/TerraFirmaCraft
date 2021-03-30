@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:stick_bundle"
   },
-  "amount": 600,
+  "duration": 600,
   "temperature": 900,
   "isForgeFuel": false,
   "isBloomeryFuel": false

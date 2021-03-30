@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/rosewood"
   },
-  "amount": 1500,
+  "duration": 1500,
   "temperature": 640,
   "isForgeFuel": false,
   "isBloomeryFuel": false

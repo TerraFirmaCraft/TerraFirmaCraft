@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/blackwood"
   },
-  "amount": 1750,
+  "duration": 1750,
   "temperature": 720,
   "isForgeFuel": false,
   "isBloomeryFuel": false

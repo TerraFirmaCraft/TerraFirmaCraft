@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/kapok"
   },
-  "amount": 1000,
+  "duration": 1000,
   "temperature": 645,
   "isForgeFuel": false,
   "isBloomeryFuel": false

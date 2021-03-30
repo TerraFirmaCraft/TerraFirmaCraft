@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/hickory"
   },
-  "amount": 2000,
+  "duration": 2000,
   "temperature": 762,
   "isForgeFuel": false,
   "isBloomeryFuel": false

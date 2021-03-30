@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/sycamore"
   },
-  "amount": 1750,
+  "duration": 1750,
   "temperature": 653,
   "isForgeFuel": false,
   "isBloomeryFuel": false

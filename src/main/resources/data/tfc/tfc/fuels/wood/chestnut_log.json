@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/chestnut"
   },
-  "amount": 1500,
+  "duration": 1500,
   "temperature": 651,
   "isForgeFuel": false,
   "isBloomeryFuel": false

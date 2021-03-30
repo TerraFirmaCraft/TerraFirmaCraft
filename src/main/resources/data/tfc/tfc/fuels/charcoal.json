@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:charcoal"
   },
-  "amount": 1800,
+  "duration": 1800,
   "temperature": 1350,
   "isForgeFuel": true,
   "isBloomeryFuel": true

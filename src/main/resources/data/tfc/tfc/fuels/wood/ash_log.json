@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/ash"
   },
-  "amount": 1250,
+  "duration": 1250,
   "temperature": 696,
   "isForgeFuel": false,
   "isBloomeryFuel": false

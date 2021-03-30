@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/douglas_fir"
   },
-  "amount": 1500,
+  "duration": 1500,
   "temperature": 707,
   "isForgeFuel": false,
   "isBloomeryFuel": false

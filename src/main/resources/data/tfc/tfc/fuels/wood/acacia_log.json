@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/acacia"
   },
-  "amount": 1000,
+  "duration": 1000,
   "temperature": 650,
   "isForgeFuel": false,
   "isBloomeryFuel": false

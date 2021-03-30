@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:peat"
   },
-  "amount": 2500,
+  "duration": 2500,
   "temperature": 680,
   "isForgeFuel": false,
   "isBloomeryFuel": false

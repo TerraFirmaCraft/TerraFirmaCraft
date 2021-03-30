@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:ore/lignite"
   },
-  "amount": 2000,
+  "duration": 2000,
   "temperature": 1350,
   "isForgeFuel": true,
   "isBloomeryFuel": false

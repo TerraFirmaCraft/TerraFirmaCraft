@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:wood/log/sequoia"
   },
-  "amount": 1750,
+  "duration": 1750,
   "temperature": 612,
   "isForgeFuel": false,
   "isBloomeryFuel": false
