@@ -91,8 +91,8 @@ public class Metal
         CAST_IRON(0xFF989897, Rarity.COMMON, true, false, false),
         PIG_IRON(0xFF6A595C, Rarity.COMMON, false, false, false),
         STEEL(0xFF5F5F5F, Rarity.UNCOMMON, TFCItemTier.STEEL, TFCArmorMaterial.STEEL, true, true, true),
-        BLACK_STEEL(0xFF111111, Rarity.EPIC, TFCItemTier.BLACK_STEEL, TFCArmorMaterial.BLACK_STEEL, true, true, true),
-        BLUE_STEEL(0xFF2D5596, Rarity.RARE, TFCItemTier.BLUE_STEEL, TFCArmorMaterial.BLUE_STEEL, true, true, true),
+        BLACK_STEEL(0xFF111111, Rarity.RARE, TFCItemTier.BLACK_STEEL, TFCArmorMaterial.BLACK_STEEL, true, true, true),
+        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, TFCItemTier.BLUE_STEEL, TFCArmorMaterial.BLUE_STEEL, true, true, true),
         RED_STEEL(0xFF700503, Rarity.EPIC, TFCItemTier.RED_STEEL, TFCArmorMaterial.RED_STEEL, true, true, true),
         WEAK_STEEL(0xFF111111, Rarity.COMMON, false, false, false),
         WEAK_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, false, false, false),
@@ -154,11 +154,6 @@ public class Metal
         public boolean hasUtilities()
         {
             return utility;
-        }
-
-        public boolean hasRods()
-        {
-            return this == WROUGHT_IRON || this == GOLD || this == STEEL;
         }
 
         public IItemTier getTier()
@@ -278,7 +273,7 @@ public class Metal
         DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        ROD("rods", Type.ROD, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        ROD("rods", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
 
         // Tools and Tool Heads
@@ -372,8 +367,7 @@ public class Metal
         PART(Default::hasParts),
         TOOL(Default::hasTools),
         ARMOR(Default::hasArmor),
-        UTILITY(Default::hasUtilities),
-        ROD(Default::hasRods);
+        UTILITY(Default::hasUtilities);
 
         private final Predicate<Metal.Default> predicate;
 

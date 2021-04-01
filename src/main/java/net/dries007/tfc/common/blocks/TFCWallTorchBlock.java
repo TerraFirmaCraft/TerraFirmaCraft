@@ -42,41 +42,19 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockProp
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (!world.isClientSide())
-        {
-            ItemStack held = player.getItemInHand(hand);
-            if (held.getItem().is(Tags.Items.RODS_WOODEN))
-            {
-                held.shrink(1);
-                ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));
-            }
-        }
-        return ActionResultType.SUCCESS;
+        return TFCBlocks.TORCH.get().use(state, world, pos, player, hand, result);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
     {
-        if (world.isClientSide()) return;
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            if (te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
-            {
-                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_WALL_TORCH.get().defaultBlockState().setValue(FACING, state.getValue(FACING)));
-            }
-        }
+        TFCTorchBlock.onRandomTick(world, pos, TFCBlocks.DEAD_WALL_TORCH.get().defaultBlockState());
     }
 
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        TFCBlocks.TORCH.get().setPlacedBy(worldIn, pos, state, placer, stack);
     }
 }

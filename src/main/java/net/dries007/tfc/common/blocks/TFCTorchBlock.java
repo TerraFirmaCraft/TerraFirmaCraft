@@ -19,6 +19,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -46,7 +47,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
         if (!world.isClientSide())
         {
             ItemStack held = player.getItemInHand(hand);
-            if (held.getItem().is(Tags.Items.RODS_WOODEN))
+            if (held.getItem().is(TFCTags.Items.CAN_BE_LIT_ON_TORCH))
             {
                 held.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));
@@ -59,14 +60,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
-            {
-                world.setBlockAndUpdate(pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
-            }
-        }
+        onRandomTick(world, pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
     }
 
     @Override
@@ -78,5 +72,17 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
             te.resetCounter();
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+    public static void onRandomTick(ServerWorld world, BlockPos pos, BlockState placeState)
+    {
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
+            {
+                world.setBlockAndUpdate(pos, placeState);
+            }
+        }
     }
 }

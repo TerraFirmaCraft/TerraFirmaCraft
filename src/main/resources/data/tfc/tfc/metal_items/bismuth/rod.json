@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:rods/bismuth"
+  },
+  "metal": "tfc:bismuth",
+  "amount": 100
+}

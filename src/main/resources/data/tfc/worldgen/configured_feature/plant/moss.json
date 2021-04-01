@@ -32,8 +32,8 @@
                   "block": "tfc:plant/moss",
                   "property": "age"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 1,
                 "xspread": 6,
                 "zspread": 6,

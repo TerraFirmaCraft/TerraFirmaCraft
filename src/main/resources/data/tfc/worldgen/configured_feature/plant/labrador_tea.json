@@ -26,8 +26,8 @@
                   "block": "tfc:plant/labrador_tea",
                   "property": "age"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,

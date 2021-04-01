@@ -27,8 +27,8 @@
                   "block": "tfc:plant/spanish_moss",
                   "property": "age"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 1,
                 "xspread": 5,
                 "zspread": 5,

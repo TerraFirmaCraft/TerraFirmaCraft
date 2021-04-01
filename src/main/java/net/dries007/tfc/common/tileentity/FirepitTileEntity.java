@@ -47,6 +47,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
     public static final int SLOT_ITEM_INPUT = 4; // item to be cooked
     public static final int SLOT_OUTPUT_1 = 5; // generic output slot
     public static final int SLOT_OUTPUT_2 = 6; // extra output slot
+    public static final int DATA_SLOT_TEMPERATURE = 0;
 
     protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
     protected int burnTicks; // ticks remaining for the burning of the fuel item

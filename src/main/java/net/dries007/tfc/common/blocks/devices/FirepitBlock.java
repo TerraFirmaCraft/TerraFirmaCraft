@@ -81,10 +81,12 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
 
     protected static void tryExtinguish(World world, BlockPos pos, BlockState state)
     {
-        Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
         FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
         if (pit != null)
+        {
+            Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
             pit.extinguish(state);
+        }
     }
 
     private static void convertFirepitToGrill(World world, BlockPos pos, ItemStack stack, boolean lit)

@@ -80,6 +80,7 @@ public class TFCTags
         public static final ITag.INamedTag<Item> LOG_PILE_LOGS = create("log_pile_logs");
         public static final ITag.INamedTag<Item> PIT_KILN_STRAW = create("pit_kiln_straw");
         public static final ITag.INamedTag<Item> PIT_KILN_LOGS = create("pit_kiln_logs");
+        public static final ITag.INamedTag<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
 
         private static ITag.INamedTag<Item> create(String id)
         {

@@ -27,7 +27,7 @@ public class PotScreen extends TileEntityScreen<PotTileEntity, PotContainer>
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * ((FirepitTileEntity) tile).getSyncableData().get(0) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * ((FirepitTileEntity) tile).getSyncableData().get(FirepitTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temp > 0)
             blit(matrixStack, leftPos + 30, topPos + 84 - Math.min(51, temp), 176, 0, 15, 5);
     }

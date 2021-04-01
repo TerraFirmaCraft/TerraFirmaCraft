@@ -92,6 +92,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('log_pile_logs', '#minecraft:logs')
     rm.item_tag('pit_kiln_logs', '#minecraft:logs')
+    rm.item_tag('can_be_lit_on_torch', '#forge:rods/wooden')
 
     rm.data(('tfc', 'fuels', 'coal'), fuel('minecraft:coal', 2200, 1415, forge=True))  # vanilla coal for compat
     rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel('tfc:ore/bituminous_coal', 2200, 1415, forge=True))
