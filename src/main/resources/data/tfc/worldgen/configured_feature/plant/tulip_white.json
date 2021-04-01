@@ -26,8 +26,8 @@
                   "block": "tfc:plant/tulip_white",
                   "property": "age"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,

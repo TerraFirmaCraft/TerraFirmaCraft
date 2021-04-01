@@ -25,8 +25,8 @@
                 "block_placer": {
                   "type": "tfc:tall_plant"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 1,
                 "xspread": 15,
                 "zspread": 15,

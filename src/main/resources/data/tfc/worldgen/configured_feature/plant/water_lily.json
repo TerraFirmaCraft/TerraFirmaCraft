@@ -29,8 +29,8 @@
                       "block": "tfc:plant/water_lily",
                       "property": "age"
                     },
-                    "blacklist": [],
                     "whitelist": [],
+                    "blacklist": [],
                     "yspread": 1,
                     "xspread": 7,
                     "zspread": 7,

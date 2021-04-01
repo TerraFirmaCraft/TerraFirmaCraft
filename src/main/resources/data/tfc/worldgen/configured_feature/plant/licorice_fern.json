@@ -27,8 +27,8 @@
                   "block": "tfc:plant/licorice_fern",
                   "property": "age"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 6,
                 "xspread": 5,
                 "zspread": 5,
