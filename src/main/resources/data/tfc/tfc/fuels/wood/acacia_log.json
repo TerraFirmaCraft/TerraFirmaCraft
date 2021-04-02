@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/acacia"
   },
   "duration": 1000,
-  "temperature": 650,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 650
 }

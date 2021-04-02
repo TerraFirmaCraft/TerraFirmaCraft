@@ -4,7 +4,5 @@
     "item": "tfc:stick_bundle"
   },
   "duration": 600,
-  "temperature": 900,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 900
 }

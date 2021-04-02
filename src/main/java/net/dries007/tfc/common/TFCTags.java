@@ -81,6 +81,9 @@ public class TFCTags
         public static final ITag.INamedTag<Item> PIT_KILN_STRAW = create("pit_kiln_straw");
         public static final ITag.INamedTag<Item> PIT_KILN_LOGS = create("pit_kiln_logs");
         public static final ITag.INamedTag<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
+        public static final ITag.INamedTag<Item> FIREPIT_FUEL = create("firepit_fuel");
+        public static final ITag.INamedTag<Item> BLOOMERY_FUEL = create("bloomery_fuel");
+        public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
 
         private static ITag.INamedTag<Item> create(String id)
         {

@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/sequoia"
   },
   "duration": 1750,
-  "temperature": 612,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 612
 }

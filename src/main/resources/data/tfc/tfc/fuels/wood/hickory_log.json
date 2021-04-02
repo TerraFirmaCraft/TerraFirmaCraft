@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/hickory"
   },
   "duration": 2000,
-  "temperature": 762,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 762
 }

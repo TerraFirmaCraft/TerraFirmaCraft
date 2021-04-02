@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/oak"
   },
   "duration": 2250,
-  "temperature": 728,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 728
 }

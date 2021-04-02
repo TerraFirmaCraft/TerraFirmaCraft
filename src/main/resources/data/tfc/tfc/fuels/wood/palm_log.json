@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/palm"
   },
   "duration": 1250,
-  "temperature": 730,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 730
 }

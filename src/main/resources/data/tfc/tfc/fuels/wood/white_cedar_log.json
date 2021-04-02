@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/white_cedar"
   },
   "duration": 1500,
-  "temperature": 625,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 625
 }

@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/blackwood"
   },
   "duration": 1750,
-  "temperature": 720,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 720
 }

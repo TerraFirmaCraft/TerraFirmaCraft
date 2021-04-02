@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/willow"
   },
   "duration": 1000,
-  "temperature": 603,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 603
 }

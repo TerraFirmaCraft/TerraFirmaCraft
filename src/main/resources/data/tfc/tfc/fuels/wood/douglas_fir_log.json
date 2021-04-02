@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/douglas_fir"
   },
   "duration": 1500,
-  "temperature": 707,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 707
 }

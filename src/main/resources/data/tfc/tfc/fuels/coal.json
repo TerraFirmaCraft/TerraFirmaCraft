@@ -4,7 +4,5 @@
     "item": "minecraft:coal"
   },
   "duration": 2200,
-  "temperature": 1415,
-  "isForgeFuel": true,
-  "isBloomeryFuel": false
+  "temperature": 1415
 }

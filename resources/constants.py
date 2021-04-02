@@ -411,7 +411,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.units': '%d units',
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
-    'tfc.tooltip.fuel': 'Fuel Amount: %d Temp: %d',
+    'tfc.tooltip.fuel': 'Fuel Duration: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',

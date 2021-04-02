@@ -4,7 +4,5 @@
     "item": "tfc:ore/lignite"
   },
   "duration": 2000,
-  "temperature": 1350,
-  "isForgeFuel": true,
-  "isBloomeryFuel": false
+  "temperature": 1350
 }

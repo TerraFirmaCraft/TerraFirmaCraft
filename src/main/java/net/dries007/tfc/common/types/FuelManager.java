@@ -12,6 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
@@ -41,19 +42,19 @@ public class FuelManager extends DataManager<Fuel>
     public static boolean isItemForgeFuel(ItemStack stack)
     {
         Fuel fuel = get(stack);
-        return fuel != null && fuel.isForgeFuel();
+        return fuel != null && stack.getItem().is(TFCTags.Items.FORGE_FUEL);
     }
 
     public static boolean isItemBloomeryFuel(ItemStack stack)
     {
         Fuel fuel = get(stack);
-        return fuel != null && fuel.isBloomeryFuel();
+        return fuel != null && stack.getItem().is(TFCTags.Items.BLOOMERY_FUEL);
     }
 
     public static boolean isFirepitFuel(ItemStack stack)
     {
         Fuel fuel = get(stack);
-        return fuel != null && !fuel.isBloomeryFuel() && !fuel.isForgeFuel();
+        return fuel != null && stack.getItem().is(TFCTags.Items.FIREPIT_FUEL);
     }
 
     public static void reload()

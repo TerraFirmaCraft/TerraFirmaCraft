@@ -4,7 +4,5 @@
     "item": "tfc:peat"
   },
   "duration": 2500,
-  "temperature": 680,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 680
 }

@@ -18,8 +18,6 @@ public class Fuel
     private final Ingredient ingredient;
     private final int duration;
     private final float temperature;
-    private final boolean isForgeFuel;
-    private final boolean isBloomeryFuel;
 
     public Fuel(ResourceLocation id, JsonObject obj)
     {
@@ -27,8 +25,6 @@ public class Fuel
         this.ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(obj, "ingredient"));
         this.duration = JSONUtils.getAsInt(obj, "duration");
         this.temperature = JSONUtils.getAsFloat(obj, "temperature");
-        this.isForgeFuel = JSONUtils.getAsBoolean(obj, "isForgeFuel", false);
-        this.isBloomeryFuel = JSONUtils.getAsBoolean(obj, "isBloomeryFuel", false);
     }
 
     public ResourceLocation getId()
@@ -54,15 +50,5 @@ public class Fuel
     public float getTemperature()
     {
         return temperature;
-    }
-
-    public boolean isForgeFuel()
-    {
-        return isForgeFuel;
-    }
-
-    public boolean isBloomeryFuel()
-    {
-        return isBloomeryFuel;
     }
 }

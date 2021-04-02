@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/aspen"
   },
   "duration": 1000,
-  "temperature": 611,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 611
 }

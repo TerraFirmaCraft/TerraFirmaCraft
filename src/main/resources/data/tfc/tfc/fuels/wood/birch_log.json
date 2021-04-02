@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/birch"
   },
   "duration": 1750,
-  "temperature": 652,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 652
 }

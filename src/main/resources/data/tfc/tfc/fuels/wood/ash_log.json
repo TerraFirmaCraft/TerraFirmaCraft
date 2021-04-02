@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/ash"
   },
   "duration": 1250,
-  "temperature": 696,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 696
 }

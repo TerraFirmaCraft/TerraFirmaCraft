@@ -4,7 +4,5 @@
     "item": "tfc:wood/log/maple"
   },
   "duration": 2000,
-  "temperature": 745,
-  "isForgeFuel": false,
-  "isBloomeryFuel": false
+  "temperature": 745
 }

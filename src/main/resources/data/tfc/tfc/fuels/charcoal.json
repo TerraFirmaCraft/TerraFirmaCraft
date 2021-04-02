@@ -4,7 +4,5 @@
     "item": "minecraft:charcoal"
   },
   "duration": 1800,
-  "temperature": 1350,
-  "isForgeFuel": true,
-  "isBloomeryFuel": true
+  "temperature": 1350
 }

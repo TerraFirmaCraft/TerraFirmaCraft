@@ -86,20 +86,24 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
-        rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel('tfc:wood/log/' + wood, wood_data.duration, wood_data.temp))
+        rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel(rm, 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp))
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
+    rm.item_tag('firepit_fuel', '#minecraft:logs')
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('log_pile_logs', '#minecraft:logs')
     rm.item_tag('pit_kiln_logs', '#minecraft:logs')
     rm.item_tag('can_be_lit_on_torch', '#forge:rods/wooden')
 
-    rm.data(('tfc', 'fuels', 'coal'), fuel('minecraft:coal', 2200, 1415, forge=True))  # vanilla coal for compat
-    rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel('tfc:ore/bituminous_coal', 2200, 1415, forge=True))
-    rm.data(('tfc', 'fuels', 'lignite'), fuel('tfc:ore/lignite', 2000, 1350, forge=True))
-    rm.data(('tfc', 'fuels', 'charcoal'), fuel('minecraft:charcoal', 1800, 1350, forge=True, bloomery=True))
-    rm.data(('tfc', 'fuels', 'peat'), fuel('tfc:peat', 2500, 680))
-    rm.data(('tfc', 'fuels', 'stick_bundle'), fuel('tfc:stick_bundle', 600, 900))
+    rm.data(('tfc', 'fuels', 'coal'), fuel(rm, 'minecraft:coal', 2200, 1415))  # vanilla coal for compat
+    rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel(rm, 'tfc:ore/bituminous_coal', 2200, 1415))
+    rm.data(('tfc', 'fuels', 'lignite'), fuel(rm, 'tfc:ore/lignite', 2000, 1350))
+    rm.data(('tfc', 'fuels', 'charcoal'), fuel(rm, 'minecraft:charcoal', 1800, 1350, bloomery=True))
+    rm.data(('tfc', 'fuels', 'peat'), fuel(rm, 'tfc:peat', 2500, 680, firepit=True))
+    rm.data(('tfc', 'fuels', 'stick_bundle'), fuel(rm, 'tfc:stick_bundle', 600, 900, firepit=True))
+
+    rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
+    rm.item_tag('forge_fuel', '#minecraft:coals')
 
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
@@ -163,11 +167,15 @@ def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
             'heat_capacity': heat_capacity
         }
 
-def fuel(ingredient: str, duration: int, temp: float, forge=False, bloomery=False):
+def fuel(rm: ResourceManager, ingredient: str, duration: int, temp: float, forge=False, bloomery=False, firepit=False):
+    if forge:
+        rm.item_tag('forge_fuel', ingredient)
+    if bloomery:
+        rm.item_tag('bloomery_fuel', ingredient)
+    if firepit:
+        rm.item_tag('firepit_fuel', ingredient)
     return {
         'ingredient': item_stack(ingredient),
         'duration': duration,
-        'temperature': temp,
-        'isForgeFuel': forge,
-        'isBloomeryFuel': bloomery
+        'temperature': temp
     }
