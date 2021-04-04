@@ -23,8 +23,7 @@ public class ServerConfig extends CachingConfig
 {
     // General
     public final Cache.Boolean enableNetherPortals;
-    // Player
-    public final Cache.Boolean enableVanillaNaturalRegeneration;
+    public final Cache.Boolean enableForcedTFCGameRules;
     // Climate
     public final Cache.Int temperatureScale;
     public final Cache.Int rainfallScale;
@@ -64,10 +63,13 @@ public class ServerConfig extends CachingConfig
         innerBuilder.push("general");
 
         enableNetherPortals = wrap(builder.apply("enableNetherPortals").comment("Enable nether portal creation").define("enableNetherPortals", false));
-
-        innerBuilder.pop().push("player");
-
-        enableVanillaNaturalRegeneration = wrap(builder.apply("enableVanillaNaturalRegeneration").comment("Enables the vanilla `naturalRegeneration` gamerule, which regenerates your health much quicker than TFC does.").define("enableVanillaNaturalRegeneration", false));
+        enableForcedTFCGameRules = wrap(builder.apply("enableForcedTFCGameRules").comment(
+            "Forces a number of game rules to specific values.",
+            "  naturalRegeneration = false (Health regen is much slower and not tied to extra saturation)",
+            "  doInsomnia = false (No phantoms)",
+            "  doTraderSpawning = false (No wandering traders)",
+            "  doPatrolSpawning = false (No pillager patrols)"
+        ).define("enableForcedTFCGameRules", false));
 
         innerBuilder.pop().push("climate");
 

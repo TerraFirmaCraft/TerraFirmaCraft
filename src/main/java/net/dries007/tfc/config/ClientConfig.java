@@ -11,7 +11,6 @@ import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.util.Cache;
-import net.dries007.tfc.util.config.HealthDisplayFormat;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

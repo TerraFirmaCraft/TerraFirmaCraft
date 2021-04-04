@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "tfc:block/sandstone/top/black",
+    "top": "tfc:block/sandstone/top/black",
+    "side": "tfc:block/sandstone/cut/black"
+  }
+}

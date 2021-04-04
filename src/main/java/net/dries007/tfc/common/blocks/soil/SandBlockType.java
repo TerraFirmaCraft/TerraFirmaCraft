@@ -41,9 +41,9 @@ public enum SandBlockType
         this.materialColor = materialColor;
     }
 
-    public int getDustColor()
+    public MaterialColor getMaterialColor()
     {
-        return dustColor;
+        return materialColor;
     }
 
     public Block create()

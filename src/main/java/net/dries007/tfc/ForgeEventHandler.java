@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -361,12 +362,18 @@ public final class ForgeEventHandler
     {
         if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
         {
-            ServerWorld world = (ServerWorld) event.getWorld();
-            if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
-                // Natural regeneration should be disabled, allows TFC to have custom regeneration
-                world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
-                LOGGER.info("Updating gamerule naturalRegeneration to false!");
+                final GameRules rules = world.getGameRules();
+                final MinecraftServer server = world.getServer();
+
+                rules.getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, server);
+                rules.getRule(GameRules.RULE_DOINSOMNIA).set(false, server);
+                rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
+                rules.getRule(GameRules.RULE_DO_TRADER_SPAWNING).set(false, server);
+
+                LOGGER.info("Updating TFC Relevant Game Rules.");
             }
         }
     }
