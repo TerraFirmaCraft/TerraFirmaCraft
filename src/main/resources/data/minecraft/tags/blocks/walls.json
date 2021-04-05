@@ -141,6 +141,27 @@
     "tfc:rock/smooth/rhyolite_wall",
     "tfc:rock/mossy_cobble/rhyolite_wall",
     "tfc:rock/mossy_bricks/rhyolite_wall",
-    "tfc:rock/cracked_bricks/rhyolite_wall"
+    "tfc:rock/cracked_bricks/rhyolite_wall",
+    "tfc:raw_sandstone/brown_wall",
+    "tfc:cut_sandstone/brown_wall",
+    "tfc:smooth_sandstone/brown_wall",
+    "tfc:raw_sandstone/white_wall",
+    "tfc:cut_sandstone/white_wall",
+    "tfc:smooth_sandstone/white_wall",
+    "tfc:raw_sandstone/black_wall",
+    "tfc:cut_sandstone/black_wall",
+    "tfc:smooth_sandstone/black_wall",
+    "tfc:raw_sandstone/red_wall",
+    "tfc:cut_sandstone/red_wall",
+    "tfc:smooth_sandstone/red_wall",
+    "tfc:raw_sandstone/yellow_wall",
+    "tfc:cut_sandstone/yellow_wall",
+    "tfc:smooth_sandstone/yellow_wall",
+    "tfc:raw_sandstone/green_wall",
+    "tfc:cut_sandstone/green_wall",
+    "tfc:smooth_sandstone/green_wall",
+    "tfc:raw_sandstone/pink_wall",
+    "tfc:cut_sandstone/pink_wall",
+    "tfc:smooth_sandstone/pink_wall"
   ]
 }

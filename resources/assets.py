@@ -6,6 +6,7 @@ from typing import Any
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
 import mcresources.utils as utils
+
 from mcresources import ResourceManager
 
 from constants import *
@@ -199,6 +200,37 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:sand/%s' % sand)
         block.with_lang(lang('%s Sand', sand))
 
+        # Sandstone
+        raw = 'tfc:block/sandstone/bottom/%s' % sand  # vanilla sandstone bottom
+        top = 'tfc:block/sandstone/top/%s' % sand  # vanilla sandstone top
+        cut = 'tfc:block/sandstone/cut/%s' % sand  # vanilla sandstone side
+
+        for variant in ('raw', 'cut', 'smooth'):
+            block = rm.blockstate(('%s_sandstone' % variant, sand))
+            if variant == 'raw':
+                block.with_block_model(raw)
+                block.make_slab(bottom_texture=raw, side_texture=raw, top_texture=raw)
+                block.make_stairs(bottom_texture=raw, side_texture=raw, top_texture=raw)
+                block.make_wall(texture=raw)
+            elif variant == 'smooth':
+                block.with_block_model(top)
+                block.make_slab(bottom_texture=top, side_texture=top, top_texture=top)
+                block.make_stairs(bottom_texture=top, side_texture=top, top_texture=top)
+                block.make_wall(texture=top)
+            else:
+                block.with_block_model({
+                    'end': top,
+                    'side': cut
+                }, parent='minecraft:block/cube_column')
+                block.make_slab(bottom_texture=top, side_texture=cut, top_texture=top)
+                block.make_stairs(bottom_texture=top, side_texture=cut, top_texture=top)
+                block.make_wall(texture=cut)
+            block.with_item_model()
+            rm.block_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, sand))
+
+            for extra in ('', ' slab', ' stairs', ' wall'):
+                rm.block(('%s_sandstone' % variant, sand + extra)).with_lang(lang('%s %s sandstone' + extra, variant, sand))
+
     # Groundcover
     for misc in MISC_GROUNDCOVER:
         block = rm.blockstate(('groundcover', misc), variants={
@@ -207,7 +239,7 @@ def generate(rm: ResourceManager):
             'facing=south': {'model': 'tfc:block/groundcover/%s' % misc, 'y': 180},
             'facing=west': {'model': 'tfc:block/groundcover/%s' % misc, 'y': 270}
         })
-        block.with_lang(lang('%s Block', misc))
+        block.with_lang(lang(misc))
         block.with_tag('can_be_snow_piled')
 
         if misc in {'stick', 'flint', 'feather', 'rotten_flesh', 'bone'}:  # Vanilla ground cover
@@ -317,7 +349,12 @@ def generate(rm: ResourceManager):
         # Clay Dirt
         block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
         block.with_block_model()
-        block.with_block_loot('tfc:clay/%s' % soil)  # todo: fix loot table - should drop clay balls
+        block.with_block_loot({
+            'entries': [{
+                'name': 'minecraft:clay_ball',
+                'functions': [loot_tables.set_count(1, 3)]
+            }]
+        })
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 

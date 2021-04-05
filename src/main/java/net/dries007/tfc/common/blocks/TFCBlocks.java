@@ -78,6 +78,20 @@ public final class TFCBlocks
         register(("sand/" + type.name()).toLowerCase(), type::create, EARTH)
     );
 
+    public static final Map<SandBlockType, Map<SandstoneBlockType, RegistryObject<Block>>> SANDSTONE = Helpers.mapOfKeys(SandBlockType.class, color ->
+        Helpers.mapOfKeys(SandstoneBlockType.class, type ->
+            register((type.name() + "_sandstone/" + color.name()).toLowerCase(), () -> new Block(type.properties(color)), EARTH)
+        )
+    );
+
+    public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockRegistryObject>> SANDSTONE_DECORATIONS = Helpers.mapOfKeys(SandBlockType.class, color ->
+        Helpers.mapOfKeys(SandstoneBlockType.class, type -> new DecorationBlockRegistryObject(
+            register((type.name() + "_sandstone/" + color.name() + "_slab").toLowerCase(), () -> new SlabBlock(type.properties(color)), EARTH),
+            register((type.name() + "_sandstone/" + color.name() + "_stairs").toLowerCase(), () -> new StairsBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)), EARTH),
+            register((type.name() + "_sandstone/" + color.name() + "_wall").toLowerCase(), () -> new WallBlock(type.properties(color)), EARTH)
+        ))
+    );
+
     public static final Map<GroundcoverBlockType, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
         register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), block -> new BlockItem(block, new Item.Properties().tab(EARTH)), type.shouldCreateBlockItem())
     );
@@ -113,22 +127,12 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<SlabBlock>>> ROCK_SLABS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> type.createSlab(rock), ROCK_STUFFS)
-        )
-    );
-
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<StairsBlock>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> type.createStairs(rock), ROCK_STUFFS)
-        )
-    );
-
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_WALLS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
+    public static final Map<Rock.Default, Map<Rock.BlockType, DecorationBlockRegistryObject>> ROCK_DECORATIONS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockRegistryObject(
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> type.createSlab(rock), ROCK_STUFFS),
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> type.createStairs(rock), ROCK_STUFFS),
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> type.createWall(rock), ROCK_STUFFS)
-        )
+        ))
     );
 
     // Metals

@@ -61,7 +61,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.config.HealthDisplayFormat;
+import net.dries007.tfc.config.HealthDisplayFormat;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

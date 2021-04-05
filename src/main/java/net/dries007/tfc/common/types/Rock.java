@@ -121,7 +121,7 @@ public class Rock
         COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
         BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
         GRAVEL((rock, self) -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)), false),
-        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE).sound(SoundType.NETHERRACK).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
+        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
         CRACKED_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_COBBLE((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
@@ -175,7 +175,7 @@ public class Rock
             }
             else if (mossy() != null)
             {
-                return new MossGrowingSlabBlock(properties, TFCBlocks.ROCK_SLABS.get(rock).get(mossy()));
+                return new MossGrowingSlabBlock(properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy())::getSlab);
             }
             return new SlabBlock(properties);
         }
@@ -190,7 +190,7 @@ public class Rock
             }
             else if (mossy() != null)
             {
-                return new MossGrowingStairsBlock(state, properties, TFCBlocks.ROCK_STAIRS.get(rock).get(mossy()));
+                return new MossGrowingStairsBlock(state, properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy())::getStair);
             }
             return new StairsBlock(state, properties);
         }
@@ -204,7 +204,7 @@ public class Rock
             }
             else if (mossy() != null)
             {
-                return new MossGrowingWallBlock(properties, TFCBlocks.ROCK_WALLS.get(rock).get(mossy()));
+                return new MossGrowingWallBlock(properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy())::getWall);
             }
             return new WallBlock(properties);
         }
