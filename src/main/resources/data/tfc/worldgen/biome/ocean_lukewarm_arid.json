@@ -24,7 +24,7 @@
       "tfc:underwater_canyon"
     ]
   },
-  "surface_builder": "tfc:underwater",
+  "surface_builder": "tfc:normal",
   "features": [
     [
       "tfc:erosion"

@@ -100,12 +100,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(BlockPos pos)
     {
-        return getRainfall(pos.getX() & 15, pos.getZ() & 15);
+        return getRainfall(pos.getX(), pos.getZ());
     }
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(z / 16f, 1 - (x / 16f));
+        return rainfallLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -115,12 +115,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(BlockPos pos)
     {
-        return getAverageTemp(pos.getX() & 15, pos.getZ() & 15);
+        return getAverageTemp(pos.getX(), pos.getZ());
     }
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(z / 16f, 1 - (x / 16f));
+        return temperatureLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)

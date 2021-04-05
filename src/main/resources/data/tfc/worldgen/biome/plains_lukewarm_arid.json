@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:default",
+  "surface_builder": "tfc:normal",
   "features": [
     [
       "tfc:erosion"

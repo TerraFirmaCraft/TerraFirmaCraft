@@ -1,12 +1,7 @@
-/*
- * Licensed under the EUPL, Version 1.2.
- * You may obtain a copy of the Licence at:
- * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- */
-
-package net.dries007.tfc.world;
+package net.dries007.tfc.world.surfacebuilder;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -14,7 +9,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class SoilBlockReplacer extends SeedBlockReplacer
+public class SoilSurfaceState implements ISurfaceState
 {
     public static final float RAINFALL_SAND = 75;
     public static final float RAINFALL_SAND_SANDY_MIX = 125;
@@ -23,19 +18,21 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     public static final float RAINFALL_SILT_SILTY_MIX = 350;
     public static final float RAINFALL_SILT = 400;
 
-    private static final float RAINFALL_SAND_SANDY_MEAN = (RAINFALL_SAND + RAINFALL_SAND_SANDY_MIX) / 2f;
-    private static final float RAINFALL_SAND_SANDY_RANGE = (RAINFALL_SAND_SANDY_MIX - RAINFALL_SAND) / 2f;
+    public static final float RAINFALL_SAND_SANDY_MEAN = (RAINFALL_SAND + RAINFALL_SAND_SANDY_MIX) / 2f;
+    public static final float RAINFALL_SAND_SANDY_RANGE = (RAINFALL_SAND_SANDY_MIX - RAINFALL_SAND) / 2f;
 
-    private final SoilBlockType soil;
-    private INoise2D patchNoise;
+    private static final long PATCH_NOISE_SEED = 18273952837592L;
 
-    public SoilBlockReplacer(SoilBlockType soil)
+    protected final SoilBlockType soil;
+    protected final INoise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);;
+
+    public SoilSurfaceState(SoilBlockType soil)
     {
         this.soil = soil;
     }
 
     @Override
-    public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, boolean salty)
+    public BlockState state(RockData rockData, int x, int y, int z, float temperature, float rainfall, boolean salty)
     {
         if (rainfall < RAINFALL_SANDY)
         {
@@ -84,9 +81,13 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     }
 
     @Override
-    protected void initSeed(long seed)
+    public void place(SurfaceBuilderContext context, BlockPos pos, int x, int z, RockData rockData, float temperature, float rainfall, boolean salty)
     {
-        patchNoise = new OpenSimplex2D(seed).octaves(2).spread(0.04f);
+        ISurfaceState.super.place(context, pos, x, z, rockData, temperature, rainfall, salty);
+        if (soil == SoilBlockType.GRASS)
+        {
+            context.getChunk().markPosForPostprocessing(pos);
+        }
     }
 
     private BlockState sand(RockData rockData, int x, int z)
@@ -98,4 +99,5 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     {
         return TFCBlocks.SOIL.get(soil).get(variant).get().defaultBlockState();
     }
+
 }

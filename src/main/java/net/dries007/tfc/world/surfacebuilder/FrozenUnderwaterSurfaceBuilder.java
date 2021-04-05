@@ -30,7 +30,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 /**
  * Modified from {@link net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
  */
-public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig> implements IContextSurfaceBuilder<SurfaceBuilderConfig>
+public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private PerlinNoiseGenerator icebergNoise;
     private PerlinNoiseGenerator icebergRoofNoise;
@@ -40,28 +40,25 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         super(codec);
     }
 
-    @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
-    {
-        throw new UnsupportedOperationException("GlacierSurfaceBuilder must be used with a chunk generator which supports IContextSurfaceBuilder!");
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
-    public void applyWithContext(IWorld worldIn, ChunkData chunkData, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double surfaceNoise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    @Override
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
+
+        final int seaLevel = context.getSeaLevel();
+        final Random random = context.getRandom();
 
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;
 
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(x, startHeight, z);
-        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL, chunkData.getAverageTemp(mutablePos), 1);
+        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL, context.getChunkData().getAverageTemp(mutablePos), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
-        double icebergValue = Math.min(Math.abs(surfaceNoise), icebergNoise.getValue(x * 0.1D, z * 0.1D, false) * 15.0D);
+        double icebergValue = Math.min(Math.abs(noise), icebergNoise.getValue(x * 0.1D, z * 0.1D, false) * 15.0D);
         icebergValue += (thresholdTemperature - maxAnnualTemperature) * 0.2f;
         if (maxAnnualTemperature > thresholdTemperature)
         {
@@ -91,11 +88,10 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
 
         final int localX = x & 15;
         final int localZ = z & 15;
-        final SurfaceBuilderConfig underwaterConfig = TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed);
 
-        BlockState underState = underwaterConfig.getUnderMaterial();
-        BlockState topState = underwaterConfig.getTopMaterial();
-        int normalSurfaceDepth = (int) (surfaceNoise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
+        ISurfaceState underState = SurfaceStates.LOW_UNDERWATER;
+        ISurfaceState topState = SurfaceStates.TOP_UNDERWATER;
+        int normalSurfaceDepth = 3;
         int surfaceFlag = -1;
         int currentSnowLayers = 0;
         int maximumSnowLayers = 2 + random.nextInt(4);
@@ -104,60 +100,50 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         for (int y = Math.max(startHeight, (int) icebergMaxY + 1); y >= 0; --y)
         {
             mutablePos.set(localX, y, localZ);
-            if (chunkIn.getBlockState(mutablePos).isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
+            if (context.getBlockState(mutablePos).isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
             {
-                chunkIn.setBlockState(mutablePos, packedIce, false);
+                context.setBlockState(mutablePos, packedIce);
             }
-            else if (chunkIn.getBlockState(mutablePos).getMaterial() == Material.WATER && y > (int) icebergMinY && y < seaLevel && icebergMinY != 0.0D && random.nextDouble() > 0.15D)
+            else if (context.getBlockState(mutablePos).getMaterial() == Material.WATER && y > (int) icebergMinY && y < seaLevel && icebergMinY != 0.0D && random.nextDouble() > 0.15D)
             {
-                chunkIn.setBlockState(mutablePos, packedIce, false);
+                context.setBlockState(mutablePos, packedIce);
             }
 
-            BlockState stateAt = chunkIn.getBlockState(mutablePos);
+            BlockState stateAt = context.getBlockState(mutablePos);
             if (stateAt.isAir())
             {
                 surfaceFlag = -1;
             }
-            else if (!stateAt.is(defaultBlock.getBlock()))
+            else if (stateAt.getBlock() != context.getDefaultBlock().getBlock())
             {
+                // packed ice -> snow layers
                 if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
                 {
-                    chunkIn.setBlockState(mutablePos, snowBlock, false);
+                    context.setBlockState(mutablePos, snowBlock);
                     ++currentSnowLayers;
+                }
+                else if (stateAt.getBlock() == context.getDefaultFluid().getBlock())
+                {
+                    // Default fluid
+
                 }
             }
             else if (surfaceFlag == -1)
             {
-                if (normalSurfaceDepth <= 0)
-                {
-                    topState = Blocks.AIR.defaultBlockState();
-                    underState = defaultBlock;
-                }
-                else if (y >= seaLevel - 4 && y <= seaLevel + 1)
-                {
-                    topState = underwaterConfig.getTopMaterial();
-                    underState = underwaterConfig.getUnderMaterial();
-                }
-
-                if (y < seaLevel && topState.isAir())
-                {
-                    topState = defaultFluid;
-                }
-
                 surfaceFlag = normalSurfaceDepth;
                 if (y >= seaLevel - 1)
                 {
-                    chunkIn.setBlockState(mutablePos, topState, false);
+                    context.setBlockState(mutablePos, topState, temperature, rainfall, saltWater);
                 }
                 else
                 {
-                    chunkIn.setBlockState(mutablePos, underState, false);
+                    context.setBlockState(mutablePos, underState, temperature, rainfall, saltWater);
                 }
             }
             else if (surfaceFlag > 0)
             {
                 --surfaceFlag;
-                chunkIn.setBlockState(mutablePos, underState, false);
+                context.setBlockState(mutablePos, underState, temperature, rainfall, saltWater);
             }
         }
     }

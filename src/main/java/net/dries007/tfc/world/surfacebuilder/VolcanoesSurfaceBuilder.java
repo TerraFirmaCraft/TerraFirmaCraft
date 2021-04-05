@@ -14,14 +14,17 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 
-public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceBuilderConfig> implements IContextSurfaceBuilder<ParentedSurfaceBuilderConfig>
+public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceBuilderConfig>
 {
     private Cellular2D cellNoise;
 
@@ -31,9 +34,9 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
     }
 
     @Override
-    public void applyWithContext(IWorld worldIn, ChunkData chunkData, Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, ParentedSurfaceBuilderConfig config)
     {
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(worldIn, biomeIn).getVariants();
+        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.getWorld(), biome).getVariants();
         if (variants.isVolcanic())
         {
             // Sample volcano noise
@@ -43,17 +46,13 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
             final double heightNoise = noise * 2f + startHeight;
             if (value < variants.getVolcanoChance() && easing > 0.7f && heightNoise > variants.getVolcanoBasaltHeight())
             {
-                TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.BASALT_CONFIG.get());
+                final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
+                final ISurfaceState basaltState = (rockData, xIn, yIn, zIn, temperature1, rainfall1, salty) -> basalt;
+                TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, basaltState, basaltState, basaltState);
                 return;
             }
         }
-        TFCSurfaceBuilders.applySurfaceBuilder(config.getParent(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
-    }
-
-    @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, ParentedSurfaceBuilderConfig config)
-    {
-        throw new UnsupportedOperationException("VolcanoesSurfaceBuilder must be used with a chunk generator which supports IContextSurfaceBuilder!");
+        context.apply(config.getParent(), biome, x, z, startHeight, noise, slope);
     }
 
     @Override

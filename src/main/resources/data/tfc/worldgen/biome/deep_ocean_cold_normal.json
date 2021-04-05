@@ -24,7 +24,7 @@
       "tfc:underwater_canyon"
     ]
   },
-  "surface_builder": "tfc:frozen_underwater",
+  "surface_builder": "tfc:icebergs",
   "features": [
     [
       "tfc:erosion"
