@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks;
+package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
@@ -26,11 +26,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-public class PitKilnBlock extends Block implements IForgeBlockProperties
+public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.PIT_KILN_STAGE;
     public static final int STRAW_END = 7;
@@ -51,12 +53,10 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
         }
         shapes[16] = VoxelShapes.block(); // lit stage
     });
-    private final ForgeBlockProperties properties;
 
     public PitKilnBlock(ForgeBlockProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
@@ -83,29 +83,10 @@ public class PitKilnBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         return !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
-        {
-            if (te != null)
-                te.onBreak();
-            world.removeBlockEntity(pos);
-        }
     }
 
     @Override

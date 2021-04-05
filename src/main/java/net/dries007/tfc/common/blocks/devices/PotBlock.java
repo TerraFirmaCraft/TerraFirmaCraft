@@ -85,6 +85,24 @@ public class PotBlock extends FirepitBlock
         super(properties);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    {
+        super.animateTick(state, world, pos, rand);
+        PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
+        if (te != null && te.isBoiling())
+        {
+            double x = pos.getX() + 0.5;
+            double y = pos.getY();
+            double z = pos.getZ() + 0.5;
+            for (int i = 0; i < rand.nextInt(5) + 4; i++)
+                world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
+            world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.fastGaussian(rand), 0.5, Helpers.fastGaussian(rand));
+            world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
+        }
+    }
+
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
@@ -140,33 +158,15 @@ public class PotBlock extends FirepitBlock
         return FAIL;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        super.animateTick(state, world, pos, rand);
-        PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
-        if (te != null && te.isBoiling())
-        {
-            double x = pos.getX() + 0.5;
-            double y = pos.getY();
-            double z = pos.getZ() + 0.5;
-            for (int i = 0; i < rand.nextInt(5) + 4; i++)
-                world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
-            world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.fastGaussian(rand), 0.5, Helpers.fastGaussian(rand));
-            world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
-        }
+        return VoxelShapes.or(POT_SHAPE, BASE_SHAPE);
     }
 
     @Override
     protected double getParticleHeightOffset()
     {
         return 0.8D;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return VoxelShapes.or(POT_SHAPE, BASE_SHAPE);
     }
 }

@@ -74,6 +74,32 @@ public class GrillBlock extends FirepitBlock
         super(properties);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    {
+        super.animateTick(state, world, pos, rand);
+        if (!state.getValue(LIT)) return;
+        GrillTileEntity te = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
+        if (te != null)
+        {
+            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+                {
+                    if (!cap.getStackInSlot(i).isEmpty())
+                    {
+                        double x = pos.getX() + 0.5D;
+                        double y = pos.getY() + 0.5D;
+                        double z = pos.getZ() + 0.5D;
+                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                        world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
+                        break;
+                    }
+                }
+            });
+        }
+    }
+
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
@@ -111,41 +137,15 @@ public class GrillBlock extends FirepitBlock
         return FAIL;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        super.animateTick(state, world, pos, rand);
-        if (!state.getValue(LIT)) return;
-        GrillTileEntity te = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
-        if (te != null)
-        {
-            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
-                {
-                    if (!cap.getStackInSlot(i).isEmpty())
-                    {
-                        double x = pos.getX() + 0.5D;
-                        double y = pos.getY() + 0.5D;
-                        double z = pos.getZ() + 0.5D;
-                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
-                        world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
-                        break;
-                    }
-                }
-            });
-        }
+        return VoxelShapes.or(GRILL_SHAPE, BASE_SHAPE);
     }
 
     @Override
     protected double getParticleHeightOffset()
     {
         return 0.8D;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return VoxelShapes.or(GRILL_SHAPE, BASE_SHAPE);
     }
 }

@@ -3,20 +3,16 @@ package net.dries007.tfc.network;
 import java.util.function.Supplier;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.common.blocks.PlacedItemBlock;
+import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 import net.dries007.tfc.util.Helpers;
@@ -31,7 +27,7 @@ public class PlaceBlockSpecialPacket
         if (player != null)
         {
             World world = player.getLevel();
-            RayTraceResult rayTrace = player.pick(player.getPickRadius(), 1.0F, false);
+            RayTraceResult rayTrace = player.pick(5.0F, 1.0F, false);
             if (rayTrace instanceof BlockRayTraceResult)
             {
                 BlockRayTraceResult blockResult = (BlockRayTraceResult) rayTrace;

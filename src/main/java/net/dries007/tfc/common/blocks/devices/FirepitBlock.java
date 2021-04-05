@@ -37,14 +37,13 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 import net.dries007.tfc.common.tileentity.GrillTileEntity;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.util.Helpers.fastGaussian;
 import static net.minecraft.util.ActionResultType.*;
 
-public class FirepitBlock extends Block implements IForgeBlockProperties
+public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
     protected static final VoxelShape BASE_SHAPE = VoxelShapes.or(
@@ -130,13 +129,10 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
             }
         }
     }
-    private final ForgeBlockProperties properties;
 
     public FirepitBlock(ForgeBlockProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
-
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
 
@@ -196,19 +192,6 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
-        {
-            if (te != null)
-                te.onBreak();
-            world.removeBlockEntity(pos);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
         if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
@@ -254,12 +237,6 @@ public class FirepitBlock extends Block implements IForgeBlockProperties
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return BASE_SHAPE;
-    }
-
-    @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
     }
 
     protected double getParticleHeightOffset()

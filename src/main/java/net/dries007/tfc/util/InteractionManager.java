@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.devices.LogPileBlock;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;

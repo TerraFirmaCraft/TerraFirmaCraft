@@ -12,7 +12,7 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.dries007.tfc.common.blocks.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 
 public class PitKilnTileEntityRenderer extends TileEntityRenderer<PitKilnTileEntity>

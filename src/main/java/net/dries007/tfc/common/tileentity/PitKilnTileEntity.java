@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.blocks.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -162,7 +162,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
     }
 
     @Override
-    public void onBreak()
+    public void onRemove()
     {
         if (level == null) return;
         int x = worldPosition.getX();
@@ -170,7 +170,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         int z = worldPosition.getZ();
         strawItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
         logItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
-        super.onBreak();
+        super.onRemove();
     }
 
     public void deleteStraw(int slot)

@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks;
+package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
@@ -17,11 +17,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BurningLogPileTileEntity;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.Helpers;
@@ -76,6 +78,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
             }
         }
     }
+
     private final ForgeBlockProperties properties;
 
     public BurningLogPileBlock(ForgeBlockProperties properties)

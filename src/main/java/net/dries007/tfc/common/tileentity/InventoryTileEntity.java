@@ -105,7 +105,7 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
         }
     }
 
-    public void onBreak()
+    public void onRemove()
     {
         if (level == null) return;
         for (int i = 0; i < inventory.getSlots(); i++)

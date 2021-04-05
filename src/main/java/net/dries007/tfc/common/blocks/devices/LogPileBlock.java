@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks;
+package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,26 +23,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-public class LogPileBlock extends Block implements IForgeBlockProperties
+public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-    private final ForgeBlockProperties properties;
 
     public LogPileBlock(ForgeBlockProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
-    }
-
-    @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
     }
 
     @Override
@@ -69,19 +62,6 @@ public class LogPileBlock extends Block implements IForgeBlockProperties
             }
         }
         return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
-        {
-            if (te != null)
-                te.onBreak();
-            world.removeBlockEntity(pos);
-        }
     }
 
     @Override

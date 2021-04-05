@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks;
+package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,12 +20,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-public class PlacedItemBlock extends Block implements IForgeBlockProperties
+public class PlacedItemBlock extends DeviceBlock implements IForgeBlockProperties
 {
     private static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
     private static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
@@ -99,19 +102,11 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
             }
         }
     }
-    private final ForgeBlockProperties properties;
 
     public PlacedItemBlock(ForgeBlockProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(ITEM_0, true).setValue(ITEM_1, true).setValue(ITEM_2, true).setValue(ITEM_3, true));
-    }
-
-    @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
     }
 
     @Override
@@ -128,19 +123,6 @@ public class PlacedItemBlock extends Block implements IForgeBlockProperties
             }
         }
         return updateState;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity()))
-        {
-            if (te != null)
-                te.onBreak();
-            world.removeBlockEntity(pos);
-        }
     }
 
     @Override
