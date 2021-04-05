@@ -14,7 +14,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 
-import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.STAGE;
+import static net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock.STAGE;
 
 public class BananaFeature extends Feature<BlockStateFeatureConfig>
 {

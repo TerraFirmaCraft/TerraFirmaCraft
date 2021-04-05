@@ -90,7 +90,7 @@ public class GrillTileEntity extends FirepitTileEntity
         //todo: grill input restrictions?
         if (slot == SLOT_FUEL_INPUT)
         {
-            return FuelManager.isItemFuel(stack);
+            return FuelManager.get(stack).isPresent();
         }
         return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }

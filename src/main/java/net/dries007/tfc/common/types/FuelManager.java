@@ -1,6 +1,8 @@
 package net.dries007.tfc.common.types;
 
 import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
@@ -21,40 +23,17 @@ public class FuelManager extends DataManager<Fuel>
     public static final FuelManager INSTANCE = new FuelManager();
     private static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
-    @Nullable
-    public static Fuel get(ItemStack stack)
+    @Nonnull
+    public static Optional<Fuel> get(ItemStack stack)
     {
         for (Fuel def : CACHE.getAll(stack.getItem()))
         {
             if (def.isValid(stack))
             {
-                return def;
+                return Optional.of(def);
             }
         }
-        return null;
-    }
-
-    public static boolean isItemFuel(ItemStack stack)
-    {
-        return get(stack) != null;
-    }
-
-    public static boolean isItemForgeFuel(ItemStack stack)
-    {
-        Fuel fuel = get(stack);
-        return fuel != null && stack.getItem().is(TFCTags.Items.FORGE_FUEL);
-    }
-
-    public static boolean isItemBloomeryFuel(ItemStack stack)
-    {
-        Fuel fuel = get(stack);
-        return fuel != null && stack.getItem().is(TFCTags.Items.BLOOMERY_FUEL);
-    }
-
-    public static boolean isFirepitFuel(ItemStack stack)
-    {
-        Fuel fuel = get(stack);
-        return fuel != null && stack.getItem().is(TFCTags.Items.FIREPIT_FUEL);
+        return Optional.empty();
     }
 
     public static void reload()
@@ -64,10 +43,11 @@ public class FuelManager extends DataManager<Fuel>
 
     public static void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
     {
-        Fuel def = get(stack);
-        if (def != null)
+        Optional<Fuel> opt = get(stack);
+        if (opt.isPresent())
         {
-            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.fuel", def.getDuration(), def.getTemperature()));
+            Fuel fuel = opt.get();
+            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.fuel", fuel.getDuration(), fuel.getTemperature()));
         }
     }
 

@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.berry_bush;
+package net.dries007.tfc.common.blocks.berrybush;
 
 import java.util.function.Supplier;
 
@@ -7,7 +7,7 @@ import net.minecraft.item.Items;
 
 import net.dries007.tfc.common.items.TFCItems;
 
-import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.*;
+import static net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock.Lifecycle.*;
 
 public class BerryBush
 {

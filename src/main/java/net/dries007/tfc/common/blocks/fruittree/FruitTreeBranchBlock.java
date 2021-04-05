@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.fruit_tree;
+package net.dries007.tfc.common.blocks.fruittree;
 
 import java.util.Random;
 

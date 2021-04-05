@@ -14,7 +14,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 
-import net.dries007.tfc.common.blocks.berry_bush.SpreadingBushBlock;
+import net.dries007.tfc.common.blocks.berrybush.SpreadingBushBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;

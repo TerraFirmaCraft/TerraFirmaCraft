@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.fruit_tree;
+package net.dries007.tfc.common.blocks.fruittree;
 
 import java.util.Random;
 
@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
-import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
+import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
+import net.dries007.tfc.common.blocks.berrybush.BerryBush;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;

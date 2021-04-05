@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.berry_bush;
+package net.dries007.tfc.common.blocks.berrybush;
 
 //todo: this is a temporary enum for registration. Feel free to tear it apart
 public enum Berry

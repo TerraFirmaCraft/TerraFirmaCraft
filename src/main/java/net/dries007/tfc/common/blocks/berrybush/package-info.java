@@ -6,7 +6,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.common.blocks.berry_bush;
+package net.dries007.tfc.common.blocks.berrybush;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

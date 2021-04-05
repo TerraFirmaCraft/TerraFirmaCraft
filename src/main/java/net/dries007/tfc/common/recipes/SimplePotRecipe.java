@@ -13,7 +13,6 @@ import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,13 +28,13 @@ public class SimplePotRecipe implements IPotRecipe
 {
     protected final ResourceLocation id;
     protected final HashSet<Ingredient> inputItems;
-    protected final NonNullList<ItemStack> outputItems;
+    protected final LinkedList<ItemStack> outputItems;
     protected final int duration;
     protected final float temperature;
     protected final FluidStack inputFluid;
     protected final FluidStack outputFluid;
 
-    public SimplePotRecipe(ResourceLocation id, HashSet<Ingredient> inputItems, NonNullList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration)
+    public SimplePotRecipe(ResourceLocation id, HashSet<Ingredient> inputItems, LinkedList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration)
     {
         this.id = id;
         this.inputItems = inputItems;
@@ -46,7 +45,7 @@ public class SimplePotRecipe implements IPotRecipe
         this.outputFluid = outputFluid;
     }
 
-    public NonNullList<ItemStack> getOutputItems()
+    public LinkedList<ItemStack> getOutputItems()
     {
         return outputItems;
     }
@@ -71,7 +70,7 @@ public class SimplePotRecipe implements IPotRecipe
         HashSet<Ingredient> notFound = new HashSet<>(inputItems);
         notFound.removeIf(Ingredient::isEmpty); // clear the clutter out
 
-        HashSet<ItemStack> stacks = new HashSet<>();
+        LinkedList<ItemStack> stacks = new LinkedList<>();
         for (int i = 0; i < wrapper.getContainerSize(); i++)
         {
             stacks.add(wrapper.getItem(i).copy());
@@ -117,7 +116,7 @@ public class SimplePotRecipe implements IPotRecipe
     {
         return new Output()
         {
-            private final Queue<ItemStack> itemsLeft = copyListToQueue(outputItems);
+            private final Queue<ItemStack> itemsLeft = outputItems;
 
             @Override
             public boolean isEmpty()
@@ -171,7 +170,7 @@ public class SimplePotRecipe implements IPotRecipe
             HashSet<Ingredient> ingredients = new HashSet<>(5);
             json.getAsJsonArray("ingredients").forEach(i -> ingredients.add(Ingredient.fromJson(i)));
 
-            NonNullList<ItemStack> outputs = NonNullList.create();
+            LinkedList<ItemStack> outputs = new LinkedList<>();
             json.getAsJsonArray("outputs").forEach(i -> outputs.add(ShapedRecipe.itemFromJson(i.getAsJsonObject())));
 
             FluidStack input = FluidStack.CODEC.decode(JsonOps.INSTANCE, json.get("fluidInput")).getOrThrow(false, null).getFirst();
@@ -191,7 +190,7 @@ public class SimplePotRecipe implements IPotRecipe
             for (int i = 0; i < inputCount; i++)
                 ingredients.add(Ingredient.fromNetwork(buffer));
 
-            NonNullList<ItemStack> outputs = NonNullList.create();
+            LinkedList<ItemStack> outputs = new LinkedList<>();
             int outputCount = buffer.readInt();
             for (int i = 0; i < outputCount; i++)
                 outputs.add(buffer.readItem());
@@ -223,17 +222,7 @@ public class SimplePotRecipe implements IPotRecipe
 
         protected interface Factory<SimplePotRecipe>
         {
-            SimplePotRecipe create(ResourceLocation id, HashSet<Ingredient> inputItems, NonNullList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration);
+            SimplePotRecipe create(ResourceLocation id, HashSet<Ingredient> inputItems, LinkedList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration);
         }
-    }
-
-    private static Queue<ItemStack> copyListToQueue(NonNullList<ItemStack> list)
-    {
-        Queue<ItemStack> queue = new LinkedList<>();
-        for (ItemStack i : list)
-        {
-            queue.add(i.copy());
-        }
-        return queue;
     }
 }

@@ -1,10 +1,10 @@
-package net.dries007.tfc.common.blocks.fruit_tree;
+package net.dries007.tfc.common.blocks.fruittree;
 
-import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
-import net.dries007.tfc.common.blocks.berry_bush.BerryBush;
+import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
+import net.dries007.tfc.common.blocks.berrybush.BerryBush;
 import net.dries007.tfc.common.items.TFCItems;
 
-import static net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock.Lifecycle.*;
+import static net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock.Lifecycle.*;
 
 public class FruitTree
 {

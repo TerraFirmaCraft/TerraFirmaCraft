@@ -88,20 +88,13 @@ public class HeatingRecipe extends SimpleItemRecipe
 
     public static class Serializer extends RecipeSerializer<HeatingRecipe>
     {
-        private final HeatingRecipe.Serializer.Factory<HeatingRecipe> factory;
-
-        public Serializer(HeatingRecipe.Serializer.Factory<HeatingRecipe> factory)
-        {
-            this.factory = factory;
-        }
-
         @Override
         public HeatingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
             ItemStack stack = ShapedRecipe.itemFromJson(json.getAsJsonObject("result"));
             float temp = JSONUtils.getAsFloat(json, "temperature");
-            return factory.create(recipeId, ingredient, stack, temp);
+            return new HeatingRecipe(recipeId, ingredient, stack, temp);
         }
 
         @Nullable
@@ -111,7 +104,7 @@ public class HeatingRecipe extends SimpleItemRecipe
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack stack = buffer.readItem();
             float temp = buffer.readFloat();
-            return factory.create(recipeId, ingredient, stack, temp);
+            return new HeatingRecipe(recipeId, ingredient, stack, temp);
         }
 
         @Override
@@ -120,11 +113,6 @@ public class HeatingRecipe extends SimpleItemRecipe
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
             buffer.writeFloat(recipe.getTemperature());
-        }
-
-        protected interface Factory<HeatingRecipe>
-        {
-            HeatingRecipe create(ResourceLocation id, Ingredient ingredient, ItemStack stack, float temperature);
         }
     }
 }

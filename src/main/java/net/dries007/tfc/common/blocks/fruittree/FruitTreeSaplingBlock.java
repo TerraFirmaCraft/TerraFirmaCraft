@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.fruit_tree;
+package net.dries007.tfc.common.blocks.fruittree;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -30,7 +30,7 @@ import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.berry_bush.AbstractBerryBushBlock;
+import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;

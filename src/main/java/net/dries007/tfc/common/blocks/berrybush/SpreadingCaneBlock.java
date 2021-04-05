@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.blocks.berry_bush;
+package net.dries007.tfc.common.blocks.berrybush;
 
 import java.util.Random;
 import java.util.function.Supplier;

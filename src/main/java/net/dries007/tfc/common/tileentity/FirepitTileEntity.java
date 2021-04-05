@@ -2,6 +2,7 @@ package net.dries007.tfc.common.tileentity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import javax.annotation.Nullable;
 
@@ -21,6 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.FirepitContainer;
@@ -145,9 +147,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
                     {
                         inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
                         needsSlotUpdate = true;
-                        Fuel fuel = FuelManager.get(stack);
-                        if (fuel != null)
+                        Optional<Fuel> optionalFuel = FuelManager.get(stack);
+                        if (optionalFuel.isPresent())
                         {
+                            Fuel fuel = optionalFuel.get();
                             burnTicks += fuel.getDuration();
                             burnTemperature = fuel.getTemperature();
                         }
@@ -190,9 +193,10 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         for (int i = SLOT_FUEL_CONSUME; i <= SLOT_FUEL_INPUT; i++)
         {
             ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = FuelManager.get(fuelStack);
-            if (fuel != null) // will always be true
+            Optional<Fuel> optionalFuel = FuelManager.get(fuelStack);
+            if (optionalFuel.isPresent())
             {
+                Fuel fuel = optionalFuel.get();
                 inventory.setStackInSlot(i, ItemStack.EMPTY);
                 if (fuel.getDuration() > deltaPlayerTicks)
                 {
@@ -380,7 +384,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         switch (slot)
         {
             case SLOT_FUEL_INPUT:
-                return FuelManager.isFirepitFuel(stack);
+                return FuelManager.get(stack).isPresent() && stack.getItem().is(TFCTags.Items.FIREPIT_FUEL);
             case SLOT_ITEM_INPUT:
                 return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
             case SLOT_OUTPUT_1:

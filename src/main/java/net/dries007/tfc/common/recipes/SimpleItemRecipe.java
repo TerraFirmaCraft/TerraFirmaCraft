@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 /**
  * Handling for simple Ingredient -> ItemStack recipes
  */
-public abstract class SimpleItemRecipe implements IItemRecipe
+public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 {
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
