@@ -16,15 +16,12 @@
                   "state": {
                     "Name": "tfc:groundcover/podzol",
                     "Properties": {
-                      "facing": "north",
                       "fluid": "empty"
                     }
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:groundcover/podzol",
-                  "property": "facing"
+                  "type": "minecraft:simple_block_placer"
                 },
                 "whitelist": [],
                 "blacklist": [],

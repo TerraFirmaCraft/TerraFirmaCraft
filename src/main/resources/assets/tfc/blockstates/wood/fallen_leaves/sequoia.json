@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/wood/fallen_leaves/sequoia",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/wood/fallen_leaves/sequoia"
-    },
-    "facing=south": {
-      "model": "tfc:block/wood/fallen_leaves/sequoia",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/wood/fallen_leaves/sequoia",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/wood/fallen_leaves/sequoia",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/wood/fallen_leaves/sequoia"
+      },
+      {
+        "model": "tfc:block/wood/fallen_leaves/sequoia",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/wood/fallen_leaves/sequoia",
+        "y": 270
+      }
+    ]
   }
 }

@@ -100,8 +100,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         final BlockState state = indicator.getStateToGenerate(random);
                         if (stateAt.isAir() && state.canSurvive(world, mutablePos))
                         {
-                            // todo: this is dangerous directly setting the facing property. can this be just random from the indicator json?
-                            world.setBlock(mutablePos, state.setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)), 3);
+                            world.setBlock(mutablePos, state, 3);
                             //world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
                         }
                     }

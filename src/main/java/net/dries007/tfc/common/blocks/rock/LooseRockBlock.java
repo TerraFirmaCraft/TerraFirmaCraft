@@ -10,14 +10,24 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -39,15 +49,24 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
-    @Nonnull
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        BlockState stateAt = context.getLevel().getBlockState(context.getClickedPos());
-        if (stateAt.is(this))
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() == this.asItem())
         {
-            return stateAt.setValue(COUNT, Math.min(3, stateAt.getValue(COUNT) + 1));
+            if (!worldIn.isClientSide() && handIn == Hand.MAIN_HAND && state.is(this.getBlock()))
+            {
+                int count = state.getValue(COUNT);
+                if (count < 3)
+                {
+                    worldIn.setBlockAndUpdate(pos, state.setValue(COUNT, count + 1));
+                    stack.shrink(1);
+                    return ActionResultType.SUCCESS;
+                }
+            }
+            return ActionResultType.PASS;
         }
-        return super.getStateForPlacement(context);
+        return super.use(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override

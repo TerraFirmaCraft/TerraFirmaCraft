@@ -16,15 +16,12 @@
                   "state": {
                     "Name": "tfc:groundcover/dead_grass",
                     "Properties": {
-                      "facing": "north",
                       "fluid": "empty"
                     }
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:groundcover/dead_grass",
-                  "property": "facing"
+                  "type": "minecraft:simple_block_placer"
                 },
                 "whitelist": [
                   "tfc:grass/silt",
