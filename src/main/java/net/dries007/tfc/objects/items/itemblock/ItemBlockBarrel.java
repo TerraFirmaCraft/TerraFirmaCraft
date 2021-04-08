@@ -228,6 +228,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
          */
         public void setBarrelContents(@Nullable FluidStack fluidStack, @Nullable NBTTagCompound inventoryTag, @Nullable NBTTagList surplusTag, long sealedTick, long sealedCalendarTick)
         {
+            this.fill(fluidStack, true);
             NBTTagCompound nbt = container.getTagCompound();
             if (nbt == null)
             {
@@ -244,7 +245,6 @@ public class ItemBlockBarrel extends ItemBlockTFC
             nbt.setLong("sealedTick", sealedTick);
             nbt.setLong("sealedCalendarTick", sealedCalendarTick);
             container.setTagCompound(nbt);
-            this.fill(fluidStack, true);
         }
 
         /**
