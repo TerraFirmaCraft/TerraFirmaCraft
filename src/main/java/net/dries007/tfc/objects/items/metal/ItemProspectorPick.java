@@ -75,7 +75,13 @@ public class ItemProspectorPick extends ItemMetalTool
                 player.getHeldItem(hand).damageItem(1, player);
                 player.getCooldownTracker().setCooldown(this, COOLDOWN);
 
-                RANDOM.setSeed(pos.toLong());
+                /**
+                 * We fix a terrible case of Random seeding with dx,dy=0 and small dz resulting in issue #1736
+                 * where propick false negatives were rows in the z-axis, especially at 0 skill. setSeed() only uses 48 bits
+                 * of pos.toLong(). Solved this by multiplying coordinates by primes and XOR's results. Verified produces
+                 * more "random" results.
+                 */
+                RANDOM.setSeed((pos.getX() * 92853) ^ (pos.getY() * 1959302) ^ (pos.getZ() * 2839402));
                 ItemStack targetStack = getOreStack(worldIn, pos, state, false);
                 if (!targetStack.isEmpty())
                 {
