@@ -44,7 +44,6 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 public class GroundcoverBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     public static final VoxelShape FLAT = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
     public static final VoxelShape SMALL = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
@@ -77,7 +76,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         this.shape = shape;
         this.pickBlock = pickBlock;
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Nonnull
@@ -86,7 +85,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     {
         final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 
-        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState state = defaultBlockState();
         if (getFluidProperty().canContain(fluidState.getType()))
         {
             return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
@@ -97,7 +96,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, getFluidProperty());
+        builder.add(getFluidProperty());
     }
 
     @Override

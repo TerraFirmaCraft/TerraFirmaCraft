@@ -170,9 +170,7 @@ public class ForestFeature extends Feature<ForestConfig>
                 mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
                 if ((worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
                 {
-                    setBlock(worldIn, mutablePos, setState
-                        .setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType()))
-                        .setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)));
+                    setBlock(worldIn, mutablePos, setState.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType())));
                 }
             }
         }

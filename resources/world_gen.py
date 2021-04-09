@@ -410,27 +410,27 @@ def generate(rm: ResourceManager):
     raw = ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
     grass = ['tfc:grass/%s' % soil for soil in SOIL_BLOCK_VARIANTS]
 
-    rm.feature('driftwood', wg.configure_decorated(simple_patch_feature('tfc:groundcover/driftwood[facing=north,fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 50, 200, 500)))
-    rm.feature('clam', wg.configure_decorated(simple_patch_feature('tfc:groundcover/clam[facing=north,fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-50, 22, 10, 450)))
-    rm.feature('mollusk', wg.configure_decorated(simple_patch_feature('tfc:groundcover/mollusk[facing=north,fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 30, 150, 500)))
-    rm.feature('mussel', wg.configure_decorated(simple_patch_feature('tfc:groundcover/mussel[facing=north,fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(10, 50, 100, 500)))
+    rm.feature('driftwood', wg.configure_decorated(simple_patch_feature('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 50, 200, 500)))
+    rm.feature('clam', wg.configure_decorated(simple_patch_feature('tfc:groundcover/clam[fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-50, 22, 10, 450)))
+    rm.feature('mollusk', wg.configure_decorated(simple_patch_feature('tfc:groundcover/mollusk[fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(-10, 30, 150, 500)))
+    rm.feature('mussel', wg.configure_decorated(simple_patch_feature('tfc:groundcover/mussel[fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(6), 'minecraft:square', decorate_climate(10, 50, 100, 500)))
 
-    rm.feature('sticks_shore', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick[facing=north,fluid=empty]', 1, 15, 25, sand + gravel, True), decorate_chance(2), 'minecraft:square', decorate_climate(-50, 50, 100, 500)))
-    rm.feature('seaweed', wg.configure_decorated(simple_patch_feature('tfc:groundcover/seaweed[facing=north,fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(5), 'minecraft:square', decorate_climate(-20, 50, 150, 500)))
+    rm.feature('sticks_shore', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick[fluid=empty]', 1, 15, 25, sand + gravel, True), decorate_chance(2), 'minecraft:square', decorate_climate(-50, 50, 100, 500)))
+    rm.feature('seaweed', wg.configure_decorated(simple_patch_feature('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 10, sand + gravel, True), decorate_chance(5), 'minecraft:square', decorate_climate(-20, 50, 150, 500)))
 
     # Forest Only
-    rm.feature('sticks_forest', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick[facing=north,fluid=empty]', 1, 15, 20), decorate_chance(3), 'minecraft:square', decorate_climate(-20, 50, 70, 500, True)))
-    rm.feature('pinecone', wg.configure_decorated(simple_patch_feature('tfc:groundcover/pinecone[facing=north,fluid=empty]', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 33, 200, 500, True)))
-    rm.feature('podzol', wg.configure_decorated(simple_patch_feature('tfc:groundcover/podzol[facing=north,fluid=empty]', 1, 5, 100), decorate_chance(5), 'minecraft:square', decorate_climate(8, 20, 180, 420, True, fuzzy=True)))
-    rm.feature('salt_lick', wg.configure_decorated(simple_patch_feature('tfc:groundcover/salt_lick[facing=north,fluid=empty]', 1, 5, 100, raw), decorate_chance(110), 'minecraft:square', decorate_climate(5, 33, 100, 500, True)))
-    rm.feature('dead_grass', wg.configure_decorated(simple_patch_feature('tfc:groundcover/dead_grass[facing=north,fluid=empty]', 1, 5, 100, grass), decorate_chance(70), 'minecraft:square', decorate_climate(10, 20, 0, 150, True, fuzzy=True)))
+    rm.feature('sticks_forest', wg.configure_decorated(simple_patch_feature('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), 'minecraft:square', decorate_climate(-20, 50, 70, 500, True)))
+    rm.feature('pinecone', wg.configure_decorated(simple_patch_feature('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 33, 200, 500, True)))
+    rm.feature('podzol', wg.configure_decorated(simple_patch_feature('tfc:groundcover/podzol[fluid=empty]', 1, 5, 100), decorate_chance(5), 'minecraft:square', decorate_climate(8, 20, 180, 420, True, fuzzy=True)))
+    rm.feature('salt_lick', wg.configure_decorated(simple_patch_feature('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100, raw), decorate_chance(110), 'minecraft:square', decorate_climate(5, 33, 100, 500, True)))
+    rm.feature('dead_grass', wg.configure_decorated(simple_patch_feature('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100, grass), decorate_chance(70), 'minecraft:square', decorate_climate(10, 20, 0, 150, True, fuzzy=True)))
 
     # Loose Rocks - Both Surface + Underground
     rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', 'minecraft:top_solid_heightmap'))
 
     # Underground decoration
     rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, 12, 90)))
-    rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[facing=north,fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
+    rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
 
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
@@ -580,11 +580,11 @@ def plant_feature(block: str, vertical_spread: int, horizontal_spread: int, coun
 
 
 def simple_patch_feature(block: str, vertical_spread: int, horizontal_spread: int, count: int = None, whitelist: List[Any] = None, water_agnostic: bool = False):
-    return random_patch(wg.block_state(block), random_property_placer(block, 'facing'), vertical_spread, horizontal_spread, count, target='both' if water_agnostic else 'air', project='sea' if water_agnostic else 'land', whitelist=whitelist)
+    return random_patch(wg.block_state(block), {'type': 'minecraft:simple_block_placer'}, vertical_spread, horizontal_spread, count, target='both' if water_agnostic else 'air', project='sea' if water_agnostic else 'land', whitelist=whitelist)
 
 
 def cave_patch_feature(block: str, vertical_spread: int, horizontal_spread: int, count: Optional[int] = None) -> Dict[str, Any]:
-    return random_patch(wg.block_state(block), random_property_placer(block, 'facing'), vertical_spread, horizontal_spread, count, False, project=False, only_underground=True)
+    return random_patch(wg.block_state(block), {'type': 'minecraft:simple_block_placer'}, vertical_spread, horizontal_spread, count, False, project=False, only_underground=True)
 
 
 def random_patch(state_provider: Union[str, Dict[str, Any]], block_placer: Dict[str, Any], vertical_spread: int, horizontal_spread: int, count: int, use_density: bool = False, target: Union[Literal['air', 'water', 'both', 'emergent'], str] = 'air', project: Union[Literal['sea', 'land', False], str] = 'land', only_underground: bool = False, blacklist: Optional[List[str]] = None, whitelist: Optional[List[str]] = None) -> Dict[str, Any]:

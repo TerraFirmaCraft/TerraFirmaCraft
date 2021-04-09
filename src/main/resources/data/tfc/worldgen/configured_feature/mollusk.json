@@ -16,15 +16,12 @@
                   "state": {
                     "Name": "tfc:groundcover/mollusk",
                     "Properties": {
-                      "facing": "north",
                       "fluid": "empty"
                     }
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:groundcover/mollusk",
-                  "property": "facing"
+                  "type": "minecraft:simple_block_placer"
                 },
                 "whitelist": [
                   "tfc:sand/brown",
