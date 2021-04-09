@@ -15,6 +15,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
  * Represents a wrapper around a context-sensitive block
  * For example, 'grass', which may be at time of placement, any variant of grass or sand depending on climate
  */
+@FunctionalInterface
 public interface ISurfaceState
 {
     BlockState state(RockData rockData, int x, int y, int z, float temperature, float rainfall, boolean salty);

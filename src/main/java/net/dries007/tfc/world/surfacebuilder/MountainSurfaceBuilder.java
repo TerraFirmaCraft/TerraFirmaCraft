@@ -33,15 +33,15 @@ public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
             float surfaceMaterialValue = surfaceMaterialNoise.noise(x, z) + 0.1f * context.getRandom().nextFloat() - 0.05f;
             if (surfaceMaterialValue > 0.3f)
             {
-                surfaceBuilder.apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);
             }
             else if (surfaceMaterialValue < -0.3f)
             {
-                surfaceBuilder.apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.RAW);
             }
             else
             {
-                surfaceBuilder.apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
             }
         }
         else

@@ -11,9 +11,7 @@ import java.util.Random;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -41,7 +39,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
         }
         else
         {
-            buildSandySurface(context, x, z, startHeight, noise, slope, config, temperature, rainfall, saltWater);
+            buildSandySurface(context, x, z, startHeight, temperature, rainfall, saltWater);
         }
     }
 
@@ -69,15 +67,12 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @SuppressWarnings("deprecation")
-    private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, double noise, double slope, SurfaceBuilderConfig config, float rainfall, float temperature, boolean saltWater)
+    private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, float rainfall, float temperature, boolean saltWater)
     {
         final BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int localX = x & 15;
         int localZ = z & 15;
-
-        boolean underwaterLayer = false;
-        ISurfaceState surfaceState = SurfaceStates.RAW;
 
         for (int y = startHeight; y >= 0; --y)
         {
@@ -97,16 +92,13 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
                     if (y < context.getSeaLevel() - 1)
                     {
                         context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, rainfall, temperature, saltWater);
-                        surfaceState = SurfaceStates.LOW_UNDERWATER;
-                        underwaterLayer = true;
                     }
                     else
                     {
                         context.setBlockState(pos, sandLayers[y % sandLayers.length]);
-                        surfaceState = SurfaceStates.RAW;
                     }
                 }
-                else if (surfaceDepth == 0)
+                else
                 {
                     // Underground layers
                     context.setBlockState(pos, SurfaceStates.RAW, rainfall, temperature, saltWater);

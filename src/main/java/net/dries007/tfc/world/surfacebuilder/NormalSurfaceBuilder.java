@@ -6,16 +6,11 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
 
@@ -29,11 +24,11 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderCo
     @Override
     public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
-        apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
+        apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
     }
 
     @SuppressWarnings("deprecation")
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
+    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
     {
         final BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
@@ -62,15 +57,31 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderCo
                     firstLayer = true;
                     if (y < context.getSeaLevel() - 1)
                     {
-                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 2, 0.1);
-                        context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, temperature, rainfall, saltWater);
+                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 2, 0.1, -1);
+                        if (surfaceDepth == -1)
+                        {
+                            surfaceDepth = 0;
+                            context.setBlockState(pos, SurfaceStates.WATER, temperature, rainfall, saltWater);
+                        }
+                        else
+                        {
+                            context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, temperature, rainfall, saltWater);
+                        }
                         surfaceState = SurfaceStates.TOP_UNDERWATER;
                         underwaterLayer = true;
                     }
                     else
                     {
-                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 3, 0);
-                        context.setBlockState(pos, topState, temperature, rainfall, saltWater);
+                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 3, 0, -1);
+                        if (surfaceDepth == -1)
+                        {
+                            surfaceDepth = 0;
+                            context.setBlockState(pos, Blocks.AIR.defaultBlockState());
+                        }
+                        else
+                        {
+                            context.setBlockState(pos, topState, temperature, rainfall, saltWater);
+                        }
                         surfaceState = midState;
                         underwaterLayer = false;
                     }
@@ -88,12 +99,12 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderCo
                             firstLayer = false;
                             if (underwaterLayer)
                             {
-                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 4, 0.4);
+                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 4, 0.4, 0);
                                 surfaceState = SurfaceStates.LOW_UNDERWATER;
                             }
                             else
                             {
-                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 7, 0.3);
+                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 7, 0.3, 0);
                                 surfaceState = underState;
                             }
                         }

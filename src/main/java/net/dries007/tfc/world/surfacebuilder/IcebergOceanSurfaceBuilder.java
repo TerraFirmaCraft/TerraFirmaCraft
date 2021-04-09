@@ -15,27 +15,23 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Modified from {@link net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
  */
-public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
+public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private PerlinNoiseGenerator icebergNoise;
     private PerlinNoiseGenerator icebergRoofNoise;
 
-    public FrozenUnderwaterSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public IcebergOceanSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
         super(codec);
     }
@@ -90,16 +86,20 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
         final int localZ = z & 15;
 
         ISurfaceState underState = SurfaceStates.LOW_UNDERWATER;
-        ISurfaceState topState = SurfaceStates.TOP_UNDERWATER;
-        int normalSurfaceDepth = 3;
-        int surfaceFlag = -1;
+        int surfaceDepth = -1;
         int currentSnowLayers = 0;
         int maximumSnowLayers = 2 + random.nextInt(4);
         int minimumSnowY = seaLevel + 18 + random.nextInt(10);
 
+        int surfaceY = 0;
+        boolean firstLayer = false;
+        ISurfaceState surfaceState = SurfaceStates.RAW;
+
         for (int y = Math.max(startHeight, (int) icebergMaxY + 1); y >= 0; --y)
         {
             mutablePos.set(localX, y, localZ);
+
+            // Place packed ice, both above and below water
             if (context.getBlockState(mutablePos).isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
             {
                 context.setBlockState(mutablePos, packedIce);
@@ -109,41 +109,53 @@ public class FrozenUnderwaterSurfaceBuilder extends SeededSurfaceBuilder<Surface
                 context.setBlockState(mutablePos, packedIce);
             }
 
+            // After iceberg placement, continue with standard surface builder replacements
             BlockState stateAt = context.getBlockState(mutablePos);
             if (stateAt.isAir())
             {
-                surfaceFlag = -1;
+                surfaceDepth = -1;
             }
-            else if (stateAt.getBlock() != context.getDefaultBlock().getBlock())
+            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
             {
-                // packed ice -> snow layers
-                if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
+                if (surfaceDepth == -1)
                 {
-                    context.setBlockState(mutablePos, snowBlock);
-                    ++currentSnowLayers;
+                    // Reached surface. Place top state and switch to subsurface layers
+                    surfaceY = y;
+                    firstLayer = true;
+                    surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 3, 0.1, 0);
+                    surfaceState = SurfaceStates.TOP_UNDERWATER;
+                    if (surfaceDepth > 0)
+                    {
+                        context.setBlockState(mutablePos, surfaceState, temperature, rainfall, saltWater);
+                    }
                 }
-                else if (stateAt.getBlock() == context.getDefaultFluid().getBlock())
+                else if (surfaceDepth > 0)
                 {
-                    // Default fluid
-
+                    // Subsurface layers
+                    surfaceDepth--;
+                    context.setBlockState(mutablePos, surfaceState, temperature, rainfall, saltWater);
+                    if (surfaceDepth == 0 && firstLayer)
+                    {
+                        // Next subsurface layer
+                        firstLayer = false;
+                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 7, 0.3, 0);
+                        surfaceState = underState;
+                    }
+                }
+                else if (surfaceDepth == 0)
+                {
+                    // Underground layers
+                    context.setBlockState(mutablePos, SurfaceStates.RAW, temperature, rainfall, saltWater);
                 }
             }
-            else if (surfaceFlag == -1)
+            else if (stateAt.getBlock() == context.getDefaultFluid().getBlock())
             {
-                surfaceFlag = normalSurfaceDepth;
-                if (y >= seaLevel - 1)
-                {
-                    context.setBlockState(mutablePos, topState, temperature, rainfall, saltWater);
-                }
-                else
-                {
-                    context.setBlockState(mutablePos, underState, temperature, rainfall, saltWater);
-                }
+                context.setBlockState(mutablePos, SurfaceStates.WATER, temperature, rainfall, saltWater);
             }
-            else if (surfaceFlag > 0)
+            else if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
             {
-                --surfaceFlag;
-                context.setBlockState(mutablePos, underState, temperature, rainfall, saltWater);
+                context.setBlockState(mutablePos, snowBlock);
+                ++currentSnowLayers;
             }
         }
     }

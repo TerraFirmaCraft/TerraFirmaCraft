@@ -28,11 +28,11 @@ public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConf
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
+            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
         }
         else
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
+            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
         }
     }
 
