@@ -6,12 +6,8 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import java.util.Random;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
@@ -28,28 +24,29 @@ public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
-        double heightNoise = noise * 3f + startHeight;
+        final NormalSurfaceBuilder surfaceBuilder = TFCSurfaceBuilders.NORMAL.get();
+        final double heightNoise = noise * 3f + startHeight;
         if (heightNoise > 130)
         {
-            float surfaceMaterialValue = surfaceMaterialNoise.noise(x, z) + 0.1f * random.nextFloat() - 0.05f;
+            float surfaceMaterialValue = surfaceMaterialNoise.noise(x, z) + 0.1f * context.getRandom().nextFloat() - 0.05f;
             if (surfaceMaterialValue > 0.3f)
             {
-                TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.COBBLE_COBBLE_RED_SAND_CONFIG.get());
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);
             }
             else if (surfaceMaterialValue < -0.3f)
             {
-                TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.CONFIG_GRAVEL);
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.RAW);
             }
             else
             {
-                TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.CONFIG_STONE);
+                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
             }
         }
         else
         {
-            TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.THIN.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.CONFIG_GRASS);
+            surfaceBuilder.apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
     }
 

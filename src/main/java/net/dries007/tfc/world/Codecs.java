@@ -49,10 +49,6 @@ public final class Codecs
     /**
      * Additional codecs for existing configs.
      */
-    public static final Codec<SurfaceBuilderConfig> LENIENT_SURFACE_BUILDER_CONFIG = RecordCodecBuilder.create(instance -> instance.group(
-        LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTopMaterial),
-        LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnderMaterial)
-    ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.defaultBlockState())));
 
     public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
 
