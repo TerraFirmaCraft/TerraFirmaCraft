@@ -6,11 +6,7 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import java.util.Random;
-
-import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
@@ -27,16 +23,16 @@ public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConf
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)
         {
-            TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SAND_CONFIG.get());
+            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
         }
         else
         {
-            TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SANDSTONE_CONFIG.get());
+            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
         }
     }
 

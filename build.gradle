@@ -169,6 +169,9 @@ license {
     exclude 'net/dries007/tfc/world/noise/NoiseUtil.java'
     exclude 'net/dries007/tfc/world/noise/OpenSimplex2D.java'
     exclude 'net/dries007/tfc/world/noise/OpenSimplex3D.java'
+
+    // From Overworld Two
+    exclude 'net/dries007/tfc/world/biome/BiomeCache.java'
 }
 
 // Puts the mod version into the jar for mods.toml to read from

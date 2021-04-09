@@ -11,9 +11,7 @@ import java.util.Random;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -32,16 +30,16 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
         float heightVariation = heightVariationNoise.noise(x, z);
         if (startHeight > heightVariation)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+            TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
         else
         {
-            buildSandySurface(random, chunkIn, x, z, startHeight, noise, defaultBlock, seaLevel, seed, config);
+            buildSandySurface(context, x, z, startHeight, temperature, rainfall, saltWater);
         }
     }
 
@@ -51,9 +49,10 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
         sandLayers = new BlockState[32];
 
         // Alternating red + brown sand layers
-        Random random = new Random(seed);
-        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().defaultBlockState();
-        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().defaultBlockState();
+        final Random random = new Random(seed);
+        final BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().defaultBlockState();
+        final BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().defaultBlockState();
+
         boolean state = random.nextBoolean();
         for (int i = 0; i < sandLayers.length; i++)
         {
@@ -68,54 +67,46 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @SuppressWarnings("deprecation")
-    private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, long seed, SurfaceBuilderConfig config)
+    private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, float rainfall, float temperature, boolean saltWater)
     {
-        // Lazy because this queries a noise layer
-        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
-
-        BlockState underState = config.getUnderMaterial();
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        final BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
-        int maxSurfaceDepth = (int) (noise / 3.0D + random.nextDouble() * 0.25D);
-        if (maxSurfaceDepth < 0)
-        {
-            maxSurfaceDepth = 0;
-        }
         int localX = x & 15;
         int localZ = z & 15;
 
         for (int y = startHeight; y >= 0; --y)
         {
             pos.set(localX, y, localZ);
-            BlockState stateAt = chunkIn.getBlockState(pos);
+            BlockState stateAt = context.getBlockState(pos);
             if (stateAt.isAir())
             {
                 // Reached air, reset surface depth
                 surfaceDepth = -1;
             }
-            else if (stateAt.getBlock() == defaultBlock.getBlock())
+            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
             {
                 if (surfaceDepth == -1)
                 {
                     // Reached surface. Place top state and switch to subsurface layers
-                    surfaceDepth = maxSurfaceDepth;
-                    if (y < seaLevel - 1)
+                    surfaceDepth = 0;
+                    if (y < context.getSeaLevel() - 1)
                     {
-                        underState = underWaterConfig.get().getUnderwaterMaterial();
+                        context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, rainfall, temperature, saltWater);
                     }
                     else
                     {
-                        underState = sandLayers[y % sandLayers.length];
+                        context.setBlockState(pos, sandLayers[y % sandLayers.length]);
                     }
-
-                    chunkIn.setBlockState(pos, underState, false);
                 }
-                else if (surfaceDepth > 0)
+                else
                 {
-                    // Subsurface layers
-                    surfaceDepth--;
-                    chunkIn.setBlockState(pos, underState, false);
+                    // Underground layers
+                    context.setBlockState(pos, SurfaceStates.RAW, rainfall, temperature, saltWater);
                 }
+            }
+            else // Default fluid
+            {
+                context.setBlockState(pos, SurfaceStates.WATER, rainfall, temperature, saltWater);
             }
         }
     }

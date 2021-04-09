@@ -6,20 +6,15 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
 
-public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
+public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderConfig>
 {
     public NormalSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
@@ -27,58 +22,103 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
     {
-        // Lazy because this queries a noise layer
-        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
+        apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
+    }
 
-        BlockState topState;
-        BlockState underState = config.getUnderMaterial();
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+    @SuppressWarnings("deprecation")
+    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
+    {
+        final BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
-        int maxSurfaceDepth = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
         int localX = x & 15;
         int localZ = z & 15;
+
+        int surfaceY = 0;
+        boolean underwaterLayer = false, firstLayer = false;
+        ISurfaceState surfaceState = SurfaceStates.RAW;
 
         for (int y = startHeight; y >= 0; --y)
         {
             pos.set(localX, y, localZ);
-            BlockState stateAt = chunkIn.getBlockState(pos);
+            BlockState stateAt = context.getBlockState(pos);
             if (stateAt.isAir())
             {
                 // Reached air, reset surface depth
                 surfaceDepth = -1;
             }
-            else if (stateAt.getBlock() == defaultBlock.getBlock())
+            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
             {
                 if (surfaceDepth == -1)
                 {
                     // Reached surface. Place top state and switch to subsurface layers
-                    surfaceDepth = maxSurfaceDepth;
-                    if (maxSurfaceDepth <= 0)
+                    surfaceY = y;
+                    firstLayer = true;
+                    if (y < context.getSeaLevel() - 1)
                     {
-                        topState = Blocks.AIR.defaultBlockState();
-                        underState = defaultBlock;
-                    }
-                    else if (y < seaLevel - 1)
-                    {
-                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
+                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 2, 0.1, -1);
+                        if (surfaceDepth == -1)
+                        {
+                            surfaceDepth = 0;
+                            context.setBlockState(pos, SurfaceStates.WATER, temperature, rainfall, saltWater);
+                        }
+                        else
+                        {
+                            context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, temperature, rainfall, saltWater);
+                        }
+                        surfaceState = SurfaceStates.TOP_UNDERWATER;
+                        underwaterLayer = true;
                     }
                     else
                     {
-                        topState = config.getTopMaterial();
-                        underState = config.getUnderMaterial();
+                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 3, 0, -1);
+                        if (surfaceDepth == -1)
+                        {
+                            surfaceDepth = 0;
+                            context.setBlockState(pos, Blocks.AIR.defaultBlockState());
+                        }
+                        else
+                        {
+                            context.setBlockState(pos, topState, temperature, rainfall, saltWater);
+                        }
+                        surfaceState = midState;
+                        underwaterLayer = false;
                     }
-
-                    chunkIn.setBlockState(pos, topState, false);
                 }
                 else if (surfaceDepth > 0)
                 {
                     // Subsurface layers
                     surfaceDepth--;
-                    chunkIn.setBlockState(pos, underState, false);
+                    context.setBlockState(pos, surfaceState, temperature, rainfall, saltWater);
+                    if (surfaceDepth == 0)
+                    {
+                        // Next subsurface layer
+                        if (firstLayer)
+                        {
+                            firstLayer = false;
+                            if (underwaterLayer)
+                            {
+                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 4, 0.4, 0);
+                                surfaceState = SurfaceStates.LOW_UNDERWATER;
+                            }
+                            else
+                            {
+                                surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 7, 0.3, 0);
+                                surfaceState = underState;
+                            }
+                        }
+                    }
                 }
+                else if (surfaceDepth == 0)
+                {
+                    // Underground layers
+                    context.setBlockState(pos, SurfaceStates.RAW, temperature, rainfall, saltWater);
+                }
+            }
+            else // Default fluid
+            {
+                context.setBlockState(pos, SurfaceStates.WATER, temperature, rainfall, saltWater);
             }
         }
     }
