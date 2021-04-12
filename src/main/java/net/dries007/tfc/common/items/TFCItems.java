@@ -19,15 +19,11 @@ import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.types.Metal;
-import net.dries007.tfc.common.types.Ore;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockCategory;
+import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.common.TFCItemGroup.FLORA;
-import static net.dries007.tfc.common.TFCItemGroup.MISC;
+import static net.dries007.tfc.common.TFCItemGroup.*;
 
 /**
  * Collection of all TFC items.
@@ -96,6 +92,11 @@ public final class TFCItems
 
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
+
+    //todo move to correct spot once bulk is merged
+    public static final Map<Wood.Default, RegistryObject<Item>> SUPPORTS = Helpers.mapOfKeys(Wood.Default.class, wood ->
+        register("wood/support/" + wood.name().toLowerCase(), () -> new WallOrFloorItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.VERTICAL_SUPPORT).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HORIZONTAL_SUPPORT).get(), new Item.Properties().tab(WOOD)))
+    );
 
     // Fluid Buckets
 

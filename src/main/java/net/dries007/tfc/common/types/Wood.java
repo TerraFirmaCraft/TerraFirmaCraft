@@ -15,12 +15,10 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.NonNullFunction;
 
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
-import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
-import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
-import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
+import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTree;
 
@@ -135,7 +133,9 @@ public class Wood
         STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
-        FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false);
+        FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
+        VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false);
 
         public static final BlockType[] VALUES = values();
 
@@ -161,6 +161,11 @@ public class Wood
         public String nameFor(Default wood)
         {
             return (isPlanksVariant ? "wood/planks/" + wood.name() + "_" + name().toLowerCase() : "wood/" + name() + "/" + wood.name()).toLowerCase();
+        }
+
+        public boolean needsItem()
+        {
+            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT;
         }
     }
 }

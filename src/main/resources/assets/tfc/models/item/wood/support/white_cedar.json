@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:wood/support/white_cedar_inventory",
+  "textures": {
+    "layer0": {
+      "texture": "tfc:block/wood/sheet/white_cedar"
+    }
+  }
+}

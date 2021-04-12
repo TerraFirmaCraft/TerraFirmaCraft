@@ -73,6 +73,14 @@ def generate(rm: ResourceManager):
     for color in SAND_BLOCK_TYPES:
         rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
 
+    for wood in WOODS:
+        rm.data(('tfc', 'supports', wood), {
+            'ingredient': 'tfc:wood/horizontal_support/%s' % wood,
+            'support_up': 1,
+            'support_down': 1,
+            'support_horizontal': 4
+        })
+
     # Forge you dingus, use vanilla tags
     rm.block_tag('forge:sand', '#minecraft:sand')
 

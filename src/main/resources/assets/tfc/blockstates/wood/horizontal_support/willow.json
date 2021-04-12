@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=z": {
+      "model": "tfc:block/wood/support/willow_horizontal"
+    },
+    "axis=x": {
+      "model": "tfc:block/wood/support/willow_horizontal",
+      "y": 90
+    }
+  }
+}
