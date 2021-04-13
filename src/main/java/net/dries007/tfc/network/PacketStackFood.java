@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -109,6 +110,12 @@ public class PacketStackFood implements IMessage
 
                     targetStack.setCount(currentAmount);
                     targetCap.setCreationDate(minCreationDate);
+
+                    // Laziest fix
+                    InventoryCrafting craftingInv = ((ContainerPlayer) player.openContainer).craftMatrix;
+                    for (int i = 0; i < craftingInv.getSizeInventory(); i++) {
+                        craftingInv.setInventorySlotContents(i, craftingInv.getStackInSlot(i));
+                    }
                 }
             });
             return null;
