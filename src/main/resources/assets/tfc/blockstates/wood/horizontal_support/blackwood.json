@@ -1,12 +1,45 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "axis=z": {
-      "model": "tfc:block/wood/support/blackwood_horizontal"
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/wood/support/blackwood_horizontal"
+      }
     },
-    "axis=x": {
-      "model": "tfc:block/wood/support/blackwood_horizontal",
-      "y": 90
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/support/blackwood_connection",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/support/blackwood_connection"
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/support/blackwood_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/support/blackwood_connection",
+        "y": 180
+      }
     }
-  }
+  ]
 }

@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/douglas_fir_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/douglas_fir"
-    }
-  }
+  "parent": "tfc:block/wood/support/douglas_fir_inventory"
 }

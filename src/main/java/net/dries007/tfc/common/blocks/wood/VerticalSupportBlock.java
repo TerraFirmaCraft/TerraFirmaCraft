@@ -41,7 +41,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     private static final BooleanProperty EAST = SixWayBlock.EAST;
     private static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
     private static final BooleanProperty WEST = SixWayBlock.WEST;
-    private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
+    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
         .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 
     private final ForgeBlockProperties properties;
@@ -123,7 +123,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        VoxelShape shape = VERTICAL_SHAPE;
+        VoxelShape shape = getMiddleShape();
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             if (state.getValue(PROPERTY_BY_DIRECTION.get(d)))
@@ -140,7 +140,12 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
         builder.add(NORTH, EAST, SOUTH, WEST);
     }
 
-    private VoxelShape shapeByDirection(Direction d)
+    protected VoxelShape getMiddleShape()
+    {
+        return VERTICAL_SHAPE;
+    }
+
+    protected static VoxelShape shapeByDirection(Direction d)
     {
         switch (d)
         {

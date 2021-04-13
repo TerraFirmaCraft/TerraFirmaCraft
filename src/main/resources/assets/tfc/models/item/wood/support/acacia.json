@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/acacia_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/acacia"
-    }
-  }
+  "parent": "tfc:block/wood/support/acacia_inventory"
 }

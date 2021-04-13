@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/blackwood_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/blackwood"
-    }
-  }
+  "parent": "tfc:block/wood/support/blackwood_inventory"
 }

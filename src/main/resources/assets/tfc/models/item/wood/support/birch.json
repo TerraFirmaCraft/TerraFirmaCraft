@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/birch_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/birch"
-    }
-  }
+  "parent": "tfc:block/wood/support/birch_inventory"
 }

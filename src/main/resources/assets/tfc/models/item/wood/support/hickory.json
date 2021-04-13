@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/hickory_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/hickory"
-    }
-  }
+  "parent": "tfc:block/wood/support/hickory_inventory"
 }

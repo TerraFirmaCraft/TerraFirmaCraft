@@ -1,9 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:wood/support/sycamore_inventory",
-  "textures": {
-    "layer0": {
-      "texture": "tfc:block/wood/sheet/sycamore"
-    }
-  }
+  "parent": "tfc:block/wood/support/sycamore_inventory"
 }
