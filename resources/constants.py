@@ -8,7 +8,7 @@ Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_tempe
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
 OreGrade = NamedTuple('OreGrade', weight=int)
-Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str])
+Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
@@ -163,9 +163,9 @@ ORE_GRADES: Dict[str, OreGrade] = {
 }
 
 
-def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None):
+def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0):
     # Factory method to allow default values
-    return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks)
+    return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height)
 
 
 ORE_VEINS: Dict[str, Vein] = {
@@ -193,7 +193,6 @@ ORE_VEINS: Dict[str, Vein] = {
     'surface_sphalerite': vein('sphalerite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
     'normal_tetrahedrite': vein('tetrahedrite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
     'surface_tetrahedrite': vein('tetrahedrite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
-
     'bituminous_coal': vein('bituminous_coal', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
     'lignite': vein('lignite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
     'kaolinite': vein('kaolinite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
@@ -204,12 +203,14 @@ ORE_VEINS: Dict[str, Vein] = {
     'sulfur': vein('sulfur', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive'], 'gypsum', 20, ['rhyolite']),
     'sylvite': vein('sylvite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['shale', 'claystone', 'chert']),
     'borax': vein('borax', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['slate']),
-    'gypsum': vein('gypsum', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['metamorphic']),
+    'gypsum': vein('gypsum', 'disc', 120, 20, 70, 120, 60, 0, 0, 0, ['metamorphic']),
     'lapis_lazuli': vein('lapis_lazuli', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['limestone', 'marble']),
-    'halite': vein('halite', 'disc', 120, 30, 80, 100, 80, 0, 0, 0, ['sedimentary']),
-
+    'halite': vein('halite', 'disc', 120, 30, 70, 120, 80, 0, 0, 0, ['sedimentary']),
     'diamond': vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
     'emerald': vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
+    'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 120, 150, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='volcanic', height=6),
+    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='lake', height=4),
+    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='lake', height=4)
 }
 
 ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
@@ -374,6 +375,8 @@ DEFAULT_LANG = {
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
     'tfc.commands.player.query_hunger': 'Hunger is %s',
     'tfc.commands.player.query_saturation': 'Saturation is %s',
+    'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
+    'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
 
     # ENUMS
 

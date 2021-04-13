@@ -20,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.command.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -55,6 +56,7 @@ public enum CacheInvalidationListener implements IFutureReloadListener
         }
 
         ChunkDataCache.clearAll();
+        LocateVeinCommand.clearCache();
     }
 
     @SuppressWarnings("unchecked")

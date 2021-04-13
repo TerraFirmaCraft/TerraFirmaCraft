@@ -11,7 +11,7 @@ from constants import *
 BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
 BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
 
-TEMPERATURES = (
+TEMPERATURES: Tuple[BiomeTemperature, ...] = (
     BiomeTemperature('frozen', 0, 3750089, 329011),
     BiomeTemperature('cold', 0.25, 4020182, 329011),
     BiomeTemperature('normal', 0.5, 4159204, 329011),
@@ -19,7 +19,7 @@ TEMPERATURES = (
     BiomeTemperature('warm', 1.0, 4445678, 270131)
 )
 
-RAINFALLS = (
+RAINFALLS: Tuple[BiomeRainfall, ...] = (
     BiomeRainfall('arid', 0),
     BiomeRainfall('dry', 0.2),
     BiomeRainfall('normal', 0.45),
@@ -150,10 +150,67 @@ def generate(rm: ResourceManager):
         'state': 'minecraft:lava'
     }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
 
-    # todo: this might be cool in cold mountain biomes, high altitude
-    rm.feature('ice_rivulet', wg.configure_decorated(wg.configure('tfc:rivulet', {
-        'state': 'minecraft:packed_ice'
-    }), decorate_chance(7), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    rm.feature('random_volcano_fissure', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {
+        'features': count_weighted_list(
+            ('tfc:topaz_volcano_fissure', 3),
+            ('tfc:kimberlite_volcano_fissure', 1),
+            ('tfc:volcano_fissure', 4)
+        )
+    })))
+
+    rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive', 'metamorphic'])
+    for ore in ('kimberlite', 'topaz', ''):
+        rm.feature(join_not_empty('_', ore, 'volcano_fissure'), wg.configure_decorated(wg.configure('tfc:fissure', {
+            'wall_state': 'tfc:rock/raw/basalt',
+            'fluid_state': 'minecraft:lava',
+            'count': 3,
+            'radius': 6,
+            'decoration': {
+                'blocks': [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
+                } for rock in rocks],
+                'radius': 3,
+                'count': 6,
+                'rarity': 3
+            }
+        }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
+
+    # six different variants: both filled + not, and both sapphire, emerald, and no decoration
+    for ore in ('sapphire', 'emerald', ''):
+        for variant, fill_state, count in (('empty', 'minecraft:air', 2), ('', 'tfc:fluid/spring_water', 5)):
+            rm.feature(join_not_empty('_', ore, variant, 'hot_spring'), wg.configure('tfc:hot_spring', {
+                'fluid_state': fill_state,
+                'radius': 14,
+                'decoration': {
+                    'blocks': [{
+                        'stone': ['tfc:rock/raw/%s' % rock],
+                        'ore': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
+                    } for rock in rocks],
+                    'radius': 5,
+                    'count': count,
+                    'rarity': 3
+                } if ore != '' else None
+            }))
+
+    rm.feature('random_empty_hot_spring', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {
+        'features': count_weighted_list(
+            ('tfc:sapphire_empty_hot_spring', 1),
+            ('tfc:emerald_empty_hot_spring', 1),
+            ('tfc:empty_hot_spring', 2)
+        )
+    }), 'minecraft:square', decorate_chance(70)))
+
+    rm.feature('random_active_hot_spring', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {
+        'features': count_weighted_list(
+            ('tfc:sapphire_empty_hot_spring', 1),
+            ('tfc:emerald_empty_hot_spring', 1),
+            ('tfc:empty_hot_spring', 2),
+            ('tfc:sapphire_hot_spring', 3),
+            ('tfc:emerald_hot_spring', 3),
+            ('tfc:hot_spring', 6)
+        )
+    }), 'minecraft:square', decorate_chance(50)))
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {
@@ -231,6 +288,19 @@ def generate(rm: ResourceManager):
             })
         return ore_blocks
 
+    def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
+        if biome_filter == 'lake':
+            return [{'category': 'lake'}]
+        elif biome_filter == 'volcanic':
+            return [
+                '%s_%s_%s' % (b, t.id, r.id)
+                for b in ('canyons', 'volcanic_mountains', 'volcanic_oceanic_mountains')
+                for t in TEMPERATURES
+                for r in RAINFALLS
+            ]
+        else:
+            return None
+
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
         rocks = expand_rocks(vein.rocks, vein_name)
@@ -252,7 +322,8 @@ def generate(rm: ResourceManager):
                         'block': 'tfc:ore/small_%s' % vein.ore
                     }]
                 },
-                'salt': vein_salt(vein_name)
+                'salt': vein_salt(vein_name),
+                'biomes': vein_biome_filter(vein.biomes)
             }))
         else:  # non-graded ore vein (mineral)
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
@@ -265,7 +336,8 @@ def generate(rm: ResourceManager):
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
                 } for rock in rocks],
-                'salt': vein_salt(vein_name)
+                'salt': vein_salt(vein_name),
+                'biomes': vein_biome_filter(vein.biomes)
             }))
 
     rm.feature(('vein', 'gravel'), wg.configure('tfc:cluster_vein', {
@@ -444,17 +516,17 @@ def generate(rm: ResourceManager):
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
             biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands', lake_features=False)
-            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:volcanic', boulders=True, lake_features=False, volcano_features=True)
-            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:normal', boulders=True, lake_features=False)
+            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:volcanic', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
+            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:normal', boulders=True, lake_features=False, hot_spring_features='empty')
             biome(rm, 'plains', temp, rain, 'plains', 'tfc:normal')
-            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True)
+            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True, hot_spring_features='empty')
             biome(rm, 'hills', temp, rain, 'plains', 'tfc:normal')
-            biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:normal', boulders=True)
+            biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:normal', boulders=True, hot_spring_features='empty')
             biome(rm, 'lake', temp, rain, 'river', 'tfc:normal', spawnable=False)
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:normal', lake_features=False)
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True)
-            biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True, hot_spring_features=True)
+            biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', hot_spring_features=True)
             biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True, ocean_carvers=True)
             biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
@@ -706,7 +778,7 @@ def decorate_count(count: int) -> Tuple[str, Dict[str, Any]]:
     return 'minecraft:count', {'count': count}
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
@@ -733,7 +805,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
+        ['tfc:vein/gravel', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
         [
             'tfc:cave_spike',
             'tfc:large_cave_spike',
@@ -751,6 +823,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # vegetal decoration
         ['tfc:surface_loose_rocks']  # top layer modification
     ]
+
     if boulders:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
         if rain.id in ('damp', 'wet'):
@@ -787,7 +860,13 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
 
     if volcano_features:
-        features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']
+        features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']
+
+    if hot_spring_features:  # can be True, 'empty'
+        if hot_spring_features == 'empty':
+            features[Decoration.SURFACE_STRUCTURES].append('tfc:random_empty_hot_spring')
+        else:
+            features[Decoration.SURFACE_STRUCTURES].append('tfc:random_active_hot_spring')
 
     if lake_features:
         features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
@@ -822,7 +901,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     )
 
 
-def expand_rocks(rocks_list: List, path: str) -> List[str]:
+def expand_rocks(rocks_list: List[str], path: Optional[str] = None) -> List[str]:
     rocks = []
     for rock_spec in rocks_list:
         if rock_spec in ROCKS:
@@ -830,5 +909,13 @@ def expand_rocks(rocks_list: List, path: str) -> List[str]:
         elif rock_spec in ROCK_CATEGORIES:
             rocks += [r for r, d in ROCKS.items() if d.category == rock_spec]
         else:
-            raise RuntimeError('Unknown rock or rock category specification: %s at %s' % (rock_spec, path))
+            raise RuntimeError('Unknown rock or rock category specification: %s at %s' % (rock_spec, path if path is not None else '??'))
     return rocks
+
+
+def join_not_empty(c: str, *elements: str) -> str:
+    return c.join((item for item in elements if item != ''))
+
+
+def count_weighted_list(*pairs: Tuple[Any, int]) -> List[Any]:
+    return [item for item, count in pairs for _ in range(count)]

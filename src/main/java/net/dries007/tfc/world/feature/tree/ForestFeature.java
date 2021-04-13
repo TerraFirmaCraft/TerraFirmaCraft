@@ -13,7 +13,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -24,7 +23,7 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -161,16 +160,19 @@ public class ForestFeature extends Feature<ForestConfig>
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
         {
-            BlockState leafState = entry.getFallenLeaves();
-            BlockState twigState = entry.getTwig();
+            final BlockState leafState = entry.getFallenLeaves();
+            final BlockState twigState = entry.getTwig();
             for (int j = 0; j < tries; ++j)
             {
-                BlockState setState = random.nextInt(2) == 1 ? leafState : twigState;
+                BlockState placementState = random.nextInt(2) == 1 ? leafState : twigState;
+
                 mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
                 mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
-                if ((worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
+
+                placementState = FluidHelpers.fillWithFluid(placementState, worldIn.getFluidState(mutablePos).getType());
+                if (placementState != null && (worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
                 {
-                    setBlock(worldIn, mutablePos, setState.setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType())));
+                    setBlock(worldIn, mutablePos, placementState);
                 }
             }
         }

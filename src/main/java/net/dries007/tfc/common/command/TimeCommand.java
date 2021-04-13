@@ -62,7 +62,7 @@ public final class TimeCommand
                 )
                 .then(Commands.literal("days")
                     .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * ICalendar.TICKS_IN_DAY))
+                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * (long) ICalendar.TICKS_IN_DAY))
                     )
                 )
                 .then(Commands.literal("ticks")

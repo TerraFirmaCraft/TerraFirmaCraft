@@ -12,7 +12,6 @@ import java.util.Random;
 import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.gen.area.IAreaFactory;
-import net.minecraft.world.gen.area.LazyArea;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
