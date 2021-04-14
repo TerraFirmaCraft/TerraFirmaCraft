@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
@@ -18,7 +19,7 @@ import net.dries007.tfc.common.container.LogPileContainer;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class LogPileTileEntity extends InventoryTileEntity
+public class LogPileTileEntity extends InventoryTileEntity implements INamedContainerProvider
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.log_pile");
 
@@ -47,6 +48,12 @@ public class LogPileTileEntity extends InventoryTileEntity
     {
         isContainerOpen = nbt.getBoolean("isContainerOpen");
         return super.save(nbt);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return customName != null ? customName : defaultName;
     }
 
     @Override

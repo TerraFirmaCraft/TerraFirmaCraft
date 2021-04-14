@@ -1,11 +1,12 @@
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
-public abstract class TickableInventoryTileEntity extends InventoryTileEntity implements ITickableTileEntity
+public abstract class TickableInventoryTileEntity extends InventoryTileEntity implements ITickableTileEntity, INamedContainerProvider
 {
     protected boolean needsClientUpdate;
 
@@ -17,6 +18,12 @@ public abstract class TickableInventoryTileEntity extends InventoryTileEntity im
     public TickableInventoryTileEntity(TileEntityType<?> type, ItemStackHandler inventory, ITextComponent defaultName)
     {
         super(type, inventory, defaultName);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return customName != null ? customName : defaultName;
     }
 
     @Override

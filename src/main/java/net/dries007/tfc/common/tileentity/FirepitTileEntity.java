@@ -91,7 +91,7 @@ public class FirepitTileEntity extends TickableInventoryTileEntity implements IC
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
         updateCache();
-        if (nbt.hasUUID("leftover"))
+        if (nbt.contains("leftover"))
         {
             ListNBT surplusItems = nbt.getList("leftover", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < surplusItems.size(); i++)

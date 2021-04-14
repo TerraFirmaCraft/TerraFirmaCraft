@@ -60,7 +60,7 @@ public class PotTileEntity extends FirepitTileEntity
     public void load(BlockState state, CompoundNBT nbt)
     {
         tank.readFromNBT(nbt.getCompound("tank"));
-        if (nbt.hasUUID("output"))
+        if (nbt.contains("output"))
             output.deserializeNBT(nbt);
         boilingTicks = nbt.getInt("boilingTicks");
         super.load(state, nbt);

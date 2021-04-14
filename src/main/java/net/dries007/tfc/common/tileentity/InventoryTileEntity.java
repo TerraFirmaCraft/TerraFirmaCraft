@@ -23,7 +23,7 @@ import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.container.ItemStackHandlerCallback;
 import net.dries007.tfc.util.Helpers;
 
-public abstract class InventoryTileEntity extends TFCTileEntity implements INamedContainerProvider, ISlotCallback, IClearable
+public abstract class InventoryTileEntity extends TFCTileEntity implements ISlotCallback, IClearable
 {
     protected final ItemStackHandler inventory;
     protected final LazyOptional<IItemHandler> inventoryCapability;
@@ -45,12 +45,6 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
         this.inventory = inventory;
         this.inventoryCapability = LazyOptional.of(() -> inventory);
         this.defaultName = defaultName;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return customName != null ? customName : defaultName;
     }
 
     @Nullable
@@ -112,6 +106,7 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
         {
             Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i));
         }
+        inventoryCapability.invalidate();
     }
 
     @Override
@@ -123,16 +118,5 @@ public abstract class InventoryTileEntity extends TFCTileEntity implements IName
     public boolean canInteractWith(PlayerEntity player)
     {
         return true;
-    }
-
-    public void onReplaced()
-    {
-        inventoryCapability.invalidate();
-    }
-
-    @Override
-    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_)
-    {
-        return null;
     }
 }
