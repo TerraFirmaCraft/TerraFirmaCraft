@@ -1,5 +1,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -8,8 +9,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
@@ -18,11 +22,12 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 
 public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockProperties
 {
-    private static final VoxelShape CORE = box(5.0D, 10.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+    private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
 
     public HorizontalSupportBlock(ForgeBlockProperties properties)
     {
         super(properties);
+        SHAPE_BY_STATE = makeShapes(box(5.0D, 10.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
     }
 
     @Override
@@ -56,7 +61,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
                 {
                     worldIn.setBlock(mutablePos, defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(d), true).setValue(PROPERTY_BY_DIRECTION.get(d.getOpposite()), true), 2);
                     mutablePos.move(Direction.DOWN);
-                    worldIn.getBlockTicks().scheduleTick(mutablePos, worldIn.getBlockState(mutablePos).getBlock(), 3);
+                    worldIn.getLiquidTicks().scheduleTick(mutablePos, worldIn.getFluidState(mutablePos).getType(), 3);
                 }
             }
         }
@@ -82,13 +87,35 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         return stateIn;
     }
 
+    /**
+     *  In 1.16 canPlaceBlockOnSide is no longer a thing, instead we use this to trick ItemBlock into not placing in invalid conditions.
+     *  This eliminates cases of placing and then immediately breaking.
+     */
     @Override
-    protected VoxelShape getMiddleShape()
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return CORE;
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            if (getHorizontalDistance(d, worldIn, pos) > 0) // we found a pole it could connect to
+            {
+                if (worldIn.getBlockState(pos.relative(d.getOpposite())).is(TFCTags.Blocks.SUPPORT_BEAM))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    private int getHorizontalDistance(Direction d, IWorld world, BlockPos pos)
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        VoxelShape shape = SHAPE_BY_STATE.get(state);
+        if (shape != null) return shape;
+        throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
+    }
+
+    private int getHorizontalDistance(Direction d, IWorldReader world, BlockPos pos)
     {
         int distance = -1;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
