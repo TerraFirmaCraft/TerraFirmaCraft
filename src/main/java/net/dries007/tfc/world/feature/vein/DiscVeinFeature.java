@@ -25,7 +25,7 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     @Override
     protected float getChanceToGenerate(int x, int y, int z, DiscVein vein, DiscVeinConfig config)
     {
-        if (Math.abs(y) * 2 <= config.getHeight())
+        if (Math.abs(y) <= config.getHeight())
         {
             return vein.metaballs.noise(x, z) * config.getDensity();
         }

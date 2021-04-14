@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.world.feature.vein;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
@@ -17,8 +16,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.FastRandom;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraftforge.common.util.Lazy;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -39,7 +41,11 @@ public class VeinConfig implements IFeatureConfig
         Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
         Codec.intRange(0, 256).optionalFieldOf("min_y", 16).forGetter(VeinConfig::getMinY),
         Codec.intRange(0, 256).optionalFieldOf("max_y", 128).forGetter(VeinConfig::getMaxY),
-        Codec.LONG.optionalFieldOf("salt").forGetter(c -> Optional.of(c.salt))
+        Codec.LONG.optionalFieldOf("salt").forGetter(c -> Optional.of(c.salt)),
+        Codec.either(
+            Biome.Category.CODEC.fieldOf("category").codec(),
+            Biome.CODEC
+        ).listOf().optionalFieldOf("biomes", new ArrayList<>()).forGetter(c -> c.biomeFilter)
     ).apply(instance, VeinConfig::new));
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
@@ -52,13 +58,15 @@ public class VeinConfig implements IFeatureConfig
     private final int minY;
     private final int maxY;
     private final long salt;
+    private final List<Either<Biome.Category, Supplier<Biome>>> biomeFilter;
+    private final Lazy<Predicate<Supplier<Biome>>> resolvedBiomeFilter;
 
     protected VeinConfig(VeinConfig other)
     {
-        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt));
+        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt), other.biomeFilter);
     }
 
-    protected VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt)
+    protected VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt, List<Either<Biome.Category, Supplier<Biome>>> biomeFilter)
     {
         this.states = states;
         this.indicator = indicator.orElse(null);
@@ -74,6 +82,29 @@ public class VeinConfig implements IFeatureConfig
             seed = FastRandom.next(seed, rarity);
             seed = FastRandom.next(seed, rarity);
             return seed;
+        });
+        this.biomeFilter = biomeFilter;
+        this.resolvedBiomeFilter = Lazy.of(() -> {
+            // This filter checks both categories and biomes in a containing hash set
+            // However, if there's no filter to be found, then importantly, we DO NOT RESOLVE the provided supplier
+            // This is important, as it is an expensive operation that need not be applied if not necessary
+            if (biomeFilter.isEmpty())
+            {
+                return supplier -> true;
+            }
+            else
+            {
+                final Set<Biome.Category> categories = new HashSet<>();
+                final Set<Biome> biomes = new HashSet<>();
+                for (Either<Biome.Category, Supplier<Biome>> either : biomeFilter)
+                {
+                    either.map(categories::add, b -> biomes.add(b.get()));
+                }
+                return supplier -> {
+                    final Biome biome = supplier.get();
+                    return categories.contains(biome.getBiomeCategory()) || biomes.contains(biome);
+                };
+            }
         });
     }
 
@@ -91,6 +122,11 @@ public class VeinConfig implements IFeatureConfig
             return weighted.get(random);
         }
         return null;
+    }
+
+    public boolean canSpawnInBiome(Supplier<Biome> biome)
+    {
+        return resolvedBiomeFilter.get().test(biome);
     }
 
     /**

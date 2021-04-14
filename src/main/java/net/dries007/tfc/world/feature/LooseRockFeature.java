@@ -50,7 +50,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
 
         if (state != null && state.canSurvive(worldIn, pos))
         {
-            setBlock(worldIn, pos, state.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)).setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(rand)));
+            setBlock(worldIn, pos, state.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + rand.nextInt(2)));
             return true;
         }
         return false;

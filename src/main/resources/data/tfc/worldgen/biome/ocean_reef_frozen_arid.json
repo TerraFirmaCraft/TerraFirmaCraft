@@ -81,7 +81,10 @@
       "tfc:vein/lapis_lazuli",
       "tfc:vein/halite",
       "tfc:vein/diamond",
-      "tfc:vein/emerald"
+      "tfc:vein/emerald",
+      "tfc:vein/volcanic_sulfur",
+      "tfc:vein/amethyst",
+      "tfc:vein/opal"
     ],
     [
       "tfc:cave_spike",

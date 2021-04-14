@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/groundcover/guano",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/groundcover/guano"
-    },
-    "facing=south": {
-      "model": "tfc:block/groundcover/guano",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/groundcover/guano",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/groundcover/guano",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/guano"
+      },
+      {
+        "model": "tfc:block/groundcover/guano",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/guano",
+        "y": 270
+      }
+    ]
   }
 }

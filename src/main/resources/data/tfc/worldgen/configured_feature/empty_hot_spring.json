@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:hot_spring",
+  "config": {
+    "fluid_state": "minecraft:air",
+    "radius": 14
+  }
+}

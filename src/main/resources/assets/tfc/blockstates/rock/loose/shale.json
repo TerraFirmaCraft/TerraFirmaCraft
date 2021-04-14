@@ -1,50 +1,56 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east,count=1": {
-      "model": "tfc:block/rock/pebble/shale",
-      "y": 90
-    },
-    "facing=north,count=1": {
-      "model": "tfc:block/rock/pebble/shale"
-    },
-    "facing=south,count=1": {
-      "model": "tfc:block/rock/pebble/shale",
-      "y": 180
-    },
-    "facing=west,count=1": {
-      "model": "tfc:block/rock/pebble/shale",
-      "y": 270
-    },
-    "facing=east,count=2": {
-      "model": "tfc:block/rock/rubble/shale",
-      "y": 90
-    },
-    "facing=north,count=2": {
-      "model": "tfc:block/rock/rubble/shale"
-    },
-    "facing=south,count=2": {
-      "model": "tfc:block/rock/rubble/shale",
-      "y": 180
-    },
-    "facing=west,count=2": {
-      "model": "tfc:block/rock/rubble/shale",
-      "y": 270
-    },
-    "facing=east,count=3": {
-      "model": "tfc:block/rock/boulder/shale",
-      "y": 90
-    },
-    "facing=north,count=3": {
-      "model": "tfc:block/rock/boulder/shale"
-    },
-    "facing=south,count=3": {
-      "model": "tfc:block/rock/boulder/shale",
-      "y": 180
-    },
-    "facing=west,count=3": {
-      "model": "tfc:block/rock/boulder/shale",
-      "y": 270
-    }
+    "count=1": [
+      {
+        "model": "tfc:block/rock/pebble/shale",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/pebble/shale"
+      },
+      {
+        "model": "tfc:block/rock/pebble/shale",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/pebble/shale",
+        "y": 270
+      }
+    ],
+    "count=2": [
+      {
+        "model": "tfc:block/rock/rubble/shale",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/rubble/shale"
+      },
+      {
+        "model": "tfc:block/rock/rubble/shale",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/rubble/shale",
+        "y": 270
+      }
+    ],
+    "count=3": [
+      {
+        "model": "tfc:block/rock/boulder/shale",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/boulder/shale"
+      },
+      {
+        "model": "tfc:block/rock/boulder/shale",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/boulder/shale",
+        "y": 270
+      }
+    ]
   }
 }

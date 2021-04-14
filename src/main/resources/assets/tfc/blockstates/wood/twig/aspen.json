@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/wood/twig/aspen",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/wood/twig/aspen"
-    },
-    "facing=south": {
-      "model": "tfc:block/wood/twig/aspen",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/wood/twig/aspen",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/wood/twig/aspen",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/wood/twig/aspen"
+      },
+      {
+        "model": "tfc:block/wood/twig/aspen",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/wood/twig/aspen",
+        "y": 270
+      }
+    ]
   }
 }

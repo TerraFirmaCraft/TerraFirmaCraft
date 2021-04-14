@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/groundcover/podzol",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/groundcover/podzol"
-    },
-    "facing=south": {
-      "model": "tfc:block/groundcover/podzol",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/groundcover/podzol",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/groundcover/podzol",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/podzol"
+      },
+      {
+        "model": "tfc:block/groundcover/podzol",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/podzol",
+        "y": 270
+      }
+    ]
   }
 }

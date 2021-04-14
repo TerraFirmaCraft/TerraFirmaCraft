@@ -40,7 +40,9 @@
       "tfc:cobble_boulder",
       "tfc:mossy_boulder",
       "tfc:volcano_rivulet",
-      "tfc:volcano_caldera"
+      "tfc:volcano_caldera",
+      "tfc:random_volcano_fissure",
+      "tfc:random_active_hot_spring"
     ],
     [],
     [
@@ -83,7 +85,10 @@
       "tfc:vein/lapis_lazuli",
       "tfc:vein/halite",
       "tfc:vein/diamond",
-      "tfc:vein/emerald"
+      "tfc:vein/emerald",
+      "tfc:vein/volcanic_sulfur",
+      "tfc:vein/amethyst",
+      "tfc:vein/opal"
     ],
     [
       "tfc:cave_spike",

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:stick"
+          "name": "tfc:wood/twig/palm"
         }
       ],
       "conditions": [

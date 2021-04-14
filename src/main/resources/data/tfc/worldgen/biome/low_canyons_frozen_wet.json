@@ -38,7 +38,8 @@
     [
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
-      "tfc:mossy_boulder"
+      "tfc:mossy_boulder",
+      "tfc:random_empty_hot_spring"
     ],
     [],
     [
@@ -81,7 +82,10 @@
       "tfc:vein/lapis_lazuli",
       "tfc:vein/halite",
       "tfc:vein/diamond",
-      "tfc:vein/emerald"
+      "tfc:vein/emerald",
+      "tfc:vein/volcanic_sulfur",
+      "tfc:vein/amethyst",
+      "tfc:vein/opal"
     ],
     [
       "tfc:cave_spike",

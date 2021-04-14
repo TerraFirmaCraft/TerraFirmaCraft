@@ -21,6 +21,7 @@ public final class TFCCommands
             .then(HeatCommand.create())
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
+            .then(LocateVeinCommand.create())
         );
 
         // For command modifications / replacements, we register directly

@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -56,15 +55,12 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -502,5 +498,24 @@ public final class Helpers
     public static boolean spawnItem(World world, BlockPos pos, ItemStack stack)
     {
         return spawnItem(world, pos, stack, 0.5D);
+    }
+
+    /**
+     * Select N unique elements from a list, without having to shuffle the whole list.
+     * This involves moving the selected elements to the end of the list. Note: this method will mutate the passed in list!
+     * From <a href="https://stackoverflow.com/questions/4702036/take-n-random-elements-from-a-liste">Stack Overflow</a>
+     */
+    public static <T> List<T> uniqueRandomSample(List<T> list, int n, Random r)
+    {
+        final int length = list.size();
+        if (length < n)
+        {
+            throw new IllegalArgumentException("Cannot select n=" + n + " from a list of size = " + length);
+        }
+        for (int i = length - 1; i >= length - n; --i)
+        {
+            Collections.swap(list, i, r.nextInt(i + 1));
+        }
+        return list.subList(length - n, length);
     }
 }

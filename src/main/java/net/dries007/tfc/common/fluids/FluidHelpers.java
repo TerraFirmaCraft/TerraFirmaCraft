@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -50,6 +49,12 @@ public class FluidHelpers
     @Nullable
     public static BlockState fillWithFluid(BlockState state, Fluid fluid)
     {
+        // If the state is already filled. Also handles cases where a block is unable to be filled and we're filling with empty fluid
+        if (state.getFluidState().getType() == fluid)
+        {
+            return state;
+        }
+
         final Block block = state.getBlock();
         if (block instanceof IFluidLoggable)
         {
