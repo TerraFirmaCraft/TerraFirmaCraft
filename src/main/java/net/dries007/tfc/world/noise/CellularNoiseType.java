@@ -8,6 +8,7 @@ package net.dries007.tfc.world.noise;
 
 /**
  * Important to note: all distances are concerning square distances!
+ * F1 / F2 are used by 2D cell noise. F3 is only calculated by 3D cell noise.
  */
 public enum CellularNoiseType
 {
@@ -32,7 +33,7 @@ public enum CellularNoiseType
             case F3:
                 return f3;
             case F1_MUL_F2:
-                return f1 * f1 * 0.5f - 1;
+                return f1 * f2 * 0.5f - 1;
             case F1_DIV_F2:
                 return f1 / f2 - 1;
             case F1_DIV_F3:
