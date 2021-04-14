@@ -111,11 +111,7 @@ public class PacketStackFood implements IMessage
                     targetStack.setCount(currentAmount);
                     targetCap.setCreationDate(minCreationDate);
 
-                    // Laziest fix
-                    InventoryCrafting craftingInv = ((ContainerPlayer) player.openContainer).craftMatrix;
-                    for (int i = 0; i < craftingInv.getSizeInventory(); i++) {
-                        craftingInv.setInventorySlotContents(i, craftingInv.getStackInSlot(i));
-                    }
+                    player.openContainer.onCraftMatrixChanged(((ContainerPlayer) player.openContainer).craftMatrix);
                 }
             });
             return null;
