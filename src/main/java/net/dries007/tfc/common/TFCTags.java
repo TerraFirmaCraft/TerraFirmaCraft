@@ -36,6 +36,7 @@ public class TFCTags
         public static final ITag.INamedTag<Block> KELP_BRANCH = create("kelp_branch");
         public static final ITag.INamedTag<Block> WALL_CORALS = create("wall_corals");
         public static final ITag.INamedTag<Block> CORALS = create("corals");
+        public static final ITag.INamedTag<Block> WORKBENCH = create("workbench");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 
