@@ -8,6 +8,9 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -98,6 +101,7 @@ public final class TerraFirmaCraft
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        TFCEntities.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 
