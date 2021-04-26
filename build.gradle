@@ -24,10 +24,6 @@ buildscript {
             name = "forge"
             url = "https://maven.minecraftforge.net/"
         }
-        maven {
-            name = "forge alternative"
-            url = "https://maven.daporkchop.net/"
-        }
         //maven {
         //    name = "curseforge"
         //    url "https://plugins.gradle.org/m2/"
@@ -128,6 +124,10 @@ repositories {
     //    name = "CurseForge"
     //    url = "https://www.cursemaven.com"
     //}
+    removeIf { it instanceof MavenArtifactRepository && it.url.host == 'files.minecraftforge.net' }
+    maven {
+        url "https://maven.minecraftforge.net/"
+    }
 }
 
 String mcVersion = config.minecraft.version
