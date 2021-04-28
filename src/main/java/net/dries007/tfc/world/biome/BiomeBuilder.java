@@ -29,7 +29,7 @@ public class BiomeBuilder<V extends BiomeVariants>
 
     public static BiomeBuilder<BiomeVariants> builder(LongFunction<INoise2D> noiseFactory)
     {
-        BiomeBuilder<BiomeVariants> builder = new BiomeBuilder<>(b -> new BiomeVariants(b.noiseFactory, b.smallGroup, b.largeGroup, b.salty, b.volcanic, b.volcanoFrequency, b.volcanoBasaltHeight));
+        BiomeBuilder<BiomeVariants> builder = new BiomeBuilder<>(b -> new BiomeVariants(b.noiseFactory, b.group, b.salty, b.volcanic, b.volcanoFrequency, b.volcanoBasaltHeight));
         builder.noiseFactory = noiseFactory;
         return builder;
     }
@@ -38,8 +38,7 @@ public class BiomeBuilder<V extends BiomeVariants>
     private final List<BiomeDictionary.Type> dictionaryTypes;
 
     private LongFunction<INoise2D> noiseFactory;
-    private BiomeVariants.SmallGroup smallGroup;
-    private BiomeVariants.LargeGroup largeGroup;
+    private BiomeVariants.Group group;
     private boolean salty;
     private boolean volcanic;
     private int volcanoFrequency;
@@ -51,8 +50,7 @@ public class BiomeBuilder<V extends BiomeVariants>
         this.dictionaryTypes = new ArrayList<>();
 
         noiseFactory = seed -> null;
-        smallGroup = BiomeVariants.SmallGroup.BODY;
-        largeGroup = BiomeVariants.LargeGroup.LAND;
+        group = BiomeVariants.Group.LAND;
         salty = false;
         volcanic = false;
         volcanoFrequency = 0;
@@ -65,15 +63,9 @@ public class BiomeBuilder<V extends BiomeVariants>
         return this;
     }
 
-    public BiomeBuilder<V> group(BiomeVariants.SmallGroup group)
+    public BiomeBuilder<V> group(BiomeVariants.Group group)
     {
-        this.smallGroup = group;
-        return this;
-    }
-
-    public BiomeBuilder<V> group(BiomeVariants.LargeGroup group)
-    {
-        this.largeGroup = group;
+        this.group = group;
         return this;
     }
 

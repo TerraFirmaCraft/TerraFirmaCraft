@@ -39,10 +39,10 @@ public final class TFCBiomes
     private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", builder(seed -> BiomeNoise.ocean(seed, -20, -12)).salty().group(BiomeVariants.LargeGroup.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
-    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder(seed -> BiomeNoise.ocean(seed, -16, -6)).salty().group(BiomeVariants.LargeGroup.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
-    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder(seed -> BiomeNoise.ocean(seed, -38, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder(seed -> BiomeNoise.oceanRidge(seed, -46, -18)).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
+    public static final BiomeVariants OCEAN = register("ocean", builder(seed -> BiomeNoise.ocean(seed, -20, -12)).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
+    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder(seed -> BiomeNoise.ocean(seed, -16, -6)).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
+    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder(seed -> BiomeNoise.ocean(seed, -38, -18)).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder(seed -> BiomeNoise.oceanRidge(seed, -46, -18)).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 
     // Low biomes
     public static final BiomeVariants PLAINS = register("plains", builder(seed -> BiomeNoise.simple(seed, 4, 10)).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
@@ -64,11 +64,11 @@ public final class TFCBiomes
     public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder(seed -> BiomeNoise.mountains(seed, 16, 40)).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", builder(BiomeNoise::shore).group(BiomeVariants.LargeGroup.OCEAN).salty().types(BiomeDictionary.Type.BEACH)); // Standard shore / beach. Material will vary based on location
+    public static final BiomeVariants SHORE = register("shore", builder(BiomeNoise::shore).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.BEACH)); // Standard shore / beach. Material will vary based on location
 
     // Water
-    public static final BiomeVariants LAKE = register("lake", builder(BiomeNoise::lake).group(BiomeVariants.LargeGroup.LAKE).types(BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants RIVER = register("river", builder(BiomeNoise::river).group(BiomeVariants.LargeGroup.RIVER).group(BiomeVariants.SmallGroup.RIVER).types(BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants LAKE = register("lake", builder(BiomeNoise::lake).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants RIVER = register("river", builder(BiomeNoise::river).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.RIVER));
 
     // Mountain Fresh water / carving biomes
     public static final CarvingBiomeVariants MOUNTAIN_RIVER = register("mountain_river", BiomeBuilder.carving(MOUNTAINS, BiomeNoise::riverCarving).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
