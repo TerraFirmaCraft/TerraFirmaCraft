@@ -8,6 +8,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 import net.dries007.tfc.common.entities.ai.AquaticMovementController;
 
 public class ManateeEntity extends TFCAbstractGroupFishEntity
@@ -28,5 +31,11 @@ public class ManateeEntity extends TFCAbstractGroupFishEntity
     protected SoundEvent getFlopSound()
     {
         return SoundEvents.COD_FLOP;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRenderAtSqrDistance(double distance)
+    {
+        return true;
     }
 }

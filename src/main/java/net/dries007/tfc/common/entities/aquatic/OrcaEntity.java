@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 
 public class OrcaEntity extends DolphinEntity
 {
-    public OrcaEntity(EntityType<? extends DolphinEntity> type, World worldIN)
+    public OrcaEntity(EntityType<? extends DolphinEntity> type, World world)
     {
-        super(type, worldIN);
+        super(type, world);
     }
 
     @Override

@@ -9,13 +9,12 @@ package net.dries007.tfc.common.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.PhantomEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,6 +38,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<ManateeEntity>> MANATEE = register("manatee", EntityType.Builder.of(ManateeEntity::new, EntityClassification.WATER_CREATURE).sized(1.0F, 1.0F).clientTrackingRange(16));
     public static final RegistryObject<EntityType<OrcaEntity>> ORCA = register("orca", EntityType.Builder.of(OrcaEntity::new, EntityClassification.WATER_CREATURE).sized(0.9F, 0.6F));
     public static final RegistryObject<EntityType<SeafloorCritterEntity>> ISOPOD = register("isopod", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<VultureEntity>> VULTURE = register("vulture", EntityType.Builder.of(VultureEntity::new, EntityClassification.MONSTER).sized(0.9F, 0.5F).clientTrackingRange(8));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -67,5 +67,6 @@ public class TFCEntities
         GlobalEntityTypeAttributes.put(MANATEE.get(), AbstractFishEntity.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).build());
         GlobalEntityTypeAttributes.put(ORCA.get(), DolphinEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(ISOPOD.get(), AbstractFishEntity.createAttributes().build());
+        GlobalEntityTypeAttributes.put(VULTURE.get(), MonsterEntity.createMonsterAttributes().build());
     }
 }
