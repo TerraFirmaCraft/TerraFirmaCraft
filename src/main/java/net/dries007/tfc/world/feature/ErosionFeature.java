@@ -23,12 +23,13 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.soil.DirtBlock;
+import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 
+// todo: make not shit
 public class ErosionFeature extends Feature<NoFeatureConfig>
 {
     public ErosionFeature(Codec<NoFeatureConfig> codec)
@@ -95,25 +96,26 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
             mutableWrapper.update(landslidePos.getX(), landslidePos.getY(), landslidePos.getZ(), stateAt);
             if (recipe.matches(mutableWrapper, worldIn.getLevel()))
             {
+                //worldIn.setBlock(landslidePos, landslidePos.getY() < generator.getSeaLevel() ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
                 BlockPos resultPos = quickLandslideBlock(worldIn, landslidePos, rand, minX, maxX, minZ, maxZ);
                 if (resultPos != null && !resultPos.equals(landslidePos))
                 {
                     worldIn.setBlock(landslidePos, Blocks.AIR.defaultBlockState(), 2);
-                    worldIn.setBlock(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
+                    //worldIn.setBlock(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
 
                     // Fix exposed and/or covered grass
                     if (stateAt.getBlock() instanceof IGrassBlock)
                     {
                         mutablePos.set(landslidePos).move(Direction.DOWN, 1);
                         BlockState pastDirtState = worldIn.getBlockState(mutablePos);
-                        if (pastDirtState.getBlock() instanceof DirtBlock)
+                        if (pastDirtState.getBlock() instanceof IDirtBlock)
                         {
                             // Replace exposed dirt with grass
-                            DirtBlock dirtBlock = (DirtBlock) pastDirtState.getBlock();
+                            IDirtBlock dirtBlock = (IDirtBlock) pastDirtState.getBlock();
                             worldIn.setBlock(mutablePos, dirtBlock.getGrass(), 2);
-                            worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock, 0);
+                            worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock.getGrass().getBlock(), 0);
                         }
-
+/*
                         mutablePos.set(resultPos).move(Direction.DOWN);
                         BlockState pastGrassState = worldIn.getBlockState(mutablePos);
                         if (pastGrassState.getBlock() instanceof IGrassBlock)
@@ -121,7 +123,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                             // Replace covered grass with dirt
                             IGrassBlock grassBlock = (IGrassBlock) pastGrassState.getBlock();
                             worldIn.setBlock(mutablePos, grassBlock.getDirt(), 2);
-                        }
+                        }*/
                     }
                 }
             }
@@ -176,6 +178,8 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                 // Unable to fall to the side or down, so stop here
                 return pos;
             }
+
+            return pos;
         }
         return null;
     }

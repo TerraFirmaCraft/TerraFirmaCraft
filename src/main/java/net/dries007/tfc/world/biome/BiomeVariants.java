@@ -12,7 +12,7 @@ import java.util.function.LongFunction;
 
 import net.minecraftforge.fml.RegistryObject;
 
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.IBiomeNoiseSampler;
 
 /**
  * This is a version of {@link RegistryObject} for biomes.
@@ -23,7 +23,7 @@ import net.dries007.tfc.world.noise.INoise2D;
 public class BiomeVariants
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, BiomeExtension>> extensions;
-    private final LongFunction<INoise2D> noiseFactory;
+    private final LongFunction<IBiomeNoiseSampler> noiseFactory;
     private final Group group;
     private final boolean salty;
     private final boolean volcanic;
@@ -35,7 +35,7 @@ public class BiomeVariants
         this(parent.noiseFactory, parent.group, parent.salty, parent.volcanic, parent.volcanoFrequency, parent.volcanoBasaltHeight);
     }
 
-    public BiomeVariants(LongFunction<INoise2D> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    public BiomeVariants(LongFunction<IBiomeNoiseSampler> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
         this.group = group;
@@ -76,7 +76,7 @@ public class BiomeVariants
         return volcanoBasaltHeight;
     }
 
-    public INoise2D createNoiseLayer(long seed)
+    public IBiomeNoiseSampler createNoiseSampler(long seed)
     {
         return noiseFactory.apply(seed);
     }
