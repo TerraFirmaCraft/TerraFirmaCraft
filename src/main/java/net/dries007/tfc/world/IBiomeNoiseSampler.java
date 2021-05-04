@@ -56,8 +56,7 @@ public interface IBiomeNoiseSampler
             public double noise(int y)
             {
                 float distance = Math.abs(y - carvingCenter) / carvingHeight;
-                float factor = 1.2f;
-                return factor * (1 - distance);
+                return Math.max(1 - (distance * distance), 0);
             }
         };
     }

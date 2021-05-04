@@ -71,7 +71,7 @@ public final class BiomeNoise
     public static IBiomeNoiseSampler riverSampler(long seed)
     {
         INoise2D riverHeight = new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL - 11, SEA_LEVEL - 5);
-        INoise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 6);
+        INoise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 3);
 
         return new IBiomeNoiseSampler()
         {
@@ -95,18 +95,22 @@ public final class BiomeNoise
             @Override
             public double noise(int y)
             {
-                if (y > height + 20 && y < height + 40)
+                if (y > SEA_LEVEL + 20)
                 {
-                    double easing = 1 - (y - height - 20) / 20f;
+                    return FULL;
+                }
+                else if (y > SEA_LEVEL + 10)
+                {
+                    double easing = 1 - (y - SEA_LEVEL - 10) / 10f;
                     return easing * cliffNoise.noise(x, y, z);
                 }
-                if (y > height)
+                else if (y > SEA_LEVEL)
                 {
                     return cliffNoise.noise(x, y, z);
                 }
-                if (y > height - 8)
+                else if (y > SEA_LEVEL - 8)
                 {
-                    double easing = (y - height + 8) / 8d;
+                    double easing = (y - SEA_LEVEL + 8) / 8d;
                     return easing * cliffNoise.noise(x, y, z);
                 }
                 return FULL;
@@ -224,26 +228,24 @@ public final class BiomeNoise
 
     public static IBiomeNoiseSampler undergroundLakes(long seed, INoise2D heightNoise)
     {
-        final float maxColumnThreshold = 0.5f;
-
         final INoise2D centerNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL - 3, SEA_LEVEL + 3);
         final INoise2D baseNoise = new OpenSimplex2D(seed + 827349183L).octaves(4).spread(0.15f).scaled(8, 14);
         final INoise2D columnNoise = new Cellular2D(seed + 57238179321L, 1f, CellularNoiseType.F1).spread(0.065f);
 
         final INoise2D baseAndColumnNoise = (x, z) -> {
-            float maxBaseValue = 14;
-            final float columnValue = columnNoise.noise(x, z);
-            if (columnValue < maxColumnThreshold)
+            float maxBaseValue = 18;
+            final float columnValue = columnNoise.noise(x * 0.6f, z * 0.6f);
+            if (columnValue < 0.2)
             {
                 // Near a column, scale the base noise to quickly clamp off inside the column radius
-                final float t = (columnValue - maxColumnThreshold) / (maxColumnThreshold - 0.1f);
+                final float t = (columnValue - 0.2f) / (0.2f - 0.03f);
                 maxBaseValue = NoiseUtil.lerp(14, 0, t * t);
                 if (maxBaseValue < 0)
                 {
                     return 0;
                 }
             }
-            float baseValue = baseNoise.noise(x, z);
+            float baseValue = baseNoise.noise(x, z) * 1.7f - 6;
             return Math.min(maxBaseValue, baseValue);
         };
 
