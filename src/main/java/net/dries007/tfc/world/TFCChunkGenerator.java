@@ -389,7 +389,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
             sampledHeightMap[x + 7 * z] = sampleHeightOnly(world, biomeWeights[x + z * 7], x0, z0);
         }
 
-        buildSurfaceWithContext(world, chunk, localBiomes, buildSlopeMap(sampledHeightMap), random);
+        final double[] slopeMap = buildSlopeMap(sampledHeightMap);
+
+        buildSurfaceWithContext(world, chunk, localBiomes, slopeMap, random);
+        if (Debug.ENABLE_SLOPE_VISUALIZATION)
+        {
+            Debug.slopeVisualization(chunk, slopeMap, chunkX, chunkZ, this::sampleSlope);
+        }
     }
 
     @Override
