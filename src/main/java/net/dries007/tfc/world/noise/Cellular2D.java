@@ -137,7 +137,7 @@ public class Cellular2D implements INoise2D
                     {
                         temp = f1;
                         f1 = f2;
-                        f1 = temp;
+                        f2 = temp;
                     }
                 }
                 yPrimed += PRIME_Y;
