@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.biome;
 
+import net.minecraft.util.math.MathHelper;
+
 import net.dries007.tfc.world.IBiomeNoiseSampler;
 import net.dries007.tfc.world.noise.*;
 
@@ -228,27 +230,37 @@ public final class BiomeNoise
 
     public static IBiomeNoiseSampler undergroundLakes(long seed, INoise2D heightNoise)
     {
-        final INoise2D centerNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL - 3, SEA_LEVEL + 3);
-        final INoise2D baseNoise = new OpenSimplex2D(seed + 827349183L).octaves(4).spread(0.15f).scaled(8, 14);
-        final INoise2D columnNoise = new Cellular2D(seed + 57238179321L, 1f, CellularNoiseType.F1).spread(0.065f);
+        final INoise2D blobsNoise = new OpenSimplex2D(seed + 7289374132L).spread(0.04f).abs();
+        final INoise2D depthNoise = new OpenSimplex2D(seed + 18273948132L).octaves(4).scaled(2, 18).spread(0.2f);
+        final INoise2D centerNoise = new OpenSimplex2D(seed + 192378491L).octaves(2).spread(0.06f).scaled(SEA_LEVEL - 4, SEA_LEVEL + 4);
 
-        final INoise2D baseAndColumnNoise = (x, z) -> {
-            float maxBaseValue = 18;
-            final float columnValue = columnNoise.noise(x * 0.6f, z * 0.6f);
-            if (columnValue < 0.2)
+        return new IBiomeNoiseSampler()
+        {
+            private float surfaceHeight, center, height;
+
+            @Override
+            public void setColumn(int x, int z)
             {
-                // Near a column, scale the base noise to quickly clamp off inside the column radius
-                final float t = (columnValue - 0.2f) / (0.2f - 0.03f);
-                maxBaseValue = NoiseUtil.lerp(14, 0, t * t);
-                if (maxBaseValue < 0)
-                {
-                    return 0;
-                }
-            }
-            float baseValue = baseNoise.noise(x, z) * 1.7f - 6;
-            return Math.min(maxBaseValue, baseValue);
-        };
+                float h0 = MathHelper.clamp((0.7f - blobsNoise.noise(x, z)) * (1 / 0.3f), 0, 1);
+                float h1 = depthNoise.noise(x, z);
 
-        return IBiomeNoiseSampler.fromHeightAndCarvingNoise(heightNoise, centerNoise, baseAndColumnNoise);
+                surfaceHeight = heightNoise.noise(x, z);
+                center = centerNoise.noise(x, z);
+                height = h0 * h1;
+            }
+
+            @Override
+            public double height()
+            {
+                return surfaceHeight;
+            }
+
+            @Override
+            public double noise(int y)
+            {
+                float delta = Math.abs(center - y);
+                return MathHelper.clamp(0.4f + 0.05f * (height - delta), 0, 1);
+            }
+        };
     }
 }
