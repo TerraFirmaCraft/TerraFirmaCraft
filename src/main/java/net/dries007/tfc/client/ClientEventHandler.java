@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.PufferfishRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
@@ -113,7 +114,9 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ORCA.get(), OrcaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.VULTURE.get(), VultureRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

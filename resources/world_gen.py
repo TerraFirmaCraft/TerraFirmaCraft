@@ -789,6 +789,13 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     else:
         rain_type = 'rain'
 
+    spawners = None
+    if ocean_features:
+        spawners = {
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
+            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
+        }
+
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
         ocean_features = True
@@ -893,6 +900,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             'water_color': temp.water_color,
             'water_fog_color': temp.water_fog_color
         },
+        spawners=spawners,
         surface_builder=surface_builder,
         air_carvers=air_carvers,
         water_carvers=water_carvers,

@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, NamedTuple, Sequence, Optional
+from typing import Dict, List, NamedTuple, Sequence, Optional, Any
 
 Rock = NamedTuple('Rock', category=str, desert_sand_color=str, beach_sand_color=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
@@ -314,6 +314,29 @@ OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
 
 
+def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
+    return {
+        'type': entity,
+        'weight': weight,
+        'minCount': min_count,
+        'maxCount': max_count
+    }
+
+
+OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'isopod': spawner('tfc:isopod'),
+    'lobster': spawner('tfc:lobster'),
+    'cod': spawner('tfc:cod', weight=10),
+    'pufferfish': spawner('tfc:pufferfish', max_count=2),
+    'tropical_fish': spawner('tfc:tropical_fish', weight=10, max_count=6),
+    'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
+}
+
+OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
+    'orca': spawner('tfc:orca', min_count=1, max_count=3)
+}
+
+
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()
@@ -377,6 +400,20 @@ DEFAULT_LANG = {
     'tfc.commands.player.query_saturation': 'Saturation is %s',
     'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
     'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
+
+    # Entities
+    'entity.tfc.falling_block': 'Falling Block',
+    'entity.tfc.cod': 'Cod',
+    'entity.tfc.salmon': 'Salmon',
+    'entity.tfc.pufferfish': 'Pufferfish',
+    'entity.tfc.tropical_fish': 'Tropical Fish',
+    'entity.tfc.jellyfish': 'Jellyfish',
+    'entity.tfc.manatee': 'Manatee',
+    'entity.tfc.orca': 'Orca Whale',
+    'entity.tfc.dolphin': 'Dolphin',
+    'entity.tfc.isopod': 'Isopod',
+    'entity.tfc.vulture': 'Vulture',
+    'entity.tfc.lobster': 'Lobster',
 
     # ENUMS
 
