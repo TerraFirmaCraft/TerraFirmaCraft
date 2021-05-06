@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.unit;
+package net.dries007.tfc.visualization;
 
 import java.awt.*;
 import java.util.List;
@@ -26,7 +26,6 @@ import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.decorator.ClimateConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import org.junit.jupiter.api.Disabled;

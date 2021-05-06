@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.unit;
+package net.dries007.tfc.visualization;
 
 import java.awt.*;
 
@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
+@Disabled
 public class TFCLayerUtilTests
 {
     // These inner lambdas could be shortened to factory.make()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
@@ -44,7 +45,6 @@ public class TFCLayerUtilTests
     static final Artist.Raw RAW = Artist.raw().size(1000);
 
     @Test
-    @Disabled
     public void testCreateOverworldBiomeLayer()
     {
         final long seed = System.currentTimeMillis();
@@ -127,7 +127,6 @@ public class TFCLayerUtilTests
     }
 
     @Test
-    @Disabled
     public void testBiomesWithVolcanoes()
     {
         long seed = System.currentTimeMillis();

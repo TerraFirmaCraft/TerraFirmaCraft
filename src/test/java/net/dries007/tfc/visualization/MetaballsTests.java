@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.unit;
+package net.dries007.tfc.visualization;
 
 import java.awt.*;
 import java.util.Random;

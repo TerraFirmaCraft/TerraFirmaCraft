@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.integration.block;
+package net.dries007.tfc.integration;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;

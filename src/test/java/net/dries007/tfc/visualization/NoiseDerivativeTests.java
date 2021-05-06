@@ -4,18 +4,18 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.unit;
+package net.dries007.tfc.visualization;
 
 import java.awt.*;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class NoiseDerivativeTests
 {
     boolean inside(float x, float exp, float dL)
