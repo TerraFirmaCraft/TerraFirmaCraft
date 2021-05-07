@@ -13,19 +13,11 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
-public class DykeVeinFeature extends PipeVeinFeature
+public class DikeVeinFeature extends PipeVeinFeature
 {
-    public DykeVeinFeature(Codec<PipeVeinConfig> codec)
+    public DikeVeinFeature(Codec<PipeVeinConfig> codec)
     {
         super(codec);
-    }
-
-    @Override
-    protected MutableBoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
-    {
-        MutableBoundingBox bb = super.getBoundingBox(config, vein);
-        bb.y0 = 50 - vein.getPos().getY(); //todo: can we do better? hard to sample noise...
-        return bb;
     }
 
     @Nullable

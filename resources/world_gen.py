@@ -346,11 +346,12 @@ def generate(rm: ResourceManager):
                 vein_config['maxSlant'] = 2
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, vein_config))
 
-    rm.feature(('vein', 'gravel'), wg.configure('tfc:cluster_vein', {
+    rm.feature(('vein', 'gravel'), wg.configure('tfc:disc_vein', {
         'rarity': 30,
         'min_y': 0,
         'max_y': 180,
-        'size': 20,
+        'size': 44,
+        'height': 4,
         'density': 1,
         'blocks': [{
             'stone': ['tfc:rock/raw/%s' % rock],
@@ -359,27 +360,27 @@ def generate(rm: ResourceManager):
         'salt': vein_salt('gravel')
     }))
 
-    dyke_block_config = [{
+    dike_block_config = [{
         'stone': ['tfc:rock/raw/%s' % rock],
         'ore': [{'block': 'minecraft:air'}]
     } for rock in ROCKS.keys()]
-    dyke_block_config.extend([{
+    dike_block_config.extend([{
         'stone': ['tfc:rock/gravel/%s' % rock],
         'ore': [{'block': 'minecraft:air'}]
     } for rock in ROCKS.keys()])
-    dyke_block_config.extend([{
+    dike_block_config.extend([{
         'stone': ['tfc:rock/hardened/%s' % rock],
         'ore': [{'block': 'minecraft:air'}]
     } for rock in ROCKS.keys()])
 
-    rm.feature(('vein', 'dyke'), wg.configure('tfc:dyke_vein', {
+    rm.feature(('vein', 'dike'), wg.configure('tfc:dike_vein', {
         'rarity': 60,
-        'min_y': 45,
+        'min_y': 40,
         'max_y': 180,
-        'size': 80,
+        'size': 90,
         'density': 0.95,
-        'blocks': dyke_block_config,
-        'salt': vein_salt('dyke'),
+        'blocks': dike_block_config,
+        'salt': vein_salt('dike'),
         'radius': 4,
         'minSkew': 7,
         'maxSkew': 20,
@@ -839,7 +840,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:vein/gravel', 'tfc:vein/dyke', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
+        ['tfc:vein/gravel', 'tfc:vein/dike', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
         [
             'tfc:cave_spike',
             'tfc:large_cave_spike',

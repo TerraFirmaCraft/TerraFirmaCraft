@@ -1,11 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:dyke_vein",
+  "type": "tfc:dike_vein",
   "config": {
     "rarity": 60,
-    "min_y": 45,
+    "min_y": 40,
     "max_y": 180,
-    "size": 80,
+    "size": 90,
     "density": 0.95,
     "blocks": [
       {
@@ -609,7 +609,7 @@
         ]
       }
     ],
-    "salt": 910806238,
+    "salt": 4261926707,
     "radius": 4,
     "minSkew": 7,
     "maxSkew": 20,
