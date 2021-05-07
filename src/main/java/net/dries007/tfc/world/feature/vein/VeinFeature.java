@@ -52,7 +52,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     protected void place(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        final MutableBoundingBox box = getBoundingBox(config);
+        final MutableBoundingBox box = getBoundingBox(config, vein);
         box.move(vein.getPos());
 
         // Intersect the bounding box with the chunk allowed region
@@ -72,7 +72,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                     if (random.nextFloat() < getChanceToGenerate(x - vein.getPos().getX(), y - vein.getPos().getY(), z - vein.getPos().getZ(), vein, config))
                     {
                         final BlockState stoneState = world.getBlockState(mutablePos);
-                        final BlockState oreState = getStateToGenerate(stoneState, random, config);
+                        final BlockState oreState = getStateToGenerate(stoneState, random, config, world, mutablePos);
                         if (oreState != null)
                         {
                             world.setBlock(mutablePos, oreState, 3);
@@ -105,7 +105,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Nullable
-    protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config)
+    protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config, ISeedReader world, BlockPos pos)
     {
         return config.getStateToGenerate(stoneState, random);
     }
@@ -172,5 +172,5 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     /**
      * Gets the total bounding box around where the vein can spawn, using relative position to the center of the vein
      */
-    protected abstract MutableBoundingBox getBoundingBox(C config);
+    protected abstract MutableBoundingBox getBoundingBox(C config, V vein);
 }

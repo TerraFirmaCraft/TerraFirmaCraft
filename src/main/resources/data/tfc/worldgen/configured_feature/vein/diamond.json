@@ -19,6 +19,10 @@
         ]
       }
     ],
-    "salt": 3033966424
+    "salt": 3033966424,
+    "minSkew": 5,
+    "maxSkew": 13,
+    "minSlant": 0,
+    "maxSlant": 2
   }
 }

@@ -1,0 +1,619 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:dyke_vein",
+  "config": {
+    "rarity": 60,
+    "min_y": 45,
+    "max_y": 180,
+    "size": 80,
+    "density": 0.95,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/marble"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/chalk"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/chert"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/claystone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/limestone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/shale"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/marble"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/schist"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/slate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/diorite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/granite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/andesite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/basalt"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/dacite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/chalk"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/chert"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/claystone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/limestone"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/shale"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/marble"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/schist"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/slate"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/diorite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/granite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/andesite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/basalt"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/dacite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "minecraft:air"
+          }
+        ]
+      }
+    ],
+    "salt": 910806238,
+    "radius": 4,
+    "minSkew": 7,
+    "maxSkew": 20,
+    "minSlant": 2,
+    "maxSlant": 5
+  }
+}

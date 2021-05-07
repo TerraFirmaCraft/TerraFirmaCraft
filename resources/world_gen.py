@@ -326,7 +326,7 @@ def generate(rm: ResourceManager):
                 'biomes': vein_biome_filter(vein.biomes)
             }))
         else:  # non-graded ore vein (mineral)
-            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
+            vein_config = {
                 'rarity': vein.rarity,
                 'min_y': vein.min_y,
                 'max_y': vein.max_y,
@@ -338,7 +338,13 @@ def generate(rm: ResourceManager):
                 } for rock in rocks],
                 'salt': vein_salt(vein_name),
                 'biomes': vein_biome_filter(vein.biomes)
-            }))
+            }
+            if vein.type == 'pipe':
+                vein_config['minSkew'] = 5
+                vein_config['maxSkew'] = 13
+                vein_config['minSlant'] = 0
+                vein_config['maxSlant'] = 2
+            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, vein_config))
 
     rm.feature(('vein', 'gravel'), wg.configure('tfc:cluster_vein', {
         'rarity': 30,
@@ -351,6 +357,34 @@ def generate(rm: ResourceManager):
             'ore': [{'block': 'tfc:rock/gravel/%s' % rock}]
         } for rock in ROCKS.keys()],
         'salt': vein_salt('gravel')
+    }))
+
+    dyke_block_config = [{
+        'stone': ['tfc:rock/raw/%s' % rock],
+        'ore': [{'block': 'minecraft:air'}]
+    } for rock in ROCKS.keys()]
+    dyke_block_config.extend([{
+        'stone': ['tfc:rock/gravel/%s' % rock],
+        'ore': [{'block': 'minecraft:air'}]
+    } for rock in ROCKS.keys()])
+    dyke_block_config.extend([{
+        'stone': ['tfc:rock/hardened/%s' % rock],
+        'ore': [{'block': 'minecraft:air'}]
+    } for rock in ROCKS.keys()])
+
+    rm.feature(('vein', 'dyke'), wg.configure('tfc:dyke_vein', {
+        'rarity': 60,
+        'min_y': 45,
+        'max_y': 180,
+        'size': 80,
+        'density': 0.95,
+        'blocks': dyke_block_config,
+        'salt': vein_salt('dyke'),
+        'radius': 4,
+        'minSkew': 7,
+        'maxSkew': 20,
+        'minSlant': 2,
+        'maxSlant': 5
     }))
 
     # todo: change to use cave biomes in 1.17
@@ -805,7 +839,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:vein/gravel', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
+        ['tfc:vein/gravel', 'tfc:vein/dyke', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
         [
             'tfc:cave_spike',
             'tfc:large_cave_spike',

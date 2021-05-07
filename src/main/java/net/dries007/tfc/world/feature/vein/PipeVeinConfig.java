@@ -14,21 +14,53 @@ public class PipeVeinConfig extends VeinConfig
 {
     public static final Codec<PipeVeinConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         VeinConfig.MAP_CODEC.forGetter(c -> c),
-        Codecs.POSITIVE_INT.optionalFieldOf("radius", 3).forGetter(PipeVeinConfig::getRadius)
+        Codecs.POSITIVE_INT.optionalFieldOf("radius", 3).forGetter(PipeVeinConfig::getRadius),
+        Codecs.POSITIVE_INT.optionalFieldOf("minSkew", 0).forGetter(PipeVeinConfig::getMinSkew),
+        Codecs.POSITIVE_INT.optionalFieldOf("maxSkew", 0).forGetter(PipeVeinConfig::getMaxSkew),
+        Codecs.POSITIVE_INT.optionalFieldOf("minSlant", 0).forGetter(PipeVeinConfig::getMinSlant),
+        Codecs.POSITIVE_INT.optionalFieldOf("maxSlant", 0).forGetter(PipeVeinConfig::getMaxSlant)
     ).apply(instance, PipeVeinConfig::new));
 
     private final int radius;
+    private final int minSkew;
+    private final int maxSkew;
+    private final int minSlant;
+    private final int maxSlant;
 
-    private PipeVeinConfig(VeinConfig other, int radius)
+    private PipeVeinConfig(VeinConfig other, int radius, int minSkew, int maxSkew, int minSlant, int maxSlant)
     {
         super(other);
 
         this.radius = radius;
+        this.minSkew = minSkew;
+        this.maxSkew = maxSkew;
+        this.minSlant = minSlant;
+        this.maxSlant = maxSlant;
     }
 
     public int getRadius()
     {
         return radius;
+    }
+
+    public int getMinSkew()
+    {
+        return minSkew;
+    }
+
+    public int getMaxSkew()
+    {
+        return maxSkew;
+    }
+
+    public int getMinSlant()
+    {
+        return minSlant;
+    }
+
+    public int getMaxSlant()
+    {
+        return maxSlant;
     }
 
     @Override

@@ -39,6 +39,7 @@
     [],
     [
       "tfc:vein/gravel",
+      "tfc:vein/dyke",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
