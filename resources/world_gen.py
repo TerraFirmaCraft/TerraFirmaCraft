@@ -351,7 +351,7 @@ def generate(rm: ResourceManager):
         'min_y': 0,
         'max_y': 180,
         'size': 44,
-        'height': 4,
+        'height': 2,
         'density': 1,
         'blocks': [{
             'stone': ['tfc:rock/raw/%s' % rock],
