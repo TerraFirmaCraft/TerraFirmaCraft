@@ -194,8 +194,25 @@
     ]
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "water_ambient": [
+      {
+        "type": "tfc:salmon",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 6
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
   "player_spawn_friendly": false,
-  "creature_spawn_probability": 0.5,
+  "creature_spawn_probability": 0.1,
   "spawn_costs": {}
 }

@@ -23,6 +23,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
+import net.dries007.tfc.common.entities.predator.VultureEntity;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.entity.EntityTypeAccessor;
 
@@ -81,15 +83,5 @@ public class TFCEntities
         GlobalEntityTypeAttributes.put(ISOPOD.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(LOBSTER.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(VULTURE.get(), MonsterEntity.createMonsterAttributes().build());
-
-        EntitySpawnPlacementRegistry.register(ISOPOD.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SeafloorCritterEntity.createSpawnRules(-50F, 13F, 50F, 450F));
-        EntitySpawnPlacementRegistry.register(LOBSTER.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SeafloorCritterEntity.createSpawnRules(-30F, 17F, 20F, 500F));
-
-        ForgeFlowingFluid saltWater = TFCFluids.SALT_WATER.getSource();
-        EntitySpawnPlacementRegistry.register(COD.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TFCAbstractGroupFishEntity.createSpawnRules(-50F, 18F, 20F, 500F, saltWater));
-        EntitySpawnPlacementRegistry.register(PUFFERFISH.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TFCAbstractGroupFishEntity.createSpawnRules(-10F, 50F, 20F, 500F, saltWater));
-        EntitySpawnPlacementRegistry.register(TROPICAL_FISH.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TFCAbstractGroupFishEntity.createSpawnRules(18F, 50F, 20F, 500F, saltWater));
-        EntitySpawnPlacementRegistry.register(JELLYFISH.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TFCAbstractGroupFishEntity.createSpawnRules(18F, 50F, 20F, 500F, saltWater));
-        EntitySpawnPlacementRegistry.register(ORCA.get(), PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, OrcaEntity.createSpawnRules());
     }
 }

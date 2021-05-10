@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.predator;
 
 import java.util.Comparator;
 import java.util.EnumSet;

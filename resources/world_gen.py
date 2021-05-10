@@ -790,11 +790,6 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         rain_type = 'rain'
 
     spawners = None
-    if ocean_features:
-        spawners = {
-            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
-            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
-        }
 
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
@@ -849,6 +844,10 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         if temp.id in ('cold', 'frozen'):
             features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']
+        spawners = {
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
+            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
+        }
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LOCAL_MODIFICATIONS].append('tfc:coral_reef')
@@ -877,6 +876,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
     if lake_features:
         features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
+    if category == 'river':
+        spawners = {
+            'water_ambient': [entity for entity in LAKE_AMBIENT.values()],
+            'water_creature': [entity for entity in LAKE_CREATURES.values()]
+        }
 
     features[Decoration.TOP_LAYER_MODIFICATION].append('tfc:ice_and_snow')  # This must go last
 
@@ -905,7 +909,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         air_carvers=air_carvers,
         water_carvers=water_carvers,
         features=features,
-        player_spawn_friendly=spawnable
+        player_spawn_friendly=spawnable,
+        creature_spawn_probability=0.1
     )
 
 

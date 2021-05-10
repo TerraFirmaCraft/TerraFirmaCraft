@@ -7,7 +7,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.client.model.VultureModel;
-import net.dries007.tfc.common.entities.VultureEntity;
+import net.dries007.tfc.common.entities.predator.VultureEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

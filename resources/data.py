@@ -1,7 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
+from typing import Union
 
-from mcresources import ResourceManager
+from mcresources import ResourceManager, utils
 from mcresources.utils import item_stack
 
 from constants import *
@@ -97,3 +98,36 @@ def generate(rm: ResourceManager):
 
     # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
+
+    # Entities
+    rm.data(('tfc', 'fauna', 'isopod'), fauna('tfc:isopod', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=14)))
+    rm.data(('tfc', 'fauna', 'lobster'), fauna('tfc:lobster', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=21)))
+    rm.data(('tfc', 'fauna', 'cod'), fauna('tfc:cod', fluid='tfc:salt_water', climate=climate_config(max_temp=18)))
+    rm.data(('tfc', 'fauna', 'pufferfish'), fauna('tfc:pufferfish', fluid='tfc:salt_water', climate=climate_config(min_temp=10)))
+    rm.data(('tfc', 'fauna', 'tropical_fish'), fauna('tfc:tropical_fish', fluid='tfc:salt_water', climate=climate_config(min_temp=18)))
+    rm.data(('tfc', 'fauna', 'jellyfish'), fauna('tfc:jellyfish', fluid='tfc:salt_water', climate=climate_config(min_temp=18)))
+    rm.data(('tfc', 'fauna', 'orca'), fauna('tfc:orca', fluid='tfc:salt_water', distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
+    rm.data(('tfc', 'fauna', 'dolphin'), fauna('tfc:dolphin', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
+    rm.data(('tfc', 'fauna', 'manatee'), fauna('tfc:manatee', fluid='minecraft:water', distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
+    rm.data(('tfc', 'fauna', 'salmon'), fauna('tfc:salmon', fluid='minecraft:water', climate=climate_config(min_temp=-5)))
+
+
+def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'min_temperature': min_temp,
+        'max_temperature': max_temp,
+        'min_rainfall': min_rain,
+        'max_rainfall': max_rain,
+        'max_forest': 'normal' if needs_forest else None,
+        'fuzzy': fuzzy
+    })
+
+
+def fauna(entity: str, fluid: str = 'minecraft:empty', chance: int = 1, distance_below_sea_level: int = -1, climate: Dict[str, Any] = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'entity': entity,
+        'fluid': fluid,
+        'chance': chance,
+        'distance_below_sea_level': distance_below_sea_level,
+        'climate': climate
+    })

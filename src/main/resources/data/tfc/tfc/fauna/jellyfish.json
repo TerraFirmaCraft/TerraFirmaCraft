@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "entity": "tfc:jellyfish",
+  "fluid": "tfc:salt_water",
+  "chance": 1,
+  "distance_below_sea_level": -1,
+  "climate": {
+    "min_temperature": 18
+  }
+}

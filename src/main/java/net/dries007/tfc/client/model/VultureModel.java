@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
-import net.dries007.tfc.common.entities.VultureEntity;
+import net.dries007.tfc.common.entities.predator.VultureEntity;
 
 public class VultureModel extends SegmentedModel<VultureEntity>
 {

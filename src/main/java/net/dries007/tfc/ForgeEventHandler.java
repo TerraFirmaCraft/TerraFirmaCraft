@@ -46,6 +46,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
+import net.dries007.tfc.common.entities.FaunaManager;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.common.types.MetalManager;
@@ -238,6 +239,7 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
         resourceManager.registerReloadListener(HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(FaunaManager.INSTANCE);
 
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }

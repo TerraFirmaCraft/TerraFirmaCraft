@@ -8,6 +8,7 @@
     "block.IceBlockMixin",
     "block.SnowBlockMixin",
     "entity.ai.goal.GoalSelectorAccessor",
+    "entity.EntitySpawnPlacementRegistryAccessor",
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",
     "fluid.FlowingFluidAccessor",

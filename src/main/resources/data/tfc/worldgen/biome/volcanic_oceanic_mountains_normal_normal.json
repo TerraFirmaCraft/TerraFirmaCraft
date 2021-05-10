@@ -165,10 +165,16 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },
   "player_spawn_friendly": false,
-  "creature_spawn_probability": 0.5,
+  "creature_spawn_probability": 0.1,
   "spawn_costs": {}
 }

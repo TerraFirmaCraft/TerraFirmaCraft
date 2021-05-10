@@ -7,10 +7,6 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.common.entities.PlacementPredicate;
-import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.world.decorator.ClimateConfig;
-
 public class SeafloorCritterEntity extends WaterMobEntity
 {
     public SeafloorCritterEntity(EntityType<? extends WaterMobEntity> type, World world)
@@ -30,10 +26,5 @@ public class SeafloorCritterEntity extends WaterMobEntity
     protected PathNavigator createNavigation(World worldIn)
     {
         return new SwimmerPathNavigator(this, worldIn);
-    }
-
-    public static PlacementPredicate<SeafloorCritterEntity> createSpawnRules(float minTemp, float maxTemp, float minRain, float maxRain)
-    {
-        return new PlacementPredicate<SeafloorCritterEntity>().fluid(TFCFluids.SALT_WATER.getSource()).belowSeaLevel(20).simpleClimate(minTemp, maxTemp, minRain, maxRain);
     }
 }
