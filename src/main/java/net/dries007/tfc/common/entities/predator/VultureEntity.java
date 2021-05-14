@@ -48,6 +48,7 @@ public class VultureEntity extends FlyingEntity
         };
     }
 
+    @Override
     protected BodyController createBodyControl()
     {
         return new BodyController(this) {

@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.aquatic.SeafloorCritterEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class LobsterModel extends SegmentedModel<SeafloorCritterEntity>
 {
     private final ModelRenderer body;
@@ -144,13 +146,6 @@ public class LobsterModel extends SegmentedModel<SeafloorCritterEntity>
         cube_r2.texOffs(0, 7).addBox(-2.0F, 0.0F, -2.5F, 2.0F, 0.0F, 5.0F, 0.0F, false);
     }
 
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
-    }
 
     @Override
     public Iterable<ModelRenderer> parts()

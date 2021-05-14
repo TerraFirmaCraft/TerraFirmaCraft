@@ -132,6 +132,12 @@
         "weight": 10,
         "minCount": 2,
         "maxCount": 6
+      },
+      {
+        "type": "tfc:bluegill",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
       }
     ],
     "water_creature": [

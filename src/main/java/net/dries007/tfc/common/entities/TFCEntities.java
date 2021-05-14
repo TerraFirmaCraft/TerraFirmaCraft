@@ -41,6 +41,7 @@ public class TFCEntities
     // Sea Creatures
     public static final RegistryObject<EntityType<TFCCodEntity>> COD = register("cod", EntityType.Builder.of(TFCCodEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<TFCSalmonEntity>> SALMON = register("salmon", EntityType.Builder.of(TFCSalmonEntity::new, EntityClassification.WATER_AMBIENT).sized(0.7F, 0.4F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<BluegillEntity>> BLUEGILL = register("bluegill", EntityType.Builder.of(BluegillEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.5F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<TFCPufferfishEntity>> PUFFERFISH = register("pufferfish", EntityType.Builder.of(TFCPufferfishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.7F, 0.7F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<TFCTropicalFishEntity>> TROPICAL_FISH = register("tropical_fish", EntityType.Builder.of(TFCTropicalFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.4F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<JellyfishEntity>> JELLYFISH = register("jellyfish", EntityType.Builder.of(JellyfishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.3F, 0.3F).clientTrackingRange(4));
@@ -74,6 +75,7 @@ public class TFCEntities
     {
         GlobalEntityTypeAttributes.put(COD.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(SALMON.get(), AbstractFishEntity.createAttributes().build());
+        GlobalEntityTypeAttributes.put(BLUEGILL.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(PUFFERFISH.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(TROPICAL_FISH.get(), AbstractFishEntity.createAttributes().build());
         GlobalEntityTypeAttributes.put(JELLYFISH.get(), AbstractFishEntity.createAttributes().build());

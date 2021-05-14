@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.aquatic.ManateeEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class ManateeModel extends SegmentedModel<ManateeEntity>
 {
     private final ModelRenderer head;
@@ -140,12 +142,5 @@ public class ManateeModel extends SegmentedModel<ManateeEntity>
     public Iterable<ModelRenderer> parts()
     {
         return ImmutableList.of(head, finright, finleft, body, back);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

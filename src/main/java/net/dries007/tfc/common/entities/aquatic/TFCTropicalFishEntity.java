@@ -30,7 +30,7 @@ public class TFCTropicalFishEntity extends TropicalFishEntity
         availableGoals.removeIf(priority -> priority.getGoal() instanceof AvoidEntityGoal);
 
         goalSelector.addGoal(2, new TFCAvoidEntityGoal<>(this, PlayerEntity.class, 8.0F, 5.0D, 5.4D));
-        goalSelector.addGoal(5, new FluidPreferenceGoal(this, 1.0F, 8, TFCFluids.SALT_WATER.getSource()));
+        goalSelector.addGoal(3, new FluidPreferenceGoal(this, 1.0F, 8, TFCFluids.SALT_WATER.getSource()));
         goalSelector.addGoal(6, new UnderwaterHideGoal(this, 1.0F, 8));
     }
 }

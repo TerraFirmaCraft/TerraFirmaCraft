@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.predator.VultureEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class VultureModel extends SegmentedModel<VultureEntity>
 {
     private final ModelRenderer main;
@@ -90,13 +92,6 @@ public class VultureModel extends SegmentedModel<VultureEntity>
         head.texOffs(21, 39).addBox(-2.0F, -0.75F, -6.0F, 3.0F, 3.0F, 3.0F, 0.0F, false);
         head.texOffs(0, 6).addBox(-1.0F, 0.25F, -8.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
         head.texOffs(0, 0).addBox(-1.0F, 0.75F, -9.0F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 
     @Override

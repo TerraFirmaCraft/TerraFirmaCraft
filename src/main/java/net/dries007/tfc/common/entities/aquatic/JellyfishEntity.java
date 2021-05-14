@@ -27,6 +27,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.entities.ai.AquaticMovementController;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.mixin.entity.ai.goal.GoalSelectorAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -55,15 +56,14 @@ public class JellyfishEntity extends TFCAbstractGroupFishEntity
         Set<PrioritizedGoal> availableGoals = ((GoalSelectorAccessor) goalSelector).getAvailableGoals();
         availableGoals.removeIf(priority -> priority.getGoal() instanceof AvoidEntityGoal);
 
-        //afraid of something?
-        //goalSelector.addGoal(2, new TFCAvoidEntityGoal<>(this, PlayerEntity.class, 8.0F, 5.0D, 5.4D));
+        goalSelector.addGoal(2, new TFCAvoidEntityGoal<>(this, OrcaEntity.class, 8.0F, 5.0D, 5.4D));
     }
 
 
     @Override
     public void playerTouch(PlayerEntity entityIn)
     {
-        entityIn.hurt(DamageSource.GENERIC, 1.0F);
+        entityIn.hurt(DamageSource.GENERIC, 1.0F);//todo once bulk is merged put a dmg source in
         super.playerTouch(entityIn);
     }
 

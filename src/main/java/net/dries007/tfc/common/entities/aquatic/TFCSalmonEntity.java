@@ -2,6 +2,7 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
@@ -9,11 +10,20 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.common.entities.ai.FluidPreferenceGoal;
+
 public class TFCSalmonEntity extends TFCAbstractGroupFishEntity
 {
     public TFCSalmonEntity(EntityType<? extends AbstractGroupFishEntity> type, World worldIn)
     {
         super(type, worldIn);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        goalSelector.addGoal(2, new FluidPreferenceGoal(this, 1.0F, 16, Fluids.WATER.getSource()));
     }
 
     @Override

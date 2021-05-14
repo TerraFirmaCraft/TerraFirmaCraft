@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.aquatic.JellyfishEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class JellyfishModel extends SegmentedModel<JellyfishEntity>
 {
     private final ModelRenderer head;
@@ -65,12 +67,5 @@ public class JellyfishModel extends SegmentedModel<JellyfishEntity>
     public Iterable<ModelRenderer> parts()
     {
         return ImmutableList.of(head, tail1, tail2, tail3, tail4);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

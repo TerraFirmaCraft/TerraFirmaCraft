@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.aquatic.SeafloorCritterEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class IsopodModel extends SegmentedModel<SeafloorCritterEntity>
 {
     private final ModelRenderer body;
@@ -60,12 +62,5 @@ public class IsopodModel extends SegmentedModel<SeafloorCritterEntity>
     public void setupAnim(SeafloorCritterEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         //double oscillation = 0.04 * MathHelper.cos(0.2F * ageInTicks);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

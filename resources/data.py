@@ -110,6 +110,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'dolphin'), fauna('tfc:dolphin', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
     rm.data(('tfc', 'fauna', 'manatee'), fauna('tfc:manatee', fluid='minecraft:water', distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
     rm.data(('tfc', 'fauna', 'salmon'), fauna('tfc:salmon', fluid='minecraft:water', climate=climate_config(min_temp=-5)))
+    rm.data(('tfc', 'fauna', 'bluegill'), fauna('tfc:bluegill', fluid='minecraft:water', climate=climate_config(min_temp=-10, max_temp=26)))
 
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:

@@ -30,7 +30,7 @@ public class TFCCodEntity extends TFCAbstractGroupFishEntity
     protected void registerGoals()
     {
         super.registerGoals();
-        goalSelector.addGoal(5, new FluidPreferenceGoal(this, 1.0F, 16, TFCFluids.SALT_WATER.getSource()));
+        goalSelector.addGoal(2, new FluidPreferenceGoal(this, 1.0F, 16, TFCFluids.SALT_WATER.getSource()));
         goalSelector.addGoal(6, new UnderwaterHideGoal(this, 1.0F, 8));
     }
 

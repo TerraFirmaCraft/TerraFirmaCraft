@@ -117,6 +117,7 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.VULTURE.get(), VultureRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

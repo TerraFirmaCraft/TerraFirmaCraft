@@ -338,7 +338,8 @@ OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
-    'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10)
+    'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),
+    'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10)
 }
 
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -423,6 +424,7 @@ DEFAULT_LANG = {
     'entity.tfc.isopod': 'Isopod',
     'entity.tfc.vulture': 'Vulture',
     'entity.tfc.lobster': 'Lobster',
+    'entity.tfc.bluegill': 'Bluegill',
 
     # ENUMS
 

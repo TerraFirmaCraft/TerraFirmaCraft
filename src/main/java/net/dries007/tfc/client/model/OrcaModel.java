@@ -8,6 +8,8 @@ import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.common.entities.aquatic.OrcaEntity;
 
+import static net.dries007.tfc.client.ClientHelpers.setRotationAngle;
+
 public class OrcaModel extends SegmentedModel<OrcaEntity>
 {
     private final ModelRenderer front;
@@ -117,7 +119,7 @@ public class OrcaModel extends SegmentedModel<OrcaEntity>
 
         if (Entity.getHorizontalDistanceSqr(entityIn.getDeltaMovement()) > 1.0E-7D)
         {
-            float oscillation = 0.05F - 0.1F * MathHelper.cos(ageInTicks * 0.3F);
+            float oscillation = 0.1F - 0.2F * MathHelper.cos(ageInTicks * 0.3F);
             rump.zRot = oscillation;
             front.zRot = oscillation;
             top.zRot = oscillation;
@@ -126,12 +128,5 @@ public class OrcaModel extends SegmentedModel<OrcaEntity>
             right.zRot = oscillation;
             right.zRot = -1 * oscillation;
         }
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }
