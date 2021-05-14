@@ -46,7 +46,19 @@ public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
     @Override
     public FastArea createResult(IPixelTransformer pixelTransformer)
     {
-        return new FastArea(pixelTransformer, 256);
+        return new FastArea(pixelTransformer, 16);
+    }
+
+    @Override
+    public FastArea createResult(IPixelTransformer pixelTransformer, FastArea area)
+    {
+        return new FastArea(pixelTransformer, Math.min(1024, area.getSize() * 4));
+    }
+
+    @Override
+    public FastArea createResult(IPixelTransformer pixelTransformer, FastArea firstArea, FastArea secondArea)
+    {
+        return new FastArea(pixelTransformer, Math.min(1024, Math.max(firstArea.getSize(), secondArea.getSize()) * 4));
     }
 
     @Override

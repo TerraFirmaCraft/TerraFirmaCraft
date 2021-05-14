@@ -12,7 +12,7 @@ import java.util.function.LongFunction;
 
 import net.minecraftforge.fml.RegistryObject;
 
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.IBiomeNoiseSampler;
 
 /**
  * This is a version of {@link RegistryObject} for biomes.
@@ -23,9 +23,8 @@ import net.dries007.tfc.world.noise.INoise2D;
 public class BiomeVariants
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, BiomeExtension>> extensions;
-    private final LongFunction<INoise2D> noiseFactory;
-    private final SmallGroup smallGroup;
-    private final LargeGroup largeGroup;
+    private final LongFunction<IBiomeNoiseSampler> noiseFactory;
+    private final Group group;
     private final boolean salty;
     private final boolean volcanic;
     private final int volcanoFrequency;
@@ -33,14 +32,13 @@ public class BiomeVariants
 
     protected BiomeVariants(BiomeVariants parent)
     {
-        this(parent.noiseFactory, parent.smallGroup, parent.largeGroup, parent.salty, parent.volcanic, parent.volcanoFrequency, parent.volcanoBasaltHeight);
+        this(parent.noiseFactory, parent.group, parent.salty, parent.volcanic, parent.volcanoFrequency, parent.volcanoBasaltHeight);
     }
 
-    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    public BiomeVariants(LongFunction<IBiomeNoiseSampler> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
-        this.smallGroup = smallGroup;
-        this.largeGroup = largeGroup;
+        this.group = group;
         this.salty = salty;
         this.volcanic = volcanic;
         this.volcanoFrequency = volcanoFrequency;
@@ -53,14 +51,9 @@ public class BiomeVariants
         }
     }
 
-    public LargeGroup getLargeGroup()
+    public Group getGroup()
     {
-        return largeGroup;
-    }
-
-    public SmallGroup getSmallGroup()
-    {
-        return smallGroup;
+        return group;
     }
 
     public boolean isSalty()
@@ -83,7 +76,7 @@ public class BiomeVariants
         return volcanoBasaltHeight;
     }
 
-    public INoise2D createNoiseLayer(long seed)
+    public IBiomeNoiseSampler createNoiseSampler(long seed)
     {
         return noiseFactory.apply(seed);
     }
@@ -101,17 +94,10 @@ public class BiomeVariants
         return extensions.get(temp).get(rain);
     }
 
-    public enum LargeGroup
+    public enum Group
     {
         LAND, OCEAN, RIVER, LAKE;
 
-        public static final int SIZE = LargeGroup.values().length;
-    }
-
-    public enum SmallGroup
-    {
-        BODY, RIVER;
-
-        public static final int SIZE = SmallGroup.values().length;
+        public static final int SIZE = Group.values().length;
     }
 }

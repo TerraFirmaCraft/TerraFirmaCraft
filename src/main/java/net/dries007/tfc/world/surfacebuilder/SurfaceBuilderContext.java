@@ -90,15 +90,15 @@ public class SurfaceBuilderContext
     public void setBlockState(BlockPos pos, BlockState state)
     {
         // Skip unnecessary steps in ChunkPrimer#setBlockState
-        final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+        final int x = pos.getX() & 15, y = pos.getY(), z = pos.getZ() & 15;
         if (!World.isOutsideBuildHeight(y))
         {
             if (chunk.getSections()[y >> 4] != Chunk.EMPTY_SECTION || !state.is(Blocks.AIR))
             {
                 final ChunkSection section = chunk.getOrCreateSection(y >> 4);
-                section.setBlockState(x & 15, y & 15, z & 15, state, false);
-                worldSurfaceHeightmap.update(x & 15, y, z & 15, state);
-                oceanFloorHeightmap.update(x & 15, y, z & 15, state);
+                section.setBlockState(x, y & 15, z, state, false);
+                worldSurfaceHeightmap.update(x, y, z, state);
+                oceanFloorHeightmap.update(x, y, z, state);
             }
         }
     }

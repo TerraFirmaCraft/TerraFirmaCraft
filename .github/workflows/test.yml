@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  push:
+    branches: [ 1.16.x ]
+  pull_request:
+    branches: [ 1.16.x ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+    - uses: actions/cache@v2
+      name: Cache MC Assets
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: Test
+      run: ./gradlew runServerTest
+    - name: Check Licenses
+      run: ./gradlew checkLicenses

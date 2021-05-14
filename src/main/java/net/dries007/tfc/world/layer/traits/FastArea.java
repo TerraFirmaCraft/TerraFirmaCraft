@@ -55,4 +55,9 @@ public class FastArea implements IArea
             return value;
         }
     }
+
+    public int getSize()
+    {
+        return mask + 1;
+    }
 }
