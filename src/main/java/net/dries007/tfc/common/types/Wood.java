@@ -71,7 +71,7 @@ public class Wood
             this.topColor = topColor;
             this.barkColor = barkColor;
             this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
-            this.fallFoliageCoords = rng.nextInt(256 * 256);
+            this.fallFoliageCoords = rng.nextInt(256 * 256); // todo: pick actual colors for these!
             this.maxDecayDistance = maxDecayDistance;
         }
 
