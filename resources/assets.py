@@ -525,6 +525,29 @@ def generate(rm: ResourceManager):
         rm.item_model('tfc:wood/planks/' + wood + '_log_fence', parent='tfc:block/wood/planks/' + wood + '_log_fence_inventory', no_textures=True)
         rm.block_loot(log_fence_namespace, log_fence_namespace)
 
+        texture = 'tfc:block/wood/sheet/%s' % wood
+        connection = 'tfc:block/wood/support/%s_connection' % wood
+        rm.blockstate_multipart(('wood', 'vertical_support', wood), [
+            {'model': 'tfc:block/wood/support/%s_vertical' % wood},
+            ({'north': True}, {'model': connection, 'y': 270}),
+            ({'east': True}, {'model': connection}),
+            ({'south': True}, {'model': connection, 'y': 90}),
+            ({'west': True}, {'model': connection, 'y': 180}),
+        ]).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        rm.blockstate_multipart(('wood', 'horizontal_support', wood), [
+            {'model': 'tfc:block/wood/support/%s_horizontal' % wood},
+            ({'north': True}, {'model': connection, 'y': 270}),
+            ({'east': True}, {'model': connection}),
+            ({'south': True}, {'model': connection, 'y': 90}),
+            ({'west': True}, {'model': connection, 'y': 180}),
+        ]).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+
+        rm.block_model('tfc:wood/support/%s_inventory' % wood, textures={'texture': texture}, parent='tfc:block/wood/support/inventory')
+        rm.block_model('tfc:wood/support/%s_vertical' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/vertical')
+        rm.block_model('tfc:wood/support/%s_connection' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/connection')
+        rm.block_model('tfc:wood/support/%s_horizontal' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/horizontal')
+        rm.item_model(('wood', 'support', wood), no_textures=True, parent='tfc:block/wood/support/%s_inventory' % wood).with_lang(lang('%s Support', wood))
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)
