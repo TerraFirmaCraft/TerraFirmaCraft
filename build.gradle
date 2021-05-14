@@ -34,7 +34,7 @@ apply from: 'dev.gradle'
 
 // These properties can all be customized from dev.gradle
 def mappingsChannel = project.hasProperty('mappings_channel') ? mappings_channel : 'official'
-def mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : mc_version
+def mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : minecraft_version
 def minifyResources = project.hasProperty("minify_resources") ? minify_resources : true
 
 println "Using mappings: " + mappingsChannel + " / " + mappingsVersion
