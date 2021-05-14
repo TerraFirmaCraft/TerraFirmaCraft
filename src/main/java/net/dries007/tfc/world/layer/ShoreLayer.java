@@ -24,7 +24,7 @@ public enum ShoreLayer implements ICastleTransformer
         {
             if (matcher.test(TFCLayerUtil::isOcean))
             {
-                return TFCLayerUtil.SHORE;
+                return TFCLayerUtil.shoreFor(center);
             }
         }
         return center;

@@ -170,6 +170,11 @@ public final class TFCItems
 
     //todo: molds
 
+    //todo move to correct spot once bulk is merged
+    public static final Map<Wood.Default, RegistryObject<Item>> SUPPORTS = Helpers.mapOfKeys(Wood.Default.class, wood ->
+        register("wood/support/" + wood.name().toLowerCase(), () -> new WallOrFloorItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.VERTICAL_SUPPORT).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HORIZONTAL_SUPPORT).get(), new Item.Properties().tab(WOOD)))
+    );
+
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->

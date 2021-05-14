@@ -147,7 +147,7 @@ public final class TFCBlocks
 
     public static final Map<Wood.Default, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.Default.class, wood ->
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
-            register(type.nameFor(wood), type.create(wood), WOOD)
+            type.needsItem() ? register(type.nameFor(wood), type.create(wood), WOOD) : register(type.nameFor(wood), type.create(wood))
         )
     );
 

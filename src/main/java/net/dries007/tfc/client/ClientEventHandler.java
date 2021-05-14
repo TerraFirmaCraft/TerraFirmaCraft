@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.gui.screen.inventory.CraftingScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -71,6 +72,7 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
         ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
         ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+        ScreenManager.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);

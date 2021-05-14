@@ -29,7 +29,7 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
     }
 
     @Override
-    protected MutableBoundingBox getBoundingBox(VeinConfig config)
+    protected MutableBoundingBox getBoundingBox(VeinConfig config, ClusterVein vein)
     {
         return new MutableBoundingBox(-config.getSize(), -config.getSize(), -config.getSize(), config.getSize(), config.getSize(), config.getSize());
     }

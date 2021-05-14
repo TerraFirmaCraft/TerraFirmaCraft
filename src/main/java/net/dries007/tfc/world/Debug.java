@@ -11,6 +11,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.Heightmap;
 
 /**
  * A collection of debug world generation things
@@ -18,12 +19,19 @@ import net.minecraft.world.chunk.IChunk;
 @SuppressWarnings("unused")
 public final class Debug
 {
+    /* Toggle to only generate biomes with normal/normal climates. This can assist when debugging specific biomes, as /locatebiome works much more readily. */
+    public static final boolean ONLY_NORMAL_NORMAL_CLIMATES = false;
+
+    /* Cover the world in a visualization of the slope, which is used to seed surface depth. */
+    public static final boolean ENABLE_SLOPE_VISUALIZATION = false;
+
+    @FunctionalInterface
     interface SlopeFunction
     {
         double sampleSlope(double[] slopeMap, int x, int z);
     }
 
-    public static void slopeVisualization(IChunk chunk, int[] surfaceHeightMap, double[] slopeMap, int chunkX, int chunkZ, SlopeFunction slopeFunction)
+    public static void slopeVisualization(IChunk chunk, double[] slopeMap, int chunkX, int chunkZ, SlopeFunction slopeFunction)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final Block[] meter = new Block[] {
@@ -41,11 +49,13 @@ public final class Debug
             Blocks.PINK_STAINED_GLASS
         };
 
+        final Heightmap heightmap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
+
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                int y = surfaceHeightMap[x + 16 * z];
+                int y = chunk.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, x, z);
                 mutablePos.set(chunkX + x, y, chunkZ + z);
                 double slope = slopeFunction.sampleSlope(slopeMap, x, z);
                 int slopeIndex = MathHelper.clamp((int) slope, 0, meter.length - 1);

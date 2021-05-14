@@ -23,6 +23,7 @@ import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
+import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTree;
 
@@ -76,7 +77,7 @@ public class Wood
             this.topColor = topColor;
             this.barkColor = barkColor;
             this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
-            this.fallFoliageCoords = rng.nextInt(256 * 256);
+            this.fallFoliageCoords = rng.nextInt(256 * 256); // todo: pick actual colors for these!
             this.maxDecayDistance = maxDecayDistance;
             this.daysToGrow = daysToGrow;
         }
@@ -144,7 +145,10 @@ public class Wood
         STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
-        FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false);
+        FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
+        VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        WORKBENCH(wood -> new TFCCraftingTableBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)).flammable(60, 30)), true);
 
         public static final BlockType[] VALUES = values();
 
@@ -170,6 +174,11 @@ public class Wood
         public String nameFor(Default wood)
         {
             return (isPlanksVariant ? "wood/planks/" + wood.name() + "_" + name().toLowerCase() : "wood/" + name() + "/" + wood.name()).toLowerCase();
+        }
+
+        public boolean needsItem()
+        {
+            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT;
         }
     }
 }

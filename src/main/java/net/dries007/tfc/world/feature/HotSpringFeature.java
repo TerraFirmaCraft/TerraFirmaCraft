@@ -23,6 +23,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs2D;
@@ -57,22 +58,26 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             {
                 final int localX = pos.getX() + x;
                 final int localZ = pos.getZ() + z;
-                final int y = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, localX, localZ) - 1;
+                final int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
-                if (noise.noise(x, z) == 0)
+                // Disallow underwater locations
+                if (y <= TFCChunkGenerator.SEA_LEVEL || noise.noise(x, z) == 0)
                 {
                     continue;
                 }
 
                 mutablePos.set(localX, y + 1, localZ);
                 final BlockState stateAbove = world.getBlockState(mutablePos);
-                if (stateAbove.getMaterial().isReplaceable())
+                if (!stateAbove.isAir())
                 {
-                    setBlock(world, mutablePos, Blocks.AIR.defaultBlockState());
-                }
-                else
-                {
-                    continue;
+                    if (stateAbove.getMaterial().isReplaceable())
+                    {
+                        setBlock(world, mutablePos, Blocks.AIR.defaultBlockState());
+                    }
+                    else
+                    {
+                        continue; // Solid, non-replaceable block above. So don't replace with hot spring blocks
+                    }
                 }
 
                 boolean edge = false;
@@ -86,7 +91,10 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     }
                 }
 
-                final int surfaceDepth = 8 + rand.nextInt(3);
+                // surface depth is deeper near the center of the hot spring
+                // Range: [0.3, 1.0]
+                final float centerFactor = 1 - 0.7f * MathHelper.clamp(mutablePos.distManhattan(pos) / (float) (config.radius * config.radius), 0, 1);
+                final int surfaceDepth = (int) ((8 + rand.nextInt(3)) * centerFactor);
                 if (edge)
                 {
                     final int startY = rand.nextInt(12) == 0 ? -1 : 0; // Creates holes which allow the water to flow, rarely
@@ -109,6 +117,9 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 else
                 {
                     mutablePos.set(localX, y, localZ);
+                    final BlockPos posAt = mutablePos.immutable();
+                    fissureStartPositions.add(posAt);
+
                     setBlock(world, mutablePos, config.fluidState);
                     if (fluid != Fluids.EMPTY)
                     {
@@ -116,19 +127,21 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     }
                     if (useFilledEmptyCheck)
                     {
-                        filledEmptyPositions.add(mutablePos.immutable());
+                        filledEmptyPositions.add(posAt);
                     }
-                    fissureStartPositions.add(mutablePos.immutable());
-                    for (int dy = -1; dy >= -surfaceDepth; dy--)
+
+                    mutablePos.set(localX, y - 1, localZ);
+                    setFissureBaseBlock(world, mutablePos, gravelState);
+
+                    for (int dy = -2; dy >= -surfaceDepth; dy--)
                     {
                         mutablePos.set(localX, y + dy, localZ);
-                        final BlockState state = world.getBlockState(mutablePos);
-                        setBlock(world, mutablePos, gravelState); // set block first so we always hit at least one layer of gravel
-                        if (state == rockState || state == gravelState)
+                        if (!setFissureBaseBlock(world, pos, rockState))
                         {
                             break;
                         }
                     }
+
                 }
             }
         }
@@ -145,6 +158,18 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             FissureFeature.placeFissure(world, start, pos, mutablePos, rand, config.fluidState, rockState, 10, 22, 6, 16, 12, config.decoration.orElse(null));
         }
 
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean setFissureBaseBlock(ISeedReader world, BlockPos pos, BlockState state)
+    {
+        final BlockState stateAt = world.getBlockState(pos);
+        if (stateAt.isAir())
+        {
+            return false;
+        }
+        world.setBlock(pos, state, 2);
         return true;
     }
 }

@@ -27,11 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerProvider;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
@@ -242,30 +238,6 @@ public final class Helpers
     public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
     {
         return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
-    }
-
-    /**
-     * Names a simple container provider.
-     *
-     * @return a singleton container provider
-     */
-    public static INamedContainerProvider createNamedContainerProvider(ITextComponent name, IContainerProvider provider)
-    {
-        return new INamedContainerProvider()
-        {
-            @Override
-            public ITextComponent getDisplayName()
-            {
-                return name;
-            }
-
-            @Nullable
-            @Override
-            public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-            {
-                return provider.createMenu(windowId, inv, player);
-            }
-        };
     }
 
     /**

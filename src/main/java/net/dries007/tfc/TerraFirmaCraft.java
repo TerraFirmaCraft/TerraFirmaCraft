@@ -107,16 +107,4 @@ public final class TerraFirmaCraft
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
     }
-
-    @SubscribeEvent
-    public void onConfigReloading(ModConfig.Reloading event)
-    {
-        TFCConfig.reload();
-    }
-
-    @SubscribeEvent
-    public void onConfigLoading(ModConfig.Loading event)
-    {
-        TFCConfig.reload();
-    }
 }

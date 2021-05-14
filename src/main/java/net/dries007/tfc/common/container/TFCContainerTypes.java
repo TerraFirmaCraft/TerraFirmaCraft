@@ -32,6 +32,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<ContainerType<GrillContainer>> GRILL = register("grill", GrillTileEntity.class, GrillContainer::new);
     public static final RegistryObject<ContainerType<PotContainer>> POT = register("pot", PotTileEntity.class, PotContainer::new);
     public static final RegistryObject<ContainerType<LogPileContainer>> LOG_PILE = register("log_pile", LogPileTileEntity.class, LogPileContainer::new);
+    public static final RegistryObject<ContainerType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (((windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv))));
 
 
     @SuppressWarnings("SameParameterValue")

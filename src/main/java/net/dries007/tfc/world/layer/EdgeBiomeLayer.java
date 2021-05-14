@@ -63,6 +63,13 @@ public enum EdgeBiomeLayer implements ICastleTransformer
                 return ROLLING_HILLS;
             }
         }
+        else if (center == DEEP_OCEAN_TRENCH)
+        {
+            if (matcher.test(i -> !TFCLayerUtil.isOcean(i)))
+            {
+                return OCEAN;
+            }
+        }
         return center;
     }
 }

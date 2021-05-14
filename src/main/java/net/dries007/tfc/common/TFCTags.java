@@ -41,6 +41,8 @@ public class TFCTags
         public static final ITag.INamedTag<Block> FRUIT_TREE_BRANCH = create("fruit_tree_branch");
         public static final ITag.INamedTag<Block> FRUIT_TREE_LEAVES = create("fruit_tree_leaves");
         public static final ITag.INamedTag<Block> FRUIT_TREE_SAPLING = create("fruit_tree_sapling");
+        public static final ITag.INamedTag<Block> SUPPORT_BEAM = create("support_beam");
+        public static final ITag.INamedTag<Block> WORKBENCH = create("workbench");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 

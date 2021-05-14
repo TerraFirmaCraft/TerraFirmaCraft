@@ -6,15 +6,12 @@
 
 package net.dries007.tfc.config;
 
-import java.util.ArrayList;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-
-import net.dries007.tfc.util.Cache;
 
 /**
  * Central point for all configuration options
@@ -29,13 +26,6 @@ public final class TFCConfig
     public static final ServerConfig SERVER = register(ModConfig.Type.SERVER, ServerConfig::new);
 
     public static void init() {}
-
-    public static void reload()
-    {
-        COMMON.reload();
-        CLIENT.reload();
-        SERVER.reload();
-    }
 
     private static <C> C register(ModConfig.Type type, Function<ForgeConfigSpec.Builder, C> factory)
     {
