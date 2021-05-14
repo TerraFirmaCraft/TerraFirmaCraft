@@ -513,6 +513,17 @@ def generate(rm: ResourceManager):
         block.with_item_model()
         block.with_lang(lang('%s Bookshelf', wood))
 
+        # Workbench
+        rm.blockstate(('wood', 'planks', '%s_workbench' % wood)).with_block_model(parent='minecraft:block/cube', textures={
+            'particle': 'tfc:block/wood/planks/%s_workbench_front' % wood,
+            'north': 'tfc:block/wood/planks/%s_workbench_front' % wood,
+            'south': 'tfc:block/wood/planks/%s_workbench_side' % wood,
+            'east': 'tfc:block/wood/planks/%s_workbench_side' % wood,
+            'west': 'tfc:block/wood/planks/%s_workbench_front' % wood,
+            'up': 'tfc:block/wood/planks/%s_workbench_top' % wood,
+            'down': 'tfc:block/wood/planks/%s' % wood
+        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbench')
+
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
 

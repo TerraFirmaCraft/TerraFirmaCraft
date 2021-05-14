@@ -135,7 +135,8 @@ public class Wood
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
         VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
-        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false);
+        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        WORKBENCH(wood -> new TFCCraftingTableBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)).flammable(60, 30)), true);
 
         public static final BlockType[] VALUES = values();
 
