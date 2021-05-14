@@ -34,9 +34,10 @@ public class FluidHelpers
      * Checks if a block state is empty other than a provided fluid
      * @return true if the provided state is a source block of it's current fluid
      */
-    public static boolean isEmptyFluid(BlockState state)
+    @SuppressWarnings("deprecation")
+    public static boolean isAirOrEmptyFluid(BlockState state)
     {
-        return state.getBlock().is(state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock());
+        return state.isAir() || state.getBlock().is(state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock());
     }
 
     /**

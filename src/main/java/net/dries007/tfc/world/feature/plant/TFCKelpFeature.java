@@ -11,7 +11,6 @@ import java.util.Random;
 import net.minecraft.block.AbstractTopPlantBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -22,10 +21,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.plant.TFCKelpTopBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class TFCKelpFeature extends Feature<TallPlantConfig>
 {
@@ -51,7 +47,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
             final BlockState bodyState = FluidHelpers.fillWithFluid(config.getBodyState(), fluid);
             final BlockState headState = FluidHelpers.fillWithFluid(config.getHeadState(), fluid);
 
-            if (bodyState != null && headState != null && bodyState.canSurvive(world, mutablePos) && FluidHelpers.isEmptyFluid(state))
+            if (bodyState != null && headState != null && bodyState.canSurvive(world, mutablePos) && FluidHelpers.isAirOrEmptyFluid(state))
             {
                 placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, bodyState, headState);
                 placedAny = true;
