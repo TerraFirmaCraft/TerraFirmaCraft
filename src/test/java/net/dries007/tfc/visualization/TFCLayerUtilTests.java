@@ -94,9 +94,10 @@ public class TFCLayerUtilTests
                     else if (index <= 5) zoom = 1;
                     else if (index <= 7) zoom = 2;
                     else if (index <= 10) zoom = 3;
-                    else zoom = 4;
+                    else if (index <= 14) zoom = index - 7;
+                    else zoom = 8;
 
-                    AREA.color(this::biomeColor).centerSized((1 << zoom) * 20).draw(name + '_' + index, instance);
+                    AREA.color(this::biomeColor).center((1 << zoom) * 16).size(Math.min(1024, (1 << zoom) * 16)).draw(name + '_' + index, instance);
                     break;
                 }
             }
