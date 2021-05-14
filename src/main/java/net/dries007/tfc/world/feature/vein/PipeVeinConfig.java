@@ -15,10 +15,11 @@ public class PipeVeinConfig extends VeinConfig
     public static final Codec<PipeVeinConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         VeinConfig.MAP_CODEC.forGetter(c -> c),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 3).forGetter(PipeVeinConfig::getRadius),
-        Codecs.POSITIVE_INT.optionalFieldOf("minSkew", 0).forGetter(PipeVeinConfig::getMinSkew),
-        Codecs.POSITIVE_INT.optionalFieldOf("maxSkew", 0).forGetter(PipeVeinConfig::getMaxSkew),
-        Codecs.POSITIVE_INT.optionalFieldOf("minSlant", 0).forGetter(PipeVeinConfig::getMinSlant),
-        Codecs.POSITIVE_INT.optionalFieldOf("maxSlant", 0).forGetter(PipeVeinConfig::getMaxSlant)
+        Codecs.POSITIVE_INT.optionalFieldOf("min_skew", 0).forGetter(PipeVeinConfig::getMinSkew),
+        Codecs.POSITIVE_INT.optionalFieldOf("max_skew", 0).forGetter(PipeVeinConfig::getMaxSkew),
+        Codecs.POSITIVE_INT.optionalFieldOf("min_slant", 0).forGetter(PipeVeinConfig::getMinSlant),
+        Codecs.POSITIVE_INT.optionalFieldOf("max_slant", 0).forGetter(PipeVeinConfig::getMaxSlant),
+        Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("sign", 0.5F).forGetter(PipeVeinConfig::getSign)
     ).apply(instance, PipeVeinConfig::new));
 
     private final int radius;
@@ -26,8 +27,9 @@ public class PipeVeinConfig extends VeinConfig
     private final int maxSkew;
     private final int minSlant;
     private final int maxSlant;
+    private final float sign;
 
-    private PipeVeinConfig(VeinConfig other, int radius, int minSkew, int maxSkew, int minSlant, int maxSlant)
+    private PipeVeinConfig(VeinConfig other, int radius, int minSkew, int maxSkew, int minSlant, int maxSlant, float sign)
     {
         super(other);
 
@@ -36,6 +38,7 @@ public class PipeVeinConfig extends VeinConfig
         this.maxSkew = maxSkew;
         this.minSlant = minSlant;
         this.maxSlant = maxSlant;
+        this.sign = sign;
     }
 
     public int getRadius()
@@ -61,6 +64,11 @@ public class PipeVeinConfig extends VeinConfig
     public int getMaxSlant()
     {
         return maxSlant;
+    }
+
+    public float getSign()
+    {
+        return sign;
     }
 
     @Override

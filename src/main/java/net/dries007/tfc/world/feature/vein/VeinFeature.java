@@ -72,7 +72,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                     if (random.nextFloat() < getChanceToGenerate(x - vein.getPos().getX(), y - vein.getPos().getY(), z - vein.getPos().getZ(), vein, config))
                     {
                         final BlockState stoneState = world.getBlockState(mutablePos);
-                        final BlockState oreState = getStateToGenerate(stoneState, random, config, world, mutablePos);
+                        final BlockState oreState = getStateToGenerate(stoneState, random, config);
                         if (oreState != null)
                         {
                             world.setBlock(mutablePos, oreState, 3);
@@ -105,7 +105,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Nullable
-    protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config, ISeedReader world, BlockPos pos)
+    protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config)
     {
         return config.getStateToGenerate(stoneState, random);
     }
