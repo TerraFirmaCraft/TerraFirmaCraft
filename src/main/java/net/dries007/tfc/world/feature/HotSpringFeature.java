@@ -93,7 +93,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
                 // surface depth is deeper near the center of the hot spring
                 // Range: [0.3, 1.0]
-                final float centerFactor = 1 - 0.7f * MathHelper.clamp(mutablePos.distManhattan(pos) / (float) (config.radius * config.radius), 0, 1);
+                final float centerFactor = 1 - 0.7f * MathHelper.clamp(2 * (x * x + z * z) / (float) (config.radius * config.radius), 0, 1);
                 final int surfaceDepth = (int) ((8 + rand.nextInt(3)) * centerFactor);
                 if (edge)
                 {
@@ -102,16 +102,6 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     {
                         mutablePos.set(localX, y, localZ);
                         setBlock(world, mutablePos, Blocks.AIR.defaultBlockState());
-                    }
-                    for (int dy = startY; dy >= -surfaceDepth; dy--)
-                    {
-                        mutablePos.set(localX, y + dy, localZ);
-                        final BlockState state = world.getBlockState(mutablePos);
-                        if (state == rockState)
-                        {
-                            break;
-                        }
-                        setBlock(world, mutablePos, rockState);
                     }
                 }
                 else
@@ -132,16 +122,15 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
                     mutablePos.set(localX, y - 1, localZ);
                     setFissureBaseBlock(world, mutablePos, gravelState);
+                }
 
-                    for (int dy = -2; dy >= -surfaceDepth; dy--)
+                for (int dy = -2; dy >= -surfaceDepth; dy--)
+                {
+                    mutablePos.set(localX, y + dy, localZ);
+                    if (!setFissureBaseBlock(world, mutablePos, rockState))
                     {
-                        mutablePos.set(localX, y + dy, localZ);
-                        if (!setFissureBaseBlock(world, pos, rockState))
-                        {
-                            break;
-                        }
+                        break;
                     }
-
                 }
             }
         }
