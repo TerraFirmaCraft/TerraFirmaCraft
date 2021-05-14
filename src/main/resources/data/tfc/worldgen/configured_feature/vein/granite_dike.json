@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:dike_vein",
+  "type": "tfc:pipe_vein",
   "config": {
-    "rarity": 60,
+    "rarity": 220,
     "min_y": 40,
     "max_y": 180,
     "size": 90,
@@ -14,7 +14,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -24,7 +24,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -34,7 +34,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -44,7 +44,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -54,7 +54,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -64,7 +64,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -74,7 +74,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -84,7 +84,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -94,7 +94,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -104,7 +104,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -114,7 +114,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -124,7 +124,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -134,7 +134,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -144,7 +144,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -154,7 +154,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -164,7 +164,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -174,7 +174,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -184,7 +184,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -194,7 +194,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -204,7 +204,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -214,7 +214,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -224,7 +224,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -234,7 +234,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -244,7 +244,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -254,7 +254,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -264,7 +264,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -274,7 +274,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -284,7 +284,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -294,7 +294,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -304,7 +304,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -314,7 +314,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -324,7 +324,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -334,7 +334,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -344,7 +344,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -354,7 +354,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -364,7 +364,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -374,7 +374,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -384,7 +384,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -394,7 +394,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -404,7 +404,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -414,7 +414,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -424,7 +424,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -434,7 +434,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -444,7 +444,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -454,7 +454,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -464,7 +464,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -474,7 +474,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -484,7 +484,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -494,7 +494,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -504,7 +504,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -514,7 +514,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -524,7 +524,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -534,7 +534,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -544,7 +544,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -554,7 +554,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -564,7 +564,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -574,7 +574,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -584,7 +584,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -594,7 +594,7 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       },
@@ -604,12 +604,12 @@
         ],
         "ore": [
           {
-            "block": "minecraft:air"
+            "block": "tfc:rock/raw/granite"
           }
         ]
       }
     ],
-    "salt": 4261926707,
+    "salt": 597756037,
     "radius": 4,
     "minSkew": 7,
     "maxSkew": 20,

@@ -340,10 +340,10 @@ def generate(rm: ResourceManager):
                 'biomes': vein_biome_filter(vein.biomes)
             }
             if vein.type == 'pipe':
-                vein_config['minSkew'] = 5
-                vein_config['maxSkew'] = 13
-                vein_config['minSlant'] = 0
-                vein_config['maxSlant'] = 2
+                vein_config['min_skew'] = 5
+                vein_config['max_skew'] = 13
+                vein_config['min_slant'] = 0
+                vein_config['max_slant'] = 2
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, vein_config))
 
     rm.feature(('vein', 'gravel'), wg.configure('tfc:disc_vein', {
@@ -360,33 +360,35 @@ def generate(rm: ResourceManager):
         'salt': vein_salt('gravel')
     }))
 
-    dike_block_config = [{
-        'stone': ['tfc:rock/raw/%s' % rock],
-        'ore': [{'block': 'minecraft:air'}]
-    } for rock in ROCKS.keys()]
-    dike_block_config.extend([{
-        'stone': ['tfc:rock/gravel/%s' % rock],
-        'ore': [{'block': 'minecraft:air'}]
-    } for rock in ROCKS.keys()])
-    dike_block_config.extend([{
-        'stone': ['tfc:rock/hardened/%s' % rock],
-        'ore': [{'block': 'minecraft:air'}]
-    } for rock in ROCKS.keys()])
+    for rock, data in ROCKS.items():
+        if data.category == 'igneous_intrusive':
+            dike_block_config = [{
+                'stone': ['tfc:rock/raw/%s' % rock_in],
+                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+            } for rock_in in ROCKS.keys()]
+            dike_block_config.extend([{
+                'stone': ['tfc:rock/gravel/%s' % rock_in],
+                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+            } for rock_in in ROCKS.keys()])
+            dike_block_config.extend([{
+                'stone': ['tfc:rock/hardened/%s' % rock_in],
+                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+            } for rock_in in ROCKS.keys()])
 
-    rm.feature(('vein', 'dike'), wg.configure('tfc:dike_vein', {
-        'rarity': 60,
-        'min_y': 40,
-        'max_y': 180,
-        'size': 90,
-        'density': 0.95,
-        'blocks': dike_block_config,
-        'salt': vein_salt('dike'),
-        'radius': 4,
-        'minSkew': 7,
-        'maxSkew': 20,
-        'minSlant': 2,
-        'maxSlant': 5
-    }))
+            rm.feature(('vein', '%s_dike' % rock), wg.configure('tfc:pipe_vein', {
+                'rarity': 220,
+                'min_y': 40,
+                'max_y': 180,
+                'size': 90,
+                'density': 0.95,
+                'blocks': dike_block_config,
+                'salt': vein_salt('%s_dike' % rock),
+                'radius': 4,
+                'minSkew': 7,
+                'maxSkew': 20,
+                'minSlant': 2,
+                'maxSlant': 5
+            }))
 
     # todo: change to use cave biomes in 1.17
     rm.feature('cave_vegetation', wg.configure_decorated(wg.configure('tfc:cave_vegetation', {
@@ -832,6 +834,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
+    dike_veins = []
+    for rock, data in ROCKS.items():
+        if data.category == 'igneous_intrusive':
+            dike_veins += ['tfc:vein/%s_dike' % rock]
+
     # Features
     features = [
         ['tfc:erosion'],  # raw generation
@@ -840,7 +847,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:vein/gravel', 'tfc:vein/dike', *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
+        ['tfc:vein/gravel', *dike_veins, *('tfc:vein/%s' % vein for vein in ORE_VEINS.keys())],  # underground ores
         [
             'tfc:cave_spike',
             'tfc:large_cave_spike',

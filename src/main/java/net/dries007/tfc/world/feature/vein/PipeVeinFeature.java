@@ -33,10 +33,10 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     protected float getChanceToGenerate(int x, int y, int z, PipeVein vein, PipeVeinConfig config)
     {
         final double yScaled = (double) y / config.getSize();
-        x += vein.skew * MathHelper.cos(vein.angle) * yScaled;
-        z += vein.skew * MathHelper.sin(vein.angle) * yScaled;
+        x += vein.skew * vein.skewX * yScaled;
+        z += vein.skew * vein.skewZ * yScaled;
 
-        final double yFactor = (double) vein.yFlipper * yScaled + 0.5D;
+        final double yFactor = (double) vein.sign * yScaled + 0.5D;
         final double trueRadius = config.getRadius() * (1 - yFactor) + (config.getRadius() - vein.slant) * yFactor;
         if (Math.abs(y) < config.getSize() && (x * x) + (z * z) < trueRadius * trueRadius)
         {
@@ -53,16 +53,19 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
 
     static class PipeVein extends Vein
     {
-        final int yFlipper;
-        final float angle;
+        final int sign;
+        final float skewX;
+        final float skewZ;
         final int skew;
         final int slant;
 
         PipeVein(BlockPos pos, Random random, PipeVeinConfig config)
         {
             super(pos);
-            this.yFlipper = random.nextBoolean() ? 1 : -1;
-            this.angle = random.nextFloat() * (float) Math.PI * 2;
+            this.sign = config.getSign() < random.nextFloat() ? 1 : -1; // if 0: always \/ if 1: always /\
+            float angle = random.nextFloat() * (float) Math.PI * 2;
+            this.skewX = MathHelper.cos(angle);
+            this.skewZ = MathHelper.sin(angle);
             this.skew = MathHelper.nextInt(random, config.getMinSkew(), config.getMaxSkew());
             this.slant = MathHelper.nextInt(random, config.getMinSlant(), config.getMaxSlant());
         }
