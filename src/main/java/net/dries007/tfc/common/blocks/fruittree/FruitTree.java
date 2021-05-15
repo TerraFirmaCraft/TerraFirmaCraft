@@ -55,10 +55,5 @@ public class FruitTree
         {
             return fruitTree;
         }
-
-        public BerryBush baseInfo()
-        {
-            return fruitTree.getBase();
-        }
     }
 }

@@ -189,7 +189,7 @@ public final class InteractionManager
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockPos relativePos = posClicked.relative(direction);
 
-                if (!player.isShiftKeyDown()) return ActionResultType.PASS;
+                if (!player.isShiftKeyDown()) return ActionResultType.PASS; // for some reason this cancels placement?
 
                 // First we allow bulk insertion via shift click.
                 if (world.getBlockState(posClicked).is(TFCBlocks.LOG_PILE.get()))
@@ -204,7 +204,9 @@ public final class InteractionManager
                             {
                                 Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
                                 stack.shrink(inserted);
+                                return ActionResultType.CONSUME;
                             }
+                            return ActionResultType.SUCCESS;
                         }
                         return ActionResultType.PASS;
                     }
@@ -233,10 +235,14 @@ public final class InteractionManager
                         {
                             if (te.insertLog(stack.copy()))
                             {
-                                stack.shrink(1); // insert one log so that the log pile doesn't disappear
+                                if (!world.isClientSide())
+                                {
+                                    stack.shrink(1); // insert one log so that the log pile doesn't disappear
+                                    return ActionResultType.CONSUME;
+                                }
+                                return ActionResultType.SUCCESS;
                             }
                         }
-                        return ActionResultType.CONSUME;
                     }
                 }
             }
