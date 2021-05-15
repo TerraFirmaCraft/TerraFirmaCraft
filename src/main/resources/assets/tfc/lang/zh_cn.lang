@@ -109,6 +109,7 @@ tfc.tooltip.powderkeg_amount=含 %1$dx %2$s
 tfc.tooltip.powderkeg_empty=空
 tfc.tooltip.small_vessel_empty=空
 tfc.tooltip.small_vessel_item=%1$dx %2$s
+tfc.tooltip.small_vessel_unit_total=%s：%d 单元 / §6%f%%
 tfc.tooltip.weldable=可焊接
 tfc.tooltip.workable=可加工
 tfc.tooltip.danger=危险！！
@@ -1195,6 +1196,7 @@ jei.tooltips.tfc.barrel.duration.short=%d 小时
 jei.description.tfc.pit_kiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
 jei.description.tfc.placed_item=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
 jei.description.tfc.charcoal_pit=要烧制木炭，Shift + 右键点击以放置原木堆。用实心方块盖住这些原木堆，只留一个小孔，点一把火，之后把孔填上。几个小时后，你就可以去挖木炭了。
+jei.description.tfc.hide_scraping=水平放置一根原木，拿着浸泡过的皮革对准它按下右键，就能把兽皮蒙在上面。之后，在它上面右键点击，就可以进行刮削了。
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=岩石类别
@@ -5066,7 +5068,7 @@ waila.tfc.quern.handstone_durability=磨盘耐久度：%d / %d
 
 # Patchouli
 tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！群峦传说简中本地化组倾情奉献。
-tfc.patchouli.recipe_removed=配方已移除
+tfc.patchouli.recipe_removed=配方已被移除
 
 ## Devices
 waila.tfc.devices.minutes_remaining=剩余 %d 分钟
