@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.inventory.CraftingScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -63,6 +64,7 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
         ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+        ScreenManager.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
 
         // Render Types
         final RenderType cutout = RenderType.cutout();

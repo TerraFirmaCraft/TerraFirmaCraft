@@ -382,6 +382,11 @@ public class TFCLayerUtil
         return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
     }
 
+    public static int shoreFor(int value)
+    {
+        return SHORE;
+    }
+
     public static boolean hasLake(int value)
     {
         return !isOcean(value) && value != BADLANDS;

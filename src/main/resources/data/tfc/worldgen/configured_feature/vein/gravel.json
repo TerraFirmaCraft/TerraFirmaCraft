@@ -1,11 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:cluster_vein",
+  "type": "tfc:disc_vein",
   "config": {
     "rarity": 30,
     "min_y": 0,
     "max_y": 180,
-    "size": 20,
+    "size": 44,
+    "height": 2,
     "density": 1,
     "blocks": [
       {

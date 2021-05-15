@@ -73,8 +73,8 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
                 {
                     // Third check: is the position clear and valid
                     if ((config.canReplaceAir && stateAt.isAir()) ||
-                        (config.canReplaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isEmptyFluid(stateAt)) ||
-                        (config.canReplaceSurfaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isEmptyFluid(stateAt) && world.isEmptyBlock(mutablePos.above())))
+                        (config.canReplaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isAirOrEmptyFluid(stateAt)) ||
+                        (config.canReplaceSurfaceWater && stateAt.getFluidState().is(FluidTags.WATER) && FluidHelpers.isAirOrEmptyFluid(stateAt) && world.isEmptyBlock(mutablePos.above())))
                     {
                         // Fourth check: for extra conditions such as only allowing placement underground
                         if (config.onlyUnderground)

@@ -3,16 +3,18 @@ import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {
+            url = 'https://maven.minecraftforge.net'
+        }
         maven {
             url "https://repo.spongepowered.org/repository/maven-public/"
-            // content { includeGroup "org.spongepowered" } // gradle 5.1+
+            content { includeGroup "org.spongepowered" }
         }
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
@@ -25,49 +27,36 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-/*
- * !! Important Info for Contributors !!
- *
- * This project uses Mappificator (https://github.com/alcatrazEscapee/mappificator) for its mappings. This is a tool based on the official mappings provided by Mojang.
- * For information on how to set that up, see the project's README.md, it should detail how to create a customized mapping set and publish it to your maven local for use by FG.
- * While mappificator is recommended as it adds comments and parameter names to the standard official mappings, it is by no means necessary.
- * If you wish to use standard official mappings, see the below instructions to add the "use_official_mappings" property to your local dev.gradle
- *
- * This will create (if it does not exist) and use a 'dev.gradle' file in the root directory of this project.
- * It is used to set various property overrides in one's local development environment, without having to edit this file.
- * local.gradle should resemble the following:
- *
- * // In dev.gradle
- * ext {
- *     property_name = "a property value"
- *     another_property = true
- * }
- *
- * Important properties can can be configured in this manner:
- * use_official_mappings = true
- *  - This will tell gradle to use the official mappings for the purposes of mapping Minecraft source code. Using this option DOES NOT require setting up Mappificator. It WILL NOT de-obfuscate parameter names, or apply comments to the Minecraft source.
- */
-
 def localProperties = new File('./dev.gradle')
 localProperties.createNewFile()
 
 apply from: 'dev.gradle'
 
-def envVersion = System.getenv("version")
-version = envVersion == null ? "dev" : envVersion
+// These properties can all be customized from dev.gradle
+def mappingsChannel = project.hasProperty('mappings_channel') ? mappings_channel : 'official'
+def mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : minecraft_version
+def minifyResources = project.hasProperty("minify_resources") ? minify_resources : true
 
-def mappingsOfficial = (project.hasProperty('use_official_mappings') && Boolean.valueOf(use_official_mappings)) ||
-        System.getenv("USE_OFFICIAL_MAPPINGS") != null || // Detect in an actions buildscript
-        System.getenv("JITPACK") != null // Detect in a jitpack publishing environment
-def mappingsChannel = mappingsOfficial ? 'official' : 'snapshot'
-def mappingsVersion = mappingsOfficial ? minecraft_version : mappings_version
-
-println 'Using mappings: ' + mappingsChannel + ' / ' + mappingsVersion
+println "Using mappings: " + mappingsChannel + " / " + mappingsVersion
 
 group = "net.dries007.tfc" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+// Wow I can't believe this works this is awful
+// Fixes an issue where IDEA's compile and Mixins AP and missing obfuscation mappings blows up the run configs.
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType(JavaCompile).all {
+            it.options.annotationProcessorPath = files()
+        }
+    }
+}
+
+// Use version from environment variable, if set
+def envVersion = System.getenv('VERSION')
+version = envVersion == null ? 'indev' : envVersion
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaVersion.VERSION_1_8 // Need this here so eclipse task generates correctly.
 
 repositories {
     mavenCentral()
@@ -82,12 +71,10 @@ minecraft {
     mappings channel: mappingsChannel, version: mappingsVersion
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    def testClasses = String.join(File.pathSeparator, "${mod_id}%%${sourceSets.main.output.resourcesDir}", "${mod_id}%%${sourceSets.main.output.classesDirs.asPath}", "${mod_id}%%${sourceSets.test.output.resourcesDir}", "${mod_id}%%${sourceSets.test.output.classesDirs.asPath}")
-
     runs {
         client {
             workingDirectory project.file('run')
-            arg '-mixin.config=' + mod_id + '.mixins.json'
+            args '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -99,8 +86,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg '-mixin.config=' + mod_id + '.mixins.json'
-            arg '--nogui'
+            args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -110,12 +96,17 @@ minecraft {
             }
         }
 
-        integrationTest {
-            parent runs.client
+        serverTest {
+            parent runs.server
             workingDirectory project.file('run')
+            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher'
             ideaModule "${project.name}.test"
-            property 'forge.logging.console.level', 'debug' // This logging level prevents any other server information messages and leaves only the unit test output
-            environment 'MOD_CLASSES', testClasses // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
+            property 'forge.logging.console.level', 'unittest'
+            environment 'MOD_CLASSES', String.join(File.pathSeparator, "${mod_id}%%${sourceSets.main.output.resourcesDir}", "${mod_id}%%${sourceSets.main.output.classesDirs.asPath}", "${mod_id}%%${sourceSets.test.output.resourcesDir}", "${mod_id}%%${sourceSets.test.output.classesDirs.asPath}")
+            environment 'target', 'fmltestserver'
+            environment 'targetModId', "${mod_id}"
+            args '-mixin.config=' + mod_id + '.mixins.json', '--crashOnFailedTests'
+            forceExit false
             mods {
                 tfc {
                     sources sourceSets.main, sourceSets.test
@@ -123,19 +114,10 @@ minecraft {
             }
         }
 
-        unitTest {
-            parent runs.server // This run config inherits settings from the server config
-            workingDirectory project.file('run')
-            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher' // The main class which launches a customized server which then runs JUnit tests
-            ideaModule "${project.name}.test" // Tell IDEA to use the classpath of the test module
-            property 'forge.logging.console.level', 'unittest' // This logging level prevents any other server information messages and leaves only the unit test output
-            environment 'MOD_CLASSES', testClasses // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
-            environment 'target', 'fmltestserver' // This is a custom service used to launch with ModLauncher's transforming class loader
-            mods {
-                tfc {
-                    sources sourceSets.main, sourceSets.test
-                }
-            }
+        serverTestDebug {
+            parent runs.serverTest
+            property 'forge.logging.console.level', 'debug'
+            args '-mixin.config=' + mod_id + '.mixins.json'
         }
     }
 }
@@ -143,16 +125,18 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
     testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
 }
 
 processResources {
-    // Minify the json files in the output jar, reduces overall jar size.
-    // Also removes comments from mcresources, as they don't need to be included
-    doLast {
-        fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
-            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-            file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
+    if (minifyResources) {
+        doLast {
+            fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
+                file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+                file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
+            }
         }
     }
 }

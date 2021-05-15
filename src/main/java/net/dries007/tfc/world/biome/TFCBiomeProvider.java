@@ -28,6 +28,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.Debug;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
@@ -144,8 +145,8 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
         final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
+        final BiomeTemperature temperature = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
+        final BiomeRainfall rainfall = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }

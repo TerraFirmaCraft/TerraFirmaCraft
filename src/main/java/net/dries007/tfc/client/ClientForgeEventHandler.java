@@ -211,7 +211,7 @@ public class ClientForgeEventHandler
         TextureManager textureManager = mc.getTextureManager();
         textureManager.bind(ICONS);
 
-        if (!player.abilities.instabuild)
+        if (!player.abilities.instabuild && !player.isSpectator())
         {
             float foodLevel = player.getFoodData().getFoodLevel();
             float percentFood = foodLevel / 20f;
