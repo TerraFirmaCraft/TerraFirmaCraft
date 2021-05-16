@@ -209,6 +209,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
         if (te != null)
         {
+            te.resetCounter();
             te.reduceCounter(-1L * ICalendar.TICKS_IN_DAY * cycles * 5);
         }
         addLeaves(worldIn, pos);

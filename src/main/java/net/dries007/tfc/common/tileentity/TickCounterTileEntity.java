@@ -14,7 +14,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 public class TickCounterTileEntity extends TFCTileEntity
 {
-    private long lastUpdateTick;
+    private long lastUpdateTick = Integer.MIN_VALUE;
 
     public TickCounterTileEntity()
     {
@@ -24,7 +24,6 @@ public class TickCounterTileEntity extends TFCTileEntity
     protected TickCounterTileEntity(TileEntityType<?> type)
     {
         super(type);
-        resetCounter();
     }
 
     public long getTicksSinceUpdate()
@@ -35,11 +34,13 @@ public class TickCounterTileEntity extends TFCTileEntity
     public void resetCounter()
     {
         lastUpdateTick = Calendars.SERVER.getTicks();
+        markDirtyFast();
     }
 
     public void reduceCounter(long amount)
     {
         lastUpdateTick += amount;
+        markDirtyFast();
     }
 
     @Override

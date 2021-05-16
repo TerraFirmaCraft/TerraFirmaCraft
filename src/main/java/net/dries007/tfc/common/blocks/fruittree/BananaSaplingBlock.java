@@ -50,7 +50,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
             TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
             if (te != null)
             {
-                if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
+                if (te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
                 {
                     world.setBlockAndUpdate(pos, block.get().defaultBlockState());
                 }

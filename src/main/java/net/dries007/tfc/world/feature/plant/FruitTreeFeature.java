@@ -58,11 +58,7 @@ public class FruitTreeFeature extends Feature<BlockStateFeatureConfig>
                     int saplings = MathHelper.clamp(rand.nextInt(5) + 1, 2, 4);
                     BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
                     setBlock(world, mutablePos, branch);
-                    TickCounterTileEntity te = Helpers.getTileEntity(world, mutablePos, TickCounterTileEntity.class);
-                    if (te != null)
-                    {
-                        te.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300);
-                    }
+                    Helpers.getTileEntityOrThrow(world, mutablePos, TickCounterTileEntity.class).reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300);
                     world.getBlockTicks().scheduleTick(mutablePos, branch.getBlock(), 1);
                     return true;
                 }

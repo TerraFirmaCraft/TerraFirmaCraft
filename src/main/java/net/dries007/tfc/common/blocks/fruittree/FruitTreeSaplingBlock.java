@@ -95,10 +95,10 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te != null)
         {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
             {
                 ChunkData data = ChunkData.get(world, pos);
-                if (!tree.getBase().isValidConditions(data.getRainfall(pos), data.getAverageTemp(pos)))
+                if (!tree.getBase().isValidConditions(data.getAverageTemp(pos), data.getRainfall(pos)))
                 {
                     world.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                 }
@@ -106,6 +106,11 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
                 {
                     boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                    TickCounterTileEntity newTE = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+                    if (newTE != null)
+                    {
+                        newTE.resetCounter();
+                    }
                 }
             }
         }
