@@ -45,7 +45,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
         final BlockState rockState = rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
-        final BlockState gravelState = rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
+        final BlockState gravelState = rock.getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
         final Fluid fluid = config.fluidState.getFluidState().getType();
 
         final boolean useFilledEmptyCheck = config.fluidState.isAir();
@@ -124,7 +124,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     setFissureBaseBlock(world, mutablePos, gravelState);
                 }
 
-                for (int dy = -2; dy >= -surfaceDepth; dy--)
+                for (int dy = edge ? 0 : -2; dy >= -surfaceDepth; dy--)
                 {
                     mutablePos.set(localX, y + dy, localZ);
                     if (!setFissureBaseBlock(world, mutablePos, rockState))

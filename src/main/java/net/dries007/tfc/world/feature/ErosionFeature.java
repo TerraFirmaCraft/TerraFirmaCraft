@@ -6,16 +6,11 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.*;
-import javax.annotation.Nullable;
+import java.util.Random;
 
-import org.apache.commons.lang3.mutable.MutableInt;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
@@ -23,11 +18,14 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.soil.IDirtBlock;
-import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.RockData;
 
 // todo: make not shit
 public class ErosionFeature extends Feature<NoFeatureConfig>
@@ -41,146 +39,77 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
     @SuppressWarnings("deprecation")
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
-        int minX = chunkX - 8, maxX = chunkX + 24, minZ = chunkZ - 8, maxZ = chunkZ + 24;
-
-        Map<BlockPos, LandslideRecipe> landslidePositions = new HashMap<>();
-
+        final ChunkPos chunkPos = new ChunkPos(pos);
+        final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
+        final RockData rockData = ChunkDataProvider.getOrThrow(generator).get(chunkPos, ChunkData.Status.ROCKS).getRockData();
 
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
+                // Top down iteration, attempt to either fix unstable locations, or remove the offending blocks.
                 final int baseHeight = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
+                boolean prevBlockCanLandslide = false;
+                int lastSafeY = baseHeight;
 
-                // This is a heuristic to avoid both leaving a lot of blocks un-erroded, and also to check erosion down to y=0. After three non-air blocks that we can't errode, we assume we're in the weeds and will not find anything further down.
-                final MutableInt tries = new MutableInt();
-                for (int y = baseHeight; y >= 0; y--)
+                mutablePos.set(chunkX + x, baseHeight, chunkZ + z);
+
+                // Iterate down to sea level - at that point we're pretty likely not to come upon any significant collapse areas due to the water adjacency mask used in carving
+                for (int y = baseHeight; y >= TFCChunkGenerator.SEA_LEVEL; y--)
                 {
-                    mutablePos.set(chunkX + x, y, chunkZ + z);
+                    mutablePos.setY(y);
                     BlockState stateAt = worldIn.getBlockState(mutablePos);
-                    if (stateAt.isAir())
-                    {
-                        continue;
-                    }
-                    mutableWrapper.update(chunkX + x, y, chunkZ + z, stateAt);
 
-                    final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
-                    if (recipe != null)
+                    mutableWrapper.update(chunkX + x, y, chunkZ + z, stateAt);
+                    LandslideRecipe recipe = stateAt.isAir() ? null : LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
+                    if (prevBlockCanLandslide)
                     {
-                        landslidePositions.put(mutablePos.immutable(), recipe);
+                        // Continuing a collapsible downwards
+                        // If the block is also collapsible, we just continue until we reach either the bottom (solid) or something to collapse through
+                        if (recipe == null)
+                        {
+                            // This block is sturdy, preventing the column from collapsing
+                            // However, we need to make sure we can't collapse *through* this block
+                            if (stateAt.isAir() || TFCFallingBlockEntity.canFallThrough(worldIn, mutablePos, stateAt))
+                            {
+                                // We can collapse through the current block. aka, from [y + 1, lastSafeY) need to collapse
+                                // If we would only collapse one block, we remove it. Otherwise, we replace the lowest block with hardened stone
+                                if (lastSafeY > y + 2)
+                                {
+                                    // More than one block to collapse, so we can support instead
+                                    mutablePos.setY(y + 1);
+                                    worldIn.setBlock(mutablePos, rockData.getRock(x, y + 1, z).getBlock(Rock.BlockType.RAW).defaultBlockState(), 2);
+                                }
+                                else
+                                {
+                                    // Delete the block above
+                                    mutablePos.setY(y + 1);
+                                    worldIn.removeBlock(mutablePos, false);
+                                }
+                            }
+                            prevBlockCanLandslide = false;
+                            lastSafeY = y;
+                        }
                     }
                     else
                     {
-                        tries.increment();
-                        if (tries.intValue() > 3)
+                        // Last block is sturdy
+                        if (recipe == null)
                         {
-                            break;
+                            // This block is sturdy
+                            lastSafeY = y;
                         }
-                    }
-                }
-            }
-        }
-
-        // Ascend upwards, collapsing from the bottom up
-        List<BlockPos> sortedLandslidePositions = new ArrayList<>(landslidePositions.keySet());
-        sortedLandslidePositions.sort(Comparator.comparingInt(BlockPos::getY));
-
-        for (BlockPos landslidePos : sortedLandslidePositions)
-        {
-            LandslideRecipe recipe = landslidePositions.get(landslidePos);
-            BlockState stateAt = worldIn.getBlockState(landslidePos);
-            mutableWrapper.update(landslidePos.getX(), landslidePos.getY(), landslidePos.getZ(), stateAt);
-            if (recipe.matches(mutableWrapper, worldIn.getLevel()))
-            {
-                //worldIn.setBlock(landslidePos, landslidePos.getY() < generator.getSeaLevel() ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
-                BlockPos resultPos = quickLandslideBlock(worldIn, landslidePos, rand, minX, maxX, minZ, maxZ);
-                if (resultPos != null && !resultPos.equals(landslidePos))
-                {
-                    worldIn.setBlock(landslidePos, Blocks.AIR.defaultBlockState(), 2);
-                    //worldIn.setBlock(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
-
-                    // Fix exposed and/or covered grass
-                    if (stateAt.getBlock() instanceof IGrassBlock)
-                    {
-                        mutablePos.set(landslidePos).move(Direction.DOWN, 1);
-                        BlockState pastDirtState = worldIn.getBlockState(mutablePos);
-                        if (pastDirtState.getBlock() instanceof IDirtBlock)
+                        else
                         {
-                            // Replace exposed dirt with grass
-                            IDirtBlock dirtBlock = (IDirtBlock) pastDirtState.getBlock();
-                            worldIn.setBlock(mutablePos, dirtBlock.getGrass(), 2);
-                            worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock.getGrass().getBlock(), 0);
+                            // This block can collapse. lastSafeY will already be y + 1, so all we need to mark is the prev flag for next iteration
+                            prevBlockCanLandslide = true;
                         }
-/*
-                        mutablePos.set(resultPos).move(Direction.DOWN);
-                        BlockState pastGrassState = worldIn.getBlockState(mutablePos);
-                        if (pastGrassState.getBlock() instanceof IGrassBlock)
-                        {
-                            // Replace covered grass with dirt
-                            IGrassBlock grassBlock = (IGrassBlock) pastGrassState.getBlock();
-                            worldIn.setBlock(mutablePos, grassBlock.getDirt(), 2);
-                        }*/
                     }
                 }
             }
         }
         return true;
-    }
-
-    @Nullable
-    private BlockPos quickLandslideBlock(IBlockReader world, BlockPos pos, Random random, int minX, int maxX, int minZ, int maxZ)
-    {
-        int minY = Math.max(pos.getY() - 16, 0);
-        while (pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ && pos.getY() > minY)
-        {
-            // Cascade downwards
-            BlockPos down = pos.below();
-            while (TFCFallingBlockEntity.canFallThrough(world, down))
-            {
-                pos = down;
-                down = pos.below();
-            }
-            // Unable to cascade downwards any more, try sideways
-            int supportedDirections = 0;
-            List<BlockPos> possibleDirections = new ArrayList<>();
-            for (Direction side : Direction.Plane.HORIZONTAL)
-            {
-                if (LandslideRecipe.isSupportedOnSide(world, pos, side))
-                {
-                    supportedDirections++;
-                    if (supportedDirections >= 2)
-                    {
-                        // Supported by at least two sides, don't fall
-                        return pos;
-                    }
-                }
-                else
-                {
-                    // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
-                    BlockPos posSide = pos.relative(side);
-                    if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.below()))
-                    {
-                        possibleDirections.add(posSide);
-                    }
-                }
-            }
-            if (!possibleDirections.isEmpty())
-            {
-                // Fall to the side
-                pos = possibleDirections.get(random.nextInt(possibleDirections.size()));
-            }
-            else
-            {
-                // Unable to fall to the side or down, so stop here
-                return pos;
-            }
-
-            return pos;
-        }
-        return null;
     }
 }
