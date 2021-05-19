@@ -13,6 +13,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
+import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomes;
+
 /**
  * A collection of debug world generation things
  */
@@ -24,6 +27,10 @@ public final class Debug
 
     /* Cover the world in a visualization of the slope, which is used to seed surface depth. */
     public static final boolean ENABLE_SLOPE_VISUALIZATION = false;
+
+    /* Only generate a single biome in the world */
+    public static final boolean SINGLE_BIOME = false;
+    public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.OCEAN;
 
     @FunctionalInterface
     interface SlopeFunction

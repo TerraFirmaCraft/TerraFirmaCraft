@@ -144,7 +144,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
+        final BiomeVariants variants = Debug.SINGLE_BIOME ? Debug.SINGLE_BIOME_BIOME : biomeLayer.get(biomeCoordX, biomeCoordZ);
         final BiomeTemperature temperature = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
         final BiomeRainfall rainfall = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);

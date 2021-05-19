@@ -42,16 +42,6 @@ println "Using mappings: " + mappingsChannel + " / " + mappingsVersion
 group = "net.dries007.tfc" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 
-// Wow I can't believe this works this is awful
-// Fixes an issue where IDEA's compile and Mixins AP and missing obfuscation mappings blows up the run configs.
-if (System.getProperty("idea.sync.active") == "true") {
-    afterEvaluate {
-        tasks.withType(JavaCompile).all {
-            it.options.annotationProcessorPath = files()
-        }
-    }
-}
-
 // Use version from environment variable, if set
 def envVersion = System.getenv('VERSION')
 version = envVersion == null ? 'indev' : envVersion
@@ -125,9 +115,11 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-
     testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
+
+    if (System.getProperty("idea.sync.active") != "true") {
+        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    }
 }
 
 processResources {
