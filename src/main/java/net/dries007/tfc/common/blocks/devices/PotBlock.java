@@ -113,55 +113,56 @@ public class PotBlock extends FirepitBlock
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
         if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
+        PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
+        if (te == null || !(player instanceof ServerPlayerEntity)) return FAIL;
+
         ItemStack stack = player.getItemInHand(hand);
         boolean lit = state.getValue(LIT);
-        if (stack.isEmpty() && player.isShiftKeyDown())
+        if (!te.isBoiling())
         {
-            if (lit)//can't take stuff out if it's lit
+            if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                player.hurt(TFCDamageSources.POT, 1.0F);
-                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
-            }
-            else
-            {
-                convertPotToFirepit(world, pos);
-            }
-            return SUCCESS;
-        }
-        else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
-        {
-            tryExtinguish(world, pos, state);
-            return SUCCESS;
-        }
-        else
-        {
-            PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
-            if (te != null && player instanceof ServerPlayerEntity)
-            {
-                if (!te.isBoiling())
+                if (lit)//can't take stuff out if it's lit
                 {
-                    if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, null))
-                    {
-                        return CONSUME;
-                    }
-                    else if (te.hasOutput())
-                    {
-                        IPotRecipe.Output output = te.getOutput();
-                        // retrieve the output via right click
-                        if (!output.isEmpty())
-                            output.onExtract(world, pos, stack);
-                        // if there's nothing left, set it to null so we can start the process over
-                        if (output.isEmpty())
-                            te.setFinished();
-                        return SUCCESS;
-                    }
-                    NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                    Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
-                    return SUCCESS;
+                    player.hurt(TFCDamageSources.POT, 1.0F);
+                    Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
+                }
+                else
+                {
+                    convertPotToFirepit(world, pos);
+                    return CONSUME;
                 }
             }
+            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            {
+                tryExtinguish(world, pos, state);
+                return SUCCESS;
+            }
         }
-        return FAIL;
+        if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, null))
+        {
+            te.markForSync();
+            return CONSUME;
+        }
+        else if (te.hasOutput())
+        {
+            IPotRecipe.Output output = te.getCurrentOutputData();
+            // retrieve the output via right click
+            if (!output.isEmpty())
+                output.onExtract(world, pos, stack);
+            // if there's nothing left, set it to null so we can start the process over
+            if (output.isEmpty())
+            {
+                te.resetOutput();
+                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
+            }
+            te.markForSync();
+            return CONSUME;
+        }
+        NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+        Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
+        return SUCCESS;
     }
 
     @Override

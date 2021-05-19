@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -16,31 +15,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.PerfectMatchingWithEdmondsMatrix;
 
-//todo: much of the functionality is here, just needs to be finished
 public class SimplePotRecipe implements IPotRecipe
 {
     protected final ResourceLocation id;
-    protected final HashSet<Ingredient> inputItems;
-    protected final LinkedList<ItemStack> outputItems;
+    protected final List<Ingredient> inputItems;
+    protected final NonNullList<ItemStack> outputItems;
     protected final int duration;
     protected final float temperature;
     protected final FluidStack inputFluid;
     protected final FluidStack outputFluid;
 
-    public SimplePotRecipe(ResourceLocation id, HashSet<Ingredient> inputItems, LinkedList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration)
+    public SimplePotRecipe(ResourceLocation id, List<Ingredient> inputItems, NonNullList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration)
     {
         this.id = id;
         this.inputItems = inputItems;
@@ -49,11 +45,6 @@ public class SimplePotRecipe implements IPotRecipe
         this.temperature = temperature;
         this.inputFluid = inputFluid;
         this.outputFluid = outputFluid;
-    }
-
-    public LinkedList<ItemStack> getOutputItems()
-    {
-        return outputItems;
     }
 
     @Override
@@ -73,26 +64,16 @@ public class SimplePotRecipe implements IPotRecipe
     {
         if (!wrapper.getInputFluid().isFluidEqual(inputFluid)) return false;
 
-        HashSet<Ingredient> notFound = new HashSet<>(inputItems);
-        notFound.removeIf(Ingredient::isEmpty); // clear the clutter out
-
-        LinkedList<ItemStack> stacks = new LinkedList<>();
+        List<ItemStack> stacks = new ArrayList<>();
         for (int i = 0; i < wrapper.getContainerSize(); i++)
         {
-            stacks.add(wrapper.getItem(i).copy());
-        }
-        for (ItemStack stack : stacks)
-        {
-            for (Ingredient i : notFound)
+            ItemStack item = wrapper.getItem(i);
+            if (!item.isEmpty())
             {
-                if (i.test(stack))
-                {
-                    notFound.remove(i);
-                    break; // removeIf not used so we can handle duplicates
-                }
+                stacks.add(item.copy());
             }
         }
-        return notFound.isEmpty();
+        return PerfectMatchingWithEdmondsMatrix.perfectMatchExists(stacks, inputItems);
     }
 
     @Override
@@ -116,49 +97,19 @@ public class SimplePotRecipe implements IPotRecipe
         return outputFluid.copy();
     }
 
-    //todo: could just add a thing similar to getOutputFluid() that deposits items into the inventory and leave the output handling unused. right now this is good to keep for demonstration purposes
+    /**
+     * @return A copy of the output items
+     */
+    @Override
+    public NonNullList<ItemStack> getOutputItems()
+    {
+        return Helpers.copyItemList(outputItems);
+    }
+
     @Override
     public Output getOutput(ItemStackHandler inv, FluidStack fluid)
     {
-        return new Output()
-        {
-            private final Queue<ItemStack> itemsLeft = outputItems;
-
-            @Override
-            public boolean isEmpty()
-            {
-                return itemsLeft.isEmpty();
-            }
-
-            @Override
-            public void onExtract(World world, BlockPos pos, ItemStack clickedWith)
-            {
-                // leave fluid extraction up to the helpful TE logic
-                if (!itemsLeft.isEmpty())
-                    Helpers.spawnItem(world, pos, itemsLeft.remove(), 0.7D);
-            }
-
-            @Override
-            public CompoundNBT serializeNBT()
-            {
-                CompoundNBT nbt = new CompoundNBT();
-                ListNBT surplusList = new ListNBT();
-                itemsLeft.forEach(stack -> surplusList.add(stack.serializeNBT()));
-                nbt.put("leftover", surplusList);
-                return nbt;
-            }
-
-            @Override
-            public void deserializeNBT(CompoundNBT nbt)
-            {
-                itemsLeft.clear();
-                ListNBT items = nbt.getList("leftover", Constants.NBT.TAG_COMPOUND);
-                for (int i = 0; i < items.size(); i++)
-                {
-                    itemsLeft.add(ItemStack.of(items.getCompound(i)));
-                }
-            }
-        };
+        return new Output() {}; // returns isEmpty = true by default, so this will get discarded right away
     }
 
     public static class Serializer extends RecipeSerializer<SimplePotRecipe>
@@ -173,10 +124,10 @@ public class SimplePotRecipe implements IPotRecipe
         @Override
         public SimplePotRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            HashSet<Ingredient> ingredients = new HashSet<>(5);
+            List<Ingredient> ingredients = new ArrayList<>(5);
             json.getAsJsonArray("ingredients").forEach(i -> ingredients.add(Ingredient.fromJson(i)));
 
-            LinkedList<ItemStack> outputs = new LinkedList<>();
+            NonNullList<ItemStack> outputs = NonNullList.create();
             json.getAsJsonArray("outputs").forEach(i -> outputs.add(ShapedRecipe.itemFromJson(i.getAsJsonObject())));
 
             FluidStack input = FluidStack.CODEC.decode(JsonOps.INSTANCE, json.get("fluidInput")).getOrThrow(false, null).getFirst();
@@ -191,12 +142,12 @@ public class SimplePotRecipe implements IPotRecipe
         @Override
         public SimplePotRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            HashSet<Ingredient> ingredients = new HashSet<>();
+            List<Ingredient> ingredients = new ArrayList<>(5);
             int inputCount = buffer.readInt();
             for (int i = 0; i < inputCount; i++)
                 ingredients.add(Ingredient.fromNetwork(buffer));
 
-            LinkedList<ItemStack> outputs = new LinkedList<>();
+            NonNullList<ItemStack> outputs = NonNullList.create();
             int outputCount = buffer.readInt();
             for (int i = 0; i < outputCount; i++)
                 outputs.add(buffer.readItem());
@@ -228,7 +179,7 @@ public class SimplePotRecipe implements IPotRecipe
 
         protected interface Factory<SimplePotRecipe>
         {
-            SimplePotRecipe create(ResourceLocation id, HashSet<Ingredient> inputItems, LinkedList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration);
+            SimplePotRecipe create(ResourceLocation id, List<Ingredient> inputItems, NonNullList<ItemStack> outputItems, FluidStack inputFluid, FluidStack outputFluid, float temperature, int duration);
         }
     }
 }

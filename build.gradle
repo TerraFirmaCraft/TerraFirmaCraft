@@ -156,6 +156,9 @@ license {
 
     // From Overworld Two
     exclude 'net/dries007/tfc/world/biome/BiomeCache.java'
+
+    // From a handsome developer
+    exclude 'net/dries007/tfc/util/PerfectMatchingWithEdmondsMatrix.java'
 }
 
 // Puts the mod version into the jar for mods.toml to read from

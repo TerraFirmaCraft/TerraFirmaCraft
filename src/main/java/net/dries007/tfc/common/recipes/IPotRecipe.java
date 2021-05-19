@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -44,9 +45,14 @@ public interface IPotRecipe extends ISimpleRecipe<FluidInventoryRecipeWrapper>
     IPotRecipe.Output getOutput(ItemStackHandler input, FluidStack fluid);
 
     /**
-     * @return The FluidStack to be filled in the cooking pot on completion
+     * @return Copy of the FluidStack to be filled in the cooking pot on completion
      */
     FluidStack getOutputFluid();
+
+    /**
+     * @return Copy of the ItemStacks to be put into the inventory on completion
+     */
+    NonNullList<ItemStack> getOutputItems();
 
     /**
      * Serializable 'output state' that gets stored in the tile.
@@ -59,7 +65,10 @@ public interface IPotRecipe extends ISimpleRecipe<FluidInventoryRecipeWrapper>
         /**
          * @return If there's nothing left to return. Causes the output state to become null.
          */
-        boolean isEmpty();
+        default boolean isEmpty()
+        {
+            return true;
+        }
 
         /**
          * @return if we want to render a reddish soup fluid even if there's no actual fluid output
@@ -72,7 +81,20 @@ public interface IPotRecipe extends ISimpleRecipe<FluidInventoryRecipeWrapper>
         /**
          * Called on right click when output is nonnull. Use to distribute output items.
          */
-        void onExtract(World world, BlockPos pos, ItemStack clickedWith);
+        default void onExtract(World world, BlockPos pos, ItemStack clickedWith)
+        {
+
+        }
+
+        default CompoundNBT serializeNBT()
+        {
+            return new CompoundNBT();
+        }
+
+        default void deserializeNBT(CompoundNBT nbt)
+        {
+
+        }
     }
 
     @Override

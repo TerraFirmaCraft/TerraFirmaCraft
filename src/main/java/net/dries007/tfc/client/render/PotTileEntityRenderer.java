@@ -46,7 +46,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
     {
         if (te.getLevel() == null) return;
         FluidStack fluidStack = te.getFluidContained();
-        boolean useDefault = te.hasOutput() && te.getOutput().renderDefaultFluid();
+        boolean useDefault = te.hasOutput() && te.getCurrentOutputData().renderDefaultFluid();
         if (!fluidStack.isEmpty() || useDefault)
         {
             Fluid fluid = useDefault ? Fluids.WATER : fluidStack.getFluid();
@@ -78,6 +78,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
         }
 
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            int ordinal = 0;
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
             {
                 ItemStack item = cap.getStackInSlot(i);
@@ -90,7 +91,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
                     matrixStack.mulPose(Vector3f.XP.rotationDegrees(90F));
                     matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
 
-                    int ordinal = i - SLOT_EXTRA_INPUT_START;
+                    ordinal++;
                     matrixStack.translate(0, 0, -0.12F * ordinal);
 
                     Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemCameraTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);

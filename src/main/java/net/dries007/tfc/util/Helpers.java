@@ -38,7 +38,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -489,5 +488,12 @@ public final class Helpers
             Collections.swap(list, i, r.nextInt(i + 1));
         }
         return list.subList(length - n, length);
+    }
+
+    public static NonNullList<ItemStack> copyItemList(NonNullList<ItemStack> stacksIn)
+    {
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        stacksIn.forEach(stack -> stacks.add(stack.copy()));
+        return stacks;
     }
 }

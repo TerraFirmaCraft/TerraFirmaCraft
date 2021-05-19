@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -90,6 +91,7 @@ public class PotTileEntity extends FirepitTileEntity
         {
             if (boilingTicks > recipe.getDuration())
             {
+                if (boilingTicks == 0) markForSync(); // make sure everyone knows we're boiling
                 ItemStackHandler inv = convertInventory();
                 FluidStack fluidStack = tank.drain(1000, IFluidHandler.FluidAction.SIMULATE);
                 if (!recipe.isValid(inv, fluidStack))
@@ -99,12 +101,20 @@ public class PotTileEntity extends FirepitTileEntity
                 }
                 output = recipe.getOutput(inv, fluidStack);
                 for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+                {
                     inventory.setStackInSlot(i, ItemStack.EMPTY);
+                }
+                NonNullList<ItemStack> outputItems = recipe.getOutputItems();
+                for (int i = 0; i < outputItems.size(); i++)
+                {
+                    inventory.setStackInSlot(i + SLOT_EXTRA_INPUT_START, outputItems.get(i));
+                }
 
                 tank.setFluid(FluidStack.EMPTY);
                 tank.fill(recipe.getOutputFluid(), IFluidHandler.FluidAction.EXECUTE);
 
                 quit();
+                updateCache();
                 return;
             }
             boilingTicks++;
@@ -129,7 +139,7 @@ public class PotTileEntity extends FirepitTileEntity
         return cachedPotRecipe != null && output == null && cachedPotRecipe.isValidTemperature(temperature);
     }
 
-    public void setFinished()
+    public void resetOutput()
     {
         output = null;
         markForSync();
@@ -139,7 +149,7 @@ public class PotTileEntity extends FirepitTileEntity
      * Distinct from getOutput() in {@link IPotRecipe#getOutput(ItemStackHandler, FluidStack)}
      * This is a copy of the internal data from calling that function
      */
-    public IPotRecipe.Output getOutput()
+    public IPotRecipe.Output getCurrentOutputData()
     {
         return output;
     }
