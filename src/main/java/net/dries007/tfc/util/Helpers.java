@@ -496,4 +496,82 @@ public final class Helpers
         stacksIn.forEach(stack -> stacks.add(stack.copy()));
         return stacks;
     }
+
+    /**
+     * Checks the existence of a <a href="https://en.wikipedia.org/wiki/Perfect_matching">perfect matching</a> of a <a href="https://en.wikipedia.org/wiki/Bipartite_graph">bipartite graph</a>.
+     * The graph is interpreted as the matches between the set of inputs, and the set of tests.
+     * This algorithm computes the <a href="https://en.wikipedia.org/wiki/Edmonds_matrix">Edmonds Matrix</a> of the graph, which has the property that the determinant is identically zero iff the graph does not admit a perfect matching.
+     */
+    public static <T> boolean perfectMatchExists(List<T> inputs, List<? extends Predicate<T>> tests)
+    {
+        if (inputs.size() != tests.size())
+        {
+            return false;
+        }
+        final int size = inputs.size();
+        final boolean[][] matrices = new boolean[size][];
+        for (int i = 0; i < size; i++)
+        {
+            matrices[i] = new boolean[(size + 1) * (size + 1)];
+        }
+        final boolean[] matrix = matrices[size - 1];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                matrix[i + size * j] = tests.get(i).test(inputs.get(j));
+            }
+        }
+        return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes a symbolic determinant
+     */
+    private static boolean perfectMatchDet(boolean[][] matrices, int size)
+    {
+        // matrix true = nonzero = matches
+        final boolean[] matrix = matrices[size - 1];
+        switch (size)
+        {
+            case 1:
+                return matrix[0];
+            case 2:
+                return (matrix[0] && matrix[3]) || (matrix[1] && matrix[2]);
+            default:
+            {
+                for (int c = 0; c < size; c++)
+                {
+                    if (matrix[c])
+                    {
+                        perfectMatchSub(matrices, size, c);
+                        if (perfectMatchDet(matrices, size - 1))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes the symbolic minor of a matrix by removing an arbitrary column.
+     */
+    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    {
+        final int subSize = size - 1;
+        final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
+        for (int c = 0; c < subSize; c++)
+        {
+            final int c0 = c + (c >= dc ? 1 : 0);
+            for (int r = 0; r < subSize; r++)
+            {
+                sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
+            }
+        }
+    }
 }

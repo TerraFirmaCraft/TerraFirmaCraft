@@ -24,7 +24,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.PerfectMatchingWithEdmondsMatrix;
 
 public class SimplePotRecipe implements IPotRecipe
 {
@@ -73,7 +72,7 @@ public class SimplePotRecipe implements IPotRecipe
                 stacks.add(item.copy());
             }
         }
-        return PerfectMatchingWithEdmondsMatrix.perfectMatchExists(stacks, inputItems);
+        return Helpers.perfectMatchExists(stacks, inputItems);
     }
 
     @Override
