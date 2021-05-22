@@ -14,6 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.VineBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluids;
@@ -247,7 +248,7 @@ public enum Plant implements IPlant
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
-        VINE((plant, type) -> new TFCVineBlock(nonSolid(plant))),
+        VINE((plant, type) -> new VineBlock(nonSolid(plant))),
         WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
         WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
         TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),

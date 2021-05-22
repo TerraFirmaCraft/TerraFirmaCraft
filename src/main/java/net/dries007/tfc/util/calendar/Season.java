@@ -26,7 +26,12 @@ public enum Season implements IStringSerializable
 
     public Season next()
     {
-        return this == WINTER ? SPRING : VALUES[this.ordinal() + 1];
+        return VALUES[(ordinal() + 1) & 0b11];
+    }
+
+    public Season previous()
+    {
+        return VALUES[(ordinal() - 1) & 0b11];
     }
 
     @Override

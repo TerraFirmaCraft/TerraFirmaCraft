@@ -19,18 +19,12 @@ import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.util.calendar.Season;
 
 /**
  * @see net.minecraft.state.properties.BlockStateProperties
  */
 public class TFCBlockStateProperties
 {
-    public static final BooleanProperty SUPPORTED = BooleanProperty.create("supported");
-
-    public static final EnumProperty<Season> SEASON = EnumProperty.create("season", Season.class);
-    public static final EnumProperty<Season> SEASON_NO_SPRING = EnumProperty.create("season", Season.class, Season.SUMMER, Season.FALL, Season.WINTER);
-
     public static final IntegerProperty DISTANCE_7 = BlockStateProperties.DISTANCE;
     public static final IntegerProperty DISTANCE_8 = IntegerProperty.create("distance", 1, 8);
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);

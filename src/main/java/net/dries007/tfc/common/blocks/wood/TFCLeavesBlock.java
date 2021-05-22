@@ -13,7 +13,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -31,14 +30,11 @@ import net.minecraft.world.server.ServerWorld;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.Season;
 
 
 public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
-    public static final EnumProperty<Season> SEASON_NO_SPRING = TFCBlockStateProperties.SEASON_NO_SPRING;
 
     public static TFCLeavesBlock create(Properties properties, int maxDecayDistance)
     {
@@ -71,7 +67,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false).setValue(SEASON_NO_SPRING, Season.SUMMER));
+        registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
     }
 
     /**
@@ -104,23 +100,6 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VoxelShapes.empty();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
-    {
-        // Adjust the season based on the current time
-        Season oldSeason = state.getValue(SEASON_NO_SPRING);
-        Season newSeason = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
-        if (newSeason == Season.SPRING)
-        {
-            newSeason = Season.SUMMER; // Skip spring
-        }
-        if (oldSeason != newSeason)
-        {
-            worldIn.setBlockAndUpdate(pos, state.setValue(SEASON_NO_SPRING, newSeason));
-        }
     }
 
     @Override
@@ -166,15 +145,13 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
-        Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
-        return defaultBlockState().setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
+        return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
+        builder.add(PERSISTENT, getDistanceProperty());
     }
 
     /**
