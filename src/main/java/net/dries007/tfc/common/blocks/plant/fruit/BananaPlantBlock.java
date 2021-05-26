@@ -4,13 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.fruittree;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -24,21 +26,19 @@ import net.minecraft.world.World;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
-import net.dries007.tfc.common.blocks.berrybush.BerryBush;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class BananaPlantBlock extends AbstractBerryBushBlock
+public class BananaPlantBlock extends SeasonalPlantBlock
 {
     public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
 
-    public BananaPlantBlock(ForgeBlockProperties properties, BerryBush bush)
+    public BananaPlantBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
-        super(properties, bush);
+        super(properties, productItem, stages);
     }
 
     @Override

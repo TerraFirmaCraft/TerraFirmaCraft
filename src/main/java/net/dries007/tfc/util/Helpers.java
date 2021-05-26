@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -186,14 +187,6 @@ public final class Helpers
     }
 
     /**
-     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
-     */
-    public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
-    {
-        return () -> mapper.apply(supplier.get());
-    }
-
-    /**
      * Applies two possible consumers of a given lazy optional
      */
     public static <T> void ifPresentOrElse(LazyOptional<T> lazyOptional, Consumer<T> ifPresent, Runnable orElse)
@@ -221,6 +214,16 @@ public final class Helpers
     public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
     {
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
+    }
+
+    /**
+     * Flattens a homogeneous stream of {@code Collection<T>} and Ts together into a {@code Stream<T>}
+     * Usage: {@code stream.flatMap(Helpers::flatten)}
+     */
+    @SuppressWarnings("unchecked")
+    public static <R> Stream<? extends R> flatten(Object t)
+    {
+        return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
     }
 
     /**

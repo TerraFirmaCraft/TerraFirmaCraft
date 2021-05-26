@@ -4,14 +4,16 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.fruittree;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -31,34 +33,22 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.common.tileentity.FruitTreeLeavesTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IForgeBlockProperties, ILeavesBlock
+public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockProperties, ILeavesBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
-
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    private final ForgeBlockProperties properties;
-    private final FruitTree tree;
-
-    public FruitTreeLeavesBlock(ForgeBlockProperties properties, FruitTree tree)
+    public FruitTreeLeavesBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
-        super(properties, tree.getBase());
-        this.properties = properties;
-        this.tree = tree;
+        super(properties, productItem, stages);
+
         registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
-    }
-
-    @Override
-    public ForgeBlockProperties getForgeProperties()
-    {
-        return properties;
     }
 
     @Override
@@ -153,17 +143,25 @@ public class FruitTreeLeavesBlock extends AbstractBerryBushBlock implements IFor
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
         if (!isValid(worldIn, pos, state))
+        {
             worldIn.destroyBlock(pos, true);
+        }
     }
 
     private boolean isValid(IWorld worldIn, BlockPos pos, BlockState state)
     {
-        if (state.getValue(PERSISTENT)) return true;
+        if (state.getValue(PERSISTENT))
+        {
+            return true;
+        }
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (Direction direction : Direction.values())
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             mutablePos.set(pos).move(direction);
-            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)) return true;
+            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            {
+                return true;
+            }
         }
         return false;
     }

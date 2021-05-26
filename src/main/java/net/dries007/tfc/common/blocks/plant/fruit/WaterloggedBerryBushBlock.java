@@ -4,9 +4,10 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -17,7 +18,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.FluidTags;
@@ -44,10 +45,9 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
     public static final BooleanProperty WILD = TFCBlockStateProperties.WILD;
 
-    public WaterloggedBerryBushBlock(ForgeBlockProperties properties, BerryBush bush)
+    public WaterloggedBerryBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
     {
-        super(properties, bush);
-        registerDefaultState(getStateDefinition().any().setValue(WILD, false).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)).setValue(LIFECYCLE, Lifecycle.HEALTHY));
+        super(properties, productItem, stages, deathChance);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         }
         else if (lifecycle == Lifecycle.FRUITING && fluid.is(FluidTags.WATER))
         {
-            Helpers.spawnItem(world, pos, new ItemStack(bush.getBerry()));
+            Helpers.spawnItem(world, pos, getProductItem());
             te.setHarvested(true);
             world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
         }

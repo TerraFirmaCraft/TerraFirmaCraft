@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.fruittree;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
 import java.util.Random;
@@ -28,7 +28,6 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * If I had my way, everything in this mod would be chorus fruit.
@@ -72,16 +71,17 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         }
         return true;
     }
-    private final FruitTree fruitTree;
+
     private final Supplier<? extends Block> body;
     private final Supplier<? extends Block> leaves;
 
-    public GrowingFruitTreeBranchBlock(ForgeBlockProperties properties, FruitTree fruitTree, Supplier<? extends Block> body, Supplier<? extends Block> leaves)
+    public GrowingFruitTreeBranchBlock(ForgeBlockProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves)
     {
         super(properties);
-        this.fruitTree = fruitTree;
+
         this.body = body;
         this.leaves = leaves;
+
         registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
     }
 
@@ -92,12 +92,14 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te == null || world.isClientSide()) return;
 
+        // todo: better climate checks
+        /*
         ChunkData chunkData = ChunkData.get(world, pos);
         if (!fruitTree.getBase().isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
         {
             te.resetCounter();
         }
-
+*/
         super.randomTick(state, world, pos, random);
     }
 

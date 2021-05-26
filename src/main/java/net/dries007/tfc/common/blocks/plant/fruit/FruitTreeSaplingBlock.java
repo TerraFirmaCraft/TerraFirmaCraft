@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.fruittree;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -35,9 +35,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
-import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -47,15 +44,15 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
 {
     private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     protected final Supplier<? extends Block> block;
-    protected final FruitTree tree;
+    protected final int treeGrowthDays;
     private final ForgeBlockProperties properties;
 
-    public FruitTreeSaplingBlock(ForgeBlockProperties properties, FruitTree tree, Supplier<? extends Block> block)
+    public FruitTreeSaplingBlock(ForgeBlockProperties properties, Supplier<? extends Block> block, int treeGrowthDays)
     {
         super(properties.properties());
         this.properties = properties;
         this.block = block;
-        this.tree = tree;
+        this.treeGrowthDays = treeGrowthDays;
     }
 
     @Override
@@ -85,7 +82,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return AbstractBerryBushBlock.PLANT_SHAPE;
+        return SeasonalPlantBlock.PLANT_SHAPE;
     }
 
     @Override
@@ -95,14 +92,15 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te != null)
         {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * tree.getSaplingDays())
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
             {
                 ChunkData data = ChunkData.get(world, pos);
-                if (!tree.getBase().isValidConditions(data.getAverageTemp(pos), data.getRainfall(pos)))
+                // todo: better climate checks
+                /*if (!tree.getBase().isValidConditions(data.getAverageTemp(pos), data.getRainfall(pos)))
                 {
                     world.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                 }
-                else
+                else*/
                 {
                     boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
@@ -153,7 +151,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(SAPLINGS);
+        super.createBlockStateDefinition(builder.add(SAPLINGS));
     }
 
     @Override

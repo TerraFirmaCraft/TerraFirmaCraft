@@ -6,7 +6,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.common.blocks.fruittree;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

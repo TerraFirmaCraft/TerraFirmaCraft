@@ -4,11 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.items;
 
-//todo: this is a temporary enum for registration. Feel free to tear it apart
-public enum Berry
+public enum Food
 {
+    // Berry Bushes
     BLACKBERRY,
     BLUEBERRY,
     BUNCHBERRY,
@@ -19,5 +19,15 @@ public enum Berry
     RASPBERRY,
     SNOWBERRY,
     STRAWBERRY,
-    WINTERGREEN_BERRY
+    WINTERGREEN_BERRY,
+    // Fruit Trees
+    BANANA,
+    CHERRY,
+    GREEN_APPLE,
+    LEMON,
+    OLIVE,
+    ORANGE,
+    PEACH,
+    PLUM,
+    RED_APPLE
 }

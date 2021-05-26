@@ -20,7 +20,7 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.fruittree.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;

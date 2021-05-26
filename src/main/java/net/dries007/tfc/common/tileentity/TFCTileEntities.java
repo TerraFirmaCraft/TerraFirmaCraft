@@ -6,7 +6,8 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -41,7 +43,9 @@ public class TFCTileEntities
     public static final RegistryObject<TileEntityType<BurningLogPileTileEntity>> BURNING_LOG_PILE = register("burning_log_pile", BurningLogPileTileEntity::new, TFCBlocks.BURNING_LOG_PILE);
     public static final RegistryObject<TileEntityType<PlacedItemTileEntity>> PLACED_ITEM = register("placed_item", PlacedItemTileEntity::new, TFCBlocks.PLACED_ITEM);
     public static final RegistryObject<TileEntityType<PitKilnTileEntity>> PIT_KILN = register("pit_kiln", PitKilnTileEntity::new, TFCBlocks.PIT_KILN);
-    public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(Collections.singletonList(TFCBlocks.BANANA_PLANT), TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.WATERLOGGED_BUSHES.values()).flatMap(Collection::stream));
+
+    public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).flatMap(Helpers::flatten));
+
     public static final RegistryObject<TileEntityType<FruitTreeLeavesTileEntity>> FRUIT_TREE = register("fruit_tree", FruitTreeLeavesTileEntity::new, TFCBlocks.FRUIT_TREE_LEAVES.values().stream());
 
     @SuppressWarnings("ConstantConditions")

@@ -4,9 +4,10 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -16,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
@@ -42,7 +44,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-public abstract class AbstractBerryBushBlock extends BushBlock implements IForgeBlockProperties
+public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockProperties
 {
     public static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
@@ -52,25 +54,36 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
     /**
      * This function is essentially min(blocks to reach the ground, provided distance value)
      */
-    protected static int distanceToGround(World world, BlockPos pos, int distance)
+    public static int distanceToGround(World world, BlockPos pos, int distance)
     {
         BlockPos.Mutable mutablePos = pos.mutable();
         for (int i = 1; i <= distance; i++)
         {
             mutablePos.move(Direction.DOWN);
             if (world.getBlockState(mutablePos).isFaceSturdy(world, pos, Direction.UP))
+            {
                 return i;
+            }
         }
         return distance;
     }
-    protected final BerryBush bush;
+
+    private final Supplier<? extends Item> productItem;
+    private final Lifecycle[] stages;
     private final ForgeBlockProperties properties;
 
-    public AbstractBerryBushBlock(ForgeBlockProperties properties, BerryBush bush)
+    public SeasonalPlantBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
         super(properties.properties());
+
         this.properties = properties;
-        this.bush = bush;
+        this.stages = stages;
+        this.productItem = productItem;
+
+        if (stages.length != 12)
+        {
+            throw new IllegalArgumentException("stages array must be of length 12 (number of months per year)");
+        }
     }
 
     @Override
@@ -91,7 +104,7 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
                 te.use();
                 if (te.willStopUsing())
                 {
-                    Helpers.spawnItem(worldIn, pos, new ItemStack(bush.getBerry()));
+                    Helpers.spawnItem(worldIn, pos, getProductItem());
                     te.setHarvested(true);
                     te.stopUsing();
                     worldIn.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
@@ -127,15 +140,20 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         if (te == null) return;
 
         ChunkData chunkData = ChunkData.get(world, pos);
+
+        // todo: improve temperature and rainfall checks. temperature should be actual, rainfall should be player-useful hydration
+        /*
         if (!bush.isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
         {
             te.setGrowing(false);
         }
 
+         */
+
         /*Lifecycle old = state.getValue(LIFECYCLE);
         if (old != Lifecycle.HEALTHY)
         {
-            te.resetCounter(); // Prevent long calendar changes from causing runaway growth. Needs improvement.
+            te.resetCounter(); // todo Prevent long calendar changes from causing runaway growth. Needs improvement.
         }*/
 
         Lifecycle lifecycle = updateLifecycle(te);
@@ -203,17 +221,12 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         builder.add(LIFECYCLE, STAGE);
     }
 
-    public BerryBush getBush()
-    {
-        return bush;
-    }
-
     /**
      * Queries the lifecycle based on the data, but catches certain conditions that would
      */
     protected Lifecycle updateLifecycle(BerryBushTileEntity te)
     {
-        Lifecycle cycle = bush.getStages()[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
+        Lifecycle cycle = stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
 
         if ((cycle == Lifecycle.HEALTHY || cycle == Lifecycle.FLOWERING) && te.isGrowing())
         {
@@ -233,14 +246,9 @@ public abstract class AbstractBerryBushBlock extends BushBlock implements IForge
         return cycle;
     }
 
-    public enum Lifecycle implements IStringSerializable
+    protected ItemStack getProductItem()
     {
-        HEALTHY, FLOWERING, FRUITING, DORMANT;
-
-        @Override
-        public String getSerializedName()
-        {
-            return this.name().toLowerCase();
-        }
+        return new ItemStack(productItem.get());
     }
+
 }

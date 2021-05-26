@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 
 import java.util.Random;
@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Items;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -35,13 +36,14 @@ import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class DeadBerryBushBlock extends AbstractBerryBushBlock implements IFluidLoggable
+public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLoggable
 {
-    private static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
     public DeadBerryBushBlock(ForgeBlockProperties properties)
     {
-        super(properties, BerryBush.NOOP);
+        super(properties, () -> Items.AIR, new Lifecycle[12]);
+
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(STAGE, 0));
     }
 

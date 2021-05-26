@@ -39,7 +39,7 @@
                   }
                 },
                 "decorator": {
-                  "type": "tfc:shoreline",
+                  "type": "tfc:near_water",
                   "config": {
                     "radius": 9
                   }

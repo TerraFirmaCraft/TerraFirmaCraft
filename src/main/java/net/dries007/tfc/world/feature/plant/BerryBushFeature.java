@@ -19,8 +19,9 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.berrybush.AbstractBerryBushBlock;
-import net.dries007.tfc.common.blocks.berrybush.WaterloggedBerryBushBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
+import net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.WaterloggedBerryBushBlock;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -49,7 +50,7 @@ public class BerryBushFeature extends Feature<BlockStateFeatureConfig>
 
             if (bushState.hasProperty(WaterloggedBerryBushBlock.WILD))
                 bushState = bushState.setValue(WaterloggedBerryBushBlock.WILD, true);
-            world.setBlock(mutablePos, bushState.setValue(AbstractBerryBushBlock.LIFECYCLE, AbstractBerryBushBlock.Lifecycle.HEALTHY), 3);
+            world.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);
 
             BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
             if (te != null)

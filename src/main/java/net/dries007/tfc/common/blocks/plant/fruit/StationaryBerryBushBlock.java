@@ -4,13 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -29,13 +31,17 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-public class StationaryBerryBushBlock extends AbstractBerryBushBlock
+public class StationaryBerryBushBlock extends SeasonalPlantBlock
 {
     private static final VoxelShape HALF_PLANT = box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
-    public StationaryBerryBushBlock(ForgeBlockProperties properties, BerryBush bush)
+    private final int deathChance;
+
+    public StationaryBerryBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
     {
-        super(properties, bush);
+        super(properties, productItem, stages);
+
+        this.deathChance = deathChance;
     }
 
     @Override
@@ -86,7 +92,7 @@ public class StationaryBerryBushBlock extends AbstractBerryBushBlock
             }
             else if (stage == 2)
             {
-                if (random.nextInt(bush.getDeathFactor()) == 0)
+                if (random.nextInt(deathChance) == 0)
                 {
                     for (int i = 0; i < random.nextInt(3) + 1; i++)
                         propagate(world, pos, random);

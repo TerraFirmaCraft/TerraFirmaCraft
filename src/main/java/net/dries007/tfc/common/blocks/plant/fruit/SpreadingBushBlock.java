@@ -4,13 +4,14 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
@@ -25,16 +26,18 @@ import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class SpreadingBushBlock extends AbstractBerryBushBlock implements IForgeBlockProperties
+public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockProperties
 {
-    protected final BerryBush bush;
     protected final Supplier<? extends Block> companion;
+    protected final int maxHeight;
+    protected final int deathChance;
 
-    public SpreadingBushBlock(ForgeBlockProperties properties, BerryBush bush, Supplier<? extends Block> companion)
+    public SpreadingBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
     {
-        super(properties, bush);
-        this.bush = bush;
+        super(properties, productItem, stages);
         this.companion = companion;
+        this.maxHeight = maxHeight;
+        this.deathChance = deathChance;
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
@@ -45,7 +48,7 @@ public class SpreadingBushBlock extends AbstractBerryBushBlock implements IForge
         {
             if (!te.isGrowing() || te.isRemoved()) return;
 
-            if (distanceToGround(world, pos, bush.getMaxHeight()) >= bush.getMaxHeight())
+            if (distanceToGround(world, pos, maxHeight) >= maxHeight)
             {
                 te.setGrowing(false);
             }
@@ -72,7 +75,7 @@ public class SpreadingBushBlock extends AbstractBerryBushBlock implements IForge
                         cane.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());
                     }
                 }
-                if (random.nextInt(bush.getDeathFactor()) == 0)
+                if (random.nextInt(deathChance) == 0)
                 {
                     te.setGrowing(false);
                 }

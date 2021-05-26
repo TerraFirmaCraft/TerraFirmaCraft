@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.berrybush;
+package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -47,9 +48,9 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     private static final VoxelShape CANE_SOUTH = Block.box(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 8.0D);
     private static final VoxelShape CANE_NORTH = Block.box(0.0D, 3.0D, 8.0D, 16.0D, 12.0D, 16.0D);
 
-    public SpreadingCaneBlock(ForgeBlockProperties properties, BerryBush bush, Supplier<? extends Block> companion)
+    public SpreadingCaneBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
     {
-        super(properties, bush, companion);
+        super(properties, productItem, stages, companion, maxHeight, deathChance);
     }
 
     @Override
@@ -125,7 +126,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
             else if (stage == 1 && random.nextInt(7) == 0)
             {
                 world.setBlockAndUpdate(pos, state.setValue(STAGE, 2));
-                if (random.nextInt(bush.getDeathFactor()) == 0)
+                if (random.nextInt(deathChance) == 0)
                 {
                     te.setGrowing(false);
                 }

@@ -13,8 +13,8 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.gui.screen.inventory.CraftingScreen;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -113,7 +113,7 @@ public final class ClientEventHandler
         TFCBlocks.SPREADING_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
         TFCBlocks.SPREADING_CANES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
         TFCBlocks.STATIONARY_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
-        TFCBlocks.WATERLOGGED_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
+        RenderTypeLookup.setRenderLayer(TFCBlocks.CRANBERRY_BUSH.get(), cutoutMipped);
         RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_BERRY_BUSH.get(), cutout);
         RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_CANE.get(), cutout);
         TFCBlocks.FRUIT_TREE_LEAVES.values().forEach(leaves -> RenderTypeLookup.setRenderLayer(leaves.get(), cutoutMipped));
