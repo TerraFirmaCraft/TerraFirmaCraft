@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
@@ -40,6 +41,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -47,10 +49,13 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
@@ -114,6 +119,10 @@ public class ClientForgeEventHandler
         {
             MetalItemManager.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+            if (event.getFlags().isAdvanced())
+            {
+                FuelManager.addTooltipInfo(stack, text);
+            }
         }
     }
 
@@ -165,7 +174,16 @@ public class ClientForgeEventHandler
     }
 
     @SubscribeEvent
+    public static void onKeyEvent(InputEvent.KeyInputEvent event)
+    {
+        if (TFCKeyBindings.PLACE_BLOCK.isDown())
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
+        }
+    }
+
     @SuppressWarnings("deprecation")
+    @SubscribeEvent
     public static void render(RenderGameOverlayEvent.Pre event)
     {
         final Minecraft mc = Minecraft.getInstance();

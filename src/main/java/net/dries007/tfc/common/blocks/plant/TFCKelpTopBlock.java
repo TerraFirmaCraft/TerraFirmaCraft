@@ -28,8 +28,6 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
-    private final Supplier<? extends Block> bodyBlock;
-
     public static TFCKelpTopBlock create(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
         return new TFCKelpTopBlock(properties, bodyBlock, direction, shape)
@@ -41,6 +39,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
             }
         };
     }
+    private final Supplier<? extends Block> bodyBlock;
 
     protected TFCKelpTopBlock(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
@@ -59,6 +58,20 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
             return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
         return null;
+    }
+
+    @Override
+    protected boolean canAttachToBlock(Block blockIn)
+    {
+        return blockIn != Blocks.MAGMA_BLOCK;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
+        Vector3d vector3d = state.getOffset(worldIn, pos);
+        return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 
     @Override
@@ -82,16 +95,10 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected boolean canGrowInto(BlockState state)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        Fluid fluid = state.getFluidState().getType().getFluid();
-        return getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
-    }
-
-    @Override
-    protected boolean canAttachToBlock(Block blockIn)
-    {
-        return blockIn != Blocks.MAGMA_BLOCK;
+        super.createBlockStateDefinition(builder);
+        builder.add(getFluidProperty());
     }
 
     @Override
@@ -102,10 +109,9 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    public AbstractBlock.OffsetType getOffsetType()
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(getFluidProperty());
+        return AbstractBlock.OffsetType.XZ;
     }
 
     @Override
@@ -121,22 +127,15 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
+    protected boolean canGrowInto(BlockState state)
+    {
+        Fluid fluid = state.getFluidState().getType().getFluid();
+        return getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
+    }
+
+    @Override
     protected AbstractBodyPlantBlock getBodyBlock()
     {
         return (AbstractBodyPlantBlock) bodyBlock.get();
-    }
-
-    @Override
-    public AbstractBlock.OffsetType getOffsetType()
-    {
-        return AbstractBlock.OffsetType.XZ;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
-        Vector3d vector3d = state.getOffset(worldIn, pos);
-        return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 }

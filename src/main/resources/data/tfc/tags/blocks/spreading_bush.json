@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:berry_bush/blackberry_bush",
+    "tfc:berry_bush/blackberry_bush_cane",
+    "tfc:berry_bush/raspberry_bush",
+    "tfc:berry_bush/raspberry_bush_cane",
+    "tfc:berry_bush/blueberry_bush",
+    "tfc:berry_bush/blueberry_bush_cane",
+    "tfc:berry_bush/elderberry_bush",
+    "tfc:berry_bush/elderberry_bush_cane"
+  ]
+}

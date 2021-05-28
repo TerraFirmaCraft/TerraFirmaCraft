@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "minecraft:magenta_terracotta"
+  },
+  "result": {
+    "count": 1,
+    "item": "minecraft:magenta_glazed_terracotta"
+  },
+  "temperature": 1200
+}

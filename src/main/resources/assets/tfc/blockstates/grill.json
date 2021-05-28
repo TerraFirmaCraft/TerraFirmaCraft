@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/firepit_grill"
+      }
+    },
+    {
+      "when": {
+        "lit": true
+      },
+      "apply": {
+        "model": "tfc:block/firepit_lit"
+      }
+    },
+    {
+      "when": {
+        "lit": false
+      },
+      "apply": {
+        "model": "tfc:block/firepit_unlit"
+      }
+    }
+  ]
+}

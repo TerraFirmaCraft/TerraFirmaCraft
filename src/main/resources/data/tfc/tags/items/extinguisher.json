@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/shovel/bismuth_bronze",
+    "tfc:metal/shovel/black_bronze",
+    "tfc:metal/shovel/bronze",
+    "tfc:metal/shovel/copper",
+    "tfc:metal/shovel/wrought_iron",
+    "tfc:metal/shovel/steel",
+    "tfc:metal/shovel/black_steel",
+    "tfc:metal/shovel/blue_steel",
+    "tfc:metal/shovel/red_steel",
+    "minecraft:netherite_shovel",
+    "minecraft:diamond_shovel",
+    "minecraft:iron_shovel",
+    "minecraft:stone_shovel",
+    "minecraft:wooden_shovel",
+    "minecraft:golden_shovel"
+  ]
+}

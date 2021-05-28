@@ -14,28 +14,26 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.state.properties.BedPart;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.GroundcoverBlockType;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.ThatchBedBlock;
+import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.devices.LogPileBlock;
+import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 /**
  * This exists due to problems in handling right click events
@@ -80,6 +78,36 @@ public final class InteractionManager
             return ActionResultType.FAIL;
         });
 
+        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
+            final PlayerEntity playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayerEntity)
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                if (!player.isCreative())
+                    stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(context.getHand()));
+                if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                    return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.FAIL;
+        });
+
+        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
+            final PlayerEntity playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayerEntity)
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                if (!player.isCreative())
+                    stack.shrink(1);
+                if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                    return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.FAIL;
+        });
+
         register(Items.SNOW, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
             if (player != null && !player.abilities.mayBuild)
@@ -120,6 +148,107 @@ public final class InteractionManager
             }
         });
 
+        register(Items.CHARCOAL, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && !player.abilities.mayBuild)
+            {
+                return ActionResultType.PASS;
+            }
+            else
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final BlockState stateAt = world.getBlockState(pos);
+                if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
+                {
+                    int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
+                    if (layers != 8)
+                    {
+                        world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
+                        Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                        return ActionResultType.SUCCESS;
+                    }
+                }
+                if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
+                {
+                    world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                    return ActionResultType.SUCCESS;
+                }
+                return ActionResultType.FAIL;
+            }
+        });
+
+        // Log pile creation and insertion. Don't touch unless broken
+        register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
+            final PlayerEntity player = context.getPlayer();
+            if (player != null)
+            {
+                final World world = context.getLevel();
+                final Direction direction = context.getClickedFace();
+                final BlockPos posClicked = context.getClickedPos();
+                final BlockPos relativePos = posClicked.relative(direction);
+
+                if (!player.isShiftKeyDown()) return ActionResultType.PASS; // for some reason this cancels placement?
+
+                // First we allow bulk insertion via shift click.
+                if (world.getBlockState(posClicked).is(TFCBlocks.LOG_PILE.get()))
+                {
+                    LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
+                    if (te != null && !te.isFull())
+                    {
+                        int inserted = te.insertLogs(stack.copy());
+                        if (inserted > 0)
+                        {
+                            if (!world.isClientSide())
+                            {
+                                Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                stack.shrink(inserted);
+                                return ActionResultType.CONSUME;
+                            }
+                            return ActionResultType.SUCCESS;
+                        }
+                        return ActionResultType.PASS;
+                    }
+                }
+
+                // Trying to place a log pile.
+                if (world.isEmptyBlock(relativePos) && !player.blockPosition().equals(relativePos))
+                {
+                    if (world.isClientSide()) return ActionResultType.SUCCESS;
+                    final BlockPos belowPos = relativePos.below();
+                    final BlockState belowState = world.getBlockState(belowPos);
+                    if (belowState.isFaceSturdy(world, belowPos, Direction.UP))
+                    {
+                        if (belowState.is(TFCBlocks.LOG_PILE.get()))
+                        {
+                            LogPileTileEntity te = Helpers.getTileEntity(world, belowPos, LogPileTileEntity.class);
+                            if (te == null || !te.isFull())
+                            {
+                                return ActionResultType.FAIL; // can't place on a full log pile
+                            }
+                        }
+                        world.setBlockAndUpdate(relativePos, TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(LogPileBlock.AXIS, context.getHorizontalDirection().getAxis()));
+                        Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                        LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
+                        if (te != null)
+                        {
+                            if (te.insertLog(stack.copy()))
+                            {
+                                if (!world.isClientSide())
+                                {
+                                    stack.shrink(1); // insert one log so that the log pile doesn't disappear
+                                    return ActionResultType.CONSUME;
+                                }
+                                return ActionResultType.SUCCESS;
+                            }
+                        }
+                    }
+                }
+            }
+            return ActionResultType.PASS;
+        });
+
         // BlockItem mechanics for vanilla items that match groundcover types
         for (GroundcoverBlockType type : GroundcoverBlockType.values())
         {
@@ -131,8 +260,6 @@ public final class InteractionManager
 
         // todo: hide tag right click -> generic scraping recipe
         // todo: knapping tags
-        // todo: log piles
-        // todo: charcoal piles
     }
 
     public static void register(BlockItemPlacement wrapper)

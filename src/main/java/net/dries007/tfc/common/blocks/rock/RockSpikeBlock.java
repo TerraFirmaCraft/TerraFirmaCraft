@@ -62,6 +62,21 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.getValue(PART))
+        {
+            case BASE:
+                return BASE_SHAPE;
+            case MIDDLE:
+                return MIDDLE_SHAPE;
+            case TIP:
+            default:
+                return TIP_SHAPE;
+        }
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
@@ -112,21 +127,6 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         // todo: better shatter sound
         worldIn.destroyBlock(pos, false);
         worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.8f, 2.0f);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        switch (state.getValue(PART))
-        {
-            case BASE:
-                return BASE_SHAPE;
-            case MIDDLE:
-                return MIDDLE_SHAPE;
-            case TIP:
-            default:
-                return TIP_SHAPE;
-        }
     }
 
     @Override

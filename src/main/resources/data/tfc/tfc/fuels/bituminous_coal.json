@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:ore/bituminous_coal"
+  },
+  "duration": 2200,
+  "temperature": 1415
+}

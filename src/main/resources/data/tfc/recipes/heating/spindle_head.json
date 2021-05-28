@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/spindle_head"
+  },
+  "result": {
+    "count": 1,
+    "item": "tfc:ceramic/unfired_spindle_head"
+  },
+  "temperature": 1599
+}

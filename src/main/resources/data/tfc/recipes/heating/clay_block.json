@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "minecraft:clay"
+  },
+  "result": {
+    "count": 1,
+    "item": "minecraft:terracotta"
+  },
+  "temperature": 600
+}

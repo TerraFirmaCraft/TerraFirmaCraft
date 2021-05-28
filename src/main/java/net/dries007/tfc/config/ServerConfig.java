@@ -22,6 +22,8 @@ public class ServerConfig
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
+    public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
+    public final ForgeConfigSpec.DoubleValue fireStarterChance;
     // Climate
     public final ForgeConfigSpec.IntValue temperatureScale;
     public final ForgeConfigSpec.IntValue rainfallScale;
@@ -41,8 +43,15 @@ public class ServerConfig
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
+    // Blocks - Torch
+    public final ForgeConfigSpec.IntValue torchTicks;
+    // Blocks - Charcoal Pit
+    public final ForgeConfigSpec.IntValue charcoalTicks;
+    // Blocks - Pit Kiln
+    public final ForgeConfigSpec.IntValue pitKilnTicks;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
+    public final ForgeConfigSpec.IntValue rainTicks;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -52,7 +61,6 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
-
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -68,6 +76,8 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", false);
+        enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
+        fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
 
         innerBuilder.pop().push("climate");
 
@@ -104,9 +114,22 @@ public class ServerConfig
         enableMossyRockSpreading = builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true);
         mossyRockSpreadRate = builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("torch");
+
+        torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 7200, -1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("charcoal");
+
+        charcoalTicks = builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("pit_kiln");
+
+        pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
+
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        rainTicks = builder.apply("rainTicks").comment("Number of burning ticks that is removed when the fire pit is on rain (random ticks). Makes fuel burn faster.").defineInRange("rainTicks", 1000, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 

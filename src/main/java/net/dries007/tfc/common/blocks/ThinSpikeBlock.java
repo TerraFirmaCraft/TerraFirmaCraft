@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -22,6 +23,9 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+
+import net.dries007.tfc.common.TFCTags;
+
 
 public class ThinSpikeBlock extends Block
 {
@@ -69,12 +73,40 @@ public class ThinSpikeBlock extends Block
     }
 
     @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        boolean flag = context.getLevel().getBlockState(context.getClickedPos().above()).is(TFCTags.Blocks.SMALL_SPIKE);
+        return defaultBlockState().setValue(TIP, flag);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(TIP);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (facing == Direction.DOWN && !facingState.is(this))
+        {
+            return stateIn.setValue(TIP, true);
+        }
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (!canSurvive(state, worldIn, pos))
         {
             worldIn.destroyBlock(pos, false);
+        }
+        if (blockIn.is(TFCTags.Blocks.SMALL_SPIKE))
+        {
+            worldIn.setBlock(pos, state.setValue(TIP, false), 2);
         }
     }
 
@@ -101,17 +133,6 @@ public class ThinSpikeBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (facing == Direction.DOWN && !facingState.is(this))
-        {
-            return stateIn.setValue(TIP, true);
-        }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return state.getValue(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
@@ -122,11 +143,5 @@ public class ThinSpikeBlock extends Block
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
         worldIn.destroyBlock(pos, false);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(TIP);
     }
 }

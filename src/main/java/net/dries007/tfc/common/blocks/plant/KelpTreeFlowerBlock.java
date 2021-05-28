@@ -44,7 +44,6 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
     private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
-    private final Supplier<? extends Block> bodyBlock;
 
     public static KelpTreeFlowerBlock create(AbstractBlock.Properties builder, Supplier<? extends Block> plant, FluidProperty fluid)
     {
@@ -58,6 +57,24 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         };
     }
 
+    public static boolean isEmptyWaterBlock(IWorldReader worldIn, BlockPos pos)
+    {
+        return worldIn.isWaterAt(pos) && !(worldIn.getBlockState(pos).getBlock() instanceof IFluidLoggable);
+    }
+
+    private static boolean allNeighborsEmpty(IWorldReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
+    {
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            if (direction != excludingSide && !isEmptyWaterBlock(worldIn, pos.relative(direction)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private final Supplier<? extends Block> bodyBlock;
+
     protected KelpTreeFlowerBlock(AbstractBlock.Properties builder, Supplier<? extends Block> bodyBlock)
     {
         super(builder);
@@ -66,19 +83,89 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public boolean isRandomlyTicking(BlockState state)
     {
-        if (!state.canSurvive(worldIn, pos))
+        return state.getValue(AGE) < 5;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(getFluidProperty(), AGE);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
+        if (containedFluid != Fluids.EMPTY)
         {
-            worldIn.destroyBlock(pos, true);
+            worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+        }
+        if (facing != Direction.UP && !stateIn.canSurvive(worldIn, currentPos))
+        {
+            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            return Blocks.AIR.defaultBlockState();
+        }
+        return stateIn;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
+        KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
+
+        BlockState blockstate = worldIn.getBlockState(pos.below());
+        if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        {
+            if (!isEmptyWaterBlock(worldIn, pos.below()))
+            {
+                return false;
+            }
+            else
+            {
+                boolean isValid = false;
+                for (Direction direction : Direction.Plane.HORIZONTAL)
+                {
+                    BlockState relativeState = worldIn.getBlockState(pos.relative(direction));
+                    if (relativeState.is(body))
+                    {
+                        if (isValid)
+                        {
+                            return false;
+                        }
+
+                        isValid = true;
+                    }
+                    else if (!isEmptyWaterBlock(worldIn, pos.relative(direction)))
+                    {
+                        return false;
+                    }
+                }
+
+                return isValid;
+            }
+        }
+        else
+        {
+            return true;
         }
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return state.getValue(AGE) < 5;
+        return SHAPE;
     }
 
     @Override
@@ -172,97 +259,14 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         }
     }
 
-    private void placeGrownFlower(World worldIn, BlockPos pos, int age)
-    {
-        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
-        worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age), 2);
-        worldIn.levelEvent(1033, pos, 0);
-    }
-
-    private void placeDeadFlower(World worldIn, BlockPos pos)
-    {
-        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
-        worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5), 2);
-        worldIn.levelEvent(1034, pos, 0);
-    }
-
-    private static boolean allNeighborsEmpty(IWorldReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
-    {
-        for (Direction direction : Direction.Plane.HORIZONTAL)
-        {
-            if (direction != excludingSide && !isEmptyWaterBlock(worldIn, pos.relative(direction)))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
-        if (containedFluid != Fluids.EMPTY)
+        if (!state.canSurvive(worldIn, pos))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+            worldIn.destroyBlock(pos, true);
         }
-        if (facing != Direction.UP && !stateIn.canSurvive(worldIn, currentPos))
-        {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
-            return Blocks.AIR.defaultBlockState();
-        }
-        return stateIn;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
-        KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
-
-        BlockState blockstate = worldIn.getBlockState(pos.below());
-        if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-        {
-            if (!isEmptyWaterBlock(worldIn, pos.below()))
-            {
-                return false;
-            }
-            else
-            {
-                boolean isValid = false;
-                for (Direction direction : Direction.Plane.HORIZONTAL)
-                {
-                    BlockState relativeState = worldIn.getBlockState(pos.relative(direction));
-                    if (relativeState.is(body))
-                    {
-                        if (isValid)
-                        {
-                            return false;
-                        }
-
-                        isValid = true;
-                    }
-                    else if (!isEmptyWaterBlock(worldIn, pos.relative(direction)))
-                    {
-                        return false;
-                    }
-                }
-
-                return isValid;
-            }
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(getFluidProperty(), AGE);
     }
 
     public void generatePlant(IWorld worldIn, BlockPos pos, Random rand, int maxHorizontalDistance, Fluid fluid)
@@ -319,9 +323,18 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         }
     }
 
-    public static boolean isEmptyWaterBlock(IWorldReader worldIn, BlockPos pos)
+    private void placeGrownFlower(World worldIn, BlockPos pos, int age)
     {
-        return worldIn.isWaterAt(pos) && !(worldIn.getBlockState(pos).getBlock() instanceof IFluidLoggable);
+        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
+        worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age), 2);
+        worldIn.levelEvent(1033, pos, 0);
+    }
+
+    private void placeDeadFlower(World worldIn, BlockPos pos)
+    {
+        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
+        worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5), 2);
+        worldIn.levelEvent(1034, pos, 0);
     }
 
     private void setBodyBlockWithFluid(IWorld worldIn, BlockPos pos, Fluid fluid)
@@ -339,19 +352,5 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     private Supplier<? extends Block> getBodyBlock()
     {
         return bodyBlock;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
-    {
-        return IFluidLoggable.super.getFluidState(state);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return SHAPE;
     }
 }

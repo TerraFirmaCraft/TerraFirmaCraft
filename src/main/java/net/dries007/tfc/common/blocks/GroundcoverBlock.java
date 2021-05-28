@@ -62,7 +62,8 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     }
 
     private final VoxelShape shape;
-    @Nullable private final Supplier<? extends Item> pickBlock;
+    @Nullable
+    private final Supplier<? extends Item> pickBlock;
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {

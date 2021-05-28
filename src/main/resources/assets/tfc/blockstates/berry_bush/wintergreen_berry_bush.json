@@ -1,0 +1,41 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "lifecycle=healthy,stage=0": {
+      "model": "tfc:block/berry_bush/wintergreen_berry_bush_0"
+    },
+    "lifecycle=healthy,stage=1": {
+      "model": "tfc:block/berry_bush/wintergreen_berry_bush_1"
+    },
+    "lifecycle=healthy,stage=2": {
+      "model": "tfc:block/berry_bush/wintergreen_berry_bush_2"
+    },
+    "lifecycle=dormant,stage=0": {
+      "model": "tfc:block/berry_bush/dry_wintergreen_berry_bush_0"
+    },
+    "lifecycle=dormant,stage=1": {
+      "model": "tfc:block/berry_bush/dry_wintergreen_berry_bush_1"
+    },
+    "lifecycle=dormant,stage=2": {
+      "model": "tfc:block/berry_bush/dry_wintergreen_berry_bush_2"
+    },
+    "lifecycle=fruiting,stage=0": {
+      "model": "tfc:block/berry_bush/fruiting_wintergreen_berry_bush_0"
+    },
+    "lifecycle=fruiting,stage=1": {
+      "model": "tfc:block/berry_bush/fruiting_wintergreen_berry_bush_1"
+    },
+    "lifecycle=fruiting,stage=2": {
+      "model": "tfc:block/berry_bush/fruiting_wintergreen_berry_bush_2"
+    },
+    "lifecycle=flowering,stage=0": {
+      "model": "tfc:block/berry_bush/flowering_wintergreen_berry_bush_0"
+    },
+    "lifecycle=flowering,stage=1": {
+      "model": "tfc:block/berry_bush/flowering_wintergreen_berry_bush_1"
+    },
+    "lifecycle=flowering,stage=2": {
+      "model": "tfc:block/berry_bush/flowering_wintergreen_berry_bush_2"
+    }
+  }
+}

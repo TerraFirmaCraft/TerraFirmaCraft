@@ -10,6 +10,10 @@ Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
 OreGrade = NamedTuple('OreGrade', weight=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
+Wood = NamedTuple('Wood', temp=float, duration=int)
+Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
+Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
+
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -226,7 +230,27 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
-WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
+WOODS: Dict[str, Wood] = {
+    'acacia': Wood(650, 1000),
+    'ash': Wood(696, 1250),
+    'aspen': Wood(611, 1000),
+    'birch': Wood(652, 1750),
+    'blackwood': Wood(720, 1750),
+    'chestnut': Wood(651, 1500),
+    'douglas_fir': Wood(707, 1500),
+    'hickory': Wood(762, 2000),
+    'kapok': Wood(645, 1000),
+    'maple': Wood(745, 2000),
+    'oak': Wood(728, 2250),
+    'palm': Wood(730, 1250),
+    'pine': Wood(627, 1250),
+    'rosewood': Wood(640, 1500),
+    'sequoia': Wood(612, 1750),
+    'spruce': Wood(608, 1500),
+    'sycamore': Wood(653, 1750),
+    'white_cedar': Wood(625, 1500),
+    'willow': Wood(603, 1000)
+}
 
 PLANTS: Dict[str, Plant] = {
     'allium': Plant(False, 10, 18, 150, 400, 'standard'),
@@ -308,11 +332,44 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
 
+SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite')
+POWDERS = ('fertilizer', 'flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
+PAIRED_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
+UNFIRED_ITEMS = ('brick', 'crucible', 'flower_pot', 'jug')
+VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
 OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
 
+BERRIES: Dict[str, Berry] = {
+    'blackberry': Berry(7, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'raspberry': Berry(5, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'blueberry': Berry(7, 25, 100, 400, 'spreading', 'edge', 'edge'),
+    'elderberry': Berry(10, 29, 100, 400, 'spreading', 'edge', 'edge'),
+    'bunchberry': Berry(15, 30, 100, 400, 'stationary', 'edge', 'normal'),
+    'gooseberry': Berry(5, 27, 100, 400, 'stationary', 'none', 'sparse'),
+    'snowberry': Berry(-5, 18, 100, 400, 'stationary', 'normal', 'old_growth'),
+    'cloudberry': Berry(3, 17, 80, 370, 'stationary', 'normal', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'none', 'sparse'),
+    'wintergreen_berry': Berry(-5, 17, 100, 400, 'stationary', 'old_growth', 'old_growth'),
+    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
+}
+
+FRUITS: Dict[str, Fruit] = {
+    'banana': Fruit(23, 35, 280, 480),
+    'cherry': Fruit(5, 21, 100, 350),
+    'green_apple': Fruit(8, 25, 110, 280),
+    'lemon': Fruit(10, 30, 180, 470),
+    'olive': Fruit(13, 30, 150, 380),
+    'orange': Fruit(23, 36, 250, 480),
+    'peach': Fruit(9, 27, 60, 230),
+    'plum': Fruit(18, 31, 250, 400),
+    'red_apple': Fruit(9, 25, 100, 280)
+}
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -364,6 +421,14 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 DEFAULT_LANG = {
     # Misc
     'generator.tfc.tng': 'TerraFirmaCraft',
+    'death.attack.grill': '%1$s grilled themself to death',
+    'death.attack.grill.player': '%1$s grilled themselves while trying to escape %2$s',
+    'death.attack.pot': '%1$s boiled themselves into soup',
+    'death.attack.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'tfc.tile_entity.pot': 'Pot',
+    'tfc.tile_entity.grill': 'Grill',
+    'tfc.tile_entity.firepit': 'Firepit',
+    'tfc.tile_entity.log_pile': 'Log Pile',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -374,6 +439,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.devices': 'TFC Devices',
     'itemGroup.tfc.food': 'TFC Food',
     'itemGroup.tfc.misc': 'TFC Misc',
+    'itemGroup.tfc.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
@@ -383,6 +449,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.units': '%d units',
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.fuel': 'Fuel Duration: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',

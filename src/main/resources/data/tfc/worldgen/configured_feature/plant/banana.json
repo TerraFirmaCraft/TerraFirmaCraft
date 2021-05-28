@@ -1,0 +1,51 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:bananas",
+                  "config": {
+                    "state": "tfc:fruit_tree/banana_plant"
+                  }
+                },
+                "decorator": {
+                  "type": "minecraft:chance",
+                  "config": {
+                    "chance": 200
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 23,
+                "max_temperature": 35,
+                "min_rainfall": 280,
+                "max_rainfall": 480,
+                "max_forest": "normal"
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
+    }
+  }
+}

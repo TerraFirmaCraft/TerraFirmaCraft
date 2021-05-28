@@ -47,8 +47,10 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     private static final Map<Direction, BooleanProperty> PROPERTIES = ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.WEST, WEST, Direction.SOUTH, SOUTH);
 
     private final Supplier<? extends Block> dirt;
-    @Nullable private final Supplier<? extends Block> grassPath;
-    @Nullable private final Supplier<? extends Block> farmland;
+    @Nullable
+    private final Supplier<? extends Block> grassPath;
+    @Nullable
+    private final Supplier<? extends Block> farmland;
 
     public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant soilType)
     {

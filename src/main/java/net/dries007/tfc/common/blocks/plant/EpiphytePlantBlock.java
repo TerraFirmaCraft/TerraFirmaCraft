@@ -91,12 +91,6 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         return SHAPES.get(state.getValue(FACING));
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(FACING));
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
@@ -107,5 +101,11 @@ public abstract class EpiphytePlantBlock extends PlantBlock
             return updateStateWithCurrentMonth(defaultBlockState()).setValue(FACING, direction);
         }
         return null;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(FACING));
     }
 }

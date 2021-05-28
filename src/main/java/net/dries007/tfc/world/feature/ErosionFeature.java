@@ -27,7 +27,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
 
-// todo: make not shit
 public class ErosionFeature extends Feature<NoFeatureConfig>
 {
     public ErosionFeature(Codec<NoFeatureConfig> codec)

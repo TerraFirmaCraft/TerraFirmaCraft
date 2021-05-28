@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,6 +26,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
@@ -33,13 +35,11 @@ import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -64,6 +64,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
 {
+    public static final Direction[] DIRECTIONS = Direction.values();
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
 
@@ -185,14 +187,6 @@ public final class Helpers
     }
 
     /**
-     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
-     */
-    public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
-    {
-        return () -> mapper.apply(supplier.get());
-    }
-
-    /**
      * Applies two possible consumers of a given lazy optional
      */
     public static <T> void ifPresentOrElse(LazyOptional<T> lazyOptional, Consumer<T> ifPresent, Runnable orElse)
@@ -220,6 +214,16 @@ public final class Helpers
     public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
     {
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
+    }
+
+    /**
+     * Flattens a homogeneous stream of {@code Collection<T>} and Ts together into a {@code Stream<T>}
+     * Usage: {@code stream.flatMap(Helpers::flatten)}
+     */
+    @SuppressWarnings("unchecked")
+    public static <R> Stream<? extends R> flatten(Object t)
+    {
+        return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
     }
 
     /**
@@ -255,6 +259,18 @@ public final class Helpers
     @Nullable
     @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    {
+        TileEntity te = world.getBlockEntity(pos);
+        if (tileEntityClass.isInstance(te))
+        {
+            return (T) te;
+        }
+        return null;
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T extends TileEntity> T getTileEntity(IBlockReader world, BlockPos pos, Class<T> tileEntityClass)
     {
         TileEntity te = world.getBlockEntity(pos);
         if (tileEntityClass.isInstance(te))
@@ -435,6 +451,30 @@ public final class Helpers
     }
 
     /**
+     * Lightning fast. Not actually Gaussian.
+     */
+    public static double fastGaussian(Random rand)
+    {
+        return (rand.nextDouble() - rand.nextDouble()) * 0.5;
+    }
+
+    public static void playSound(World world, BlockPos pos, SoundEvent sound)
+    {
+        Random rand = world.getRandom();
+        world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)
+    {
+        return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack)
+    {
+        return spawnItem(world, pos, stack, 0.5D);
+    }
+
+    /**
      * Select N unique elements from a list, without having to shuffle the whole list.
      * This involves moving the selected elements to the end of the list. Note: this method will mutate the passed in list!
      * From <a href="https://stackoverflow.com/questions/4702036/take-n-random-elements-from-a-liste">Stack Overflow</a>
@@ -451,5 +491,90 @@ public final class Helpers
             Collections.swap(list, i, r.nextInt(i + 1));
         }
         return list.subList(length - n, length);
+    }
+
+    public static NonNullList<ItemStack> copyItemList(NonNullList<ItemStack> stacksIn)
+    {
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        stacksIn.forEach(stack -> stacks.add(stack.copy()));
+        return stacks;
+    }
+
+    /**
+     * Checks the existence of a <a href="https://en.wikipedia.org/wiki/Perfect_matching">perfect matching</a> of a <a href="https://en.wikipedia.org/wiki/Bipartite_graph">bipartite graph</a>.
+     * The graph is interpreted as the matches between the set of inputs, and the set of tests.
+     * This algorithm computes the <a href="https://en.wikipedia.org/wiki/Edmonds_matrix">Edmonds Matrix</a> of the graph, which has the property that the determinant is identically zero iff the graph does not admit a perfect matching.
+     */
+    public static <T> boolean perfectMatchExists(List<T> inputs, List<? extends Predicate<T>> tests)
+    {
+        if (inputs.size() != tests.size())
+        {
+            return false;
+        }
+        final int size = inputs.size();
+        final boolean[][] matrices = new boolean[size][];
+        for (int i = 0; i < size; i++)
+        {
+            matrices[i] = new boolean[(size + 1) * (size + 1)];
+        }
+        final boolean[] matrix = matrices[size - 1];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                matrix[i + size * j] = tests.get(i).test(inputs.get(j));
+            }
+        }
+        return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes a symbolic determinant
+     */
+    private static boolean perfectMatchDet(boolean[][] matrices, int size)
+    {
+        // matrix true = nonzero = matches
+        final boolean[] matrix = matrices[size - 1];
+        switch (size)
+        {
+            case 1:
+                return matrix[0];
+            case 2:
+                return (matrix[0] && matrix[3]) || (matrix[1] && matrix[2]);
+            default:
+            {
+                for (int c = 0; c < size; c++)
+                {
+                    if (matrix[c])
+                    {
+                        perfectMatchSub(matrices, size, c);
+                        if (perfectMatchDet(matrices, size - 1))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes the symbolic minor of a matrix by removing an arbitrary column.
+     */
+    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    {
+        final int subSize = size - 1;
+        final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
+        for (int c = 0; c < subSize; c++)
+        {
+            final int c0 = c + (c >= dc ? 1 : 0);
+            for (int r = 0; r < subSize; r++)
+            {
+                sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
+            }
+        }
     }
 }

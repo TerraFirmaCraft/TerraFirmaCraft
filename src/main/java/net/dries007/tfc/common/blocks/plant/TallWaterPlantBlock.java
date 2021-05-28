@@ -91,13 +91,6 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
-    {
-        return IFluidLoggable.super.getFluidState(state);
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(getFluidProperty()));
@@ -119,5 +112,12 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
                 world.setBlock(posAbove, state.setValue(PART, Part.UPPER), flags);
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
     }
 }

@@ -29,16 +29,16 @@
           }
         },
         "decorator": {
-          "type": "minecraft:chance",
-          "config": {
-            "chance": 50
-          }
+          "type": "minecraft:square",
+          "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:square",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 50
+      }
     }
   }
 }
