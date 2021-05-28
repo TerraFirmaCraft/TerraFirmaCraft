@@ -1,6 +1,9 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -37,5 +40,10 @@ public class ManateeEntity extends TFCAbstractGroupFishEntity
     public boolean shouldRenderAtSqrDistance(double distance)
     {
         return true;
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes()
+    {
+        return AbstractFishEntity.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 }

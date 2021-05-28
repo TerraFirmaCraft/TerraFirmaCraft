@@ -346,6 +346,10 @@ LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
 
+SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5)
+}
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -425,6 +429,7 @@ DEFAULT_LANG = {
     'entity.tfc.vulture': 'Vulture',
     'entity.tfc.lobster': 'Lobster',
     'entity.tfc.bluegill': 'Bluegill',
+    'entity.tfc.penguin': 'Penguin',
 
     # ENUMS
 

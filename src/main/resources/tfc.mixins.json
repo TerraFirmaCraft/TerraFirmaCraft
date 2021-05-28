@@ -11,6 +11,7 @@
     "entity.EntitySpawnPlacementRegistryAccessor",
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",
+    "entity.passive.TurtleEntityAccessor",
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
     "item.crafting.RecipeManagerAccessor",

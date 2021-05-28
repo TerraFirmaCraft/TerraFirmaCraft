@@ -375,6 +375,19 @@ def generate(rm: ResourceManager):
         'conditions': [silk_touch()]
     })
 
+    crack_states_dict = {'0': 'normal', '1': 'slightly_cracked', '2': 'very_cracked'}
+    egg_template_dict = {1: 'template_turtle_egg', 2: 'template_two_turtle_eggs', 3: 'template_three_turtle_eggs', 4: 'template_four_turtle_eggs'}
+    for ovipositor in ['penguin']:
+        all_variants = {}
+        for damage in crack_states_dict:
+            for i in range(1, 4 + 1):
+                all_variants.update({'eggs=%s,hatch=%s' % (i, damage): four_ways('tfc:block/egg/' + ovipositor + '_' + crack_states_dict[damage] + '_' + str(i))})
+        rm.blockstate(ovipositor + '_egg', variants=all_variants, use_default_model=False).with_lang(lang('%s Egg', ovipositor))
+        rm.item_model(ovipositor + '_egg', 'tfc:item/%s_egg' % ovipositor)
+        for damage in crack_states_dict:
+            for i in range(1, 4 + 1):
+                rm.block_model('egg/' + ovipositor + '_' + crack_states_dict[damage] + '_' + str(i), textures={"all": "tfc:block/egg/%s_%s" % (ovipositor, crack_states_dict[damage])}, parent='minecraft:block/%s' % egg_template_dict.get(i))
+
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):
@@ -660,6 +673,15 @@ def generate(rm: ResourceManager):
     for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
         corals(color, False)
         corals(color, True)
+
+
+def four_ways(model: str) -> List[Dict[str, Any]]:
+    return [
+        {'model': model, 'y': 90},
+        {'model': model},
+        {'model': model, 'y': 180},
+        {'model': model, 'y': 270}
+    ]
 
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:

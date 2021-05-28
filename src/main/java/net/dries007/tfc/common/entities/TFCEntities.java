@@ -8,16 +8,12 @@ package net.dries007.tfc.common.entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,7 +21,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.common.entities.aquatic.*;
 import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.entities.predator.VultureEntity;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.entity.EntityTypeAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -50,6 +45,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCDolphinEntity>> DOLPHIN = register("dolphin", EntityType.Builder.of(TFCDolphinEntity::new, EntityClassification.WATER_CREATURE).sized(0.9F, 0.6F));
     public static final RegistryObject<EntityType<SeafloorCritterEntity>> ISOPOD = register("isopod", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<SeafloorCritterEntity>> LOBSTER = register("lobster", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<PenguinEntity>> PENGUIN = register("penguin", EntityType.Builder.of(PenguinEntity::new, EntityClassification.CREATURE).sized(0.5F, 0.7F).clientTrackingRange(10));
 
     // Predators
     public static final RegistryObject<EntityType<VultureEntity>> VULTURE = register("vulture", EntityType.Builder.of(VultureEntity::new, EntityClassification.MONSTER).sized(0.9F, 0.5F).clientTrackingRange(8));
@@ -71,19 +67,20 @@ public class TFCEntities
         });
     }
 
-    public static void setup()
+    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event)
     {
-        GlobalEntityTypeAttributes.put(COD.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(SALMON.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(BLUEGILL.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(PUFFERFISH.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(TROPICAL_FISH.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(JELLYFISH.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(MANATEE.get(), AbstractFishEntity.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).build());
-        GlobalEntityTypeAttributes.put(ORCA.get(), DolphinEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(DOLPHIN.get(), DolphinEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(ISOPOD.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(LOBSTER.get(), AbstractFishEntity.createAttributes().build());
-        GlobalEntityTypeAttributes.put(VULTURE.get(), MonsterEntity.createMonsterAttributes().build());
+        event.put(COD.get(), AbstractFishEntity.createAttributes().build());
+        event.put(SALMON.get(), AbstractFishEntity.createAttributes().build());
+        event.put(BLUEGILL.get(), AbstractFishEntity.createAttributes().build());
+        event.put(PUFFERFISH.get(), AbstractFishEntity.createAttributes().build());
+        event.put(TROPICAL_FISH.get(), AbstractFishEntity.createAttributes().build());
+        event.put(JELLYFISH.get(), AbstractFishEntity.createAttributes().build());
+        event.put(MANATEE.get(), ManateeEntity.createAttributes().build());
+        event.put(ORCA.get(), DolphinEntity.createAttributes().build());
+        event.put(DOLPHIN.get(), DolphinEntity.createAttributes().build());
+        event.put(ISOPOD.get(), AbstractFishEntity.createAttributes().build());
+        event.put(LOBSTER.get(), AbstractFishEntity.createAttributes().build());
+        event.put(VULTURE.get(), MonsterEntity.createMonsterAttributes().build());
+        event.put(PENGUIN.get(), PenguinEntity.createAttributes().build());
     }
 }

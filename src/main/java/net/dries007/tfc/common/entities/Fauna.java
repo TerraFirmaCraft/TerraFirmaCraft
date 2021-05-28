@@ -4,8 +4,10 @@ import com.google.gson.JsonObject;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.util.Direction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.JsonOps;
@@ -21,16 +23,18 @@ public class Fauna
     private final int chance;
     private final int distanceBelowSeaLevel;
     private final ClimateConfig climateConfig;
+    private final boolean solidGround;
 
+    @SuppressWarnings("unchecked")
     public Fauna(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        //noinspection unchecked
         entity = (EntityType<MobEntity>) ForgeRegistries.ENTITIES.getValue(new ResourceLocation(JSONUtils.getAsString(json, "entity")));
         this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(JSONUtils.getAsString(json, "fluid")));
         this.chance = JSONUtils.getAsInt(json, "chance");
         this.distanceBelowSeaLevel = JSONUtils.getAsInt(json, "distance_below_sea_level");
         this.climateConfig = ClimateConfig.CODEC.decode(JsonOps.INSTANCE, json.get("climate")).getOrThrow(false, null).getFirst();
+        this.solidGround = JSONUtils.getAsBoolean(json, "solid_ground", false);
     }
 
     public ResourceLocation getId()
@@ -80,6 +84,11 @@ public class Fauna
                 {
                     return false;
                 }
+            }
+            BlockPos below = pos.below();
+            if (solidGround && !world.getBlockState(below).isFaceSturdy(world, below, Direction.UP))
+            {
+                return false;
             }
             return true;
         };
