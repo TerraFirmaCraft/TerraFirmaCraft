@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/gneiss",
-    "hardened": "tfc:rock/hardened/gneiss",
-    "bricks": "tfc:rock/bricks/gneiss",
-    "cobble": "tfc:rock/cobble/gneiss",
-    "gravel": "tfc:rock/gravel/gneiss",
-    "smooth": "tfc:rock/smooth/gneiss",
-    "mossy_cobble": "tfc:rock/mossy_cobble/gneiss",
-    "mossy_bricks": "tfc:rock/mossy_bricks/gneiss",
-    "cracked_bricks": "tfc:rock/cracked_bricks/gneiss",
-    "chiseled": "tfc:rock/chiseled/gneiss",
-    "spike": "tfc:rock/spike/gneiss",
-    "loose": "tfc:rock/loose/gneiss"
-  },
-  "category": "metamorphic",
-  "desert_sand_color": "brown",
-  "beach_sand_color": "brown"
+  "raw": "tfc:rock/raw/gneiss",
+  "hardened": "tfc:rock/hardened/gneiss",
+  "cobble": "tfc:rock/cobble/gneiss",
+  "gravel": "tfc:rock/gravel/gneiss",
+  "spike": "tfc:rock/spike/gneiss",
+  "loose": "tfc:rock/loose/gneiss",
+  "sand": "tfc:sand/green",
+  "sandstone": "tfc:raw_sandstone/green"
 }

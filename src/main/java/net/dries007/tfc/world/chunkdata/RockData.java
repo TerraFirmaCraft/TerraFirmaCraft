@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -26,15 +27,18 @@ import net.dries007.tfc.util.Helpers;
 
 public class RockData implements INBTSerializable<CompoundNBT>
 {
+    public static final RockData EMPTY = new Immutable();
+
+    private static int index(int x, int z)
+    {
+        return (x & 15) | ((z & 15) << 4);
+    }
+
     private final Rock[] bottomLayer;
     private final Rock[] middleLayer;
     private final Rock[] topLayer;
-    private final int[] rockLayerHeight;
-
-    public RockData()
-    {
-        this(new Rock[256], new Rock[256], new Rock[256], new int[256]);
-    }
+    private int[] rockLayerHeight;
+    private int[] surfaceHeight;
 
     public RockData(Rock[] bottomLayer, Rock[] middleLayer, Rock[] topLayer, int[] rockLayerHeight)
     {
@@ -42,6 +46,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
         this.middleLayer = middleLayer;
         this.topLayer = topLayer;
         this.rockLayerHeight = rockLayerHeight;
+        this.surfaceHeight = null;
     }
 
     public Rock getRock(BlockPos pos)
@@ -51,46 +56,41 @@ public class RockData implements INBTSerializable<CompoundNBT>
 
     public Rock getRock(int x, int y, int z)
     {
-        if (y > getRockHeight(x, z))
+        final int i = index(x, z);
+        final int sh = surfaceHeight[i];
+        final int rh = rockLayerHeight[i];
+        if (y > (int) (142 - 0.2 * sh + rh))
         {
-            return getTopRock(x, z);
+            return topLayer[i];
+        }
+        else if (y > (int) (82 - 0.2 * sh + rh))
+        {
+            return middleLayer[i];
         }
         else
         {
-            return getBottomRock(x, z);
+            return bottomLayer[i];
         }
     }
 
-    public int getRockHeight(int x, int z)
-    {
-        return rockLayerHeight[(x & 15) + 16 * (z & 15)];
-    }
-
-    /**
-     * Used as decoration rock in some biomes
-     * Sand color used as "inland" sand color (deserts)
-     */
     public Rock getTopRock(int x, int z)
     {
-        return topLayer[(x & 15) + 16 * (z & 15)];
+        return topLayer[index(x, z)];
     }
 
-    /**
-     * Actually functions as the topmost rock in most biomes
-     * Sand color used as the "water" sand color (beaches, oceans, rivers)
-     */
     public Rock getMidRock(int x, int z)
     {
-        return middleLayer[(x & 15) + 16 * (z & 15)];
+        return middleLayer[index(x, z)];
     }
 
-    /**
-     * Base rock, does what it says on the tin.
-     * Sand color is unused.
-     */
     public Rock getBottomRock(int x, int z)
     {
-        return bottomLayer[(x & 15) + 16 * (z & 15)];
+        return bottomLayer[index(x, z)];
+    }
+
+    public void setSurfaceHeight(int[] surfaceHeightMap)
+    {
+        this.surfaceHeight = surfaceHeightMap;
     }
 
     @Override
@@ -117,12 +117,15 @@ public class RockData implements INBTSerializable<CompoundNBT>
         nbt.putByteArray("topLayer", Helpers.createByteArray(bottomLayer, r -> (byte) uniqueRocks.indexOf(r)));
 
         nbt.putIntArray("height", rockLayerHeight);
-
+        if (surfaceHeight != null)
+        {
+            nbt.putIntArray("surface_height", surfaceHeight);
+        }
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(@Nullable CompoundNBT nbt)
     {
         if (nbt != null)
         {
@@ -138,7 +141,36 @@ public class RockData implements INBTSerializable<CompoundNBT>
             Helpers.createArrayFromBytes(nbt.getByteArray("middleLayer"), middleLayer, uniqueRocks::get);
             Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
 
-            System.arraycopy(nbt.getIntArray("height"), 0, rockLayerHeight, 0, 256);
+            rockLayerHeight = nbt.getIntArray("height");
+            if (nbt.contains("surface_height"))
+            {
+                surfaceHeight = nbt.getIntArray("surface_height");
+            }
         }
+    }
+
+    private static class Immutable extends RockData
+    {
+        @SuppressWarnings("ConstantConditions")
+        Immutable()
+        {
+            // This will crash, but it will crash in expected locations, and we don't have much to add to the crash if we overrode the methods here anyway
+            super(null, null, null, null);
+        }
+
+        @Override
+        public void setSurfaceHeight(int[] surfaceHeightMap)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable rock data");
+        }
+
+        @Override
+        public CompoundNBT serializeNBT()
+        {
+            return new CompoundNBT();
+        }
+
+        @Override
+        public void deserializeNBT(@Nullable CompoundNBT nbt) {}
     }
 }

@@ -129,8 +129,8 @@ public class FissureFeature extends Feature<FissureConfig>
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final int placeCount = 1 + rand.nextInt(config.count);
         final BlockState insideState = config.wallState.orElseGet(() -> {
-            final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
-            final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
+            final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+            final ChunkData data = provider.get(pos);
             final Rock rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
             return rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
         });

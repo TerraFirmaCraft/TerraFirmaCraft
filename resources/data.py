@@ -54,10 +54,9 @@ def generate(rm: ResourceManager):
     # Rocks
     for rock, rock_data in ROCKS.items():
         rm.data(('tfc', 'rocks', rock), {
-            'blocks': dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCK_TYPES),
-            'category': rock_data.category,
-            'desert_sand_color': rock_data.desert_sand_color,
-            'beach_sand_color': rock_data.beach_sand_color
+            **dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCKS_IN_JSON),
+            'sand': 'tfc:sand/%s' % rock_data.sand,
+            'sandstone': 'tfc:raw_sandstone/%s' % rock_data.sand
         })
 
         def block(block_type: str):
@@ -67,7 +66,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone', block('raw'), block('hardened'))
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
-        rm.block_tag('tfc:breaks_when_isolated', block('raw'))  # only raw rock
+        rm.block_tag('tfc:breaks_when_isolated', block('raw'))
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -95,6 +94,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel(rm, 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp))
+
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_fuel', '#minecraft:logs')

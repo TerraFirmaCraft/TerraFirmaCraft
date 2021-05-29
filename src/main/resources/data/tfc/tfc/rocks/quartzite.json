@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/quartzite",
-    "hardened": "tfc:rock/hardened/quartzite",
-    "bricks": "tfc:rock/bricks/quartzite",
-    "cobble": "tfc:rock/cobble/quartzite",
-    "gravel": "tfc:rock/gravel/quartzite",
-    "smooth": "tfc:rock/smooth/quartzite",
-    "mossy_cobble": "tfc:rock/mossy_cobble/quartzite",
-    "mossy_bricks": "tfc:rock/mossy_bricks/quartzite",
-    "cracked_bricks": "tfc:rock/cracked_bricks/quartzite",
-    "chiseled": "tfc:rock/chiseled/quartzite",
-    "spike": "tfc:rock/spike/quartzite",
-    "loose": "tfc:rock/loose/quartzite"
-  },
-  "category": "metamorphic",
-  "desert_sand_color": "white",
-  "beach_sand_color": "white"
+  "raw": "tfc:rock/raw/quartzite",
+  "hardened": "tfc:rock/hardened/quartzite",
+  "cobble": "tfc:rock/cobble/quartzite",
+  "gravel": "tfc:rock/gravel/quartzite",
+  "spike": "tfc:rock/spike/quartzite",
+  "loose": "tfc:rock/loose/quartzite",
+  "sand": "tfc:sand/white",
+  "sandstone": "tfc:raw_sandstone/white"
 }

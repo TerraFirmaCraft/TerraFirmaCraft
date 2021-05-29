@@ -38,16 +38,14 @@ import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadCaneBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
+import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.*;
-import net.dries007.tfc.common.types.Metal;
-import net.dries007.tfc.common.types.Ore;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -105,19 +103,19 @@ public final class TFCBlocks
 
     // Ores
 
-    public static final Map<Rock.Default, Map<Ore.Default, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Ore.Default.class, ore -> !ore.isGraded(), ore ->
+    public static final Map<Rock.Default, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), ore ->
             register(("ore/" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10).harvestTool(ToolType.PICKAXE).harvestLevel(0)), TFCItemGroup.ORES)
         )
     );
-    public static final Map<Rock.Default, Map<Ore.Default, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
+    public static final Map<Rock.Default, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
             Helpers.mapOfKeys(Ore.Grade.class, grade ->
                 register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10).harvestTool(ToolType.PICKAXE).harvestLevel(0)), TFCItemGroup.ORES)
             )
         )
     );
-    public static final Map<Ore.Default, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, type ->
+    public static final Map<Ore, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, type ->
         register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion()), TFCItemGroup.ORES)
     );
 
@@ -137,6 +135,10 @@ public final class TFCBlocks
         ))
     );
 
+    public static final Map<Rock.Default, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.Default.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)), ROCK_STUFFS)
+    );
+
     // Metals
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
@@ -147,7 +149,7 @@ public final class TFCBlocks
 
     // Wood
 
-    public static final Map<Wood.Default, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.Default.class, wood ->
+    public static final Map<Wood, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.class, wood ->
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
             type.needsItem() ? register(type.nameFor(wood), type.create(wood), WOOD) : register(type.nameFor(wood), type.create(wood))
         )

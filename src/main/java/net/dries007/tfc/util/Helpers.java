@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -18,8 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -50,9 +47,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullFunction;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -65,8 +60,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
-
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
 
     /**
@@ -107,47 +100,6 @@ public final class Helpers
         }
     }
 
-    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, NonNullFunction<K, String> keyStringMapper)
-    {
-        return findRegistryObjects(obj, path, registry, keyValues, Collections.emptyList(), keyStringMapper);
-    }
-
-    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, Collection<K> optionalKeyValues, NonNullFunction<K, String> keyStringMapper)
-    {
-        if (obj.has(path))
-        {
-            Map<K, V> objects = new HashMap<>();
-            JsonObject objectsJson = JSONUtils.getAsJsonObject(obj, path);
-            for (K expectedKey : keyValues)
-            {
-                String jsonKey = keyStringMapper.apply(expectedKey);
-                ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
-                V registryObject = registry.getValue(id);
-                if (registryObject == null)
-                {
-                    throw new JsonParseException("Unknown registry object: " + id);
-                }
-                objects.put(expectedKey, registryObject);
-            }
-            for (K optionalKey : optionalKeyValues)
-            {
-                String jsonKey = keyStringMapper.apply(optionalKey);
-                if (objectsJson.has(jsonKey))
-                {
-                    ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
-                    V registryObject = registry.getValue(id);
-                    if (registryObject == null)
-                    {
-                        throw new JsonParseException("Unknown registry object: " + id);
-                    }
-                    objects.put(optionalKey, registryObject);
-                }
-            }
-            return objects;
-        }
-        return Collections.emptyMap();
-    }
-
     public static BlockState readBlockState(String block) throws JsonParseException
     {
         BlockStateParser parser = parseBlockState(block, false);
@@ -171,18 +123,22 @@ public final class Helpers
         }
     }
 
-    /**
-     * Maps a {@link Supplier} to an {@link Optional} by swallowing any runtime exceptions.
-     */
-    public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
+    public static Block getBlockFromJson(JsonObject json, String key)
     {
         try
         {
-            return Optional.of(unsafeSupplier.get());
+            String id = JSONUtils.getAsString(json, key);
+            ResourceLocation res = new ResourceLocation(id);
+            Block block = ForgeRegistries.BLOCKS.getValue(res);
+            if (block == null)
+            {
+                throw new JsonParseException("Unknown block: " + id);
+            }
+            return block;
         }
-        catch (RuntimeException e)
+        catch (ResourceLocationException e)
         {
-            return Optional.empty();
+            throw new JsonParseException(e);
         }
     }
 

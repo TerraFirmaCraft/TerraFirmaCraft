@@ -27,16 +27,16 @@ public final class TreeCommand
         return Commands.literal("tree")
             .requires(source -> source.hasPermission(2))
             .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                .then(Commands.argument("wood", EnumArgument.enumArgument(Wood.Default.class))
+                .then(Commands.argument("wood", EnumArgument.enumArgument(Wood.class))
                     .then(Commands.argument("variant", EnumArgument.enumArgument(Variant.class))
-                        .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), context.getArgument("variant", Variant.class)))
+                        .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.class), context.getArgument("variant", Variant.class)))
                     )
-                    .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.Default.class), Variant.NORMAL))
+                    .executes(context -> placeTree(context.getSource().getLevel(), BlockPosArgument.getOrLoadBlockPos(context, "pos"), context.getArgument("wood", Wood.class), Variant.NORMAL))
                 )
             );
     }
 
-    private static int placeTree(ServerWorld world, BlockPos pos, Wood.Default wood, Variant variant)
+    private static int placeTree(ServerWorld world, BlockPos pos, Wood wood, Variant variant)
     {
         TFCTree tree = wood.getTree();
         Registry<ConfiguredFeature<?, ?>> registry = world.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);

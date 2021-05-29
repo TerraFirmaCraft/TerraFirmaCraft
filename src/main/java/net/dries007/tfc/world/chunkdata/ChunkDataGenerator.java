@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.annotations.VisibleForTesting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.gen.area.IAreaFactory;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
@@ -20,7 +20,6 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
-import net.dries007.tfc.world.layer.traits.FastArea;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -33,6 +32,11 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
  */
 public class ChunkDataGenerator implements IChunkDataGenerator
 {
+    private static LayerFactory<Rock> createRockLayer(Random seedGenerator, TFCBiomeProvider.LayerSettings settings, List<ResourceLocation> rocks)
+    {
+        return LayerFactory.rocks(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getRockLayerScale(), rocks.size()), rocks);
+    }
+
     private final LayerFactory<Rock> bottomRockLayer, middleRockLayer, topRockLayer;
     private final LayerFactory<ForestType> forestTypeLayer;
 
@@ -46,12 +50,11 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
     public ChunkDataGenerator(long worldSeed, Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
     {
-        List<IAreaFactory<FastArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong(), layerSettings);
-        this.bottomRockLayer = LayerFactory.rocks(rockLayers.get(0), layerSettings);
-        this.middleRockLayer = LayerFactory.rocks(rockLayers.get(1), layerSettings);
-        this.topRockLayer = LayerFactory.rocks(rockLayers.get(2), layerSettings);
+        this.bottomRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getBottomRocks());
+        this.middleRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getMidRocks());
+        this.topRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getTopRocks());
 
-        this.layerHeightNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.015f);
+        this.layerHeightNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(2).scaled(-10, 10).spread(0.03f);
 
         // Climate
         temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)
@@ -80,65 +83,26 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     }
 
     @Override
-    public void generate(ChunkData data, ChunkData.Status status)
+    public void generate(ChunkData data)
     {
         ChunkPos pos = data.getPos();
         int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
-        switch (status)
-        {
-            case EMPTY:
-            case CLIENT:
-                throw new IllegalStateException("Should not ever generate EMPTY or CLIENT status!");
-            case PLATE_TECTONICS:
-                generatePlateTectonics(data);
-                break;
-            case CLIMATE:
-                generateClimate(data, chunkX, chunkZ);
-                break;
-            case ROCKS:
-                generateRocks(data, chunkX, chunkZ);
-                break;
-            case FLORA:
-                generateFlora(data, chunkX, chunkZ);
-                break;
-        }
-    }
 
-    @VisibleForTesting
-    public INoise2D getTemperatureNoise()
-    {
-        return temperatureNoise;
-    }
-
-    @VisibleForTesting
-    public INoise2D getRainfallNoise()
-    {
-        return rainfallNoise;
-    }
-
-    private void generatePlateTectonics(ChunkData data)
-    {
-        data.setPlateTectonicsInfo(plateTectonicsInfo.get(data.getPos().x, data.getPos().z));
-    }
-
-    private void generateClimate(ChunkData data, int chunkX, int chunkZ)
-    {
         // Temperature / Rainfall
         float rainNW = rainfallNoise.noise(chunkX, chunkZ);
         float rainNE = rainfallNoise.noise(chunkX + 16, chunkZ);
         float rainSW = rainfallNoise.noise(chunkX, chunkZ + 16);
         float rainSE = rainfallNoise.noise(chunkX + 16, chunkZ + 16);
-        data.setRainfall(rainNW, rainNE, rainSW, rainSE);
 
         float tempNW = temperatureNoise.noise(chunkX, chunkZ);
         float tempNE = temperatureNoise.noise(chunkX + 16, chunkZ);
         float tempSW = temperatureNoise.noise(chunkX, chunkZ + 16);
         float tempSE = temperatureNoise.noise(chunkX + 16, chunkZ + 16);
-        data.setAverageTemp(tempNW, tempNE, tempSW, tempSE);
-    }
 
-    private void generateRocks(ChunkData data, int chunkX, int chunkZ)
-    {
+        final ForestType forestType = forestTypeLayer.get(chunkX >> 4, chunkZ >> 4); // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
+        final float forestWeirdness = forestWeirdnessNoise.noise(chunkX + 8, chunkZ + 8);
+        final float forestDensity = forestDensityNoise.noise(chunkX + 8, chunkZ + 8);
+
         // Rocks
         Rock[] bottomLayer = new Rock[256];
         Rock[] middleLayer = new Rock[256];
@@ -157,15 +121,22 @@ public class ChunkDataGenerator implements IChunkDataGenerator
             }
         }
 
+        data.setRainfall(rainNW, rainNE, rainSW, rainSE);
+        data.setAverageTemp(tempNW, tempNE, tempSW, tempSE);
+        data.setFloraData(forestType, forestWeirdness, forestDensity);
+        data.setPlateTectonicsInfo(plateTectonicsInfo.get(data.getPos().x, data.getPos().z));
         data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, rockLayerHeight));
     }
 
-    private void generateFlora(ChunkData data, int chunkX, int chunkZ)
+    @VisibleForTesting
+    public INoise2D getTemperatureNoise()
     {
-        final ForestType forestType = forestTypeLayer.get(chunkX >> 4, chunkZ >> 4); // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
-        final float forestWeirdness = forestWeirdnessNoise.noise(chunkX + 8, chunkZ + 8);
-        final float forestDensity = forestDensityNoise.noise(chunkX + 8, chunkZ + 8);
+        return temperatureNoise;
+    }
 
-        data.setFloraData(forestType, forestWeirdness, forestDensity);
+    @VisibleForTesting
+    public INoise2D getRainfallNoise()
+    {
+        return rainfallNoise;
     }
 }

@@ -18,7 +18,7 @@ import net.dries007.tfc.config.TFCConfig;
 
 public class MossSpreadingBlock extends Block
 {
-    public static void spreadMoss(World world, BlockPos pos, BlockState state, Random random)
+    public static void spreadMoss(World world, BlockPos pos, Random random)
     {
         if (world.isAreaLoaded(pos, 5) && TFCConfig.SERVER.enableMossyRockSpreading.get() && random.nextInt(TFCConfig.SERVER.mossyRockSpreadRate.get()) == 0)
         {
@@ -40,6 +40,6 @@ public class MossSpreadingBlock extends Block
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
-        MossSpreadingBlock.spreadMoss(worldIn, pos, state, random);
+        MossSpreadingBlock.spreadMoss(worldIn, pos, random);
     }
 }

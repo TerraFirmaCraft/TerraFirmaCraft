@@ -30,7 +30,7 @@ public class SoilSurfaceState implements ISurfaceState
     private static final long PATCH_NOISE_SEED = 18273952837592L;
 
     protected final SoilBlockType soil;
-    protected final INoise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);;
+    protected final INoise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);
 
     public SoilSurfaceState(SoilBlockType soil)
     {
@@ -98,7 +98,7 @@ public class SoilSurfaceState implements ISurfaceState
 
     private BlockState sand(RockData rockData, int x, int z)
     {
-        return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().defaultBlockState();
+        return rockData.getTopRock(x, z).getSand().defaultBlockState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)

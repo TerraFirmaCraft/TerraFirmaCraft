@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/slate",
-    "hardened": "tfc:rock/hardened/slate",
-    "bricks": "tfc:rock/bricks/slate",
-    "cobble": "tfc:rock/cobble/slate",
-    "gravel": "tfc:rock/gravel/slate",
-    "smooth": "tfc:rock/smooth/slate",
-    "mossy_cobble": "tfc:rock/mossy_cobble/slate",
-    "mossy_bricks": "tfc:rock/mossy_bricks/slate",
-    "cracked_bricks": "tfc:rock/cracked_bricks/slate",
-    "chiseled": "tfc:rock/chiseled/slate",
-    "spike": "tfc:rock/spike/slate",
-    "loose": "tfc:rock/loose/slate"
-  },
-  "category": "metamorphic",
-  "desert_sand_color": "brown",
-  "beach_sand_color": "yellow"
+  "raw": "tfc:rock/raw/slate",
+  "hardened": "tfc:rock/hardened/slate",
+  "cobble": "tfc:rock/cobble/slate",
+  "gravel": "tfc:rock/gravel/slate",
+  "spike": "tfc:rock/spike/slate",
+  "loose": "tfc:rock/loose/slate",
+  "sand": "tfc:sand/brown",
+  "sandstone": "tfc:raw_sandstone/brown"
 }

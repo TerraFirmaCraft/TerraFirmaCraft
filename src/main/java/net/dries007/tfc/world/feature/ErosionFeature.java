@@ -23,7 +23,6 @@ import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
 
@@ -42,7 +41,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
-        final RockData rockData = ChunkDataProvider.getOrThrow(generator).get(chunkPos, ChunkData.Status.ROCKS).getRockData();
+        final RockData rockData = ChunkDataProvider.get(generator).get(chunkPos).getRockData();
 
         for (int x = 0; x < 16; x++)
         {

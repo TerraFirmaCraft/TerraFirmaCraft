@@ -3,7 +3,7 @@
 
 from typing import Dict, List, NamedTuple, Sequence, Optional
 
-Rock = NamedTuple('Rock', category=str, desert_sand_color=str, beach_sand_color=str)
+Rock = NamedTuple('Rock', category=str, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
@@ -21,28 +21,26 @@ ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive',
 ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
 
 ROCKS: Dict[str, Rock] = {
-    # Desert sand color is either white, brown, black, or yellow based on rock color. red is an indicator of hematite rocks
-    # Beach sand color is either white, gray, yellow, black or green based on rock color. Pink and black are used for accents in tropical regions.
-    'chalk': Rock('sedimentary', 'white', 'white'),
-    'chert': Rock('sedimentary', 'brown', 'yellow'),
-    'claystone': Rock('sedimentary', 'brown', 'yellow'),
-    'conglomerate': Rock('sedimentary', 'yellow', 'green'),
-    'dolomite': Rock('sedimentary', 'black', 'black'),
-    'limestone': Rock('sedimentary', 'yellow', 'white'),
-    'shale': Rock('sedimentary', 'black', 'black'),
-    'gneiss': Rock('metamorphic', 'brown', 'brown'),
-    'marble': Rock('metamorphic', 'yellow', 'white'),
-    'phyllite': Rock('metamorphic', 'brown', 'yellow'),
-    'quartzite': Rock('metamorphic', 'white', 'white'),
-    'schist': Rock('metamorphic', 'yellow', 'green'),
-    'slate': Rock('metamorphic', 'brown', 'yellow'),
-    'diorite': Rock('igneous_intrusive', 'white', 'white'),
-    'gabbro': Rock('igneous_intrusive', 'black', 'black'),
-    'granite': Rock('igneous_intrusive', 'white', 'white'),
-    'andesite': Rock('igneous_extrusive', 'red', 'green'),
-    'basalt': Rock('igneous_extrusive', 'red', 'black'),
-    'dacite': Rock('igneous_extrusive', 'red', 'yellow'),
-    'rhyolite': Rock('igneous_extrusive', 'red', 'white')
+    'chalk': Rock('sedimentary', 'white'),
+    'chert': Rock('sedimentary', 'yellow'),
+    'claystone': Rock('sedimentary', 'brown'),
+    'conglomerate': Rock('sedimentary', 'green'),
+    'dolomite': Rock('sedimentary', 'black'),
+    'limestone': Rock('sedimentary', 'white'),
+    'shale': Rock('sedimentary', 'black'),
+    'gneiss': Rock('metamorphic', 'green'),
+    'marble': Rock('metamorphic', 'yellow'),
+    'phyllite': Rock('metamorphic', 'brown'),
+    'quartzite': Rock('metamorphic', 'white'),
+    'schist': Rock('metamorphic', 'green'),
+    'slate': Rock('metamorphic', 'brown'),
+    'diorite': Rock('igneous_intrusive', 'white'),
+    'gabbro': Rock('igneous_intrusive', 'black'),
+    'granite': Rock('igneous_intrusive', 'white'),
+    'andesite': Rock('igneous_extrusive', 'red'),
+    'basalt': Rock('igneous_extrusive', 'red'),
+    'dacite': Rock('igneous_extrusive', 'red'),
+    'rhyolite': Rock('igneous_extrusive', 'red')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270),
@@ -218,6 +216,7 @@ ORE_VEINS: Dict[str, Vein] = {
 }
 
 ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
+ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')

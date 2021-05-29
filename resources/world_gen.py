@@ -134,10 +134,12 @@ def generate(rm: ResourceManager):
         'max_height': 5
     }), decorate_count(3), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(max_temp=-4)))
 
-    for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
+    for boulder_cfg in (('raw_boulder', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
-            'base_type': boulder_cfg[1],
-            'decoration_type': boulder_cfg[2]
+            'states': [{
+                'rock': 'tfc:' + rock,
+                'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
+            } for rock in ROCKS.keys()]
         }), decorate_chance(12), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:flat_enough'))
 
     rm.feature('volcano_rivulet', wg.configure_decorated(wg.configure('tfc:rivulet', {

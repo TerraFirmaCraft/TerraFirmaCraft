@@ -53,12 +53,15 @@ public class RockManager extends DataManager<Rock>
         {
             for (Rock.BlockType blockType : Rock.BlockType.values())
             {
-                rockBlocks.put(rock.getBlock(blockType), rock);
+                final Block optionalBlock = rock.getBlockOrNull(blockType);
+                if (optionalBlock != null)
+                {
+                    rockBlocks.put(optionalBlock, rock);
+                }
             }
         }
 
         super.postProcess();
-
         if (getValues().isEmpty())
         {
             throw new IllegalStateException("Something went badly wrong... There are no rocks. This cannot be.");

@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/basalt",
-    "hardened": "tfc:rock/hardened/basalt",
-    "bricks": "tfc:rock/bricks/basalt",
-    "cobble": "tfc:rock/cobble/basalt",
-    "gravel": "tfc:rock/gravel/basalt",
-    "smooth": "tfc:rock/smooth/basalt",
-    "mossy_cobble": "tfc:rock/mossy_cobble/basalt",
-    "mossy_bricks": "tfc:rock/mossy_bricks/basalt",
-    "cracked_bricks": "tfc:rock/cracked_bricks/basalt",
-    "chiseled": "tfc:rock/chiseled/basalt",
-    "spike": "tfc:rock/spike/basalt",
-    "loose": "tfc:rock/loose/basalt"
-  },
-  "category": "igneous_extrusive",
-  "desert_sand_color": "red",
-  "beach_sand_color": "black"
+  "raw": "tfc:rock/raw/basalt",
+  "hardened": "tfc:rock/hardened/basalt",
+  "cobble": "tfc:rock/cobble/basalt",
+  "gravel": "tfc:rock/gravel/basalt",
+  "spike": "tfc:rock/spike/basalt",
+  "loose": "tfc:rock/loose/basalt",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red"
 }

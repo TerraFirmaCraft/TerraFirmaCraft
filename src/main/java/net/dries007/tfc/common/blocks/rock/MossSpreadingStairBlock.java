@@ -30,6 +30,6 @@ public class MossSpreadingStairBlock extends StairsBlock
     @Override
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
-        MossSpreadingBlock.spreadMoss(worldIn, pos, state, random);
+        MossSpreadingBlock.spreadMoss(worldIn, pos, random);
     }
 }

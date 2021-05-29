@@ -43,10 +43,7 @@ public final class ChunkDataCache
     public static final ChunkDataCache SERVER = new ChunkDataCache("server", false);
 
     /**
-     * This is a cache of incomplete chunk data used by world generation
-     * It is generated in stages:
-     * - {@link ChunkData.Status#CLIMATE} during biome generation to generate climate variants
-     * - {@link ChunkData.Status#ROCKS} during surface generation, later used for feature generation
+     * This is a cache of chunk data during generation, before the chunk is fully generated.
      * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
      */
     public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen", true);

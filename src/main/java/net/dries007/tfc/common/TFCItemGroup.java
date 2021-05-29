@@ -27,10 +27,10 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class TFCItemGroup extends ItemGroup
 {
     public static final ItemGroup EARTH = new TFCItemGroup("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.QUARTZITE).get(Rock.BlockType.RAW).get()));
-    public static final ItemGroup ORES = new TFCItemGroup("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.Default.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()));
+    public static final ItemGroup ORES = new TFCItemGroup("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()));
     public static final ItemGroup ROCK_STUFFS = new TFCItemGroup("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.ANDESITE).get(Rock.BlockType.RAW).get()));
     public static final ItemGroup METAL = new TFCItemGroup("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()));
-    public static final ItemGroup WOOD = new TFCItemGroup("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.Default.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()));
+    public static final ItemGroup WOOD = new TFCItemGroup("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()));
     public static final ItemGroup FOOD = new TFCItemGroup("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()));
     public static final ItemGroup FLORA = new TFCItemGroup("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()));
     public static final ItemGroup DECORATIONS = new TFCItemGroup("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()));
