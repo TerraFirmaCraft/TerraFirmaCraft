@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -85,8 +86,8 @@ public class Fauna
                     return false;
                 }
             }
-            BlockPos below = pos.below();
-            if (solidGround && !world.getBlockState(below).isFaceSturdy(world, below, Direction.UP))
+            final BlockPos below = pos.below();
+            if (solidGround && !world.getBlockState(below).is(BlockTags.VALID_SPAWN))
             {
                 return false;
             }

@@ -16,20 +16,29 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
-public class EggBlock extends TurtleEggBlock
+import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendar;
+
+public class EggBlock extends TurtleEggBlock implements IForgeBlockProperties
 {
     private final Supplier<? extends EntityType<? extends TurtleEntity>> type;
+    private final ForgeBlockProperties properties;
 
-    public EggBlock(Properties properties, Supplier<? extends EntityType<? extends TurtleEntity>> type)
+    public EggBlock(ForgeBlockProperties properties, Supplier<? extends EntityType<? extends TurtleEntity>> type)
     {
-        super(properties);
+        super(properties.properties());
         this.type = type;
+        this.properties = properties;
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
     {
-        if (shouldUpdateHatchLevel(world) && onSand(world, pos))
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+
+        if (te != null && te.getTicksSinceUpdate() > (long) Calendar.TICKS_IN_DAY * TFCConfig.SERVER.eggDays.get() && onSand(world, pos))
         {
             int i = state.getValue(HATCH);
             if (i < 2)
@@ -55,6 +64,12 @@ public class EggBlock extends TurtleEggBlock
             }
         }
 
+    }
+
+    @Override
+    public ForgeBlockProperties getForgeProperties()
+    {
+        return properties;
     }
 
     private boolean shouldUpdateHatchLevel(World world)

@@ -89,8 +89,11 @@ public class PenguinEntity extends TurtleEntity
     @Override
     public void aiStep()
     {
-        super.aiStep();
         int counter = ((TurtleEntityAccessor) this).getEggCounter();
+        ((TurtleEntityAccessor) this).setEggCounter(2);
+        super.aiStep(); // this is a hack to prevent the animal from spewing default sand particles
+        ((TurtleEntityAccessor) this).setEggCounter(counter);
+
         if (isAlive() && isLayingEgg() && counter >= 1 && counter % 5 == 0)
         {
             BlockPos pos = blockPosition();
@@ -99,6 +102,13 @@ public class PenguinEntity extends TurtleEntity
                 level.levelEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getId(level.getBlockState(pos)));
             }
         }
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        final Block block = level.getBlockState(blockPosition()).getBlock();
+        return block.is(Blocks.SNOW) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     private static class TFCGoHomeGoal extends GoHomeGoal

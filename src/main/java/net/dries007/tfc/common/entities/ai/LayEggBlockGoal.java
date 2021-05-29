@@ -3,6 +3,8 @@ package net.dries007.tfc.common.entities.ai;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.TurtleEggBlock;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.entity.passive.TurtleEntity;
@@ -48,7 +50,7 @@ public class LayEggBlockGoal extends MoveToBlockGoal
             int counter = ((TurtleEntityAccessor) turtle).getEggCounter();
             if (counter < 1)
             {
-                ((TurtleEntityAccessor) turtle).invoke$setHasEgg(true);
+                ((TurtleEntityAccessor) turtle).invoke$setLayingEgg(true);
             }
             else if (counter > 200)
             {
@@ -69,8 +71,10 @@ public class LayEggBlockGoal extends MoveToBlockGoal
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected boolean isValidTarget(IWorldReader world, BlockPos pos)
     {
-        return world.isEmptyBlock(pos.above()) && TurtleEggBlock.isSand(world, pos);
+        BlockState aboveState = world.getBlockState(pos.above());
+        return (aboveState.isAir() || aboveState.is(Blocks.SNOW)) && TurtleEggBlock.isSand(world, pos);
     }
 }
