@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/template_two_turtle_eggs",
+  "textures": {
+    "all": "tfc:block/egg/turtle_slightly_cracked"
+  }
+}

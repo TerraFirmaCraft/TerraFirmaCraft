@@ -31,9 +31,9 @@ public class Fauna
     {
         this.id = id;
         entity = (EntityType<MobEntity>) ForgeRegistries.ENTITIES.getValue(new ResourceLocation(JSONUtils.getAsString(json, "entity")));
-        this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(JSONUtils.getAsString(json, "fluid")));
-        this.chance = JSONUtils.getAsInt(json, "chance");
-        this.distanceBelowSeaLevel = JSONUtils.getAsInt(json, "distance_below_sea_level");
+        this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(JSONUtils.getAsString(json, "fluid", "minecraft:empty")));
+        this.chance = JSONUtils.getAsInt(json, "chance", 1);
+        this.distanceBelowSeaLevel = JSONUtils.getAsInt(json, "distance_below_sea_level", -1);
         this.climateConfig = ClimateConfig.CODEC.decode(JsonOps.INSTANCE, json.get("climate")).getOrThrow(false, null).getFirst();
         this.solidGround = JSONUtils.getAsBoolean(json, "solid_ground", false);
     }

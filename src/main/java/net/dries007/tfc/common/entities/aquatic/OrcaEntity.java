@@ -26,9 +26,10 @@ public class OrcaEntity extends TFCDolphinEntity
         goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         goalSelector.addGoal(5, new DolphinJumpGoal(this, 10));
         goalSelector.addGoal(6, new SafeMeleeAttackGoal(this, 2.0F, true));
-        goalSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, TFCCodEntity.class, true));
         goalSelector.addGoal(8, new FollowBoatGoal(this));
         goalSelector.addGoal(9, new AvoidEntityGoal<>(this, GuardianEntity.class, 8.0F, 1.0D, 1.0D));
-        targetSelector.addGoal(1, (new HurtByTargetGoal(this, GuardianEntity.class)).setAlertOthers());
+
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, TFCCodEntity.class, true));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PenguinEntity.class, true));
     }
 }

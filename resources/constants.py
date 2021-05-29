@@ -404,7 +404,8 @@ LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
-    'penguin': spawner('tfc:penguin', min_count=2, max_count=5)
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
+    'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
 }
 
 

@@ -2,8 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "entity": "tfc:tropical_fish",
   "fluid": "tfc:salt_water",
-  "chance": 1,
-  "distance_below_sea_level": -1,
+  "distance_below_sea_level": 3,
   "climate": {
     "min_temperature": 18
   }

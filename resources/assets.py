@@ -467,7 +467,7 @@ def generate(rm: ResourceManager):
 
     crack_states_dict = {'0': 'normal', '1': 'slightly_cracked', '2': 'very_cracked'}
     egg_template_dict = {1: 'template_turtle_egg', 2: 'template_two_turtle_eggs', 3: 'template_three_turtle_eggs', 4: 'template_four_turtle_eggs'}
-    for ovipositor in ['penguin']:
+    for ovipositor in ['penguin', 'turtle']:
         all_variants = {}
         for damage in crack_states_dict:
             for i in range(1, 4 + 1):

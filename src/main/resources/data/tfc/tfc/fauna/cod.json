@@ -2,8 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "entity": "tfc:cod",
   "fluid": "tfc:salt_water",
-  "chance": 1,
-  "distance_below_sea_level": -1,
+  "distance_below_sea_level": 5,
   "climate": {
     "max_temperature": 18
   }

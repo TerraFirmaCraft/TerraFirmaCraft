@@ -19,10 +19,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.entity.DolphinRenderer;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.client.renderer.entity.PufferfishRenderer;
-import net.minecraft.client.renderer.entity.TropicalFishRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.item.Item;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
@@ -156,6 +153,7 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.TURTLE.get(), TurtleRenderer::new);
 
         // TE Rendering
 

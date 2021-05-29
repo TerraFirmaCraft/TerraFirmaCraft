@@ -3,12 +3,16 @@ package net.dries007.tfc.common.blocks;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.Validate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TurtleEggBlock;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TurtleEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +44,7 @@ public class EggBlock extends TurtleEggBlock implements IForgeBlockProperties
 
         if (te != null && te.getTicksSinceUpdate() > (long) Calendar.TICKS_IN_DAY * TFCConfig.SERVER.eggDays.get() && onSand(world, pos))
         {
+            te.resetCounter();
             int i = state.getValue(HATCH);
             if (i < 2)
             {
@@ -72,9 +77,14 @@ public class EggBlock extends TurtleEggBlock implements IForgeBlockProperties
         return properties;
     }
 
-    private boolean shouldUpdateHatchLevel(World world)
+    @Override
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        final float dayTime = world.getTimeOfDay(1.0F);
-        return dayTime < 0.69D && dayTime > 0.65D || world.random.nextInt(500) == 0;
+        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            te.resetCounter();
+        }
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 }
