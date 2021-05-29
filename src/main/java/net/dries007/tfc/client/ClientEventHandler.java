@@ -155,7 +155,16 @@ public final class ClientEventHandler
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> registry.register(grassColor, reg.get()));
         registry.register(grassColor, TFCBlocks.PEAT_GRASS.get());
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isLeafColored() ? seasonalFoliageColor : grassColor, reg.get()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> {
+            if (plant.isLeafColored())
+            {
+                registry.register(seasonalFoliageColor, reg.get());
+            }
+            else if (plant.isGrassColored())
+            {
+                registry.register(grassColor, reg.get());
+            }
+        });
         TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
 
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get());

@@ -187,10 +187,9 @@ public enum Plant implements IPlant
         return type == BlockType.VINE;
     }
 
-    public boolean needsItemColor()
+    public boolean isGrassColored()
     {
-        return type == BlockType.SHORT_GRASS || (type == BlockType.TALL_GRASS && this != ROSE) || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING
-            || this == HANGING_VINES || this == SAGO || this == GUTWEED;
+        return type == BlockType.SHORT_GRASS || (type == BlockType.TALL_GRASS && this != ROSE) || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING || this == HANGING_VINES || this == SAGO || this == GUTWEED;
     }
 
     @VisibleForTesting
