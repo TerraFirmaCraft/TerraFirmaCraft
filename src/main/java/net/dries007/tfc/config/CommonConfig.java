@@ -35,7 +35,6 @@ public class CommonConfig
         enableDevTweaks = builder.apply("enableDevTweaks").comment(
             "This enables a series of quality of life logging improvements aimed at mod or pack development. It has no end user or gameplay effect.",
             "This currently enables the following tweaks:",
-            " - Enables a [Possible DFU FU] log message, which attempts to catch errors due to incorrect world generation data packs. This does produce false errors!",
             " - Improves and shortens the error message for invalid loot tables.",
             " - Improves and shortens the error message for invalid recipes.",
             " - Fixes MC-190122 (Makes the 'Loaded Recipes' log message accurate)"

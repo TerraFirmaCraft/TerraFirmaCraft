@@ -17,7 +17,6 @@
     "server.management.PlayerInteractionManagerMixin",
     "util.SharedSeedRandomMixin",
     "util.palette.PalettedContainerMixin",
-    "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
     "world.biome.BiomeMixin",
