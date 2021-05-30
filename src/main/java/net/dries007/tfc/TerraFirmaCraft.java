@@ -24,6 +24,7 @@ import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.TFCSpawnEggItem;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
@@ -101,6 +102,7 @@ public final class TerraFirmaCraft
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        TFCSpawnEggItem.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 

@@ -478,6 +478,9 @@ def generate(rm: ResourceManager):
             for i in range(1, 4 + 1):
                 rm.block_model('egg/' + ovipositor + '_' + crack_states_dict[damage] + '_' + str(i), textures={"all": "tfc:block/egg/%s_%s" % (ovipositor, crack_states_dict[damage])}, parent='minecraft:block/%s' % egg_template_dict.get(i))
 
+    for creature in SPAWN_EGG_ENTITIES:
+        rm.item_model('spawn_eggs/%s' % creature, parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('%s Spawn Egg', creature))
+
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):

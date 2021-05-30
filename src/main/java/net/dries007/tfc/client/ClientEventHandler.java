@@ -33,17 +33,10 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-import net.dries007.tfc.client.render.*;
-import net.dries007.tfc.client.screen.CalendarScreen;
-import net.dries007.tfc.client.screen.ClimateScreen;
-import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.GrillTileEntityRenderer;
-import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
-import net.dries007.tfc.client.render.PlacedItemTileEntityRenderer;
-import net.dries007.tfc.client.render.PotTileEntityRenderer;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
@@ -51,6 +44,7 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.TFCSpawnEggItem;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
@@ -209,8 +203,9 @@ public final class ClientEventHandler
         Item[] grassyPlants = Stream.of(Plant.values()).filter(Plant::needsItemColor).map(p -> TFCBlocks.PLANTS.get(p).get().asItem()).toArray(Item[]::new);
         registry.register((itemStack, tintIndex) -> TFCColors.getGrassColor(new BlockPos(0, 96, 0), tintIndex), grassyPlants);
         registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), leafyPlants);
-
         TFCBlocks.WOODS.forEach((key, value) -> registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
+
+        TFCSpawnEggItem.EGGS.forEach(egg -> registry.register((itemStack, tintIndex) -> egg.getColor(tintIndex), egg));
     }
 
     @SubscribeEvent

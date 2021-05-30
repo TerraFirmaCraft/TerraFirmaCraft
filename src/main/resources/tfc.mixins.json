@@ -14,6 +14,7 @@
     "entity.passive.TurtleEntityAccessor",
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
+    "item.SpawnEggItemAccessor",
     "item.crafting.RecipeManagerAccessor",
     "item.crafting.RecipeManagerMixin",
     "loot.LootTableManagerMixin",

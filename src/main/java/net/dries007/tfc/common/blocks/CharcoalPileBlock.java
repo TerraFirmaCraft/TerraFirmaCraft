@@ -113,6 +113,7 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];

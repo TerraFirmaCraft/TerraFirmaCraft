@@ -79,13 +79,13 @@ public class PenguinModel extends SegmentedModel<PenguinEntity>
         core.zRot = entity.isInWater() ? 0.0F : 0.3F * MathHelper.triangleWave(limbSwing * 0.2F, 2.0F);
 	}
 
-	// someone please name these params
 	@Override
     public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder builder, int p_225598_3_, int p_225598_4_, float p_225598_5_, float p_225598_6_, float p_225598_7_, float p_225598_8_)
     {
         if (young)
         {
             matrixStack.scale(0.5F, 0.5F, 0.5F);
+            matrixStack.translate(0.0F, 1.5F, 0.0F);
         }
         super.renderToBuffer(matrixStack, builder, p_225598_3_, p_225598_4_, p_225598_5_, p_225598_6_, p_225598_7_, p_225598_8_);
     }
