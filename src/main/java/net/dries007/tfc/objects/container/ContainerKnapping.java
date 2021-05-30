@@ -32,6 +32,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
     private final ItemStack stackCopy;
     public boolean requiresReset;
     private boolean hasBeenModified;
+    private boolean hasConsumedIngredient;
 
     public ContainerKnapping(KnappingType type, InventoryPlayer playerInv, ItemStack stack)
     {
@@ -43,6 +44,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         matrix = new SimpleCraftMatrix();
         hasBeenModified = false;
         requiresReset = false;
+        hasConsumedIngredient = false;
     }
 
     @Override
@@ -161,7 +163,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
     private void consumeIngredientStackAfterComplete()
     {
-        if (type.consumeAfterComplete())
+        if (type.consumeAfterComplete() && !hasConsumedIngredient)
         {
             ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
             if (isOffhand)
@@ -172,6 +174,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
             {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack);
             }
+            hasConsumedIngredient = true;
         }
     }
 }
