@@ -23,41 +23,41 @@ import net.dries007.tfc.common.items.tools.TFCToolItem;
 
 public enum RockCategory implements IStringSerializable
 {
-    IGNEOUS_EXTRUSIVE(TFCItemTier.IGNEOUS_EXTRUSIVE, true),
-    IGNEOUS_INTRUSIVE(TFCItemTier.IGNEOUS_INTRUSIVE, true),
-    METAMORPHIC(TFCItemTier.METAMORPHIC, false),
-    SEDIMENTARY(TFCItemTier.SEDIMENTARY, false);
+	IGNEOUS_EXTRUSIVE(TFCItemTier.IGNEOUS_EXTRUSIVE, 0f),
+	IGNEOUS_INTRUSIVE(TFCItemTier.IGNEOUS_INTRUSIVE, 0.2f),
+	METAMORPHIC(TFCItemTier.METAMORPHIC, -0.2f),
+	SEDIMENTARY(TFCItemTier.SEDIMENTARY, -0.4f);
 
-    private final String serializedName;
-    private final IItemTier itemTier;
-    private final boolean hasAnvil;
+	private final String serializedName;
+	private final IItemTier itemTier;
+	private final float hardnessModifier;
 
-    RockCategory(IItemTier itemTier, boolean hasAnvil)
-    {
-        this.serializedName = name().toLowerCase(Locale.ROOT);
-        this.itemTier = itemTier;
-        this.hasAnvil = hasAnvil;
-    }
+	RockCategory(IItemTier itemTier, float hardnessModifier)
+	{
+		this.serializedName = name().toLowerCase(Locale.ROOT);
+		this.itemTier = itemTier;
+		this.hardnessModifier = hardnessModifier;
+	}
 
-    public IItemTier getItemTier()
-    {
-        return itemTier;
-    }
+	public IItemTier getItemTier()
+	{
+		return itemTier;
+	}
 
-    public boolean hasAnvil()
-    {
-        return hasAnvil;
-    }
+	public float getHardness()
+	{
+		return hardnessModifier;
+	}
 
-    @Override
-    public String getSerializedName()
-    {
-        return serializedName;
-    }
+	@Override
+	public String getSerializedName()
+	{
+		return serializedName;
+	}
 
-    public enum ItemType
-    {
-        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
+	public enum ItemType
+	{
+		AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
         AXE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
         HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
         HAMMER_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
