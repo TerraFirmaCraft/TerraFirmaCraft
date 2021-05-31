@@ -25,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -156,16 +157,24 @@ public class BlockPlacedHide extends Block
         {
             if (!worldIn.isRemote)
             {
+                // Account for the distance between the hitbox and where the hide is rendered
+                Vec3d point = calculatePoint(playerIn.getLookVec(), new Vec3d(hitX, hitY, hitZ));
                 stack.damageItem(1, playerIn);
                 TEPlacedHide tile = Helpers.getTE(worldIn, pos, TEPlacedHide.class);
                 if (tile != null)
                 {
-                    tile.onClicked(hitX, hitZ);
+                    tile.onClicked((float) point.x, (float) point.z);
                 }
             }
             return true;
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    private static Vec3d calculatePoint(Vec3d rayVector, Vec3d rayPoint)
+    {
+        Vec3d planeNormal = new Vec3d(0.0, 1.0, 0.0);
+        return rayPoint.subtract(rayVector.scale(rayPoint.dotProduct(planeNormal) / rayVector.dotProduct(planeNormal)));
     }
 
     @Nonnull
