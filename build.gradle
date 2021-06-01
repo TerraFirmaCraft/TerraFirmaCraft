@@ -124,7 +124,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Add Blame, useful for running certain diagnostics
-    // runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
+    runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
 
     testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
 
