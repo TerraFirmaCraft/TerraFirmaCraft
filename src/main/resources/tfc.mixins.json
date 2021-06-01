@@ -12,8 +12,6 @@
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
     "item.crafting.RecipeManagerAccessor",
-    "item.crafting.RecipeManagerMixin",
-    "loot.LootTableManagerMixin",
     "server.management.PlayerInteractionManagerMixin",
     "util.SharedSeedRandomMixin",
     "util.palette.PalettedContainerMixin",
