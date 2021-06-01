@@ -6,7 +6,6 @@ from typing import Any
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
 import mcresources.utils as utils
-
 from mcresources import ResourceManager
 
 from constants import *
@@ -284,7 +283,7 @@ def generate(rm: ResourceManager):
         'facing=north': {'model': 'tfc:block/dead_wall_torch', 'y': 270},
         'facing=south': {'model': 'tfc:block/dead_wall_torch', 'y': 90},
         'facing=west': {'model': 'tfc:block/dead_wall_torch', 'y': 180}
-    }).with_lang(lang('Torch')).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch')).with_block_loot('tfc:torch')
+    }).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
     rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
@@ -767,7 +766,6 @@ def generate(rm: ResourceManager):
                 {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 180},
                 {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 270}
             ]}, use_default_model=False)
-            block.with_item_model()
             block.with_lang(lang('%s %s', wood, variant))
 
             if variant == 'twig':
@@ -778,6 +776,8 @@ def generate(rm: ResourceManager):
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
                 rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/groundcover/fallen_leaves')
                 block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
+            else:
+                block.with_item_model()
 
             block.with_tag('can_be_snow_piled')
 

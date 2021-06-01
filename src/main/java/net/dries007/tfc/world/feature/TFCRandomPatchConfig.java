@@ -30,22 +30,23 @@ import net.dries007.tfc.world.Codecs;
 public class TFCRandomPatchConfig implements IFeatureConfig
 {
     public static final Codec<TFCRandomPatchConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(c -> c.stateProvider),
-        BlockPlacer.CODEC.fieldOf("block_placer").forGetter(c -> c.blockPlacer),
-        Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
-        Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
-        Codec.INT.fieldOf("tries").orElse(128).forGetter(c -> c.tries),
-        Codec.BOOL.fieldOf("use_density").orElse(false).forGetter(c -> c.useDensity),
-        Codec.INT.fieldOf("xspread").orElse(7).forGetter(c -> c.xSpread),
-        Codec.INT.fieldOf("yspread").orElse(3).forGetter(c -> c.ySpread),
-        Codec.INT.fieldOf("zspread").orElse(7).forGetter(c -> c.zSpread),
-        Codec.BOOL.fieldOf("can_replace_air").orElse(true).forGetter(c -> c.canReplaceAir),
-        Codec.BOOL.fieldOf("can_replace_water").orElse(false).forGetter(c -> c.canReplaceWater),
-        Codec.BOOL.fieldOf("can_replace_surface_water").orElse(false).forGetter(c -> c.canReplaceSurfaceWater),
-        Codec.BOOL.fieldOf("project").orElse(true).forGetter(c -> c.project),
-        Codec.BOOL.fieldOf("project_to_ocean_floor").orElse(false).forGetter(c -> c.projectToOceanFloor),
-        Codec.BOOL.fieldOf("only_underground").orElse(false).forGetter(c -> c.onlyUnderground)
-    ).apply(instance, TFCRandomPatchConfig::new));
+		BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(c -> c.stateProvider),
+		BlockPlacer.CODEC.fieldOf("block_placer").forGetter(c -> c.blockPlacer),
+		Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
+		Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
+		Codec.INT.optionalFieldOf("tries", 64).forGetter(c -> c.tries),
+		Codec.BOOL.optionalFieldOf("use_density", false).forGetter(c -> c.useDensity),
+		Codec.INT.optionalFieldOf("xspread", 7).forGetter(c -> c.xSpread),
+		Codec.INT.optionalFieldOf("yspread", 3).forGetter(c -> c.ySpread),
+		Codec.INT.optionalFieldOf("zspread", 7).forGetter(c -> c.zSpread),
+		Codec.BOOL.optionalFieldOf("can_replace_air", true).forGetter(c -> c.canReplaceAir),
+		Codec.BOOL.optionalFieldOf("can_replace_water", false).forGetter(c -> c.canReplaceWater),
+		Codec.BOOL.optionalFieldOf("can_replace_surface_water", false).forGetter(c -> c.canReplaceSurfaceWater),
+		Codec.BOOL.optionalFieldOf("project", true).forGetter(c -> c.project),
+		Codec.BOOL.optionalFieldOf("project_to_ocean_floor", false).forGetter(c -> c.projectToOceanFloor),
+		Codec.BOOL.optionalFieldOf("project_each_location", true).forGetter(c -> c.projectEachLocation),
+		Codec.BOOL.optionalFieldOf("only_underground", false).forGetter(c -> c.onlyUnderground)
+	).apply(instance, TFCRandomPatchConfig::new));
 
     public final BlockStateProvider stateProvider;
     public final BlockPlacer blockPlacer;
@@ -60,25 +61,27 @@ public class TFCRandomPatchConfig implements IFeatureConfig
     public final boolean canReplaceWater;
     public final boolean canReplaceSurfaceWater;
     public final boolean project;
-    public final boolean projectToOceanFloor;
-    public final boolean onlyUnderground;
+	public final boolean projectToOceanFloor;
+	public final boolean projectEachLocation;
+	public final boolean onlyUnderground;
 
-    protected TFCRandomPatchConfig(BlockStateProvider stateProvider, BlockPlacer blockPlacer, List<BlockState> whitelist, List<BlockState> blacklist, int tries, boolean useDensity, int xSpread, int ySpread, int zSpread, boolean canReplaceAir, boolean canReplaceWater, boolean canReplaceSurfaceWater, boolean project, boolean projectToOceanFloor, boolean onlyUnderground)
-    {
-        this.stateProvider = stateProvider;
-        this.blockPlacer = blockPlacer;
-        this.whitelist = whitelist.stream().map(AbstractBlock.AbstractBlockState::getBlock).collect(Collectors.toSet());
-        this.blacklist = ImmutableSet.copyOf(blacklist);
-        this.tries = tries;
-        this.useDensity = useDensity;
-        this.xSpread = xSpread;
-        this.ySpread = ySpread;
-        this.zSpread = zSpread;
+	public TFCRandomPatchConfig(BlockStateProvider stateProvider, BlockPlacer blockPlacer, List<BlockState> whitelist, List<BlockState> blacklist, int tries, boolean useDensity, int xSpread, int ySpread, int zSpread, boolean canReplaceAir, boolean canReplaceWater, boolean canReplaceSurfaceWater, boolean project, boolean projectToOceanFloor, boolean projectEachLocation, boolean onlyUnderground)
+	{
+		this.stateProvider = stateProvider;
+		this.blockPlacer = blockPlacer;
+		this.whitelist = whitelist.stream().map(AbstractBlock.AbstractBlockState::getBlock).collect(Collectors.toSet());
+		this.blacklist = ImmutableSet.copyOf(blacklist);
+		this.tries = tries;
+		this.useDensity = useDensity;
+		this.xSpread = xSpread;
+		this.ySpread = ySpread;
+		this.zSpread = zSpread;
         this.canReplaceAir = canReplaceAir;
         this.canReplaceWater = canReplaceWater;
         this.canReplaceSurfaceWater = canReplaceSurfaceWater;
         this.project = project;
-        this.projectToOceanFloor = projectToOceanFloor;
-        this.onlyUnderground = onlyUnderground;
+		this.projectToOceanFloor = projectToOceanFloor;
+		this.projectEachLocation = projectEachLocation;
+		this.onlyUnderground = onlyUnderground;
     }
 }

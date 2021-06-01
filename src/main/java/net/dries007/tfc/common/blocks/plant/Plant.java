@@ -182,15 +182,10 @@ public enum Plant implements IPlant
         return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
     }
 
-    public boolean isLeafColored()
-    {
-        return type == BlockType.VINE;
-    }
-
-    public boolean isGrassColored()
-    {
-        return type == BlockType.SHORT_GRASS || (type == BlockType.TALL_GRASS && this != ROSE) || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING || this == HANGING_VINES || this == SAGO || this == GUTWEED;
-    }
+    public boolean isSeasonal()
+	{
+		return type == BlockType.VINE;
+	}
 
     @VisibleForTesting
     public BlockType getType()

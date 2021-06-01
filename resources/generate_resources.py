@@ -22,6 +22,7 @@ def main():
     args = parser.parse_args()
 
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
+
     if args.clean:
         # Stupid windows file locking errors.
         for tries in range(1, 1 + 3):

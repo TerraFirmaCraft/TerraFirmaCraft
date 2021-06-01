@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:torch"
+          "name": "minecraft:stick"
         }
       ],
       "conditions": [
