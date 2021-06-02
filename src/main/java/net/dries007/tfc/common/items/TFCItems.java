@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -198,8 +199,21 @@ public final class TFCItems
         register("bucket/metal/" + metal.name(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
-    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
-    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), bucketProperties()));
+
+    public static final RegistryObject<FishBucketItem> COD_BUCKET = register("bucket/cod", () -> new FishBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new FishBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> JELLYFISH_BUCKET = register("bucket/jellyfish", () -> new FishBucketItem(TFCEntities.JELLYFISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> TROPICAL_FISH_BUCKET = register("bucket/tropical_fish", () -> new FishBucketItem(TFCEntities.TROPICAL_FISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+
+    public static final RegistryObject<FishBucketItem> BLUEGILL_BUCKET = register("bucket/bluegill", () -> new FishBucketItem(TFCEntities.BLUEGILL, () -> Fluids.WATER, bucketProperties()));
+    public static final RegistryObject<FishBucketItem> SALMON_BUCKET = register("bucket/salmon", () -> new FishBucketItem(TFCEntities.SALMON, () -> Fluids.WATER, bucketProperties()));
+
+    private static Item.Properties bucketProperties()
+    {
+        return new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC);
+    }
 
     private static <T extends Entity> RegistryObject<Item> egg(RegistryObject<EntityType<T>> entity, int color1, int color2)
     {

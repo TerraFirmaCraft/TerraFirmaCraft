@@ -24,12 +24,6 @@ public class ManateeEntity extends TFCAbstractGroupFishEntity
     }
 
     @Override
-    protected ItemStack getBucketItemStack()
-    {
-        return new ItemStack(Items.BONE);
-    }
-
-    @Override
     protected SoundEvent getFlopSound()
     {
         return SoundEvents.COD_FLOP;

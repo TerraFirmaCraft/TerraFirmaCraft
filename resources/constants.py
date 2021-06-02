@@ -409,7 +409,7 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture']
-
+BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -428,6 +428,8 @@ DEFAULT_LANG = {
     'death.attack.grill.player': '%1$s grilled themselves while trying to escape %2$s',
     'death.attack.pot': '%1$s boiled themselves into soup',
     'death.attack.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'death.attack.jellyfish': '%1$s was stung by a jellyfish',
+    'death.attack.jellyfish.player': '%1$s was stung by a jellyfish while trying to escape %2$s',
     'tfc.tile_entity.pot': 'Pot',
     'tfc.tile_entity.grill': 'Grill',
     'tfc.tile_entity.firepit': 'Firepit',

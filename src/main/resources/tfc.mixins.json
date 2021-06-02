@@ -12,6 +12,7 @@
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",
     "entity.passive.TurtleEntityAccessor",
+    "entity.passive.fish.AbstractFishEntityAccessor",
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
     "item.SpawnEggItemAccessor",

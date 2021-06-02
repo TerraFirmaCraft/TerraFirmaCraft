@@ -480,6 +480,9 @@ def generate(rm: ResourceManager):
 
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_eggs/%s' % creature, parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('%s Spawn Egg', creature))
+    for creature in BUCKETABLE_FISH:
+        rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
+
 
     # Hides
     for size in ('small', 'medium', 'large'):

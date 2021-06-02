@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.common.entities.ai.FluidPreferenceGoal;
 import net.dries007.tfc.common.entities.ai.UnderwaterHideGoal;
+import net.dries007.tfc.common.items.TFCItems;
 
 public class BluegillEntity extends TFCAbstractGroupFishEntity
 {
@@ -35,9 +36,9 @@ public class BluegillEntity extends TFCAbstractGroupFishEntity
     }
 
     @Override
-    protected ItemStack getBucketItemStack()
+    public ItemStack getBucketItemStack()
     {
-        return new ItemStack(Items.COD_BUCKET);
+        return new ItemStack(TFCItems.BLUEGILL_BUCKET.get());
     }
 
     @Override

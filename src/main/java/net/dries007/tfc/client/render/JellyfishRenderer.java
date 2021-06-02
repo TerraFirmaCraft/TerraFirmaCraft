@@ -25,6 +25,6 @@ public class JellyfishRenderer extends MobRenderer<JellyfishEntity, JellyfishMod
     protected void setupRotations(JellyfishEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks)
     {
         super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
-        matrixStackIn.translate(0.0D, -4.0D, 0.0D); // model is too high
+        matrixStackIn.translate(0.0D, -0.4D, 0.0D); // model is too high
     }
 }

@@ -4,19 +4,31 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.entities.ai.FluidPreferenceGoal;
+import net.dries007.tfc.common.items.TFCItems;
 
 public class TFCSalmonEntity extends TFCAbstractGroupFishEntity
 {
     public TFCSalmonEntity(EntityType<? extends AbstractGroupFishEntity> type, World worldIn)
     {
         super(type, worldIn);
+    }
+
+    @Override
+    public int getMaxSchoolSize()
+    {
+        return 5;
+    }
+
+    @Override
+    public ItemStack getSaltyBucketItemStack()
+    {
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -27,15 +39,15 @@ public class TFCSalmonEntity extends TFCAbstractGroupFishEntity
     }
 
     @Override
-    public int getMaxSchoolSize()
+    public ItemStack getBucketItemStack()
     {
-        return 5;
+        return new ItemStack(TFCItems.SALMON_BUCKET.get());
     }
 
     @Override
-    protected ItemStack getBucketItemStack()
+    protected SoundEvent getFlopSound()
     {
-        return new ItemStack(Items.SALMON_BUCKET);
+        return SoundEvents.SALMON_FLOP;
     }
 
     @Override
@@ -45,20 +57,14 @@ public class TFCSalmonEntity extends TFCAbstractGroupFishEntity
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.SALMON_DEATH;
-    }
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.SALMON_HURT;
     }
 
     @Override
-    protected SoundEvent getFlopSound()
+    protected SoundEvent getDeathSound()
     {
-        return SoundEvents.SALMON_FLOP;
+        return SoundEvents.SALMON_DEATH;
     }
 }
