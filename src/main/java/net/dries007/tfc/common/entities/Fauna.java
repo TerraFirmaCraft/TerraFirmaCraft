@@ -5,7 +5,6 @@ import net.minecraft.entity.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +12,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.decorator.ClimateConfig;
 
 public class Fauna
@@ -79,8 +77,7 @@ public class Fauna
 
             if (climateConfig != null)
             {
-                final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(world);
-                final ChunkData data = provider.get(pos, ChunkData.Status.CLIMATE);
+                final ChunkData data = ChunkData.get(world, pos);
                 if (!climateConfig.isValid(data, pos, rand))
                 {
                     return false;

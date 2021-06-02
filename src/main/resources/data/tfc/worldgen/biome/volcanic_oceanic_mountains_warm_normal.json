@@ -138,6 +138,12 @@
         "maxCount": 4
       },
       {
+        "type": "tfc:horseshoe_crab",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:cod",
         "weight": 10,
         "minCount": 1,

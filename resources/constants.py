@@ -370,6 +370,7 @@ FRUITS: Dict[str, Fruit] = {
     'red_apple': Fruit(9, 25, 100, 280)
 }
 
+
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
         'type': entity,
@@ -382,6 +383,7 @@ def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4
 OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'isopod': spawner('tfc:isopod'),
     'lobster': spawner('tfc:lobster'),
+    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
     'cod': spawner('tfc:cod', weight=10),
     'pufferfish': spawner('tfc:pufferfish', max_count=2),
     'tropical_fish': spawner('tfc:tropical_fish', weight=10, max_count=6),
@@ -407,8 +409,9 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -501,6 +504,7 @@ DEFAULT_LANG = {
     'entity.tfc.lobster': 'Lobster',
     'entity.tfc.bluegill': 'Bluegill',
     'entity.tfc.penguin': 'Penguin',
+    'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
 
     # ENUMS
 

@@ -44,6 +44,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCDolphinEntity>> DOLPHIN = register("dolphin", EntityType.Builder.of(TFCDolphinEntity::new, EntityClassification.WATER_CREATURE).sized(0.9F, 0.6F));
     public static final RegistryObject<EntityType<SeafloorCritterEntity>> ISOPOD = register("isopod", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<SeafloorCritterEntity>> LOBSTER = register("lobster", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<SeafloorCritterEntity>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(SeafloorCritterEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<PenguinEntity>> PENGUIN = register("penguin", EntityType.Builder.of(PenguinEntity::new, EntityClassification.CREATURE).sized(0.5F, 0.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<TFCTurtleEntity>> TURTLE = register("turtle", EntityType.Builder.of(TFCTurtleEntity::new, EntityClassification.WATER_CREATURE).sized(1.2F, 0.4F).clientTrackingRange(10));
 
@@ -80,6 +81,7 @@ public class TFCEntities
         event.put(DOLPHIN.get(), DolphinEntity.createAttributes().build());
         event.put(ISOPOD.get(), AbstractFishEntity.createAttributes().build());
         event.put(LOBSTER.get(), AbstractFishEntity.createAttributes().build());
+        event.put(HORSESHOE_CRAB.get(), AbstractFishEntity.createAttributes().build());
         event.put(VULTURE.get(), MonsterEntity.createMonsterAttributes().build());
         event.put(PENGUIN.get(), AbstractTurtleEntity.createAttributes().build());
         event.put(TURTLE.get(), TFCTurtleEntity.createAttributes().build());

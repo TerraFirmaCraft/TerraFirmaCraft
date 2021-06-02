@@ -159,6 +159,7 @@ def generate(rm: ResourceManager):
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna('tfc:isopod', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=14)))
     rm.data(('tfc', 'fauna', 'lobster'), fauna('tfc:lobster', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=21)))
+    rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna('tfc:horseshoe_crab', fluid='tfc:salt_water', distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
     rm.data(('tfc', 'fauna', 'cod'), fauna('tfc:cod', fluid='tfc:salt_water', climate=climate_config(max_temp=18), distance_below_sea_level=5))
     rm.data(('tfc', 'fauna', 'pufferfish'), fauna('tfc:pufferfish', fluid='tfc:salt_water', climate=climate_config(min_temp=10), distance_below_sea_level=3))
     rm.data(('tfc', 'fauna', 'tropical_fish'), fauna('tfc:tropical_fish', fluid='tfc:salt_water', climate=climate_config(min_temp=18), distance_below_sea_level=3))

@@ -139,6 +139,7 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ORCA.get(), OrcaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.VULTURE.get(), VultureRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);

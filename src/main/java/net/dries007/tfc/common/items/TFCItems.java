@@ -180,6 +180,7 @@ public final class TFCItems
 
     public static final RegistryObject<Item> ISOPOD_EGG = egg(TFCEntities.ISOPOD, 0xE987F0, 0xF4E2F5);
     public static final RegistryObject<Item> LOBSTER_EGG = egg(TFCEntities.LOBSTER, 0xD44444, 0x96A0E3);
+    public static final RegistryObject<Item> HORSESHOE_CRAB_EGG = egg(TFCEntities.HORSESHOE_CRAB, 0x78FAFA, 0x614C29);
     public static final RegistryObject<Item> COD_EGG = egg(TFCEntities.COD, 12691306, 15058059);
     public static final RegistryObject<Item> PUFFERFISH_EGG = egg(TFCEntities.PUFFERFISH, 16167425, 3654642);
     public static final RegistryObject<Item> TROPICAL_FISH_EGG = egg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
