@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
@@ -73,11 +72,5 @@ public class AirBlockCarver extends BlockCarver
             }
         }
         return false;
-    }
-
-    @Override
-    protected boolean isSupportable(BlockState state)
-    {
-        return state.getFluidState().is(FluidTags.LAVA) || super.isSupportable(state);
     }
 }

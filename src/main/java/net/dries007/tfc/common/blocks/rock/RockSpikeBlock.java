@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -145,10 +146,17 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     {
         BASE, MIDDLE, TIP;
 
+        private final String serializedName;
+
+        Part()
+        {
+            serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
         @Override
         public String getSerializedName()
         {
-            return name().toLowerCase();
+            return serializedName;
         }
 
         public boolean isLargerThan(Part other)

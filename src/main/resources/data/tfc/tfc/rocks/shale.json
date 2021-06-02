@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/shale",
-    "hardened": "tfc:rock/hardened/shale",
-    "bricks": "tfc:rock/bricks/shale",
-    "cobble": "tfc:rock/cobble/shale",
-    "gravel": "tfc:rock/gravel/shale",
-    "smooth": "tfc:rock/smooth/shale",
-    "mossy_cobble": "tfc:rock/mossy_cobble/shale",
-    "mossy_bricks": "tfc:rock/mossy_bricks/shale",
-    "cracked_bricks": "tfc:rock/cracked_bricks/shale",
-    "chiseled": "tfc:rock/chiseled/shale",
-    "spike": "tfc:rock/spike/shale",
-    "loose": "tfc:rock/loose/shale"
-  },
-  "category": "sedimentary",
-  "desert_sand_color": "black",
-  "beach_sand_color": "black"
+  "raw": "tfc:rock/raw/shale",
+  "hardened": "tfc:rock/hardened/shale",
+  "cobble": "tfc:rock/cobble/shale",
+  "gravel": "tfc:rock/gravel/shale",
+  "spike": "tfc:rock/spike/shale",
+  "loose": "tfc:rock/loose/shale",
+  "sand": "tfc:sand/black",
+  "sandstone": "tfc:raw_sandstone/black"
 }

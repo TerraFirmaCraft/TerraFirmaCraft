@@ -21,7 +21,6 @@ public class CommonConfig
 {
     // General
     public final ForgeConfigSpec.IntValue defaultMonthLength;
-    public final ForgeConfigSpec.BooleanValue enableDevTweaks;
     public final ForgeConfigSpec.BooleanValue setTFCWorldTypeAsDefault;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -32,14 +31,6 @@ public class CommonConfig
         innerBuilder.push("general");
 
         defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
-        enableDevTweaks = builder.apply("enableDevTweaks").comment(
-            "This enables a series of quality of life logging improvements aimed at mod or pack development. It has no end user or gameplay effect.",
-            "This currently enables the following tweaks:",
-            " - Enables a [Possible DFU FU] log message, which attempts to catch errors due to incorrect world generation data packs. This does produce false errors!",
-            " - Improves and shortens the error message for invalid loot tables.",
-            " - Improves and shortens the error message for invalid recipes.",
-            " - Fixes MC-190122 (Makes the 'Loaded Recipes' log message accurate)"
-        ).define("enableDevTweaks", true);
 
         setTFCWorldTypeAsDefault = builder.apply("setTFCWorldTypeAsDefault").comment(
             "If the TFC world type (tfc:tng) should be set as the default world generation.",

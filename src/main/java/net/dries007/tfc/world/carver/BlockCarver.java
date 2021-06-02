@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
+import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -27,8 +28,8 @@ import net.dries007.tfc.world.chunkdata.RockData;
  */
 public abstract class BlockCarver implements IContextCarver
 {
-    protected final Set<Block> carvableBlocks, supportableBlocks;
-    protected final Map<Block, Block> exposedBlockReplacements;
+	protected final Set<Block> carvableBlocks;
+	protected final Map<Block, Block> exposedBlockReplacements;
 
     protected BitSet airCarvingMask;
     protected BitSet liquidCarvingMask;
@@ -37,7 +38,6 @@ public abstract class BlockCarver implements IContextCarver
     public BlockCarver()
     {
         carvableBlocks = new HashSet<>();
-        supportableBlocks = new HashSet<>();
         exposedBlockReplacements = new HashMap<>();
 
         // This needs to run post rock reload
@@ -75,11 +75,10 @@ public abstract class BlockCarver implements IContextCarver
             exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
         }
         for (SandBlockType sand : SandBlockType.values())
-        {
-            supportableBlocks.add(TFCBlocks.SAND.get(sand).get());
-        }
-
-        supportableBlocks.addAll(carvableBlocks);
+		{
+			carvableBlocks.add(TFCBlocks.SAND.get(sand).get());
+			carvableBlocks.add(TFCBlocks.SANDSTONE.get(sand).get(SandstoneBlockType.RAW).get());
+		}
     }
 
     /**
@@ -88,15 +87,6 @@ public abstract class BlockCarver implements IContextCarver
     protected boolean isCarvable(BlockState state)
     {
         return carvableBlocks.contains(state.getBlock());
-    }
-
-    /**
-     * If the state can be supported. Any block carved must ensure that exposed blocks (all but down) are supported
-     */
-    @SuppressWarnings("deprecation")
-    protected boolean isSupportable(BlockState state)
-    {
-        return state.isAir() || supportableBlocks.contains(state.getBlock());
     }
 
     /**

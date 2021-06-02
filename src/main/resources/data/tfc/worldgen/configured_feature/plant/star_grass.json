@@ -56,9 +56,9 @@
       }
     },
     "decorator": {
-      "type": "minecraft:chance",
+      "type": "minecraft:count",
       "config": {
-        "chance": 1
+        "count": 2
       }
     }
   }

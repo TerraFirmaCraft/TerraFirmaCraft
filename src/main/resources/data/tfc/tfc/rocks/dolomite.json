@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/dolomite",
-    "hardened": "tfc:rock/hardened/dolomite",
-    "bricks": "tfc:rock/bricks/dolomite",
-    "cobble": "tfc:rock/cobble/dolomite",
-    "gravel": "tfc:rock/gravel/dolomite",
-    "smooth": "tfc:rock/smooth/dolomite",
-    "mossy_cobble": "tfc:rock/mossy_cobble/dolomite",
-    "mossy_bricks": "tfc:rock/mossy_bricks/dolomite",
-    "cracked_bricks": "tfc:rock/cracked_bricks/dolomite",
-    "chiseled": "tfc:rock/chiseled/dolomite",
-    "spike": "tfc:rock/spike/dolomite",
-    "loose": "tfc:rock/loose/dolomite"
-  },
-  "category": "sedimentary",
-  "desert_sand_color": "black",
-  "beach_sand_color": "black"
+  "raw": "tfc:rock/raw/dolomite",
+  "hardened": "tfc:rock/hardened/dolomite",
+  "cobble": "tfc:rock/cobble/dolomite",
+  "gravel": "tfc:rock/gravel/dolomite",
+  "spike": "tfc:rock/spike/dolomite",
+  "loose": "tfc:rock/loose/dolomite",
+  "sand": "tfc:sand/black",
+  "sandstone": "tfc:raw_sandstone/black"
 }

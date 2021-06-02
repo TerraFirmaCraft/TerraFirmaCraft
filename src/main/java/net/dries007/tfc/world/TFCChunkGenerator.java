@@ -247,7 +247,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         final BitSet liquidCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
         final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
-        final RockData rockData = chunkDataProvider.get(chunk.getPos(), ChunkData.Status.ROCKS).getRockData();
+        final RockData rockData = chunkDataProvider.get(chunk.getPos()).getRockData();
 
         if (stage == GenerationStage.Carving.AIR)
         {
@@ -297,7 +297,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     public void createStructures(DynamicRegistries dynamicRegistry, StructureManager structureManager, IChunk chunk, TemplateManager templateManager, long seed)
     {
         final ChunkPos chunkPos = chunk.getPos();
-        final Biome biome = this.biomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
+        final Biome biome = this.biomeProvider.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
         for (Supplier<StructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
         {
             ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
@@ -320,6 +320,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         final Biome[] localBiomes = new Biome[16 * 16];
         final double[] sampledHeightMap = new double[7 * 7];
+        final int[] surfaceHeightMap = new int[16 * 16];
 
         final BiomeCache localBiomeCache = biomeCache.get();
         final BiomeContainer biomeContainer = Objects.requireNonNull(chunk.getBiomes(), "Chunk has no biomes?");
@@ -374,8 +375,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     final int sampleX = x >> 2, sampleZ = z >> 2;
                     sampledHeightMap[(sampleX + 1) + 7 * (sampleZ + 1)] = actualHeight;
                 }
+
+                surfaceHeightMap[x + 16 * z] = (int) actualHeight;
             }
         }
+
+        // Surface height is built now, this is required for surface builders
+        chunkDataProvider.get(chunkPos).getRockData().setSurfaceHeight(surfaceHeightMap);
 
         // Fill in additional derivative sampling points
         for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)
@@ -839,7 +845,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     private void buildSurfaceWithContext(IWorld world, ChunkPrimer chunk, Biome[] accurateChunkBiomes, double[] slopeMap, Random random)
     {
         final ChunkPos chunkPos = chunk.getPos();
-        final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
+        final ChunkData chunkData = chunkDataProvider.get(chunkPos);
         final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, settings, getSeaLevel());
         for (int x = 0; x < 16; ++x)
         {

@@ -44,10 +44,10 @@ public final class TFCItems
 
     // Ores
 
-    public static final Map<Ore.Default, RegistryObject<Item>> ORES = Helpers.mapOfKeys(Ore.Default.class, ore -> !ore.isGraded(), type ->
+    public static final Map<Ore, RegistryObject<Item>> ORES = Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), type ->
         register("ore/" + type.name(), TFCItemGroup.ORES)
     );
-    public static final Map<Ore.Default, Map<Ore.Grade, RegistryObject<Item>>> GRADED_ORES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
+    public static final Map<Ore, Map<Ore.Grade, RegistryObject<Item>>> GRADED_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
         Helpers.mapOfKeys(Ore.Grade.class, grade ->
             register(("ore/" + grade.name() + '_' + ore.name()), TFCItemGroup.ORES)
         )
@@ -77,9 +77,9 @@ public final class TFCItems
 
     // Wood
 
-    public static final Map<Wood.Default, RegistryObject<Item>> LUMBER = Helpers.mapOfKeys(Wood.Default.class, wood -> register(("wood/lumber/" + wood.name()), MISC));
+    public static final Map<Wood, RegistryObject<Item>> LUMBER = Helpers.mapOfKeys(Wood.class, wood -> register(("wood/lumber/" + wood.name()), MISC));
 
-    public static final Map<Wood.Default, RegistryObject<Item>> SUPPORTS = Helpers.mapOfKeys(Wood.Default.class, wood ->
+    public static final Map<Wood, RegistryObject<Item>> SUPPORTS = Helpers.mapOfKeys(Wood.class, wood ->
         register("wood/support/" + wood.name(), () -> new WallOrFloorItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.VERTICAL_SUPPORT).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HORIZONTAL_SUPPORT).get(), new Item.Properties().tab(WOOD)))
     );
 

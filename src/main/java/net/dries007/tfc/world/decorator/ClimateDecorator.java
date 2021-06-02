@@ -28,8 +28,8 @@ public class ClimateDecorator extends Placement<ClimateConfig>
     @Override
     public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random random, ClimateConfig config, BlockPos pos)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(((WorldDecoratingHelperAccessor) helper).accessor$getGenerator());
-        final ChunkData data = provider.get(pos, ChunkData.Status.CLIMATE);
+        final ChunkDataProvider provider = ChunkDataProvider.get(((WorldDecoratingHelperAccessor) helper).accessor$getGenerator());
+        final ChunkData data = provider.get(pos);
         if (config.isValid(data, pos, random))
         {
             return Stream.of(pos);

@@ -9,11 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
  * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link IChunkDataGenerator}.
@@ -21,28 +17,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
  */
 public final class ChunkDataProvider
 {
-    /**
-     * Directly tries to access the chunk data provider through the overworld.
-     */
-    public static ChunkDataProvider getOrThrow()
-    {
-        return getOrThrow(ServerLifecycleHooks.getCurrentServer().overworld());
-    }
-
-    public static ChunkDataProvider getOrThrow(IWorld world)
-    {
-        AbstractChunkProvider chunkProvider = world.getChunkSource();
-        if (chunkProvider instanceof ServerChunkProvider)
-        {
-            return getOrThrow(((ServerChunkProvider) chunkProvider).getGenerator());
-        }
-        throw new IllegalStateException("Tried to access ChunkDataProvider but no ServerChunkProvider was found on world: " + world);
-    }
-
-    /**
-     * Tries to access the chunk data provider through the chunk generator, mostly used during feature generation when we have direct access to the generator.
-     */
-    public static ChunkDataProvider getOrThrow(ChunkGenerator chunkGenerator)
+    public static ChunkDataProvider get(ChunkGenerator chunkGenerator)
     {
         if (chunkGenerator instanceof ITFCChunkGenerator)
         {
@@ -63,32 +38,26 @@ public final class ChunkDataProvider
      * The default implementation generates chunk data using TFC semantics, and stores generated data in {@link ChunkDataCache#WORLD_GEN}
      * Implementors are free to return any form of data.
      *
-     * @param pos            The chunk position
-     * @param requiredStatus The minimum status of the chunk data returned
+     * @param pos The chunk position
      * @return A chunk data for the provided chunk pos
      */
-    public final ChunkData get(BlockPos pos, ChunkData.Status requiredStatus)
+    public final ChunkData get(BlockPos pos)
     {
-        return get(new ChunkPos(pos), requiredStatus);
+        return get(new ChunkPos(pos));
     }
 
     /**
-     * Gets the chunk data for a chunk, during world generation.
-     * The default implementation generates chunk data using TFC semantics, and stores generated data in {@link ChunkDataCache#WORLD_GEN}
-     * Implementors are free to return any form of data.
-     *
-     * @param pos            The chunk position
-     * @param requiredStatus The minimum status of the chunk data returned
+     * Gets the chunk data for a chunk, during world generation, fully generated.
+     * @param pos The chunk position
      * @return A chunk data for the provided chunk pos
      */
-    public final ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus)
+    public final ChunkData get(ChunkPos pos)
     {
         final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
-        while (!data.getStatus().isAtLeast(requiredStatus))
+        if (data.getStatus() == ChunkData.Status.EMPTY)
         {
-            final ChunkData.Status next = data.getStatus().next();
-            generator.generate(data, next);
-            data.setStatus(next);
+            generator.generate(data);
+            data.setStatus(ChunkData.Status.FULL);
         }
         return data;
     }

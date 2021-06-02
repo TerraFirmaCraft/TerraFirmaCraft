@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.VineBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,6 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.plant.TFCVineBlock;
 
 public class TFCVinesFeature extends Feature<VineConfig>
 {
@@ -55,7 +55,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
                         if (direction != Direction.DOWN && (foundState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON) || foundState.is(BlockTags.LOGS) || foundState.is(BlockTags.LEAVES)))
                         {
                             mutablePos.move(direction.getOpposite());
-                            world.setBlock(mutablePos, state.setValue(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                            world.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
                             if (direction != Direction.UP)
                                 dirs.add(direction);
                             break;
@@ -71,7 +71,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
                             {
                                 for (Direction direction : dirs)
                                 {
-                                    world.setBlock(mutablePos, state.setValue(TFCVineBlock.getPropertyForFace(direction), true), 2);
+                                    world.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
                                 }
                             }
                         }

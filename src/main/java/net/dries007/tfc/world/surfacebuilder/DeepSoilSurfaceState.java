@@ -8,8 +8,6 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import net.minecraft.block.BlockState;
 
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.RockData;
@@ -49,6 +47,6 @@ public class DeepSoilSurfaceState extends SoilSurfaceState
 
     private BlockState sandstone(RockData rockData, int x, int z)
     {
-        return TFCBlocks.SANDSTONE.get(rockData.getTopRock(x, z).getDesertSandColor()).get(SandstoneBlockType.RAW).get().defaultBlockState();
+        return rockData.getTopRock(x, z).getSandstone().defaultBlockState();
     }
 }

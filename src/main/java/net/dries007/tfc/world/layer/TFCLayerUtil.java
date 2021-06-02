@@ -332,44 +332,34 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static List<IAreaFactory<FastArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
+    public static IAreaFactory<FastArea> createOverworldRockLayer(long seed, int layerScale, int rockCount)
     {
         final Random random = new Random(seed);
         final Supplier<FastAreaContext> contextFactory = () -> new FastAreaContext(seed, random.nextLong());
-        final List<IAreaFactory<FastArea>> completedLayers = new ArrayList<>(3);
+        IAreaFactory<FastArea> seedLayer = new RockLayer(rockCount).run(contextFactory.get());
 
-        IAreaFactory<FastArea> seedLayer;
-        int numRocks = layerSettings.getRocks().size();
+        // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
+        // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
+        // 1x => 98.49%
+        // 2x => 99.42%
+        // 3x => 99.54%
+        // 4x => 99.55%
+        // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
+        seedLayer = new RandomizeNeighborsLayer(rockCount).run(contextFactory.get(), seedLayer);
 
-        // Seed Areas
-        for (int j = 0; j < 3; j++)
+        for (int i = 0; i < 2; i++)
         {
-            seedLayer = new RockLayer(numRocks).run(contextFactory.get());
-
-            // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
-            // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
-            // 1x => 98.49%
-            // 2x => 99.42%
-            // 3x => 99.54%
-            // 4x => 99.55%
-            // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
-            seedLayer = new RandomizeNeighborsLayer(numRocks).run(contextFactory.get(), seedLayer);
-
-            for (int i = 0; i < 2; i++)
-            {
-                seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.get(), seedLayer);
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
-                seedLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), seedLayer);
-            }
-
-            for (int i = 0; i < layerSettings.getRockLayerScale(); i++)
-            {
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
-            }
-
-            completedLayers.add(seedLayer);
+            seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.get(), seedLayer);
+            seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
+            seedLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), seedLayer);
         }
-        return completedLayers;
+
+        for (int i = 0; i < layerScale; i++)
+        {
+            seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
+        }
+
+        return seedLayer;
     }
 
     public static boolean isContinental(int value)

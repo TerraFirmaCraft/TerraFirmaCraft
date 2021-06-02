@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/limestone",
-    "hardened": "tfc:rock/hardened/limestone",
-    "bricks": "tfc:rock/bricks/limestone",
-    "cobble": "tfc:rock/cobble/limestone",
-    "gravel": "tfc:rock/gravel/limestone",
-    "smooth": "tfc:rock/smooth/limestone",
-    "mossy_cobble": "tfc:rock/mossy_cobble/limestone",
-    "mossy_bricks": "tfc:rock/mossy_bricks/limestone",
-    "cracked_bricks": "tfc:rock/cracked_bricks/limestone",
-    "chiseled": "tfc:rock/chiseled/limestone",
-    "spike": "tfc:rock/spike/limestone",
-    "loose": "tfc:rock/loose/limestone"
-  },
-  "category": "sedimentary",
-  "desert_sand_color": "yellow",
-  "beach_sand_color": "white"
+  "raw": "tfc:rock/raw/limestone",
+  "hardened": "tfc:rock/hardened/limestone",
+  "cobble": "tfc:rock/cobble/limestone",
+  "gravel": "tfc:rock/gravel/limestone",
+  "spike": "tfc:rock/spike/limestone",
+  "loose": "tfc:rock/loose/limestone",
+  "sand": "tfc:sand/white",
+  "sandstone": "tfc:raw_sandstone/white"
 }

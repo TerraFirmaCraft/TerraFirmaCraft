@@ -51,6 +51,7 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.config.HealthDisplayFormat;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
@@ -61,7 +62,6 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.config.HealthDisplayFormat;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -91,7 +91,7 @@ public class ClientForgeEventHandler
                 list.add(I18n.get("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
 
                 ChunkData data = ChunkData.get(mc.level, pos);
-                if (data.getStatus().isAtLeast(ChunkData.Status.CLIENT))
+                if (data.getStatus() == ChunkData.Status.CLIENT)
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.CLIENT))));

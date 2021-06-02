@@ -6,35 +6,41 @@
 
 package net.dries007.tfc.world.feature;
 
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.world.Codecs;
 
 public class BoulderConfig implements IFeatureConfig
 {
     public static final Codec<BoulderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Rock.BlockType.CODEC.fieldOf("base_type").forGetter(c -> c.baseType),
-        Rock.BlockType.CODEC.fieldOf("decoration_type").forGetter(c -> c.decorationType)
+        Codecs.mapListCodec(Codecs.recordPairCodec(
+            ResourceLocation.CODEC.comapFlatMap(r -> {
+                Rock rock = RockManager.INSTANCE.get(r);
+                return rock == null ? DataResult.error("No rock: " + r) : DataResult.success(rock);
+            }, Rock::getId), "rock",
+            Codecs.LENIENT_BLOCKSTATE.listOf(), "blocks"
+        )).fieldOf("states").forGetter(c -> c.states)
     ).apply(instance, BoulderConfig::new));
 
-    private final Rock.BlockType baseType;
-    private final Rock.BlockType decorationType;
+    private final Map<Rock, List<BlockState>> states;
 
-    public BoulderConfig(Rock.BlockType baseType, Rock.BlockType decorationType)
+    public BoulderConfig(Map<Rock, List<BlockState>> states)
     {
-        this.baseType = baseType;
-        this.decorationType = decorationType;
+        this.states = states;
     }
 
-    public Rock.BlockType getBaseType()
+    public List<BlockState> getStates(Rock rock)
     {
-        return baseType;
-    }
-
-    public Rock.BlockType getDecorationType()
-    {
-        return decorationType;
+        return states.get(rock);
     }
 }

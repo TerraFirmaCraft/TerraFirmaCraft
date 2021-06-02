@@ -14,6 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.VineBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluids;
@@ -181,16 +182,10 @@ public enum Plant implements IPlant
         return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
     }
 
-    public boolean isLeafColored()
-    {
-        return type == BlockType.VINE;
-    }
-
-    public boolean needsItemColor()
-    {
-        return type == BlockType.SHORT_GRASS || (type == BlockType.TALL_GRASS && this != ROSE) || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING
-            || this == HANGING_VINES || this == SAGO || this == GUTWEED;
-    }
+    public boolean isSeasonal()
+	{
+		return type == BlockType.VINE;
+	}
 
     @VisibleForTesting
     public BlockType getType()
@@ -247,7 +242,7 @@ public enum Plant implements IPlant
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
-        VINE((plant, type) -> new TFCVineBlock(nonSolid(plant))),
+        VINE((plant, type) -> new VineBlock(nonSolid(plant))),
         WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
         WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
         TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),

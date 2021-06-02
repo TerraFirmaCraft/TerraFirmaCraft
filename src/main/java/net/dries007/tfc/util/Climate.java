@@ -31,23 +31,23 @@ import net.dries007.tfc.world.noise.NoiseUtil;
  */
 public final class Climate
 {
-    /**
-     * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in.
-     */
-    public static final float MINIMUM_TEMPERATURE_SCALE = -24f;
-    public static final float MAXIMUM_TEMPERATURE_SCALE = 30f;
-    public static final float LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE = -6.5f;
-    public static final float LATITUDE_TEMPERATURE_VARIANCE_MEAN = 13.5f;
-    public static final float REGIONAL_TEMPERATURE_SCALE = 2f;
-    public static final float REGIONAL_RAINFALL_SCALE = 50f;
+	/**
+	 * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in.
+	 */
+	public static final float MINIMUM_TEMPERATURE_SCALE = -20f;
+	public static final float MAXIMUM_TEMPERATURE_SCALE = 30f;
+	public static final float LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE = -3f;
+	public static final float LATITUDE_TEMPERATURE_VARIANCE_MEAN = 15f;
+	public static final float REGIONAL_TEMPERATURE_SCALE = 2f;
+	public static final float REGIONAL_RAINFALL_SCALE = 50f;
 
-    /**
-     * Magic numbers. These probably mean something
-     */
-    public static final float MINIMUM_RAINFALL = 0f;
-    public static final float MAXIMUM_RAINFALL = 500f;
+	/**
+	 * Magic numbers. These probably mean something
+	 */
+	public static final float MINIMUM_RAINFALL = 0f;
+	public static final float MAXIMUM_RAINFALL = 500f;
 
-    public static final float SNOW_MELT_TEMPERATURE = 4f;
+	public static final float SNOW_MELT_TEMPERATURE = 4f;
     public static final float SNOW_STACKING_TEMPERATURE = -4f;
     public static final float ICE_MELT_TEMPERATURE = -2f;
     public static final float SEA_ICE_FREEZE_TEMPERATURE = -6f;
@@ -130,7 +130,7 @@ public final class Climate
      */
     public static float calculateMonthlyAverageTemperature(int z, int y, float averageTemperature, float monthFactor)
     {
-        float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
+		final float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
         return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
     }
 

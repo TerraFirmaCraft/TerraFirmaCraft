@@ -36,14 +36,14 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
     public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, TFCRandomPatchConfig config)
     {
         BlockPos posAt;
-        if (config.project)
-        {
-            posAt = world.getHeightmapPos(config.projectToOceanFloor ? Heightmap.Type.OCEAN_FLOOR_WG : Heightmap.Type.WORLD_SURFACE_WG, pos);
-        }
-        else
-        {
-            posAt = pos;
-        }
+        if (config.project && !config.projectEachLocation)
+		{
+			posAt = world.getHeightmapPos(config.projectToOceanFloor ? Heightmap.Type.OCEAN_FLOOR_WG : Heightmap.Type.WORLD_SURFACE_WG, pos);
+		}
+		else
+		{
+			posAt = pos;
+		}
 
         int placed = 0;
         int tries = config.tries;
@@ -57,18 +57,28 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final BlockState baseState = config.stateProvider.getState(random, posAt);
         for (int i = 0; i < tries; ++i)
-        {
-            mutablePos.setWithOffset(posAt, random.nextInt(config.xSpread + 1) - random.nextInt(config.xSpread + 1), random.nextInt(config.ySpread + 1) - random.nextInt(config.ySpread + 1), random.nextInt(config.zSpread + 1) - random.nextInt(config.zSpread + 1));
+		{
+			final int x = posAt.getX() + random.nextInt(config.xSpread + 1) - random.nextInt(config.xSpread + 1);
+			final int z = posAt.getZ() + random.nextInt(config.zSpread + 1) - random.nextInt(config.zSpread + 1);
+			final int y = random.nextInt(config.ySpread + 1) - random.nextInt(config.ySpread + 1);
+			if (config.projectEachLocation)
+			{
+				mutablePos.set(x, y + world.getHeight(config.projectToOceanFloor ? Heightmap.Type.OCEAN_FLOOR_WG : Heightmap.Type.WORLD_SURFACE_WG, x, z), z);
+			}
+			else
+			{
+				mutablePos.set(x, y + posAt.getY(), z);
+			}
 
-            // Water plants need to be flooded with the target fluid, if possible, in order to pass the canSurvive() check
-            final BlockState stateAt = world.getBlockState(mutablePos);
-            final BlockState placementState = config.canReplaceWater || config.canReplaceSurfaceWater ? FluidHelpers.fillWithFluid(baseState, stateAt.getFluidState().getType()) : baseState;
+			// Water plants need to be flooded with the target fluid, if possible, in order to pass the canSurvive() check
+			final BlockState stateAt = world.getBlockState(mutablePos);
+			final BlockState placementState = config.canReplaceWater || config.canReplaceSurfaceWater ? FluidHelpers.fillWithFluid(baseState, stateAt.getFluidState().getType()) : baseState;
 
-            // First check: is the state placeable at the current location
-            if (placementState != null && placementState.canSurvive(world, mutablePos))
-            {
-                // Second check: is the below state passable with the white and black lists
-                final BlockState stateBelow = world.getBlockState(mutablePos.below());
+			// First check: is the state placeable at the current location
+			if (placementState != null && placementState.canSurvive(world, mutablePos))
+			{
+				// Second check: is the below state passable with the white and black lists
+				final BlockState stateBelow = world.getBlockState(mutablePos.below());
                 if ((config.whitelist.isEmpty() || config.whitelist.contains(stateBelow.getBlock())) && !config.blacklist.contains(stateBelow))
                 {
                     // Third check: is the position clear and valid

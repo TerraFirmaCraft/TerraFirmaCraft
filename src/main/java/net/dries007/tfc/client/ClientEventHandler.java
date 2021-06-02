@@ -8,9 +8,6 @@ package net.dries007.tfc.client;
 
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.CraftingScreen;
@@ -18,16 +15,16 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.item.Item;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -39,7 +36,6 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -51,17 +47,14 @@ import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.common.types.Wood.BlockType.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientEventHandler
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event)
     {
-        LOGGER.debug("Client Setup");
-
         // Screens
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
@@ -76,6 +69,7 @@ public final class ClientEventHandler
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
 
         // Render Types
+        final RenderType solid = RenderType.solid();
         final RenderType cutout = RenderType.cutout();
         final RenderType cutoutMipped = RenderType.cutoutMipped();
         final RenderType translucent = RenderType.translucent();
@@ -86,8 +80,10 @@ public final class ClientEventHandler
         TFCBlocks.GRADED_ORES.values().forEach(map -> map.values().forEach(inner -> inner.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout))));
 
         // Wood blocks
-        Stream.of(Wood.BlockType.SAPLING, Wood.BlockType.DOOR, Wood.BlockType.TRAPDOOR, Wood.BlockType.FENCE, Wood.BlockType.FENCE_GATE, Wood.BlockType.BUTTON, Wood.BlockType.PRESSURE_PLATE, Wood.BlockType.SLAB, Wood.BlockType.STAIRS).forEach(type -> TFCBlocks.WOODS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(type).get(), cutout)));
-        Stream.of(Wood.BlockType.LEAVES, Wood.BlockType.FALLEN_LEAVES, Wood.BlockType.TWIG).forEach(type -> TFCBlocks.WOODS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(type).get(), cutoutMipped)));
+        TFCBlocks.WOODS.values().forEach(map -> {
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG).forEach(type -> RenderTypeLookup.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> RenderTypeLookup.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
+        });
 
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutoutMipped));
@@ -163,48 +159,31 @@ public final class ClientEventHandler
     @SubscribeEvent
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
-        LOGGER.debug("Registering Color Handler Blocks");
         final BlockColors registry = event.getBlockColors();
-        final int nope = -1;
+        final IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
+        final IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
+        final IBlockColor seasonalFoliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
 
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PEAT_GRASS.get());
-        // Plants
-        Block[] leafyPlants = Stream.of(Plant.values()).filter(Plant::isLeafColored).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
-        Block[] grassyPlants = Stream.of(Plant.values()).filter(p -> !p.isLeafColored()).map(p -> TFCBlocks.PLANTS.get(p).get()).toArray(Block[]::new);
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, Plant.BlockType.VINE.getFallFoliageCoords()), leafyPlants);
-        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), grassyPlants);
+        TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> registry.register(grassColor, reg.get()));
+        TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> registry.register(grassColor, reg.get()));
+        registry.register(grassColor, TFCBlocks.PEAT_GRASS.get());
 
-        TFCBlocks.WOODS.forEach((key, value) -> {
-            Block leaves = value.get(Wood.BlockType.LEAVES).get();
-            Block fallenLeaves = value.get(Wood.BlockType.FALLEN_LEAVES).get();
-            if (key.isConifer())
-            {
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), leaves, fallenLeaves);
-            }
-            else
-            {
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), leaves, fallenLeaves);
-            }
-        });
+        TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get()));
+		TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
 
-        registry.register((state, worldIn, pos, tintIndex) -> pos != null ? TFCColors.getWaterColor(pos) : nope, TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get());
-        registry.register((state, worldIn, pos, tintIndex) -> pos != null ? TFCColors.getSpringWaterColor(pos) : nope, TFCBlocks.SPRING_WATER.get());
+        registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get());
+        registry.register((state, worldIn, pos, tintIndex) -> 0x5FB5B8, TFCBlocks.SPRING_WATER.get());
     }
 
     @SubscribeEvent
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
-        LOGGER.debug("Registering Color Handler Items");
         final ItemColors registry = event.getItemColors();
+        final IItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
+        final IItemColor seasonalFoliageColor = (stack, tintIndex) -> TFCColors.getFoliageColor(null, tintIndex);
 
-        Item[] leafyPlants = Stream.of(Plant.values()).filter(Plant::isLeafColored).map(p -> TFCBlocks.PLANTS.get(p).get().asItem()).toArray(Item[]::new);
-        Item[] grassyPlants = Stream.of(Plant.values()).filter(Plant::needsItemColor).map(p -> TFCBlocks.PLANTS.get(p).get().asItem()).toArray(Item[]::new);
-        registry.register((itemStack, tintIndex) -> TFCColors.getGrassColor(new BlockPos(0, 96, 0), tintIndex), grassyPlants);
-        registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), leafyPlants);
-        TFCBlocks.WOODS.forEach((key, value) -> registry.register((itemStack, tintIndex) -> TFCColors.getFoliageColor(new BlockPos(0, 96, 0), tintIndex), value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
-
+		TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
+		TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
         TFCSpawnEggItem.EGGS.forEach(egg -> registry.register((itemStack, tintIndex) -> egg.getColor(tintIndex), egg));
     }
 
