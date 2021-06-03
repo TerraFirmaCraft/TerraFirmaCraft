@@ -48,6 +48,8 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
 
     public static final int FIELD_TEMPERATURE = 0;
 
+    private static final int MAX_AIR_TICKS = 600;
+
     private final HeatRecipe[] cachedRecipes = new HeatRecipe[5];
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -75,9 +77,9 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
     public void onAirIntake(int amount)
     {
         airTicks += amount;
-        if (airTicks > 600)
+        if (airTicks > MAX_AIR_TICKS)
         {
-            airTicks = 600;
+            airTicks = MAX_AIR_TICKS;
         }
     }
 
@@ -148,7 +150,7 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
+                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, MAX_AIR_TICKS) : 0);
                 if (temperature != targetTemperature)
                 {
                     float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
