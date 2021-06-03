@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -108,7 +109,10 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        if (entityIn instanceof PlayerEntity)
+        {
+            entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        }
     }
 
     @Override

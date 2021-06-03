@@ -18,7 +18,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.types.Rock;

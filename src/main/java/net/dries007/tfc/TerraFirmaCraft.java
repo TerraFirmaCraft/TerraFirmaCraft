@@ -12,7 +12,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -25,6 +24,7 @@ import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.TFCSpawnEggItem;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
@@ -63,6 +63,8 @@ public final class TerraFirmaCraft
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
 
+        modEventBus.addListener(TFCEntities::onEntityAttributeCreation);
+
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
         TFCContainerTypes.CONTAINERS.register(modEventBus);
@@ -100,6 +102,7 @@ public final class TerraFirmaCraft
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        TFCSpawnEggItem.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 

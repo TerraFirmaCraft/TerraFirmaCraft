@@ -885,6 +885,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     else:
         rain_type = 'rain'
 
+    spawners = {}
+
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
         ocean_features = True
@@ -936,6 +938,9 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         if name == 'shore':
             features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s' % beach_item for beach_item in SHORE_DECORATORS]
+            spawners.update({
+                'creature': [entity for entity in SHORE_CREATURES.values()]
+            })
         else:
             features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/giant_kelp', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
 
@@ -943,6 +948,10 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         if temp.id in ('cold', 'frozen'):
             features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']
+        spawners.update({
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
+            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
+        })
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LOCAL_MODIFICATIONS].append('tfc:coral_reef')
@@ -972,6 +981,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
     if lake_features:
         features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
+    if category == 'river':
+        spawners.update({
+            'water_ambient': [entity for entity in LAKE_AMBIENT.values()],
+            'water_creature': [entity for entity in LAKE_CREATURES.values()]
+        })
 
     features[Decoration.TOP_LAYER_MODIFICATION].append('tfc:ice_and_snow')  # This must go last
 
@@ -995,11 +1009,13 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             'water_color': temp.water_color,
             'water_fog_color': temp.water_fog_color
         },
+        spawners=spawners,
         surface_builder=surface_builder,
         air_carvers=air_carvers,
         water_carvers=water_carvers,
         features=features,
-        player_spawn_friendly=spawnable
+        player_spawn_friendly=spawnable,
+        creature_spawn_probability=0.1
     )
 
 

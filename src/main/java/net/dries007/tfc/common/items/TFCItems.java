@@ -6,10 +6,14 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,6 +23,7 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
+import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.util.Helpers;
@@ -173,15 +178,48 @@ public final class TFCItems
 
     //todo: molds
 
+    public static final RegistryObject<Item> ISOPOD_EGG = egg(TFCEntities.ISOPOD, 0xE987F0, 0xF4E2F5);
+    public static final RegistryObject<Item> LOBSTER_EGG = egg(TFCEntities.LOBSTER, 0xD44444, 0x96A0E3);
+    public static final RegistryObject<Item> HORSESHOE_CRAB_EGG = egg(TFCEntities.HORSESHOE_CRAB, 0x78FAFA, 0x614C29);
+    public static final RegistryObject<Item> COD_EGG = egg(TFCEntities.COD, 12691306, 15058059);
+    public static final RegistryObject<Item> PUFFERFISH_EGG = egg(TFCEntities.PUFFERFISH, 16167425, 3654642);
+    public static final RegistryObject<Item> TROPICAL_FISH_EGG = egg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
+    public static final RegistryObject<Item> JELLYFISH_EGG = egg(TFCEntities.JELLYFISH, 0xE83D0E, 0x11F2F2);
+    public static final RegistryObject<Item> ORCA_EGG = egg(TFCEntities.ORCA, 0xFFFFFF, 0x000000);
+    public static final RegistryObject<Item> DOLPHIN_EGG = egg(TFCEntities.DOLPHIN, 2243405, 16382457);
+    public static final RegistryObject<Item> SALMON_EGG = egg(TFCEntities.SALMON, 10489616, 951412);
+    public static final RegistryObject<Item> BLUEGILL_EGG = egg(TFCEntities.BLUEGILL, 0x00658A, 0xE3E184);
+    public static final RegistryObject<Item> MANATEE_EGG = egg(TFCEntities.MANATEE, 0x65786C, 0x7FCFCF);
+    public static final RegistryObject<Item> PENGUIN_EGG = egg(TFCEntities.PENGUIN, 0x000000, 0xE0E0AC);
+    public static final RegistryObject<Item> TURTLE_EGG = egg(TFCEntities.TURTLE, 15198183, 44975);
+    public static final RegistryObject<Item> VULTURE_EGG = egg(TFCEntities.VULTURE, 0x66663D, 0x87582C);
+
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         register("bucket/metal/" + metal.name(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
-    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
-    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), bucketProperties()));
 
+    public static final RegistryObject<FishBucketItem> COD_BUCKET = register("bucket/cod", () -> new FishBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new FishBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> JELLYFISH_BUCKET = register("bucket/jellyfish", () -> new FishBucketItem(TFCEntities.JELLYFISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+    public static final RegistryObject<FishBucketItem> TROPICAL_FISH_BUCKET = register("bucket/tropical_fish", () -> new FishBucketItem(TFCEntities.TROPICAL_FISH, TFCFluids.SALT_WATER.getSecond(), bucketProperties()));
+
+    public static final RegistryObject<FishBucketItem> BLUEGILL_BUCKET = register("bucket/bluegill", () -> new FishBucketItem(TFCEntities.BLUEGILL, () -> Fluids.WATER, bucketProperties()));
+    public static final RegistryObject<FishBucketItem> SALMON_BUCKET = register("bucket/salmon", () -> new FishBucketItem(TFCEntities.SALMON, () -> Fluids.WATER, bucketProperties()));
+
+    private static Item.Properties bucketProperties()
+    {
+        return new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC);
+    }
+
+    private static <T extends Entity> RegistryObject<Item> egg(RegistryObject<EntityType<T>> entity, int color1, int color2)
+    {
+        return register("spawn_eggs/" + entity.getId().getPath(), () -> new TFCSpawnEggItem(entity, color1, color2, new Item.Properties().tab(MISC)));
+    }
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {

@@ -9,6 +9,7 @@ package net.dries007.tfc.client;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.world.World;
 
 /**
@@ -20,5 +21,12 @@ public class ClientHelpers
     public static World getWorld()
     {
         return Minecraft.getInstance().level;
+    }
+
+    public static void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

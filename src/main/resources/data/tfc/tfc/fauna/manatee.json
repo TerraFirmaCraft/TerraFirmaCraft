@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "entity": "tfc:manatee",
+  "fluid": "minecraft:water",
+  "chance": 10,
+  "distance_below_sea_level": 3,
+  "climate": {
+    "min_temperature": 20,
+    "min_rainfall": 300
+  }
+}

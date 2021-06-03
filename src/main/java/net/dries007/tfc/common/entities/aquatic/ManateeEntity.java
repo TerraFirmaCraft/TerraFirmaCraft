@@ -1,0 +1,48 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
+package net.dries007.tfc.common.entities.aquatic;
+
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.dries007.tfc.common.entities.ai.AquaticMovementController;
+
+public class ManateeEntity extends TFCAbstractGroupFishEntity
+{
+    public ManateeEntity(EntityType<? extends AbstractGroupFishEntity> type, World worldIn)
+    {
+        super(type, worldIn);
+        moveControl = new AquaticMovementController(this, true, 6);
+    }
+
+    @Override
+    protected SoundEvent getFlopSound()
+    {
+        return SoundEvents.COD_FLOP;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRenderAtSqrDistance(double distance)
+    {
+        return true;
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes()
+    {
+        return AbstractFishEntity.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D);
+    }
+}

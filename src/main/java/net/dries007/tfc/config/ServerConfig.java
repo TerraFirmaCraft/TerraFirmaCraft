@@ -49,6 +49,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
     public final ForgeConfigSpec.IntValue pitKilnTicks;
+    // Blocks - Egg
+    public final ForgeConfigSpec.IntValue eggDays;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
     public final ForgeConfigSpec.IntValue rainTicks;
@@ -125,6 +127,10 @@ public class ServerConfig
         innerBuilder.pop().push("pit_kiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("egg");
+
+        eggDays = builder.apply("eggDays").comment("Number of days required for an egg to advance a stage. Default is 8 days.").defineInRange("eggDays", 8, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,16 +33,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.GrillTileEntityRenderer;
-import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
-import net.dries007.tfc.client.render.PlacedItemTileEntityRenderer;
-import net.dries007.tfc.client.render.PotTileEntityRenderer;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.TFCSpawnEggItem;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
@@ -131,6 +130,21 @@ public final class ClientEventHandler
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.COD.get(), TFCCodRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.SALMON.get(), TFCSalmonRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.MANATEE.get(), ManateeRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ORCA.get(), OrcaRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.VULTURE.get(), VultureRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.TURTLE.get(), TurtleRenderer::new);
 
         // TE Rendering
 
@@ -171,6 +185,7 @@ public final class ClientEventHandler
 
 		TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
 		TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
+        TFCSpawnEggItem.EGGS.forEach(egg -> registry.register((itemStack, tintIndex) -> egg.getColor(tintIndex), egg));
     }
 
     @SubscribeEvent

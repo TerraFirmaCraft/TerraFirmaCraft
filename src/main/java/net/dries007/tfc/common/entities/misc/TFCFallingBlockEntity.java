@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.misc;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

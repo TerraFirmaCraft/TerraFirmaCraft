@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;

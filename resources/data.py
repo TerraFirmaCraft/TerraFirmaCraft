@@ -1,7 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
+from typing import Union
 
-from mcresources import ResourceManager
+from mcresources import ResourceManager, utils
 from mcresources.utils import item_stack
 
 from constants import *
@@ -67,6 +68,8 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
+
+    rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -152,7 +155,45 @@ def generate(rm: ResourceManager):
 
     # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
-    rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
+
+    # Entities
+    rm.data(('tfc', 'fauna', 'isopod'), fauna('tfc:isopod', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=14)))
+    rm.data(('tfc', 'fauna', 'lobster'), fauna('tfc:lobster', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=21)))
+    rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna('tfc:horseshoe_crab', fluid='tfc:salt_water', distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
+    rm.data(('tfc', 'fauna', 'cod'), fauna('tfc:cod', fluid='tfc:salt_water', climate=climate_config(max_temp=18), distance_below_sea_level=5))
+    rm.data(('tfc', 'fauna', 'pufferfish'), fauna('tfc:pufferfish', fluid='tfc:salt_water', climate=climate_config(min_temp=10), distance_below_sea_level=3))
+    rm.data(('tfc', 'fauna', 'tropical_fish'), fauna('tfc:tropical_fish', fluid='tfc:salt_water', climate=climate_config(min_temp=18), distance_below_sea_level=3))
+    rm.data(('tfc', 'fauna', 'jellyfish'), fauna('tfc:jellyfish', fluid='tfc:salt_water', climate=climate_config(min_temp=18), distance_below_sea_level=3))
+    rm.data(('tfc', 'fauna', 'orca'), fauna('tfc:orca', fluid='tfc:salt_water', distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
+    rm.data(('tfc', 'fauna', 'dolphin'), fauna('tfc:dolphin', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
+    rm.data(('tfc', 'fauna', 'manatee'), fauna('tfc:manatee', fluid='minecraft:water', distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
+    rm.data(('tfc', 'fauna', 'salmon'), fauna('tfc:salmon', fluid='minecraft:water', climate=climate_config(min_temp=-5)))
+    rm.data(('tfc', 'fauna', 'bluegill'), fauna('tfc:bluegill', fluid='minecraft:water', climate=climate_config(min_temp=-10, max_temp=26)))
+    rm.data(('tfc', 'fauna', 'penguin'), fauna('tfc:penguin', climate=climate_config(max_temp=-14, min_rain=75)))
+    rm.data(('tfc', 'fauna', 'turtle'), fauna('tfc:turtle', climate=climate_config(min_temp=21, min_rain=250)))
+
+
+def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'min_temperature': min_temp,
+        'max_temperature': max_temp,
+        'min_rainfall': min_rain,
+        'max_rainfall': max_rain,
+        'max_forest': 'normal' if needs_forest else None,
+        'fuzzy': fuzzy
+    })
+
+
+def fauna(entity: str, fluid: str = None, chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'entity': entity,
+        'fluid': fluid,
+        'chance': chance,
+        'distance_below_sea_level': distance_below_sea_level,
+        'climate': climate,
+        'solid_ground': solid_ground
+    })
+
 
 def metal_item(ingredient: str, metal: str, amount: int):
     return {
@@ -160,6 +201,7 @@ def metal_item(ingredient: str, metal: str, amount: int):
         'metal': metal,
         'amount': amount
     }
+
 
 def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
     if melt_temperature > 0:
@@ -174,6 +216,7 @@ def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
             'ingredient': item_stack(ingredient),
             'heat_capacity': heat_capacity
         }
+
 
 def fuel(rm: ResourceManager, ingredient: str, duration: int, temp: float, forge=False, bloomery=False, firepit=False):
     if forge:

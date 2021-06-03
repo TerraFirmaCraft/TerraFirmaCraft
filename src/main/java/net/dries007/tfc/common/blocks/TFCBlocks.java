@@ -42,6 +42,7 @@ import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.*;
@@ -223,6 +224,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL)));
 
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F)), MISC);
+    public static final RegistryObject<Block> PENGUIN_EGG = register("penguin_egg", () -> new EggBlock(new ForgeBlockProperties(Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()).tileEntity(TickCounterTileEntity::new), TFCEntities.PENGUIN), MISC);
+    public static final RegistryObject<Block> TURTLE_EGG = register("turtle_egg", () -> new EggBlock(new ForgeBlockProperties(Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()).tileEntity(TickCounterTileEntity::new), TFCEntities.TURTLE), MISC);
 
     public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
     public static final RegistryObject<Block> WALL_TORCH = register("wall_torch", () -> new TFCWallTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));

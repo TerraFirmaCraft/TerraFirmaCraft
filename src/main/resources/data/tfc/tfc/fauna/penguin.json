@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "entity": "tfc:penguin",
+  "climate": {
+    "max_temperature": -14,
+    "min_rainfall": 75
+  }
+}
