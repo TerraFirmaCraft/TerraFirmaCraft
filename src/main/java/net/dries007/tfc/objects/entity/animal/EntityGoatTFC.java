@@ -10,19 +10,24 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIEatGrass;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAILawnmower;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -34,6 +39,9 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
+    public int sheepTimer;
+    private EntityAILawnmower entityAILawnmower;
+
     @SuppressWarnings("unused")
     public EntityGoatTFC(World worldIn)
     {
@@ -43,6 +51,46 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     public EntityGoatTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
+    }
+
+    @Override
+    protected void updateAITasks()
+    {
+        sheepTimer = entityAILawnmower.getTimer();
+        super.updateAITasks();
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        if (world.isRemote)
+        {
+            sheepTimer = Math.max(0, this.sheepTimer - 1);
+        }
+        super.onLivingUpdate();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id)
+    {
+        if (id == (byte) 10)
+        {
+            sheepTimer = 40;
+        }
+        else
+        {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        tasks.taskEntries.removeIf(task -> task.action instanceof EntityAIEatGrass);
+        entityAILawnmower = new EntityAILawnmower(this);
+        tasks.addTask(6, entityAILawnmower);
     }
 
     @Override
@@ -142,5 +190,19 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     {
         // Equivalent sound
         this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getHeadRotationAngleX(float ticks)
+    {
+        if (this.sheepTimer > 4 && this.sheepTimer <= 36)
+        {
+            float f = ((float) (this.sheepTimer - 4) - ticks) / 32.0F;
+            return 0.62831855F + 0.2199115F * MathHelper.sin(f * 28.7F);
+        }
+        else
+        {
+            return this.sheepTimer > 0 ? 0.62831855F : this.rotationPitch * 0.017453292F;
+        }
     }
 }
