@@ -13,6 +13,7 @@ import java.util.Set;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -43,6 +44,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
         final LinkedList<BlockPos> branches = new LinkedList<>();
 
         final BlockPos startPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ()), pos.getZ());
+        if (!world.getFluidState(startPos.below()).isEmpty()) return false;
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         branches.add(startPos);
 
@@ -72,7 +74,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
                 {
                     // Check positions in each direction
                     mutablePos.setWithOffset(lastPos, direction);
-                    if (!box.isInside(mutablePos))
+                    if (!box.isInside(mutablePos) || !world.getFluidState(mutablePos.below()).isEmpty())
                     {
                         continue; // Outside of the bounding box, skip!
                     }
@@ -109,7 +111,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
 
                     // One direction, so proceed
                     mutablePos.setWithOffset(lastPos, chosenDirection).setY(chosenHeight);
-                    if (!chosen.contains(mutablePos))
+                    if (!chosen.contains(mutablePos) && world.getFluidState(mutablePos.below()).isEmpty())
                     {
                         lastPos = mutablePos.immutable();
                         chosen.add(lastPos);
@@ -126,13 +128,25 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
         if (!chosen.isEmpty())
         {
             // We have found a path and can generate a magma rivulet
-            final BlockState air = Blocks.AIR.defaultBlockState();
             for (BlockPos chosenPos : chosen)
             {
+                BlockState setState = Blocks.AIR.defaultBlockState();
                 // At each position, break the top block, and replace two blocks underneath with magma
                 // The recorded positions are one above the topmost block due to how getHeight works
                 mutablePos.setWithOffset(chosenPos, Direction.DOWN);
-                setBlock(world, mutablePos, air);
+                for (Direction d : Direction.Plane.HORIZONTAL)
+                {
+                    mutablePos.move(d);
+                    FluidState fluidState = world.getFluidState(mutablePos);
+                    if (!fluidState.isEmpty())
+                    {
+                        setState = fluidState.createLegacyBlock();
+                        mutablePos.move(d.getOpposite());
+                        break;
+                    }
+                    mutablePos.move(d.getOpposite());
+                }
+                setBlock(world, mutablePos, setState);
                 mutablePos.move(Direction.DOWN);
                 setBlock(world, mutablePos, config.state);
                 mutablePos.move(Direction.DOWN);
