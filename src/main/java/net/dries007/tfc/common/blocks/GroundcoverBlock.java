@@ -10,7 +10,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -19,7 +22,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -36,10 +38,13 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.Helpers;
 
 public class GroundcoverBlock extends Block implements IFluidLoggable
 {
@@ -123,11 +128,12 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        worldIn.destroyBlock(pos, false);
+        worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHelpers.makeBreakParticles(pos, state));
         if (!player.isCreative() && worldIn instanceof ServerWorld)
         {
             TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
-            getDrops(state, (ServerWorld) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
+            getDrops(state, (ServerWorld) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> Helpers.giveItemWithAnimation(player, stackToSpawn));
         }
         return ActionResultType.SUCCESS;
     }

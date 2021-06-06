@@ -8,7 +8,9 @@ package net.dries007.tfc.client;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -20,5 +22,10 @@ public class ClientHelpers
     public static World getWorld()
     {
         return Minecraft.getInstance().level;
+    }
+
+    public static void makeBreakParticles(BlockPos pos, BlockState state)
+    {
+        Minecraft.getInstance().particleEngine.destroy(pos, state);
     }
 }

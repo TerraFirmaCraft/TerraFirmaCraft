@@ -47,6 +47,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.brigadier.StringReader;
@@ -368,6 +369,23 @@ public final class Helpers
                 stack.shrink(1);
                 stack.setDamageValue(0);
             }
+        }
+    }
+
+    public static void giveItemWithAnimation(PlayerEntity player, ItemStack stack)
+    {
+        playDroppingAnimation(player, stack);
+        ItemHandlerHelper.giveItemToPlayer(player, stack);
+    }
+
+    public static void playDroppingAnimation(PlayerEntity player, ItemStack stack)
+    {
+        ItemStack dropStack = stack.copy();
+        dropStack.setCount(1);
+        ItemEntity entity = player.drop(stack, false);
+        if (entity != null)
+        {
+            entity.makeFakeItem();
         }
     }
 
