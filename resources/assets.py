@@ -548,36 +548,24 @@ def generate(rm: ResourceManager):
             rm.block_loot(('fruit_tree', '%s_sapling' % fruit), {
                 'entries': [{
                     'name': 'tfc:fruit_tree/%s_sapling' % fruit,
-                    'functions': [
-                        {**loot_tables.set_count(1), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '1'})]},
-                        {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '2'})]},
-                        {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '3'})]},
-                        {**loot_tables.set_count(4), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '4'})]},
-                        explosion_decay()
-                    ]
+                    'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), explosion_decay()]
                 }]
             })
             for i in range(2, 4 + 1):
                 rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
             rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
         else:
-            banana_dict = {}
-            for state in lifecycles:
-                for i in range(0, 2 + 1):
-                    last = str(i)
-                    if state == 'fruiting' and i == 2:
-                        last = '%d_fruiting' % i
-                    if state == 'flowering' and i == 2:
-                        last = '%d_flowering' % i
-                    banana_dict.update({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/fruit_tree/banana_trunk_%s' % last}})
-            rm.blockstate('fruit_tree/banana_plant', variants=banana_dict).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
+            def banana_suffix(state: str, i: int) -> str:
+                if i == 2 and (state == 'fruiting' or state == 'flowering'):
+                    return '%d_%s' % (i, state)
+                return str(i)
+            rm.blockstate('fruit_tree/banana_plant', variants=dict({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/fruit_tree/banana_trunk_%s' % banana_suffix(state, i)} for state, i in itertools.product(lifecycles, range(0, 3))})).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
                 'entries': [{
                     'name': 'tfc:fruit_tree/banana_sapling',
                     'functions': [{**loot_tables.set_count(1, 2)}],
                     'conditions': [block_state_property('tfc:fruit_tree/banana_plant', {'stage': '2'})]
                 }]
             })
-
             rm.block_model(('fruit_tree', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
             rm.blockstate(('fruit_tree', 'banana_sapling'), model='tfc:block/fruit_tree/banana_sapling').with_lang(lang('Banana Sapling')).with_tag('fruit_tree_sapling')
 
