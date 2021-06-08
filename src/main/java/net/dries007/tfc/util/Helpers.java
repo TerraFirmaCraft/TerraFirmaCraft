@@ -382,7 +382,7 @@ public final class Helpers
     {
         ItemStack dropStack = stack.copy();
         dropStack.setCount(1);
-        ItemEntity entity = player.drop(stack, false);
+        ItemEntity entity = player.drop(dropStack, false);
         if (entity != null)
         {
             entity.makeFakeItem();
