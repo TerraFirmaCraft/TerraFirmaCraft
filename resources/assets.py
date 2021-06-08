@@ -1,6 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+import itertools
 from typing import Any, Tuple
 
 import mcresources.block_states as block_states
@@ -486,18 +487,13 @@ def generate(rm: ResourceManager):
     state_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
     lifecycles = ['healthy', 'dormant', 'fruiting', 'flowering']
     for berry in ('blackberry', 'raspberry', 'blueberry', 'elderberry'):
-        bush_dict = {}
-        for state in lifecycles:
-            for i in range(0, 2 + 1):
-                bush_dict.update({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/berry_bush/%s%s_bush_%d' % (state_to_model[state], berry, i)}})
-        rm.blockstate('berry_bush/%s_bush' % berry, variants=bush_dict).with_lang(lang('%s Bush', berry))
+        rm.blockstate('berry_bush/%s_bush' % berry, variants=dict(('lifecycle=%s,stage=%d' % (state, i), {'model': 'tfc:block/berry_bush/%s%s_bush_%d' % (state_to_model[state], berry, i)}) for state, i in itertools.product(lifecycles, range(0, 3)))).with_lang(lang('%s Bush', berry))
         cane_dict = {}
-        for state in lifecycles:
-            for i in range(0, 2 + 1):
-                cane_dict.update(four_rotations('tfc:block/berry_bush/%s%s_bush_side_%d' % (state_to_model[state], berry, i), (90, None, 180, 270), suffix=',stage=%d' % i, prefix='lifecycle=%s,' % state))
+        for state, i in itertools.product(lifecycles, range(3)):
+            cane_dict.update(four_rotations('tfc:block/berry_bush/%s%s_bush_side_%d' % (state_to_model[state], berry, i), (90, None, 180, 270), suffix=',stage=%d' % i, prefix='lifecycle=%s,' % state))
         rm.blockstate('berry_bush/%s_bush_cane' % berry, variants=cane_dict).with_lang(lang('%s Cane', berry))
         rm.item_model('berry_bush/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
-        for state in ('', 'flowering_', 'dry_', 'fruiting_'):
+        for state in state_to_model.values():
             bush_textures = {'cane': 'tfc:block/berry_bush/' + state + '%s_cane' % berry, 'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry}
             for i in range(0, 3):
                 rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures=bush_textures)
@@ -507,15 +503,10 @@ def generate(rm: ResourceManager):
         rm.block_model('berry_bush/dead_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
         rm.block_model('berry_bush/dead_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
     for berry in ('gooseberry', 'snowberry', 'bunchberry', 'cloudberry', 'wintergreen_berry', 'strawberry', 'cranberry'):
-        bush_dict = {}
-        for state in lifecycles:
-            for i in range(0, 2 + 1):
-                bush_dict.update({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/berry_bush/%s%s_bush_%d' % (state_to_model[state], berry, i)}})
-        rm.blockstate('berry_bush/%s_bush' % berry, variants=bush_dict).with_lang(lang('%s Bush', berry))
+        rm.blockstate('berry_bush/%s_bush' % berry, variants=dict(('lifecycle=%s,stage=%d' % (state, i), {'model': 'tfc:block/berry_bush/%s%s_bush_%d' % (state_to_model[state], berry, i)}) for state, i in itertools.product(lifecycles, range(0, 3)))).with_lang(lang('%s Bush', berry))
         rm.item_model('berry_bush/%s_bush' % berry, 'tfc:block/berry_bush/%s_bush' % berry)
-        for state in ('', 'flowering_', 'dry_', 'fruiting_'):
-            for i in range(0, 3):
-                rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
+        for state, i in itertools.product(state_to_model.values(), range(0, 3)):
+            rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
 
     for fruit in FRUITS.keys():
         if fruit != 'banana':
@@ -832,12 +823,12 @@ def four_ways(model: str) -> List[Dict[str, Any]]:
 
 
 def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = '', prefix: str = '') -> Dict[str, Dict[str, Any]]:
-    return utils.del_none({
+    return {
         '%sfacing=east%s' % (prefix, suffix): {'model': model, 'y': rots[0]},
         '%sfacing=north%s' % (prefix, suffix): {'model': model, 'y': rots[1]},
         '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
         '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
-    })
+    }
 
 
 def alternatives(entries: utils.Json) -> Dict[str, Any]:
