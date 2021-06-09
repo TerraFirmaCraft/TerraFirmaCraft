@@ -1,0 +1,62 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:random_patch",
+              "config": {
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/heliconia",
+                    "Properties": {
+                      "age": "1",
+                      "stage": "1"
+                    }
+                  }
+                },
+                "block_placer": {
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/heliconia",
+                  "property": "age"
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 10,
+                "zspread": 10,
+                "tries": 10,
+                "use_density": true
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 14,
+                "max_temperature": 40,
+                "min_rainfall": 320,
+                "max_rainfall": 500
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
+    }
+  }
+}

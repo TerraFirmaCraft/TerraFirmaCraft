@@ -1,0 +1,74 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "single"
+      },
+      "apply": [
+		  {"model": "tfc:block/plant/king_fern_upper_0a", "weight": 16 },
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "weight": 3 },
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 90, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 180, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 270, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "weight": 2 },
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 90, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 180, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 270, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "weight": 2 },
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 90, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 180, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 270, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "weight": 1 },
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 90, "weight": 1},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 180, "weight": 1},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 270, "weight": 1}
+        
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/king_fern_lower_0"
+        }
+      ]
+    },
+	{
+      "when": {
+        "part": "lower",
+        "stage": "0"
+      },
+      "apply": [
+          {"model": "tfc:block/plant/king_fern_lower_fronds_0a", "weight": 4 }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "0"
+      },
+      "apply": [
+		  {"model": "tfc:block/plant/king_fern_upper_0a", "weight": 16 },
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "weight": 3 },
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 90, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 180, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0b", "y": 270, "weight": 3},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "weight": 2 },
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 90, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 180, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0c", "y": 270, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "weight": 2 },
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 90, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 180, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0d", "y": 270, "weight": 2},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "weight": 1 },
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 90, "weight": 1},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 180, "weight": 1},
+		  {"model": "tfc:block/plant/king_fern_upper_0e", "y": 270, "weight": 1}
+      ]
+    }
+  ]
+}

@@ -31,8 +31,8 @@
             ],
             "blacklist": [],
             "yspread": 1,
-            "xspread": 10,
-            "zspread": 10
+            "xspread": 7,
+            "zspread": 7
           }
         },
         "decorator": {
@@ -46,8 +46,8 @@
     "decorator": {
       "type": "tfc:climate",
       "config": {
-        "min_temperature": 0,
-        "max_temperature": 36,
+        "min_temperature": 4,
+        "max_temperature": 40,
         "min_rainfall": 150,
         "max_rainfall": 500
       }

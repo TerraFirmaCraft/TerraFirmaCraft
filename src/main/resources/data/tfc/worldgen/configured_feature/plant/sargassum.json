@@ -39,7 +39,7 @@
                   }
                 },
                 "decorator": {
-                  "type": "tfc:near_water",
+                  "type": "tfc:shoreline",
                   "config": {
                     "radius": 6
                   }
@@ -49,8 +49,8 @@
             "decorator": {
               "type": "tfc:climate",
               "config": {
-                "min_temperature": 0,
-                "max_temperature": 25,
+                "min_temperature": -10,
+                "max_temperature": 16,
                 "min_rainfall": 0,
                 "max_rainfall": 500
               }

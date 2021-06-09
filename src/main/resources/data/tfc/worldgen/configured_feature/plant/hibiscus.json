@@ -1,0 +1,61 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:random_patch",
+              "config": {
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/hibiscus",
+                    "Properties": {
+                      "age": "1",
+                      "stage": "1",
+                      "part": "lower"
+                    }
+                  }
+                },
+                "block_placer": {
+                  "type": "tfc:tall_plant"
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 15,
+                "zspread": 15,
+                "tries": 10,
+                "use_density": true
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 10,
+                "max_temperature": 24,
+                "min_rainfall": 260,
+                "max_rainfall": 450
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
+    }
+  }
+}

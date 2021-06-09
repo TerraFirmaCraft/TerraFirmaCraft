@@ -104,10 +104,10 @@
       "tfc:plant/badderlocks",
       "tfc:plant/gutweed",
       "tfc:plant/laminaria",
-      "tfc:plant/manatee_grass",
       "tfc:plant/sargassum",
-      "tfc:plant/star_grass",
-      "tfc:plant/turtle_grass"
+      "tfc:plant/turtle_grass",
+      "tfc:plant/manatee_grass",
+      "tfc:plant/star_grass"
     ],
     [
       "tfc:surface_loose_rocks",
