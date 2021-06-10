@@ -73,6 +73,8 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
 
     public static final float COOKING_POT_BOILING_TEMPERATURE = Heat.VERY_HOT.getMin();
 
+    private static final int MAX_AIR_TICKS = 600;
+
     private final IItemHandler[] inventoryWrappers;
     private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
     // Grill
@@ -178,7 +180,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
+                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, MAX_AIR_TICKS) : 0);
                 if (temperature != targetTemperature)
                 {
                     float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
@@ -649,9 +651,9 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
     public void onAirIntake(int amount)
     {
         airTicks += amount;
-        if (airTicks > 600)
+        if (airTicks > MAX_AIR_TICKS)
         {
-            airTicks = 600;
+            airTicks = MAX_AIR_TICKS;
         }
     }
 

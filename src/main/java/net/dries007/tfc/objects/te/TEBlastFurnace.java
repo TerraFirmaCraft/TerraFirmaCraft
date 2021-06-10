@@ -51,6 +51,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
 {
     public static final int SLOT_TUYERE = 0;
     public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
+    private static final int MAX_AIR_TICKS = 600;
 
     private final List<ItemStack> oreStacks = new ArrayList<>();
     private final List<ItemStack> fuelStacks = new ArrayList<>();
@@ -265,7 +266,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
 
                 if (temperature > 0 || burnTemperature > 0)
                 {
-                    float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
+                    float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, MAX_AIR_TICKS) : 0);
                     if (temperature != targetTemperature)
                     {
                         float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
@@ -405,9 +406,9 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
         if (!stack.isEmpty() && burnTicksLeft > 0)
         {
             airTicks += airAmount;
-            if (airTicks > 600)
+            if (airTicks > MAX_AIR_TICKS)
             {
-                airTicks = 600;
+                airTicks = MAX_AIR_TICKS;
             }
         }
     }
