@@ -822,6 +822,9 @@ config.tfc.client.tooltip.anvilWeldOutputToActionBar.tooltip=Should welding outp
 config.tfc.client.tooltip.vesselOutputToActionBar=Vessel Output to Actionbar
 config.tfc.client.tooltip.vesselOutputToActionBar.tooltip=Should vessels output to the actionbar? (the space just above the hotbar)
 
+config.tfc.client.tooltip.animalsOutputToActionBar=Animal Feedback Output to Actionbar
+config.tfc.client.tooltip.animalsOutputToActionBar.tooltip=Should animal feedback output to the actionbar? (the space just above the hotbar)
+
 config.tfc.client.tooltip.oreTooltipMode=Ore Tooltip Mode
 config.tfc.client.tooltip.oreTooltipMode.tooltip=Mode used on ore tooltips.
 

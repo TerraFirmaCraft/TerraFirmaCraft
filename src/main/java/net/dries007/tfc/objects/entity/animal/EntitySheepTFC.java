@@ -20,6 +20,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -40,9 +41,12 @@ import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -168,7 +172,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
                     TextComponentTranslation tooltip = getTooltip();
                     if (tooltip != null)
                     {
-                        player.sendMessage(tooltip);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage(MessageCategory.ANIMAL, tooltip), (EntityPlayerMP) player);
                     }
                 }
             }
@@ -183,7 +187,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
                     TextComponentTranslation tooltip = getTooltip();
                     if (tooltip != null)
                     {
-                        player.sendMessage(tooltip);
+                        TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage(MessageCategory.ANIMAL, tooltip), (EntityPlayerMP) player);
                     }
                 }
             }

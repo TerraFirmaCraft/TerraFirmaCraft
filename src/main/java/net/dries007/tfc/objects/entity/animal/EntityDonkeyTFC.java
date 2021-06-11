@@ -45,6 +45,7 @@ import net.minecraft.world.biome.Biome;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -52,6 +53,8 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -414,11 +417,11 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                     {
                         if (this.getAge() == Age.CHILD)
                         {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
+                            TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANIMAL, MOD_ID + ".tooltip.animal.product.young", getAnimalName()), (EntityPlayerMP) player);
                         }
                         else
                         {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
+                            TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANIMAL, MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName()), (EntityPlayerMP) player);
                         }
 
                     }

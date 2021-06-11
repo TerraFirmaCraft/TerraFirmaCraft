@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -38,9 +39,12 @@ import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -160,7 +164,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
                 TextComponentTranslation tooltip = getTooltip();
                 if (tooltip != null)
                 {
-                    player.sendMessage(tooltip);
+                    TerraFirmaCraft.getNetwork().sendTo(new PacketSimpleMessage(MessageCategory.ANIMAL, tooltip), (EntityPlayerMP) player);
                 }
             }
             return true;

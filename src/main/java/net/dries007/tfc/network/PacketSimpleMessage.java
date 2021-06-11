@@ -24,7 +24,8 @@ public class PacketSimpleMessage implements IMessage
     public enum MessageCategory
     {
         ANVIL(() -> ConfigTFC.Client.TOOLTIP.anvilWeldOutputToActionBar),
-        VESSEL(() -> ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar);
+        VESSEL(() -> ConfigTFC.Client.TOOLTIP.vesselOutputToActionBar),
+        ANIMAL(() -> ConfigTFC.Client.TOOLTIP.animalsOutputToActionBar);
 
         private final BooleanSupplier displayToToolbar;
 
@@ -37,9 +38,9 @@ public class PacketSimpleMessage implements IMessage
     /**
      * Utility method for making a message with just a single {@link TextComponentTranslation} element.
      */
-    public static PacketSimpleMessage translateMessage(MessageCategory category, String unlocalized)
+    public static PacketSimpleMessage translateMessage(MessageCategory category, String unlocalized, Object... args)
     {
-        return new PacketSimpleMessage(category, new TextComponentTranslation(unlocalized));
+        return new PacketSimpleMessage(category, new TextComponentTranslation(unlocalized, args));
     }
 
     /**

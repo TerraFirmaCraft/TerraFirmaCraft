@@ -41,10 +41,13 @@ import net.minecraft.world.biome.Biome;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -447,7 +450,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
                         //Show tooltips
                         if (this.isFertilized() && this.getType() == Type.MAMMAL)
                         {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                            TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANIMAL, MOD_ID + ".tooltip.animal.mating.pregnant", getAnimalName()), (EntityPlayerMP) player);
                         }
                     }
                 }
