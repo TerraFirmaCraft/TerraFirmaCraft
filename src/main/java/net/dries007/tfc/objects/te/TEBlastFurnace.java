@@ -22,7 +22,6 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,12 +51,14 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
     public static final int SLOT_TUYERE = 0;
     public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
     private static final int MAX_AIR_TICKS = 600;
+    private static final int MAX_AIR_TICKS = ConfigTFC.Devices.BELLOWS.maxTicks;
 
     private final List<ItemStack> oreStacks = new ArrayList<>();
     private final List<ItemStack> fuelStacks = new ArrayList<>();
     private final Alloy alloy;
     private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0, chimney = 0;
-    private long burnTicksLeft = 0, airTicks = 0;
+    private long burnTicksLeft = 0;
+    private int airTicks = 0;
     private int fuelCount = 0, oreCount = 0, oreUnits; // Used to show on client's GUI how much ore/fuel TE has
     private float temperature = 0;
     private float burnTemperature = 0;
@@ -104,7 +105,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
         burnTicksLeft = nbt.getLong("burnTicksLeft");
-        airTicks = nbt.getLong("airTicks");
+        airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         temperature = nbt.getFloat("temperature");
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
@@ -128,7 +129,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
         }
         nbt.setTag("fuels", fuels);
         nbt.setLong("burnTicksLeft", burnTicksLeft);
-        nbt.setLong("airTicks", airTicks);
+        nbt.setInteger("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
         nbt.setFloat("temperature", temperature);
         nbt.setTag("alloy", alloy.serializeNBT());
@@ -266,12 +267,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
 
                 if (temperature > 0 || burnTemperature > 0)
                 {
-                    float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, MAX_AIR_TICKS) : 0);
-                    if (temperature != targetTemperature)
-                    {
-                        float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
-                        temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
-                    }
+                    temperature = CapabilityItemHeat.adjustToTargetTemperature(temperature, burnTemperature, airTicks, MAX_AIR_TICKS);
                     // Provide heat to blocks that are one block bellow AKA crucible
                     Block blockCrucible = world.getBlockState(pos.down()).getBlock();
                     if (blockCrucible instanceof IHeatConsumerBlock)
