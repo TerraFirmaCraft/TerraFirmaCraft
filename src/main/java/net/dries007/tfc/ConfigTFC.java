@@ -727,6 +727,9 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".devices.goldpan")
         public static final GoldPanCFG GOLD_PAN = new GoldPanCFG();
 
+        @Config.Comment("Bellows")
+        @Config.LangKey("config." + MOD_ID + ".devices.bellows")
+        public static final BellowsCFG BELLOWS = new BellowsCFG();
 
         public static final class TemperatureCFG
         {
@@ -920,6 +923,19 @@ public final class ConfigTFC
             @Config.Comment("Cooldown ticks after panning.")
             @Config.LangKey("config." + MOD_ID + ".devices.gold_pan.cooldownTicks")
             public int cooldownTicks = 20;
+        }
+
+        public static final class BellowsCFG
+        {
+            @Config.Comment("The max number of air ticks, devices get a temperature bonus up to this amount. (1000 = 1 in game hour = 50 seconds), default is 600 ticks.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.bellows.maxTicks")
+            public int maxTicks = 600;
+
+            @Config.Comment("Amount of air ticks given to the connected devices. (1000 = 1 in game hour = 50 seconds), default is 200 ticks.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.bellows.ticks")
+            public int ticks = 200;
         }
 
     }

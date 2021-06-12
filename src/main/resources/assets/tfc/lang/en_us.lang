@@ -798,6 +798,16 @@ config.tfc.devices.gold_pan.cooldownTicks=Cooldown Ticks
 config.tfc.devices.gold_pan.cooldownTicks.tooltip=Cooldown ticks after panning.
 
 
+## Bellows
+config.tfc.devices.bellows=Bellows
+
+config.tfc.devices.bellows.maxTicks=Max Air Ticks
+config.tfc.devices.bellows.maxTicks.tooltip=The max number of air ticks, devices get a temperature bonus up to this amount. (1000 = 1 in game hour = 50 seconds), default is 600 ticks.
+
+config.tfc.devices.bellows.ticks=Added Air Ticks
+config.tfc.devices.bellows.ticks.tooltip=Amount of air ticks given to the connected devices. (1000 = 1 in game hour = 50 seconds), default is 200 ticks.
+
+
 ## Clients
 config.tfc.client=Client Settings
 

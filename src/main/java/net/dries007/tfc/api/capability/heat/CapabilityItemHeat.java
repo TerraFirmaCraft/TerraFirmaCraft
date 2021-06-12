@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -101,6 +102,18 @@ public final class CapabilityItemHeat
     {
         final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.Devices.TEMPERATURE.globalModifier;
         instance.setTemperature(temp);
+    }
+
+    public static float adjustToTargetTemperature(float temp, float burnTemp, int airTicks, int maxTempBonus)
+    {
+        boolean hasAir = airTicks > 0;
+        float targetTemperature = burnTemp + (hasAir ? MathHelper.clamp(burnTemp, 0, maxTempBonus) : 0);
+        if (temp != targetTemperature)
+        {
+            float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
+            return adjustTempTowards(temp, targetTemperature, delta * (hasAir ? 2 : 1), delta * (hasAir ? 0.5f : 1));
+        }
+        return temp;
     }
 
     @Nullable

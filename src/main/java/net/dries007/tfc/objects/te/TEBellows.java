@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCSounds;
@@ -35,7 +35,7 @@ public class TEBellows extends TEBase
     public static final Vec3i OFFSET_INSET = new Vec3i(1, -1, 0);
 
     private static final Set<Vec3i> OFFSETS = new HashSet<>();
-    private static final int BELLOWS_AIR = 200;
+    private static final int BELLOWS_AIR = ConfigTFC.Devices.BELLOWS.ticks;
 
     static
     {
