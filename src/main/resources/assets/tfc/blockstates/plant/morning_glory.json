@@ -67,62 +67,72 @@
         "down": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1"
-      }
+      "apply": [
+	  { "model": "tfc:block/plant/morning_glory_1a", "weight": 1 },
+	  { "model": "tfc:block/plant/morning_glory_1b", "weight": 2 },
+	  { "model": "tfc:block/plant/morning_glory_1c", "weight": 2 },
+	  { "model": "tfc:block/plant/morning_glory_1d", "weight": 2 }
+      ]
     },
     {
       "when": {
         "east": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1",
-        "x": 270,
-        "y": 90
-      }
+      "apply": [
+		  {"model": "tfc:block/plant/morning_glory_1a", "x": 270, "y": 90, "weight": 1 },
+		  {"model": "tfc:block/plant/morning_glory_1b", "x": 270, "y": 90, "weight": 4 },
+		  {"model": "tfc:block/plant/morning_glory_1c", "x": 270, "y": 90, "weight": 4 },
+		  {"model": "tfc:block/plant/morning_glory_1d", "x": 270, "y": 90, "weight": 4 }
+      ]
     },
     {
       "when": {
         "north": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1",
-        "x": 270
-      }
+      "apply": [
+	      {"model": "tfc:block/plant/morning_glory_1a", "x": 270, "weight": 1 },
+		  {"model": "tfc:block/plant/morning_glory_1b", "x": 270, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1c", "x": 270, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1d", "x": 270, "weight": 3 }
+      ]
     },
     {
       "when": {
         "south": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1",
-        "x": 270,
-        "y": 180
-      }
+      "apply": [
+	      {"model": "tfc:block/plant/morning_glory_1a", "x": 270, "y": 180, "weight": 1 },
+		  {"model": "tfc:block/plant/morning_glory_1b", "x": 270, "y": 180, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1c", "x": 270, "y": 180, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1d", "x": 270, "y": 180, "weight": 3 }
+      ]
     },
     {
       "when": {
         "up": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1",
-        "x": 180
-      }
+      "apply": [
+	      {"model": "tfc:block/plant/morning_glory_1a", "x": 180, "weight": 1 },
+		  {"model": "tfc:block/plant/morning_glory_1b", "x": 180, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1c", "x": 180, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1d", "x": 180, "weight": 3 }
+      ]
     },
     {
       "when": {
         "west": "true",
         "stage": "1"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory_1",
-        "x": 270,
-        "y": 270
-      }
+      "apply": [
+	      {"model": "tfc:block/plant/morning_glory_1a", "x": 270, "y": 270, "weight": 1 },
+		  {"model": "tfc:block/plant/morning_glory_1b", "x": 270, "y": 270, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1c", "x": 270, "y": 270, "weight": 3 },
+		  {"model": "tfc:block/plant/morning_glory_1d", "x": 270, "y": 270, "weight": 3 }
+      ]
     },
     {
       "when": {

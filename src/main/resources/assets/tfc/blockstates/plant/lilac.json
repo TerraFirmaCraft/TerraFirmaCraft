@@ -2,16 +2,6 @@
   "multipart": [
     {
       "when": {
-        "part": "single"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/lilac_single"
-        }
-      ]
-    },
-    {
-      "when": {
         "part": "lower",
         "stage": "0"
       },

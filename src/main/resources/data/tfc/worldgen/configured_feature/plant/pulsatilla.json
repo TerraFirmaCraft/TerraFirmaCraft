@@ -39,7 +39,7 @@
               "type": "tfc:climate",
               "config": {
                 "min_temperature": -10,
-                "max_temperature": 10,
+                "max_temperature": 2,
                 "min_rainfall": 50,
                 "max_rainfall": 200
               }

@@ -108,13 +108,13 @@
       "tfc:underground_guano"
     ],
     [
-      "tfc:plant/badderlocks",
-      "tfc:plant/gutweed",
-      "tfc:plant/laminaria",
-      "tfc:plant/sargassum",
-      "tfc:plant/turtle_grass",
       "tfc:plant/manatee_grass",
       "tfc:plant/star_grass",
+      "tfc:plant/badderlocks",
+      "tfc:plant/laminaria",
+      "tfc:plant/gutweed",
+      "tfc:plant/sargassum",
+      "tfc:plant/turtle_grass",
       "tfc:plant/giant_kelp",
       "tfc:plant/winged_kelp",
       "tfc:plant/leafy_kelp"

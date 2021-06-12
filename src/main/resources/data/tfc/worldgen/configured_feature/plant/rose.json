@@ -17,9 +17,7 @@
           }
         },
         "block_placer": {
-          "type": "tfc:random_property",
-          "block": "tfc:plant/rose",
-          "property": "age"
+          "type": "tfc:tall_plant"
         },
         "whitelist": [
           "tfc:clay_grass/silt",
@@ -36,8 +34,8 @@
     "decorator": {
       "type": "tfc:climate",
       "config": {
-        "min_temperature": 2,
-        "max_temperature": 14,
+        "min_temperature": 6,
+        "max_temperature": 16,
         "min_rainfall": 150,
         "max_rainfall": 300
       }
