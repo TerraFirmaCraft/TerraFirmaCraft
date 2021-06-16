@@ -46,13 +46,13 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.api.util.IRidable;
 import net.dries007.tfc.network.PacketSimpleMessage;
 import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -61,7 +61,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestock
+public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestock, IRidable
 {
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.BOOLEAN);
@@ -381,34 +381,9 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+            else if (canAcceptHalter(stack))
             {
-                if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
-                {
-                    if (!this.world.isRemote)
-                    {
-                        this.consumeItemFromStack(player, stack);
-                        this.setHalter(true);
-                    }
-                    return true;
-                }
-                else
-                {
-                    // Show tooltips
-                    if (!this.world.isRemote)
-                    {
-                        if (this.getAge() == Age.CHILD)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
-                        }
-                        else
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
-                        }
-
-                    }
-                    return false;
-                }
+                return attemptApplyHalter(this, this.world, player, stack);
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
