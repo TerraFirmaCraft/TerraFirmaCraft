@@ -31,16 +31,15 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -64,15 +63,25 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventHandler
 {
     private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/icons/overlay.png");
 
-    @SubscribeEvent
+    public static void init()
+    {
+        final IEventBus bus = MinecraftForge.EVENT_BUS;
+
+        bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
+        bus.addListener(ClientForgeEventHandler::onItemTooltip);
+        bus.addListener(ClientForgeEventHandler::onInitGuiPost);
+        bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
+        bus.addListener(ClientForgeEventHandler::onClientTick);
+        bus.addListener(ClientForgeEventHandler::onKeyEvent);
+        bus.addListener(ClientForgeEventHandler::onRenderOverlay);
+    }
+
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
         Minecraft mc = Minecraft.getInstance();
@@ -109,7 +118,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         ItemStack stack = event.getItemStack();
@@ -126,7 +134,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
         PlayerEntity player = Minecraft.getInstance().player;
@@ -143,7 +150,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onClientWorldLoad(WorldEvent.Load event)
     {
         if (event.getWorld() instanceof ClientWorld)
@@ -162,7 +168,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event)
     {
         World world = Minecraft.getInstance().level;
@@ -173,7 +178,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onKeyEvent(InputEvent.KeyInputEvent event)
     {
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
@@ -183,8 +187,7 @@ public class ClientForgeEventHandler
     }
 
     @SuppressWarnings("deprecation")
-    @SubscribeEvent
-    public static void render(RenderGameOverlayEvent.Pre event)
+    public static void onRenderOverlay(RenderGameOverlayEvent.Pre event)
     {
         final Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
