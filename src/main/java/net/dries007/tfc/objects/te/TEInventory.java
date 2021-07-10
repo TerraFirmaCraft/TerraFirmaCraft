@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -41,6 +44,11 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
     protected TEInventory(ItemStackHandler inventory)
     {
         this.inventory = inventory;
+    }
+
+    protected TEInventory(BiFunction<ISlotCallback, Integer, ItemStackHandler> builder, int inventorySize)
+    {
+        this.inventory = builder.apply(this, inventorySize);
     }
 
     @Override
