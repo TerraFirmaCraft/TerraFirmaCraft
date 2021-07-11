@@ -34,13 +34,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
-public class BlockSaplingTFC extends BlockBush implements IGrowable
+public class BlockSaplingTFC extends BlockBush implements IGrowable, IGrowingPlant
 {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 4);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
@@ -181,5 +182,11 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         wood.addInfo(stack, worldIn, tooltip, flagIn);
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        return GrowthStatus.GROWING;
     }
 }

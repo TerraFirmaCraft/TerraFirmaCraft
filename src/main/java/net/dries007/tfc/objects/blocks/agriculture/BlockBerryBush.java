@@ -39,6 +39,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IBerryBush;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.DamageSourcesTFC;
@@ -50,7 +51,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockBerryBush extends Block
+public class BlockBerryBush extends Block implements IGrowingPlant
 {
     public static final PropertyBool FRUITING = PropertyBool.create("fruiting");
 
@@ -289,5 +290,22 @@ public class BlockBerryBush extends Block
             return BlocksTFC.isGrowableSoil(world.getBlockState(pos.down(2))); // Only stack once
         }
         return BlocksTFC.isGrowableSoil(below);
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        float temp = ClimateTFC.getActualTemp(world, pos);
+        float rainfall = ChunkDataTFC.getRainfall(world, pos);
+        boolean canGrow = bush.isValidForGrowth(temp, rainfall);
+        if (state.getValue(FRUITING))
+        {
+            return GrowthStatus.FULLY_GROWN;
+        }
+        else if (canGrow && bush.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
+        {
+            return GrowthStatus.GROWING;
+        }
+        return canGrow ? GrowthStatus.CAN_GROW : GrowthStatus.NOT_GROWING;
     }
 }

@@ -1164,6 +1164,12 @@ tfc.enum.nutrient.fruit=Fruit
 tfc.enum.nutrient.protein=Protein
 tfc.enum.nutrient.dairy=Dairy
 
+tfc.enum.growstatus.dead=This plant is dead
+tfc.enum.growstatus.not_growing=This plant is not growing
+tfc.enum.growstatus.can_grow=This plant is able to grow
+tfc.enum.growstatus.growing=This plant is growing
+tfc.enum.growstatus.fully_grown=This plant is fully grown
+
 #JEI
 jei.category.tfc.alloy=Alloying recipes
 jei.category.tfc.anvil=Anvil recipes

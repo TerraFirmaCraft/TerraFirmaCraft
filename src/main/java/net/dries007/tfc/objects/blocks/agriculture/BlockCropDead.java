@@ -32,13 +32,14 @@ import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillType;
 
 @ParametersAreNonnullByDefault
-public class BlockCropDead extends BlockBush
+public class BlockCropDead extends BlockBush implements IGrowingPlant
 {
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
     public static final PropertyBool MATURE = PropertyBool.create("mature");
@@ -168,5 +169,11 @@ public class BlockCropDead extends BlockBush
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Crop;
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        return GrowthStatus.DEAD;
     }
 }

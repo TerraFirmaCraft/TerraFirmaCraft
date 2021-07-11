@@ -33,9 +33,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.api.util.IGrowingPlant;
+import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockFruitTreeBranch extends Block
+public class BlockFruitTreeBranch extends Block implements IGrowingPlant
 {
     /* Facing of this branch */
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
@@ -308,5 +311,18 @@ public class BlockFruitTreeBranch extends Block
             }
         }
         return null;
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        float temp = ClimateTFC.getActualTemp(world, pos);
+        float rainfall = ChunkDataTFC.getRainfall(world, pos);
+        boolean canGrow = tree.isValidForGrowth(temp, rainfall);
+        if (canGrow)
+        {
+            return GrowthStatus.GROWING;
+        }
+        return GrowthStatus.NOT_GROWING;
     }
 }

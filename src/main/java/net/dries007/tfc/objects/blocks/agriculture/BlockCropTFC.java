@@ -35,6 +35,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
@@ -46,7 +47,7 @@ import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public abstract class BlockCropTFC extends BlockBush
+public abstract class BlockCropTFC extends BlockBush implements IGrowingPlant
 {
     // stage properties
     public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
@@ -302,4 +303,24 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     public abstract PropertyInteger getStageProperty();
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        float temp = ClimateTFC.getActualTemp(world, pos);
+        float rainfall = ChunkDataTFC.getRainfall(world, pos);
+        if (state.getValue(getStageProperty()) >= crop.getMaxStage())
+        {
+            return GrowthStatus.FULLY_GROWN;
+        }
+        else if (!crop.isValidConditions(temp, rainfall) || !world.canSeeSky(pos))
+        {
+            return GrowthStatus.NOT_GROWING;
+        }
+        else if (crop.isValidForGrowth(temp, rainfall))
+        {
+            return GrowthStatus.GROWING;
+        }
+        return GrowthStatus.CAN_GROW;
+    }
 }

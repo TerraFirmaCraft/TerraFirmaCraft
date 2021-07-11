@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -41,7 +42,7 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockFruitTreeSapling extends BlockBush implements IGrowable
+public class BlockFruitTreeSapling extends BlockBush implements IGrowable, IGrowingPlant
 {
     private static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0, 0.1, 0.9, 0.9, 0.9);
 
@@ -163,5 +164,14 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         tree.addInfo(stack, worldIn, tooltip, flagIn);
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        float temp = ClimateTFC.getActualTemp(world, pos);
+        float rainfall = ChunkDataTFC.getRainfall(world, pos);
+        boolean canGrow = tree.isValidForGrowth(temp, rainfall);
+        return canGrow ? GrowthStatus.GROWING : GrowthStatus.NOT_GROWING;
     }
 }
