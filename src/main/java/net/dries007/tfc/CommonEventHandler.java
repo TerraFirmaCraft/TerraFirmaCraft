@@ -268,7 +268,7 @@ public final class CommonEventHandler
 
         // Drop shards from glass
         ItemStack stackAt = new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
-        if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
+        if (!event.isSilkTouching() && OreDictionaryHelper.doesStackMatchOre(stackAt, "blockGlass"))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
