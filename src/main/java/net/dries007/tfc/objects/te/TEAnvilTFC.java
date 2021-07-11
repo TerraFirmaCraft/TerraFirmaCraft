@@ -167,7 +167,7 @@ public class TEAnvilTFC extends TEInventory
     }
 
     /**
-     * Slot updates only happen on server side, so update recipe when change is made
+     * Slot updates only happen on server side, so update when change is made so that items displayed on the anvil are synced up
      *
      * @param slot a slot id, or -1 if triggered by other methods
      */
@@ -177,10 +177,7 @@ public class TEAnvilTFC extends TEInventory
         super.setAndUpdateSlots(slot);
         if (!world.isRemote)
         {
-            if (checkRecipeUpdate())
-            {
-                markForSync();
-            }
+            markForSync();
         }
     }
 
@@ -425,31 +422,6 @@ public class TEAnvilTFC extends TEInventory
         return workingTarget;
     }
 
-    private boolean checkRecipeUpdate()
-    {
-        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        boolean shouldSendUpdate = false;
-        if (cap == null && recipe != null)
-        {
-            // Check for item removed / broken
-            shouldSendUpdate = setRecipe(null);
-        }
-        else if (cap != null)
-        {
-            // Check for mismatched recipe
-            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
-            if (capRecipe != recipe)
-            {
-                shouldSendUpdate = setRecipe(capRecipe);
-            }
-            else if (AnvilRecipe.getAllFor(stack).size() == 1)
-            {
-                shouldSendUpdate = setRecipe(AnvilRecipe.getAllFor(stack).get(0));
-            }
-        }
-        return shouldSendUpdate;
-    }
 
     private void resetFields()
     {
