@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/silver_spurflower/silver_spurflower_2",
+    "particle": "tfc:block/plant/silver_spurflower/silver_spurflower_2"
+  }
+}

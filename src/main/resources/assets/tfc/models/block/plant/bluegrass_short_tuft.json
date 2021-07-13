@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/bluegrass/bluegrass_short_tuft"
+  }
+}

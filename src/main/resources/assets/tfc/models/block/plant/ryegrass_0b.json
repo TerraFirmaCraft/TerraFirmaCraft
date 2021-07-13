@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/tinted_cross",
+  "parent": "block/tinted_cross",
   "textures": {
     "cross": "tfc:block/plant/ryegrass/ryegrass_lower_0b",
     "cross1": "tfc:block/plant/ryegrass/ryegrass_upper_0b",
@@ -41,9 +41,9 @@
         },
         "south": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross",
@@ -86,9 +86,9 @@
         },
         "east": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross",
@@ -131,9 +131,9 @@
         },
         "south": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross1",
@@ -176,9 +176,9 @@
         },
         "east": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross1",

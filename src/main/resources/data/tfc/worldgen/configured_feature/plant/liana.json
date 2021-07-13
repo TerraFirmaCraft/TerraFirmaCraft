@@ -46,7 +46,7 @@
       "type": "tfc:bounded_carving_mask",
       "config": {
         "step": "air",
-        "probability": 0.003,
+        "probability": 0.005,
         "min_y": 0,
         "max_y": 110
       }
