@@ -86,9 +86,9 @@ public final class ForgeEventHandler
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
-        bus.addListener(ForgeEventHandler::attachChunkCapabilities);
-        bus.addListener(ForgeEventHandler::attachWorldCapabilities);
-        bus.addListener(ForgeEventHandler::attachItemCapabilities);
+        bus.addGenericListener(Chunk.class, ForgeEventHandler::attachChunkCapabilities);
+        bus.addGenericListener(World.class, ForgeEventHandler::attachWorldCapabilities);
+        bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);
