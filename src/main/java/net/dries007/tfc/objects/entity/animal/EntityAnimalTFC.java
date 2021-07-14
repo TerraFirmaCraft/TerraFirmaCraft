@@ -346,7 +346,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                 }
             }
             if (this instanceof ILivestock){
-                // Wild animals disappear after 125% lifespan
+                // Wild livestock disappear after 125% lifespan
                 if (this.getFamiliarity() < 0.10F &&
                     (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
                 {
