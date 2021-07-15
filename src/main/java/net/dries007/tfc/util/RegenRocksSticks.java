@@ -111,9 +111,7 @@ public class RegenRocksSticks implements IWorldGenerator
 
     private void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
     {
-        // Use air, so it doesn't replace other replaceable world gen
-        // This matches the check in BlockPlacedItemFlat for if the block can stay
-        // Also, only add on soil, since this is called by the world regen handler later
+
         if (isReplaceable(world, pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
         {
             world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), 2);
@@ -163,7 +161,7 @@ public class RegenRocksSticks implements IWorldGenerator
 
     private static Boolean isReplaceable(World world, BlockPos pos)
     {
-
+        //Modified to allow replacement of grass during spring regen
         Block test = world.getBlockState(pos).getBlock();
         if (test instanceof BlockShortGrassTFC || test instanceof BlockTallGrassTFC || test.isAir(world.getBlockState(pos), world, pos))
         {

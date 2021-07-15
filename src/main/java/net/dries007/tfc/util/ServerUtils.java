@@ -15,8 +15,4 @@ public class ServerUtils
         return Math.min(1000.0D / worldTickTime, 20.0D);
 
     }
-
-    public static boolean isSurvivalOrAdventure(EntityPlayer player) {
-        return !player.isSpectator() && !player.isCreative();
-    }
 }

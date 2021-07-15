@@ -84,7 +84,7 @@ public class RegenWildCrops implements IWorldGenerator
     }
     private Boolean isReplaceable(World world, BlockPos pos)
     {
-
+        //Modified to allow replacement of grass during spring regen
         Block test = world.getBlockState(pos).getBlock();
         if (test instanceof BlockShortGrassTFC || test instanceof BlockTallGrassTFC || test.isAir(world.getBlockState(pos), world, pos))
         {
