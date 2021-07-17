@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:plant/foxglove"
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:pink_dye"
+  }
+}

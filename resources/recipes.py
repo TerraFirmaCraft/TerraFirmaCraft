@@ -93,6 +93,10 @@ def generate(rm: ResourceManager):
     for gem in GEMS:
         simple_item(rm, 'quern', gem, 'tfc:ore/%s' % gem, 'tfc:powder/%s' % gem, count=4)
 
+    for color, plants in PLANT_COLORS.items():
+        for plant in plants:
+            simple_item(rm, 'quern', 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
+
     for pottery in PAIRED_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1500, result_item='tfc:ceramic/' + pottery)
 

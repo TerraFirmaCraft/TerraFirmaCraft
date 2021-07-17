@@ -331,6 +331,22 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
 
+PLANT_COLORS: Dict[str, List[str]] = {
+    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white'],
+    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna'],
+    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla'],
+    'light_blue': ['labrador_tea', 'sapphire_tower'],
+    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow'],
+    'lime': ['moss'],
+    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink'],
+    'light_gray': ['yucca'],
+    'purple': ['allium', 'black_orchid', 'perovskia'],
+    'blue': ['blue_orchid', 'grape_hyacinth'],
+    'brown': ['field_horsetail', 'sargassum'],
+    'green': ['barrel_cactus', 'reindeer_lichen'],
+    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
+}
+
 SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
                 'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')

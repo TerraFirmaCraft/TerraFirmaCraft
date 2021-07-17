@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:plant/labrador_tea"
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:light_blue_dye"
+  }
+}
