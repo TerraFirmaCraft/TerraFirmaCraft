@@ -65,7 +65,6 @@ def generate(rm: ResourceManager):
     for color in COLORS:
         heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 1200, result_item='minecraft:%s_glazed_terracotta' % color)
 
-    # todo: plants
     simple_item(rm, 'quern', 'olive', 'tfc:food/olive', 'tfc:olive_paste')
     simple_item(rm, 'quern', 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
     simple_item(rm, 'quern', 'fluxstone', 'tag!tfc:fluxstone', 'tfc:powder/flux', count=2)
