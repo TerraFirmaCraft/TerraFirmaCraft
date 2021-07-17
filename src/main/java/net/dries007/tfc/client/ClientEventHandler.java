@@ -20,14 +20,13 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
@@ -44,13 +43,20 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.types.Wood.BlockType.*;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientEventHandler
 {
-    @SubscribeEvent
+    public static void init()
+    {
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        bus.addListener(ClientEventHandler::clientSetup);
+        bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
+        bus.addListener(ClientEventHandler::registerColorHandlerItems);
+        bus.addListener(ClientEventHandler::registerParticleFactoriesAndOtherStuff);
+    }
+
     public static void clientSetup(FMLClientSetupEvent event)
     {
         // Screens
@@ -141,7 +147,6 @@ public final class ClientEventHandler
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
     }
 
-    @SubscribeEvent
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
@@ -160,7 +165,6 @@ public final class ClientEventHandler
         registry.register((state, worldIn, pos, tintIndex) -> 0x5FB5B8, TFCBlocks.SPRING_WATER.get());
     }
 
-    @SubscribeEvent
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();
@@ -171,7 +175,6 @@ public final class ClientEventHandler
 		TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
     }
 
-    @SubscribeEvent
     public static void registerParticleFactoriesAndOtherStuff(ParticleFactoryRegisterEvent event)
     {
         // Add client reload listeners here, as it's closest to the location where they are added in vanilla

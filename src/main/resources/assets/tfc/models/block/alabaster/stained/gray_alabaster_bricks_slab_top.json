@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/alabaster/stained/gray_alabaster_bricks",
+    "top": "tfc:block/alabaster/stained/gray_alabaster_bricks",
+    "side": "tfc:block/alabaster/stained/gray_alabaster_bricks"
+  }
+}
