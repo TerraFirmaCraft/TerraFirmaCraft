@@ -192,6 +192,28 @@ public final class Helpers
         return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public static <E extends Enum<E>> E getEnumFromJson(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    {
+        final String enumName = JSONUtils.getAsString(obj, key, null);
+        if (enumName != null)
+        {
+            try
+            {
+                Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
+            }
+            catch (IllegalArgumentException e)
+            {
+                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
+            }
+        }
+        if (defaultValue != null)
+        {
+            return defaultValue;
+        }
+        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+    }
+
     /**
      * Gets the translation key name for an enum. For instance, Metal.UNKNOWN would map to "tfc.enum.metal.unknown"
      */
@@ -407,7 +429,7 @@ public final class Helpers
         NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
         for (int slot = 0; slot < inventory.getSlots(); slot++)
         {
-            saved.set(slot, inventory.getStackInSlot(slot));
+            saved.set(slot, inventory.getStackInSlot(slot).copy());
             inventory.setStackInSlot(slot, ItemStack.EMPTY);
         }
         return saved;

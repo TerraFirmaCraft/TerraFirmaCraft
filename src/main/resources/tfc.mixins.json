@@ -12,6 +12,7 @@
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
     "inventory.container.ContainerMixin",
+    "item.ItemAccessor",
     "item.crafting.RecipeManagerAccessor",
     "server.management.PlayerInteractionManagerMixin",
     "util.SharedSeedRandomMixin",

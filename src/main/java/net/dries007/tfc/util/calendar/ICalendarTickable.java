@@ -11,8 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 /**
  * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
  * Note: the default {@code update()} casts the implementor to {@link TileEntity}
- *
- * //todo: @see Calendar#runTransaction(long, long, Runnable)
  */
 public interface ICalendarTickable
 {

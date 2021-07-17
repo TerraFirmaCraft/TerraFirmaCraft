@@ -39,12 +39,6 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
     }
 
     @Override
-    public ItemStack assemble(ItemStackRecipeWrapper wrapper)
-    {
-        return result.copy();
-    }
-
-    @Override
     public ItemStack getResultItem()
     {
         return result;
@@ -54,6 +48,12 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
     public ResourceLocation getId()
     {
         return id;
+    }
+
+    @Override
+    public ItemStack assemble(ItemStackRecipeWrapper wrapper)
+    {
+        return result.copy();
     }
 
     public static class Serializer<R extends SimpleItemRecipe> extends RecipeSerializer<R>

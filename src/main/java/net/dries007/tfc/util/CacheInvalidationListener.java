@@ -20,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -53,6 +54,7 @@ public enum CacheInvalidationListener implements IFutureReloadListener
             HeatingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.HEATING));
 
             HeatManager.reload();
+            ItemSizeManager.reload();
             MetalItemManager.reload();
             FuelManager.reload();
 

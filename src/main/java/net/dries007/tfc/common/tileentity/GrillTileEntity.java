@@ -54,12 +54,19 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     }
 
     @Override
-    protected void coolInstantly()
+    public int getSlotStackLimit(int slot)
     {
-        for (ItemStack stack : Helpers.iterate(inventory))
+        return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        if (slot == SLOT_FUEL_INPUT)
         {
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0));
+            return FuelManager.get(stack) != null;
         }
+        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 
     @Override
@@ -84,6 +91,15 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     }
 
     @Override
+    protected void coolInstantly()
+    {
+        for (ItemStack stack : Helpers.iterate(inventory))
+        {
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0));
+        }
+    }
+
+    @Override
     protected void updateCachedRecipe()
     {
         assert level != null;
@@ -92,21 +108,5 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
             final ItemStack stack = inventory.getStackInSlot(slot);
             cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
         }
-    }
-
-    @Override
-    public int getSlotStackLimit(int slot)
-    {
-        return 1;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        if (slot == SLOT_FUEL_INPUT)
-        {
-            return FuelManager.get(stack) != null;
-        }
-        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 }

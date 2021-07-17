@@ -23,6 +23,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -106,6 +107,7 @@ public final class TerraFirmaCraft
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        ItemSizeManager.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 

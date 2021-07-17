@@ -93,9 +93,19 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
-    protected void coolInstantly()
+    public int getSlotStackLimit(int slot)
     {
-        boilingTicks = 0;
+        return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        if (slot == SLOT_FUEL_INPUT)
+        {
+            return FuelManager.get(stack) != null;
+        }
+        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 
     @Override
@@ -141,26 +151,16 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
+    protected void coolInstantly()
+    {
+        boilingTicks = 0;
+    }
+
+    @Override
     protected void updateCachedRecipe()
     {
         assert level != null;
         cachedRecipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.POT, inventory, level).orElse(null);
-    }
-
-    @Override
-    public int getSlotStackLimit(int slot)
-    {
-        return 1;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        if (slot == SLOT_FUEL_INPUT)
-        {
-            return FuelManager.get(stack) != null;
-        }
-        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }
 
     public boolean isBoiling()

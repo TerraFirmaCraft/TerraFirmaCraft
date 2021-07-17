@@ -61,6 +61,13 @@ public class FluidPotRecipe extends PotRecipe
     public static class Serializer extends PotRecipe.Serializer<FluidPotRecipe>
     {
         @Override
+        public void toNetwork(PacketBuffer buffer, FluidPotRecipe recipe)
+        {
+            super.toNetwork(buffer, recipe);
+            buffer.writeFluidStack(recipe.outputFluid);
+        }
+
+        @Override
         protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             JsonObject output = JSONUtils.getAsJsonObject(json, "fluid_output");
@@ -71,13 +78,6 @@ public class FluidPotRecipe extends PotRecipe
         protected FluidPotRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, buffer.readFluidStack());
-        }
-
-        @Override
-        public void toNetwork(PacketBuffer buffer, FluidPotRecipe recipe)
-        {
-            super.toNetwork(buffer, recipe);
-            buffer.writeFluidStack(recipe.outputFluid);
         }
     }
 }

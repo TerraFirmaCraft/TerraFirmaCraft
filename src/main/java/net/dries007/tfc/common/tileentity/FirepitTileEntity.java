@@ -42,6 +42,13 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
         super(TFCTileEntities.FIREPIT.get(), defaultInventory(7), NAME);
     }
 
+    @Nullable
+    @Override
+    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new FirepitContainer(this, playerInv, windowID);
+    }
+
     @Override
     protected void handleCooking()
     {
@@ -69,23 +76,16 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
     }
 
     @Override
-    protected void updateCachedRecipe()
-    {
-        assert level != null;
-        cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitTileEntity.SLOT_ITEM_INPUT)));
-    }
-
-    @Override
     protected void coolInstantly()
     {
         inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
     }
 
-    @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    protected void updateCachedRecipe()
     {
-        return new FirepitContainer(this, playerInv, windowID);
+        assert level != null;
+        cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitTileEntity.SLOT_ITEM_INPUT)));
     }
 
     /**

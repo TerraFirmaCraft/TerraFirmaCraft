@@ -1,10 +1,30 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+from enum import Enum, auto
+
 from mcresources import ResourceManager, utils
 from mcresources.utils import item_stack
 
 from constants import *
+
+
+class Size(Enum):
+    tiny = auto()
+    very_small = auto()
+    small = auto()
+    normal = auto()
+    large = auto()
+    very_large = auto()
+    huge = auto()
+
+
+class Weight(Enum):
+    very_light = auto()
+    light = auto()
+    medium = auto()
+    heavy = auto()
+    very_heavy = auto()
 
 
 def generate(rm: ResourceManager):
@@ -159,6 +179,17 @@ def generate(rm: ResourceManager):
     # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
     rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
+
+    # todo: specific item size definitions for a whole bunch of items that aren't naturally assigned
+    item_size(rm, 'logs', 'tag!minecraft:logs', Size.very_large, Weight.medium)
+
+
+def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, size: Size, weight: Weight):
+    rm.data(('tfc', 'item_sizes', name_parts), {
+        'ingredient': utils.ingredient(ingredient),
+        'size': size.name,
+        'weight': weight.name
+    })
 
 
 def metal_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, metal: str, amount: int):

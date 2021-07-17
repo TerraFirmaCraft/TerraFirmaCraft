@@ -246,11 +246,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
 
     public void copyFrom(AbstractFirepitTileEntity<?> other)
     {
-        for (int slot = SLOT_FUEL_CONSUME; slot <= SLOT_FUEL_INPUT; slot++)
-        {
-            inventory.setStackInSlot(slot, other.inventory.getStackInSlot(slot).copy());
-        }
-
         burnTicks = other.burnTicks;
         airTicks = other.airTicks;
         burnTemperature = other.burnTemperature;
