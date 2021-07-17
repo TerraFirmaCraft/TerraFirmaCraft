@@ -410,7 +410,6 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public void setStackInSlot(int slot, @Nonnull ItemStack stack)
         {
-            TerraFirmaCraft.getLog().info("setStackInSlot(slot = {}, stack = {})", slot, stack);
             IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
@@ -423,7 +422,6 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
         {
-            TerraFirmaCraft.getLog().info("insertItem(slot = {}, stack = {}, simulate = {})", slot, stack, simulate);
             if (!simulate)
             {
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
@@ -439,25 +437,13 @@ public class ItemSmallVessel extends ItemPottery
         @Nonnull
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            TerraFirmaCraft.getLog().info("extractItem(slot = {}, amount = {}, simulate = {})", slot, amount, simulate);
-            ItemStack slotStack = getStackInSlot(slot);
-            boolean makesCopy = (amount != slotStack.getCount());
-            IFood cap = slotStack.getCapability(CapabilityFood.CAPABILITY, null);
+            ItemStack stack = super.extractItem(slot, amount, simulate).copy();
+            IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
                 CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
             }
-            ItemStack outStack = super.extractItem(slot, amount, simulate);
-            if (!simulate && makesCopy)
-            {
-                TerraFirmaCraft.getLog().info("Re-applied trait (workaround done)");
-                IFood capAfter = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
-                if (capAfter != null)
-                {
-                    CapabilityFood.applyTrait(capAfter, FoodTrait.PRESERVED);
-                }
-            }
-            return outStack;
+            return stack;
         }
 
         @Override
@@ -536,7 +522,6 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public void beforePutStack(SlotCallback slot, @Nonnull ItemStack stack)
         {
-            TerraFirmaCraft.getLog().info("beforePutStack(slot = {}, stack = {})", slot, stack);
             IFood cap = slot.getStack().getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
