@@ -38,7 +38,7 @@
       "tfc:rooster1"
     ]
   },
-  "quern.stonedrag": {
+  "quern_drag": {
     "category": "block",
     "sounds": [
       "tfc:stonedrag1",

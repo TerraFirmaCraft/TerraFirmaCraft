@@ -339,6 +339,8 @@ def generate(rm: ResourceManager):
     }, {'entries': 'tfc:ceramic/pot'}])
     rm.item_model('pot', parent='tfc:block/firepit_pot')
 
+    rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern'))
+
     rm.blockstate('placed_item', 'tfc:block/empty')
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
