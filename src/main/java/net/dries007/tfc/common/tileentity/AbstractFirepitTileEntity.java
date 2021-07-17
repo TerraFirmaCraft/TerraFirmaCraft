@@ -24,8 +24,6 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.Fuel;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.util.Helpers;
@@ -37,9 +35,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
 {
     public static final int SLOT_FUEL_CONSUME = 0; // where fuel is taken by the firepit
     public static final int SLOT_FUEL_INPUT = 3; // where fuel is inserted into the firepit (0-3 are all fuel slots)
-    public static final int SLOT_ITEM_INPUT = 4; // item to be cooked
-    public static final int SLOT_OUTPUT_1 = 5; // generic output slot
-    public static final int SLOT_OUTPUT_2 = 6; // extra output slot
 
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
@@ -67,7 +62,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     protected int airTicks; // ticks remaining for bellows provided air
     protected float burnTemperature; // burn temperature of the current fuel item
     protected float temperature; // current actual temperature
-    protected HeatingRecipe cachedRecipe;
     private long lastPlayerTick;
 
     public AbstractFirepitTileEntity(TileEntityType<?> type, InventoryFactory<C> inventoryFactory, ITextComponent defaultName)
@@ -80,7 +74,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         lastPlayerTick = Calendars.SERVER.getTicks();
 
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
-        cachedRecipe = null;
     }
 
     @Override
@@ -215,12 +208,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         lastPlayerTick = tick;
     }
 
-    public void updateCachedRecipe()
-    {
-        assert level != null;
-        cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(SLOT_ITEM_INPUT)));
-    }
-
     public void extinguish(BlockState state)
     {
         assert level != null;
@@ -251,7 +238,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     public void ejectMainInventory()
     {
         assert level != null;
-        for (int i = SLOT_ITEM_INPUT; i < inventory.getSlots(); i++)
+        for (int i = FirepitTileEntity.SLOT_ITEM_INPUT; i < inventory.getSlots(); i++)
         {
             Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
         }
@@ -259,11 +246,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
 
     public void copyFrom(AbstractFirepitTileEntity<?> other)
     {
-        for (int slot = SLOT_FUEL_CONSUME; slot <= SLOT_FUEL_INPUT; slot++)
-        {
-            inventory.setStackInSlot(slot, other.inventory.getStackInSlot(slot).copy());
-        }
-
         burnTicks = other.burnTicks;
         airTicks = other.airTicks;
         burnTemperature = other.burnTemperature;
@@ -276,7 +258,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     public int getSlotStackLimit(int slot)
     {
         // Output slots can carry full stacks, the rest is individual
-        return (slot == SLOT_OUTPUT_1 || slot == SLOT_OUTPUT_2) ? 64 : 1;
+        return (slot == FirepitTileEntity.SLOT_OUTPUT_1 || slot == FirepitTileEntity.SLOT_OUTPUT_2) ? 64 : 1;
     }
 
     @Override
@@ -286,10 +268,10 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         {
             case SLOT_FUEL_INPUT:
                 return FuelManager.get(stack) != null && stack.getItem().is(TFCTags.Items.FIREPIT_FUEL);
-            case SLOT_ITEM_INPUT:
+            case FirepitTileEntity.SLOT_ITEM_INPUT:
                 return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
-            case SLOT_OUTPUT_1:
-            case SLOT_OUTPUT_2:
+            case FirepitTileEntity.SLOT_OUTPUT_1:
+            case FirepitTileEntity.SLOT_OUTPUT_2:
                 return true;
             default:
                 return false;
@@ -333,6 +315,11 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
      * Cools all contents of the firepit instantly.
      */
     protected abstract void coolInstantly();
+
+    /**
+     * Updates cached recipes due to an inventory or other change.
+     */
+    protected abstract void updateCachedRecipe();
 
     protected void cascadeFuelSlots()
     {

@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.RegistryKey;
@@ -163,7 +160,7 @@ public final class TFCBiomes
         {
             for (BiomeRainfall rain : BiomeRainfall.values())
             {
-                String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
+                String name = (baseName + "_" + temp.name() + "_" + rain.name()).toLowerCase(Locale.ROOT);
                 ResourceLocation id = new ResourceLocation(MOD_ID, name);
                 RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
                 BiomeExtension extension = new BiomeExtension(key, variants);

@@ -51,6 +51,7 @@ public class FuelManager extends DataManager<Fuel>
         final Fuel fuel = get(stack);
         if (fuel != null)
         {
+            // todo: color and convert temperature to words
             text.add(new TranslationTextComponent(TOOLTIP_KEY, fuel.getDuration(), fuel.getTemperature()));
         }
     }

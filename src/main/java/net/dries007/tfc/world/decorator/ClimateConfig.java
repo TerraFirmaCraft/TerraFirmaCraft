@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.decorator;
 
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.util.IStringSerializable;
@@ -98,10 +99,17 @@ public class ClimateConfig implements IPlacementConfig
 
         public static final Codec<TemperatureType> CODEC = IStringSerializable.fromEnum(TemperatureType::values, name -> TemperatureType.valueOf(name.toUpperCase()));
 
+        private final String serializedName;
+
+        TemperatureType()
+        {
+            serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
         @Override
         public String getSerializedName()
         {
-            return name().toLowerCase();
+            return serializedName;
         }
     }
 }

@@ -33,10 +33,11 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
 {
     public static void onRandomTick(ServerWorld world, BlockPos pos, BlockState placeState)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
+        TickCounterTileEntity entity = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (entity != null)
         {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
+            final int torchTicks = TFCConfig.SERVER.torchTicks.get();
+            if (entity.getTicksSinceUpdate() > torchTicks && torchTicks > 0)
             {
                 world.setBlockAndUpdate(pos, placeState);
             }

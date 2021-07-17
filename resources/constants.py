@@ -449,6 +449,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
+    'tfc.tooltip.debug_tag': 'Tag: %s',
 
     # Commands
     'tfc.commands.time.query.daytime': 'The day time is %s',
@@ -494,8 +495,20 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.enum.size.tiny': 'Tiny',
+    'tfc.enum.size.very_small': 'Very Small',
+    'tfc.enum.size.small': 'Small',
+    'tfc.enum.size.normal': 'Normal',
+    'tfc.enum.size.large': 'Large',
+    'tfc.enum.size.very_large': 'Very Large',
+    'tfc.enum.size.huge': 'Huge',
+    'tfc.enum.weight.very_light': 'Very Light',
+    'tfc.enum.weight.light': 'Light',
+    'tfc.enum.weight.medium': 'Medium',
+    'tfc.enum.weight.heavy': 'Heavy',
+    'tfc.enum.weight.very_heavy': 'Very Heavy',
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
-    **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
+    **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys())
 }

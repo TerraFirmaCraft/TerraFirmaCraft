@@ -16,21 +16,10 @@ import net.minecraft.util.IntReferenceHolder;
 
 public class IntArrayBuilder implements IIntArray
 {
-    private final List<IntSupplier> getters;
-    private final List<IntConsumer> setters;
-    private int size;
-
-    public IntArrayBuilder()
-    {
-        size = 0;
-        getters = new ArrayList<>();
-        setters = new ArrayList<>();
-    }
-
     /**
      * A single {@link IntReferenceHolder} for one tracked value
      */
-    public IntReferenceHolder of(IntSupplier getter, IntConsumer setter)
+    public static IntReferenceHolder of(IntSupplier getter, IntConsumer setter)
     {
         return new IntReferenceHolder()
         {
@@ -46,6 +35,17 @@ public class IntArrayBuilder implements IIntArray
                 setter.accept(value);
             }
         };
+    }
+
+    private final List<IntSupplier> getters;
+    private final List<IntConsumer> setters;
+    private int size;
+
+    public IntArrayBuilder()
+    {
+        size = 0;
+        getters = new ArrayList<>();
+        setters = new ArrayList<>();
     }
 
     public IntArrayBuilder add(IntSupplier getter, IntConsumer setter)

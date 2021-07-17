@@ -46,6 +46,31 @@ public abstract class SnowBlockMixin extends Block
         super(properties);
     }
 
+    @Override
+    public float getSpeedFactor()
+    {
+        if (TFCConfig.SERVER.enableSnowSlowEntities.get())
+        {
+            return 0.6f;
+        }
+        return 1.0f;
+    }
+
+    /**
+     * Add behavior to snow blocks - when they are destroyed, they should only destroy one layer.
+     */
+    @Override
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
+    {
+        playerWillDestroy(world, pos, state, player);
+        final int prevLayers = state.getValue(SnowBlock.LAYERS);
+        if (prevLayers > 1)
+        {
+            return world.setBlock(pos, state.setValue(SnowBlock.LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+        }
+        return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+    }
+
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
     private void inject$canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
@@ -110,30 +135,5 @@ public abstract class SnowBlockMixin extends Block
                 }
             }
         }
-    }
-
-    @Override
-    public float getSpeedFactor()
-    {
-        if (TFCConfig.SERVER.enableSnowSlowEntities.get())
-        {
-            return 0.6f;
-        }
-        return 1.0f;
-    }
-
-    /**
-     * Add behavior to snow blocks - when they are destroyed, they should only destroy one layer.
-     */
-    @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
-    {
-        playerWillDestroy(world, pos, state, player);
-        final int prevLayers = state.getValue(SnowBlock.LAYERS);
-        if (prevLayers > 1)
-        {
-            return world.setBlock(pos, state.setValue(SnowBlock.LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
-        }
-        return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
     }
 }

@@ -39,21 +39,23 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockProperties
 {
-    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
+    public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
         .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
-    private static final BooleanProperty NORTH = SixWayBlock.NORTH;
-    private static final BooleanProperty EAST = SixWayBlock.EAST;
-    private static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
-    private static final BooleanProperty WEST = SixWayBlock.WEST;
-    private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
 
+    public static final BooleanProperty NORTH = SixWayBlock.NORTH;
+    public static final BooleanProperty EAST = SixWayBlock.EAST;
+    public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
+    public static final BooleanProperty WEST = SixWayBlock.WEST;
+
+    private final Map<BlockState, VoxelShape> cachedShapes;
     private final ForgeBlockProperties properties;
 
     public VerticalSupportBlock(ForgeBlockProperties properties)
     {
         super(properties.properties());
         this.properties = properties;
-        SHAPE_BY_STATE = makeShapes(box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
+        this.cachedShapes = makeShapes(box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
+
         registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false));
     }
 
@@ -142,7 +144,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        VoxelShape shape = SHAPE_BY_STATE.get(state);
+        VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }

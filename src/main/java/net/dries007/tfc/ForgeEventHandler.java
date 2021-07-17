@@ -54,6 +54,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
@@ -217,10 +218,10 @@ public final class ForgeEventHandler
         ItemStack stack = event.getObject();
         if (!stack.isEmpty())
         {
-            // Every item has a forging capability
+            // Attach mandatory capabilities
             event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
-            // Attach heat capability to the ones defined by data packs
+            // Optional capabilities
             HeatDefinition def = HeatManager.get(stack);
             if (def != null)
             {
@@ -284,6 +285,7 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(FuelManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
         resourceManager.registerReloadListener(HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(ItemSizeManager.INSTANCE);
 
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }

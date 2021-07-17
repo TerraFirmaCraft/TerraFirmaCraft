@@ -29,7 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
@@ -50,6 +50,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.HealthDisplayFormat;
@@ -122,11 +123,11 @@ public class ClientForgeEventHandler
 
     public static void onItemTooltip(ItemTooltipEvent event)
     {
-        ItemStack stack = event.getItemStack();
-        PlayerEntity player = event.getPlayer();
-        List<ITextComponent> text = event.getToolTip();
-        if (!stack.isEmpty() && player != null)
+        final ItemStack stack = event.getItemStack();
+        final List<ITextComponent> text = event.getToolTip();
+        if (!stack.isEmpty())
         {
+            ItemSizeManager.addTooltipInfo(stack, text);
             MetalItemManager.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
             if (event.getFlags().isAdvanced())
@@ -134,11 +135,13 @@ public class ClientForgeEventHandler
                 FuelManager.addTooltipInfo(stack, text);
             }
 
-            // todo: config and translation key
-            CompoundNBT stackTag = stack.getTag();
-            if (stackTag != null)
+            if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
             {
-                text.add(new StringTextComponent("NBT: " + stackTag));
+                CompoundNBT stackTag = stack.getTag();
+                if (stackTag != null)
+                {
+                    text.add(new TranslationTextComponent("tfc.tooltip.debug_tag", stackTag));
+                }
             }
         }
     }

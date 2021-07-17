@@ -29,12 +29,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IceBlock.class)
 public abstract class IceBlockMixin extends BreakableBlock
 {
-    @Shadow protected abstract void melt(BlockState state, World worldIn, BlockPos pos);
-
     private IceBlockMixin(Properties properties)
     {
         super(properties);
     }
+
+    @Shadow
+    protected abstract void melt(BlockState state, World worldIn, BlockPos pos);
 
     @Inject(method = "randomTick", at = @At(value = "RETURN"))
     private void inject$randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random, CallbackInfo ci)
