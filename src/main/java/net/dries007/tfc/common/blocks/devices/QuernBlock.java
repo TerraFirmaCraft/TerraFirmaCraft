@@ -18,6 +18,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -80,45 +81,53 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
     {
         if (hand == Hand.MAIN_HAND)
         {
-            QuernTileEntity teQuern = Helpers.getTileEntity(world, pos, QuernTileEntity.class);
+            QuernTileEntity teQuern = Helpers.getTileEntity(level, pos, QuernTileEntity.class);
             if (teQuern != null && !teQuern.isGrinding())
             {
                 ItemStack heldStack = player.getItemInHand(hand);
-                SelectionPlace selection = getPlayerSelection(world, pos, player, hit);
+                SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
                 return teQuern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> {
                     if (selection == SelectionPlace.HANDLE)
                     {
                         teQuern.grind();
-                        world.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundCategory.BLOCKS, 1, 1 + ((world.random.nextFloat() - world.random.nextFloat()) / 16));
-                        return ActionResultType.sidedSuccess(world.isClientSide);
+                        level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundCategory.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+                        return ActionResultType.sidedSuccess(level.isClientSide);
                     }
                     else if (selection == SelectionPlace.INPUT_SLOT)
                     {
-                        player.setItemInHand(Hand.MAIN_HAND, teQuern.insertOrSwapItem(SLOT_INPUT, heldStack));
-                        teQuern.setAndUpdateSlots(SLOT_INPUT);
-                        return ActionResultType.sidedSuccess(world.isClientSide);
+                        return insertOrExtract(level, teQuern, inventory, player, heldStack, SLOT_INPUT);
                     }
-                    else if (selection == SelectionPlace.HANDSTONE && inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty() && inventory.isItemValid(SLOT_HANDSTONE, heldStack))
+                    else if (selection == SelectionPlace.HANDSTONE && inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty())
                     {
-                        player.setItemInHand(Hand.MAIN_HAND, teQuern.insertOrSwapItem(SLOT_HANDSTONE, heldStack));
-                        teQuern.setAndUpdateSlots(SLOT_HANDSTONE);
-                        return ActionResultType.sidedSuccess(world.isClientSide);
+                        return insertOrExtract(level, teQuern, inventory, player, heldStack, SLOT_HANDSTONE);
                     }
                     else if (selection == SelectionPlace.BASE && !inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
                     {
-                        ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_OUTPUT, inventory.getStackInSlot(SLOT_OUTPUT).getCount(), false));
-                        teQuern.setAndUpdateSlots(SLOT_OUTPUT);
-                        return ActionResultType.sidedSuccess(world.isClientSide);
+                        return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_INPUT);
                     }
                     return ActionResultType.FAIL;
                 }).orElse(ActionResultType.FAIL);
             }
         }
         return ActionResultType.FAIL;
+    }
+
+    private static ActionResultType insertOrExtract(World level, QuernTileEntity teQuern, IItemHandler inventory, PlayerEntity player, ItemStack stack, int slot)
+    {
+        if (!stack.isEmpty())
+        {
+            player.setItemInHand(Hand.MAIN_HAND, inventory.insertItem(slot, stack, false));
+        }
+        else if (player.isShiftKeyDown())
+        {
+            ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
+        }
+        teQuern.setAndUpdateSlots(slot);
+        return ActionResultType.sidedSuccess(level.isClientSide);
     }
 
     @Override
@@ -130,9 +139,9 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    public boolean drawHighlight(World world, BlockPos pos, PlayerEntity player, BlockRayTraceResult rayTrace, MatrixStack matrixStack, IRenderTypeBuffer buffers, Vector3d renderPos)
+    public boolean drawHighlight(World level, BlockPos pos, PlayerEntity player, BlockRayTraceResult rayTrace, MatrixStack matrixStack, IRenderTypeBuffer buffers, Vector3d renderPos)
     {
-        SelectionPlace selection = getPlayerSelection(world, pos, player, rayTrace);
+        SelectionPlace selection = getPlayerSelection(level, pos, player, rayTrace);
         if (selection != SelectionPlace.BASE)
         {
             IHighlightHandler.drawBox(matrixStack, selection.shape, buffers, pos, renderPos, 1.0F, 0.0F, 0.0F, 0.4F);

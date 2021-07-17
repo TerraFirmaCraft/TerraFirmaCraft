@@ -30,6 +30,12 @@ def generate(rm: ResourceManager):
         })
         return RecipeContext(rm, res)
 
+    def simple_item(recipe_type: str, name, item: str, result: str, count: int = 1) -> RecipeContext:
+        return rm.recipe((recipe_type, name), 'tfc:%s' % recipe_type, {
+            'ingredient': utils.ingredient(item),
+            'result': utils.item_stack((count, result))
+        })
+
     def heat_recipe(name, item: str, result: str, count: int = 1, temperature: float = 1599, heat_capacity: float = 0) -> RecipeContext:
         if heat_capacity > 0:
             rm.data(('tfc', 'item_heats', name), {
@@ -113,3 +119,5 @@ def generate(rm: ResourceManager):
         heat_recipe(pottery, 'tfc:ceramic/' + pottery, 'tfc:ceramic/unfired_' + pottery, heat_capacity=1.0)
 
     pot_recipe('test', ['tfc:jute', 'tfc:jute', 'tfc:straw'], ['tfc:glue', 'tfc:glass_shard'], 'minecraft:water', 'tfc:salt_water', 200, 500)
+
+    simple_item('quern', 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)

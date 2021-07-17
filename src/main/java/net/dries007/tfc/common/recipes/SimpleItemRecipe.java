@@ -6,9 +6,13 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -30,6 +34,11 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         this.id = id;
         this.ingredient = ingredient;
         this.result = result;
+    }
+
+    public Collection<Item> getValidItems()
+    {
+        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     @Override
@@ -68,8 +77,8 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            Ingredient ingredient = Ingredient.fromJson(json);
-            ItemStack stack = ShapedRecipe.itemFromJson(json);
+            Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
+            ItemStack stack = ShapedRecipe.itemFromJson(json.getAsJsonObject("result"));
             return factory.create(recipeId, ingredient, stack);
         }
 

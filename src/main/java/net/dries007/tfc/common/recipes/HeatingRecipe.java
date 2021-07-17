@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -87,10 +84,6 @@ public class HeatingRecipe extends SimpleItemRecipe
         return TFCRecipeTypes.HEATING;
     }
 
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
-    }
 
     public static class Serializer extends RecipeSerializer<HeatingRecipe>
     {

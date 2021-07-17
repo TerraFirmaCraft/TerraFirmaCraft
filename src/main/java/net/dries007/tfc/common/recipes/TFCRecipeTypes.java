@@ -17,6 +17,7 @@ public class TFCRecipeTypes
     public static final IRecipeType<LandslideRecipe> LANDSLIDE = register("landslide");
     public static final IRecipeType<HeatingRecipe> HEATING = register("heating");
     public static final IRecipeType<IPotRecipe> POT = register("pot");
+    public static final IRecipeType<QuernRecipe> QUERN = register("quern");
 
     private static <R extends IRecipe<?>> IRecipeType<R> register(String name)
     {
