@@ -116,10 +116,10 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                         return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
                     }
                     return ActionResultType.FAIL;
-                }).orElse(ActionResultType.FAIL);
+                }).orElse(ActionResultType.PASS);
             }
         }
-        return ActionResultType.FAIL;
+        return ActionResultType.PASS;
     }
 
     private static ActionResultType insertOrExtract(World level, QuernTileEntity teQuern, IItemHandler inventory, PlayerEntity player, ItemStack stack, int slot)

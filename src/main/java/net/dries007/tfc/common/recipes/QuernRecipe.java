@@ -22,11 +22,6 @@ public class QuernRecipe extends SimpleItemRecipe
 {
     public static final IndirectHashCollection<Item, QuernRecipe> CACHE = new IndirectHashCollection<>(QuernRecipe::getValidItems);
 
-    public QuernRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
-    {
-        super(id, ingredient, result);
-    }
-
     @Nullable
     public static QuernRecipe getRecipe(World world, ItemStackRecipeWrapper wrapper)
     {
@@ -40,10 +35,9 @@ public class QuernRecipe extends SimpleItemRecipe
         return null;
     }
 
-    public static boolean exists(@Nullable World level, ItemStack stack)
+    public QuernRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
     {
-        assert level != null;
-        return getRecipe(level, new ItemStackRecipeWrapper(stack)) != null;
+        super(id, ingredient, result);
     }
 
     @Override

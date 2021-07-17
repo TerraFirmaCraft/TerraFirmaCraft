@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -77,8 +79,8 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
-            ItemStack stack = ShapedRecipe.itemFromJson(json.getAsJsonObject("result"));
+            final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
+            final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
             return factory.create(recipeId, ingredient, stack);
         }
 
@@ -86,8 +88,8 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         @Override
         public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack stack = buffer.readItem();
+            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            final ItemStack stack = buffer.readItem();
             return factory.create(recipeId, ingredient, stack);
         }
 

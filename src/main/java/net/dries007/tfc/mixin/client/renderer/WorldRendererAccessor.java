@@ -20,6 +20,6 @@ public interface WorldRendererAccessor
     @Invoker("renderShape")
     static void invoke$renderShape(MatrixStack mStack, IVertexBuilder builder, VoxelShape shape, double x, double y, double z, float red, float green, float blue, float alpha)
     {
-        throw new UnsupportedOperationException();
+        throw new AssertionError("Mixin not applied");
     }
 }

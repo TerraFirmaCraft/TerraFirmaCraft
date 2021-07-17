@@ -16,7 +16,6 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -59,7 +58,7 @@ public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> imple
                 return stack.getItem().is(TFCTags.Items.HANDSTONE); // needs to be handstone
             case SLOT_INPUT:
                 assert level != null;
-                return QuernRecipe.exists(level, stack); // recipe must exist + weird item swap glitch workaround
+                return QuernRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack)) != null; // recipe must exist + weird item swap glitch workaround
             case SLOT_OUTPUT:
                 return true;
         }
