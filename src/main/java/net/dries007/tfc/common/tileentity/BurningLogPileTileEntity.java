@@ -11,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,30 +18,20 @@ import net.minecraft.util.math.MathHelper;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.calendar.Calendars;
 
-public class BurningLogPileTileEntity extends TFCTileEntity implements ITickableTileEntity
+public class BurningLogPileTileEntity extends TickCounterTileEntity implements ITickableTileEntity
 {
     private int logs;
-    private long startBurningTick;
 
     public BurningLogPileTileEntity()
     {
-        this(TFCTileEntities.BURNING_LOG_PILE.get());
-    }
-
-    protected BurningLogPileTileEntity(TileEntityType<?> type)
-    {
-        super(type);
-        logs = 0;
-        startBurningTick = 0;
+        super(TFCTileEntities.BURNING_LOG_PILE.get());
     }
 
     @Override
     public void load(BlockState state, CompoundNBT nbt)
     {
         logs = nbt.getInt("logs");
-        startBurningTick = nbt.getLong("startBurningTick");
         super.load(state, nbt);
     }
 
@@ -50,34 +39,30 @@ public class BurningLogPileTileEntity extends TFCTileEntity implements ITickable
     public CompoundNBT save(CompoundNBT nbt)
     {
         nbt.putInt("logs", logs);
-        nbt.putLong("startBurningTick", startBurningTick);
         return super.save(nbt);
     }
 
     @Override
     public void tick()
     {
-        if (level != null && !level.isClientSide)
+        if (level != null && !level.isClientSide())
         {
-            if (startBurningTick == 0) return;
-            if ((int) (Calendars.SERVER.getTicks() - startBurningTick) > TFCConfig.SERVER.charcoalTicks.get())
+            if (lastUpdateTick > 0 && getTicksSinceUpdate() > TFCConfig.SERVER.charcoalTicks.get())
             {
                 createCharcoal();
             }
         }
     }
 
-    public void light(int logsIn)
+    public void light(int logs)
     {
-        startBurningTick = Calendars.SERVER.getTicks();
-        logs = logsIn;
+        this.logs = logs;
+        resetCounter();
         markForSync();
     }
 
     /**
-     * This function does some magic **** to not create floating charcoal. Don't touch unless broken
-     *
-     * @author AlcatrazEscapee, ported to 1.16 by EERussianguy
+     * This function does some magic **** to not create floating charcoal.
      */
     private void createCharcoal()
     {
@@ -117,7 +102,6 @@ public class BurningLogPileTileEntity extends TFCTileEntity implements ITickable
         for (int k = j - 1; k >= 0; k--)
         {
             // Climb back up from the bottom
-
             mutablePos.move(Direction.DOWN);
             BlockState state = level.getBlockState(mutablePos);
             if (level.isEmptyBlock(mutablePos))

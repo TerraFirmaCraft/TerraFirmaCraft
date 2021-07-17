@@ -38,10 +38,12 @@ public class TorchItem extends WallOrFloorItem
     @Override
     public ActionResultType useOn(ItemUseContext context)
     {
-        World world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        // we cancel the event every time
-        StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand());
+        final World world = context.getLevel();
+        final BlockPos pos = context.getClickedPos();
+        if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
+        {
+            return ActionResultType.SUCCESS;
+        }
         return super.useOn(context);
     }
 
@@ -56,7 +58,9 @@ public class TorchItem extends WallOrFloorItem
             itemEntity.setItem(new ItemStack(Items.STICK, stack.getCount()));
             int ash = (int) MathHelper.clamp(stack.getCount() * 0.5 - 4, 0, 8);
             if (ash > 0)
+            {
                 Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
+            }
             Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
             return true;
         }
@@ -70,7 +74,7 @@ public class TorchItem extends WallOrFloorItem
         {
             if (itemEntity.getAge() > ageRequirement && random.nextFloat() < 0.01f)
             {
-                StartFireEvent.startFire(world, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null);
+                StartFireEvent.startFire(world, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null, false);
                 itemEntity.kill();
             }
             else

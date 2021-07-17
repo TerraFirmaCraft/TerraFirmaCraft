@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3f;
-
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.matrix.MatrixStack;

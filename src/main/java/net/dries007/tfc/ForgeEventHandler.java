@@ -10,7 +10,6 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -46,7 +45,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
@@ -57,8 +55,8 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.common.types.*;
@@ -431,52 +429,48 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (!world.isClientSide())
+        if (block.is(TFCBlocks.FIREPIT.get()) || block.is(TFCBlocks.POT.get()) || block.is(TFCBlocks.GRILL.get()))
         {
-            if (block.is(TFCBlocks.FIREPIT.get()) || block.is(TFCBlocks.POT.get()) || block.is(TFCBlocks.GRILL.get()))
+            AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
+            if (firepit != null)
             {
-                world.setBlock(pos, state.setValue(TFCBlockStateProperties.LIT, true), 2);
-                event.setCanceled(true);
+                firepit.light(state);
             }
-            else if (block.is(TFCBlocks.TORCH.get()) || block.is(TFCBlocks.WALL_TORCH.get()))
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.TORCH.get()) || block.is(TFCBlocks.WALL_TORCH.get()))
+        {
+            TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+            if (te != null)
             {
-                TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-                if (te != null)
-                    te.resetCounter();
-                event.setCanceled(true);
+                te.resetCounter();
             }
-            else if (block.is(TFCBlocks.DEAD_TORCH.get()))
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.DEAD_TORCH.get()))
+        {
+            world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.DEAD_WALL_TORCH.get()))
+        {
+            Direction direction = state.getValue(DeadWallTorchBlock.FACING);
+            world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.LOG_PILE.get()))
+        {
+            BurningLogPileBlock.tryLightLogPile(world, pos);
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+        {
+            PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
+            if (kiln != null)
             {
-                world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
-                event.setCanceled(true);
-            }
-            else if (block.is(TFCBlocks.DEAD_WALL_TORCH.get()))
-            {
-                Direction direction = state.getValue(DeadWallTorchBlock.FACING);
-                world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
-                event.setCanceled(true);
-            }
-            else if (block.is(TFCBlocks.LOG_PILE.get()))
-            {
-                BurningLogPileBlock.tryLightLogPile(world, pos);
-                event.setCanceled(true);
-            }
-            else if (block.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
-            {
-                PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
-                if (kiln != null)
-                    kiln.tryLight();
-            }
-
-            ItemStack item = event.getItemStack();
-            if (item != null && item.getItem() == TFCItems.TORCH.get())
-            {
-                event.setCanceled(true); // so torches don't start fires
+                kiln.tryLight();
             }
         }
-
-        if (!event.isCanceled() && AbstractFireBlock.canBePlacedAt(world, pos, event.getTargetedFace()))
-            world.setBlock(pos, AbstractFireBlock.getState(world, pos), 11);
     }
 
     public static void onArrowImpact(ProjectileImpactEvent.Arrow event)

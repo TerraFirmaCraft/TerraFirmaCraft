@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pot_soup",
+  "ingredients": [
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    }
+  ],
+  "fluid_ingredient": {
+    "fluid": "minecraft:water",
+    "amount": 1000
+  },
+  "duration": 200,
+  "temperature": 300
+}

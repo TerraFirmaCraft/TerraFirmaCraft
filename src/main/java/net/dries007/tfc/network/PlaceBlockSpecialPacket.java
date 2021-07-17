@@ -18,8 +18,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 import net.dries007.tfc.util.Helpers;
 

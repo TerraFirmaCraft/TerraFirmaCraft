@@ -32,7 +32,8 @@ public class TFCRecipeSerializers
 
     // Complex Recipes
 
-    public static final RegistryObject<SimplePotRecipe.Serializer> SIMPLE_POT = register("simple_pot", () -> new SimplePotRecipe.Serializer(SimplePotRecipe::new));
+    public static final RegistryObject<FluidPotRecipe.Serializer> POT_FLUID = register("pot_fluid", FluidPotRecipe.Serializer::new);
+    public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
 
     // Delegate Recipe Types
 

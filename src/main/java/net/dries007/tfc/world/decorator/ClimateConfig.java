@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.decorator;
 
-import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.util.IStringSerializable;
@@ -64,7 +63,7 @@ public class ClimateConfig implements IPlacementConfig
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 
-        if(minTemp <= temperature && temperature <= maxTemp && minRainfall <= rainfall && rainfall <= maxRainfall && minForest.ordinal() <= forestType.ordinal() && forestType.ordinal() <= maxForest.ordinal())
+        if (minTemp <= temperature && temperature <= maxTemp && minRainfall <= rainfall && rainfall <= maxRainfall && minForest.ordinal() <= forestType.ordinal() && forestType.ordinal() <= maxForest.ordinal())
         {
             if (fuzzy)
             {

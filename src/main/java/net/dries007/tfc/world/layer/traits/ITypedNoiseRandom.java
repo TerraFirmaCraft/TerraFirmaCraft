@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.layer.traits;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.area.LazyArea;
 
 /**
  * Like {@link IExtendedNoiseRandom}

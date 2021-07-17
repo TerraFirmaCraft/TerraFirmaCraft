@@ -27,6 +27,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -74,42 +75,60 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide()) return ActionResultType.SUCCESS;
-        LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
-        ItemStack stack = player.getItemInHand(hand);
-        if (te != null)
+        if (!player.isShiftKeyDown())
         {
+            final ItemStack stack = player.getItemInHand(hand);
+            final LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
             if (stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS))
             {
-                if (!player.isShiftKeyDown()) // shift interaction handled in InteractionManager
-                {
-                    if (te.insertLog(stack.copy()))
+                return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                    ItemStack insertStack = stack.copy();
+                    insertStack.setCount(1);
+                    insertStack = Helpers.insertAllSlots(cap, insertStack);
+                    if (insertStack.isEmpty())
                     {
-                        if (!world.isClientSide())
+                        if (!world.isClientSide)
                         {
                             Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
-                            if (!player.isCreative())
-                                stack.shrink(1);
+                            stack.shrink(1);
                         }
-                        return ActionResultType.sidedSuccess(world.isClientSide());
+                        return ActionResultType.SUCCESS;
                     }
-                }
+                    return ActionResultType.FAIL;
+                }).orElse(ActionResultType.PASS);
             }
-
-            if (!player.isShiftKeyDown() && player instanceof ServerPlayerEntity)
+            else
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                }
                 return ActionResultType.SUCCESS;
             }
         }
-
-        return ActionResultType.FAIL;
+        return ActionResultType.PASS;
     }
 
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
-        return te != null ? te.getLog().copy() : ItemStack.EMPTY;
+        if (te != null)
+        {
+            return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .map(cap -> {
+                    for (int i = 0; i < cap.getSlots(); i++)
+                    {
+                        final ItemStack stack = cap.getStackInSlot(i);
+                        if (!stack.isEmpty())
+                        {
+                            return stack.copy();
+                        }
+                    }
+                    return ItemStack.EMPTY;
+                })
+                .orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 }

@@ -34,7 +34,7 @@ public class MetalItem
         metal = MetalManager.INSTANCE.get(metalId);
         if (metal == null)
         {
-            throw new JsonSyntaxException("Invalid metal specified: " + metalId.toString());
+            throw new JsonSyntaxException("Invalid metal specified: " + metalId);
         }
         amount = JSONUtils.getAsInt(json, "amount");
     }

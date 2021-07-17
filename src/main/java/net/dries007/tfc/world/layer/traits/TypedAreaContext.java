@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.world.layer.traits;
 
-import net.minecraft.world.gen.LazyAreaLayerContext;
-
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-
 public class TypedAreaContext<A> extends FastAreaContext implements ITypedNoiseRandom<A>
 {
     public TypedAreaContext(long seedIn, long seedModifierIn)

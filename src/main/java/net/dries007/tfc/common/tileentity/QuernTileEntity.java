@@ -11,6 +11,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import net.minecraftforge.items.ItemStackHandler;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
@@ -19,7 +21,7 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class QuernTileEntity extends InventoryTileEntity implements ITickableTileEntity
+public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> implements ITickableTileEntity
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.quern");
 
@@ -32,7 +34,7 @@ public class QuernTileEntity extends InventoryTileEntity implements ITickableTil
 
     public QuernTileEntity()
     {
-        super(TFCTileEntities.QUERN.get(), 3, NAME);
+        super(TFCTileEntities.QUERN.get(), defaultInventory(3), NAME);
         rotationTimer = 0;
     }
 

@@ -41,7 +41,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         LogPileTileEntity pile = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
         if (pile != null)
         {
-            int logs = pile.countLogs();
+            int logs = pile.logCount();
             pile.clearContent(); // avoid dumping when onRemove is called
             world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
             Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);

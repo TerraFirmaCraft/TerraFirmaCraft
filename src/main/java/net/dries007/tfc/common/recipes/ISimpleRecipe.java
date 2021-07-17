@@ -16,7 +16,7 @@ import net.minecraft.item.crafting.IRecipe;
 public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
 {
     @Override
-    default ItemStack assemble(C inv)
+    default ItemStack assemble(C inventory)
     {
         return getResultItem().copy();
     }

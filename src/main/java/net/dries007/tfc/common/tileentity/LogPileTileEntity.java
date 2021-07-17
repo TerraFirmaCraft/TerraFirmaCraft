@@ -8,148 +8,73 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.container.LogPileContainer;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class LogPileTileEntity extends InventoryTileEntity implements INamedContainerProvider
+public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> implements INamedContainerProvider
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.log_pile");
 
-    private boolean isContainerOpen;
+    private int playersUsing;
 
     public LogPileTileEntity()
     {
-        this(TFCTileEntities.LOG_PILE.get(), 4, NAME);
-        this.isContainerOpen = false;
-    }
-
-    public LogPileTileEntity(TileEntityType<?> type, int inventorySlots, ITextComponent defaultName)
-    {
-        super(type, inventorySlots, defaultName);
-    }
-
-    @Override
-    public void load(BlockState state, CompoundNBT nbt)
-    {
-        nbt.putBoolean("isContainerOpen", isContainerOpen);
-        super.load(state, nbt);
-    }
-
-    @Override
-    public CompoundNBT save(CompoundNBT nbt)
-    {
-        isContainerOpen = nbt.getBoolean("isContainerOpen");
-        return super.save(nbt);
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return customName != null ? customName : defaultName;
+        super(TFCTileEntities.LOG_PILE.get(), defaultInventory(4), NAME);
+        this.playersUsing = 0;
     }
 
     @Override
     public void setAndUpdateSlots(int slot)
     {
+        super.setAndUpdateSlots(slot);
         if (level != null && !level.isClientSide())
         {
-            for (int i = 0; i < 4; i++)
-            {
-                if (!inventory.getStackInSlot(i).isEmpty())
-                {
-                    super.setAndUpdateSlots(slot);
-                    return;
-                }
-            }
-            if (!isContainerOpen)
+            if (playersUsing == 0 && isEmpty())
             {
                 level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
             }
         }
-        super.setAndUpdateSlots(slot);
     }
 
-    public void setContainerOpen(boolean isOpen)
+    public void onOpen(PlayerEntity player)
     {
-        isContainerOpen = isOpen;
-        setAndUpdateSlots(-1);
-    }
-
-    /**
-     * Insert one log into the pile
-     *
-     * @param stack the log ItemStack to be inserted
-     * @return true if one log was inserted, false otherwise
-     */
-    public boolean insertLog(ItemStack stack)
-    {
-        stack.setCount(1);
-        for (int i = 0; i < inventory.getSlots(); i++)
+        if (!player.isSpectator())
         {
-            if (inventory.insertItem(i, stack, false).isEmpty())
-            {
-                return true;
-            }
+            playersUsing++;
         }
-        return false;
     }
 
-    /**
-     * Try to insert logs into every possible slot
-     *
-     * @param stack the log ItemStack to be inserted
-     * @return 0 if none was inserted, number of logs inserted in the pile otherwise
-     */
-    public int insertLogs(ItemStack stack)
+    public void onClose(PlayerEntity player)
     {
-        int start = stack.getCount();
-        for (int i = 0; i < inventory.getSlots(); i++)
+        if (!player.isSpectator())
         {
-            stack = inventory.insertItem(i, stack, false);
-            if (stack.isEmpty())
+            playersUsing--;
+            if (playersUsing < 0)
             {
-                break;
+                playersUsing = 0;
             }
+            setAndUpdateSlots(-1);
         }
-        int remaining = stack.isEmpty() ? 0 : stack.getCount();
-        return start - remaining;
     }
 
-    /**
-     * @return A single log for the purpose of pick block
-     */
-    public ItemStack getLog()
+    public boolean isEmpty()
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
+        for (ItemStack stack : Helpers.iterate(inventory))
         {
-            if (!inventory.getStackInSlot(i).isEmpty())
-            {
-                return inventory.getStackInSlot(i);
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    public boolean isFull()
-    {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (stack.isEmpty() || stack.getCount() < 4)
+            if (!stack.isEmpty())
             {
                 return false;
             }
@@ -157,14 +82,14 @@ public class LogPileTileEntity extends InventoryTileEntity implements INamedCont
         return true;
     }
 
-    public int countLogs()
+    public int logCount()
     {
-        int logs = 0;
-        for (int i = 0; i < inventory.getSlots(); i++)
+        int count = 0;
+        for (ItemStack stack : Helpers.iterate(inventory))
         {
-            logs += inventory.getStackInSlot(i).getCount();
+            count += stack.getCount();
         }
-        return logs;
+        return count;
     }
 
     @Override

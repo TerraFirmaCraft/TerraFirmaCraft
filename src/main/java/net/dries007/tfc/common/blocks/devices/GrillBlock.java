@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
@@ -33,47 +32,23 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.tileentity.FirepitTileEntity;
+import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.common.tileentity.GrillTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
 
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
-import static net.minecraft.util.ActionResultType.FAIL;
-import static net.minecraft.util.ActionResultType.SUCCESS;
-
 
 public class GrillBlock extends FirepitBlock
 {
     private static final VoxelShape GRILL_SHAPE = VoxelShapes.or(
+        BASE_SHAPE,
         box(2, 9.5, 3, 14, 10, 13),
         box(2, 0, 13, 3, 11, 14),
         box(13, 0, 13, 14, 11, 14),
         box(2, 0, 2, 3, 11, 3),
         box(13, 0, 2, 14, 11, 3));
-
-    private static void convertGrillToFirepit(World world, BlockPos pos)
-    {
-        GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
-        if (grill != null)
-        {
-            Helpers.spawnItem(world, pos, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
-            Helpers.playSound(world, pos, SoundEvents.CHAIN_BREAK);
-            List<ItemStack> logs = grill.getLogs();
-            float[] fields = grill.getFields();
-            grill.dump();
-            grill.clearContent();
-
-            world.setBlock(pos, TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.LIT, false), 3);
-            FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-            if (pit != null)
-            {
-                pit.acceptData(logs, fields);
-            }
-        }
-    }
 
     public GrillBlock(ForgeBlockProperties properties)
     {
@@ -109,44 +84,47 @@ public class GrillBlock extends FirepitBlock
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
-        ItemStack stack = player.getItemInHand(hand);
-        boolean lit = state.getValue(LIT);
-        if (stack.isEmpty() && player.isShiftKeyDown())
+        final AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
+        if (firepit != null)
         {
-            if (lit)//can't take stuff out if it's lit
+            final ItemStack stack = player.getItemInHand(hand);
+            if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                player.hurt(TFCDamageSources.GRILL, 1.0F);
-                Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
+                if (!world.isClientSide)
+                {
+                    if (state.getValue(LIT))
+                    {
+                        player.hurt(TFCDamageSources.GRILL, 1.0F);
+                        Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
+                    }
+                    else
+                    {
+                        AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
+                    }
+                }
+                return ActionResultType.SUCCESS;
+            }
+            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            {
+                firepit.extinguish(state);
+                return ActionResultType.SUCCESS;
             }
             else
             {
-                convertGrillToFirepit(world, pos);
-            }
-            return SUCCESS;
-        }
-        else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
-        {
-            tryExtinguish(world, pos, state);
-            return SUCCESS;
-        }
-        else
-        {
-            GrillTileEntity te = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
-            if (te != null && player instanceof ServerPlayerEntity)
-            {
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
-                return SUCCESS;
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, firepit, pos);
+                }
+                return ActionResultType.SUCCESS;
             }
         }
-        return FAIL;
+        return ActionResultType.PASS;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return VoxelShapes.or(GRILL_SHAPE, BASE_SHAPE);
+        return GRILL_SHAPE;
     }
 
     @Override

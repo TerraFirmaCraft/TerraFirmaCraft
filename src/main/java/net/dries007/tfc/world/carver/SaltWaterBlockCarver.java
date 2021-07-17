@@ -35,16 +35,16 @@ public class SaltWaterBlockCarver extends BlockCarver
             final BlockState stateAbove = chunk.getBlockState(posUp);
 
             if (isCarvable(state) && isCarvable(stateAbove))
-			{
-				if (pos.getY() == 10)
-				{
-					// Top of lava level - create obsidian and magma
-					if (random.nextFloat() < 0.25f)
-					{
-						chunk.setBlockState(pos, Blocks.MAGMA_BLOCK.defaultBlockState(), false);
-						chunk.getBlockTicks().scheduleTick(pos, Blocks.MAGMA_BLOCK, 0);
-					}
-					else
+            {
+                if (pos.getY() == 10)
+                {
+                    // Top of lava level - create obsidian and magma
+                    if (random.nextFloat() < 0.25f)
+                    {
+                        chunk.setBlockState(pos, Blocks.MAGMA_BLOCK.defaultBlockState(), false);
+                        chunk.getBlockTicks().scheduleTick(pos, Blocks.MAGMA_BLOCK, 0);
+                    }
+                    else
                     {
                         chunk.setBlockState(pos, Blocks.OBSIDIAN.defaultBlockState(), false);
                     }

@@ -51,24 +51,24 @@ public class BerryBushTileEntity extends TickCounterTileEntity
         return super.save(nbt);
     }
 
-    public void setGrowing(boolean growing)
-    {
-        isGrowing = growing;
-    }
-
     public boolean isGrowing()
     {
         return isGrowing;
     }
 
-    public void setHarvested(boolean isHarvested)
+    public void setGrowing(boolean growing)
     {
-        harvested = isHarvested;
+        isGrowing = growing;
     }
 
     public boolean isHarvested()
     {
         return harvested;
+    }
+
+    public void setHarvested(boolean isHarvested)
+    {
+        harvested = isHarvested;
     }
 
     public void use()

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;

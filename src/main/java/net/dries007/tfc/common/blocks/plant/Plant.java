@@ -183,9 +183,9 @@ public enum Plant implements IPlant
     }
 
     public boolean isSeasonal()
-	{
-		return type == BlockType.VINE;
-	}
+    {
+        return type == BlockType.VINE;
+    }
 
     @VisibleForTesting
     public BlockType getType()
@@ -315,8 +315,10 @@ public enum Plant implements IPlant
         {
             return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
         }
+
         private final BiFunction<Plant, BlockType, ? extends Block> factory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
+
         BlockType(BiFunction<Plant, BlockType, ? extends Block> factory)
         {
             this(factory, BlockItem::new);

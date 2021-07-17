@@ -14,9 +14,6 @@ import net.minecraft.world.gen.layer.traits.IPixelTransformer;
 
 public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
 {
-    private final long seed;
-    private long rval;
-
     private static long mixSeed(long left, long right)
     {
         long mixRight = FastRandom.next(right, right);
@@ -26,6 +23,9 @@ public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
         mixLeft = FastRandom.next(mixLeft, mixRight);
         return FastRandom.next(mixLeft, mixRight);
     }
+
+    private final long seed;
+    private long rval;
 
     public FastAreaContext(long seed, long seedModifier)
     {
@@ -64,7 +64,7 @@ public class FastAreaContext implements IExtendedNoiseRandom<FastArea>
     @Override
     public int nextRandom(int bound)
     {
-        final int value = (int)Math.floorMod(rval >> 24, bound);
+        final int value = (int) Math.floorMod(rval >> 24, bound);
         rval = FastRandom.next(rval, seed);
         return value;
     }

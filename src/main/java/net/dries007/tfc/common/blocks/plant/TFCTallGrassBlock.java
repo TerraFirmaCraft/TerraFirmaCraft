@@ -95,6 +95,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(PART));
+    }
+
+    @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
@@ -138,12 +144,6 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public OffsetType getOffsetType()
     {
         return OffsetType.XYZ;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(PART));
     }
 
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)

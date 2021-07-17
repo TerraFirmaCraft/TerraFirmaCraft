@@ -7,7 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -15,7 +14,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.SnowBlock;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;

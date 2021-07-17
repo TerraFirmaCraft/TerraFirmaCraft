@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -30,11 +31,12 @@ public class HeatDefinition
 
     public HeatDefinition(ResourceLocation id, JsonObject obj)
     {
-        this.id = id;
         float heatCapacity = JSONUtils.getAsFloat(obj, "heat_capacity");
         float forgingTemp = JSONUtils.getAsFloat(obj, "forging_temperature", 0);
         float weldingTemp = JSONUtils.getAsFloat(obj, "welding_temperature", 0);
-        this.ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(obj, "ingredient"));
+
+        this.id = id;
+        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
         this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
     }
 

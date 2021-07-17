@@ -39,6 +39,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
             }
         };
     }
+
     private final Supplier<? extends Block> bodyBlock;
 
     protected TFCKelpTopBlock(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)

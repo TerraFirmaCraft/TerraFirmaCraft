@@ -26,13 +26,6 @@ public class AirBlockCarver extends BlockCarver
     private BitSet waterAdjacencyMask;
 
     @Override
-    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
-    {
-        this.waterAdjacencyMask = Objects.requireNonNull(waterAdjacencyMask, "Air block carver was supplied with a null waterAdjacencyMask - this is not allowed!");
-        super.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
-    }
-
-    @Override
     public boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel)
     {
         // First, check if the location has already been carved by the current carving mask
@@ -72,5 +65,12 @@ public class AirBlockCarver extends BlockCarver
             }
         }
         return false;
+    }
+
+    @Override
+    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
+    {
+        this.waterAdjacencyMask = Objects.requireNonNull(waterAdjacencyMask, "Air block carver was supplied with a null waterAdjacencyMask - this is not allowed!");
+        super.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
     }
 }

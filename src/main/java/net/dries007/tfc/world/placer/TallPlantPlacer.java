@@ -24,10 +24,11 @@ public class TallPlantPlacer extends BlockPlacer
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
     {
-        ((TFCTallGrassBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
+        ((TFCTallGrassBlock) state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }
 
-    protected BlockPlacerType<?> type() {
+    protected BlockPlacerType<?> type()
+    {
         return TFCBlockPlacers.TALL_PLANT.get();
     }
 }

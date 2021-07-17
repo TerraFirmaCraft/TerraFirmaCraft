@@ -34,11 +34,11 @@ public class GrillContainer extends TileEntityContainer<GrillTileEntity>
         Helpers.ifPresentOrElse(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY), handler -> {
             for (int i = 0; i < 4; i++) // Fuel
             {
-                addSlot(new SlotCallback(tile, handler, i, 8, 70 - 18 * i));
+                addSlot(new CallbackSlot(tile, handler, i, 8, 70 - 18 * i));
             }
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Grill input
             {
-                addSlot(new SlotCallback(tile, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
+                addSlot(new CallbackSlot(tile, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
             }
         }, () -> LOGGER.warn("Missing capability on grill at {}?", tile.getBlockPos()));
     }

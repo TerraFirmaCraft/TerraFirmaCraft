@@ -23,6 +23,24 @@ import com.mojang.serialization.Codec;
 
 public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
 {
+    // This code is copied from WeepingVineFeature
+    private static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
+    {
+        for (int i = 0; i <= height; ++i)//this assumes that we found a valid place to attach
+        {
+            if (world.isEmptyBlock(mutablePos))//if it's empty, we can grow
+            {
+                if (i == height || !world.isEmptyBlock(mutablePos.below()))//if we guarantee the next iteration will fail, set the end block
+                {
+                    world.setBlock(mutablePos, headState.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
+                    break;
+                }
+                world.setBlock(mutablePos, bodyState, 2);
+            }
+            mutablePos.move(Direction.DOWN);
+        }
+    }
+
     public TFCWeepingVinesFeature(Codec<TallPlantConfig> codec)
     {
         super(codec);
@@ -46,23 +64,5 @@ public class TFCWeepingVinesFeature extends Feature<TallPlantConfig>
             }
         }
         return placedAny;
-    }
-
-    // This code is copied from WeepingVineFeature
-    private static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
-    {
-        for (int i = 0; i <= height; ++i)//this assumes that we found a valid place to attach
-        {
-            if (world.isEmptyBlock(mutablePos))//if it's empty, we can grow
-            {
-                if (i == height || !world.isEmptyBlock(mutablePos.below()))//if we guarantee the next iteration will fail, set the end block
-                {
-                    world.setBlock(mutablePos, headState.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
-                    break;
-                }
-                world.setBlock(mutablePos, bodyState, 2);
-            }
-            mutablePos.move(Direction.DOWN);
-        }
     }
 }

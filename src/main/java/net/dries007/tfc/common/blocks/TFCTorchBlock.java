@@ -22,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
@@ -32,6 +31,18 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
 {
+    public static void onRandomTick(ServerWorld world, BlockPos pos, BlockState placeState)
+    {
+        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        if (te != null)
+        {
+            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
+            {
+                world.setBlockAndUpdate(pos, placeState);
+            }
+        }
+    }
+
     private final ForgeBlockProperties properties;
 
     public TFCTorchBlock(ForgeBlockProperties properties, IParticleData particle)
@@ -78,17 +89,5 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
             te.resetCounter();
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
-    }
-
-    public static void onRandomTick(ServerWorld world, BlockPos pos, BlockState placeState)
-    {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-        if (te != null)
-        {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > TFCConfig.SERVER.torchTicks.get() && TFCConfig.SERVER.torchTicks.get() > 0)
-            {
-                world.setBlockAndUpdate(pos, placeState);
-            }
-        }
     }
 }
