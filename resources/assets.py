@@ -481,6 +481,10 @@ def generate(rm: ResourceManager):
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
 
+    for grain in GRAINS:
+        for suffix in GRAIN_SUFFIXES:
+            rm.item_model('food/%s%s' % (grain, suffix)).with_lang(lang('%s%s', grain, suffix))
+
     rm.blockstate('berry_bush/dead_bush', variants={
         'stage=0': {'model': 'tfc:block/berry_bush/dead_bush_0'},
         'stage=1': {'model': 'tfc:block/berry_bush/dead_bush_1'},

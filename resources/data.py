@@ -68,6 +68,9 @@ def generate(rm: ResourceManager):
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
 
+        if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
+            rm.item_tag('tfc:fluxstone', block('loose'))
+
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.block_tag('plant', 'tfc:plant/%s' % plant)

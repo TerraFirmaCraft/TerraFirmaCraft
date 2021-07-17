@@ -7,7 +7,7 @@ Rock = NamedTuple('Rock', category=str, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
-OreGrade = NamedTuple('OreGrade', weight=int)
+OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, duration=int)
@@ -159,9 +159,9 @@ ORES: Dict[str, Ore] = {
     'topaz': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(50),
-    'poor': OreGrade(30),
-    'rich': OreGrade(20)
+    'normal': OreGrade(50, 5),
+    'poor': OreGrade(30, 3),
+    'rich': OreGrade(20, 7)
 }
 
 
@@ -369,6 +369,9 @@ FRUITS: Dict[str, Fruit] = {
     'plum': Fruit(18, 31, 250, 400),
     'red_apple': Fruit(9, 25, 100, 280)
 }
+
+GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
+GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

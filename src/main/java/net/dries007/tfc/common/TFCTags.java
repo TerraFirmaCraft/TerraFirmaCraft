@@ -16,6 +16,7 @@ import net.minecraft.tags.ItemTags;
 
 import net.dries007.tfc.util.Helpers;
 
+@SuppressWarnings("unused")
 public class TFCTags
 {
     public static class Blocks
@@ -87,6 +88,7 @@ public class TFCTags
         public static final ITag.INamedTag<Item> BLOOMERY_FUEL = create("bloomery_fuel");
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
         public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
+        public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
 
         private static ITag.INamedTag<Item> create(String id)
         {

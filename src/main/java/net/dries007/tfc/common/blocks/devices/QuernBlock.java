@@ -107,7 +107,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                     }
                     else if (selection == SelectionPlace.BASE && !inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
                     {
-                        return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_INPUT);
+                        return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
                     }
                     return ActionResultType.FAIL;
                 }).orElse(ActionResultType.FAIL);
@@ -122,7 +122,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         {
             player.setItemInHand(Hand.MAIN_HAND, inventory.insertItem(slot, stack, false));
         }
-        else if (player.isShiftKeyDown())
+        else
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
         }

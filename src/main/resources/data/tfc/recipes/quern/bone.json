@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "minecraft:bone"
+  },
+  "result": {
+    "count": 3,
+    "item": "minecraft:bone_meal"
+  }
+}

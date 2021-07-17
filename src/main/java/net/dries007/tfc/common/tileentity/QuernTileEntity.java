@@ -142,7 +142,7 @@ public class QuernTileEntity extends InventoryTileEntity implements ITickableTil
     private void addParticleSafely(ItemStack item)
     {
         assert level != null;
-        if (level.isClientSide)
+        if (level.isClientSide && !item.isEmpty())
         {
             level.addParticle(new ItemParticleData(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
         }
@@ -161,7 +161,7 @@ public class QuernTileEntity extends InventoryTileEntity implements ITickableTil
                 inputStack.shrink(1);
                 ItemStack outputStack = recipe.assemble(wrapper);
                 outputStack = inventory.insertItem(SLOT_OUTPUT, outputStack, false);
-                //todo inventory.setStackInSlot(SLOT_OUTPUT, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT), outputStack));
+                //todo: mergeItemStacksIgnoreCreationDate
                 if (!outputStack.isEmpty())
                 {
                     // Still having leftover items, dumping in world
