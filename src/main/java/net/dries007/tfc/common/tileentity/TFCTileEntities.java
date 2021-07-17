@@ -35,7 +35,7 @@ public class TFCTileEntities
 
     public static final RegistryObject<TileEntityType<FarmlandTileEntity>> FARMLAND = register("farmland", FarmlandTileEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values().stream());
     public static final RegistryObject<TileEntityType<SnowPileTileEntity>> SNOW_PILE = register("snow_pile", SnowPileTileEntity::new, TFCBlocks.SNOW_PILE);
-    public static final RegistryObject<TileEntityType<FirePitTileEntity>> FIREPIT = register("firepit", FirePitTileEntity::new, TFCBlocks.FIREPIT);
+    public static final RegistryObject<TileEntityType<FirepitTileEntity>> FIREPIT = register("firepit", FirepitTileEntity::new, TFCBlocks.FIREPIT);
     public static final RegistryObject<TileEntityType<GrillTileEntity>> GRILL = register("grill", GrillTileEntity::new, TFCBlocks.GRILL);
     public static final RegistryObject<TileEntityType<PotTileEntity>> POT = register("pot", PotTileEntity::new, TFCBlocks.POT);
     public static final RegistryObject<TileEntityType<TickCounterTileEntity>> TICK_COUNTER = register("tick_counter", TickCounterTileEntity::new, Stream.of(SAPLING_LIST, TFCBlocks.FRUIT_TREE_SAPLINGS.values(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.values(), Arrays.asList(TFCBlocks.TORCH, TFCBlocks.WALL_TORCH, TFCBlocks.DEAD_BERRY_BUSH, TFCBlocks.DEAD_CANE, TFCBlocks.BANANA_SAPLING)).flatMap(Collection::stream));

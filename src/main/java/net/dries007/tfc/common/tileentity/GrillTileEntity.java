@@ -84,7 +84,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     }
 
     @Override
-    public void updateCachedRecipe()
+    protected void updateCachedRecipe()
     {
         assert level != null;
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)

@@ -43,9 +43,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.util.Helpers.fastGaussian;
-import static net.minecraft.util.ActionResultType.PASS;
-
 public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
@@ -104,15 +101,15 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
-            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.07D, 0);
+            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.07D, 0);
         }
         for (int i = 0; i < rand.nextInt(4); i++)
         {
-            world.addParticle(ParticleTypes.SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
         }
         if (rand.nextInt(8) == 1)
         {
-            world.addParticle(ParticleTypes.LARGE_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
         }
     }
 
@@ -174,7 +171,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
                 return ActionResultType.SUCCESS;
             }
         }
-        return PASS;
+        return ActionResultType.PASS;
     }
 
     @Override

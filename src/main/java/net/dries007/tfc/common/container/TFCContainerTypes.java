@@ -28,7 +28,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<ContainerType<SimpleContainer>> CALENDAR = register("calendar", (windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.CALENDAR.get(), windowId, inv));
     public static final RegistryObject<ContainerType<SimpleContainer>> NUTRITION = register("nutrition", ((windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.NUTRITION.get(), windowId, inv)));
     public static final RegistryObject<ContainerType<SimpleContainer>> CLIMATE = register("climate", ((windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.CLIMATE.get(), windowId, inv)));
-    public static final RegistryObject<ContainerType<FirepitContainer>> FIREPIT = register("firepit", FirePitTileEntity.class, FirepitContainer::new);
+    public static final RegistryObject<ContainerType<FirepitContainer>> FIREPIT = register("firepit", FirepitTileEntity.class, FirepitContainer::new);
     public static final RegistryObject<ContainerType<GrillContainer>> GRILL = register("grill", GrillTileEntity.class, GrillContainer::new);
     public static final RegistryObject<ContainerType<PotContainer>> POT = register("pot", PotTileEntity.class, PotContainer::new);
     public static final RegistryObject<ContainerType<LogPileContainer>> LOG_PILE = register("log_pile", LogPileTileEntity.class, LogPileContainer::new);

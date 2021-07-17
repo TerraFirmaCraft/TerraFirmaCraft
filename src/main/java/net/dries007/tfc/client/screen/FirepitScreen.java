@@ -14,11 +14,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
-import net.dries007.tfc.common.tileentity.FirePitTileEntity;
+import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class FirepitScreen extends TileEntityScreen<FirePitTileEntity, FirepitContainer>
+public class FirepitScreen extends TileEntityScreen<FirepitTileEntity, FirepitContainer>
 {
     private static final ResourceLocation FIREPIT = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
 

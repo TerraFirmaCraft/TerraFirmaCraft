@@ -61,11 +61,11 @@ public final class TFCFluids
      * Fluid instances
      */
     public static final Map<Metal.Default, FluidPair<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
-        "metal/" + metal.name().toLowerCase(),
-        "metal/flowing_" + metal.name().toLowerCase(),
+        "metal/" + metal.getSerializedName(),
+        "metal/flowing_" + metal.getSerializedName(),
         properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.METAL_FLUID_BUCKETS.get(metal)).explosionResistance(100),
         FluidAttributes.builder(MOLTEN_STILL, MOLTEN_FLOW)
-            .translationKey("fluid.tfc.metal." + metal.name().toLowerCase())
+            .translationKey("fluid.tfc.metal." + metal.getSerializedName())
             .color(ALPHA_MASK | metal.getColor())
             .rarity(metal.getRarity())
             .luminosity(15)

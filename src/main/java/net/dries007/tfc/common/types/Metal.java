@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.types;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -18,6 +19,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -26,11 +28,11 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCArmorMaterial;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCItemTier;
 import net.dries007.tfc.common.items.tools.*;
+import net.dries007.tfc.util.Helpers;
 
 public class Metal
 {
@@ -72,7 +74,7 @@ public class Metal
      *
      * @see Metal instead and register via json
      */
-    public enum Default
+    public enum Default implements IStringSerializable
     {
         BISMUTH(0xFF486B72, Rarity.COMMON, true, false, false),
         BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, TFCItemTier.BISMUTH_BRONZE, TFCArmorMaterial.BISMUTH_BRONZE, true, true, true),
@@ -103,6 +105,7 @@ public class Metal
         HIGH_CARBON_RED_STEEL(0xFF700503, Rarity.COMMON, false, false, false),
         UNKNOWN(0xFF2F2B27, Rarity.COMMON, false, false, false);
 
+        private final String serializedName;
         private final boolean parts, armor, utility;
         private final IItemTier tier;
         private final IArmorMaterial armorTier;
@@ -116,6 +119,7 @@ public class Metal
 
         Default(int color, Rarity rarity, @Nullable IItemTier tier, @Nullable IArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
         {
+            this.serializedName = name().toLowerCase(Locale.ROOT);
             this.tier = tier;
             this.armorTier = armorTier;
             this.rarity = rarity;
@@ -124,6 +128,12 @@ public class Metal
             this.parts = parts;
             this.armor = armor;
             this.utility = utility;
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
         }
 
         public int getColor()
@@ -195,6 +205,13 @@ public class Metal
             return tier < 0 || tier > VALUES.length ? TIER_I : VALUES[tier];
         }
 
+        private final String translationKey;
+
+        Tier()
+        {
+            translationKey = Helpers.getEnumTranslationKey(this, "tier");
+        }
+
         public Tier next()
         {
             return this == TIER_VI ? TIER_VI : VALUES[this.ordinal() + 1];
@@ -217,7 +234,7 @@ public class Metal
 
         public ITextComponent getDisplayName()
         {
-            return new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".enum.tier." + this.name().toLowerCase());
+            return new TranslationTextComponent(translationKey);
         }
     }
 

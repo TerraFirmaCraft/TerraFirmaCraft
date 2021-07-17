@@ -429,6 +429,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
+    'tfc.tooltip.debug_tag': 'Tag: %s',
 
     # Commands
     'tfc.commands.time.query.daytime': 'The day time is %s',

@@ -29,7 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
@@ -135,10 +135,13 @@ public class ClientForgeEventHandler
             }
 
             // todo: config and translation key
-            CompoundNBT stackTag = stack.getTag();
-            if (stackTag != null)
+            if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
             {
-                text.add(new StringTextComponent("NBT: " + stackTag));
+                CompoundNBT stackTag = stack.getTag();
+                if (stackTag != null)
+                {
+                    text.add(new TranslationTextComponent("tfc.tooltip.debug_tag", stackTag));
+                }
             }
         }
     }

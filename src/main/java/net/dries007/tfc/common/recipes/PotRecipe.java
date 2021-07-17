@@ -107,20 +107,40 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
      */
     public abstract PotRecipe.Output getOutput(PotTileEntity.PotInventory inventory);
 
+    /**
+     * The output of a pot recipe
+     * This output can be fairly complex, but follows a specific contract:
+     * 1. The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotTileEntity.PotInventory)}
+     * 2. {@link Output#onFinish(PotTileEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary
+     * 3. THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...
+     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotTileEntity, PlayerEntity, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
+     */
     public interface Output extends INBTSerializable<CompoundNBT>
     {
+        /**
+         * If there is still something to be extracted from this output. If this returns false at any time the output must be serializable
+         */
         default boolean isEmpty()
         {
             return true;
         }
 
+        /**
+         * If the pot, while storing this output, should render a default reddish-brown fluid as inside the pot, despite the pot itself not necessarily being filled with any fluid
+         */
         default boolean renderDefaultFluid()
         {
             return false;
         }
 
+        /**
+         * Called with an empty pot inventory immediately after completion, before checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output.
+         */
         default void onFinish(PotTileEntity.PotInventory inventory) {}
 
+        /**
+         * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
+         */
         default ActionResultType onInteract(PotTileEntity entity, PlayerEntity player, ItemStack clickedWith)
         {
             return ActionResultType.PASS;

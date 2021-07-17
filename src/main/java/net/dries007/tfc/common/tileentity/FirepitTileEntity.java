@@ -27,11 +27,17 @@ import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class FirePitTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
+public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
 {
+    public static final int SLOT_ITEM_INPUT = 4; // item to be cooked
+    public static final int SLOT_OUTPUT_1 = 5; // generic output slot
+    public static final int SLOT_OUTPUT_2 = 6; // extra output slot
+
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.firepit");
 
-    public FirePitTileEntity()
+    protected HeatingRecipe cachedRecipe;
+
+    public FirepitTileEntity()
     {
         super(TFCTileEntities.FIREPIT.get(), defaultInventory(7), NAME);
     }
@@ -62,6 +68,14 @@ public class FirePitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
         }
     }
 
+    @Override
+    protected void updateCachedRecipe()
+    {
+        assert level != null;
+        cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitTileEntity.SLOT_ITEM_INPUT)));
+    }
+
+    @Override
     protected void coolInstantly()
     {
         inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));

@@ -50,7 +50,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.pot");
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     private PotRecipe.Output output;
-    private PotRecipe cachedPotRecipe;
+    private PotRecipe cachedRecipe;
     private int boilingTicks;
 
     public PotTileEntity()
@@ -58,7 +58,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
         super(TFCTileEntities.POT.get(), PotInventory::new, NAME);
 
         output = null;
-        cachedPotRecipe = null;
+        cachedRecipe = null;
         boilingTicks = 0;
 
         // Items in top, Fuel and fluid in sides, items and fluid out sides
@@ -103,7 +103,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     {
         if (isBoiling())
         {
-            if (boilingTicks < cachedPotRecipe.getDuration())
+            if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
             }
@@ -111,7 +111,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
             {
                 // Create output
                 // Save the recipe here, as setting inventory will call setAndUpdateSlots, which will clear the cached recipe before output is created
-                final PotRecipe recipe = cachedPotRecipe;
+                final PotRecipe recipe = cachedRecipe;
                 final PotRecipe.Output output = recipe.getOutput(inventory);
 
                 // Clear inputs
@@ -129,7 +129,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
                 }
 
                 // Reset recipe progress
-                cachedPotRecipe = null;
+                cachedRecipe = null;
                 boilingTicks = 0;
                 updateCachedRecipe();
             }
@@ -141,10 +141,10 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
-    public void updateCachedRecipe()
+    protected void updateCachedRecipe()
     {
         assert level != null;
-        cachedPotRecipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.POT, inventory, level).orElse(null);
+        cachedRecipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.POT, inventory, level).orElse(null);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     public boolean isBoiling()
     {
         // if we have a recipe, there is no output, and we're hot enough, we boil
-        return cachedPotRecipe != null && output == null && cachedPotRecipe.isHotEnough(temperature);
+        return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
     }
 
     public ActionResultType interactWithOutput(PlayerEntity player, ItemStack stack)

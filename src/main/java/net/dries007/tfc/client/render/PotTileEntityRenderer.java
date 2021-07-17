@@ -50,7 +50,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
         final boolean useDefaultFluid = output != null && output.renderDefaultFluid();
         final FluidStack fluidStack = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             .map(cap -> cap.getFluidInTank(0))
-            .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, 1000) : FluidStack.EMPTY);
+            .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
             Fluid fluid = fluidStack.getFluid();

@@ -25,7 +25,7 @@ public interface ITallPlant
 
     enum Part implements IStringSerializable
     {
-        UPPER(),
+        UPPER,
         LOWER;
 
         private final String serializedName;

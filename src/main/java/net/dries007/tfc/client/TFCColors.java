@@ -34,18 +34,28 @@ public final class TFCColors
     public static final ResourceLocation FOLIAGE_FALL_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_fall.png");
     public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
+
+    public static final ColorResolver FRESH_WATER;
+    public static final ColorResolver SALT_WATER;
+
     private static final int COLORMAP_SIZE = 256 * 256;
     private static final int COLORMAP_MASK = COLORMAP_SIZE - 1;
+
     private static int[] SKY_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] WATER_COLORS_CACHE = new int[COLORMAP_SIZE];
-    public static final ColorResolver FRESH_WATER = createColorResolver(TFCColors::getWaterColor);
-    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterColor);
     private static int[] WATER_FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
+
+    static
+    {
+        // IDEA's code ordering wants to rearrange these fields unless they're initialized after WATER_COLORS_CACHE
+        FRESH_WATER = waterColorResolver(TFCColors::getWaterColor);
+        SALT_WATER = waterColorResolver(TFCColors::getWaterColor);
+    }
 
     public static void setSkyColors(int[] skyColors)
     {
@@ -208,7 +218,7 @@ public final class TFCColors
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 
-    private static ColorResolver createColorResolver(ToIntFunction<BlockPos> colorAccessor)
+    private static ColorResolver waterColorResolver(ToIntFunction<BlockPos> colorAccessor)
     {
         final BlockPos.Mutable cursor = new BlockPos.Mutable();
         return (biome, x, z) -> {

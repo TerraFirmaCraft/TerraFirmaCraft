@@ -205,7 +205,7 @@ public final class Helpers
      */
     public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
     {
-        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
+        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase(Locale.ROOT);
     }
 
     /**
