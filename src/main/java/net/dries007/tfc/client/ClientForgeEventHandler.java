@@ -23,11 +23,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
@@ -130,6 +132,13 @@ public class ClientForgeEventHandler
             if (event.getFlags().isAdvanced())
             {
                 FuelManager.addTooltipInfo(stack, text);
+            }
+
+            // todo: config and translation key
+            CompoundNBT stackTag = stack.getTag();
+            if (stackTag != null)
+            {
+                text.add(new StringTextComponent("NBT: " + stackTag));
             }
         }
     }

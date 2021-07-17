@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.types;
 
 import java.util.List;
-import java.util.Optional;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
@@ -20,26 +18,27 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
 public class FuelManager extends DataManager<Fuel>
 {
     public static final FuelManager INSTANCE = new FuelManager();
-    private static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
-    @Nonnull
-    public static Optional<Fuel> get(ItemStack stack)
+    private static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
+    private static final String TOOLTIP_KEY = TerraFirmaCraft.MOD_ID + ".tooltip.fuel";
+
+    @Nullable
+    public static Fuel get(ItemStack stack)
     {
         for (Fuel def : CACHE.getAll(stack.getItem()))
         {
             if (def.isValid(stack))
             {
-                return Optional.of(def);
+                return def;
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     public static void reload()
@@ -49,11 +48,10 @@ public class FuelManager extends DataManager<Fuel>
 
     public static void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
     {
-        Optional<Fuel> opt = get(stack);
-        if (opt.isPresent())
+        final Fuel fuel = get(stack);
+        if (fuel != null)
         {
-            Fuel fuel = opt.get();
-            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.fuel", fuel.getDuration(), fuel.getTemperature()));
+            text.add(new TranslationTextComponent(TOOLTIP_KEY, fuel.getDuration(), fuel.getTemperature()));
         }
     }
 

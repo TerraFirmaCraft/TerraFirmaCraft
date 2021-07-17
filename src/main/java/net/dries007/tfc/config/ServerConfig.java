@@ -51,7 +51,6 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue pitKilnTicks;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
-    public final ForgeConfigSpec.IntValue rainTicks;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -129,7 +128,6 @@ public class ServerConfig
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
-        rainTicks = builder.apply("rainTicks").comment("Number of burning ticks that is removed when the fire pit is on rain (random ticks). Makes fuel burn faster.").defineInRange("rainTicks", 1000, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 

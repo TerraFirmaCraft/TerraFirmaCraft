@@ -155,6 +155,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     /**
      * Returns a standard calculated value for density.
      * This scales the regular density by the forest type.
+     *
      * @return a value in [0, 1]
      */
     public float getAdjustedForestDensity()
@@ -308,13 +309,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
-        public void setStatus(Status status)
+        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override
-        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
+        public void setStatus(Status status)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

@@ -64,6 +64,8 @@ public class TFCTags
     {
         public static final ITag.INamedTag<Fluid> MIXABLE = create("mixable");
 
+        public static final ITag.INamedTag<Fluid> USABLE_IN_POT = create("usable_in_pot");
+
         private static ITag.INamedTag<Fluid> create(String id)
         {
             return FluidTags.bind(Helpers.identifier(id).toString());

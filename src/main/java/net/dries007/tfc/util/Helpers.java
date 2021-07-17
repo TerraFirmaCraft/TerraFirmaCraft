@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.block.AbstractFireBlock;
@@ -45,8 +46,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.brigadier.StringReader;
@@ -156,6 +161,11 @@ public final class Helpers
         });
     }
 
+    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
+    {
+        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
+    }
+
     /**
      * Creates a map of each enum constant to the value as provided by the value mapper.
      */
@@ -214,18 +224,6 @@ public final class Helpers
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
-    {
-        TileEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        return null;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntity(IBlockReader world, BlockPos pos, Class<T> tileEntityClass)
     {
         TileEntity te = world.getBlockEntity(pos);
@@ -236,15 +234,9 @@ public final class Helpers
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        throw new IllegalStateException("Expected a tile entity at " + pos + " of class " + tileEntityClass.getSimpleName());
+        return Objects.requireNonNull(getTileEntity(world, pos, tileEntityClass));
     }
 
     /**
@@ -368,6 +360,65 @@ public final class Helpers
                 stack.shrink(1);
                 stack.setDamageValue(0);
             }
+        }
+    }
+
+    public static Iterable<ItemStack> iterate(IItemHandler inventory)
+    {
+        final int slots = inventory.getSlots();
+        return () -> new AbstractIterator<ItemStack>()
+        {
+            private int slot = -1;
+
+            @Override
+            protected ItemStack computeNext()
+            {
+                slot++;
+                if (slot < slots)
+                {
+                    return inventory.getStackInSlot(slot);
+                }
+                return endOfData();
+            }
+        };
+    }
+
+    /**
+     * Attempts to insert a stack across all slots of an item handler
+     *
+     * @param stack The stack to be inserted
+     * @return The remainder after the stack is inserted, if any
+     */
+    public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
+    {
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            stack = inventory.insertItem(slot, stack, false);
+            if (stack.isEmpty())
+            {
+                return ItemStack.EMPTY;
+            }
+        }
+        return stack;
+    }
+
+    public static NonNullList<ItemStack> extractAllItems(IItemHandlerModifiable inventory)
+    {
+        NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            saved.set(slot, inventory.getStackInSlot(slot));
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        return saved;
+    }
+
+    public static void insertAllItems(IItemHandlerModifiable inventory, NonNullList<ItemStack> from)
+    {
+        // We allow the list to have a different size than the new inventory
+        for (int slot = 0; slot < Math.min(inventory.getSlots(), from.size()); slot++)
+        {
+            inventory.setStackInSlot(slot, from.get(slot));
         }
     }
 

@@ -9,17 +9,12 @@ package net.dries007.tfc.world.feature.cave;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Climate;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {

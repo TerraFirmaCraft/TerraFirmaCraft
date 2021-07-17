@@ -15,8 +15,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.*;
-import static net.dries007.tfc.common.tileentity.FirepitTileEntity.SLOT_FUEL_INPUT;
+import static net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity.SLOT_FUEL_INPUT;
+import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
+import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
 
 public class PotContainer extends TileEntityContainer<PotTileEntity>
 {
@@ -35,11 +36,11 @@ public class PotContainer extends TileEntityContainer<PotTileEntity>
         Helpers.ifPresentOrElse(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY), handler -> {
             for (int i = 0; i < 4; i++) // Fuel
             {
-                addSlot(new SlotCallback(tile, handler, i, 8, 70 - 18 * i));
+                addSlot(new CallbackSlot(tile, handler, i, 8, 70 - 18 * i));
             }
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Pot input
             {
-                addSlot(new SlotCallback(tile, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
+                addSlot(new CallbackSlot(tile, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
             }
         }, () -> LOGGER.warn("Missing capability on grill at {}?", tile.getBlockPos()));
     }

@@ -28,7 +28,8 @@ public class Rock
 {
     private final Block sand, sandstone;
     private final Block raw, hardened, gravel, cobble; // Required blocks
-    @Nullable private final Block spike, loose; // Optional blocks (only required for certain features)
+    @Nullable
+    private final Block spike, loose; // Optional blocks (only required for certain features)
     private final ResourceLocation id;
 
     public Rock(ResourceLocation id, JsonObject json)
@@ -143,19 +144,19 @@ public class Rock
     }
 
     public enum BlockType implements IStringSerializable
-	{
-		RAW((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.category.getHardness(), 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-		HARDENED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.category.getHardness(), 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
-		SMOOTH((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-		COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
-		BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
-		GRAVEL((rock, self) -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)), false),
-		SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
-		CRACKED_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-		MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-		MOSSY_COBBLE((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-		CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
-		LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE).strength(0.05f, 0.0f).sound(SoundType.STONE).noOcclusion()), false);
+    {
+        RAW((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.category.getHardness(), 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        HARDENED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.category.getHardness(), 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
+        SMOOTH((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
+        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
+        GRAVEL((rock, self) -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)), false),
+        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
+        CRACKED_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        MOSSY_COBBLE((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
+        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE).strength(0.05f, 0.0f).sound(SoundType.STONE).noOcclusion()), false);
 
         public static final BlockType[] VALUES = values();
 

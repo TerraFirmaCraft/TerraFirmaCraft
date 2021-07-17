@@ -81,6 +81,13 @@ public class Cellular3D implements INoise3D
         return noise(x, y, z, returnType);
     }
 
+    @Override
+    public Cellular3D spread(float scaleFactor)
+    {
+        this.frequency *= scaleFactor;
+        return this;
+    }
+
     public float noise(float x, float y, float z, CellularNoiseType type)
     {
         if (lastX == x && lastY == y && lastZ == z)
@@ -171,12 +178,5 @@ public class Cellular3D implements INoise3D
         centerZ /= frequency;
 
         return returnType.apply(f1, f2, f3, centerHash);
-    }
-
-    @Override
-    public Cellular3D spread(float scaleFactor)
-    {
-        this.frequency *= scaleFactor;
-        return this;
     }
 }

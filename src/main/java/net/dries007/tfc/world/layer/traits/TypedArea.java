@@ -7,16 +7,11 @@
 package net.dries007.tfc.world.layer.traits;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.gen.area.LazyArea;
-import net.minecraft.world.gen.layer.traits.IPixelTransformer;
 
 import it.unimi.dsi.fastutil.HashCommon;
-import it.unimi.dsi.fastutil.longs.Long2IntLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 
 /**
  * Like {@link net.minecraft.world.gen.area.LazyArea} but with a generic return type.

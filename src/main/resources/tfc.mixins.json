@@ -11,6 +11,7 @@
     "entity.item.FallingBlockEntityAccessor",
     "fluid.FlowingFluidAccessor",
     "fluid.FlowingFluidMixin",
+    "inventory.container.ContainerMixin",
     "item.crafting.RecipeManagerAccessor",
     "server.management.PlayerInteractionManagerMixin",
     "util.SharedSeedRandomMixin",

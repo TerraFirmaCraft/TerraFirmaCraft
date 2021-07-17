@@ -33,15 +33,15 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     }
 
     @Override
-    protected MutableBoundingBox getBoundingBox(DiscVeinConfig config, DiscVein vein)
-    {
-        return new MutableBoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
-    }
-
-    @Override
     protected DiscVein createVein(int chunkX, int chunkZ, Random random, DiscVeinConfig config)
     {
         return new DiscVein(defaultPos(chunkX, chunkZ, random, config), random, config.getSize());
+    }
+
+    @Override
+    protected MutableBoundingBox getBoundingBox(DiscVeinConfig config, DiscVein vein)
+    {
+        return new MutableBoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
     }
 
     static class DiscVein extends Vein

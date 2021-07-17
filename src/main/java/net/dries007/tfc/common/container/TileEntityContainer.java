@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 
-public abstract class TileEntityContainer<T extends InventoryTileEntity> extends SimpleContainer
+public abstract class TileEntityContainer<T extends InventoryTileEntity<?>> extends SimpleContainer
 {
     protected final T tile;
 
@@ -95,7 +95,7 @@ public abstract class TileEntityContainer<T extends InventoryTileEntity> extends
     }
 
     @FunctionalInterface
-    public interface IFactory<T extends InventoryTileEntity, C extends TileEntityContainer<T>>
+    public interface IFactory<T extends InventoryTileEntity<?>, C extends TileEntityContainer<T>>
     {
         C create(T tile, PlayerInventory playerInventory, int windowId);
     }

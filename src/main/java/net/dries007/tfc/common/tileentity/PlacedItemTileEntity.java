@@ -20,15 +20,17 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.items.ItemStackHandler;
+
+import net.dries007.tfc.common.container.ItemStackHandlerCallback;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 //todo: convert to respect item sizes
-public class PlacedItemTileEntity extends InventoryTileEntity
+public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
 {
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
-
     public static final int SLOT_LARGE_ITEM = 0;
+    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
     public boolean isHoldingLargeItem;
 
     public PlacedItemTileEntity()
@@ -38,7 +40,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity
 
     protected PlacedItemTileEntity(TileEntityType<?> type)
     {
-        super(type, 4, NAME);
+        super(TFCTileEntities.PLACED_ITEM.get(), self -> new ItemStackHandlerCallback(self, 4), NAME);
         this.isHoldingLargeItem = false;
     }
 

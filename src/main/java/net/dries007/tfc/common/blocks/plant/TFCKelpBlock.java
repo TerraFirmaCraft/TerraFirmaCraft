@@ -40,6 +40,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             }
         };
     }
+
     private final Supplier<? extends Block> headBlock;
 
     protected TFCKelpBlock(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)

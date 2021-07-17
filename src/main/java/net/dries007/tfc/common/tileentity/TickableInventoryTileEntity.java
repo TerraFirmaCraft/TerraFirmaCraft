@@ -6,30 +6,20 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-public abstract class TickableInventoryTileEntity extends InventoryTileEntity implements ITickableTileEntity, INamedContainerProvider
+public abstract class TickableInventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends InventoryTileEntity<C> implements ITickableTileEntity
 {
     protected boolean needsClientUpdate;
 
-    public TickableInventoryTileEntity(TileEntityType<?> type, int inventorySlots, ITextComponent defaultName)
-    {
-        super(type, inventorySlots, defaultName);
-    }
-
-    public TickableInventoryTileEntity(TileEntityType<?> type, ItemStackHandler inventory, ITextComponent defaultName)
+    public TickableInventoryTileEntity(TileEntityType<?> type, InventoryFactory<C> inventory, ITextComponent defaultName)
     {
         super(type, inventory, defaultName);
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return customName != null ? customName : defaultName;
     }
 
     @Override

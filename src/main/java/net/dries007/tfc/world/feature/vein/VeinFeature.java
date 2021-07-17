@@ -48,6 +48,37 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         return false;
     }
 
+    public final List<V> getNearbyVeins(ISeedReader world, ChunkPos pos, int radius, C config, Function<BlockPos, Biome> biomeQuery)
+    {
+        final List<V> veins = new ArrayList<>();
+        final Random random = new Random();
+        for (int x = pos.x - radius; x <= pos.x + radius; x++)
+        {
+            for (int z = pos.z - radius; z <= pos.z + radius; z++)
+            {
+                getVeinsAtChunk(world, x, z, veins, config, random, biomeQuery);
+            }
+        }
+        return veins;
+    }
+
+    public final void getVeinsAtChunk(ISeedReader world, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Biome> biomeQuery)
+    {
+        long seed = FastRandom.next(world.getSeed(), config.getSalt());
+        seed = FastRandom.next(seed, chunkPosX);
+        seed = FastRandom.next(seed, chunkPosZ);
+        seed = FastRandom.next(seed, config.getSalt());
+        random.setSeed(seed);
+        if (random.nextInt(config.getRarity()) == 0)
+        {
+            final V vein = createVein(chunkPosX << 4, chunkPosZ << 4, random, config);
+            if (config.canSpawnInBiome(() -> biomeQuery.apply(vein.getPos())))
+            {
+                veins.add(vein);
+            }
+        }
+    }
+
     @SuppressWarnings("deprecation")
     protected void place(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
     {
@@ -108,37 +139,6 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config)
     {
         return config.getStateToGenerate(stoneState, random);
-    }
-
-    public final List<V> getNearbyVeins(ISeedReader world, ChunkPos pos, int radius, C config, Function<BlockPos, Biome> biomeQuery)
-    {
-        final List<V> veins = new ArrayList<>();
-        final Random random = new Random();
-        for (int x = pos.x - radius; x <= pos.x + radius; x++)
-        {
-            for (int z = pos.z - radius; z <= pos.z + radius; z++)
-            {
-                getVeinsAtChunk(world, x, z, veins, config, random, biomeQuery);
-            }
-        }
-        return veins;
-    }
-
-    public final void getVeinsAtChunk(ISeedReader world, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Biome> biomeQuery)
-    {
-        long seed = FastRandom.next(world.getSeed(), config.getSalt());
-        seed = FastRandom.next(seed, chunkPosX);
-        seed = FastRandom.next(seed, chunkPosZ);
-        seed = FastRandom.next(seed, config.getSalt());
-        random.setSeed(seed);
-        if (random.nextInt(config.getRarity()) == 0)
-        {
-            final V vein = createVein(chunkPosX << 4, chunkPosZ << 4, random, config);
-            if (config.canSpawnInBiome(() -> biomeQuery.apply(vein.getPos())))
-            {
-                veins.add(vein);
-            }
-        }
     }
 
     protected final BlockPos defaultPos(int chunkX, int chunkZ, Random random, C config)

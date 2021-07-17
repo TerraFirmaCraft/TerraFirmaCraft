@@ -73,6 +73,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         }
         return true;
     }
+
     private final Supplier<? extends Block> bodyBlock;
 
     protected KelpTreeFlowerBlock(AbstractBlock.Properties builder, Supplier<? extends Block> bodyBlock)

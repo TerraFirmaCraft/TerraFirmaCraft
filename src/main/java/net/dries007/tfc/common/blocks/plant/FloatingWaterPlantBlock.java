@@ -38,6 +38,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
             }
         };
     }
+
     private final Supplier<? extends Fluid> fluid;
 
     protected FloatingWaterPlantBlock(Properties properties, Supplier<? extends Fluid> fluid)

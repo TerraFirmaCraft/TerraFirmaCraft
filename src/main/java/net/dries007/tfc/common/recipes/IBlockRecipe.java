@@ -33,9 +33,9 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     @Override
-    default ItemStack assemble(BlockRecipeWrapper inv)
+    default ItemStack assemble(BlockRecipeWrapper inventory)
     {
-        return new ItemStack(getBlockCraftingResult(inv).getBlock());
+        return new ItemStack(getBlockCraftingResult(inventory).getBlock());
     }
 
     /**

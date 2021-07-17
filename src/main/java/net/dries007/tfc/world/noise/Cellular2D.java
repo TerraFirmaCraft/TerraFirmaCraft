@@ -80,6 +80,13 @@ public class Cellular2D implements INoise2D
         return noise(x, y, returnType);
     }
 
+    @Override
+    public Cellular2D spread(float scaleFactor)
+    {
+        this.frequency *= scaleFactor;
+        return this;
+    }
+
     public float noise(float x, float y, CellularNoiseType type)
     {
         if (lastX == x && lastY == y)
@@ -149,12 +156,5 @@ public class Cellular2D implements INoise2D
         centerY /= frequency;
 
         return type.apply(f1, f2, 1, centerHash);
-    }
-
-    @Override
-    public Cellular2D spread(float scaleFactor)
-    {
-        this.frequency *= scaleFactor;
-        return this;
     }
 }

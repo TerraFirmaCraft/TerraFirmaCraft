@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -40,12 +39,12 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockProperties
 {
+    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
+        .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
     private static final BooleanProperty NORTH = SixWayBlock.NORTH;
     private static final BooleanProperty EAST = SixWayBlock.EAST;
     private static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
     private static final BooleanProperty WEST = SixWayBlock.WEST;
-    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
-        .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
     private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
 
     private final ForgeBlockProperties properties;
@@ -58,44 +57,24 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
         registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false));
     }
 
-    protected Map<BlockState, VoxelShape> makeShapes(VoxelShape middleShape, ImmutableList<BlockState> possibleStates)
-    {
-        ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
-        for (BlockState state : possibleStates)
-        {
-            VoxelShape shape = middleShape;
-            for (Direction d : Direction.Plane.HORIZONTAL)
-            {
-                if (state.getValue(PROPERTY_BY_DIRECTION.get(d)))
-                {
-                    VoxelShape joinShape = VoxelShapes.empty();
-                    switch (d)
-                    {
-                        case NORTH:
-                            joinShape = box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 10.0D);
-                            break;
-                        case SOUTH:
-                            joinShape = box(5.0D, 10.0D, 11.0D, 11.0D, 16.0D, 16.0D);
-                            break;
-                        case EAST:
-                            joinShape = box(11.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D);
-                            break;
-                        case WEST:
-                            joinShape = box(0.0D, 10.0D, 5.0D, 5.0D, 16.0D, 11.0D);
-                            break;
-                    }
-                    shape = VoxelShapes.or(shape, joinShape);
-                }
-            }
-            builder.put(state, shape);
-        }
-        return builder.build();
-    }
-
     @Override
     public ForgeBlockProperties getForgeProperties()
     {
         return properties;
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        BlockState state = defaultBlockState();
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            mutablePos.setWithOffset(context.getClickedPos(), d);
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), context.getLevel().getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM));
+        }
+        return state;
     }
 
     @Override
@@ -126,17 +105,9 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        BlockState state = defaultBlockState();
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        for (Direction d : Direction.Plane.HORIZONTAL)
-        {
-            mutablePos.setWithOffset(context.getClickedPos(), d);
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), context.getLevel().getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM));
-        }
-        return state;
+        builder.add(NORTH, EAST, SOUTH, WEST);
     }
 
     @Override
@@ -176,9 +147,37 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected Map<BlockState, VoxelShape> makeShapes(VoxelShape middleShape, ImmutableList<BlockState> possibleStates)
     {
-        builder.add(NORTH, EAST, SOUTH, WEST);
+        ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
+        for (BlockState state : possibleStates)
+        {
+            VoxelShape shape = middleShape;
+            for (Direction d : Direction.Plane.HORIZONTAL)
+            {
+                if (state.getValue(PROPERTY_BY_DIRECTION.get(d)))
+                {
+                    VoxelShape joinShape = VoxelShapes.empty();
+                    switch (d)
+                    {
+                        case NORTH:
+                            joinShape = box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 10.0D);
+                            break;
+                        case SOUTH:
+                            joinShape = box(5.0D, 10.0D, 11.0D, 11.0D, 16.0D, 16.0D);
+                            break;
+                        case EAST:
+                            joinShape = box(11.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D);
+                            break;
+                        case WEST:
+                            joinShape = box(0.0D, 10.0D, 5.0D, 5.0D, 16.0D, 11.0D);
+                            break;
+                    }
+                    shape = VoxelShapes.or(shape, joinShape);
+                }
+            }
+            builder.put(state, shape);
+        }
+        return builder.build();
     }
 }

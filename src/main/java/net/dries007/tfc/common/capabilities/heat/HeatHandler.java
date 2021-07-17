@@ -119,10 +119,7 @@ public class HeatHandler implements IHeat
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        if (nbt != null)
-        {
-            temperature = nbt.getFloat("heat");
-            lastUpdateTick = nbt.getLong("ticks");
-        }
+        temperature = nbt.getFloat("heat");
+        lastUpdateTick = nbt.getLong("ticks");
     }
 }

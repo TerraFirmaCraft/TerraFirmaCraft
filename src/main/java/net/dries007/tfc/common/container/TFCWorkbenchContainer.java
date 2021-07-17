@@ -8,7 +8,7 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.*;
+import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.util.IWorldPosCallable;
 
 import net.dries007.tfc.common.TFCTags;

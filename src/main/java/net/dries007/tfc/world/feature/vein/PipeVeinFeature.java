@@ -22,14 +22,6 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     }
 
     @Override
-    protected MutableBoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
-    {
-        int radius = config.getRadius();
-        int skew = vein.skew;
-        return new MutableBoundingBox(-radius - skew, -config.getSize(), -radius - skew, radius + skew, config.getSize(), radius + skew);
-    }
-
-    @Override
     protected float getChanceToGenerate(int x, int y, int z, PipeVein vein, PipeVeinConfig config)
     {
         final double yScaled = (double) y / config.getSize();
@@ -49,6 +41,14 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     protected PipeVein createVein(int chunkX, int chunkZ, Random random, PipeVeinConfig config)
     {
         return new PipeVein(defaultPos(chunkX, chunkZ, random, config), random, config);
+    }
+
+    @Override
+    protected MutableBoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
+    {
+        int radius = config.getRadius();
+        int skew = vein.skew;
+        return new MutableBoundingBox(-radius - skew, -config.getSize(), -radius - skew, radius + skew, config.getSize(), radius + skew);
     }
 
     static class PipeVein extends Vein

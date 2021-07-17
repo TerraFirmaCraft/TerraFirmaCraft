@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from mcresources import ResourceManager
+from mcresources import ResourceManager, utils
 from mcresources.utils import item_stack
 
 from constants import *
@@ -27,29 +27,31 @@ def generate(rm: ResourceManager):
                 if item == 'shovel':
                     rm.item_tag('extinguisher', 'tfc:metal/shovel/' + metal)
 
-                # The IMetal capability
-                rm.data(('tfc', 'metal_items', metal, item), {
-                    'ingredient': ingredient,
-                    'metal': 'tfc:%s' % metal,
-                    'amount': item_data.smelt_amount
-                })
-
-                # And the IHeat capability
-                rm.data(('tfc', 'item_heats', metal, item), {
-                    'ingredient': ingredient,
-                    'heat_capacity': metal_data.heat_capacity,
-                    'forging_temperature': metal_data.melt_temperature * 0.6,
-                    'welding_temperature': metal_data.melt_temperature * 0.8
-                })
+                metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
+                heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
 
         # Common metal crafting tools
         if 'tool' in metal_data.types:
             for tool in ('hammer', 'chisel', 'axe', 'pickaxe', 'shovel'):
                 rm.item_tag('tfc:%ss' % tool, 'tfc:metal/%s/%s' % (tool, metal))
             rm.item_tag('forge:shears', 'tfc:metal/shears/%s' % metal)
-    # Grill
-    rm.data(('tfc', 'metal_items', 'wrought_iron', 'grill'), metal_item('tfc:wrought_iron_grill', 'tfc:wrought_iron', 100))
-    rm.data(('tfc', 'item_heats', 'wrought_iron', 'grill'), item_heat('tfc:wrought_iron_grill', 0.35, 1535))
+
+    # Misc metal items
+    metal_item(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 'tfc:cast_iron', 100)
+
+    # Item heat definitions
+    heat_item(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
+    heat_item(rm, 'stick', 'tag!forge:rods/wooden', 0.3)
+    heat_item(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
+    heat_item(rm, 'glass_shard', 'tfc:glass_shard', 1)
+    heat_item(rm, 'sand', 'tag!forge:sand', 0.8)
+    heat_item(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', 1)
+    heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 1)
+    heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', 1)
+    heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
+
+    for pottery in PAIRED_POTTERY:
+        heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)
 
     # Rocks
     for rock, rock_data in ROCKS.items():
@@ -93,7 +95,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
-        rm.data(('tfc', 'fuels', 'wood', wood + '_log'), fuel(rm, 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp))
+        fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
 
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
@@ -103,12 +105,11 @@ def generate(rm: ResourceManager):
     rm.item_tag('pit_kiln_logs', '#minecraft:logs')
     rm.item_tag('can_be_lit_on_torch', '#forge:rods/wooden')
 
-    rm.data(('tfc', 'fuels', 'coal'), fuel(rm, 'minecraft:coal', 2200, 1415))  # vanilla coal for compat
-    rm.data(('tfc', 'fuels', 'bituminous_coal'), fuel(rm, 'tfc:ore/bituminous_coal', 2200, 1415))
-    rm.data(('tfc', 'fuels', 'lignite'), fuel(rm, 'tfc:ore/lignite', 2000, 1350))
-    rm.data(('tfc', 'fuels', 'charcoal'), fuel(rm, 'minecraft:charcoal', 1800, 1350, bloomery=True))
-    rm.data(('tfc', 'fuels', 'peat'), fuel(rm, 'tfc:peat', 2500, 680, firepit=True))
-    rm.data(('tfc', 'fuels', 'stick_bundle'), fuel(rm, 'tfc:stick_bundle', 600, 900, firepit=True))
+    fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
+    fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
+    fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350, bloomery=True)
+    fuel_item(rm, 'peat', 'tfc:peat', 2500, 600, firepit=True)
+    fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900, firepit=True)
 
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
     rm.item_tag('forge_fuel', '#minecraft:coals')
@@ -119,6 +120,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
+
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
@@ -141,6 +143,10 @@ def generate(rm: ResourceManager):
     # Misc
     rm.item_tag('mortar', 'tfc:mortar')
 
+    # Fluids
+    rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
+
     for mat in VANILLA_TOOL_MATERIALS:
         rm.item_tag('extinguisher', 'minecraft:' + mat + '_shovel')
 
@@ -154,36 +160,38 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
     rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
 
-def metal_item(ingredient: str, metal: str, amount: int):
-    return {
-        'ingredient': item_stack(ingredient),
+
+def metal_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, metal: str, amount: int):
+    rm.data(('tfc', 'metal_items', name_parts), {
+        'ingredient': utils.ingredient(ingredient),
         'metal': metal,
         'amount': amount
-    }
+    })
 
-def item_heat(ingredient: str, heat_capacity: float, melt_temperature: int = 0):
-    if melt_temperature > 0:
-        return {
-            'ingredient': item_stack(ingredient),
-            'heat_capacity': heat_capacity,
-            'forging_temperature': melt_temperature * 0.6,
-            'welding_temperature': melt_temperature * 0.8
-        }
+
+def heat_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[int] = None):
+    if melt_temperature is not None:
+        forging_temperature = melt_temperature * 0.6
+        welding_temperature = melt_temperature * 0.8
     else:
-        return {
-            'ingredient': item_stack(ingredient),
-            'heat_capacity': heat_capacity
-        }
+        forging_temperature = welding_temperature = None
+    rm.data(('tfc', 'item_heats', name_parts), {
+        'ingredient': utils.ingredient(ingredient),
+        'heat_capacity': heat_capacity,
+        'forging_temperature': forging_temperature,
+        'welding_temperature': welding_temperature
+    })
 
-def fuel(rm: ResourceManager, ingredient: str, duration: int, temp: float, forge=False, bloomery=False, firepit=False):
+
+def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float, forge: bool = False, bloomery: bool = False, firepit: bool = False):
     if forge:
         rm.item_tag('forge_fuel', ingredient)
     if bloomery:
         rm.item_tag('bloomery_fuel', ingredient)
     if firepit:
         rm.item_tag('firepit_fuel', ingredient)
-    return {
-        'ingredient': item_stack(ingredient),
+    rm.data(('tfc', 'fuels', name_parts), {
+        'ingredient': utils.ingredient(ingredient),
         'duration': duration,
-        'temperature': temp
-    }
+        'temperature': temperature
+    })

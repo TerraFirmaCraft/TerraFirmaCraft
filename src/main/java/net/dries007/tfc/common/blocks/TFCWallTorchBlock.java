@@ -21,12 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.items.ItemHandlerHelper;
-
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockProperties
 {

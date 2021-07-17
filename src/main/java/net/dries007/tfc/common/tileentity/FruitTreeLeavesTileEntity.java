@@ -33,13 +33,13 @@ public class FruitTreeLeavesTileEntity extends BerryBushTileEntity
         return super.save(nbt);
     }
 
-    public void setOnYear(boolean onYearIn)
-    {
-        onYear = onYearIn;
-    }
-
     public boolean isOnYear()
     {
         return onYear;
+    }
+
+    public void setOnYear(boolean onYearIn)
+    {
+        onYear = onYearIn;
     }
 }
