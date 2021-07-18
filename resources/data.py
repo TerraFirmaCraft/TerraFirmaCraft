@@ -91,10 +91,9 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         rm.block_tag('tfc:forge_insulation', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
-    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
-
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
+    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
 
     # Plants
     for plant, plant_data in PLANTS.items():
