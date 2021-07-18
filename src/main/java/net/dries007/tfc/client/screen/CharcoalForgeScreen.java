@@ -18,6 +18,8 @@ public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntit
     public CharcoalForgeScreen(CharcoalForgeContainer container, PlayerInventory playerInventory, ITextComponent name)
     {
         super(container, playerInventory, name, FORGE);
+        inventoryLabelY += 20;
+        imageHeight += 20;
     }
 
     @Override
@@ -27,13 +29,7 @@ public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntit
         int temp = (int) (51 * ((CharcoalForgeTileEntity) tile).getSyncableData().get(CharcoalForgeTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temp > 0)
         {
-            blit(matrixStack, leftPos + 8, topPos + 66 - Math.min(51, temp), 176, 0, 15, 5);
+            blit(matrixStack, leftPos + 8, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
         }
-    }
-
-    @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
-    {
-
     }
 }

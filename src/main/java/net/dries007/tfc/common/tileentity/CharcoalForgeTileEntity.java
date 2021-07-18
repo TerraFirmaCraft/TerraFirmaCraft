@@ -4,7 +4,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -96,6 +96,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                 if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))
                 {
                     level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, heatLevel));
+                    markForSync();
                 }
                 // Update fuel
                 if (burnTicks > 0)
@@ -121,6 +122,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                             burnTicks = fuel.getDuration();
                             burnTemperature = fuel.getTemperature();
                         }
+                        markForSync();
                     }
                 }
             }
@@ -160,6 +162,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                         handleInputMelting(stack, slot);
                     });
                 }
+                markForSync();
             }
 
             // This is here to avoid duplication glitches
@@ -177,9 +180,10 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         BlockState state = level.getBlockState(worldPosition);
         if (state.getValue(CharcoalForgeBlock.HEAT) == 0) return;
 
-        Pair<Integer, Float> pair = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
-        burnTicks = pair.getLeft();
-        burnTemperature = pair.getRight();
+        Triple<Integer, Float, Long> triple = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
+        burnTicks = triple.getLeft();
+        burnTemperature = triple.getMiddle();
+        deltaPlayerTicks = triple.getRight();
         needsSlotUpdate = true;
         if (deltaPlayerTicks > 0)
         {
@@ -285,6 +289,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, 0));
         burnTicks = 0;
         burnTemperature = 0;
+        markForSync();
     }
 
     private void handleInputMelting(ItemStack stack, int startIndex)

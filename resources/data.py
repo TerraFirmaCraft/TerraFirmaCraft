@@ -69,6 +69,7 @@ def generate(rm: ResourceManager):
     heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 1)
     heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', 1)
     heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
+    heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
     for pottery in PAIRED_POTTERY:
         heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)

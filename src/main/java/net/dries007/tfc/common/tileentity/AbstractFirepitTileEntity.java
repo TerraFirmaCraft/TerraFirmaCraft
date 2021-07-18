@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -57,12 +57,12 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         }
     }
 
-    public static Pair<Integer, Float> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
+    public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
     {
         if (burnTicks > deltaPlayerTicks)
         {
             burnTicks -= deltaPlayerTicks;
-            return Pair.of(burnTicks, burnTemperature);
+            return Triple.of(burnTicks, burnTemperature, 0L); // the zero doesn't actually get saved, so this is fine. needed to prevent extinguishing
         }
         else
         {
@@ -81,7 +81,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
                 {
                     burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
                     burnTemperature = fuel.getTemperature();
-                    return Pair.of(burnTicks, burnTemperature);
+                    return Triple.of(burnTicks, burnTemperature, 0L); // see above
                 }
                 else
                 {
@@ -90,7 +90,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
                 }
             }
         }
-        return Pair.of(burnTicks, burnTemperature);
+        return Triple.of(burnTicks, burnTemperature, deltaPlayerTicks);
     }
 
     protected final IIntArray syncableData;
@@ -194,9 +194,10 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         assert level != null;
         if (!level.getBlockState(worldPosition).getValue(FirepitBlock.LIT)) return;
 
-        Pair<Integer, Float> pair = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
-        burnTicks = pair.getLeft();
-        burnTemperature = pair.getRight();
+        Triple<Integer, Float, Long> triple = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+        burnTicks = triple.getLeft();
+        burnTemperature = triple.getMiddle();
+        deltaPlayerTicks = triple.getRight();
         needsSlotUpdate = true;
         if (deltaPlayerTicks > 0) // Consumed all fuel, so extinguish and cool instantly
         {

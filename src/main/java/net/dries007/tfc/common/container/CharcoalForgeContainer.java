@@ -28,25 +28,25 @@ public class CharcoalForgeContainer extends TileEntityContainer<CharcoalForgeTil
             // Fuel slots
             // Note: the order of these statements is important
             int index = CharcoalForgeTileEntity.SLOT_FUEL_MIN;
-            addSlot(new CallbackSlot(tile, handler, index++, 80, 62));
-            addSlot(new CallbackSlot(tile, handler, index++, 98, 44));
-            addSlot(new CallbackSlot(tile, handler, index++, 62, 44));
-            addSlot(new CallbackSlot(tile, handler, index++, 116, 26));
-            addSlot(new CallbackSlot(tile, handler, index, 44, 26));
+            addSlot(new CallbackSlot(tile, handler, index++, 80, 70));
+            addSlot(new CallbackSlot(tile, handler, index++, 98, 52));
+            addSlot(new CallbackSlot(tile, handler, index++, 62, 52));
+            addSlot(new CallbackSlot(tile, handler, index++, 116, 34));
+            addSlot(new CallbackSlot(tile, handler, index, 44, 34));
 
             // Input slots
             // Note: the order of these statements is important
             index = CharcoalForgeTileEntity.SLOT_INPUT_MIN;
-            addSlot(new CallbackSlot(tile, handler, index++, 80, 44));
-            addSlot(new CallbackSlot(tile, handler, index++, 98, 26));
-            addSlot(new CallbackSlot(tile, handler, index++, 62, 26));
-            addSlot(new CallbackSlot(tile, handler, index++, 116, 8));
-            addSlot(new CallbackSlot(tile, handler, index, 44, 8));
+            addSlot(new CallbackSlot(tile, handler, index++, 80, 52));
+            addSlot(new CallbackSlot(tile, handler, index++, 98, 34));
+            addSlot(new CallbackSlot(tile, handler, index++, 62, 34));
+            addSlot(new CallbackSlot(tile, handler, index++, 116, 16));
+            addSlot(new CallbackSlot(tile, handler, index, 44, 16));
 
             // Extra slots (for ceramic molds)
             for (int i = CharcoalForgeTileEntity.SLOT_EXTRA_MIN; i <= CharcoalForgeTileEntity.SLOT_EXTRA_MAX; i++)
             {
-                addSlot(new CallbackSlot(tile, handler, i, 152, 8 + 18 * (i - CharcoalForgeTileEntity.SLOT_EXTRA_MIN)));
+                addSlot(new CallbackSlot(tile, handler, i, 152, 16 + 18 * (i - CharcoalForgeTileEntity.SLOT_EXTRA_MIN)));
             }
         }, () -> LOGGER.warn("Missing capability on firepit at {}?", tile.getBlockPos()));
     }
@@ -56,5 +56,11 @@ public class CharcoalForgeContainer extends TileEntityContainer<CharcoalForgeTil
     {
         return !moveItemStackTo(stack, CharcoalForgeTileEntity.SLOT_EXTRA_MIN, CharcoalForgeTileEntity.SLOT_EXTRA_MAX + 1, false)
             && !moveItemStackTo(stack, CharcoalForgeTileEntity.SLOT_FUEL_MIN, CharcoalForgeTileEntity.SLOT_INPUT_MAX + 1, false);
+    }
+
+    @Override
+    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    {
+        addPlayerInventorySlots(playerInv, 20);
     }
 }
