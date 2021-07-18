@@ -54,7 +54,8 @@ public class TFCTags
         public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
         public static final ITag.INamedTag<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
-        public static final ITag.INamedTag<Block> FORGE_INSULATION = create("forge_insulation");
+        public static final ITag.INamedTag<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
+        public static final ITag.INamedTag<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
 
         private static ITag.INamedTag<Block> create(String id)
         {

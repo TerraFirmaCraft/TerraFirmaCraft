@@ -16,12 +16,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -30,7 +28,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
@@ -53,7 +52,7 @@ public class CharcoalForgeBlock extends DeviceBlock
         BiPredicate<IWorld, BlockPos> isValidSide = Helpers.createTagCheck(TFCTags.Blocks.FORGE_INSULATION);
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(new BlockPos(0, 1, 0), BlockState::isAir)//todo: crucible is also acceptable
+            .match(new BlockPos(0, 1, 0), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))//todo: crucible is also acceptable
             // Chimney
             .matchOneOf(new BlockPos(0, 1, 0), new MultiBlock()
                 .match(new BlockPos(0, 0, 0), skyMatcher)
@@ -85,6 +84,57 @@ public class CharcoalForgeBlock extends DeviceBlock
         registerDefaultState(getStateDefinition().any().setValue(HEAT, 0));
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    {
+        if (state.getValue(HEAT) == 0) return;
+        double x = pos.getX() + 0.5D;
+        double y = pos.getY() + 0.875D;
+        double z = pos.getZ() + 0.5D;
+
+        if (rand.nextInt(10) == 0)
+        {
+            world.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+        }
+        for (int i = 0; i < 1 + rand.nextInt(2); i++)
+        {
+            world.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.07D, 0);
+        }
+        for (int i = 0; i < rand.nextInt(3); i++)
+        {
+            world.addParticle(ParticleTypes.SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+        }
+        if (rand.nextInt(8) == 1)
+        {
+            world.addParticle(ParticleTypes.LAVA, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+        }
+    }
+
+    @Override
+    public void stepOn(World world, BlockPos pos, Entity entity)
+    {
+        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(HEAT) > 0)
+        {
+            entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
+        }
+        super.stepOn(world, pos, entity);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(HEAT);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+    {
+        return state.getValue(HEAT) > 0 && !isValid(world, currentPos) ? state.setValue(HEAT, 0) : state;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
@@ -103,42 +153,18 @@ public class CharcoalForgeBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return CharcoalPileBlock.SHAPE_BY_LAYER[7];
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
     {
         if (state.getValue(HEAT) > 0 && !isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, 0));
         }
-    }
-
-    @Override
-    public void stepOn(World world, BlockPos pos, Entity entity)
-    {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(HEAT) > 0)
-        {
-            entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
-        }
-        super.stepOn(world, pos, entity);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
-    {
-        return state.getValue(HEAT) > 0 && !isValid(world, currentPos) ? state.setValue(HEAT, 0) : state;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder);
-        builder.add(HEAT);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return CharcoalPileBlock.SHAPE_BY_LAYER[7];
     }
 }

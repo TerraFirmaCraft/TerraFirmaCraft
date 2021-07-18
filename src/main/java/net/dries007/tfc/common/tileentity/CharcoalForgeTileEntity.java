@@ -19,6 +19,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -35,6 +36,7 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.Fuel;
 import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
@@ -98,6 +100,10 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
             BlockState state = level.getBlockState(worldPosition);
             if (state.getValue(CharcoalForgeBlock.HEAT) > 0)
             {
+                if (isRaining && level.random.nextFloat() < 0.15F)
+                {
+                    Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
+                }
                 int heatLevel = MathHelper.clamp((int) (temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
                 if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))
                 {
