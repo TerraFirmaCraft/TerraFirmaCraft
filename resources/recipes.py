@@ -65,6 +65,37 @@ def generate(rm: ResourceManager):
     for color in COLORS:
         heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 1200, result_item='minecraft:%s_glazed_terracotta' % color)
 
+    quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
+    quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
+    quern_recipe(rm, 'fluxstone', 'tag!tfc:fluxstone', 'tfc:powder/flux', count=2)
+    quern_recipe(rm, 'cinnabar', 'tfc:ore/cinnabar', 'minecraft:redstone', count=8)
+    quern_recipe(rm, 'cryolite', 'tfc:ore/cryolite', 'minecraft:redstone', count=8)
+    quern_recipe(rm, 'bone', 'minecraft:bone', 'minecraft:bone_meal', count=3)
+    quern_recipe(rm, 'bone_block', 'minecraft:bone_block', 'minecraft:bone_meal', count=9)
+    quern_recipe(rm, 'charcoal', 'minecraft:charcoal', 'tfc:powder/charcoal', count=4)
+    quern_recipe(rm, 'salt', 'tfc:ore/halite', 'tfc:powder/salt', count=4)
+    quern_recipe(rm, 'blaze_rod', 'minecraft:blaze_rod', 'minecraft:blaze_powder', count=2)
+    quern_recipe(rm, 'raw_limestone', 'tfc:rock/raw/limestone', 'tfc:ore/gypsum')
+    quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/fertilizer', count=4)
+
+    for grain in GRAINS:
+        heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
+        quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
+
+    for ore in ['hematite', 'limonite', 'malachite']:
+        for grade, data in ORE_GRADES.items():
+            quern_recipe(rm, '%s_%s' % (grade, ore), 'tfc:ore/%s_%s' % (grade, ore), 'tfc:powder/%s' % ore, count=data.grind_amount)
+        quern_recipe(rm, 'small_%s' % ore, 'tfc:ore/small_%s' % ore, 'tfc:powder/%s' % ore, count=2)
+
+    for ore in ['sulfur', 'saltpeter', 'graphite', 'kaolinite']:
+        quern_recipe(rm, ore, 'tfc:ore/%s' % ore, 'tfc:powder/%s' % ore, count=4)
+    for gem in GEMS:
+        quern_recipe(rm, gem, 'tfc:ore/%s' % gem, 'tfc:powder/%s' % gem, count=4)
+
+    for color, plants in PLANT_COLORS.items():
+        for plant in plants:
+            quern_recipe(rm, 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
+
     for pottery in PAIRED_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1500, result_item='tfc:ceramic/' + pottery)
 
@@ -106,6 +137,13 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
         }
     })
     return RecipeContext(rm, res)
+
+
+def quern_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:
+    return rm.recipe(('quern', name), 'tfc:quern', {
+        'ingredient': utils.ingredient(item),
+        'result': utils.item_stack((count, result))
+    })
 
 
 def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None, amount: int = 1000) -> RecipeContext:

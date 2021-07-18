@@ -284,6 +284,8 @@ def generate(rm: ResourceManager):
     ]).with_lang(lang('Pot')).with_block_loot([counted_item('tfc:powder/wood_ash', 1, 4), {'entries': 'tfc:ceramic/pot'}])
     rm.item_model('pot', parent='tfc:block/firepit_pot')
 
+    rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern'))
+
     rm.blockstate('placed_item', 'tfc:block/empty')
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
@@ -481,6 +483,10 @@ def generate(rm: ResourceManager):
     # Berry Stuff
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
+
+    for grain in GRAINS:
+        for suffix in GRAIN_SUFFIXES:
+            rm.item_model('food/%s%s' % (grain, suffix)).with_lang(lang('%s%s', grain, suffix))
 
     rm.blockstate('berry_bush/dead_bush', variants={
         'stage=0': {'model': 'tfc:block/berry_bush/dead_bush_0'},

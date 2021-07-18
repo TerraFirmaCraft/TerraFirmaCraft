@@ -28,6 +28,7 @@ public class TFCRecipeSerializers
     // Item Recipes
 
     public static final RegistryObject<HeatingRecipe.Serializer> HEATING = register("heating", HeatingRecipe.Serializer::new);
+    public static final RegistryObject<SimpleItemRecipe.Serializer<QuernRecipe>> QUERN = register("quern", () -> new SimpleItemRecipe.Serializer<>(QuernRecipe::new));
 
     // Complex Recipes
 

@@ -497,7 +497,7 @@ public final class Helpers
     public static void playSound(World world, BlockPos pos, SoundEvent sound)
     {
         Random rand = world.getRandom();
-        world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+        world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
     public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)

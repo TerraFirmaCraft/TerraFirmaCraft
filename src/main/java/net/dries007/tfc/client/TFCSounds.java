@@ -32,6 +32,8 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter");
 
+    public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
+
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_STEP, CHARCOAL_PILE_FALL);
 
     private static RegistryObject<SoundEvent> create(String name)

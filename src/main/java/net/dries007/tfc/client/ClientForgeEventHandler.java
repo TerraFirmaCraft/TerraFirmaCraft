@@ -9,12 +9,14 @@ package net.dries007.tfc.client;
 import java.awt.*;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.color.ColorCache;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
@@ -27,12 +29,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
+import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -83,6 +87,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onRenderOverlay);
+        bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -369,6 +374,38 @@ public class ClientForgeEventHandler
 
                 RenderSystem.enableBlend();
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+        }
+    }
+
+    /**
+     * Handles custom bounding boxes drawing
+     * eg: Chisel, Quern handle
+     */
+    public static void onHighlightBlockEvent(DrawHighlightEvent.HighlightBlock event)
+    {
+        final ActiveRenderInfo info = event.getInfo();
+        final MatrixStack mStack = event.getMatrix();
+        final Entity entity = info.getEntity();
+        final World world = entity.level;
+        final BlockRayTraceResult traceResult = event.getTarget();
+        final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
+
+        //noinspection ConstantConditions
+        if (lookingAt != null && entity instanceof PlayerEntity)
+        {
+            PlayerEntity player = (PlayerEntity) entity;
+            Block blockAt = world.getBlockState(lookingAt).getBlock();
+            //todo: chisel
+            if (blockAt instanceof IHighlightHandler) //todo: java 16
+            {
+                // Pass on to custom implementations
+                IHighlightHandler handler = (IHighlightHandler) blockAt;
+                if (handler.drawHighlight(world, lookingAt, player, traceResult, mStack, event.getBuffers(), info.getPosition()))
+                {
+                    // Cancel drawing this block's bounding box
+                    event.setCanceled(true);
+                }
             }
         }
     }

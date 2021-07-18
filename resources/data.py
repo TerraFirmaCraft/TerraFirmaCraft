@@ -93,6 +93,9 @@ def generate(rm: ResourceManager):
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
 
+        if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
+            rm.item_tag('tfc:fluxstone', block('loose'))
+
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.block_tag('plant', 'tfc:plant/%s' % plant)
@@ -143,6 +146,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
+    rm.item_tag('handstone', 'tfc:handstone')
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
