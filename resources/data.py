@@ -88,7 +88,10 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone', block('raw'), block('hardened'))
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
+        rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        rm.block_tag('tfc:forge_insulation', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
+    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
 
     # Plants
     for plant, plant_data in PLANTS.items():

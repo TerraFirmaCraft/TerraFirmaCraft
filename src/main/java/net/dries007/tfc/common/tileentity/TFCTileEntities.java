@@ -43,6 +43,7 @@ public class TFCTileEntities
     public static final RegistryObject<TileEntityType<BurningLogPileTileEntity>> BURNING_LOG_PILE = register("burning_log_pile", BurningLogPileTileEntity::new, TFCBlocks.BURNING_LOG_PILE);
     public static final RegistryObject<TileEntityType<PlacedItemTileEntity>> PLACED_ITEM = register("placed_item", PlacedItemTileEntity::new, TFCBlocks.PLACED_ITEM);
     public static final RegistryObject<TileEntityType<PitKilnTileEntity>> PIT_KILN = register("pit_kiln", PitKilnTileEntity::new, TFCBlocks.PIT_KILN);
+    public static final RegistryObject<TileEntityType<CharcoalForgeTileEntity>> CHARCOAL_FORGE = register("charcoal_forge", CharcoalForgeTileEntity::new, TFCBlocks.CHARCOAL_FORGE);
 
     public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).flatMap(Helpers::flatten));
 

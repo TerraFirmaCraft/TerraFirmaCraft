@@ -7,6 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -32,6 +33,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -145,6 +147,11 @@ public final class Helpers
         {
             throw new JsonParseException(e);
         }
+    }
+
+    public static BiPredicate<IWorld, BlockPos> createTagCheck(ITag<Block> tag)
+    {
+        return ((world, pos) -> world.getBlockState(pos).is(tag));
     }
 
     /**

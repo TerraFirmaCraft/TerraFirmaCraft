@@ -18,6 +18,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -35,6 +36,20 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
 
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.firepit");
 
+    public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
+    {
+        final ItemStack mergeStack = inventory.getStackInSlot(slot);
+        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (filled > 0)
+            {
+                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+            }
+            FluidStack remainder = fluidStack.copy();
+            remainder.shrink(filled);
+            return remainder;
+        }).orElse(FluidStack.EMPTY);
+    }
     protected HeatingRecipe cachedRecipe;
 
     public FirepitTileEntity()
@@ -113,27 +128,12 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
      */
     private void mergeOutputFluids(FluidStack fluidStack, float temperature)
     {
-        fluidStack = mergeOutputFluidIntoSlot(fluidStack, temperature, SLOT_OUTPUT_1);
+        fluidStack = mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_1);
         if (fluidStack.isEmpty())
         {
             return;
         }
-        mergeOutputFluidIntoSlot(fluidStack, temperature, SLOT_OUTPUT_2);
+        mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_2);
         // Any remaining fluid is lost at this point
-    }
-
-    private FluidStack mergeOutputFluidIntoSlot(FluidStack fluidStack, float temperature, int slot)
-    {
-        final ItemStack mergeStack = inventory.getStackInSlot(slot);
-        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
-            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-            if (filled > 0)
-            {
-                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
-            }
-            FluidStack remainder = fluidStack.copy();
-            remainder.shrink(filled);
-            return remainder;
-        }).orElse(FluidStack.EMPTY);
     }
 }

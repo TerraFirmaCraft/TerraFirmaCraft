@@ -31,6 +31,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<ContainerType<FirepitContainer>> FIREPIT = register("firepit", FirepitTileEntity.class, FirepitContainer::new);
     public static final RegistryObject<ContainerType<GrillContainer>> GRILL = register("grill", GrillTileEntity.class, GrillContainer::new);
     public static final RegistryObject<ContainerType<PotContainer>> POT = register("pot", PotTileEntity.class, PotContainer::new);
+    public static final RegistryObject<ContainerType<CharcoalForgeContainer>> CHARCOAL_FORGE = register("charcoal_forge", CharcoalForgeTileEntity.class, CharcoalForgeContainer::new);
     public static final RegistryObject<ContainerType<LogPileContainer>> LOG_PILE = register("log_pile", LogPileTileEntity.class, LogPileContainer::new);
     public static final RegistryObject<ContainerType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (((windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv))));
 
