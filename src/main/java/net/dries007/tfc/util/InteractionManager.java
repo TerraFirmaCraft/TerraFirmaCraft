@@ -212,7 +212,14 @@ public final class InteractionManager
                             }
                             return ActionResultType.SUCCESS;
                         }
-                        return ActionResultType.FAIL;
+
+                        final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                        if (result.consumesAction())
+                        {
+                            insertStack.setCount(1);
+                            cap.insertItem(0, insertStack, false);
+                        }
+                        return result;
                     }).orElse(ActionResultType.PASS);
                 }
                 else
