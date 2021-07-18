@@ -32,7 +32,7 @@ public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntit
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * ((CharcoalForgeTileEntity) tile).getSyncableData().get(CharcoalForgeTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * tile.getSyncableData().get(CharcoalForgeTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temp > 0)
         {
             blit(matrixStack, leftPos + 8, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);

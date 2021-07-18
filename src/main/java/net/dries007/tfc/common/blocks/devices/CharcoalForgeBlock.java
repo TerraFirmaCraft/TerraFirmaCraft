@@ -139,14 +139,14 @@ public class CharcoalForgeBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (player instanceof ServerPlayerEntity && !player.isShiftKeyDown())
+        CharcoalForgeTileEntity te = Helpers.getTileEntity(world, pos, CharcoalForgeTileEntity.class);
+        if (te != null)
         {
-            CharcoalForgeTileEntity te = Helpers.getTileEntity(world, pos, CharcoalForgeTileEntity.class);
-            if (te != null)
+            if (player instanceof ServerPlayerEntity)
             {
                 NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                return ActionResultType.SUCCESS;
             }
+            return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
     }

@@ -57,42 +57,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         }
     }
 
-    public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
-    {
-        if (burnTicks > deltaPlayerTicks)
-        {
-            burnTicks -= deltaPlayerTicks;
-            return Triple.of(burnTicks, burnTemperature, 0L); // the zero doesn't actually get saved, so this is fine. needed to prevent extinguishing
-        }
-        else
-        {
-            deltaPlayerTicks -= burnTicks;
-            burnTicks = 0;
-        }
-        // Need to consume fuel
-        for (int i = slotStart; i <= slotEnd; i++)
-        {
-            ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = FuelManager.get(fuelStack);
-            if (fuel != null)
-            {
-                inventory.setStackInSlot(i, ItemStack.EMPTY);
-                if (fuel.getDuration() > deltaPlayerTicks)
-                {
-                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
-                    burnTemperature = fuel.getTemperature();
-                    return Triple.of(burnTicks, burnTemperature, 0L); // see above
-                }
-                else
-                {
-                    deltaPlayerTicks -= fuel.getDuration();
-                    burnTicks = 0;
-                }
-            }
-        }
-        return Triple.of(burnTicks, burnTemperature, deltaPlayerTicks);
-    }
-
     protected final IIntArray syncableData;
     protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
     protected int burnTicks; // ticks remaining for the burning of the fuel item
@@ -194,7 +158,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         assert level != null;
         if (!level.getBlockState(worldPosition).getValue(FirepitBlock.LIT)) return;
 
-        Triple<Integer, Float, Long> triple = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+        Triple<Integer, Float, Long> triple = Helpers.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
         burnTicks = triple.getLeft();
         burnTemperature = triple.getMiddle();
         deltaPlayerTicks = triple.getRight();

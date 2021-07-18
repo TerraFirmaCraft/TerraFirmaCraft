@@ -192,7 +192,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         BlockState state = level.getBlockState(worldPosition);
         if (state.getValue(CharcoalForgeBlock.HEAT) == 0) return;
 
-        Triple<Integer, Float, Long> triple = AbstractFirepitTileEntity.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
+        Triple<Integer, Float, Long> triple = Helpers.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
         burnTicks = triple.getLeft();
         burnTemperature = triple.getMiddle();
         deltaPlayerTicks = triple.getRight();
@@ -319,7 +319,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                     // Loop through all input slots
                     for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
                     {
-                        FluidStack leftover = FirepitTileEntity.mergeOutputFluidIntoSlot(inventory, fluidStack, itemTemperature, slot);
+                        FluidStack leftover = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, itemTemperature, slot);
                         if (leftover.isEmpty()) break;
                     }
                 }
