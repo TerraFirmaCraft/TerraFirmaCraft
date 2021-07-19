@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:fire_clay_knapping",
+  "pattern": [
+    "X   X",
+    "X   X",
+    "X   X",
+    "X   X",
+    "XXXXX"
+  ],
+  "result": {
+    "count": 1,
+    "item": "tfc:ceramic/unfired_crucible"
+  }
+}

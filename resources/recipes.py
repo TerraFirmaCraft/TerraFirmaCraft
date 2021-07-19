@@ -116,6 +116,23 @@ def generate(rm: ResourceManager):
     })
 
     knapping_recipe(rm, 'clay_knapping', 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
+    knapping_recipe(rm, 'clay_knapping', 'jug', [' X   ', 'XXXX ', 'XXX X', 'XXXX ', 'XXX  '], 'tfc:ceramic/unfired_jug')
+    knapping_recipe(rm, 'clay_knapping', 'pot', ['X   X', 'X   X', 'X   X', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_pot')
+    knapping_recipe(rm, 'clay_knapping', 'bowl_2', ['X   X', ' XXX '], 'tfc:ceramic/unfired_bowl', count=2, outside_slot_required=False)
+    knapping_recipe(rm, 'clay_knapping', 'bowl_4', ['X   X', ' XXX ', '     ', 'X   X', ' XXX '], 'tfc:ceramic/unfired_bowl', count=4)
+    knapping_recipe(rm, 'clay_knapping', 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], 'tfc:ceramic/unfired_brick', count=3)
+    knapping_recipe(rm, 'clay_knapping', 'flower_pot', [' X X ', ' XXX ', '     ', ' X X ', ' XXX '], 'tfc:ceramic/unfired_flower_pot', count=2)
+    # todo: large vessel, molds
+
+    knapping_recipe(rm, 'leather_knapping', 'helmet', ['XXXXX', 'X   X', 'X   X', '     ', '     '], 'minecraft:leather_helmet')
+    knapping_recipe(rm, 'leather_knapping', 'chestplate', ['X   X', 'XXXXX', 'XXXXX', 'XXXXX', 'XXXXX'], 'minecraft:leather_chestplate')
+    knapping_recipe(rm, 'leather_knapping', 'leggings', ['XXXXX', 'XXXXX', 'XX XX', 'XX XX', 'XX XX'], 'minecraft:leather_leggings')
+    knapping_recipe(rm, 'leather_knapping', 'boots', ['XX   ', 'XX   ', 'XX   ', 'XXXX ', 'XXXXX'], 'minecraft:leather_boots')
+    knapping_recipe(rm, 'leather_knapping', 'saddle', ['  X  ', 'XXXXX', 'XXXXX', 'XXXXX', '  X  '], 'minecraft:saddle')
+    # todo: quiver
+
+    knapping_recipe(rm, 'fire_clay_knapping', 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
+    knapping_recipe(rm, 'fire_clay_knapping', 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], 'tfc:ceramic/unfired_fire_brick', count=3)
 
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
@@ -159,11 +176,11 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item:
     })
 
 
-def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, outside_slot_required: bool = None):
+def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, count: int = 1, outside_slot_required: bool = None):
     return rm.recipe((knap_type, name), 'tfc:%s' % knap_type, {
         'outside_slot_required': outside_slot_required,
         'pattern': pattern,
-        'result': utils.item_stack(item)
+        'result': utils.item_stack((count, item))
     })
 
 

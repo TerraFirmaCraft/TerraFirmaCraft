@@ -1,15 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:clay_knapping",
+  "type": "tfc:leather_knapping",
   "pattern": [
-    " XXX ",
     "XXXXX",
-    "XXXXX",
-    "XXXXX",
-    " XXX "
+    "X   X",
+    "X   X",
+    "     ",
+    "     "
   ],
   "result": {
     "count": 1,
-    "item": "tfc:ceramic/unfired_vessel"
+    "item": "minecraft:leather_helmet"
   }
 }

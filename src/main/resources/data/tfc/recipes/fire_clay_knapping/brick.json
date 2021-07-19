@@ -1,15 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:clay_knapping",
+  "type": "tfc:fire_clay_knapping",
   "pattern": [
-    " XXX ",
     "XXXXX",
+    "     ",
     "XXXXX",
-    "XXXXX",
-    " XXX "
+    "     ",
+    "XXXXX"
   ],
   "result": {
-    "count": 1,
-    "item": "tfc:ceramic/unfired_vessel"
+    "count": 3,
+    "item": "tfc:ceramic/unfired_fire_brick"
   }
 }
