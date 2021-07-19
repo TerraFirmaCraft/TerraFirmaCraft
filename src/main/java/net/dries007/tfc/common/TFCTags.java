@@ -91,6 +91,10 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
         public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
+        public static final ITag.INamedTag<Item> STONE_KNAPPING = create("stone_knapping");
+        public static final ITag.INamedTag<Item> CLAY_KNAPPING = create("clay_knapping");
+        public static final ITag.INamedTag<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
+        public static final ITag.INamedTag<Item> LEATHER_KNAPPING = create("leather_knapping");
 
         private static ITag.INamedTag<Item> create(String id)
         {

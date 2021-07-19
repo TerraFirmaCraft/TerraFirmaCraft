@@ -9,6 +9,8 @@ package net.dries007.tfc.common.recipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 
+import net.dries007.tfc.common.recipes.knapping.KnappingRecipe;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCRecipeTypes
@@ -18,6 +20,9 @@ public class TFCRecipeTypes
     public static final IRecipeType<HeatingRecipe> HEATING = register("heating");
     public static final IRecipeType<QuernRecipe> QUERN = register("quern");
     public static final IRecipeType<PotRecipe> POT = register("pot");
+    public static final IRecipeType<KnappingRecipe> CLAY_KNAPPING = register("clay_knapping");
+    public static final IRecipeType<KnappingRecipe> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
+    public static final IRecipeType<KnappingRecipe> LEATHER_KNAPPING = register("leather_knapping");
 
     private static <R extends IRecipe<?>> IRecipeType<R> register(String name)
     {

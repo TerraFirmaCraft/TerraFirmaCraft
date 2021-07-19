@@ -68,6 +68,9 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
         ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
         ScreenManager.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+        ScreenManager.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
+        ScreenManager.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
+        ScreenManager.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);

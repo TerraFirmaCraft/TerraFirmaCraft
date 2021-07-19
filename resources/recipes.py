@@ -115,6 +115,8 @@ def generate(rm: ResourceManager):
         'temperature': 300
     })
 
+    knapping_recipe(rm, 'clay_knapping', 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
+
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
@@ -154,6 +156,14 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item:
         'result_item': result_item,
         'result_fluid': result_fluid,
         'temperature': temperature
+    })
+
+
+def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, outside_slot_required: bool = None):
+    return rm.recipe((knap_type, name), 'tfc:%s' % knap_type, {
+        'outside_slot_required': outside_slot_required,
+        'pattern': pattern,
+        'result': utils.item_stack(item)
     })
 
 

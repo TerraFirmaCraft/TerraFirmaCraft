@@ -16,6 +16,7 @@ import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.tileentity.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -33,6 +34,9 @@ public final class TFCContainerTypes
     public static final RegistryObject<ContainerType<PotContainer>> POT = register("pot", PotTileEntity.class, PotContainer::new);
     public static final RegistryObject<ContainerType<LogPileContainer>> LOG_PILE = register("log_pile", LogPileTileEntity.class, LogPileContainer::new);
     public static final RegistryObject<ContainerType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (((windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv))));
+    public static final RegistryObject<ContainerType<KnappingContainer>> CLAY_KNAPPING = register("clay_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.CLAY_KNAPPING.get(), windowId, inv, 5, true, true, TFCRecipeTypes.CLAY_KNAPPING)))));
+    public static final RegistryObject<ContainerType<KnappingContainer>> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), windowId, inv, 5, true, true, TFCRecipeTypes.FIRE_CLAY_KNAPPING)))));
+    public static final RegistryObject<ContainerType<KnappingContainer>> LEATHER_KNAPPING = register("leather_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.LEATHER_KNAPPING.get(), windowId, inv, 1, false, false, TFCRecipeTypes.LEATHER_KNAPPING)))));
 
 
     @SuppressWarnings("SameParameterValue")

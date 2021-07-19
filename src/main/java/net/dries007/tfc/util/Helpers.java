@@ -368,6 +368,17 @@ public final class Helpers
         }
     }
 
+    @Nonnull
+    public static ItemStack consumeItem(ItemStack stack, int amount)
+    {
+        if (stack.getCount() <= amount)
+        {
+            return ItemStack.EMPTY;
+        }
+        stack.shrink(amount);
+        return stack;
+    }
+
     /**
      * A replacement for {@link ItemStack#hurtAndBreak(int, LivingEntity, Consumer)} when an entity is not present
      */

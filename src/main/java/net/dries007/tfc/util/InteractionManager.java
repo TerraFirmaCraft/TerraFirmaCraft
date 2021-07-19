@@ -26,11 +26,13 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
@@ -244,7 +246,33 @@ public final class InteractionManager
         }
 
         // todo: hide tag right click -> generic scraping recipe
-        // todo: knapping tags
+
+        register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+            }
+            return ActionResultType.SUCCESS;
+        });
+
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+            }
+            return ActionResultType.SUCCESS;
+        });
+
+        register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+            }
+            return ActionResultType.SUCCESS;
+        });
     }
 
     public static void register(BlockItemPlacement wrapper)

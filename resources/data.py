@@ -89,9 +89,14 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
+        rm.item_tag('tfc:stone_knapping', block('loose'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
+
+    rm.item_tag('tfc:clay_knapping', 'minecraft:clay_ball')
+    rm.item_tag('tfc:fire_clay_knapping', 'tfc:fire_clay')
+    rm.item_tag('tfc:leather_knapping', 'minecraft:leather')
 
     # Plants
     for plant, plant_data in PLANTS.items():
