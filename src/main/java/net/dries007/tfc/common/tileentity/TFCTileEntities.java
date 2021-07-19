@@ -44,6 +44,7 @@ public class TFCTileEntities
     public static final RegistryObject<TileEntityType<PlacedItemTileEntity>> PLACED_ITEM = register("placed_item", PlacedItemTileEntity::new, TFCBlocks.PLACED_ITEM);
     public static final RegistryObject<TileEntityType<PitKilnTileEntity>> PIT_KILN = register("pit_kiln", PitKilnTileEntity::new, TFCBlocks.PIT_KILN);
     public static final RegistryObject<TileEntityType<QuernTileEntity>> QUERN = register("quern", QuernTileEntity::new, TFCBlocks.QUERN);
+    public static final RegistryObject<TileEntityType<ScrapingTileEntity>> SCRAPING = register("scraping", ScrapingTileEntity::new, TFCBlocks.SCRAPING);
 
     public static final RegistryObject<TileEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).flatMap(Helpers::flatten));
 

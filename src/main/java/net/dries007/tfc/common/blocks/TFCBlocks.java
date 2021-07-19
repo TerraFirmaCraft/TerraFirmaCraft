@@ -230,6 +230,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> POT = register("pot", () -> new PotBlock(new ForgeBlockProperties(Properties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).noOcclusion().lightLevel(litBlockEmission(15))).tileEntity(PotTileEntity::new)), MISC);
 
     public static final RegistryObject<Block> PLACED_ITEM = register("placed_item", () -> new PlacedItemBlock(new ForgeBlockProperties(Properties.of(Material.DECORATION).instabreak().sound(SoundType.STEM).noOcclusion()).tileEntity(PlacedItemTileEntity::new)));
+    public static final RegistryObject<Block> SCRAPING = register("scraping", () -> new ScrapingBlock(new ForgeBlockProperties(Properties.of(Material.DECORATION).strength(0.2F).sound(SoundType.STEM).noOcclusion()).tileEntity(ScrapingTileEntity::new)));
     public static final RegistryObject<Block> PIT_KILN = register("pit_kiln", () -> new PitKilnBlock(new ForgeBlockProperties(Properties.of(Material.GLASS).sound(SoundType.WOOD).strength(0.6f).noOcclusion()).tileEntity(PitKilnTileEntity::new)));
     public static final RegistryObject<Block> QUERN = register("quern", () -> new QuernBlock(new ForgeBlockProperties(Properties.of(Material.STONE).strength(0.5F, 2.0F).sound(SoundType.BASALT).noOcclusion()).tileEntity(QuernTileEntity::new)), MISC);
 

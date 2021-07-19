@@ -46,6 +46,8 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
                 if item == 'shovel':
                     rm.item_tag('extinguisher', 'tfc:metal/shovel/' + metal)
+                if item == 'knife':
+                    rm.item_tag('knives', 'tfc:metal/knife/' + metal)
 
                 metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
                 heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
@@ -120,6 +122,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
 
+    rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_fuel', '#minecraft:logs')
@@ -163,6 +166,7 @@ def generate(rm: ResourceManager):
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
+    rm.item_tag('scrapable_item', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
 
     # Misc
     rm.item_tag('mortar', 'tfc:mortar')
