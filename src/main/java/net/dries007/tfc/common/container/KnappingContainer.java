@@ -15,6 +15,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.IInventoryNoop;
 import net.dries007.tfc.common.recipes.SimpleCraftMatrix;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
@@ -25,6 +26,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     public final SimpleCraftMatrix matrix;
     private final int amountToConsume;
     public final boolean usesDisabledTex;
+    private final boolean needsKnife;
     private final boolean consumeAfterComplete;
     public boolean requiresReset;
     private boolean hasBeenModified;
@@ -32,13 +34,14 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     private final IRecipeType<? extends KnappingRecipe> recipeType;
     public final ItemStack stackCopy;
 
-    public KnappingContainer(ContainerType<?> containerType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, IRecipeType<? extends KnappingRecipe> recipeType)
+    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, boolean needsKnife)
     {
-        super(containerType, windowId, playerInv, playerInv.player.getMainHandItem());
+        super(containerType, windowId, playerInv, playerInv.player.getMainHandItem()); //todo make this work for offhand
         this.itemIndex += 1;
         this.amountToConsume = amountToConsume;
         this.usesDisabledTex = usesDisabledTex;
         this.consumeAfterComplete = consumeAfterComplete;
+        this.needsKnife = needsKnife;
         this.recipeType = recipeType;
 
         matrix = new SimpleCraftMatrix();
@@ -103,6 +106,23 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
             {
                 ItemHandlerHelper.giveItemToPlayer(player, stack);
                 consumeIngredientStackAfterComplete();
+                if (needsKnife)
+                {
+                    // offhand is not included in 'items'
+                    if (player.getOffhandItem().getItem().is(TFCTags.Items.KNIVES))
+                    {
+                        player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(Hand.OFF_HAND));
+                    }
+                    for (ItemStack invItem : player.inventory.items)
+                    {
+                        if (invItem.getItem().is(TFCTags.Items.KNIVES))
+                        {
+                            // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
+                            invItem.hurtAndBreak(1, player, p -> {});
+                            break;
+                        }
+                    }
+                }
             }
         }
         super.removed(player);

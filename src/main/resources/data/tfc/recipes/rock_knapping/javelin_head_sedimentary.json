@@ -3,7 +3,7 @@
   "type": "tfc:rock_knapping",
   "outside_slot_required": false,
   "pattern": [
-    "XXX ",
+    "XXX  ",
     "XXXX ",
     "XXXXX",
     " XXX ",

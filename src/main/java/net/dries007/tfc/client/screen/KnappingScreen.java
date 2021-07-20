@@ -78,7 +78,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         if (clickType == 0)
         {
-            mouseClicked(x, y, clickType);//todo broken
+            mouseClicked(x, y, clickType);
         }
         return super.mouseDragged(x, y, clickType, dragX, dragY);
     }

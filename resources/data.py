@@ -46,6 +46,8 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
                 if item == 'shovel':
                     rm.item_tag('extinguisher', 'tfc:metal/shovel/' + metal)
+                if item == 'knife':
+                    rm.item_tag('knives', 'tfc:metal/knife/' + metal)
 
                 metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
                 heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
@@ -94,6 +96,9 @@ def generate(rm: ResourceManager):
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
+
+    for category in ROCK_CATEGORIES:
+        rm.item_tag('tfc:knives', 'tfc:stone/knife/%s' % category)
 
     rm.item_tag('tfc:clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('tfc:fire_clay_knapping', 'tfc:fire_clay')

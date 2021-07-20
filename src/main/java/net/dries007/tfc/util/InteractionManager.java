@@ -249,38 +249,54 @@ public final class InteractionManager
 
         register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            if (stack.getCount() > 4)
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
             }
-            return ActionResultType.SUCCESS;
+            return ActionResultType.PASS;
         });
 
         register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            if (stack.getCount() > 4)
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
             }
-            return ActionResultType.SUCCESS;
+            return ActionResultType.PASS;
         });
 
         register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player instanceof ServerPlayerEntity)
+            if (player != null && player.inventory.contains(TFCTags.Items.KNIVES))
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
             }
-            return ActionResultType.SUCCESS;
+            return ActionResultType.PASS;
         });
 
         register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player instanceof ServerPlayerEntity && stack.getCount() > 1)
+            if (stack.getCount() > 1)
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
             }
-            return ActionResultType.SUCCESS;
+            return ActionResultType.PASS;
         });
     }
 

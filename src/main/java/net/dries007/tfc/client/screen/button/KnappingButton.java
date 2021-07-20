@@ -20,29 +20,23 @@ public class KnappingButton extends Button
 
     public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture)
     {
-        super(x, y, width, height, StringTextComponent.EMPTY, button -> {});
+        super(x, y, width, height, StringTextComponent.EMPTY, KnappingButton::doPress);
         this.id = id;
         this.texture = texture;
     }
 
-    private void doPress()
+    public static void doPress(Button widget)
     {
-        if (active)
+        if (widget instanceof KnappingButton)
         {
-            visible = false;
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(id, null));
+            KnappingButton button = (KnappingButton) widget;
+            if (button.active)
+            {
+                button.visible = false;
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(button.id, null));
+                button.playDownSound(Minecraft.getInstance().getSoundManager());
+            }
         }
-    }
-
-    @Override
-    public void onRelease(double x, double y)
-    {
-        if (visible)
-        {
-            doPress();
-            playDownSound(Minecraft.getInstance().getSoundManager());
-        }
-        super.onRelease(x, y);
     }
 
     @Override

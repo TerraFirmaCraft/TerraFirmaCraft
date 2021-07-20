@@ -420,8 +420,10 @@ def generate(rm: ResourceManager):
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
-            item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
-            item.with_lang(lang('stone %s', rock_item))
+            for suffix in ('', '_head'):
+                rock_item = rock_item + suffix
+                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
     for rock in ROCKS.keys():
@@ -469,11 +471,25 @@ def generate(rm: ResourceManager):
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+        p = 'tfc:plant/%s' % plant
+        if plant_data.type == 'short_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears')],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type in ('tall_plant', 'tall_grass', 'emergent', 'emergent_fresh'):
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives'), block_state_property(p, {'part': 'lower'})]}})
+        elif plant_data.type == 'cactus':
+            rm.block_loot(p, p)
+        else:
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives')]}})
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-        # todo: knife harvesting of plants
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
@@ -862,6 +878,13 @@ def silk_touch() -> Dict[str, Any]:
                 'levels': {'min': 1}
             }]
         }
+    }
+
+
+def match_tag(tag: str) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'tag': tag}
     }
 
 
