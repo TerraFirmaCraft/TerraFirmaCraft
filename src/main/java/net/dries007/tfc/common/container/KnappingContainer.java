@@ -48,7 +48,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         hasBeenModified = false;
         requiresReset = false;
         hasConsumedIngredient = false;
-        stackCopy = playerInv.player.getMainHandItem();
+        stackCopy = this.stack.copy();
     }
 
     @Override
@@ -106,23 +106,6 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
             {
                 ItemHandlerHelper.giveItemToPlayer(player, stack);
                 consumeIngredientStackAfterComplete();
-                if (needsKnife)
-                {
-                    // offhand is not included in 'items'
-                    if (player.getOffhandItem().getItem().is(TFCTags.Items.KNIVES))
-                    {
-                        player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(Hand.OFF_HAND));
-                    }
-                    for (ItemStack invItem : player.inventory.items)
-                    {
-                        if (invItem.getItem().is(TFCTags.Items.KNIVES))
-                        {
-                            // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
-                            invItem.hurtAndBreak(1, player, p -> {});
-                            break;
-                        }
-                    }
-                }
             }
         }
         super.removed(player);
@@ -197,6 +180,23 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
                 player.setItemInHand(Hand.MAIN_HAND, stack);
             }
             hasConsumedIngredient = true;
+        }
+        if (needsKnife)
+        {
+            // offhand is not included in 'items'
+            if (player.getOffhandItem().getItem().is(TFCTags.Items.KNIVES))
+            {
+                player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(Hand.OFF_HAND));
+            }
+            for (ItemStack invItem : player.inventory.items)
+            {
+                if (invItem.getItem().is(TFCTags.Items.KNIVES))
+                {
+                    // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
+                    invItem.hurtAndBreak(1, player, p -> {});
+                    break;
+                }
+            }
         }
     }
 }

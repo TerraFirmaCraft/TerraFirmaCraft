@@ -123,6 +123,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'shield': MetalItem('tool', 400, 'item/handheld', None)
 }
+METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True),
     'native_gold': Ore('gold', True),
