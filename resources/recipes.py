@@ -134,6 +134,21 @@ def generate(rm: ResourceManager):
     knapping_recipe(rm, 'fire_clay_knapping', 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
     knapping_recipe(rm, 'fire_clay_knapping', 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], 'tfc:ceramic/unfired_fire_brick', count=3)
 
+    for category in ROCK_CATEGORIES:
+        predicate = 'tag!tfc:%s_rock' % category
+        rock_knapping_recipe(rm, 'axe_head_%s' % category, [' X   ', 'XXXX ', 'XXXXX', 'XXXX ', ' X   '], 'tfc:stone/axe_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'shovel_head_%s' % category, ['XXX', 'XXX', 'XXX', 'XXX', ' X '], 'tfc:stone/shovel_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'hoe_head_%s' % category, ['XXXXX', '   XX'], 'tfc:stone/hoe_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'knife_head_%s' % category, ['X ', 'XX', 'XX', 'XX', 'XX'], 'tfc:stone/knife_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'knife_head_1_%s' % category, ['X  X ', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_2_%s' % category, ['X   X', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_3_%s' % category, [' X X ', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'hoe_head_1_%s' % category, ['XXXXX', 'XX   ', '     ', 'XXXXX', 'XX   '], 'tfc:stone/hoe_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'hoe_head_1_%s' % category, ['XXXXX', 'XX   ', '     ', 'XXXXX', '   XX'], 'tfc:stone/hoe_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_%s' % category, ['X ', 'XX', 'XX', 'XX', 'XX'], 'tfc:stone/knife_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'javelin_head_%s' % category, ['XXX ', 'XXXX ', 'XXXXX', ' XXX ', '  X  '], 'tfc:stone/javelin_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'hammer_head_%s' % category, ['XXXXX', 'XXXXX', '  X  '], 'tfc:stone/hammer_head/%s' % category, predicate)
+
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
@@ -181,6 +196,16 @@ def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str
         'outside_slot_required': outside_slot_required,
         'pattern': pattern,
         'result': utils.item_stack((count, item))
+    })
+
+
+def rock_knapping_recipe(rm: ResourceManager, name, pattern: List[str], item: str, predicate: str = None, count: int = 1, outside_slot_required: bool = False):
+    predicate = None if predicate is None else utils.ingredient(predicate)
+    return rm.recipe(('rock_knapping', name), 'tfc:rock_knapping', {
+        'outside_slot_required': outside_slot_required,
+        'pattern': pattern,
+        'result': utils.item_stack((count, item)),
+        'predicate': predicate
     })
 
 

@@ -267,9 +267,18 @@ public final class InteractionManager
 
         register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
             PlayerEntity player = context.getPlayer();
-            if (player instanceof ServerPlayerEntity && stack.getCount() > 4)
+            if (player instanceof ServerPlayerEntity)
             {
                 NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+            }
+            return ActionResultType.SUCCESS;
+        });
+
+        register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player instanceof ServerPlayerEntity && stack.getCount() > 1)
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
             }
             return ActionResultType.SUCCESS;
         });

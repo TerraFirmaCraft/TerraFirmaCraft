@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:rock_knapping",
+  "outside_slot_required": false,
+  "pattern": [
+    "XXXXX",
+    "XX   ",
+    "     ",
+    "XXXXX",
+    "   XX"
+  ],
+  "result": {
+    "count": 2,
+    "item": "tfc:stone/hoe_head/sedimentary"
+  },
+  "predicate": {
+    "tag": "tfc:sedimentary_rock"
+  }
+}

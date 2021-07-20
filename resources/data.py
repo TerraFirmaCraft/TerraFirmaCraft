@@ -89,7 +89,8 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
-        rm.item_tag('tfc:stone_knapping', block('loose'))
+        rm.item_tag('tfc:rock_knapping', block('loose'))
+        rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))

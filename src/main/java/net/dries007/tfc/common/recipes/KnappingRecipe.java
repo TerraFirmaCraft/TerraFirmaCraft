@@ -1,4 +1,4 @@
-package net.dries007.tfc.common.recipes.knapping;
+package net.dries007.tfc.common.recipes;
 
 import javax.annotation.Nullable;
 
@@ -13,16 +13,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.container.KnappingContainer;
-import net.dries007.tfc.common.recipes.*;
 
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
     protected final SimpleCraftMatrix matrix;
     protected final ItemStack result;
-    protected final Serializer serializer;
+    protected final TypedRecipeSerializer<?> serializer;
 
-    public KnappingRecipe(ResourceLocation id, SimpleCraftMatrix matrix, ItemStack result, Serializer serializer)
+    public KnappingRecipe(ResourceLocation id, SimpleCraftMatrix matrix, ItemStack result, TypedRecipeSerializer<?> serializer)
     {
         this.id = id;
         this.matrix = matrix;
@@ -57,10 +56,10 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public IRecipeType<?> getType()
     {
-        return serializer.type;
+        return serializer.getRecipeType();
     }
 
-    public static class Serializer extends RecipeSerializer<KnappingRecipe>
+    public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
     {
         private final IRecipeType<?> type;
 
@@ -94,6 +93,12 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
             buffer.writeBoolean(recipe.matrix.outsideSlot);
             recipe.matrix.toNetwork(buffer, recipe.matrix.getWidth(), recipe.matrix.getHeight());
             buffer.writeItem(recipe.getResultItem());
+        }
+
+        @Override
+        public IRecipeType<?> getRecipeType()
+        {
+            return type;
         }
     }
 }

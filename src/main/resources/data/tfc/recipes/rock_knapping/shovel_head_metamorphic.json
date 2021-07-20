@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:rock_knapping",
+  "outside_slot_required": false,
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX",
+    "XXX",
+    " X "
+  ],
+  "result": {
+    "count": 1,
+    "item": "tfc:stone/shovel_head/metamorphic"
+  },
+  "predicate": {
+    "tag": "tfc:metamorphic_rock"
+  }
+}

@@ -1,11 +1,6 @@
 package net.dries007.tfc.client.screen;
 
-import java.util.function.Function;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -83,7 +78,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         if (clickType == 0)
         {
-            mouseClicked(x, y, clickType);
+            mouseClicked(x, y, clickType);//todo broken
         }
         return super.mouseDragged(x, y, clickType, dragX, dragY);
     }

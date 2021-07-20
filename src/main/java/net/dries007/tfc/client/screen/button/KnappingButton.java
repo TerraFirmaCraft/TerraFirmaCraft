@@ -37,9 +37,11 @@ public class KnappingButton extends Button
     @Override
     public void onRelease(double x, double y)
     {
-        doPress();
-        playDownSound(Minecraft.getInstance().getSoundManager());
-
+        if (visible)
+        {
+            doPress();
+            playDownSound(Minecraft.getInstance().getSoundManager());
+        }
         super.onRelease(x, y);
     }
 
