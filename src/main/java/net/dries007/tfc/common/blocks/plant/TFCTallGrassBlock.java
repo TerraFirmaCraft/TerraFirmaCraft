@@ -18,6 +18,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -129,6 +130,15 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
                 dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
             }
         }
+    }
+
+    /**
+     * See {@link net.minecraft.block.DoublePlantBlock}. We handle drops in playerWillDestroy so we must not drop things here.
+     */
+    @Override
+    public void playerDestroy(World level, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tile, ItemStack stack)
+    {
+        super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), tile, stack);
     }
 
     @Override

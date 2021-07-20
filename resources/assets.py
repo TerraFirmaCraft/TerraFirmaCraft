@@ -472,6 +472,7 @@ def generate(rm: ResourceManager):
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         p = 'tfc:plant/%s' % plant
+        lower_only = block_state_property(p, {'part': 'lower'})
         if plant_data.type == 'short_grass':
             rm.block_loot(p, alternatives([{
                 'name': p,
@@ -480,8 +481,16 @@ def generate(rm: ResourceManager):
                 'name': 'tfc:straw',
                 'conditions': [match_tag('tfc:knives')]
             }]))
-        elif plant_data.type in ('tall_plant', 'tall_grass', 'emergent', 'emergent_fresh'):
-            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives'), block_state_property(p, {'part': 'lower'})]}})
+        elif plant_data.type == 'tall_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears'), lower_only],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives'), lower_only]}})
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:
