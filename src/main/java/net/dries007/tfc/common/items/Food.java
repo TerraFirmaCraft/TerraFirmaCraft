@@ -8,19 +8,19 @@ package net.dries007.tfc.common.items;
 
 public enum Food
 {
-    // Berry Bushes
-    BLACKBERRY,
-    BLUEBERRY,
-    BUNCHBERRY,
-    CLOUDBERRY,
-    CRANBERRY,
-    ELDERBERRY,
-    GOOSEBERRY,
-    RASPBERRY,
-    SNOWBERRY,
-    STRAWBERRY,
-    WINTERGREEN_BERRY,
-    // Fruit Trees
+    // Berries
+    BLACKBERRY(false, true),
+    BLUEBERRY(false, true),
+    BUNCHBERRY(false, true),
+    CLOUDBERRY(false, true),
+    CRANBERRY(false, true),
+    ELDERBERRY(false, true),
+    GOOSEBERRY(false, true),
+    RASPBERRY(false, true),
+    SNOWBERRY(false, true),
+    STRAWBERRY(false, true),
+    WINTERGREEN_BERRY(false, true),
+    // Fruit
     BANANA,
     CHERRY,
     GREEN_APPLE,
@@ -54,11 +54,80 @@ public enum Food
     RICE,
     RICE_GRAIN,
     RICE_DOUGH,
-    RICE_FLOUR,
+    RICE_FLOUR, // todo: remove rice flour, dough, and bread. Add cooked rice. Add a pot boiling recipe for rice grain -> cooked rice. Eventually, add a rice addon to soups maybe?
     RICE_BREAD,
     WHEAT,
     WHEAT_GRAIN,
     WHEAT_DOUGH,
     WHEAT_FLOUR,
-    WHEAT_BREAD
+    WHEAT_BREAD,
+    // Vegetables
+    BEET,
+    CABBAGE,
+    CARROT,
+    GARLIC,
+    GREEN_BEAN,
+    GREEN_BELL_PEPPER,
+    ONION,
+    POTATO,
+    RED_BELL_PEPPER,
+    SOYBEAN,
+    SQUASH,
+    TOMATO,
+    YELLOW_BELL_PEPPER,
+    CHEESE,
+    COOKED_EGG,
+    // Meats
+    BEEF(true, false),
+    PORK(true, false),
+    CHICKEN(true, false),
+    MUTTON(true, false),
+    BEAR(true, false),
+    HORSE_MEAT(true, false),
+    PHEASANT(true, false),
+    VENISON(true, false),
+    WOLF(true, false),
+    RABBIT(true, false),
+    HYENA(true, false),
+    DUCK(true, false),
+    CHEVON(true, false),
+    GRAN_FELINE(true, false),
+    CAMELIDAE(true, false),
+    // Cooked Meats
+    COOKED_BEEF(true, false),
+    COOKED_PORK(true, false),
+    COOKED_CHICKEN(true, false),
+    COOKED_MUTTON(true, false),
+    COOKED_BEAR(true, false),
+    COOKED_HORSE_MEAT(true, false),
+    COOKED_PHEASANT(true, false),
+    COOKED_VENISON(true, false),
+    COOKED_WOLF(true, false),
+    COOKED_RABBIT(true, false),
+    COOKED_HYENA(true, false),
+    COOKED_DUCK(true, false),
+    COOKED_CHEVON(true, false),
+    COOKED_CAMELIDAE(true, false),
+    COOKED_GRAN_FELINE(true, false);
+
+    private final boolean meat, fast;
+
+    Food()
+    {
+        this(false, false);
+    }
+
+    Food(boolean meat, boolean fast)
+    {
+        this.meat = meat;
+        this.fast = fast;
+    }
+
+    public net.minecraft.item.Food getFoodProperties()
+    {
+        net.minecraft.item.Food.Builder builder = new net.minecraft.item.Food.Builder();
+        if (meat) builder.meat();
+        if (fast) builder.fast();
+        return builder.nutrition(4).saturationMod(0.3f).build();
+    }
 }

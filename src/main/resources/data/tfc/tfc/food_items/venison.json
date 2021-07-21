@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/venison"
+  },
+  "category": "meat",
+  "hunger": 4,
+  "saturation": 0,
+  "decay": 2,
+  "protein": 1
+}

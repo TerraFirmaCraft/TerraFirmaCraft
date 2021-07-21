@@ -9,10 +9,7 @@ package net.dries007.tfc.common.capabilities.size;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -25,10 +22,10 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
-public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
+public final class ItemSizeManager
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
-    public static final ItemSizeManager INSTANCE = new ItemSizeManager();
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager.Instance<>(ItemSizeDefinition::new, "item_sizes", "item size", true);
 
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 
@@ -48,11 +45,9 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         }
     }
 
-    public static void reload()
+    public static void resetItemSizes()
     {
-        CACHE.reload(INSTANCE.getValues());
-
-        // Additionally, compute for every item in the game, the modified stack size
+        // Edit item stack sizes for all editable items in the game (that we can find)
         // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
         for (Item item : MODIFIABLE_ITEMS)
         {
@@ -111,16 +106,5 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         {
             return ItemSize.of(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
         }
-    }
-
-    private ItemSizeManager()
-    {
-        super(new GsonBuilder().create(), "item_sizes", "item size", true);
-    }
-
-    @Override
-    protected ItemSizeDefinition read(ResourceLocation id, JsonObject obj)
-    {
-        return new ItemSizeDefinition(id, obj);
     }
 }

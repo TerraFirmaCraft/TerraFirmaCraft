@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/oat_bread"
+  },
+  "category": "bread",
+  "hunger": 4,
+  "saturation": 1,
+  "decay": 1,
+  "grain": 1
+}

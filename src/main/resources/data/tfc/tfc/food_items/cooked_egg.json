@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/cooked_egg"
+  },
+  "category": "other",
+  "hunger": 4,
+  "saturation": 0.5,
+  "decay": 4,
+  "protein": 0.75,
+  "dairy": 0.25
+}

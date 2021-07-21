@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
@@ -53,11 +53,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
-import net.dries007.tfc.config.HealthDisplayFormat;
+import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
 import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
@@ -94,7 +95,7 @@ public class ClientForgeEventHandler
     {
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
-        if (mc.level != null && mc.options.renderDebug) // todo: config
+        if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableTFCF3Overlays.get())
         {
             //noinspection ConstantConditions
             BlockPos pos = new BlockPos(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
@@ -105,7 +106,11 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString());
-                list.add(I18n.get("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+
+                if (TFCConfig.CLIENT.enableDebug.get())
+                {
+                    list.add(String.format("Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+                }
 
                 ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus() == ChunkData.Status.CLIENT)
@@ -133,19 +138,21 @@ public class ClientForgeEventHandler
         if (!stack.isEmpty())
         {
             ItemSizeManager.addTooltipInfo(stack, text);
-            MetalItemManager.addTooltipInfo(stack, text);
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+
             if (event.getFlags().isAdvanced())
             {
+                MetalItemManager.addTooltipInfo(stack, text);
                 FuelManager.addTooltipInfo(stack, text);
             }
 
-            if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
+            if (TFCConfig.CLIENT.enableDebug.get())
             {
-                CompoundNBT stackTag = stack.getTag();
+                final CompoundNBT stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TranslationTextComponent("tfc.tooltip.debug_tag", stackTag));
+                    text.add(new StringTextComponent("NBT: " + stackTag));
                 }
             }
         }
@@ -217,7 +224,7 @@ public class ClientForgeEventHandler
         ForgeIngameGui.renderFood = !TFCConfig.CLIENT.enableHungerBar.get();
         ForgeIngameGui.renderHealth = !TFCConfig.CLIENT.enableHealthBar.get();
         ForgeIngameGui.renderExperiance = !TFCConfig.CLIENT.enableHealthBar.get() && !TFCConfig.CLIENT.enableThirstBar.get(); // only allow vanilla exp in this case
-        HealthDisplayFormat healthDisplayFormat = TFCConfig.CLIENT.healthDisplayFormat.get();
+        HealthDisplayStyle healthDisplayStyle = TFCConfig.CLIENT.healthDisplayStyle.get();
 
         if (event.getType() != RenderGameOverlayEvent.ElementType.CROSSHAIRS)
         {
@@ -231,7 +238,7 @@ public class ClientForgeEventHandler
 
         MatrixStack matrixStack = event.getMatrixStack();
 
-        float displayModifier = (healthDisplayFormat == HealthDisplayFormat.TFC || healthDisplayFormat == HealthDisplayFormat.TFC_CURRENT) ? 50f : 1f;
+        float displayModifier = (healthDisplayStyle == HealthDisplayStyle.TFC || healthDisplayStyle == HealthDisplayStyle.TFC_CURRENT) ? 50f : 1f;
         float maxHealth = player.getMaxHealth() * displayModifier; // 20 * 50 = 1000
         float currentThirst = 100f; // todo: update to fetch from thirst once implemented
 
@@ -301,7 +308,7 @@ public class ClientForgeEventHandler
                 }
                 matrixStack.popPose();
 
-                String healthString = healthDisplayFormat.format(currentHealth, maxHealth);
+                String healthString = healthDisplayStyle.format(currentHealth, maxHealth);
                 matrixStack.pushPose();
                 matrixStack.translate(mid - 45, healthRowHeight + 2.5, 0);
                 matrixStack.scale(0.8f, 0.8f, 1.0f);
@@ -365,7 +372,7 @@ public class ClientForgeEventHandler
                 }
                 matrixStack.popPose();
 
-                String mountHealthString = healthDisplayFormat.format(mountCurrentHealth, mountMaxHealth);
+                String mountHealthString = healthDisplayStyle.format(mountCurrentHealth, mountMaxHealth);
                 matrixStack.pushPose();
                 matrixStack.translate(mid + 47, armorRowHeight + 2.5, 0);
                 matrixStack.scale(0.8f, 0.8f, 1.0f);

@@ -80,7 +80,7 @@ public final class TFCItems
 
     // Food
 
-    public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register(("food/" + food.name()), TFCItemGroup.FOOD));
+    public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new Item(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
 
     // Flora
 

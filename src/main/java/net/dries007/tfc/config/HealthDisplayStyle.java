@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.config;
 
-public enum HealthDisplayFormat
+public enum HealthDisplayStyle
 {
     TFC((curr, max) -> String.format("%.0f / %.0f", curr, max)),
     VANILLA((curr, max) -> String.format("%.1f / %.1f", curr, max)),
@@ -15,7 +15,7 @@ public enum HealthDisplayFormat
 
     private final Function formatFunction;
 
-    HealthDisplayFormat(Function formatFunction)
+    HealthDisplayStyle(Function formatFunction)
     {
         this.formatFunction = formatFunction;
     }

@@ -112,10 +112,10 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
     @Override
     public boolean test(FluidStack stack)
     {
-        return (amount < 0 || stack.getAmount() >= amount) && testIgnoreCount(stack);
+        return (amount < 0 || stack.getAmount() >= amount) && testIgnoreCount(stack.getFluid());
     }
 
-    public abstract boolean testIgnoreCount(FluidStack stack);
+    public abstract boolean testIgnoreCount(Fluid fluid);
 
     protected abstract void toNetwork(PacketBuffer buffer);
 
@@ -130,9 +130,9 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
 
         @Override
-        public boolean testIgnoreCount(FluidStack stack)
+        public boolean testIgnoreCount(Fluid fluid)
         {
-            return stack.getFluid() == fluid;
+            return this.fluid == fluid;
         }
 
         @Override
@@ -154,9 +154,9 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
 
         @Override
-        public boolean testIgnoreCount(FluidStack stack)
+        public boolean testIgnoreCount(Fluid fluid)
         {
-            return tag.contains(stack.getFluid());
+            return tag.contains(fluid);
         }
 
         @Override

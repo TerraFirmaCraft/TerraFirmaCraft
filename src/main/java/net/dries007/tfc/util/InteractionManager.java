@@ -48,7 +48,6 @@ public final class InteractionManager
     private static final List<Entry> ACTIONS = new ArrayList<>();
     private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
-    @SuppressWarnings("deprecation")
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {

@@ -60,6 +60,14 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
+    // Mechanics - Food / Nutrition
+    public final ForgeConfigSpec.BooleanValue peacefulDifficultyPassiveRegeneration;
+    public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
+    public final ForgeConfigSpec.DoubleValue thirstModifier;
+    public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
+    public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
+    public final ForgeConfigSpec.IntValue foodDecayStackWindow;
+    public final ForgeConfigSpec.DoubleValue foodDecayModifier;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -140,6 +148,27 @@ public class ServerConfig
         collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
         collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
         collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
+
+        innerBuilder.pop().push("player");
+
+        peacefulDifficultyPassiveRegeneration = builder.apply("peacefulDifficultyPassiveRegeneration").comment("If peaceful difficulty should still have vanilla-esque passive regeneration of health, food, and hunger").define("peacefulDifficultyPassiveRegeneration", false);
+        passiveExhaustionModifier = builder.apply("passiveExhaustionMultiplier").comment(
+            "A multiplier for passive exhaustion accumulation.",
+            "Exhaustion is the hidden stat which controls when you get hungry. In vanilla it is incremented by running and jumping for example. In TFC, exhaustion is added just by existing.",
+            "1.0 = A full hunger bar's worth of exhaustion every 2.5 days. Set to zero to disable completely.").defineInRange("passiveExhaustionMultiplier", 1d, 0d, 100d);
+        thirstModifier = builder.apply("thirstModifier").comment(
+            "A multiplier for how quickly the player gets thirsty.",
+            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+        naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(
+            "A multiplier for how quickly the player regenerates health, under TFC's passive regeneration.",
+            "By default, the player regenerates 0.2 HP/second, or 0.6 HP/second when above 80% hunger and thirst, where 1 HP = 1/50 of a heart.").defineInRange("naturalRegenerationModifier", 1d, 0d, 100d);
+        nutritionRotationHungerWindow = builder.apply("nutritionRotationHungerWindow").comment(
+            "How much total hunger consumed is required to completely refresh the player's nutrition.",
+            "Player nutrition in TFC is calculated based on nutrition of the last few foods eaten - this is how many foods are used to calculate nutrition. By default, all TFC foods restore 4 hunger.").defineInRange("nutritionRotationHungerWindow", 80, 1, Integer.MAX_VALUE);
+        foodDecayStackWindow = builder.apply("foodDecayStackWindow").comment(
+            "How many hours should different foods ignore when trying to stack together automatically?",
+            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
+        foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
 
         innerBuilder.pop().pop();
     }

@@ -6,48 +6,23 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
 
+import net.dries007.tfc.common.ItemDefinition;
 import net.dries007.tfc.util.Helpers;
 
-public class ItemSizeDefinition implements IItemSize
+public class ItemSizeDefinition extends ItemDefinition implements IItemSize
 {
-    private final ResourceLocation id;
-    private final Ingredient ingredient;
     private final Size size;
     private final Weight weight;
 
-    public ItemSizeDefinition(ResourceLocation id, JsonObject obj)
+    public ItemSizeDefinition(ResourceLocation id, JsonObject json)
     {
-        this.id = id;
-        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
-        this.size = Helpers.getEnumFromJson(obj, "size", Size.class, Size.NORMAL);
-        this.weight = Helpers.getEnumFromJson(obj, "weight", Weight.class, Weight.MEDIUM);
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public boolean matches(ItemStack stack)
-    {
-        return ingredient.test(stack);
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+        super(id, json);
+        this.size = Helpers.getEnumFromJson(json, "size", Size.class, Size.NORMAL);
+        this.weight = Helpers.getEnumFromJson(json, "weight", Weight.class, Weight.MEDIUM);
     }
 
     @Override

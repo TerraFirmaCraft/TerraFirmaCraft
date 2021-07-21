@@ -485,6 +485,12 @@ def generate(rm: ResourceManager):
         for suffix in GRAIN_SUFFIXES:
             rm.item_model('food/%s%s' % (grain, suffix)).with_lang(lang('%s%s', grain, suffix))
 
+    for meat in MEATS:
+        rm.item_model(('food', meat)).with_lang(lang('raw %s', meat))
+        rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
+    for veg in VEGETABLES:
+        rm.item_model(('food', veg)).with_lang(lang(veg))
+
     rm.blockstate('berry_bush/dead_bush', variants={
         'stage=0': {'model': 'tfc:block/berry_bush/dead_bush_0'},
         'stage=1': {'model': 'tfc:block/berry_bush/dead_bush_1'},

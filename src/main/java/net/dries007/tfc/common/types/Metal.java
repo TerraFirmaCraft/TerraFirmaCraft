@@ -33,9 +33,12 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCItemTier;
 import net.dries007.tfc.common.items.tools.*;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.data.DataManager;
 
 public class Metal
 {
+    public static final DataManager<Metal> MANAGER = new DataManager.Instance<>(Metal::new, "metals", "metal", false);
+
     private final Tier tier;
     private final Fluid fluid;
 

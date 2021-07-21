@@ -20,15 +20,17 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ClientConfig
 {
+    // General
     public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
     public final ForgeConfigSpec.BooleanValue assumeTFCWorld;
-
+    public final ForgeConfigSpec.BooleanValue enableDebug;
+    // Display
     public final ForgeConfigSpec.BooleanValue enableHungerBar;
     public final ForgeConfigSpec.BooleanValue enableHealthBar;
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
-    public final ForgeConfigSpec.ConfigValue<HealthDisplayFormat> healthDisplayFormat;
-
-    public final ForgeConfigSpec.BooleanValue enableDebugNBTTooltip;
+    public final ForgeConfigSpec.ConfigValue<HealthDisplayStyle> healthDisplayStyle;
+    public final ForgeConfigSpec.ConfigValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
+    public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -45,22 +47,28 @@ public class ClientConfig
             "2. The 'horizon height' (where the fog changes from sky to black) is moved from 63 -> 96"
         ).define("assumeTFCWorld", true);
 
+        enableDebug = builder.apply("enableDebugNBTTooltip").comment("Enables a series of additional debugging tooltips, displayed information, and logging.").define("enableDebugNBTTooltip", () -> !FMLEnvironment.production);
+
         innerBuilder.pop().push("display");
 
         enableHungerBar = builder.apply("enableHungerBar").comment("Replace the vanilla hunger bar with a TFC one.").define("enableHungerBar", true);
         enableHealthBar = builder.apply("enableHealthBar").comment("Replaces the vanilla health bar with a TFC one.").define("enableHealthBar", true);
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
-        healthDisplayFormat = builder.apply("healthDisplayFormat").comment(
+        healthDisplayStyle = builder.apply("healthDisplayStyle").comment(
             "Health display format. This affects what number is displayed on top of the tfc-style health bar",
             "TFC - e.g. 750 / 1000",
             "VANILLA - e.g. 15.0 / 20.0",
             "TFC_CURRENT - e.g. 750",
             "VANILLA_CURRENT - e.g. 15.0"
-        ).defineEnum("healthDisplayFormat", HealthDisplayFormat.TFC);
-
-        innerBuilder.pop().push("debug");
-
-        enableDebugNBTTooltip = builder.apply("enableDebugNBTTooltip").comment("Enables a tooltip which shows the NBT of items.").define("enableDebugNBTTooltip", !FMLEnvironment.production);
+        ).defineEnum("healthDisplayStyle", HealthDisplayStyle.TFC);
+        foodExpiryTooltipStyle = builder.apply("foodExpiryTooltipStyle").comment(
+            "Food expiry tooltip display style. This affects what information is shown on the food item stack tooltips.",
+            "NONE - Shows nothing. Maximum mystery!",
+            "EXPIRY - e.g. 'Expires on June 3, 05:00",
+            "TIME_LEFT - e.g. 'Expires in about 3 day(s)",
+            "BOTH - Shows both of the above, e.g. Expires on June 3, 05:00 (in about 3 day(s))."
+        ).defineEnum("foodExpiryTooltipStyle", FoodExpiryTooltipStyle.BOTH);
+        enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 
         innerBuilder.pop();
     }

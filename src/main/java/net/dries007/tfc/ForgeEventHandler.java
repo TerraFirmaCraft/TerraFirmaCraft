@@ -13,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -39,6 +42,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
@@ -51,11 +55,16 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodDefinition;
+import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -90,6 +99,7 @@ public final class ForgeEventHandler
         bus.addGenericListener(Chunk.class, ForgeEventHandler::attachChunkCapabilities);
         bus.addGenericListener(World.class, ForgeEventHandler::attachWorldCapabilities);
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
+        bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);
@@ -111,6 +121,9 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onArrowImpact);
         bus.addListener(ForgeEventHandler::onFireballImpact);
+        bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
+        bus.addListener(ForgeEventHandler::onPlayerRespawn);
+        bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
     }
 
     /**
@@ -226,11 +239,25 @@ public final class ForgeEventHandler
             event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
             // Optional capabilities
-            HeatDefinition def = HeatManager.get(stack);
+            HeatDefinition def = HeatCapability.get(stack);
             if (def != null)
             {
                 event.addCapability(HeatCapability.KEY, def.create());
             }
+
+            FoodDefinition food = FoodCapability.get(stack);
+            if (food != null)
+            {
+                event.addCapability(FoodCapability.KEY, new FoodHandler(food.getData()));
+            }
+        }
+    }
+
+    public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event)
+    {
+        if (event.getObject() instanceof PlayerEntity)
+        {
+            event.addCapability(PlayerDataCapability.KEY, new PlayerData((PlayerEntity) event.getObject()));
         }
     }
 
@@ -315,13 +342,15 @@ public final class ForgeEventHandler
         // Resource reload listeners
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
         resourceManager.registerReloadListener(RockManager.INSTANCE);
-        resourceManager.registerReloadListener(MetalManager.INSTANCE);
-        resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.registerReloadListener(FuelManager.INSTANCE);
+        resourceManager.registerReloadListener(Metal.MANAGER);
+        resourceManager.registerReloadListener(MetalItemManager.MANAGER);
+        resourceManager.registerReloadListener(FuelManager.MANAGER);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatManager.INSTANCE);
-        resourceManager.registerReloadListener(ItemSizeManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatCapability.MANAGER);
+        resourceManager.registerReloadListener(ItemSizeManager.MANAGER);
+        resourceManager.registerReloadListener(FoodCapability.MANAGER);
 
+        // Last
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
@@ -535,6 +564,30 @@ public final class ForgeEventHandler
             BlockPos pos = blockResult.getBlockPos();
             World world = fireball.level;
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+        }
+    }
+
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
+        }
+    }
+
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
+        }
+    }
+
+    public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
         }
     }
 }

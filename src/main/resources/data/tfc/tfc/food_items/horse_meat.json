@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/horse_meat"
+  },
+  "category": "meat",
+  "hunger": 4,
+  "saturation": 0,
+  "decay": 2,
+  "protein": 1.5
+}

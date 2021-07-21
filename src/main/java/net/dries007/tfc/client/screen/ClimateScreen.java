@@ -49,9 +49,9 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack stack, int mouseX, int mouseY)
     {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+        super.renderLabels(stack, mouseX, mouseY);
 
         // Climate at the current player
         float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
@@ -63,11 +63,22 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
         String averageTempTooltip = I18n.get("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp));
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
-
-        font.draw(matrixStack, climateType, (imageWidth - font.width(climateType)) / 2f, 25, 0x404040);
-        font.draw(matrixStack, plateTectonics, (imageWidth - font.width(plateTectonics)) / 2f, 34, 0x404040);
-        font.draw(matrixStack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 43, 0x404040);
-        font.draw(matrixStack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 52, 0x404040);
-        font.draw(matrixStack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 61, 0x404040);
+/*
+        drawLine(stack, climateType, 17);
+        drawLine(stack, plateTectonics, 28);
+        drawLine(stack, averageTempTooltip, 39);
+        drawLine(stack, rainfallTooltip, 50);
+        drawLine(stack, currentTempTooltip, 61);*/
+        font.draw(stack, climateType, (imageWidth - font.width(climateType)) / 2, 17, 0x404040);
+        font.draw(stack, plateTectonics, (imageWidth - font.width(plateTectonics)) / 2, 28, 0x404040);
+        font.draw(stack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2, 39, 0x404040);
+        font.draw(stack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2, 50, 0x404040);
+        font.draw(stack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2, 61, 0x404040);
     }
+    /*
+    private void drawLine(MatrixStack stack, String text, int y)
+    {
+        final int x = (imageWidth - font.width(text)) / 2;
+        font.draw(stack, text, x, y, 0x404040);
+    }*/
 }

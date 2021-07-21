@@ -7,7 +7,6 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -91,12 +90,12 @@ public interface ICalendar
 
     /* Format Methods */
 
-    static ITextComponent getTimeAndDate(long time, long daysInMonth)
+    static IFormattableTextComponent getTimeAndDate(long time, long daysInMonth)
     {
         return ICalendar.getTimeAndDate(ICalendar.getHourOfDay(time), ICalendar.getMinuteOfHour(time), ICalendar.getMonthOfYear(time, daysInMonth), ICalendar.getDayOfMonth(time, daysInMonth), ICalendar.getTotalYears(time, daysInMonth));
     }
 
-    static ITextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
+    static IFormattableTextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         return new StringTextComponent(String.format("%d:%02d ", hour, minute))
             .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
@@ -256,7 +255,7 @@ public interface ICalendar
         return (long) getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
     }
 
-    default ITextComponent getCalendarTimeAndDate()
+    default IFormattableTextComponent getCalendarTimeAndDate()
     {
         return ICalendar.getTimeAndDate(getCalendarTicks(), getCalendarDaysInMonth());
     }

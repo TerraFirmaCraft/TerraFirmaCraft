@@ -74,7 +74,7 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
      * @param text  The list of tooltips
      */
     @OnlyIn(Dist.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<ITextComponent> text)
+    default void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
     {
         float temperature = getTemperature();
         IFormattableTextComponent tooltip = Heat.getTooltip(temperature);

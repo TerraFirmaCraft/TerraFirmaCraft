@@ -25,44 +25,45 @@ import net.dries007.tfc.util.Helpers;
 
 public class PlaceBlockSpecialPacket
 {
-    void handle(Supplier<NetworkEvent.Context> contextSupplier)
+    void handle(Supplier<NetworkEvent.Context> context)
     {
-        NetworkEvent.Context context = contextSupplier.get();
-
-        ServerPlayerEntity player = context.getSender();
-        if (player != null)
-        {
-            World world = player.getLevel();
-            RayTraceResult rayTrace = player.pick(5.0F, 1.0F, false);
-            if (rayTrace instanceof BlockRayTraceResult)
+        context.get().setPacketHandled(true);
+        context.get().enqueueWork(() -> {
+            ServerPlayerEntity player = context.get().getSender();
+            if (player != null)
             {
-                BlockRayTraceResult blockResult = (BlockRayTraceResult) rayTrace;
-                Direction face = blockResult.getDirection();
-                if (face == Direction.UP)
+                World world = player.getLevel();
+                RayTraceResult rayTrace = player.pick(5.0F, 1.0F, false);
+                if (rayTrace instanceof BlockRayTraceResult)
                 {
-                    BlockPos pos = blockResult.getBlockPos();
-                    BlockState state = world.getBlockState(pos);
-                    ItemStack stack = player.getMainHandItem();
-                    if (state.is(TFCBlocks.PLACED_ITEM.get()))
+                    BlockRayTraceResult blockResult = (BlockRayTraceResult) rayTrace;
+                    Direction face = blockResult.getDirection();
+                    if (face == Direction.UP)
                     {
-                        PlacedItemTileEntity te = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
-                        if (te != null)
+                        BlockPos pos = blockResult.getBlockPos();
+                        BlockState state = world.getBlockState(pos);
+                        ItemStack stack = player.getMainHandItem();
+                        if (state.is(TFCBlocks.PLACED_ITEM.get()))
                         {
-                            te.onRightClick(player, stack, blockResult);
+                            PlacedItemTileEntity te = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
+                            if (te != null)
+                            {
+                                te.onRightClick(player, stack, blockResult);
+                            }
                         }
-                    }
-                    else if (!stack.isEmpty() && world.isEmptyBlock(pos.above()))
-                    {
-                        double y = blockResult.getLocation().y - pos.getY();
-                        if (y == 0 || y == 1)
+                        else if (!stack.isEmpty() && world.isEmptyBlock(pos.above()))
                         {
-                            world.setBlockAndUpdate(pos.above(), PlacedItemBlock.updateStateValues(world, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState()));
-                            PlacedItemTileEntity te = Helpers.getTileEntityOrThrow(world, pos.above(), PlacedItemTileEntity.class);
-                            te.insertItem(player, stack, blockResult);
+                            double y = blockResult.getLocation().y - pos.getY();
+                            if (y == 0 || y == 1)
+                            {
+                                world.setBlockAndUpdate(pos.above(), PlacedItemBlock.updateStateValues(world, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState()));
+                                PlacedItemTileEntity te = Helpers.getTileEntityOrThrow(world, pos.above(), PlacedItemTileEntity.class);
+                                te.insertItem(player, stack, blockResult);
+                            }
                         }
                     }
                 }
             }
-        }
+        });
     }
 }
