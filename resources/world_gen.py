@@ -46,13 +46,13 @@ class Decoration(IntEnum):
 
 def generate(rm: ResourceManager):
     # Surface Builders
-    surface_builder(rm, 'badlands', wg.configure('tfc:badlands'))
-    surface_builder(rm, 'volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
-    surface_builder(rm, 'normal', wg.configure('tfc:normal'))
-    surface_builder(rm, 'icebergs', wg.configure('tfc:icebergs'))
-    surface_builder(rm, 'mountains', wg.configure('tfc:mountains'))
-    surface_builder(rm, 'volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
-    surface_builder(rm, 'shore', wg.configure('tfc:shore'))
+    rm.surface_builder('badlands', wg.configure('tfc:badlands'))
+    rm.surface_builder('volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
+    rm.surface_builder('normal', wg.configure('tfc:normal'))
+    rm.surface_builder('icebergs', wg.configure('tfc:icebergs'))
+    rm.surface_builder('mountains', wg.configure('tfc:mountains'))
+    rm.surface_builder('volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
+    rm.surface_builder('shore', wg.configure('tfc:shore'))
 
     # Configured Features
     rm.feature('erosion', wg.configure('tfc:erosion'))
@@ -294,15 +294,12 @@ def generate(rm: ResourceManager):
         return ore_blocks
 
     def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
-        if biome_filter == 'lake':
-            return [{'category': 'lake'}]
+        if biome_filter == 'river':
+            return [{'category': 'river'}]
         elif biome_filter == 'volcanic':
-            return [
-                '%s_%s_%s' % (b, t.id, r.id)
-                for b in ('canyons', 'volcanic_mountains', 'volcanic_oceanic_mountains')
-                for t in TEMPERATURES
-                for r in RAINFALLS
-            ]
+            return [{'biome_dictionary': 'volcanic'}]
+        elif biome_filter is not None:
+            raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
         else:
             return None
 
@@ -643,11 +640,6 @@ def generate(rm: ResourceManager):
             biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
             biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
-
-
-def surface_builder(rm: ResourceManager, name: str, surface_builder):
-    # Add a surface builder, and also one with glaciers for cold biomes
-    rm.surface_builder(name, surface_builder)
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):

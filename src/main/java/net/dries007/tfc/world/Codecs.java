@@ -19,6 +19,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -35,6 +36,8 @@ public final class Codecs
     public static final Codec<Integer> POSITIVE_INT = Codec.intRange(1, Integer.MAX_VALUE);
     public static final Codec<Integer> NONNEGATIVE_INT = Codec.intRange(0, Integer.MAX_VALUE);
     public static final Codec<Float> NONNEGATIVE_FLOAT = Codec.floatRange(0, Float.MAX_VALUE);
+
+    public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.xmap(BiomeDictionary.Type::getType, BiomeDictionary.Type::getName);
 
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.

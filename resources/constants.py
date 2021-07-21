@@ -211,8 +211,8 @@ ORE_VEINS: Dict[str, Vein] = {
     'diamond': vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
     'emerald': vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
     'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 120, 150, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='volcanic', height=6),
-    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='lake', height=4),
-    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='lake', height=4)
+    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='river', height=4),
+    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='river', height=4)
 }
 
 ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
