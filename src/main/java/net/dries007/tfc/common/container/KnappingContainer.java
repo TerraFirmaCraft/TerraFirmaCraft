@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.server.ServerWorld;
 
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -28,13 +29,14 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     public final boolean usesDisabledTex;
     private final boolean needsKnife;
     private final boolean consumeAfterComplete;
+    public final SoundEvent sound;
     public boolean requiresReset;
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
     private final IRecipeType<? extends KnappingRecipe> recipeType;
     public final ItemStack stackCopy;
 
-    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, boolean needsKnife)
+    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, boolean needsKnife, SoundEvent sound)
     {
         super(containerType, windowId, playerInv, playerInv.player.getMainHandItem()); //todo make this work for offhand
         this.itemIndex += 1;
@@ -43,6 +45,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         this.consumeAfterComplete = consumeAfterComplete;
         this.needsKnife = needsKnife;
         this.recipeType = recipeType;
+        this.sound = sound;
 
         matrix = new SimpleCraftMatrix();
         hasBeenModified = false;

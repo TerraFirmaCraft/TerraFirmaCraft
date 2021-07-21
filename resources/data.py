@@ -128,6 +128,7 @@ def generate(rm: ResourceManager):
     for wood, wood_data in WOODS.items():
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
+        rm.item_tag('forge:rods/wooden',  'tfc:wood/twig/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
 

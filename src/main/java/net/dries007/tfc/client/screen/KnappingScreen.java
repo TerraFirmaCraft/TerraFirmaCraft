@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 
@@ -37,7 +38,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
-                addButton(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation));
+                addButton(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.sound));
             }
         }
     }
