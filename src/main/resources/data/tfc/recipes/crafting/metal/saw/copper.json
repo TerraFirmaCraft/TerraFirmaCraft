@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/saw_head/copper"
+      "item": "tfc:metal/saw_blade/copper"
     },
     "Y": {
       "tag": "forge:rods/wooden"

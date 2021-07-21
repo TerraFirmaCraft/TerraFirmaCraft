@@ -146,13 +146,13 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         {
             for (int j = 0; j < 9; j++)
             {
-                addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 18));
+                addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
             }
         }
 
         for (int k = 0; k < 9; k++)
         {
-            addSlot(new Slot(playerInv, k, 8 + k * 18, 142 + 18));
+            addSlot(new Slot(playerInv, k, 8 + k * 18, 142 + 20));
         }
     }
 

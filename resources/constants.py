@@ -427,6 +427,10 @@ DEFAULT_LANG = {
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
     'tfc.screen.climate': 'Climate',
+    'tfc.screen.rock_knapping': 'Rock Knapping',
+    'tfc.screen.clay_knapping': 'Clay Knapping',
+    'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
+    'tfc.screen.leather_knapping': 'Leather Knapping',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',

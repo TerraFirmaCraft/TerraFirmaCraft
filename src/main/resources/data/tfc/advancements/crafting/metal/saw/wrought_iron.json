@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/saw_head/wrought_iron"
+            "item": "tfc:metal/saw_blade/wrought_iron"
           }
         ]
       }

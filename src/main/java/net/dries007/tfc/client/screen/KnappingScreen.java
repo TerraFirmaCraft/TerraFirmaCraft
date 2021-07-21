@@ -21,7 +21,9 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     public KnappingScreen(KnappingContainer container, PlayerInventory inv, ITextComponent name)
     {
         super(container, inv, name, KNAPPING_BACKGROUND);
-        imageHeight = 184;
+        imageHeight = 186;
+        inventoryLabelY += 21;
+        titleLabelY -= 2;
         ResourceLocation regName = container.stackCopy.getItem().getRegistryName();
         assert regName != null;
         buttonLocation = new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + ".png");
@@ -98,11 +100,5 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             }
         }
         return super.mouseClicked(x, y, clickType);
-    }
-
-    @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
-    {
-        // no-op for now
     }
 }

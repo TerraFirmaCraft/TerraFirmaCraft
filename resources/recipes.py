@@ -57,7 +57,8 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': 'tfc:metal/double_ingot/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('tfc:metal/double_ingot/%s' % metal)
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
-                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s_head/%s' % (tool, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s_head/%s' % (tool, metal))
+                suffix = '_blade' if tool in ('knife', 'saw') else '_head'
+                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
     rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
 
