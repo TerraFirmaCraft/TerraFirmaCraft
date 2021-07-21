@@ -617,6 +617,7 @@ def generate(rm: ResourceManager):
                 'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
+            block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
             if variant != 'log':
                 block.with_item_model()
             else:

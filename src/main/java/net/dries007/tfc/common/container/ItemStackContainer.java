@@ -15,7 +15,7 @@ public abstract class ItemStackContainer extends SimpleContainer
     protected int itemDragIndex;
     protected boolean isOffhand;
 
-    public ItemStackContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv, ItemStack stack)
+    public ItemStackContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv, ItemStack stack, int yOffset)
     {
         super(type, windowId);
         this.player = playerInv.player;
@@ -34,7 +34,12 @@ public abstract class ItemStackContainer extends SimpleContainer
         }
 
         addContainerSlots();
-        addPlayerInventorySlots(playerInv);
+        addPlayerInventorySlots(playerInv, yOffset);
+    }
+
+    public ItemStackContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv, ItemStack stack)
+    {
+        this(type, windowId, playerInv, stack, 0);
     }
 
     @Override

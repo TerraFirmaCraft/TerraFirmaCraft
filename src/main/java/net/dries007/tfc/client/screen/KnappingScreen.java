@@ -22,7 +22,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         super(container, inv, name, KNAPPING_BACKGROUND);
         imageHeight = 186;
-        inventoryLabelY += 21;
+        inventoryLabelY += 22;
         titleLabelY -= 2;
         ResourceLocation regName = container.stackCopy.getItem().getRegistryName();
         assert regName != null;

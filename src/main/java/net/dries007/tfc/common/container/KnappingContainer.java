@@ -38,7 +38,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
 
     public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, boolean needsKnife, SoundEvent sound)
     {
-        super(containerType, windowId, playerInv, playerInv.player.getMainHandItem()); //todo make this work for offhand
+        super(containerType, windowId, playerInv, getItemForKnapping(playerInv), 20);
         this.itemIndex += 1;
         this.amountToConsume = amountToConsume;
         this.usesDisabledTex = usesDisabledTex;
@@ -52,6 +52,12 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         requiresReset = false;
         hasConsumedIngredient = false;
         stackCopy = this.stack.copy();
+    }
+
+    private static ItemStack getItemForKnapping(PlayerInventory inv)
+    {
+        final ItemStack main = inv.player.getMainHandItem();
+        return main.isEmpty() ? inv.player.getOffhandItem() : main;
     }
 
     @Override
@@ -95,7 +101,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     @Override
     protected void addContainerSlots()
     {
-        addSlot(new RunnableSlot(new ItemStackHandler(1), 0, 128, 44, this::resetMatrix));
+        addSlot(new RunnableSlot(new ItemStackHandler(1), 0, 128, 46, this::resetMatrix));
     }
 
     @Override
@@ -136,24 +142,6 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     public void setSlotState(int index, boolean value)
     {
         matrix.set(index, value);
-    }
-
-    @Override
-    protected void addPlayerInventorySlots(PlayerInventory playerInv)
-    {
-        // Add Player Inventory Slots (lower down)
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
-            }
-        }
-
-        for (int k = 0; k < 9; k++)
-        {
-            addSlot(new Slot(playerInv, k, 8 + k * 18, 142 + 20));
-        }
     }
 
     private void resetMatrix()
