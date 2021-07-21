@@ -49,6 +49,14 @@ public class RockData implements INBTSerializable<CompoundNBT>
         this.surfaceHeight = null;
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public RockData(CompoundNBT nbt)
+    {
+        // The null rock layer height is replaced immediately after in deserializeNBT(), as opposed to the final fields which require them to be pre-initialized to the correct length
+        this(new Rock[256], new Rock[256], new Rock[256], null);
+        deserializeNBT(nbt);
+    }
+
     public Rock getRock(BlockPos pos)
     {
         return getRock(pos.getX(), pos.getY(), pos.getZ());
@@ -119,33 +127,30 @@ public class RockData implements INBTSerializable<CompoundNBT>
         nbt.putIntArray("height", rockLayerHeight);
         if (surfaceHeight != null)
         {
-            nbt.putIntArray("surface_height", surfaceHeight);
+            nbt.putIntArray("surfaceHeight", surfaceHeight);
         }
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(@Nullable CompoundNBT nbt)
+    public void deserializeNBT(CompoundNBT nbt)
     {
-        if (nbt != null)
+        // Build pallet
+        ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
+        List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
+        for (int i = 0; i < pallet.size(); i++)
         {
-            // Build pallet
-            ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
-            List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
-            for (int i = 0; i < pallet.size(); i++)
-            {
-                uniqueRocks.add(RockManager.INSTANCE.getOrDefault(new ResourceLocation(pallet.getString(i))));
-            }
+            uniqueRocks.add(RockManager.INSTANCE.getOrDefault(new ResourceLocation(pallet.getString(i))));
+        }
 
-            Helpers.createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
-            Helpers.createArrayFromBytes(nbt.getByteArray("middleLayer"), middleLayer, uniqueRocks::get);
-            Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
+        Helpers.createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
+        Helpers.createArrayFromBytes(nbt.getByteArray("middleLayer"), middleLayer, uniqueRocks::get);
+        Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
 
-            rockLayerHeight = nbt.getIntArray("height");
-            if (nbt.contains("surface_height"))
-            {
-                surfaceHeight = nbt.getIntArray("surface_height");
-            }
+        rockLayerHeight = nbt.getIntArray("height");
+        if (nbt.contains("surfaceHeight"))
+        {
+            surfaceHeight = nbt.getIntArray("surfaceHeight");
         }
     }
 
@@ -171,6 +176,9 @@ public class RockData implements INBTSerializable<CompoundNBT>
         }
 
         @Override
-        public void deserializeNBT(@Nullable CompoundNBT nbt) {}
+        public void deserializeNBT(@Nullable CompoundNBT nbt)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable rock data");
+        }
     }
 }

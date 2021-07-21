@@ -230,22 +230,21 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         nbt.putByte("forestType", (byte) forestType.ordinal());
         nbt.putFloat("forestWeirdness", forestWeirdness);
         nbt.putFloat("forestDensity", forestDensity);
+        nbt.putByte("status", (byte) status.ordinal());
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        if (nbt != null)
-        {
-            plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
-            rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
-            temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
-            rockData.deserializeNBT(nbt.getCompound("rockData"));
-            forestType = ForestType.valueOf(nbt.getByte("forestType"));
-            forestWeirdness = nbt.getFloat("forestWeirdness");
-            forestDensity = nbt.getFloat("forestDensity");
-        }
+        plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
+        rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
+        temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
+        rockData = new RockData(nbt.getCompound("rockData"));
+        forestType = ForestType.valueOf(nbt.getByte("forestType"));
+        forestWeirdness = nbt.getFloat("forestWeirdness");
+        forestDensity = nbt.getFloat("forestDensity");
+        status = Status.valueOf(nbt.getByte("status"));
     }
 
     @Override
@@ -270,7 +269,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         EMPTY, // Default, un-generated chunk data
         CLIENT, // Client-side shallow copy
-        FULL // Fully generated chunk data
+        FULL; // Fully generated chunk data
+
+        private static final Status[] VALUES = values();
+
+        public static Status valueOf(int i)
+        {
+            return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
+        }
     }
 
     /**

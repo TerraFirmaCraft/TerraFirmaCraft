@@ -27,11 +27,13 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -92,6 +94,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);
         bus.addListener(ForgeEventHandler::onChunkUnload);
+        bus.addListener(ForgeEventHandler::onChunkDataSave);
+        bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::beforeServerStart);
         bus.addListener(ForgeEventHandler::onServerStopped);
@@ -272,6 +276,37 @@ public final class ForgeEventHandler
         if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
         {
             ChunkDataCache.SERVER.remove(event.getChunk().getPos());
+        }
+    }
+
+    /**
+     * Serialize chunk data on chunk primers, before the chunk data capability is present.
+     * - This saves the effort of re-generating the same data for proto chunks
+     * - And, due to the late setting of part of chunk data ({@link net.dries007.tfc.world.chunkdata.RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
+     */
+    public static void onChunkDataSave(ChunkDataEvent.Save event)
+    {
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK)
+        {
+            final ChunkPos pos = event.getChunk().getPos();
+            final ChunkData data = ChunkDataCache.WORLD_GEN.get(pos);
+            if (data != null && data.getStatus() != ChunkData.Status.EMPTY)
+            {
+                event.getData().put("tfc_protochunk_data", data.serializeNBT());
+            }
+        }
+    }
+
+    /**
+     * @see #onChunkDataSave(ChunkDataEvent.Save)
+     */
+    public static void onChunkDataLoad(ChunkDataEvent.Load event)
+    {
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND))
+        {
+            final ChunkPos pos = event.getChunk().getPos();
+            final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
+            data.deserializeNBT(event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 
