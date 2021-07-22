@@ -41,11 +41,15 @@
     [],
     [
       "tfc:volcano_rivulet",
-      "tfc:volcano_caldera"
+      "tfc:volcano_caldera",
+      "tfc:random_volcano_fissure"
     ],
     [],
     [
       "tfc:vein/gravel",
+      "tfc:vein/diorite_dike",
+      "tfc:vein/gabbro_dike",
+      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
@@ -84,7 +88,10 @@
       "tfc:vein/lapis_lazuli",
       "tfc:vein/halite",
       "tfc:vein/diamond",
-      "tfc:vein/emerald"
+      "tfc:vein/emerald",
+      "tfc:vein/volcanic_sulfur",
+      "tfc:vein/amethyst",
+      "tfc:vein/opal"
     ],
     [
       "tfc:cave_spike",

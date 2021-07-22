@@ -6,62 +6,49 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "minecraft:decorated",
+          "type": "tfc:random_patch",
           "config": {
-            "feature": {
-              "type": "tfc:random_patch",
-              "config": {
-                "state_provider": {
-                  "type": "minecraft:simple_state_provider",
-                  "state": {
-                    "Name": "tfc:plant/rose",
-                    "Properties": {
-                      "age": "1",
-                      "stage": "1",
-                      "part": "lower"
-                    }
-                  }
-                },
-                "block_placer": {
-                  "type": "tfc:tall_plant",
-                  "config": {}
-                },
-                "tries": 128,
-                "whitelist": [
-                  "tfc:clay_grass/silt",
-                  "tfc:clay_grass/loam",
-                  "tfc:clay_grass/sandy_loam",
-                  "tfc:clay_grass/silty_loam"
-                ],
-                "blacklist": [],
-                "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "use_density": true
+            "state_provider": {
+              "type": "minecraft:simple_state_provider",
+              "state": {
+                "Name": "tfc:plant/rose",
+                "Properties": {
+                  "age": "1",
+                  "stage": "1",
+                  "part": "lower"
+                }
               }
             },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": -5,
-                "max_temperature": 20,
-                "min_rainfall": 150,
-                "max_rainfall": 300
-              }
-            }
+            "block_placer": {
+              "type": "tfc:tall_plant"
+            },
+            "whitelist": [
+              "tfc:clay_grass/silt",
+              "tfc:clay_grass/loam",
+              "tfc:clay_grass/sandy_loam",
+              "tfc:clay_grass/silty_loam"
+            ],
+            "blacklist": [],
+            "yspread": 1,
+            "xspread": 15,
+            "zspread": 15,
+            "tries": 128
           }
         },
         "decorator": {
-          "type": "minecraft:square",
-          "config": {}
+          "type": "tfc:climate",
+          "config": {
+            "min_temperature": -5,
+            "max_temperature": 20,
+            "min_rainfall": 150,
+            "max_rainfall": 300
+          }
         }
       }
     },
     "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 1
-      }
+      "type": "minecraft:square",
+      "config": {}
     }
   }
 }

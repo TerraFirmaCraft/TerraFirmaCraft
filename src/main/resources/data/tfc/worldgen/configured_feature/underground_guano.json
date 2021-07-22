@@ -12,20 +12,25 @@
               "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/guano"
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/guano",
+                    "Properties": {
+                      "fluid": "empty"
+                    }
+                  }
                 },
                 "block_placer": {
-                  "type": "tfc:underground",
-                  "config": {}
+                  "type": "minecraft:simple_block_placer"
                 },
-                "blacklist": [],
                 "whitelist": [],
+                "blacklist": [],
                 "yspread": 5,
                 "xspread": 5,
                 "zspread": 5,
                 "tries": 60,
-                "project": false
+                "project": false,
+                "only_underground": true
               }
             },
             "decorator": {

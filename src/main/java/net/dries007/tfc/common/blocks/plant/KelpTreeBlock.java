@@ -53,6 +53,20 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         return getStateForPlacement(context.getLevel(), context.getClickedPos());
     }
 
+    @Override
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    {
+        updateFluid(worldIn, state, pos);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(getFluidProperty());
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+    }
+
     public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
     {
         Block downBlock = world.getBlockState(pos.below()).getBlock();
@@ -90,18 +104,9 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public FluidState getFluidState(BlockState state)
     {
-        if (!state.canSurvive(worldIn, pos))
-        {
-            worldIn.destroyBlock(pos, true);
-        }
-    }
-
-    @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
-    {
-        updateFluid(worldIn, state, pos);
+        return IFluidLoggable.super.getFluidState(state);
     }
 
     /**
@@ -131,17 +136,12 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        return IFluidLoggable.super.getFluidState(state);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder);
-        builder.add(getFluidProperty());
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+        if (!state.canSurvive(worldIn, pos))
+        {
+            worldIn.destroyBlock(pos, true);
+        }
     }
 
     private void updateFluid(IWorld world, BlockState state, BlockPos pos)

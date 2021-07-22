@@ -22,14 +22,16 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/ryegrass",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 20,
                 "zspread": 20,
+                "tries": 128,
                 "use_density": true
               }
             },
@@ -51,9 +53,9 @@
       }
     },
     "decorator": {
-      "type": "minecraft:chance",
+      "type": "minecraft:count",
       "config": {
-        "chance": 1
+        "count": 2
       }
     }
   }

@@ -11,9 +11,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -21,11 +23,14 @@ import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
 {
+    public static final EnumProperty<ITallPlant.Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
+
     public static TallWaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
         return new TallWaterPlantBlock(properties)
@@ -48,7 +53,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER));
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(PART, Part.LOWER));
     }
 
     @Override
@@ -86,27 +91,33 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
-    {
-        return IFluidLoggable.super.getFluidState(state);
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(getFluidProperty());
+        super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 
     @Override
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
     {
-        int age = random.nextInt(4);
-        BlockState lowerState = getStateWithFluid(defaultBlockState(), world.getFluidState(pos).getType());
-        if (lowerState.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
-            return;
-        world.setBlock(pos, lowerState.setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
-        world.setBlock(pos.above(), getStateWithFluid(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), world.getFluidState(pos.above()).getType()), flags);
+        final BlockPos posAbove = pos.above();
+        final int age = random.nextInt(4);
+        final Fluid fluidBottom = world.getFluidState(pos).getType();
+        final Fluid fluidTop = world.getFluidState(posAbove).getType();
+        if (fluidBottom == fluidTop && fluidBottom != Fluids.EMPTY)
+        {
+            final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age), fluidBottom);
+            if (state != null)
+            {
+                world.setBlock(pos, state.setValue(PART, Part.LOWER), flags);
+                world.setBlock(posAbove, state.setValue(PART, Part.UPPER), flags);
+            }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
     }
 }

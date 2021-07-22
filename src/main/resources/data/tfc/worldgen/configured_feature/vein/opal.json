@@ -1,0 +1,129 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc_vein",
+  "config": {
+    "rarity": 14,
+    "min_y": 60,
+    "max_y": 75,
+    "size": 8,
+    "density": 0.2,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/chalk"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/chert"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/claystone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/conglomerate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/dolomite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/limestone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/shale"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/andesite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/basalt"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/dacite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/opal/rhyolite"
+          }
+        ]
+      }
+    ],
+    "salt": 381529020,
+    "biomes": [
+      {
+        "category": "river"
+      }
+    ]
+  }
+}

@@ -77,15 +77,15 @@ public abstract class PlantBlock extends TFCBushBlock
     public abstract IPlant getPlant();
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(getPlant().getStageProperty(), AGE);
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return updateStateWithCurrentMonth(defaultBlockState());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(getPlant().getStageProperty(), AGE);
     }
 
     protected BlockState updateStateWithCurrentMonth(BlockState stateIn)

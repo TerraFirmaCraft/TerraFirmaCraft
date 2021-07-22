@@ -45,6 +45,24 @@ public class TopPlantBlock extends AbstractTopPlantBlock
         }
     }
 
+    @Override
+    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
+    {
+        return false;
+    }
+
+    @Override
+    protected int getBlocksToGrowWhenBonemealed(Random rand)
+    {
+        return 0;
+    }
+
+    @Override
+    protected boolean canGrowInto(BlockState state)
+    {
+        return PlantBlockHelper.isValidGrowthState(state);
+    }
+
     @Override // lifted from AbstractPlantBlock to add leaves to it
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
@@ -62,26 +80,8 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     }
 
     @Override
-    protected int getBlocksToGrowWhenBonemealed(Random rand)
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
-    {
-        return false;
-    }
-
-    @Override
     protected Block getBodyBlock()
     {
         return bodyBlock.get();
-    }
-
-    @Override
-    protected boolean canGrowInto(BlockState state)
-    {
-        return PlantBlockHelper.isValidGrowthState(state);
     }
 }

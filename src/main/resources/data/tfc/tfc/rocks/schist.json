@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/schist",
-    "hardened": "tfc:rock/hardened/schist",
-    "bricks": "tfc:rock/bricks/schist",
-    "cobble": "tfc:rock/cobble/schist",
-    "gravel": "tfc:rock/gravel/schist",
-    "smooth": "tfc:rock/smooth/schist",
-    "mossy_cobble": "tfc:rock/mossy_cobble/schist",
-    "mossy_bricks": "tfc:rock/mossy_bricks/schist",
-    "cracked_bricks": "tfc:rock/cracked_bricks/schist",
-    "chiseled": "tfc:rock/chiseled/schist",
-    "spike": "tfc:rock/spike/schist",
-    "loose": "tfc:rock/loose/schist"
-  },
-  "category": "metamorphic",
-  "desert_sand_color": "yellow",
-  "beach_sand_color": "green"
+  "raw": "tfc:rock/raw/schist",
+  "hardened": "tfc:rock/hardened/schist",
+  "cobble": "tfc:rock/cobble/schist",
+  "gravel": "tfc:rock/gravel/schist",
+  "spike": "tfc:rock/spike/schist",
+  "loose": "tfc:rock/loose/schist",
+  "sand": "tfc:sand/green",
+  "sandstone": "tfc:raw_sandstone/green"
 }

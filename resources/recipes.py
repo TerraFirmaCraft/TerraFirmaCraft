@@ -1,6 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+from typing import Any
+
 from mcresources import ResourceManager, utils
 from mcresources.recipe_context import RecipeContext
 
@@ -9,27 +11,6 @@ from constants import *
 
 # Crafting recipes
 def generate(rm: ResourceManager):
-    def stone_cutting(name, item: str, result: str, count: int = 1) -> RecipeContext:
-        return rm.recipe(('stonecutting', name), 'minecraft:stonecutting', {
-            'ingredient': utils.ingredient(item),
-            'result': result,
-            'count': count
-        })
-
-    def damage_shapeless(name_parts: utils.ResourceIdentifier, ingredients: utils.Json, result: utils.Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
-        res = utils.resource_location(rm.domain, name_parts)
-        rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
-            'type': 'tfc:damage_inputs_crafting',
-            'recipe': {
-                'type': 'minecraft:crafting_shapeless',
-                'group': group,
-                'ingredients': utils.item_stack_list(ingredients),
-                'result': utils.item_stack(result),
-                'conditions': utils.recipe_condition(conditions)
-            }
-        })
-        return RecipeContext(rm, res)
-
     # Rock Things
     for rock in ROCKS.keys():
 
@@ -57,16 +38,134 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/rock/%s_%s_wall' % (rock, block_type), ['XXX', 'XXX'], block, (6, block + '_wall')).with_advancement(block)
 
             # Vanilla allows stone cutting from any -> any, we only allow stairs/slabs/walls as other variants require mortar / chisel
-            stone_cutting('rock/%s_%s_slab' % (rock, block_type), block, block + '_slab', 2).with_advancement(block)
-            stone_cutting('rock/%s_%s_stairs' % (rock, block_type), block, block + '_stairs', 1).with_advancement(block)
-            stone_cutting('rock/%s_%s_wall' % (rock, block_type), block, block + '_wall', 1).with_advancement(block)
+            stone_cutting(rm, 'rock/%s_%s_slab' % (rock, block_type), block, block + '_slab', 2).with_advancement(block)
+            stone_cutting(rm, 'rock/%s_%s_stairs' % (rock, block_type), block, block + '_stairs', 1).with_advancement(block)
+            stone_cutting(rm, 'rock/%s_%s_wall' % (rock, block_type), block, block + '_wall', 1).with_advancement(block)
 
         # Other variants
-        damage_shapeless('crafting/rock/%s_smooth' % rock, (raw, 'tag!tfc:chisels'), smooth).with_advancement(raw)
-        damage_shapeless('crafting/rock/%s_brick' % rock, (loose, 'tag!tfc:chisels'), brick).with_advancement(loose)
-        damage_shapeless('crafting/rock/%s_chiseled' % rock, (smooth, 'tag!tfc:chisels'), chiseled).with_advancement(smooth)
+        damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, 'tag!tfc:chisels'), smooth).with_advancement(raw)
+        damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, 'tag!tfc:chisels'), brick).with_advancement(loose)
+        damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (smooth, 'tag!tfc:chisels'), chiseled).with_advancement(smooth)
 
         rm.crafting_shaped('crafting/rock/%s_hardened' % rock, ['XMX', 'MXM', 'XMX'], {'X': raw, 'M': 'tag!tfc:mortar'}, (2, hardened)).with_advancement(raw)
         rm.crafting_shaped('crafting/rock/%s_bricks' % rock, ['XMX', 'MXM', 'XMX'], {'X': brick, 'M': 'tag!tfc:mortar'}, (4, bricks)).with_advancement(brick)
 
-        damage_shapeless('crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
+        damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
+
+    # Heat Recipes
+    heat_recipe(rm, 'torch_from_stick', 'tag!forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
+    heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
+    heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
+    heat_recipe(rm, 'glass_from_sand', 'tag!forge:sand', 180, result_item='minecraft:glass')
+    heat_recipe(rm, 'brick', 'tfc:ceramic/unfired_brick', 1500, result_item='minecraft:brick')
+    heat_recipe(rm, 'flower_pot', 'tfc:ceramic/unfired_flower_pot', 1500, result_item='minecraft:flower_pot')
+    heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', 1500, result_item='tfc:ceramic/jug')
+    heat_recipe(rm, 'terracotta', 'minecraft:clay', 1200, result_item='minecraft:terracotta')
+
+    for color in COLORS:
+        heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 1200, result_item='minecraft:%s_glazed_terracotta' % color)
+
+    quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
+    quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
+    quern_recipe(rm, 'fluxstone', 'tag!tfc:fluxstone', 'tfc:powder/flux', count=2)
+    quern_recipe(rm, 'cinnabar', 'tfc:ore/cinnabar', 'minecraft:redstone', count=8)
+    quern_recipe(rm, 'cryolite', 'tfc:ore/cryolite', 'minecraft:redstone', count=8)
+    quern_recipe(rm, 'bone', 'minecraft:bone', 'minecraft:bone_meal', count=3)
+    quern_recipe(rm, 'bone_block', 'minecraft:bone_block', 'minecraft:bone_meal', count=9)
+    quern_recipe(rm, 'charcoal', 'minecraft:charcoal', 'tfc:powder/charcoal', count=4)
+    quern_recipe(rm, 'salt', 'tfc:ore/halite', 'tfc:powder/salt', count=4)
+    quern_recipe(rm, 'blaze_rod', 'minecraft:blaze_rod', 'minecraft:blaze_powder', count=2)
+    quern_recipe(rm, 'raw_limestone', 'tfc:rock/raw/limestone', 'tfc:ore/gypsum')
+    quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/fertilizer', count=4)
+
+    for grain in GRAINS:
+        heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
+        quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
+
+    for ore in ['hematite', 'limonite', 'malachite']:
+        for grade, data in ORE_GRADES.items():
+            quern_recipe(rm, '%s_%s' % (grade, ore), 'tfc:ore/%s_%s' % (grade, ore), 'tfc:powder/%s' % ore, count=data.grind_amount)
+        quern_recipe(rm, 'small_%s' % ore, 'tfc:ore/small_%s' % ore, 'tfc:powder/%s' % ore, count=2)
+
+    for ore in ['sulfur', 'saltpeter', 'graphite', 'kaolinite']:
+        quern_recipe(rm, ore, 'tfc:ore/%s' % ore, 'tfc:powder/%s' % ore, count=4)
+    for gem in GEMS:
+        quern_recipe(rm, gem, 'tfc:ore/%s' % gem, 'tfc:powder/%s' % gem, count=4)
+
+    for color, plants in PLANT_COLORS.items():
+        for plant in plants:
+            quern_recipe(rm, 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
+
+    for pottery in PAIRED_POTTERY:
+        heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1500, result_item='tfc:ceramic/' + pottery)
+
+    # todo: actual pot recipes
+    rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
+        'ingredients': [utils.ingredient('minecraft:gunpowder')],
+        'fluid_ingredient': fluid_ingredient('tfc:salt_water', 1000),
+        'duration': 200,
+        'temperature': 300,
+        'fluid_output': fluid_stack('minecraft:water', 1000)
+    })
+
+    rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
+        'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
+        'fluid_ingredient': fluid_ingredient('minecraft:water', 1000),
+        'duration': 200,
+        'temperature': 300
+    })
+
+
+def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
+    return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
+        'ingredient': utils.ingredient(item),
+        'result': result,
+        'count': count
+    })
+
+
+def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: utils.Json, result: utils.Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
+    res = utils.resource_location(rm.domain, name_parts)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+        'type': 'tfc:damage_inputs_crafting',
+        'recipe': {
+            'type': 'minecraft:crafting_shapeless',
+            'group': group,
+            'ingredients': utils.item_stack_list(ingredients),
+            'result': utils.item_stack(result),
+            'conditions': utils.recipe_condition(conditions)
+        }
+    })
+    return RecipeContext(rm, res)
+
+
+def quern_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:
+    return rm.recipe(('quern', name), 'tfc:quern', {
+        'ingredient': utils.ingredient(item),
+        'result': utils.item_stack((count, result))
+    })
+
+
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None, amount: int = 1000) -> RecipeContext:
+    result_item = None if result_item is None else utils.item_stack(result_item)
+    result_fluid = None if result_fluid is None else fluid_stack(result_fluid, amount)
+    return rm.recipe(('heating', name_parts), 'tfc:heating', {
+        'ingredient': utils.ingredient(item),
+        'result_item': result_item,
+        'result_fluid': result_fluid,
+        'temperature': temperature
+    })
+
+
+def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
+    return {
+        'fluid': fluid,
+        'amount': amount
+    }
+
+
+def fluid_ingredient(fluid: str, amount: int = None) -> Dict[str, Any]:
+    if fluid.startswith('#'):
+        return {'tag': fluid[1:], 'amount': amount}
+    else:
+        return {'fluid': fluid, 'amount': amount}

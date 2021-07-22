@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": {
+      "model": "tfc:block/alabaster/stained/light_gray_raw_alabaster"
+    }
+  }
+}

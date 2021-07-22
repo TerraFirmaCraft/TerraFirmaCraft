@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/gabbro",
-    "hardened": "tfc:rock/hardened/gabbro",
-    "bricks": "tfc:rock/bricks/gabbro",
-    "cobble": "tfc:rock/cobble/gabbro",
-    "gravel": "tfc:rock/gravel/gabbro",
-    "smooth": "tfc:rock/smooth/gabbro",
-    "mossy_cobble": "tfc:rock/mossy_cobble/gabbro",
-    "mossy_bricks": "tfc:rock/mossy_bricks/gabbro",
-    "cracked_bricks": "tfc:rock/cracked_bricks/gabbro",
-    "chiseled": "tfc:rock/chiseled/gabbro",
-    "spike": "tfc:rock/spike/gabbro",
-    "loose": "tfc:rock/loose/gabbro"
-  },
-  "category": "igneous_intrusive",
-  "desert_sand_color": "black",
-  "beach_sand_color": "black"
+  "raw": "tfc:rock/raw/gabbro",
+  "hardened": "tfc:rock/hardened/gabbro",
+  "cobble": "tfc:rock/cobble/gabbro",
+  "gravel": "tfc:rock/gravel/gabbro",
+  "spike": "tfc:rock/spike/gabbro",
+  "loose": "tfc:rock/loose/gabbro",
+  "sand": "tfc:sand/black",
+  "sandstone": "tfc:raw_sandstone/black"
 }

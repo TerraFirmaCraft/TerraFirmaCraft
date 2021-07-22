@@ -6,16 +6,15 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.*;
+import java.util.Random;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
@@ -23,196 +22,125 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
-// todo: need to reduce the frequency with which fissures are able to spawn next to eachother.
-public class FissureFeature extends Feature<BlockStateFeatureConfig>
+public class FissureFeature extends Feature<FissureConfig>
 {
-    @SuppressWarnings("unused")
-    public FissureFeature(Codec<BlockStateFeatureConfig> configFactoryIn)
+    public static void placeFissure(ISeedReader world, BlockPos startPos, BlockPos centerPos, BlockPos.Mutable mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
     {
-        super(configFactoryIn);
-    }
+        // Carve a fissure down from this position, by carving a series of tubes straight down
+        final int pieces = minPieces + random.nextInt(maxPieces - minPieces);
 
-    @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
-    {
-        final BlockPos pos = startPos.below(); // start slightly below the surface
-        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
-        final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
-        final Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
-        final BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).defaultBlockState();
-
-        int depth = 2 + rand.nextInt(3);
-        int radius = 1 + rand.nextInt(2);
-        List<BlockPos> clearPositions = getCircle(pos, radius + 2);
-
-        for (int y = 1; y < 4; y++)
+        BlockPos topPos = startPos.immutable();
+        for (int i = 0; i < pieces; i++)
         {
-            for (BlockPos clear : clearPositions)
+            // Tube
+            final int pieceDepth = 1 + random.nextInt(maxPieceLength);
+            for (int dy = 1; dy <= pieceDepth; dy++)
             {
-                setBlock(worldIn, clear.above(y), Blocks.AIR.defaultBlockState());
-            }
-        }
+                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 0), insideState, 2);
+                world.setBlock(mutablePos.setWithOffset(topPos, -1, -dy, 0), wallState, 2);
+                world.setBlock(mutablePos.setWithOffset(topPos, 1, -dy, 0), wallState, 2);
+                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, -1), wallState, 2);
+                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 1), wallState, 2);
 
-        Set<BlockPos> blocks = getCollapseSet(rand, pos, radius, depth);
-        for (BlockPos filling : blocks)
-        {
-            smartFill(worldIn, filling, blocks, rockState, config.state);
-        }
-        return true;
-    }
-
-    /**
-     * Gives a list of block positions for a circle.
-     * Used to clear the blocks above the fissure
-     *
-     * @param center the center block
-     * @param radius the radius
-     * @return ArrayList of blockPos for a circle
-     */
-    private List<BlockPos> getCircle(BlockPos center, int radius)
-    {
-        List<BlockPos> list = new ArrayList<>();
-        double rSq = Math.pow(radius, 2);
-        for (int x = -radius + center.getX(); x <= +radius + center.getX(); x++)
-        {
-            for (int z = -radius + center.getZ(); z <= +radius + center.getZ(); z++)
-            {
-                if (Math.pow(x - center.getX(), 2) + Math.pow(z - center.getZ(), 2) <= rSq)
+                if (decoration != null)
                 {
-                    list.add(new BlockPos(x, center.getY(), z));
-                }
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Cylinder like fissure.
-     *
-     * @param random the Random obj from generate to keep it procedural
-     * @param center the top-center of the cylinder
-     * @param radius the radius of the circle
-     * @param depth  the depth of this fissure
-     * @return a Set containing block pos to fill with hot water/lava
-     */
-    private Set<BlockPos> getCollapseSet(Random random, BlockPos center, int radius, int depth)
-    {
-        int maxOffset = 2 + random.nextInt(radius);
-        Set<BlockPos> blocks = new HashSet<>();
-        for (int y = 0; y < depth; y++)
-        {
-            BlockPos centerHeight = center.below(y);
-            double rSq = Math.pow(radius, 2);
-            for (int x = -radius + centerHeight.getX(); x <= +radius + centerHeight.getX(); x++)
-            {
-                for (int z = -radius + centerHeight.getZ(); z <= +radius + centerHeight.getZ(); z++)
-                {
-                    if (Math.pow(x - centerHeight.getX(), 2) + Math.pow(z - centerHeight.getZ(), 2) <= rSq)
+                    // At each step, place count / rarity blocks (average) within radius, and +/- 2 blocks vertically
+                    for (int j = 0; j < decoration.count; j++)
                     {
-                        BlockPos b = new BlockPos(x, centerHeight.getY(), z);
-                        if (random.nextFloat() < 0.65f)
+                        if (random.nextInt(decoration.rarity) == 0)
                         {
-                            blocks.add(b);
-                            for (Direction facing : Direction.values())
+                            mutablePos.setWithOffset(topPos, random.nextInt(decoration.radius) - random.nextInt(decoration.radius), random.nextInt(3) - random.nextInt(3) - dy, random.nextInt(decoration.radius) - random.nextInt(decoration.radius));
+                            final BlockState stoneState = world.getBlockState(mutablePos);
+                            final BlockState decorationState = decoration.getState(stoneState, random);
+                            if (decorationState != null)
                             {
-                                if (facing != Direction.UP)
-                                {
-                                    int off = 0;
-                                    while (off < maxOffset && random.nextFloat() < 0.35f)
-                                    {
-                                        off++;
-                                        blocks.add(b.relative(facing));
-                                    }
-                                }
+                                world.setBlock(mutablePos, decorationState, 2);
                             }
                         }
                     }
                 }
             }
-        }
-        // Now, let's make a "tunnel" all way down so this is gonna look a bit more like a fissure
-        int tunnelDepth = depth + 20 + random.nextInt(60);
-        int tunnelY = center.below(tunnelDepth).getY();
-        if (tunnelY < 20) tunnelY = 20;
-        BlockPos tunnelPos = center.below(depth);
-        blocks.add(tunnelPos);
-        radius = 8;
-        while (tunnelPos.getY() > tunnelY)
-        {
-            int value = random.nextInt(8); // 50% down, 12.5% each side
-            if (value < 1)
-            {
-                tunnelPos = tunnelPos.relative(Direction.NORTH);
-            }
-            else if (value < 2)
-            {
-                tunnelPos = tunnelPos.relative(Direction.SOUTH);
-            }
-            else if (value < 3)
-            {
-                tunnelPos = tunnelPos.relative(Direction.EAST);
-            }
-            else if (value < 4)
-            {
-                tunnelPos = tunnelPos.relative(Direction.WEST);
-            }
-            else
-            {
-                tunnelPos = tunnelPos.below();
-            }
-            // Keep it under control
-            if (tunnelPos.getX() > center.getX() + radius)
-            {
-                tunnelPos = tunnelPos.offset(-1, 0, 0);
-            }
-            if (tunnelPos.getX() < center.getX() - radius)
-            {
-                tunnelPos = tunnelPos.offset(1, 0, 0);
-            }
-            if (tunnelPos.getZ() > center.getZ() + radius)
-            {
-                tunnelPos = tunnelPos.offset(0, 0, -1);
-            }
-            if (tunnelPos.getZ() < center.getZ() - radius)
-            {
-                tunnelPos = tunnelPos.offset(0, 0, 1);
-            }
-            blocks.add(tunnelPos);
-            for (Direction horiz : Direction.Plane.HORIZONTAL)
-            {
-                blocks.add(tunnelPos.relative(horiz));
-            }
-        }
-        return blocks;
-    }
 
-    // A bit smarter fill, try to not fill the "insides" with rock
-    // Needs more tweaking
-    private void smartFill(IWorld worldIn, BlockPos pos, Set<BlockPos> fillBlockPos, BlockState rock, BlockState fillBlock)
-    {
-        setBlock(worldIn, pos, fillBlock);
-        for (Direction facing : Direction.values())
-        {
-            if (facing == Direction.UP) continue;
-            if (worldIn.getBlockState(pos.relative(facing)) == fillBlock) continue;
-            BlockPos rockPos = pos.relative(facing);
-            int filledBlocks = 0;
-            for (Direction facing2 : Direction.values())
+            // Branch
+            // topPos is now above the branch, ready for the next tube
+            final Direction branchDirection = randomBoundedDirection(random, centerPos, topPos, radius);
+            topPos = mutablePos.setWithOffset(topPos, 0, -pieceDepth, 0).move(branchDirection).immutable();
+
+            // Place the joining pieces
+            world.setBlock(mutablePos.set(topPos), insideState, 2);
+            world.setBlock(mutablePos.setWithOffset(topPos, 0, 1, 0), wallState, 2);
+            for (Direction direction : Direction.Plane.HORIZONTAL)
             {
-                BlockPos facingPos = rockPos.relative(facing2);
-                if (fillBlockPos.contains(facingPos))
+                if (direction != branchDirection.getOpposite()) // Fill all sides except the one we came from
                 {
-                    filledBlocks++;
+                    world.setBlock(mutablePos.setWithOffset(topPos, direction), wallState, 2);
                 }
             }
-            if (filledBlocks < 3)
+
+            if (topPos.getY() < minDepth)
             {
-                setBlock(worldIn, rockPos, rock);
-            }
-            else
-            {
-                setBlock(worldIn, rockPos, fillBlock);
+                break;
             }
         }
+    }
+
+    private static Direction randomBoundedDirection(Random random, BlockPos center, BlockPos target, int radius)
+    {
+        final Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+        final int distX = target.getX() - center.getX(), distZ = target.getZ() - center.getZ();
+        switch (direction) // Adjust the branch to stay within a bounded region
+        {
+            case EAST:
+                if (distX > radius)
+                {
+                    return Direction.WEST;
+                }
+                break;
+            case WEST:
+                if (distX < -radius)
+                {
+                    return Direction.EAST;
+                }
+                break;
+            case NORTH:
+                if (distZ < -radius)
+                {
+                    return Direction.SOUTH;
+                }
+                break;
+            case SOUTH:
+                if (distZ > radius)
+                {
+                    return Direction.NORTH;
+                }
+                break;
+        }
+        return direction;
+    }
+
+    public FissureFeature(Codec<FissureConfig> codec)
+    {
+        super(codec);
+    }
+
+    @Override
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FissureConfig config)
+    {
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final int placeCount = 1 + rand.nextInt(config.count);
+        final BlockState insideState = config.wallState.orElseGet(() -> {
+            final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+            final ChunkData data = provider.get(pos);
+            final Rock rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
+            return rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
+        });
+
+        for (int i = 0; i < placeCount; i++)
+        {
+            mutablePos.setWithOffset(pos, rand.nextInt(config.radius) - rand.nextInt(config.radius), 0, rand.nextInt(config.radius) - rand.nextInt(config.radius));
+            mutablePos.setY(world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+            FissureFeature.placeFissure(world, pos, mutablePos.immutable(), mutablePos, rand, config.fluidState, insideState, config.minPieces, config.maxPieces, config.maxPieceLength, config.minDepth, config.radius, config.decoration.orElse(null));
+        }
+        return true;
     }
 }

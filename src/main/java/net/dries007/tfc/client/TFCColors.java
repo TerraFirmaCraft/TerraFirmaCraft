@@ -9,13 +9,11 @@ package net.dries007.tfc.client;
 import java.util.function.ToIntFunction;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.level.ColorResolver;
 
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -37,10 +35,11 @@ public final class TFCColors
     public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
 
-    public static final ColorResolver FRESH_WATER = createColorResolver(TFCColors::getWaterColor);
-    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterColor);
+    public static final ColorResolver FRESH_WATER;
+    public static final ColorResolver SALT_WATER;
 
     private static final int COLORMAP_SIZE = 256 * 256;
+    private static final int COLORMAP_MASK = COLORMAP_SIZE - 1;
 
     private static int[] SKY_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
@@ -50,6 +49,13 @@ public final class TFCColors
     private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
+
+    static
+    {
+        // IDEA's code ordering wants to rearrange these fields unless they're initialized after WATER_COLORS_CACHE
+        FRESH_WATER = waterColorResolver(TFCColors::getWaterColor);
+        SALT_WATER = waterColorResolver(TFCColors::getWaterColor);
+    }
 
     public static void setSkyColors(int[] skyColors)
     {
@@ -101,16 +107,9 @@ public final class TFCColors
         return getClimateColor(FOG_COLORS_CACHE, pos);
     }
 
-    public static int getWaterColor(BlockPos pos)
+    public static int getWaterColor(@Nullable BlockPos pos)
     {
-        return getClimateColor(WATER_COLORS_CACHE, pos);
-    }
-
-    public static int getSpringWaterColor(BlockPos pos)
-    {
-        ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
-        float temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
-        return getClimateColor(WATER_COLORS_CACHE, temperature, 500);
+        return pos != null ? getClimateColor(WATER_COLORS_CACHE, pos) : -1;
     }
 
     public static int getWaterFogColor(BlockPos pos)
@@ -118,24 +117,18 @@ public final class TFCColors
         return getClimateColor(WATER_FOG_COLORS_CACHE, pos);
     }
 
-    public static int getSeasonalFoliageColor(BlockState state, @Nullable BlockPos pos, int tintIndex, int fallColorBaseIndex)
+    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex)
     {
         if (pos != null && tintIndex == 0)
         {
-            final Season season = state.getValue(TFCBlockStateProperties.SEASON_NO_SPRING);
-            final Month month = Calendars.CLIENT.getCalendarMonthOfYear();
-            switch (adjustSeason(season, month))
+            switch (getAdjustedNoisySeason(pos))
             {
                 case SPRING:
                 case SUMMER:
                     return getClimateColor(FOLIAGE_COLORS_CACHE, pos);
                 case FALL:
-                {
-                    int index = NoiseUtil.hash(pos.getY(), pos.getX(), pos.getZ()) & 0xFF;
-                    int xPos = MathHelper.clamp((fallColorBaseIndex & 0xFF) + (index & 0xF) - 8, 0, 255);
-                    int yPos = MathHelper.clamp((fallColorBaseIndex >> 8) + (index >> 4) - 8, 0, 255);
-                    return FOLIAGE_FALL_COLORS_CACHE[xPos | (yPos << 8)];
-                }
+                    int index = NoiseUtil.hash(pos.getX() * 9283491, pos.getY() * 7483921, pos.getZ() * 673283712);
+                    return FOLIAGE_FALL_COLORS_CACHE[index & COLORMAP_MASK];
                 case WINTER:
                     return getClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
             }
@@ -170,6 +163,41 @@ public final class TFCColors
     }
 
     /**
+     * Gets a season for the current time and position, adjusting for noise based on the position.
+     */
+    private static Season getAdjustedNoisySeason(BlockPos pos)
+    {
+        Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
+        Season season = currentMonth.getSeason();
+        float seasonDelta = 0;
+        float monthDelta = Calendars.CLIENT.getCalendarFractionOfMonth();
+        switch (currentMonth)
+        {
+            case FEBRUARY:
+            case MAY:
+            case AUGUST:
+            case NOVEMBER:
+                seasonDelta = 0.5f * monthDelta;
+                break;
+            case MARCH:
+            case JUNE:
+            case SEPTEMBER:
+            case DECEMBER:
+                season = season.previous();
+                seasonDelta = 0.5f + 0.5f * monthDelta;
+                break;
+        }
+
+        // Smoothly transition - based on when the chunk updates - from one season to the next
+        int positionDeltaHash = (NoiseUtil.hash(pos.getX() * 2834123, pos.getY() * 92349, pos.getZ() * 4792831) & 255);
+        if (positionDeltaHash < 256 * seasonDelta)
+        {
+            season = season.next();
+        }
+        return season;
+    }
+
+    /**
      * Queries a color map based on temperature and rainfall parameters, by sampling the client temperature and rainfall at a given position. Temperature is horizontal, left is high. Rainfall is vertical, up is high.
      */
     private static int getClimateColor(int[] colorCache, BlockPos pos)
@@ -190,27 +218,7 @@ public final class TFCColors
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 
-    /**
-     * Given the current month, and the season property of a leaf block, return the season that should render
-     * The first month of a rendered season use the season property, all others use the actual season
-     * No need to include spring -> summer transition as leaves don't render differently during those two seasons
-     */
-    private static Season adjustSeason(Season seasonIn, Month monthIn)
-    {
-        switch (monthIn)
-        {
-            case SEPTEMBER:
-                return seasonIn == Season.SUMMER ? Season.SUMMER : Season.FALL; // Transition to fall
-            case DECEMBER:
-                return seasonIn == Season.FALL ? Season.FALL : Season.WINTER; // Transition to winter
-            case MARCH:
-                return seasonIn == Season.WINTER ? Season.WINTER : Season.SUMMER; // Transition to spring
-            default:
-                return monthIn.getSeason();
-        }
-    }
-
-    private static ColorResolver createColorResolver(ToIntFunction<BlockPos> colorAccessor)
+    private static ColorResolver waterColorResolver(ToIntFunction<BlockPos> colorAccessor)
     {
         final BlockPos.Mutable cursor = new BlockPos.Mutable();
         return (biome, x, z) -> {

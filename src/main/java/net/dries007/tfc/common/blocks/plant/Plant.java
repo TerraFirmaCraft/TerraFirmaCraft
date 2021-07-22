@@ -14,6 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.VineBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.fluid.Fluids;
@@ -154,6 +155,44 @@ public enum Plant implements IPlant
         }
     }
 
+    public Block create()
+    {
+        return type.factory.apply(this, type);
+    }
+
+    public BlockItem createBlockItem(Block block, Item.Properties properties)
+    {
+        return type.blockItemFactory.apply(block, properties);
+    }
+
+    @Override
+    public int stageFor(Month month)
+    {
+        return stagesByMonth.length < month.ordinal() ? 0 : stagesByMonth[month.ordinal()];
+    }
+
+    @Override
+    public IntegerProperty getStageProperty()
+    {
+        return property;
+    }
+
+    public boolean needsItem()
+    {
+        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
+    }
+
+    public boolean isSeasonal()
+    {
+        return type == BlockType.VINE;
+    }
+
+    @VisibleForTesting
+    public BlockType getType()
+    {
+        return type;
+    }
+
     /**
      * This is a way for paired blocks to reference each other as suppliers
      *
@@ -193,50 +232,6 @@ public enum Plant implements IPlant
         throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
 
-    public Block create()
-    {
-        return type.factory.apply(this, type);
-    }
-
-    public BlockItem createBlockItem(Block block, Item.Properties properties)
-    {
-        return type.blockItemFactory.apply(block, properties);
-    }
-
-    @Override
-    public int stageFor(Month month)
-    {
-        return stagesByMonth.length < month.ordinal() ? 0 : stagesByMonth[month.ordinal()];
-    }
-
-    @Override
-    public IntegerProperty getStageProperty()
-    {
-        return property;
-    }
-
-    public boolean needsItem()
-    {
-        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
-    }
-
-    public boolean isLeafColored()
-    {
-        return type == BlockType.VINE;
-    }
-
-    public boolean needsItemColor()
-    {
-        return type == BlockType.SHORT_GRASS || (type == BlockType.TALL_GRASS && this != ROSE) || type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.CREEPING
-            || this == HANGING_VINES || this == SAGO || this == GUTWEED;
-    }
-
-    @VisibleForTesting
-    public BlockType getType()
-    {
-        return type;
-    }
-
     public enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
@@ -247,7 +242,7 @@ public enum Plant implements IPlant
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
-        VINE((plant, type) -> new TFCVineBlock(nonSolid(plant))),
+        VINE((plant, type) -> new VineBlock(nonSolid(plant))),
         WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
         WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
         TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
@@ -267,11 +262,6 @@ public enum Plant implements IPlant
         WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
-
-        public int getFallFoliageCoords()
-        {
-            return 200;
-        }
 
         /**
          * Default properties to avoid rewriting them out every time
@@ -338,6 +328,11 @@ public enum Plant implements IPlant
         {
             this.factory = factory;
             this.blockItemFactory = blockItemFactory;
+        }
+
+        public int getFallFoliageCoords()
+        {
+            return 200;
         }
     }
 }

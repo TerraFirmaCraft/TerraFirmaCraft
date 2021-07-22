@@ -16,6 +16,7 @@ import net.minecraft.tags.ItemTags;
 
 import net.dries007.tfc.util.Helpers;
 
+@SuppressWarnings("unused")
 public class TFCTags
 {
     public static class Blocks
@@ -36,6 +37,13 @@ public class TFCTags
         public static final ITag.INamedTag<Block> KELP_BRANCH = create("kelp_branch");
         public static final ITag.INamedTag<Block> WALL_CORALS = create("wall_corals");
         public static final ITag.INamedTag<Block> CORALS = create("corals");
+        public static final ITag.INamedTag<Block> SPREADING_BUSH = create("spreading_bush");
+        public static final ITag.INamedTag<Block> ANY_SPREADING_BUSH = create("any_spreading_bush");
+        public static final ITag.INamedTag<Block> FRUIT_TREE_BRANCH = create("fruit_tree_branch");
+        public static final ITag.INamedTag<Block> FRUIT_TREE_LEAVES = create("fruit_tree_leaves");
+        public static final ITag.INamedTag<Block> FRUIT_TREE_SAPLING = create("fruit_tree_sapling");
+        public static final ITag.INamedTag<Block> SUPPORT_BEAM = create("support_beam");
+        public static final ITag.INamedTag<Block> WORKBENCH = create("workbench");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
 
@@ -43,6 +51,9 @@ public class TFCTags
         public static final ITag.INamedTag<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
 
         public static final ITag.INamedTag<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
+        public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
+        public static final ITag.INamedTag<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
+        public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
 
         private static ITag.INamedTag<Block> create(String id)
         {
@@ -54,6 +65,8 @@ public class TFCTags
     {
         public static final ITag.INamedTag<Fluid> MIXABLE = create("mixable");
 
+        public static final ITag.INamedTag<Fluid> USABLE_IN_POT = create("usable_in_pot");
+
         private static ITag.INamedTag<Fluid> create(String id)
         {
             return FluidTags.bind(Helpers.identifier(id).toString());
@@ -63,6 +76,21 @@ public class TFCTags
     public static class Items
     {
         public static final ITag.INamedTag<Item> THATCH_BED_HIDES = create("thatch_bed_hides");
+        public static final ITag.INamedTag<Item> FIREPIT_KINDLING = create("firepit_kindling");
+        public static final ITag.INamedTag<Item> FIREPIT_STICKS = create("firepit_sticks");
+        public static final ITag.INamedTag<Item> FIREPIT_LOGS = create("firepit_logs");
+        public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_DURABILITY = create("starts_fires_with_durability");
+        public static final ITag.INamedTag<Item> STARTS_FIRES_WITH_ITEMS = create("starts_fires_with_items");
+        public static final ITag.INamedTag<Item> EXTINGUISHER = create("extinguisher");
+        public static final ITag.INamedTag<Item> LOG_PILE_LOGS = create("log_pile_logs");
+        public static final ITag.INamedTag<Item> PIT_KILN_STRAW = create("pit_kiln_straw");
+        public static final ITag.INamedTag<Item> PIT_KILN_LOGS = create("pit_kiln_logs");
+        public static final ITag.INamedTag<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
+        public static final ITag.INamedTag<Item> FIREPIT_FUEL = create("firepit_fuel");
+        public static final ITag.INamedTag<Item> BLOOMERY_FUEL = create("bloomery_fuel");
+        public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
+        public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
+        public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
 
         private static ITag.INamedTag<Item> create(String id)
         {

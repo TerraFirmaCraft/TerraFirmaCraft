@@ -23,15 +23,16 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:water_plant",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/sago",
+                  "property": "age"
                 },
-                "tries": 10,
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
                 "xspread": 10,
                 "zspread": 10,
+                "tries": 10,
                 "can_replace_air": false,
                 "can_replace_water": true,
                 "project_to_ocean_floor": true

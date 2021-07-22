@@ -26,14 +26,6 @@ public final class HeatCapability
         Helpers.registerSimpleCapability(IHeat.class);
     }
 
-    /**
-     * Helper method to adjust temperature towards a value, without overshooting or stuttering
-     */
-    public static float adjustTempTowards(float temp, float target, float delta)
-    {
-        return adjustTempTowards(temp, target, delta, delta);
-    }
-
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
         if (temp < target)
@@ -50,6 +42,45 @@ public final class HeatCapability
         }
     }
 
+    public static float adjustDeviceTemp(float temp, float baseTarget, int airTicks, boolean isRaining)
+    {
+        float target = targetDeviceTemp(baseTarget, airTicks, isRaining);
+        if (temp != target)
+        {
+            float delta = TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+            float deltaPositive = 1, deltaNegative = 1;
+            if (airTicks > 0)
+            {
+                deltaPositive = 2f;
+                deltaNegative = 0.5f;
+            }
+            return adjustTempTowards(temp, target, delta * deltaPositive, delta * deltaNegative);
+        }
+        return target;
+    }
+
+    public static float targetDeviceTemp(float target, int airTicks, boolean isRaining)
+    {
+        if (airTicks > 0)
+        {
+            float airInfluence = 4f * airTicks;
+            if (airInfluence > 600f)
+            {
+                airInfluence = 600f;
+            }
+            target += Math.min(airInfluence, target * 0.5f);
+        }
+        if (isRaining)
+        {
+            target -= 300;
+            if (target < 0)
+            {
+                target = 0;
+            }
+        }
+        return target;
+    }
+
     /**
      * Call this from within {@link IHeat#getTemperature()}
      */
@@ -60,10 +91,10 @@ public final class HeatCapability
         return newTemp < 0 ? 0 : newTemp;
     }
 
-    public static void addTemp(IHeat instance)
+    public static void addTemp(IHeat instance, float target)
     {
         // Default modifier = 3 (2x normal cooling)
-        addTemp(instance, 3);
+        addTemp(instance, target, 3);
     }
 
     /**
@@ -71,10 +102,13 @@ public final class HeatCapability
      *
      * @param modifier the modifier for how much this will heat up: 0 - 1 slows down cooling, 1 = no heating or cooling, > 1 heats, 2 heats at the same rate of normal cooling, 2+ heats faster
      */
-    public static void addTemp(IHeat instance, float modifier)
+    public static void addTemp(IHeat instance, float target, float modifier)
     {
-        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) TFCConfig.SERVER.itemHeatingModifier.get();
+        float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+        if (temp > target)
+        {
+            temp = target;
+        }
         instance.setTemperature(temp);
     }
-
 }

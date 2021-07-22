@@ -16,17 +16,17 @@ import net.dries007.tfc.TerraFirmaCraft;
 
 public enum Heat
 {
-    WARMING(1f, 80f, TextFormatting.GRAY, TextFormatting.DARK_GRAY),
-    HOT(80f, 210f, TextFormatting.GRAY, TextFormatting.DARK_GRAY),
-    VERY_HOT(210f, 480f, TextFormatting.GRAY, TextFormatting.DARK_GRAY),
-    FAINT_RED(480f, 580f, TextFormatting.DARK_RED),
-    DARK_RED(580f, 730f, TextFormatting.DARK_RED),
-    BRIGHT_RED(730f, 930f, TextFormatting.RED),
-    ORANGE(930f, 1100f, TextFormatting.GOLD),
-    YELLOW(1100f, 1300f, TextFormatting.YELLOW),
-    YELLOW_WHITE(1300f, 1400f, TextFormatting.YELLOW),
-    WHITE(1400f, 1500f, TextFormatting.WHITE),
-    BRILLIANT_WHITE(1500f, 1601f, TextFormatting.WHITE);
+    WARMING("warming", 1f, 80f, TextFormatting.GRAY),
+    HOT("hot", 80f, 210f, TextFormatting.GRAY),
+    VERY_HOT("very_hot", 210f, 480f, TextFormatting.GRAY),
+    FAINT_RED("faint_red", 480f, 580f, TextFormatting.DARK_RED),
+    DARK_RED("dark_red", 580f, 730f, TextFormatting.DARK_RED),
+    BRIGHT_RED("bright_red", 730f, 930f, TextFormatting.RED),
+    ORANGE("orange", 930f, 1100f, TextFormatting.GOLD),
+    YELLOW("yellow", 1100f, 1300f, TextFormatting.YELLOW),
+    YELLOW_WHITE("yellow_white", 1300f, 1400f, TextFormatting.YELLOW),
+    WHITE("white", 1400f, 1500f, TextFormatting.WHITE),
+    BRILLIANT_WHITE("brilliant_white", 1500f, 1601f, TextFormatting.WHITE);
 
     private static final Heat[] VALUES = values();
 
@@ -38,16 +38,15 @@ public enum Heat
     @Nullable
     public static Heat getHeat(float temperature)
     {
-        for (Heat heat : VALUES)
+        if (temperature >= WARMING.min)
         {
-            if (heat.min <= temperature && temperature < heat.max)
+            for (Heat heat : VALUES)
             {
-                return heat;
+                if (temperature < heat.max)
+                {
+                    return heat;
+                }
             }
-        }
-        if (temperature > BRILLIANT_WHITE.max)
-        {
-            // Default to "hotter than brilliant white" for max
             return BRILLIANT_WHITE;
         }
         return null;
@@ -66,7 +65,7 @@ public enum Heat
                 {
                     if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
                         continue;
-                    base.append("\u2605");
+                    base.append("\u066D");
                 }
             }
             return base;
@@ -81,38 +80,22 @@ public enum Heat
         IFormattableTextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
-            tooltip.withStyle(heat.format);
+            tooltip.withStyle(heat.color);
         }
         return tooltip;
     }
 
-    @Nullable
-    public static IFormattableTextComponent getTooltipAlternate(float temperature)
-    {
-        Heat heat = Heat.getHeat(temperature);
-        IFormattableTextComponent tooltip = getTooltipColorless(temperature);
-        if (tooltip != null && heat != null)
-        {
-            tooltip.withStyle(heat.alternate);
-        }
-        return tooltip;
-    }
-
-    final TextFormatting format, alternate;
+    private final TextFormatting color;
+    private final String translationKey;
     private final float min;
     private final float max;
 
-    Heat(float min, float max, TextFormatting format, TextFormatting alternate)
+    Heat(String name, float min, float max, TextFormatting color)
     {
         this.min = min;
         this.max = max;
-        this.format = format;
-        this.alternate = alternate;
-    }
-
-    Heat(float min, float max, TextFormatting format)
-    {
-        this(min, max, format, format);
+        this.translationKey = TerraFirmaCraft.MOD_ID + ".enum.heat." + name;
+        this.color = color;
     }
 
     public float getMin()
@@ -127,6 +110,6 @@ public enum Heat
 
     public IFormattableTextComponent getDisplayName()
     {
-        return new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".enum.heat." + this.name().toLowerCase());
+        return new TranslationTextComponent(translationKey);
     }
 }

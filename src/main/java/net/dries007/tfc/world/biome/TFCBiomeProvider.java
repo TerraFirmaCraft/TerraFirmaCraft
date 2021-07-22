@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -25,9 +23,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockCategory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.Debug;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
@@ -142,10 +142,10 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     {
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
-        final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
+        final ChunkData data = chunkDataProvider.get(chunkPos);
+        final BiomeVariants variants = Debug.SINGLE_BIOME ? Debug.SINGLE_BIOME_BIOME : biomeLayer.get(biomeCoordX, biomeCoordZ);
+        final BiomeTemperature temperature = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
+        final BiomeRainfall rainfall = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
@@ -222,23 +222,36 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(LayerSettings::getOceanPercent),
             Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale),
-            ResourceLocation.CODEC.listOf().fieldOf("rocks").forGetter(LayerSettings::getRocks)
+            ResourceLocation.CODEC.listOf().fieldOf("bottom_rocks").forGetter(LayerSettings::getBottomRocks),
+            ResourceLocation.CODEC.listOf().fieldOf("middle_rocks").forGetter(LayerSettings::getMidRocks),
+            ResourceLocation.CODEC.listOf().fieldOf("top_rocks").forGetter(LayerSettings::getTopRocks)
         ).apply(instance, LayerSettings::new));
+
+        private static List<ResourceLocation> getDefaultLayerRocks(RockCategory first, RockCategory... others)
+        {
+            final Set<RockCategory> categorySet = EnumSet.of(first, others);
+            return Arrays.stream(Rock.Default.values())
+                .filter(rock -> categorySet.contains(rock.getCategory()))
+                .map(rock -> Helpers.identifier(rock.getSerializedName()))
+                .collect(Collectors.toList());
+        }
 
         private final int oceanPercent;
         private final int rockLayerScale;
-        private final List<ResourceLocation> rocks;
+        private final List<ResourceLocation> bottomRocks, middleRocks, topRocks;
 
         public LayerSettings()
         {
-            this(45, 7, Arrays.stream(Rock.Default.values()).map(rock -> Helpers.identifier(rock.name().toLowerCase())).collect(Collectors.toList()));
+            this(30, 7, getDefaultLayerRocks(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.METAMORPHIC), getDefaultLayerRocks(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.METAMORPHIC, RockCategory.SEDIMENTARY), getDefaultLayerRocks(RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.SEDIMENTARY, RockCategory.METAMORPHIC));
         }
 
-        public LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> rocks)
+        public LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> bottomRocks, List<ResourceLocation> middleRocks, List<ResourceLocation> topRocks)
         {
             this.oceanPercent = oceanPercent;
             this.rockLayerScale = rockLayerScale;
-            this.rocks = rocks;
+            this.bottomRocks = bottomRocks;
+            this.middleRocks = middleRocks;
+            this.topRocks = topRocks;
         }
 
         public int getOceanPercent()
@@ -251,9 +264,19 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
             return rockLayerScale;
         }
 
-        public List<ResourceLocation> getRocks()
+        public List<ResourceLocation> getBottomRocks()
         {
-            return rocks;
+            return bottomRocks;
+        }
+
+        public List<ResourceLocation> getMidRocks()
+        {
+            return middleRocks;
+        }
+
+        public List<ResourceLocation> getTopRocks()
+        {
+            return topRocks;
         }
     }
 

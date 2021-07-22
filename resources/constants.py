@@ -3,13 +3,17 @@
 
 from typing import Dict, List, NamedTuple, Sequence, Optional
 
-Rock = NamedTuple('Rock', category=str, desert_sand_color=str, beach_sand_color=str)
+Rock = NamedTuple('Rock', category=str, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
-OreGrade = NamedTuple('OreGrade', weight=int)
-Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str])
+OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
+Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
+Wood = NamedTuple('Wood', temp=float, duration=int)
+Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
+Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
+
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -17,28 +21,26 @@ ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive',
 ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
 
 ROCKS: Dict[str, Rock] = {
-    # Desert sand color is either white, brown, black, or yellow based on rock color. red is an indicator of hematite rocks
-    # Beach sand color is either white, gray, yellow, black or green based on rock color. Pink and black are used for accents in tropical regions.
-    'chalk': Rock('sedimentary', 'white', 'white'),
-    'chert': Rock('sedimentary', 'brown', 'yellow'),
-    'claystone': Rock('sedimentary', 'brown', 'yellow'),
-    'conglomerate': Rock('sedimentary', 'yellow', 'green'),
-    'dolomite': Rock('sedimentary', 'black', 'black'),
-    'limestone': Rock('sedimentary', 'yellow', 'white'),
-    'shale': Rock('sedimentary', 'black', 'black'),
-    'gneiss': Rock('metamorphic', 'brown', 'brown'),
-    'marble': Rock('metamorphic', 'yellow', 'white'),
-    'phyllite': Rock('metamorphic', 'brown', 'yellow'),
-    'quartzite': Rock('metamorphic', 'white', 'white'),
-    'schist': Rock('metamorphic', 'yellow', 'green'),
-    'slate': Rock('metamorphic', 'brown', 'yellow'),
-    'diorite': Rock('igneous_intrusive', 'white', 'white'),
-    'gabbro': Rock('igneous_intrusive', 'black', 'black'),
-    'granite': Rock('igneous_intrusive', 'white', 'white'),
-    'andesite': Rock('igneous_extrusive', 'red', 'green'),
-    'basalt': Rock('igneous_extrusive', 'red', 'black'),
-    'dacite': Rock('igneous_extrusive', 'red', 'yellow'),
-    'rhyolite': Rock('igneous_extrusive', 'red', 'white')
+    'chalk': Rock('sedimentary', 'white'),
+    'chert': Rock('sedimentary', 'yellow'),
+    'claystone': Rock('sedimentary', 'brown'),
+    'conglomerate': Rock('sedimentary', 'green'),
+    'dolomite': Rock('sedimentary', 'black'),
+    'limestone': Rock('sedimentary', 'white'),
+    'shale': Rock('sedimentary', 'black'),
+    'gneiss': Rock('metamorphic', 'green'),
+    'marble': Rock('metamorphic', 'yellow'),
+    'phyllite': Rock('metamorphic', 'brown'),
+    'quartzite': Rock('metamorphic', 'white'),
+    'schist': Rock('metamorphic', 'green'),
+    'slate': Rock('metamorphic', 'brown'),
+    'diorite': Rock('igneous_intrusive', 'white'),
+    'gabbro': Rock('igneous_intrusive', 'black'),
+    'granite': Rock('igneous_intrusive', 'white'),
+    'andesite': Rock('igneous_extrusive', 'red'),
+    'basalt': Rock('igneous_extrusive', 'red'),
+    'dacite': Rock('igneous_extrusive', 'red'),
+    'rhyolite': Rock('igneous_extrusive', 'red')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270),
@@ -157,56 +159,64 @@ ORES: Dict[str, Ore] = {
     'topaz': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(50),
-    'poor': OreGrade(30),
-    'rich': OreGrade(20)
+    'normal': OreGrade(50, 5),
+    'poor': OreGrade(30, 3),
+    'rich': OreGrade(20, 7)
 }
 
+
+def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0):
+    # Factory method to allow default values
+    return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height)
+
+
 ORE_VEINS: Dict[str, Vein] = {
-    'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
-    'surface_native_copper': Vein('native_copper', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_extrusive']),
-    'normal_native_gold': Vein('native_gold', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive', 'igneous_intrusive']),
-    'deep_native_gold': Vein('native_gold', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive', 'igneous_intrusive']),
-    'normal_native_silver': Vein('native_silver', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['granite', 'gneiss']),
-    'poor_native_silver': Vein('native_silver', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['granite', 'metamorphic']),
-    'normal_hematite': Vein('hematite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
-    'deep_hematite': Vein('hematite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive']),
-    'normal_cassiterite': Vein('cassiterite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive']),
-    'surface_cassiterite': Vein('cassiterite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive']),
-    'normal_bismuthinite': Vein('bismuthinite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive', 'sedimentary']),
-    'surface_bismuthinite': Vein('bismuthinite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive', 'sedimentary']),
-    'normal_garnierite': Vein('garnierite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['gabbro']),
-    'poor_garnierite': Vein('garnierite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['igneous_intrusive']),
-    'normal_malachite': Vein('malachite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['marble', 'limestone']),
-    'poor_malachite': Vein('malachite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['marble', 'limestone', 'phyllite', 'chalk', 'dolomite']),
-    'normal_magnetite': Vein('magnetite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
-    'deep_magnetite': Vein('magnetite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
-    'normal_limonite': Vein('limonite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
-    'deep_limonite': Vein('limonite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
-    'normal_sphalerite': Vein('sphalerite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
-    'surface_sphalerite': Vein('sphalerite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
-    'normal_tetrahedrite': Vein('tetrahedrite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
-    'surface_tetrahedrite': Vein('tetrahedrite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
-
-    'bituminous_coal': Vein('bituminous_coal', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
-    'lignite': Vein('lignite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
-    'kaolinite': Vein('kaolinite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
-    'graphite': Vein('graphite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['gneiss', 'marble', 'quartzite', 'schist']),
-    'cinnabar': Vein('cinnabar', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive', 'quartzite', 'shale']),
-    'cryolite': Vein('cryolite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['granite']),
-    'saltpeter': Vein('saltpeter', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
-    'sulfur': Vein('sulfur', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive']),
-    'sylvite': Vein('sylvite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['shale', 'claystone', 'chert']),
-    'borax': Vein('borax', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['slate']),
-    'gypsum': Vein('gypsum', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['metamorphic']),
-    'lapis_lazuli': Vein('lapis_lazuli', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['limestone', 'marble']),
-    'halite': Vein('halite', 'disc', 120, 30, 80, 100, 80, 0, 0, 0, ['sedimentary']),
-
-    'diamond': Vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
-    'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
+    'normal_native_copper': vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
+    'surface_native_copper': vein('native_copper', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_extrusive']),
+    'normal_native_gold': vein('native_gold', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 20, ['igneous_extrusive', 'igneous_intrusive']),
+    'deep_native_gold': vein('native_gold', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 10, ['igneous_extrusive', 'igneous_intrusive']),
+    'normal_native_silver': vein('native_silver', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['granite', 'gneiss']),
+    'poor_native_silver': vein('native_silver', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['granite', 'metamorphic']),
+    'normal_hematite': vein('hematite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
+    'deep_hematite': vein('hematite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive']),
+    'normal_cassiterite': vein('cassiterite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive'], 'topaz', 10, ['granite']),
+    'surface_cassiterite': vein('cassiterite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive'], 'topaz', 20, ['granite']),
+    'normal_bismuthinite': vein('bismuthinite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive', 'sedimentary']),
+    'surface_bismuthinite': vein('bismuthinite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive', 'sedimentary']),
+    'normal_garnierite': vein('garnierite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['gabbro']),
+    'poor_garnierite': vein('garnierite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['igneous_intrusive']),
+    'normal_malachite': vein('malachite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['marble', 'limestone'], 'gypsum', 10, ['limestone']),
+    'poor_malachite': vein('malachite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['marble', 'limestone', 'phyllite', 'chalk', 'dolomite'], 'gypsum', 20, ['limestone']),
+    'normal_magnetite': vein('magnetite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
+    'deep_magnetite': vein('magnetite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
+    'normal_limonite': vein('limonite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary'], 'ruby', 20, ['limestone', 'shale']),
+    'deep_limonite': vein('limonite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary'], 'ruby', 10, ['limestone', 'shale']),
+    'normal_sphalerite': vein('sphalerite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
+    'surface_sphalerite': vein('sphalerite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
+    'normal_tetrahedrite': vein('tetrahedrite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
+    'surface_tetrahedrite': vein('tetrahedrite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
+    'bituminous_coal': vein('bituminous_coal', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'lignite': vein('lignite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'kaolinite': vein('kaolinite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'graphite': vein('graphite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['gneiss', 'marble', 'quartzite', 'schist']),
+    'cinnabar': vein('cinnabar', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive', 'quartzite', 'shale'], 'opal', 10, ['quartzite']),
+    'cryolite': vein('cryolite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['granite']),
+    'saltpeter': vein('saltpeter', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary'], 'gypsum', 20, ['limestone']),
+    'sulfur': vein('sulfur', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive'], 'gypsum', 20, ['rhyolite']),
+    'sylvite': vein('sylvite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['shale', 'claystone', 'chert']),
+    'borax': vein('borax', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['slate']),
+    'gypsum': vein('gypsum', 'disc', 120, 20, 70, 120, 60, 0, 0, 0, ['metamorphic']),
+    'lapis_lazuli': vein('lapis_lazuli', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['limestone', 'marble']),
+    'halite': vein('halite', 'disc', 120, 30, 70, 120, 80, 0, 0, 0, ['sedimentary']),
+    'diamond': vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
+    'emerald': vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
+    'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 120, 150, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='volcanic', height=6),
+    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='river', height=4),
+    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='river', height=4)
 }
 
 ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
+ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
@@ -219,7 +229,27 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
-WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
+WOODS: Dict[str, Wood] = {
+    'acacia': Wood(650, 1000),
+    'ash': Wood(696, 1250),
+    'aspen': Wood(611, 1000),
+    'birch': Wood(652, 1750),
+    'blackwood': Wood(720, 1750),
+    'chestnut': Wood(651, 1500),
+    'douglas_fir': Wood(707, 1500),
+    'hickory': Wood(762, 2000),
+    'kapok': Wood(645, 1000),
+    'maple': Wood(745, 2000),
+    'oak': Wood(728, 2250),
+    'palm': Wood(730, 1250),
+    'pine': Wood(627, 1250),
+    'rosewood': Wood(640, 1500),
+    'sequoia': Wood(612, 1750),
+    'spruce': Wood(608, 1500),
+    'sycamore': Wood(653, 1750),
+    'white_cedar': Wood(625, 1500),
+    'willow': Wood(603, 1000)
+}
 
 PLANTS: Dict[str, Plant] = {
     'allium': Plant(False, 10, 18, 150, 400, 'standard'),
@@ -301,11 +331,63 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
 
+PLANT_COLORS: Dict[str, List[str]] = {
+    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white'],
+    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna'],
+    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla'],
+    'light_blue': ['labrador_tea', 'sapphire_tower'],
+    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow'],
+    'lime': ['moss'],
+    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink'],
+    'light_gray': ['yucca'],
+    'purple': ['allium', 'black_orchid', 'perovskia'],
+    'blue': ['blue_orchid', 'grape_hyacinth'],
+    'brown': ['field_horsetail', 'sargassum'],
+    'green': ['barrel_cactus', 'reindeer_lichen'],
+    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
+}
+
+SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite')
+POWDERS = ('fertilizer', 'flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
+PAIRED_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
+UNFIRED_ITEMS = ('brick', 'crucible', 'flower_pot', 'jug')
+VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
 OCEAN_PLANT_TYPES = ['grass_water', 'floating', 'water', 'emergent', 'tall_water']
 MISC_PLANT_FEATURES = ['hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana']
 
+BERRIES: Dict[str, Berry] = {
+    'blackberry': Berry(7, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'raspberry': Berry(5, 20, 100, 400, 'spreading', 'edge', 'edge'),
+    'blueberry': Berry(7, 25, 100, 400, 'spreading', 'edge', 'edge'),
+    'elderberry': Berry(10, 29, 100, 400, 'spreading', 'edge', 'edge'),
+    'bunchberry': Berry(15, 30, 100, 400, 'stationary', 'edge', 'normal'),
+    'gooseberry': Berry(5, 27, 100, 400, 'stationary', 'none', 'sparse'),
+    'snowberry': Berry(-5, 18, 100, 400, 'stationary', 'normal', 'old_growth'),
+    'cloudberry': Berry(3, 17, 80, 370, 'stationary', 'normal', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'none', 'sparse'),
+    'wintergreen_berry': Berry(-5, 17, 100, 400, 'stationary', 'old_growth', 'old_growth'),
+    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
+}
+
+FRUITS: Dict[str, Fruit] = {
+    'banana': Fruit(23, 35, 280, 480),
+    'cherry': Fruit(5, 21, 100, 350),
+    'green_apple': Fruit(8, 25, 110, 280),
+    'lemon': Fruit(10, 30, 180, 470),
+    'olive': Fruit(13, 30, 150, 380),
+    'orange': Fruit(23, 36, 250, 480),
+    'peach': Fruit(9, 27, 60, 230),
+    'plum': Fruit(18, 31, 250, 400),
+    'red_apple': Fruit(9, 25, 100, 280)
+}
+
+GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
+GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -320,6 +402,15 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 DEFAULT_LANG = {
     # Misc
     'generator.tfc.tng': 'TerraFirmaCraft',
+    'death.attack.grill': '%1$s grilled themself to death',
+    'death.attack.grill.player': '%1$s grilled themselves while trying to escape %2$s',
+    'death.attack.pot': '%1$s boiled themselves into soup',
+    'death.attack.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'tfc.tile_entity.pot': 'Pot',
+    'tfc.tile_entity.grill': 'Grill',
+    'tfc.tile_entity.firepit': 'Firepit',
+    'tfc.tile_entity.log_pile': 'Log Pile',
+    'item.tfc.handstone': 'Handstone',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -330,6 +421,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.devices': 'TFC Devices',
     'itemGroup.tfc.food': 'TFC Food',
     'itemGroup.tfc.misc': 'TFC Misc',
+    'itemGroup.tfc.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
@@ -339,6 +431,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.units': '%d units',
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.fuel': 'Fuel Duration: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
@@ -356,6 +449,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
+    'tfc.tooltip.debug_tag': 'Tag: %s',
 
     # Commands
     'tfc.commands.time.query.daytime': 'The day time is %s',
@@ -368,6 +462,8 @@ DEFAULT_LANG = {
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
     'tfc.commands.player.query_hunger': 'Hunger is %s',
     'tfc.commands.player.query_saturation': 'Saturation is %s',
+    'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
+    'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
 
     # ENUMS
 
@@ -399,8 +495,20 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.enum.size.tiny': 'Tiny',
+    'tfc.enum.size.very_small': 'Very Small',
+    'tfc.enum.size.small': 'Small',
+    'tfc.enum.size.normal': 'Normal',
+    'tfc.enum.size.large': 'Large',
+    'tfc.enum.size.very_large': 'Very Large',
+    'tfc.enum.size.huge': 'Huge',
+    'tfc.enum.weight.very_light': 'Very Light',
+    'tfc.enum.weight.light': 'Light',
+    'tfc.enum.weight.medium': 'Medium',
+    'tfc.enum.weight.heavy': 'Heavy',
+    'tfc.enum.weight.very_heavy': 'Very Heavy',
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
-    **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
+    **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys())
 }

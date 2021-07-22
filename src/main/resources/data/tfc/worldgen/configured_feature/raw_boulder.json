@@ -14,8 +14,128 @@
                 "feature": {
                   "type": "tfc:boulder",
                   "config": {
-                    "base_type": "raw",
-                    "decoration_type": "raw"
+                    "states": [
+                      {
+                        "rock": "tfc:chalk",
+                        "blocks": [
+                          "tfc:rock/raw/chalk"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:chert",
+                        "blocks": [
+                          "tfc:rock/raw/chert"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:claystone",
+                        "blocks": [
+                          "tfc:rock/raw/claystone"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:conglomerate",
+                        "blocks": [
+                          "tfc:rock/raw/conglomerate"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:dolomite",
+                        "blocks": [
+                          "tfc:rock/raw/dolomite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:limestone",
+                        "blocks": [
+                          "tfc:rock/raw/limestone"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:shale",
+                        "blocks": [
+                          "tfc:rock/raw/shale"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:gneiss",
+                        "blocks": [
+                          "tfc:rock/raw/gneiss"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:marble",
+                        "blocks": [
+                          "tfc:rock/raw/marble"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:phyllite",
+                        "blocks": [
+                          "tfc:rock/raw/phyllite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:quartzite",
+                        "blocks": [
+                          "tfc:rock/raw/quartzite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:schist",
+                        "blocks": [
+                          "tfc:rock/raw/schist"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:slate",
+                        "blocks": [
+                          "tfc:rock/raw/slate"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:diorite",
+                        "blocks": [
+                          "tfc:rock/raw/diorite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:gabbro",
+                        "blocks": [
+                          "tfc:rock/raw/gabbro"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:granite",
+                        "blocks": [
+                          "tfc:rock/raw/granite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:andesite",
+                        "blocks": [
+                          "tfc:rock/raw/andesite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:basalt",
+                        "blocks": [
+                          "tfc:rock/raw/basalt"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:dacite",
+                        "blocks": [
+                          "tfc:rock/raw/dacite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:rhyolite",
+                        "blocks": [
+                          "tfc:rock/raw/rhyolite"
+                        ]
+                      }
+                    ]
                   }
                 },
                 "decorator": {
@@ -25,22 +145,22 @@
               }
             },
             "decorator": {
-              "type": "minecraft:chance",
-              "config": {
-                "chance": 12
-              }
+              "type": "minecraft:heightmap_world_surface",
+              "config": {}
             }
           }
         },
         "decorator": {
-          "type": "minecraft:heightmap_world_surface",
+          "type": "minecraft:square",
           "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:square",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 12
+      }
     }
   }
 }

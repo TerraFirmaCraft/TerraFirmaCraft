@@ -10,40 +10,34 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerProvider;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -52,16 +46,17 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullFunction;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -69,7 +64,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Direction[] DIRECTIONS = Direction.values();
     private static final Random RANDOM = new Random();
 
     /**
@@ -110,47 +105,6 @@ public final class Helpers
         }
     }
 
-    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, NonNullFunction<K, String> keyStringMapper)
-    {
-        return findRegistryObjects(obj, path, registry, keyValues, Collections.emptyList(), keyStringMapper);
-    }
-
-    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, Collection<K> optionalKeyValues, NonNullFunction<K, String> keyStringMapper)
-    {
-        if (obj.has(path))
-        {
-            Map<K, V> objects = new HashMap<>();
-            JsonObject objectsJson = JSONUtils.getAsJsonObject(obj, path);
-            for (K expectedKey : keyValues)
-            {
-                String jsonKey = keyStringMapper.apply(expectedKey);
-                ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
-                V registryObject = registry.getValue(id);
-                if (registryObject == null)
-                {
-                    throw new JsonParseException("Unknown registry object: " + id);
-                }
-                objects.put(expectedKey, registryObject);
-            }
-            for (K optionalKey : optionalKeyValues)
-            {
-                String jsonKey = keyStringMapper.apply(optionalKey);
-                if (objectsJson.has(jsonKey))
-                {
-                    ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
-                    V registryObject = registry.getValue(id);
-                    if (registryObject == null)
-                    {
-                        throw new JsonParseException("Unknown registry object: " + id);
-                    }
-                    objects.put(optionalKey, registryObject);
-                }
-            }
-            return objects;
-        }
-        return Collections.emptyMap();
-    }
-
     public static BlockState readBlockState(String block) throws JsonParseException
     {
         BlockStateParser parser = parseBlockState(block, false);
@@ -174,27 +128,23 @@ public final class Helpers
         }
     }
 
-    /**
-     * Maps a {@link Supplier} to an {@link Optional} by swallowing any runtime exceptions.
-     */
-    public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
+    public static Block getBlockFromJson(JsonObject json, String key)
     {
         try
         {
-            return Optional.of(unsafeSupplier.get());
+            String id = JSONUtils.getAsString(json, key);
+            ResourceLocation res = new ResourceLocation(id);
+            Block block = ForgeRegistries.BLOCKS.getValue(res);
+            if (block == null)
+            {
+                throw new JsonParseException("Unknown block: " + id);
+            }
+            return block;
         }
-        catch (RuntimeException e)
+        catch (ResourceLocationException e)
         {
-            return Optional.empty();
+            throw new JsonParseException(e);
         }
-    }
-
-    /**
-     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
-     */
-    public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
-    {
-        return () -> mapper.apply(supplier.get());
     }
 
     /**
@@ -209,6 +159,11 @@ public final class Helpers
             orElse.run();
             return Unit.INSTANCE;
         });
+    }
+
+    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
+    {
+        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
     }
 
     /**
@@ -228,6 +183,38 @@ public final class Helpers
     }
 
     /**
+     * Flattens a homogeneous stream of {@code Collection<T>} and Ts together into a {@code Stream<T>}
+     * Usage: {@code stream.flatMap(Helpers::flatten)}
+     */
+    @SuppressWarnings("unchecked")
+    public static <R> Stream<? extends R> flatten(Object t)
+    {
+        return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static <E extends Enum<E>> E getEnumFromJson(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    {
+        final String enumName = JSONUtils.getAsString(obj, key, null);
+        if (enumName != null)
+        {
+            try
+            {
+                Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
+            }
+            catch (IllegalArgumentException e)
+            {
+                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
+            }
+        }
+        if (defaultValue != null)
+        {
+            return defaultValue;
+        }
+        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+    }
+
+    /**
      * Gets the translation key name for an enum. For instance, Metal.UNKNOWN would map to "tfc.enum.metal.unknown"
      */
     public static String getEnumTranslationKey(Enum<?> anEnum)
@@ -240,31 +227,7 @@ public final class Helpers
      */
     public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
     {
-        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
-    }
-
-    /**
-     * Names a simple container provider.
-     *
-     * @return a singleton container provider
-     */
-    public static INamedContainerProvider createNamedContainerProvider(ITextComponent name, IContainerProvider provider)
-    {
-        return new INamedContainerProvider()
-        {
-            @Override
-            public ITextComponent getDisplayName()
-            {
-                return name;
-            }
-
-            @Nullable
-            @Override
-            public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-            {
-                return provider.createMenu(windowId, inv, player);
-            }
-        };
+        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -283,7 +246,7 @@ public final class Helpers
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    public static <T extends TileEntity> T getTileEntity(IBlockReader world, BlockPos pos, Class<T> tileEntityClass)
     {
         TileEntity te = world.getBlockEntity(pos);
         if (tileEntityClass.isInstance(te))
@@ -293,15 +256,9 @@ public final class Helpers
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        throw new IllegalStateException("Expected a tile entity at " + pos + " of class " + tileEntityClass.getSimpleName());
+        return Objects.requireNonNull(getTileEntity(world, pos, tileEntityClass));
     }
 
     /**
@@ -311,16 +268,6 @@ public final class Helpers
     {
         int i = randValue >> 2;
         return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
-    }
-
-    public static BlockState getStateForPlacementWithFluid(IWorldReader world, BlockPos pos, BlockState state)
-    {
-        FluidState fluid = world.getFluidState(pos);
-        if (state.getBlock() instanceof IFluidLoggable)
-        {
-            return ((IFluidLoggable) state.getBlock()).getStateWithFluid(state, fluid.getType());
-        }
-        return state;
     }
 
     /**
@@ -438,6 +385,65 @@ public final class Helpers
         }
     }
 
+    public static Iterable<ItemStack> iterate(IItemHandler inventory)
+    {
+        final int slots = inventory.getSlots();
+        return () -> new AbstractIterator<ItemStack>()
+        {
+            private int slot = -1;
+
+            @Override
+            protected ItemStack computeNext()
+            {
+                slot++;
+                if (slot < slots)
+                {
+                    return inventory.getStackInSlot(slot);
+                }
+                return endOfData();
+            }
+        };
+    }
+
+    /**
+     * Attempts to insert a stack across all slots of an item handler
+     *
+     * @param stack The stack to be inserted
+     * @return The remainder after the stack is inserted, if any
+     */
+    public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
+    {
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            stack = inventory.insertItem(slot, stack, false);
+            if (stack.isEmpty())
+            {
+                return ItemStack.EMPTY;
+            }
+        }
+        return stack;
+    }
+
+    public static NonNullList<ItemStack> extractAllItems(IItemHandlerModifiable inventory)
+    {
+        NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            saved.set(slot, inventory.getStackInSlot(slot).copy());
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        return saved;
+    }
+
+    public static void insertAllItems(IItemHandlerModifiable inventory, NonNullList<ItemStack> from)
+    {
+        // We allow the list to have a different size than the new inventory
+        for (int slot = 0; slot < Math.min(inventory.getSlots(), from.size()); slot++)
+        {
+            inventory.setStackInSlot(slot, from.get(slot));
+        }
+    }
+
     /**
      * Copied from {@link World#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
@@ -470,6 +476,134 @@ public final class Helpers
                 state.spawnAfterBreak((ServerWorld) worldIn, pos, ItemStack.EMPTY);
             }
             worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+        }
+    }
+
+    /**
+     * Lightning fast. Not actually Gaussian.
+     */
+    public static double fastGaussian(Random rand)
+    {
+        return (rand.nextDouble() - rand.nextDouble()) * 0.5;
+    }
+
+    public static void playSound(World world, BlockPos pos, SoundEvent sound)
+    {
+        Random rand = world.getRandom();
+        world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)
+    {
+        return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
+    }
+
+    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack)
+    {
+        return spawnItem(world, pos, stack, 0.5D);
+    }
+
+    /**
+     * Select N unique elements from a list, without having to shuffle the whole list.
+     * This involves moving the selected elements to the end of the list. Note: this method will mutate the passed in list!
+     * From <a href="https://stackoverflow.com/questions/4702036/take-n-random-elements-from-a-liste">Stack Overflow</a>
+     */
+    public static <T> List<T> uniqueRandomSample(List<T> list, int n, Random r)
+    {
+        final int length = list.size();
+        if (length < n)
+        {
+            throw new IllegalArgumentException("Cannot select n=" + n + " from a list of size = " + length);
+        }
+        for (int i = length - 1; i >= length - n; --i)
+        {
+            Collections.swap(list, i, r.nextInt(i + 1));
+        }
+        return list.subList(length - n, length);
+    }
+
+    public static NonNullList<ItemStack> copyItemList(NonNullList<ItemStack> stacksIn)
+    {
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        stacksIn.forEach(stack -> stacks.add(stack.copy()));
+        return stacks;
+    }
+
+    /**
+     * Checks the existence of a <a href="https://en.wikipedia.org/wiki/Perfect_matching">perfect matching</a> of a <a href="https://en.wikipedia.org/wiki/Bipartite_graph">bipartite graph</a>.
+     * The graph is interpreted as the matches between the set of inputs, and the set of tests.
+     * This algorithm computes the <a href="https://en.wikipedia.org/wiki/Edmonds_matrix">Edmonds Matrix</a> of the graph, which has the property that the determinant is identically zero iff the graph does not admit a perfect matching.
+     */
+    public static <T> boolean perfectMatchExists(List<T> inputs, List<? extends Predicate<T>> tests)
+    {
+        if (inputs.size() != tests.size())
+        {
+            return false;
+        }
+        final int size = inputs.size();
+        final boolean[][] matrices = new boolean[size][];
+        for (int i = 0; i < size; i++)
+        {
+            matrices[i] = new boolean[(size + 1) * (size + 1)];
+        }
+        final boolean[] matrix = matrices[size - 1];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                matrix[i + size * j] = tests.get(i).test(inputs.get(j));
+            }
+        }
+        return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes a symbolic determinant
+     */
+    private static boolean perfectMatchDet(boolean[][] matrices, int size)
+    {
+        // matrix true = nonzero = matches
+        final boolean[] matrix = matrices[size - 1];
+        switch (size)
+        {
+            case 1:
+                return matrix[0];
+            case 2:
+                return (matrix[0] && matrix[3]) || (matrix[1] && matrix[2]);
+            default:
+            {
+                for (int c = 0; c < size; c++)
+                {
+                    if (matrix[c])
+                    {
+                        perfectMatchSub(matrices, size, c);
+                        if (perfectMatchDet(matrices, size - 1))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes the symbolic minor of a matrix by removing an arbitrary column.
+     */
+    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    {
+        final int subSize = size - 1;
+        final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
+        for (int c = 0; c < subSize; c++)
+        {
+            final int c0 = c + (c >= dc ? 1 : 0);
+            for (int r = 0; r < subSize; r++)
+            {
+                sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
+            }
         }
     }
 }

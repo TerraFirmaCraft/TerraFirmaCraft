@@ -6,18 +6,21 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -39,21 +42,30 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
-    @Nonnull
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        BlockState stateAt = context.getLevel().getBlockState(context.getClickedPos());
-        if (stateAt.is(this))
-        {
-            return stateAt.setValue(COUNT, Math.min(3, stateAt.getValue(COUNT) + 1));
-        }
-        return super.getStateForPlacement(context);
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(COUNT));
+    }
+
+    @Override
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() == this.asItem())
+        {
+            if (!worldIn.isClientSide() && handIn == Hand.MAIN_HAND && state.is(this.getBlock()))
+            {
+                int count = state.getValue(COUNT);
+                if (count < 3)
+                {
+                    worldIn.setBlockAndUpdate(pos, state.setValue(COUNT, count + 1));
+                    stack.shrink(1);
+                    return ActionResultType.SUCCESS;
+                }
+            }
+            return ActionResultType.PASS;
+        }
+        return super.use(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override

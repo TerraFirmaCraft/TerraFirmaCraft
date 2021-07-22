@@ -1,0 +1,89 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc_vein",
+  "config": {
+    "rarity": 25,
+    "min_y": 120,
+    "max_y": 150,
+    "size": 14,
+    "density": 0.4,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/andesite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/basalt"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/dacite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/rhyolite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/diorite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/sulfur/granite"
+          }
+        ]
+      }
+    ],
+    "salt": 1068662322,
+    "biomes": [
+      {
+        "biome_dictionary": "volcanic"
+      }
+    ]
+  }
+}

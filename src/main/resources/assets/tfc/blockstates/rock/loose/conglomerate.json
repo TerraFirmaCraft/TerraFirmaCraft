@@ -1,50 +1,56 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east,count=1": {
-      "model": "tfc:block/rock/pebble/conglomerate",
-      "y": 90
-    },
-    "facing=north,count=1": {
-      "model": "tfc:block/rock/pebble/conglomerate"
-    },
-    "facing=south,count=1": {
-      "model": "tfc:block/rock/pebble/conglomerate",
-      "y": 180
-    },
-    "facing=west,count=1": {
-      "model": "tfc:block/rock/pebble/conglomerate",
-      "y": 270
-    },
-    "facing=east,count=2": {
-      "model": "tfc:block/rock/rubble/conglomerate",
-      "y": 90
-    },
-    "facing=north,count=2": {
-      "model": "tfc:block/rock/rubble/conglomerate"
-    },
-    "facing=south,count=2": {
-      "model": "tfc:block/rock/rubble/conglomerate",
-      "y": 180
-    },
-    "facing=west,count=2": {
-      "model": "tfc:block/rock/rubble/conglomerate",
-      "y": 270
-    },
-    "facing=east,count=3": {
-      "model": "tfc:block/rock/boulder/conglomerate",
-      "y": 90
-    },
-    "facing=north,count=3": {
-      "model": "tfc:block/rock/boulder/conglomerate"
-    },
-    "facing=south,count=3": {
-      "model": "tfc:block/rock/boulder/conglomerate",
-      "y": 180
-    },
-    "facing=west,count=3": {
-      "model": "tfc:block/rock/boulder/conglomerate",
-      "y": 270
-    }
+    "count=1": [
+      {
+        "model": "tfc:block/rock/pebble/conglomerate",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/pebble/conglomerate"
+      },
+      {
+        "model": "tfc:block/rock/pebble/conglomerate",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/pebble/conglomerate",
+        "y": 270
+      }
+    ],
+    "count=2": [
+      {
+        "model": "tfc:block/rock/rubble/conglomerate",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/rubble/conglomerate"
+      },
+      {
+        "model": "tfc:block/rock/rubble/conglomerate",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/rubble/conglomerate",
+        "y": 270
+      }
+    ],
+    "count=3": [
+      {
+        "model": "tfc:block/rock/boulder/conglomerate",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/boulder/conglomerate"
+      },
+      {
+        "model": "tfc:block/rock/boulder/conglomerate",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/boulder/conglomerate",
+        "y": 270
+      }
+    ]
   }
 }

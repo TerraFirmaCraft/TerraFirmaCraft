@@ -22,8 +22,9 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/tropical_milkweed",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -36,7 +35,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      * If on client, will query capability, falling back to cache, and send request packets if necessary
      * If on server, will either query capability falling back to cache, or query provider to generate the data.
      *
-     * @see ChunkDataProvider#get(ChunkPos, Status) to directly force chunk generation, or if a world is not available
+     * @see #get(ChunkPos) to directly force chunk generation, or if a world is not available
      * @see ChunkDataCache#get(ChunkPos) to directly access the cache
      */
     public static ChunkData get(IWorld world, ChunkPos pos)
@@ -100,12 +99,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(BlockPos pos)
     {
-        return getRainfall(pos.getX() & 15, pos.getZ() & 15);
+        return getRainfall(pos.getX(), pos.getZ());
     }
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(z / 16f, 1 - (x / 16f));
+        return rainfallLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -115,12 +114,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(BlockPos pos)
     {
-        return getAverageTemp(pos.getX() & 15, pos.getZ() & 15);
+        return getAverageTemp(pos.getX(), pos.getZ());
     }
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(z / 16f, 1 - (x / 16f));
+        return temperatureLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
@@ -156,6 +155,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     /**
      * Returns a standard calculated value for density.
      * This scales the regular density by the forest type.
+     *
      * @return a value in [0, 1]
      */
     public float getAdjustedForestDensity()
@@ -184,14 +184,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     }
 
     /**
-     * @return If the current chunk data is empty, then return other
-     */
-    public ChunkData ifEmptyGet(Supplier<ChunkData> other)
-    {
-        return status != Status.EMPTY ? this : other.get();
-    }
-
-    /**
      * Create an update packet to send to client with necessary information
      */
     public ChunkWatchPacket getUpdatePacket()
@@ -211,7 +203,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         this.forestWeirdness = forestWeirdness;
         this.plateTectonicsInfo = plateTectonicsInfo;
 
-        if (status == Status.CLIENT || status == Status.EMPTY)
+        if (status == Status.EMPTY)
         {
             this.status = Status.CLIENT;
         }
@@ -231,56 +223,28 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     public CompoundNBT serializeNBT()
     {
         CompoundNBT nbt = new CompoundNBT();
-
+        nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
+        nbt.put("rainfall", rainfallLayer.serializeNBT());
+        nbt.put("temperature", temperatureLayer.serializeNBT());
+        nbt.put("rockData", rockData.serializeNBT());
+        nbt.putByte("forestType", (byte) forestType.ordinal());
+        nbt.putFloat("forestWeirdness", forestWeirdness);
+        nbt.putFloat("forestDensity", forestDensity);
         nbt.putByte("status", (byte) status.ordinal());
-        if (status.isAtLeast(Status.PLATE_TECTONICS))
-        {
-            nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
-        }
-        if (status.isAtLeast(Status.CLIMATE))
-        {
-            nbt.put("rainfall", rainfallLayer.serializeNBT());
-            nbt.put("temperature", temperatureLayer.serializeNBT());
-        }
-        if (status.isAtLeast(Status.ROCKS))
-        {
-            nbt.put("rockData", rockData.serializeNBT());
-        }
-        if (status.isAtLeast(Status.FLORA))
-        {
-            nbt.putByte("forestType", (byte) forestType.ordinal());
-            nbt.putFloat("forestWeirdness", forestWeirdness);
-            nbt.putFloat("forestDensity", forestDensity);
-        }
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        if (nbt != null)
-        {
-            status = Status.valueOf(nbt.getByte("status"));
-            if (status.isAtLeast(Status.PLATE_TECTONICS))
-            {
-                plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
-            }
-            if (status.isAtLeast(Status.CLIMATE))
-            {
-                rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
-                temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
-            }
-            if (status.isAtLeast(Status.ROCKS))
-            {
-                rockData.deserializeNBT(nbt.getCompound("rockData"));
-            }
-            if (status.isAtLeast(Status.FLORA))
-            {
-                forestType = ForestType.valueOf(nbt.getByte("forestType"));
-                forestWeirdness = nbt.getFloat("forestWeirdness");
-                forestDensity = nbt.getFloat("forestDensity");
-            }
-        }
+        plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
+        rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
+        temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
+        rockData = new RockData(nbt.getCompound("rockData"));
+        forestType = ForestType.valueOf(nbt.getByte("forestType"));
+        forestWeirdness = nbt.getFloat("forestWeirdness");
+        forestDensity = nbt.getFloat("forestDensity");
+        status = Status.valueOf(nbt.getByte("status"));
     }
 
     @Override
@@ -291,7 +255,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     private void reset()
     {
-        rockData = new RockData();
+        rockData = RockData.EMPTY;
         rainfallLayer = new LerpFloatLayer(250);
         temperatureLayer = new LerpFloatLayer(10);
         forestWeirdness = 0.5f;
@@ -303,28 +267,15 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public enum Status
     {
-        CLIENT, // Special status - indicates it is a client side shallow copy
-        EMPTY, // Empty - default. Should never be called to generate.
-        PLATE_TECTONICS, // Metadata about the plate tectonics layer
-        CLIMATE, // Climate data, rainfall and temperature
-        ROCKS, // Rock layer information, used for surface builder and rock block replacement
-        FLORA; // Flora and fauna information, used for features
+        EMPTY, // Default, un-generated chunk data
+        CLIENT, // Client-side shallow copy
+        FULL; // Fully generated chunk data
 
         private static final Status[] VALUES = values();
 
         public static Status valueOf(int i)
         {
             return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
-        }
-
-        public Status next()
-        {
-            return this == FLORA ? FLORA : VALUES[this.ordinal() + 1];
-        }
-
-        public boolean isAtLeast(Status otherStatus)
-        {
-            return this.ordinal() >= otherStatus.ordinal();
         }
     }
 
@@ -364,13 +315,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
-        public void setStatus(Status status)
+        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override
-        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
+        public void setStatus(Status status)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

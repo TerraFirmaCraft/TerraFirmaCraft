@@ -19,9 +19,11 @@ import net.minecraft.world.IWorld;
  * A generic interface for a block which is able to contain any number of predetermined fluid properties
  *
  * @see FluidProperty
+ * @see FluidHelpers
  */
 public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucketPickupHandler
 {
+    @Override
     default boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
@@ -32,6 +34,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
         return false;
     }
 
+    @Override
     default boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
@@ -47,6 +50,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
         return false;
     }
 
+    @Override
     default Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
@@ -72,21 +76,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
     }
 
     /**
-     * Modifies a state with a fluid.
-     * Used to place automatic fluid logged blocks during world generation.
-     *
-     * @param state The original state
-     * @param fluid The fluid to try and insert
-     * @return The state with the fluid, if allowed, otherwise the input state.
+     * Gets the correct fluid property for this block, which determines what fluids it can contain.
      */
-    default BlockState getStateWithFluid(BlockState state, Fluid fluid)
-    {
-        if (getFluidProperty().getPossibleFluids().contains(fluid))
-        {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
-        }
-        return state;
-    }
-
     FluidProperty getFluidProperty();
 }

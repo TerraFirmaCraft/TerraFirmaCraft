@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/groundcover/garnierite",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/groundcover/garnierite"
-    },
-    "facing=south": {
-      "model": "tfc:block/groundcover/garnierite",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/groundcover/garnierite",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/groundcover/garnierite",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/garnierite"
+      },
+      {
+        "model": "tfc:block/groundcover/garnierite",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/garnierite",
+        "y": 270
+      }
+    ]
   }
 }

@@ -39,6 +39,10 @@
         ]
       }
     ],
-    "salt": 39135861
+    "salt": 39135861,
+    "min_skew": 5,
+    "max_skew": 13,
+    "min_slant": 0,
+    "max_slant": 2
   }
 }

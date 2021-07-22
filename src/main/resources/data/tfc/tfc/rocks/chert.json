@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/chert",
-    "hardened": "tfc:rock/hardened/chert",
-    "bricks": "tfc:rock/bricks/chert",
-    "cobble": "tfc:rock/cobble/chert",
-    "gravel": "tfc:rock/gravel/chert",
-    "smooth": "tfc:rock/smooth/chert",
-    "mossy_cobble": "tfc:rock/mossy_cobble/chert",
-    "mossy_bricks": "tfc:rock/mossy_bricks/chert",
-    "cracked_bricks": "tfc:rock/cracked_bricks/chert",
-    "chiseled": "tfc:rock/chiseled/chert",
-    "spike": "tfc:rock/spike/chert",
-    "loose": "tfc:rock/loose/chert"
-  },
-  "category": "sedimentary",
-  "desert_sand_color": "brown",
-  "beach_sand_color": "yellow"
+  "raw": "tfc:rock/raw/chert",
+  "hardened": "tfc:rock/hardened/chert",
+  "cobble": "tfc:rock/cobble/chert",
+  "gravel": "tfc:rock/gravel/chert",
+  "spike": "tfc:rock/spike/chert",
+  "loose": "tfc:rock/loose/chert",
+  "sand": "tfc:sand/yellow",
+  "sandstone": "tfc:raw_sandstone/yellow"
 }

@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "stage=0": {
+      "model": "tfc:block/berry_bush/dead_bush_0"
+    },
+    "stage=1": {
+      "model": "tfc:block/berry_bush/dead_bush_1"
+    },
+    "stage=2": {
+      "model": "tfc:block/berry_bush/dead_bush_2"
+    }
+  }
+}

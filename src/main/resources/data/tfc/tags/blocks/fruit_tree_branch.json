@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:fruit_tree/banana_plant",
+    "tfc:fruit_tree/cherry_branch",
+    "tfc:fruit_tree/cherry_growing_branch",
+    "tfc:fruit_tree/green_apple_branch",
+    "tfc:fruit_tree/green_apple_growing_branch",
+    "tfc:fruit_tree/lemon_branch",
+    "tfc:fruit_tree/lemon_growing_branch",
+    "tfc:fruit_tree/olive_branch",
+    "tfc:fruit_tree/olive_growing_branch",
+    "tfc:fruit_tree/orange_branch",
+    "tfc:fruit_tree/orange_growing_branch",
+    "tfc:fruit_tree/peach_branch",
+    "tfc:fruit_tree/peach_growing_branch",
+    "tfc:fruit_tree/plum_branch",
+    "tfc:fruit_tree/plum_growing_branch",
+    "tfc:fruit_tree/red_apple_branch",
+    "tfc:fruit_tree/red_apple_growing_branch"
+  ]
+}

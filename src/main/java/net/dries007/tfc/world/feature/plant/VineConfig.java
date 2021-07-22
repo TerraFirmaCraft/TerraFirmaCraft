@@ -19,7 +19,7 @@ public class VineConfig implements IFeatureConfig
         Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(VineConfig::getState),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
-        Codec.intRange(1, 255).fieldOf("minHeight").forGetter(c -> c.minHeight),
+        Codec.intRange(1, 255).fieldOf("minHeight").forGetter(c -> c.minHeight), // todo: min_height and max_height in json, find and fix references
         Codec.intRange(1, 255).fieldOf("maxHeight").forGetter(c -> c.maxHeight)
     ).apply(instance, VineConfig::new));
 

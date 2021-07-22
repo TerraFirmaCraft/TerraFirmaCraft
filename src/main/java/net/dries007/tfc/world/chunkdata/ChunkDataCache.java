@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,22 +34,19 @@ public final class ChunkDataCache
      * This is a cache of client side chunk data, used for when there is no world context available.
      * It is synced on chunk watch / unwatch
      */
-    public static final ChunkDataCache CLIENT = new ChunkDataCache("client");
+    public static final ChunkDataCache CLIENT = new ChunkDataCache("client", false);
 
     /**
      * This is a cache of server side chunk data.
      * It is not synced, it is updated on chunk load / unload
      */
-    public static final ChunkDataCache SERVER = new ChunkDataCache("server");
+    public static final ChunkDataCache SERVER = new ChunkDataCache("server", false);
 
     /**
-     * This is a cache of incomplete chunk data used by world generation
-     * It is generated in stages:
-     * - {@link ChunkData.Status#CLIMATE} during biome generation to generate climate variants
-     * - {@link ChunkData.Status#ROCKS} during surface generation, later used for feature generation
+     * This is a cache of chunk data during generation, before the chunk is fully generated.
      * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
      */
-    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen");
+    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen", true);
 
     /**
      * This is a set of chunk positions which have been queued for chunk watch, but were not loaded or generated at the time.
@@ -89,10 +87,10 @@ public final class ChunkDataCache
     /**
      * Creates an infinite size cache that must be managed to not create memory leaks
      */
-    private ChunkDataCache(String name)
+    private ChunkDataCache(String name, boolean sync)
     {
         this.name = name;
-        this.cache = new HashMap<>();
+        this.cache = sync ? new ConcurrentHashMap<>() : new HashMap<>();
     }
 
     public ChunkData getOrEmpty(BlockPos pos)

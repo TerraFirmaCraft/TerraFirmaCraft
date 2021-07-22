@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/andesite",
-    "hardened": "tfc:rock/hardened/andesite",
-    "bricks": "tfc:rock/bricks/andesite",
-    "cobble": "tfc:rock/cobble/andesite",
-    "gravel": "tfc:rock/gravel/andesite",
-    "smooth": "tfc:rock/smooth/andesite",
-    "mossy_cobble": "tfc:rock/mossy_cobble/andesite",
-    "mossy_bricks": "tfc:rock/mossy_bricks/andesite",
-    "cracked_bricks": "tfc:rock/cracked_bricks/andesite",
-    "chiseled": "tfc:rock/chiseled/andesite",
-    "spike": "tfc:rock/spike/andesite",
-    "loose": "tfc:rock/loose/andesite"
-  },
-  "category": "igneous_extrusive",
-  "desert_sand_color": "red",
-  "beach_sand_color": "green"
+  "raw": "tfc:rock/raw/andesite",
+  "hardened": "tfc:rock/hardened/andesite",
+  "cobble": "tfc:rock/cobble/andesite",
+  "gravel": "tfc:rock/gravel/andesite",
+  "spike": "tfc:rock/spike/andesite",
+  "loose": "tfc:rock/loose/andesite",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red"
 }

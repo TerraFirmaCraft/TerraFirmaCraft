@@ -36,5 +36,6 @@ public class PacketHandler
         CHANNEL.registerMessage(id++, ChunkUnwatchPacket.class, ChunkUnwatchPacket::encode, ChunkUnwatchPacket::new, ChunkUnwatchPacket::handle);
         CHANNEL.registerMessage(id++, CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
         CHANNEL.registerMessage(id++, SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
+        CHANNEL.registerMessage(id++, PlaceBlockSpecialPacket.class, (packet, buf) -> {}, buffer -> new PlaceBlockSpecialPacket(), PlaceBlockSpecialPacket::handle);
     }
 }

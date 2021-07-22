@@ -23,8 +23,9 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/spanish_moss",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],

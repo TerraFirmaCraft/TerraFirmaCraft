@@ -78,6 +78,12 @@ public interface ICalendar
         return (float) (time % ticksInMonth) / ticksInMonth;
     }
 
+    static float getFractionOfYear(long time, long daysInMonth)
+    {
+        long ticksInYear = MONTHS_IN_YEAR * daysInMonth * TICKS_IN_DAY;
+        return (float) (time % ticksInYear) / ticksInYear;
+    }
+
     static Month getMonthOfYear(long time, long daysInMonth)
     {
         return Month.valueOf((int) ((time / (TICKS_IN_DAY * daysInMonth)) % MONTHS_IN_YEAR));
@@ -211,6 +217,14 @@ public interface ICalendar
     }
 
     /**
+     * Returns the progress through the year from a calendar time (i.e. 0 - 1, where Jan 1 = 0)
+     */
+    default float getCalendarFractionOfYear()
+    {
+        return ICalendar.getFractionOfYear(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    /**
      * Calculates the current day from a calendar time.
      */
     default IFormattableTextComponent getCalendarDayOfYear()
@@ -231,7 +245,7 @@ public interface ICalendar
      */
     default long getCalendarTicksInMonth()
     {
-        return getCalendarDaysInMonth() * TICKS_IN_DAY;
+        return (long) getCalendarDaysInMonth() * TICKS_IN_DAY;
     }
 
     /**
@@ -239,7 +253,7 @@ public interface ICalendar
      */
     default long getCalendarTicksInYear()
     {
-        return getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
+        return (long) getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
     }
 
     default ITextComponent getCalendarTimeAndDate()

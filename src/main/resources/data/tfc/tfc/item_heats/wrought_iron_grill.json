@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:wrought_iron_grill"
+  },
+  "heat_capacity": 0.35,
+  "forging_temperature": 921.0,
+  "welding_temperature": 1228.0
+}

@@ -41,7 +41,7 @@ public class Cellular2D implements INoise2D
     private float lastX, lastY;
     private float centerX, centerY;
     private int centerHash;
-    private float f1, f2, f3;
+    private float f1, f2;
 
     // Modifiers
     private float frequency;
@@ -71,7 +71,7 @@ public class Cellular2D implements INoise2D
 
     public float get(CellularNoiseType alternateType)
     {
-        return alternateType.apply(f1, f2, f3, centerHash);
+        return alternateType.apply(f1, f2, 1, centerHash);
     }
 
     @Override
@@ -80,11 +80,18 @@ public class Cellular2D implements INoise2D
         return noise(x, y, returnType);
     }
 
+    @Override
+    public Cellular2D spread(float scaleFactor)
+    {
+        this.frequency *= scaleFactor;
+        return this;
+    }
+
     public float noise(float x, float y, CellularNoiseType type)
     {
         if (lastX == x && lastY == y)
         {
-            return type.apply(f1, f2, f3, centerHash);
+            return type.apply(f1, f2, 1, centerHash);
         }
         lastX = x;
         lastY = y;
@@ -97,7 +104,6 @@ public class Cellular2D implements INoise2D
 
         f1 = Float.MAX_VALUE;
         f2 = Float.MAX_VALUE;
-        f3 = Float.MAX_VALUE;
         centerHash = 0;
 
         final float cellularJitter = 0.43701595f * jitter;
@@ -121,7 +127,7 @@ public class Cellular2D implements INoise2D
                 final float f = vecX * vecX + vecY * vecY;
 
                 // Minimum effort to compute two things:
-                // 1. The shortest three distances (f1, f2, f3)
+                // 1. The shortest two distances (f1, f2)
                 // 2. The center + hash of the shortest distance
                 if (f < f1)
                 {
@@ -131,20 +137,14 @@ public class Cellular2D implements INoise2D
                 }
 
                 float temp;
-                if (f < f3)
+                if (f < f2)
                 {
-                    f3 = f;
-                    if (f3 < f2)
+                    f2 = f;
+                    if (f2 < f1)
                     {
-                        temp = f2;
-                        f2 = f3;
-                        f3 = temp;
-                        if (f2 < f1)
-                        {
-                            temp = f1;
-                            f1 = f2;
-                            f2 = temp;
-                        }
+                        temp = f1;
+                        f1 = f2;
+                        f2 = temp;
                     }
                 }
                 yPrimed += PRIME_Y;
@@ -155,13 +155,6 @@ public class Cellular2D implements INoise2D
         centerX /= frequency;
         centerY /= frequency;
 
-        return type.apply(f1, f2, f3, centerHash);
-    }
-
-    @Override
-    public Cellular2D spread(float scaleFactor)
-    {
-        this.frequency *= scaleFactor;
-        return this;
+        return type.apply(f1, f2, 1, centerHash);
     }
 }

@@ -35,7 +35,7 @@ public class CaveVegetationConfig implements IFeatureConfig
 
     private final Map<Block, IWeighted<BlockState>> states;
 
-    protected CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states)
+    public CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states)
     {
         this.states = states;
     }

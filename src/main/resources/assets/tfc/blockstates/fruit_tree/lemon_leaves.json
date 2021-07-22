@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "lifecycle=flowering": {
+      "model": "tfc:block/fruit_tree/lemon_flowering_leaves"
+    },
+    "lifecycle=fruiting": {
+      "model": "tfc:block/fruit_tree/lemon_fruiting_leaves"
+    },
+    "lifecycle=dormant": {
+      "model": "tfc:block/fruit_tree/lemon_dry_leaves"
+    },
+    "lifecycle=healthy": {
+      "model": "tfc:block/fruit_tree/lemon_leaves"
+    }
+  }
+}

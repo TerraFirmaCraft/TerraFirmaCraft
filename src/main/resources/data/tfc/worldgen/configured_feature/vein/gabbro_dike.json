@@ -1,0 +1,619 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pipe_vein",
+  "config": {
+    "rarity": 220,
+    "min_y": 40,
+    "max_y": 180,
+    "size": 90,
+    "density": 0.95,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/marble"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/marble"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/diorite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/granite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/gravel/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/marble"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/diorite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/granite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/hardened/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/raw/gabbro"
+          }
+        ]
+      }
+    ],
+    "salt": 2316872906,
+    "radius": 4,
+    "minSkew": 7,
+    "maxSkew": 20,
+    "minSlant": 2,
+    "maxSlant": 5
+  }
+}

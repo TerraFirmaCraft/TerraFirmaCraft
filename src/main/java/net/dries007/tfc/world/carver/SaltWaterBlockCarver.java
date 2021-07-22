@@ -14,8 +14,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
@@ -36,7 +34,7 @@ public class SaltWaterBlockCarver extends BlockCarver
             final BlockState state = chunk.getBlockState(pos);
             final BlockState stateAbove = chunk.getBlockState(posUp);
 
-            if (isCarvable(state) && isSupportable(stateAbove))
+            if (isCarvable(state) && isCarvable(stateAbove))
             {
                 if (pos.getY() == 10)
                 {
@@ -93,23 +91,5 @@ public class SaltWaterBlockCarver extends BlockCarver
             }
         }
         return false;
-    }
-
-    @Override
-    protected void reload()
-    {
-        super.reload();
-
-        // Sand can be carved for underwater carvers
-        for (SandBlockType sand : SandBlockType.values())
-        {
-            carvableBlocks.add(TFCBlocks.SAND.get(sand).get());
-        }
-    }
-
-    @Override
-    protected boolean isSupportable(BlockState state)
-    {
-        return !state.getFluidState().isEmpty() || super.isSupportable(state);
     }
 }

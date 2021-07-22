@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.world.feature;
 
+import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -30,21 +32,32 @@ public class BouldersFeature extends Feature<BoulderConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
-        final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
+        final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final ChunkData data = provider.get(pos);
         final Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
-        final BlockState baseState = rock.getBlock(config.getBaseType()).defaultBlockState();
-        final BlockState decorationState = rock.getBlock(config.getDecorationType()).defaultBlockState();
-        place(worldIn, baseState, decorationState, pos, rand);
+        final List<BlockState> states = config.getStates(rock);
+        place(worldIn, pos, states, rand);
         return true;
     }
 
-    private void place(ISeedReader worldIn, BlockState baseState, BlockState decorationState, BlockPos pos, Random rand)
+    private void place(ISeedReader worldIn, BlockPos pos, List<BlockState> states, Random rand)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
         final float radiusSquared = radius * radius;
         final int size = MathHelper.ceil(radius);
+
+        Supplier<BlockState> state;
+        if (states.size() == 1)
+        {
+            BlockState onlyState = states.get(0);
+            state = () -> onlyState;
+        }
+        else
+        {
+            state = () -> states.get(rand.nextInt(states.size()));
+        }
+
         for (int x = -size; x <= size; x++)
         {
             for (int y = -size; y <= size; y++)
@@ -56,11 +69,11 @@ public class BouldersFeature extends Feature<BoulderConfig>
                         mutablePos.set(pos).move(x, y, z);
                         if (rand.nextFloat() < 0.4f)
                         {
-                            setBlock(worldIn, mutablePos, decorationState);
+                            setBlock(worldIn, mutablePos, state.get());
                         }
                         else
                         {
-                            setBlock(worldIn, mutablePos, baseState);
+                            setBlock(worldIn, mutablePos, state.get());
                         }
                     }
                 }

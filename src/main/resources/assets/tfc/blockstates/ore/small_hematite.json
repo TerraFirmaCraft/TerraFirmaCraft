@@ -1,20 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
-      "model": "tfc:block/groundcover/hematite",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "tfc:block/groundcover/hematite"
-    },
-    "facing=south": {
-      "model": "tfc:block/groundcover/hematite",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "tfc:block/groundcover/hematite",
-      "y": 270
-    }
+    "": [
+      {
+        "model": "tfc:block/groundcover/hematite",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/hematite"
+      },
+      {
+        "model": "tfc:block/groundcover/hematite",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/hematite",
+        "y": 270
+      }
+    ]
   }
 }

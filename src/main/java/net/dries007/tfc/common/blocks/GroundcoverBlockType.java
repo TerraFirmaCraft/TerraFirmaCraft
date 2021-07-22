@@ -32,7 +32,8 @@ public enum GroundcoverBlockType
     STICK(GroundcoverBlock.FLAT, () -> Items.STICK);
 
     private final VoxelShape shape;
-    @Nullable private final Supplier<? extends Item> vanillaItem; // The vanilla item this corresponds to
+    @Nullable
+    private final Supplier<? extends Item> vanillaItem; // The vanilla item this corresponds to
 
     GroundcoverBlockType(VoxelShape shape)
     {

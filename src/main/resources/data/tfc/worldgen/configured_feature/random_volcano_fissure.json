@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:topaz_volcano_fissure",
+      "tfc:topaz_volcano_fissure",
+      "tfc:topaz_volcano_fissure",
+      "tfc:kimberlite_volcano_fissure",
+      "tfc:volcano_fissure",
+      "tfc:volcano_fissure",
+      "tfc:volcano_fissure",
+      "tfc:volcano_fissure"
+    ]
+  }
+}

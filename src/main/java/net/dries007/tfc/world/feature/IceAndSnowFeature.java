@@ -53,11 +53,15 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
     {
         initSeed(worldIn.getSeed());
+        final ChunkPos chunkPos = new ChunkPos(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
         // Since this feature may be run *both* during world generation, and after during climate updates, we need to query both the existing data, and fallback to the world gen data if empty.
-        final ChunkPos chunkPos = new ChunkPos(pos);
-        final ChunkData chunkData = ChunkData.get(worldIn, chunkPos).ifEmptyGet(() -> ChunkDataProvider.getOrThrow(chunkGenerator).get(chunkPos, ChunkData.Status.CLIMATE));
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        ChunkData chunkData = ChunkData.get(worldIn, chunkPos);
+        if (chunkData.getStatus() == ChunkData.Status.EMPTY)
+        {
+            chunkData = ChunkDataProvider.get(chunkGenerator).get(chunkPos);
+        }
 
         final BlockState snowState = Blocks.SNOW.defaultBlockState();
 

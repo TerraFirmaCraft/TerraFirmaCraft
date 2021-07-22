@@ -22,6 +22,7 @@ def main():
     args = parser.parse_args()
 
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
+
     if args.clean:
         # Stupid windows file locking errors.
         for tries in range(1, 1 + 3):
@@ -29,7 +30,7 @@ def main():
                 clean_generated_resources('/'.join(rm.resource_dir))
                 print('Clean Success')
                 return
-            except Exception:
+            except:
                 print('Failed, retrying (%d / 3)' % tries)
         print('Clean Aborted')
         return

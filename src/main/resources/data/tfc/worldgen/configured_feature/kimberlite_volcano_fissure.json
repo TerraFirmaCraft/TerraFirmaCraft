@@ -1,0 +1,167 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "tfc:fissure",
+          "config": {
+            "wall_state": "tfc:rock/raw/basalt",
+            "fluid_state": "minecraft:lava",
+            "count": 3,
+            "radius": 6,
+            "decoration": {
+              "blocks": [
+                {
+                  "stone": [
+                    "tfc:rock/raw/andesite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/andesite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/basalt"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/basalt"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/dacite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/dacite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/rhyolite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/rhyolite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/diorite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/diorite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/gabbro"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/gabbro"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/granite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/granite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/gneiss"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/gneiss"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/marble"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/marble"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/phyllite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/phyllite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/quartzite"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/quartzite"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/schist"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/schist"
+                    }
+                  ]
+                },
+                {
+                  "stone": [
+                    "tfc:rock/raw/slate"
+                  ],
+                  "ore": [
+                    {
+                      "block": "tfc:ore/kimberlite/slate"
+                    }
+                  ]
+                }
+              ],
+              "radius": 3,
+              "count": 6,
+              "rarity": 3
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:heightmap_world_surface",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "tfc:volcano",
+      "config": {
+        "center": true
+      }
+    }
+  }
+}

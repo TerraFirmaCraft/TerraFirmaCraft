@@ -10,7 +10,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -19,7 +22,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -44,7 +46,6 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 public class GroundcoverBlock extends Block implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     public static final VoxelShape FLAT = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
     public static final VoxelShape SMALL = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
@@ -63,7 +64,8 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     }
 
     private final VoxelShape shape;
-    @Nullable private final Supplier<? extends Item> pickBlock;
+    @Nullable
+    private final Supplier<? extends Item> pickBlock;
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
@@ -77,7 +79,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         this.shape = shape;
         this.pickBlock = pickBlock;
 
-        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Nonnull
@@ -86,7 +88,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     {
         final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 
-        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        BlockState state = defaultBlockState();
         if (getFluidProperty().canContain(fluidState.getType()))
         {
             return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
@@ -97,7 +99,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, getFluidProperty());
+        builder.add(getFluidProperty());
     }
 
     @Override
@@ -123,7 +125,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        worldIn.destroyBlock(pos, false);
+        worldIn.removeBlock(pos, false);
         if (!player.isCreative() && worldIn instanceof ServerWorld)
         {
             TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;

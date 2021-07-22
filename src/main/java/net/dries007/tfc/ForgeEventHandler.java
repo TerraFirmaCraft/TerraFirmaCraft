@@ -13,48 +13,62 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.world.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
+import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.types.MetalItemManager;
-import net.dries007.tfc.common.types.MetalManager;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
+import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
+import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
+import net.dries007.tfc.common.types.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CacheInvalidationListener;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -64,17 +78,44 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public static void init()
+    {
+        final IEventBus bus = MinecraftForge.EVENT_BUS;
+
+        bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
+        bus.addGenericListener(Chunk.class, ForgeEventHandler::attachChunkCapabilities);
+        bus.addGenericListener(World.class, ForgeEventHandler::attachWorldCapabilities);
+        bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
+        bus.addListener(ForgeEventHandler::onChunkWatch);
+        bus.addListener(ForgeEventHandler::onChunkUnwatch);
+        bus.addListener(ForgeEventHandler::onChunkLoad);
+        bus.addListener(ForgeEventHandler::onChunkUnload);
+        bus.addListener(ForgeEventHandler::onChunkDataSave);
+        bus.addListener(ForgeEventHandler::onChunkDataLoad);
+        bus.addListener(ForgeEventHandler::addReloadListeners);
+        bus.addListener(ForgeEventHandler::beforeServerStart);
+        bus.addListener(ForgeEventHandler::onServerStopped);
+        bus.addListener(ForgeEventHandler::registerCommands);
+        bus.addListener(ForgeEventHandler::onBlockBroken);
+        bus.addListener(ForgeEventHandler::onBlockPlace);
+        bus.addListener(ForgeEventHandler::onNeighborUpdate);
+        bus.addListener(ForgeEventHandler::onWorldTick);
+        bus.addListener(ForgeEventHandler::onExplosionDetonate);
+        bus.addListener(ForgeEventHandler::onWorldLoad);
+        bus.addListener(ForgeEventHandler::onCreateNetherPortal);
+        bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
+        bus.addListener(ForgeEventHandler::onFireStart);
+        bus.addListener(ForgeEventHandler::onArrowImpact);
+        bus.addListener(ForgeEventHandler::onFireballImpact);
+    }
+
     /**
      * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerWorld, IServerWorldInfo, boolean, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
-    @SubscribeEvent
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
@@ -143,8 +184,7 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
-    public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
+    public static void attachChunkCapabilities(AttachCapabilitiesEvent<Chunk> event)
     {
         if (!event.getObject().isEmpty())
         {
@@ -172,7 +212,28 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
+    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event)
+    {
+        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+    }
+
+    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
+    {
+        ItemStack stack = event.getObject();
+        if (!stack.isEmpty())
+        {
+            // Attach mandatory capabilities
+            event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
+
+            // Optional capabilities
+            HeatDefinition def = HeatManager.get(stack);
+            if (def != null)
+            {
+                event.addCapability(HeatCapability.KEY, def.create());
+            }
+        }
+    }
+
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
         // Send an update packet to the client when watching the chunk
@@ -189,7 +250,14 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
+    public static void onChunkUnwatch(ChunkWatchEvent.UnWatch event)
+    {
+        // Send an update packet to the client when un-watching the chunk
+        ChunkPos pos = event.getPos();
+        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
+        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
+    }
+
     public static void onChunkLoad(ChunkEvent.Load event)
     {
         if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
@@ -202,7 +270,6 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
         // Clear server side chunk data cache
@@ -212,22 +279,37 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
-    public static void onChunkUnwatch(ChunkWatchEvent.UnWatch event)
+    /**
+     * Serialize chunk data on chunk primers, before the chunk data capability is present.
+     * - This saves the effort of re-generating the same data for proto chunks
+     * - And, due to the late setting of part of chunk data ({@link net.dries007.tfc.world.chunkdata.RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
+     */
+    public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        // Send an update packet to the client when un-watching the chunk
-        ChunkPos pos = event.getPos();
-        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
-        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK)
+        {
+            final ChunkPos pos = event.getChunk().getPos();
+            final ChunkData data = ChunkDataCache.WORLD_GEN.get(pos);
+            if (data != null && data.getStatus() != ChunkData.Status.EMPTY)
+            {
+                event.getData().put("tfc_protochunk_data", data.serializeNBT());
+            }
+        }
     }
 
-    @SubscribeEvent
-    public static void onAttachCapabilitiesWorld(AttachCapabilitiesEvent<World> event)
+    /**
+     * @see #onChunkDataSave(ChunkDataEvent.Save)
+     */
+    public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND))
+        {
+            final ChunkPos pos = event.getChunk().getPos();
+            final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
+            data.deserializeNBT(event.getData().getCompound("tfc_protochunk_data"));
+        }
     }
 
-    @SubscribeEvent
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
         // Resource reload listeners
@@ -235,32 +317,30 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
+        resourceManager.registerReloadListener(FuelManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
         resourceManager.registerReloadListener(HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(ItemSizeManager.INSTANCE);
 
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
-    @SubscribeEvent
     public static void beforeServerStart(FMLServerAboutToStartEvent event)
     {
         CacheInvalidationListener.INSTANCE.invalidateAll();
     }
 
-    @SubscribeEvent
-    public static void onRegisterCommands(RegisterCommandsEvent event)
-    {
-        LOGGER.debug("Registering TFC Commands");
-        TFCCommands.register(event.getDispatcher());
-    }
-
-    @SubscribeEvent
     public static void onServerStopped(FMLServerStoppedEvent event)
     {
         CacheInvalidationListener.INSTANCE.invalidateAll();
     }
 
-    @SubscribeEvent
+    public static void registerCommands(RegisterCommandsEvent event)
+    {
+        LOGGER.debug("Registering TFC Commands");
+        TFCCommands.register(event.getDispatcher());
+    }
+
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
         // Check for possible collapse
@@ -274,7 +354,26 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
+    {
+        if (event.getWorld() instanceof ServerWorld)
+        {
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            final BlockPos pos = event.getPos();
+            final BlockState state = event.getState();
+
+            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+            }
+
+            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+            }
+        }
+    }
+
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
         if (event.getWorld() instanceof ServerWorld)
@@ -299,28 +398,6 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
-    {
-        if (event.getWorld() instanceof ServerWorld)
-        {
-            final ServerWorld world = (ServerWorld) event.getWorld();
-            final BlockPos pos = event.getPos();
-            final BlockState state = event.getState();
-
-            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
-            {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
-            }
-
-            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
-            {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
@@ -329,7 +406,6 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         if (!event.getWorld().isClientSide)
@@ -338,40 +414,26 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
-    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
-    {
-        ItemStack stack = event.getObject();
-        if (!stack.isEmpty())
-        {
-            // Every item has a forging capability
-            event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
-
-            // Attach heat capability to the ones defined by data packs
-            HeatDefinition def = HeatManager.get(stack);
-            if (def != null)
-            {
-                event.addCapability(HeatCapability.KEY, def.create());
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
         if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
         {
-            ServerWorld world = (ServerWorld) event.getWorld();
-            if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
-                // Natural regeneration should be disabled, allows TFC to have custom regeneration
-                world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
-                LOGGER.info("Updating gamerule naturalRegeneration to false!");
+                final GameRules rules = world.getGameRules();
+                final MinecraftServer server = world.getServer();
+
+                rules.getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, server);
+                rules.getRule(GameRules.RULE_DOINSOMNIA).set(false, server);
+                rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
+                rules.getRule(GameRules.RULE_DO_TRADER_SPAWNING).set(false, server);
+
+                LOGGER.info("Updating TFC Relevant Game Rules.");
             }
         }
     }
 
-    @SubscribeEvent
     public static void onCreateNetherPortal(BlockEvent.PortalSpawnEvent event)
     {
         if (!TFCConfig.SERVER.enableNetherPortals.get())
@@ -380,7 +442,6 @@ public final class ForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
         Block originalBlock = event.getOriginalState().getBlock();
@@ -395,6 +456,85 @@ public final class ForgeEventHandler
         else if (originalBlock == Blocks.BASALT)
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+    }
+
+    public static void onFireStart(StartFireEvent event)
+    {
+        World world = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+        Block block = state.getBlock();
+
+        if (block.is(TFCBlocks.FIREPIT.get()) || block.is(TFCBlocks.POT.get()) || block.is(TFCBlocks.GRILL.get()))
+        {
+            AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
+            if (firepit != null)
+            {
+                firepit.light(state);
+            }
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.TORCH.get()) || block.is(TFCBlocks.WALL_TORCH.get()))
+        {
+            TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+            if (te != null)
+            {
+                te.resetCounter();
+            }
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.DEAD_TORCH.get()))
+        {
+            world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.DEAD_WALL_TORCH.get()))
+        {
+            Direction direction = state.getValue(DeadWallTorchBlock.FACING);
+            world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.LOG_PILE.get()))
+        {
+            BurningLogPileBlock.tryLightLogPile(world, pos);
+            event.setCanceled(true);
+        }
+        else if (block.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+        {
+            PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
+            if (kiln != null)
+            {
+                kiln.tryLight();
+            }
+        }
+    }
+
+    public static void onArrowImpact(ProjectileImpactEvent.Arrow event)
+    {
+        if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
+        AbstractArrowEntity arrow = event.getArrow();
+        RayTraceResult result = event.getRayTraceResult();
+        if (result.getType() == RayTraceResult.Type.BLOCK && arrow.isOnFire())
+        {
+            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockPos pos = blockResult.getBlockPos();
+            World world = arrow.level;
+            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+        }
+    }
+
+    public static void onFireballImpact(ProjectileImpactEvent.Fireball event)
+    {
+        if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
+        DamagingProjectileEntity fireball = event.getFireball();
+        RayTraceResult result = event.getRayTraceResult();
+        if (result.getType() == RayTraceResult.Type.BLOCK)
+        {
+            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockPos pos = blockResult.getBlockPos();
+            World world = fireball.level;
+            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
 }

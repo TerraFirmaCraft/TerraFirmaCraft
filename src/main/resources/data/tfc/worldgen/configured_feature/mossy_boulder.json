@@ -14,8 +14,148 @@
                 "feature": {
                   "type": "tfc:boulder",
                   "config": {
-                    "base_type": "cobble",
-                    "decoration_type": "mossy_cobble"
+                    "states": [
+                      {
+                        "rock": "tfc:chalk",
+                        "blocks": [
+                          "tfc:rock/cobble/chalk",
+                          "tfc:rock/mossy_cobble/chalk"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:chert",
+                        "blocks": [
+                          "tfc:rock/cobble/chert",
+                          "tfc:rock/mossy_cobble/chert"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:claystone",
+                        "blocks": [
+                          "tfc:rock/cobble/claystone",
+                          "tfc:rock/mossy_cobble/claystone"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:conglomerate",
+                        "blocks": [
+                          "tfc:rock/cobble/conglomerate",
+                          "tfc:rock/mossy_cobble/conglomerate"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:dolomite",
+                        "blocks": [
+                          "tfc:rock/cobble/dolomite",
+                          "tfc:rock/mossy_cobble/dolomite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:limestone",
+                        "blocks": [
+                          "tfc:rock/cobble/limestone",
+                          "tfc:rock/mossy_cobble/limestone"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:shale",
+                        "blocks": [
+                          "tfc:rock/cobble/shale",
+                          "tfc:rock/mossy_cobble/shale"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:gneiss",
+                        "blocks": [
+                          "tfc:rock/cobble/gneiss",
+                          "tfc:rock/mossy_cobble/gneiss"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:marble",
+                        "blocks": [
+                          "tfc:rock/cobble/marble",
+                          "tfc:rock/mossy_cobble/marble"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:phyllite",
+                        "blocks": [
+                          "tfc:rock/cobble/phyllite",
+                          "tfc:rock/mossy_cobble/phyllite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:quartzite",
+                        "blocks": [
+                          "tfc:rock/cobble/quartzite",
+                          "tfc:rock/mossy_cobble/quartzite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:schist",
+                        "blocks": [
+                          "tfc:rock/cobble/schist",
+                          "tfc:rock/mossy_cobble/schist"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:slate",
+                        "blocks": [
+                          "tfc:rock/cobble/slate",
+                          "tfc:rock/mossy_cobble/slate"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:diorite",
+                        "blocks": [
+                          "tfc:rock/cobble/diorite",
+                          "tfc:rock/mossy_cobble/diorite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:gabbro",
+                        "blocks": [
+                          "tfc:rock/cobble/gabbro",
+                          "tfc:rock/mossy_cobble/gabbro"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:granite",
+                        "blocks": [
+                          "tfc:rock/cobble/granite",
+                          "tfc:rock/mossy_cobble/granite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:andesite",
+                        "blocks": [
+                          "tfc:rock/cobble/andesite",
+                          "tfc:rock/mossy_cobble/andesite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:basalt",
+                        "blocks": [
+                          "tfc:rock/cobble/basalt",
+                          "tfc:rock/mossy_cobble/basalt"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:dacite",
+                        "blocks": [
+                          "tfc:rock/cobble/dacite",
+                          "tfc:rock/mossy_cobble/dacite"
+                        ]
+                      },
+                      {
+                        "rock": "tfc:rhyolite",
+                        "blocks": [
+                          "tfc:rock/cobble/rhyolite",
+                          "tfc:rock/mossy_cobble/rhyolite"
+                        ]
+                      }
+                    ]
                   }
                 },
                 "decorator": {
@@ -25,22 +165,22 @@
               }
             },
             "decorator": {
-              "type": "minecraft:chance",
-              "config": {
-                "chance": 12
-              }
+              "type": "minecraft:heightmap_world_surface",
+              "config": {}
             }
           }
         },
         "decorator": {
-          "type": "minecraft:heightmap_world_surface",
+          "type": "minecraft:square",
           "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:square",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 12
+      }
     }
   }
 }

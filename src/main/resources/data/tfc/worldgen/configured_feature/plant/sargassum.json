@@ -25,8 +25,9 @@
                       }
                     },
                     "block_placer": {
-                      "type": "tfc:random_age",
-                      "config": {}
+                      "type": "tfc:random_property",
+                      "block": "tfc:plant/sargassum",
+                      "property": "age"
                     },
                     "whitelist": [],
                     "blacklist": [],
@@ -38,7 +39,7 @@
                   }
                 },
                 "decorator": {
-                  "type": "tfc:shoreline",
+                  "type": "tfc:near_water",
                   "config": {
                     "radius": 6
                   }

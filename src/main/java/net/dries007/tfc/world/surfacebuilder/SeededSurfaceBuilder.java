@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
 
-public abstract class SeededSurfaceBuilder<C extends SurfaceBuilderConfig> extends SurfaceBuilder<C>
+public abstract class SeededSurfaceBuilder<C extends SurfaceBuilderConfig> extends ContextSurfaceBuilder<C>
 {
     private long lastSeed;
     private boolean initialized;

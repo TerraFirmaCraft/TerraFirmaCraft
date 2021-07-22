@@ -109,17 +109,17 @@ public abstract class CreepingPlantBlock extends PlantBlock
         return shapeCache.get(state);
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
-    }
-
     @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return updateStateFromSides(context.getLevel(), context.getClickedPos(), updateStateWithCurrentMonth(defaultBlockState()));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
     }
 
     private BlockState updateStateFromSides(IWorld world, BlockPos pos, BlockState state)

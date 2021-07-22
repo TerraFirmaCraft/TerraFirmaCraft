@@ -43,6 +43,10 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_malachite/limestone"
+          },
+          {
+            "weight": 11,
+            "block": "tfc:ore/gypsum/limestone"
           }
         ]
       }

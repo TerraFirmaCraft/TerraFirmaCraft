@@ -13,5 +13,8 @@ package net.dries007.tfc.world.chunkdata;
  */
 public interface IChunkDataGenerator
 {
-    void generate(ChunkData data, ChunkData.Status status);
+    /**
+     * Generate the provided chunk data
+     */
+    void generate(ChunkData data);
 }

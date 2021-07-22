@@ -28,34 +28,29 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/reindeer_lichen",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 1,
-                "xspread": 6,
-                "zspread": 6,
+                "xspread": 7,
+                "zspread": 7,
+                "tries": 100,
                 "use_density": true
               }
             },
             "decorator": {
-              "type": "minecraft:range",
-              "config": {
-                "bottom_offset": 64,
-                "top_offset": 0,
-                "maximum": 130
-              }
+              "type": "minecraft:square",
+              "config": {}
             }
           }
         },
         "decorator": {
-          "type": "tfc:bounded_carving_mask",
+          "type": "minecraft:count",
           "config": {
-            "step": "air",
-            "probability": 0.002,
-            "min_y": 0,
-            "max_y": 130
+            "count": 4
           }
         }
       }
@@ -64,8 +59,8 @@
       "type": "tfc:climate",
       "config": {
         "min_temperature": -7,
-        "max_temperature": 7,
-        "min_rainfall": 110,
+        "max_temperature": 5,
+        "min_rainfall": 210,
         "max_rainfall": 390,
         "max_forest": "normal",
         "fuzzy": true

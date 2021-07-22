@@ -20,9 +20,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
-import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.recipes.LandslideRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.command.LocateVeinCommand;
+import net.dries007.tfc.common.recipes.*;
+import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.mixin.item.crafting.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
@@ -47,14 +48,19 @@ public enum CacheInvalidationListener implements IFutureReloadListener
         {
             CollapseRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.COLLAPSE));
             LandslideRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.LANDSLIDE));
+            HeatingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.HEATING));
+            QuernRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.QUERN));
 
             HeatManager.reload();
+            ItemSizeManager.reload();
             MetalItemManager.reload();
+            FuelManager.reload();
 
             InteractionManager.reload();
         }
 
         ChunkDataCache.clearAll();
+        LocateVeinCommand.clearCache();
     }
 
     @SuppressWarnings("unchecked")

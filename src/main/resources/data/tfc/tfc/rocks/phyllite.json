@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/phyllite",
-    "hardened": "tfc:rock/hardened/phyllite",
-    "bricks": "tfc:rock/bricks/phyllite",
-    "cobble": "tfc:rock/cobble/phyllite",
-    "gravel": "tfc:rock/gravel/phyllite",
-    "smooth": "tfc:rock/smooth/phyllite",
-    "mossy_cobble": "tfc:rock/mossy_cobble/phyllite",
-    "mossy_bricks": "tfc:rock/mossy_bricks/phyllite",
-    "cracked_bricks": "tfc:rock/cracked_bricks/phyllite",
-    "chiseled": "tfc:rock/chiseled/phyllite",
-    "spike": "tfc:rock/spike/phyllite",
-    "loose": "tfc:rock/loose/phyllite"
-  },
-  "category": "metamorphic",
-  "desert_sand_color": "brown",
-  "beach_sand_color": "yellow"
+  "raw": "tfc:rock/raw/phyllite",
+  "hardened": "tfc:rock/hardened/phyllite",
+  "cobble": "tfc:rock/cobble/phyllite",
+  "gravel": "tfc:rock/gravel/phyllite",
+  "spike": "tfc:rock/spike/phyllite",
+  "loose": "tfc:rock/loose/phyllite",
+  "sand": "tfc:sand/brown",
+  "sandstone": "tfc:raw_sandstone/brown"
 }

@@ -24,10 +24,11 @@ public class EmergentPlantPlacer extends BlockPlacer
     @Override
     public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
     {
-        ((TallWaterPlantBlock)state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
+        ((TallWaterPlantBlock) state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }
 
-    protected BlockPlacerType<?> type() {
+    protected BlockPlacerType<?> type()
+    {
         return TFCBlockPlacers.EMERGENT_PLANT.get();
     }
 }

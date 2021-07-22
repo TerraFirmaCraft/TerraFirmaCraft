@@ -1,0 +1,51 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:fruit_trees",
+                  "config": {
+                    "state": "tfc:fruit_tree/olive_growing_branch"
+                  }
+                },
+                "decorator": {
+                  "type": "minecraft:chance",
+                  "config": {
+                    "chance": 200
+                  }
+                }
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 13,
+                "max_temperature": 30,
+                "min_rainfall": 150,
+                "max_rainfall": 380,
+                "max_forest": "normal"
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
+    }
+  }
+}

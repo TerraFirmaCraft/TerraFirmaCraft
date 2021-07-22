@@ -1,0 +1,145 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:hot_spring",
+  "config": {
+    "fluid_state": "tfc:fluid/spring_water",
+    "radius": 14,
+    "decoration": {
+      "blocks": [
+        {
+          "stone": [
+            "tfc:rock/raw/andesite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/andesite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/basalt"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/basalt"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/dacite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/dacite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/rhyolite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/rhyolite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/diorite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/diorite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/gabbro"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/gabbro"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/granite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/granite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/gneiss"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/gneiss"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/marble"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/marble"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/phyllite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/phyllite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/quartzite"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/quartzite"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/schist"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/schist"
+            }
+          ]
+        },
+        {
+          "stone": [
+            "tfc:rock/raw/slate"
+          ],
+          "ore": [
+            {
+              "block": "tfc:ore/emerald/slate"
+            }
+          ]
+        }
+      ],
+      "radius": 5,
+      "count": 5,
+      "rarity": 3
+    }
+  }
+}

@@ -12,12 +12,16 @@
               "type": "tfc:random_patch",
               "config": {
                 "state_provider": {
-                  "type": "tfc:facing_random",
-                  "state": "tfc:groundcover/stick"
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:groundcover/stick",
+                    "Properties": {
+                      "fluid": "empty"
+                    }
+                  }
                 },
                 "block_placer": {
-                  "type": "minecraft:simple_block_placer",
-                  "config": {}
+                  "type": "minecraft:simple_block_placer"
                 },
                 "whitelist": [],
                 "blacklist": [],

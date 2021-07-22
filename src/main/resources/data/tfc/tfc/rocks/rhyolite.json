@@ -1,20 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "blocks": {
-    "raw": "tfc:rock/raw/rhyolite",
-    "hardened": "tfc:rock/hardened/rhyolite",
-    "bricks": "tfc:rock/bricks/rhyolite",
-    "cobble": "tfc:rock/cobble/rhyolite",
-    "gravel": "tfc:rock/gravel/rhyolite",
-    "smooth": "tfc:rock/smooth/rhyolite",
-    "mossy_cobble": "tfc:rock/mossy_cobble/rhyolite",
-    "mossy_bricks": "tfc:rock/mossy_bricks/rhyolite",
-    "cracked_bricks": "tfc:rock/cracked_bricks/rhyolite",
-    "chiseled": "tfc:rock/chiseled/rhyolite",
-    "spike": "tfc:rock/spike/rhyolite",
-    "loose": "tfc:rock/loose/rhyolite"
-  },
-  "category": "igneous_extrusive",
-  "desert_sand_color": "red",
-  "beach_sand_color": "white"
+  "raw": "tfc:rock/raw/rhyolite",
+  "hardened": "tfc:rock/hardened/rhyolite",
+  "cobble": "tfc:rock/cobble/rhyolite",
+  "gravel": "tfc:rock/gravel/rhyolite",
+  "spike": "tfc:rock/spike/rhyolite",
+  "loose": "tfc:rock/loose/rhyolite",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red"
 }

@@ -23,8 +23,7 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:tall_plant",
-                  "config": {}
+                  "type": "tfc:tall_plant"
                 },
                 "whitelist": [],
                 "blacklist": [],

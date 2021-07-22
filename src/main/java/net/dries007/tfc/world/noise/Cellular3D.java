@@ -78,6 +78,26 @@ public class Cellular3D implements INoise3D
     @Override
     public float noise(float x, float y, float z)
     {
+        return noise(x, y, z, returnType);
+    }
+
+    @Override
+    public Cellular3D spread(float scaleFactor)
+    {
+        this.frequency *= scaleFactor;
+        return this;
+    }
+
+    public float noise(float x, float y, float z, CellularNoiseType type)
+    {
+        if (lastX == x && lastY == y && lastZ == z)
+        {
+            return type.apply(f1, f2, f3, centerHash);
+        }
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+
         x *= frequency;
         y *= frequency;
         z *= frequency;
@@ -86,9 +106,10 @@ public class Cellular3D implements INoise3D
         int yr = NoiseUtil.fastRound(y);
         int zr = NoiseUtil.fastRound(z);
 
-        float distance0 = Float.MAX_VALUE;
-        float distance1 = Float.MAX_VALUE;
-        int centerHash = 0;
+        f1 = Float.MAX_VALUE;
+        f2 = Float.MAX_VALUE;
+        f3 = Float.MAX_VALUE;
+        centerHash = 0;
 
         float cellularJitter = 0.39614353f * jitter;
 
@@ -107,20 +128,43 @@ public class Cellular3D implements INoise3D
                     int hash = NoiseUtil.hashPrimed(seed, xPrimed, yPrimed, zPrimed);
                     int idx = hash & (255 << 2);
 
-                    float vecX = (xi - x) + RANDOM_VECTORS_3D[idx] * cellularJitter;
-                    float vecY = (yi - y) + RANDOM_VECTORS_3D[idx | 1] * cellularJitter;
-                    float vecZ = (zi - z) + RANDOM_VECTORS_3D[idx | 2] * cellularJitter;
+                    final float cellX = xi + RANDOM_VECTORS_3D[idx] * cellularJitter;
+                    final float cellY = yi + RANDOM_VECTORS_3D[idx | 1] * cellularJitter;
+                    final float cellZ = zi + RANDOM_VECTORS_3D[idx | 2] * cellularJitter;
 
-                    float newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
+                    final float vecX = (x - cellX);
+                    final float vecY = (y - cellY);
+                    final float vecZ = (z - cellZ);
 
-                    distance1 = NoiseUtil.fastMax(NoiseUtil.fastMin(distance1, newDistance), distance0);
-                    if (newDistance < distance0)
+                    final float f = vecX * vecX + vecY * vecY + vecZ * vecZ;
+
+                    // Minimum effort to compute two things:
+                    // 1. The shortest three distances (f1, f2, f3)
+                    // 2. The center + hash of the shortest distance
+                    if (f < f1)
                     {
-                        distance0 = newDistance;
                         centerHash = hash;
-                        centerX = vecX + x;
-                        centerY = vecY + y;
-                        centerZ = vecZ + z;
+                        centerX = cellX;
+                        centerY = cellY;
+                        centerZ = cellZ;
+                    }
+
+                    float temp;
+                    if (f < f3)
+                    {
+                        f3 = f;
+                        if (f3 < f2)
+                        {
+                            temp = f2;
+                            f2 = f3;
+                            f3 = temp;
+                            if (f2 < f1)
+                            {
+                                temp = f1;
+                                f1 = f2;
+                                f2 = temp;
+                            }
+                        }
                     }
                     zPrimed += PRIME_Z;
                 }
@@ -134,12 +178,5 @@ public class Cellular3D implements INoise3D
         centerZ /= frequency;
 
         return returnType.apply(f1, f2, f3, centerHash);
-    }
-
-    @Override
-    public Cellular3D spread(float scaleFactor)
-    {
-        this.frequency *= scaleFactor;
-        return this;
     }
 }

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:wood/log/maple"
+  },
+  "duration": 2000,
+  "temperature": 745
+}

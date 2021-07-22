@@ -6,23 +6,25 @@
 
 package net.dries007.tfc.world;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IWeighted;
 
@@ -34,6 +36,8 @@ public final class Codecs
     public static final Codec<Integer> POSITIVE_INT = Codec.intRange(1, Integer.MAX_VALUE);
     public static final Codec<Integer> NONNEGATIVE_INT = Codec.intRange(0, Integer.MAX_VALUE);
     public static final Codec<Float> NONNEGATIVE_FLOAT = Codec.floatRange(0, Float.MAX_VALUE);
+
+    public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.xmap(BiomeDictionary.Type::getType, BiomeDictionary.Type::getName);
 
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.
@@ -49,10 +53,6 @@ public final class Codecs
     /**
      * Additional codecs for existing configs.
      */
-    public static final Codec<SurfaceBuilderConfig> LENIENT_SURFACE_BUILDER_CONFIG = RecordCodecBuilder.create(instance -> instance.group(
-        LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTopMaterial),
-        LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnderMaterial)
-    ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.defaultBlockState())));
 
     public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
 

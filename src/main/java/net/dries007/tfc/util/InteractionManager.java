@@ -14,30 +14,26 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.state.properties.BedPart;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.GroundcoverBlockType;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.ThatchBedBlock;
+import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 /**
  * This exists due to problems in handling right click events
@@ -52,6 +48,7 @@ public final class InteractionManager
     private static final List<Entry> ACTIONS = new ArrayList<>();
     private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
+    @SuppressWarnings("deprecation")
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
@@ -78,6 +75,36 @@ public final class InteractionManager
 
                     }
                 }
+            }
+            return ActionResultType.FAIL;
+        });
+
+        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
+            final PlayerEntity player = context.getPlayer();
+            final World world = context.getLevel();
+            final BlockPos pos = context.getClickedPos();
+            if (player != null && StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+            {
+                if (!player.isCreative())
+                {
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
+            final PlayerEntity playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayerEntity)
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                if (!player.isCreative())
+                    stack.shrink(1);
+                if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                    return ActionResultType.SUCCESS;
             }
             return ActionResultType.FAIL;
         });
@@ -122,6 +149,91 @@ public final class InteractionManager
             }
         });
 
+        register(Items.CHARCOAL, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && !player.abilities.mayBuild)
+            {
+                return ActionResultType.PASS;
+            }
+            else
+            {
+                final World world = context.getLevel();
+                final BlockPos pos = context.getClickedPos();
+                final BlockState stateAt = world.getBlockState(pos);
+                if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
+                {
+                    int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
+                    if (layers != 8)
+                    {
+                        world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
+                        Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                        return ActionResultType.SUCCESS;
+                    }
+                }
+                if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
+                {
+                    world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                    return ActionResultType.SUCCESS;
+                }
+                return ActionResultType.FAIL;
+            }
+        });
+
+        // Log pile creation and insertion.
+        // Note: sneaking will always bypass the log pile block onUse method - that is why we have to handle some insertion here.
+        // - holding log, targeting block, shift click = place log pile
+        // - holding log, targeting log pile, shift click = insert all
+        // - holding log, targeting log pile, click normally = insert one
+        final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
+        register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
+            final PlayerEntity player = context.getPlayer();
+            if (player != null && player.isShiftKeyDown())
+            {
+                final World world = context.getLevel();
+                final Direction direction = context.getClickedFace();
+                final BlockPos posClicked = context.getClickedPos();
+                final BlockState stateClicked = world.getBlockState(posClicked);
+                final BlockPos relativePos = posClicked.relative(direction);
+
+                // If we're targeting a log pile, we can do one of two insertion operations
+                if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
+                {
+                    final LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
+                    return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                        ItemStack insertStack = stack.copy();
+                        insertStack = Helpers.insertAllSlots(cap, insertStack);
+                        if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
+                        {
+                            if (!world.isClientSide())
+                            {
+                                Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                stack.setCount(insertStack.getCount());
+                            }
+                            return ActionResultType.SUCCESS;
+                        }
+                        return ActionResultType.FAIL;
+                    }).orElse(ActionResultType.PASS);
+                }
+                else
+                {
+                    // Trying to place a log pile.
+                    final ItemStack insertStack = stack.copy();
+                    final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                    if (result.consumesAction())
+                    {
+                        final LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
+                        Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                            insertStack.setCount(1);
+                            cap.insertItem(0, insertStack, false);
+                        });
+                    }
+                    return result;
+                }
+            }
+            return ActionResultType.PASS;
+        });
+
         // BlockItem mechanics for vanilla items that match groundcover types
         for (GroundcoverBlockType type : GroundcoverBlockType.values())
         {
@@ -133,8 +245,6 @@ public final class InteractionManager
 
         // todo: hide tag right click -> generic scraping recipe
         // todo: knapping tags
-        // todo: log piles
-        // todo: charcoal piles
     }
 
     public static void register(BlockItemPlacement wrapper)
@@ -170,7 +280,7 @@ public final class InteractionManager
                     {
                         ACTIVE.set(false);
                     }
-                    return Optional.of(result);
+                    return result == ActionResultType.PASS ? Optional.empty() : Optional.of(result);
                 }
             }
         }
@@ -182,6 +292,9 @@ public final class InteractionManager
         CACHE.reload(ACTIONS);
     }
 
+    /**
+     * Return {@link ActionResultType#PASS} to allow normal right click handling
+     */
     @FunctionalInterface
     public interface OnItemUseAction
     {

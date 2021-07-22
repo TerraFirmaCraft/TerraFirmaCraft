@@ -24,6 +24,23 @@ import net.dries007.tfc.common.TFCTags;
 
 public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
 {
+    public static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    {
+        for (int i = 1; i <= height; ++i)
+        {
+            if (world.isEmptyBlock(mutablePos))
+            {
+                if (i == height || !world.isEmptyBlock(mutablePos.above()))
+                {
+                    world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
+                    break;
+                }
+                world.setBlock(mutablePos, body, 2);
+            }
+            mutablePos.move(Direction.UP);
+        }
+    }
+
     public TFCTwistingVinesFeature(Codec<TallPlantConfig> codec)
     {
         super(codec);
@@ -48,22 +65,5 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
             }
         }
         return placedAny;
-    }
-
-    public static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
-    {
-        for (int i = 1; i <= height; ++i)
-        {
-            if (world.isEmptyBlock(mutablePos))
-            {
-                if (i == height || !world.isEmptyBlock(mutablePos.above()))
-                {
-                    world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
-                    break;
-                }
-                world.setBlock(mutablePos, body, 2);
-            }
-            mutablePos.move(Direction.UP);
-        }
     }
 }

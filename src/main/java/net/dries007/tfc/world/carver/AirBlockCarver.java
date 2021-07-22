@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
@@ -25,13 +24,6 @@ import net.dries007.tfc.world.chunkdata.RockData;
 public class AirBlockCarver extends BlockCarver
 {
     private BitSet waterAdjacencyMask;
-
-    @Override
-    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
-    {
-        this.waterAdjacencyMask = Objects.requireNonNull(waterAdjacencyMask, "Air block carver was supplied with a null waterAdjacencyMask - this is not allowed!");
-        super.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
-    }
 
     @Override
     public boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel)
@@ -76,8 +68,9 @@ public class AirBlockCarver extends BlockCarver
     }
 
     @Override
-    protected boolean isSupportable(BlockState state)
+    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
     {
-        return state.getFluidState().is(FluidTags.LAVA) || super.isSupportable(state);
+        this.waterAdjacencyMask = Objects.requireNonNull(waterAdjacencyMask, "Air block carver was supplied with a null waterAdjacencyMask - this is not allowed!");
+        super.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
     }
 }

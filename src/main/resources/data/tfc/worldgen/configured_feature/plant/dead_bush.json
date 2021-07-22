@@ -22,8 +22,9 @@
                   }
                 },
                 "block_placer": {
-                  "type": "tfc:random_age",
-                  "config": {}
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/dead_bush",
+                  "property": "age"
                 },
                 "whitelist": [],
                 "blacklist": [],
