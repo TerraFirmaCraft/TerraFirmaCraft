@@ -45,6 +45,57 @@
       "tfc:stonedrag2"
     ]
   },
+  "knap_stone": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "knap_clay": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "knap_leather": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 1.1
+      }
+    ]
+  },
   "bellows.blow.air": {
     "category": "block",
     "sounds": [

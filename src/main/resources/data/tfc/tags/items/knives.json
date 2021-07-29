@@ -10,6 +10,10 @@
     "tfc:metal/knife/steel",
     "tfc:metal/knife/black_steel",
     "tfc:metal/knife/blue_steel",
-    "tfc:metal/knife/red_steel"
+    "tfc:metal/knife/red_steel",
+    "tfc:stone/knife/sedimentary",
+    "tfc:stone/knife/metamorphic",
+    "tfc:stone/knife/igneous_extrusive",
+    "tfc:stone/knife/igneous_intrusive"
   ]
 }

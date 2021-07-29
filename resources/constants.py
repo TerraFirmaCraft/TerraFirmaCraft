@@ -18,7 +18,7 @@ Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
-ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
+ROCK_ITEMS: List[str] = ['axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel']
 
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'white'),
@@ -123,6 +123,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'shield': MetalItem('tool', 400, 'item/handheld', None)
 }
+METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True),
     'native_gold': Ore('gold', True),
@@ -427,6 +428,10 @@ DEFAULT_LANG = {
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
     'tfc.screen.climate': 'Climate',
+    'tfc.screen.rock_knapping': 'Rock Knapping',
+    'tfc.screen.clay_knapping': 'Clay Knapping',
+    'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
+    'tfc.screen.leather_knapping': 'Leather Knapping',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',

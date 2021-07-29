@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:leather_knapping",
+  "matrix": {
+    "pattern": [
+      "XXXXX",
+      "XXXXX",
+      "XX XX",
+      "XX XX",
+      "XX XX"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "item": "minecraft:leather_leggings"
+  }
+}

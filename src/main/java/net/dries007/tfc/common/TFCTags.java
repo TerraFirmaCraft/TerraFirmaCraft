@@ -96,6 +96,16 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
         public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
         public static final ITag.INamedTag<Item> KNIVES = create("knives");
+        public static final ITag.INamedTag<Item> KNIVES = create("knives");
+        public static final ITag.INamedTag<Item> ROCK_KNAPPING = create("rock_knapping");
+        public static final ITag.INamedTag<Item> CLAY_KNAPPING = create("clay_knapping");
+        public static final ITag.INamedTag<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
+        public static final ITag.INamedTag<Item> LEATHER_KNAPPING = create("leather_knapping");
+        public static final ITag.INamedTag<Item> KNAPPING_ANY = create("knapping_any");
+        public static final ITag.INamedTag<Item> SEDIMENTARY_ROCK = create("sedimentary_rock");
+        public static final ITag.INamedTag<Item> METAMORPHIC_ROCK = create("metamorphic_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_INTRUSIVE_ROCK = create("igneous_intrusive_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_EXTRUSIVE_ROCK = create("igneous_extrusive_rock");
 
         private static ITag.INamedTag<Item> create(String id)
         {

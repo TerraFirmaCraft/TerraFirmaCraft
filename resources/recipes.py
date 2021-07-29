@@ -52,6 +52,20 @@ def generate(rm: ResourceManager):
 
         damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
+    for metal, metal_data in METALS.items():
+        if 'utility' in metal_data.types:
+            rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': 'tfc:metal/double_ingot/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('tfc:metal/double_ingot/%s' % metal)
+        if 'tool' in metal_data.types:
+            for tool in METAL_TOOL_HEADS:
+                suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
+                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
+
+    for wood in WOODS.keys():
+        rm.crafting_shapeless('crafting/wood/%s_twig' % wood, 'tfc:wood/twig/%s' % wood, 'minecraft:stick').with_advancement('tfc:wood/twig/%s' % wood)
+
+
+    rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
+
     # Heat Recipes
     heat_recipe(rm, 'torch_from_stick', 'tag!forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
@@ -118,6 +132,43 @@ def generate(rm: ResourceManager):
         'temperature': 300
     })
 
+    knapping_recipe(rm, 'clay_knapping', 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
+    knapping_recipe(rm, 'clay_knapping', 'jug', [' X   ', 'XXXX ', 'XXX X', 'XXXX ', 'XXX  '], 'tfc:ceramic/unfired_jug')
+    knapping_recipe(rm, 'clay_knapping', 'pot', ['X   X', 'X   X', 'X   X', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_pot')
+    knapping_recipe(rm, 'clay_knapping', 'bowl_2', ['X   X', ' XXX '], 'tfc:ceramic/unfired_bowl', count=2, outside_slot_required=False)
+    knapping_recipe(rm, 'clay_knapping', 'bowl_4', ['X   X', ' XXX ', '     ', 'X   X', ' XXX '], 'tfc:ceramic/unfired_bowl', count=4)
+    knapping_recipe(rm, 'clay_knapping', 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], 'tfc:ceramic/unfired_brick', count=3)
+    knapping_recipe(rm, 'clay_knapping', 'flower_pot', [' X X ', ' XXX ', '     ', ' X X ', ' XXX '], 'tfc:ceramic/unfired_flower_pot', count=2)
+    # todo: large vessel, molds
+
+    knapping_recipe(rm, 'leather_knapping', 'helmet', ['XXXXX', 'X   X', 'X   X', '     ', '     '], 'minecraft:leather_helmet')
+    knapping_recipe(rm, 'leather_knapping', 'chestplate', ['X   X', 'XXXXX', 'XXXXX', 'XXXXX', 'XXXXX'], 'minecraft:leather_chestplate')
+    knapping_recipe(rm, 'leather_knapping', 'leggings', ['XXXXX', 'XXXXX', 'XX XX', 'XX XX', 'XX XX'], 'minecraft:leather_leggings')
+    knapping_recipe(rm, 'leather_knapping', 'boots', ['XX   ', 'XX   ', 'XX   ', 'XXXX ', 'XXXXX'], 'minecraft:leather_boots')
+    knapping_recipe(rm, 'leather_knapping', 'saddle', ['  X  ', 'XXXXX', 'XXXXX', 'XXXXX', '  X  '], 'minecraft:saddle')
+    # todo: quiver
+
+    knapping_recipe(rm, 'fire_clay_knapping', 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
+    knapping_recipe(rm, 'fire_clay_knapping', 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], 'tfc:ceramic/unfired_fire_brick', count=3)
+
+    for category in ROCK_CATEGORIES:
+        predicate = 'tag!tfc:%s_rock' % category
+        rock_knapping_recipe(rm, 'axe_head_%s' % category, [' X   ', 'XXXX ', 'XXXXX', 'XXXX ', ' X   '], 'tfc:stone/axe_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'shovel_head_%s' % category, ['XXX', 'XXX', 'XXX', 'XXX', ' X '], 'tfc:stone/shovel_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'hoe_head_%s' % category, ['XXXXX', '   XX'], 'tfc:stone/hoe_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'knife_head_%s' % category, ['X ', 'XX', 'XX', 'XX', 'XX'], 'tfc:stone/knife_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'knife_head_1_%s' % category, ['X  X ', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_2_%s' % category, ['X   X', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_3_%s' % category, [' X X ', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:stone/knife_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'hoe_head_1_%s' % category, ['XXXXX', 'XX   ', '     ', 'XXXXX', 'XX   '], 'tfc:stone/hoe_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'hoe_head_1_%s' % category, ['XXXXX', 'XX   ', '     ', 'XXXXX', '   XX'], 'tfc:stone/hoe_head/%s' % category, predicate, count=2)
+        rock_knapping_recipe(rm, 'knife_head_%s' % category, ['X ', 'XX', 'XX', 'XX', 'XX'], 'tfc:stone/knife_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'javelin_head_%s' % category, ['XXX  ', 'XXXX ', 'XXXXX', ' XXX ', '  X  '], 'tfc:stone/javelin_head/%s' % category, predicate)
+        rock_knapping_recipe(rm, 'hammer_head_%s' % category, ['XXXXX', 'XXXXX', '  X  '], 'tfc:stone/hammer_head/%s' % category, predicate)
+
+        for tool in ROCK_ITEMS:
+            rm.crafting_shaped('crafting/stone/%s_%s' % (tool, category), ['X', 'Y'], {'X': 'tfc:stone/%s_head/%s' % (tool, category), 'Y': 'tag!forge:rods/wooden'}, 'tfc:stone/%s/%s' % (tool, category)).with_advancement('tfc:stone/%s_head/%s' % (tool, category))
+
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
@@ -164,6 +215,28 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item:
         'result_item': result_item,
         'result_fluid': result_fluid,
         'temperature': temperature
+    })
+
+
+def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, count: int = 1, outside_slot_required: bool = None):
+    return rm.recipe((knap_type, name), 'tfc:%s' % knap_type, {
+        'matrix': {
+            'outside_slot_required': outside_slot_required,
+            'pattern': pattern
+        },
+        'result': utils.item_stack((count, item))
+    })
+
+
+def rock_knapping_recipe(rm: ResourceManager, name, pattern: List[str], item: str, ingredient: str = None, count: int = 1, outside_slot_required: bool = False):
+    ingredient = None if ingredient is None else utils.ingredient(ingredient)
+    return rm.recipe(('rock_knapping', name), 'tfc:rock_knapping', {
+        'matrix': {
+            'outside_slot_required': outside_slot_required,
+            'pattern': pattern
+        },
+        'result': utils.item_stack((count, item)),
+        'ingredient': ingredient
     })
 
 

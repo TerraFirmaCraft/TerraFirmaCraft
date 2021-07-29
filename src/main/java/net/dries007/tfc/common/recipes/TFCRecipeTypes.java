@@ -19,6 +19,10 @@ public class TFCRecipeTypes
     public static final IRecipeType<QuernRecipe> QUERN = register("quern");
     public static final IRecipeType<PotRecipe> POT = register("pot");
     public static final IRecipeType<ScrapingRecipe> SCRAPING = register("scraping");
+    public static final IRecipeType<KnappingRecipe> CLAY_KNAPPING = register("clay_knapping");
+    public static final IRecipeType<KnappingRecipe> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
+    public static final IRecipeType<KnappingRecipe> LEATHER_KNAPPING = register("leather_knapping");
+    public static final IRecipeType<RockKnappingRecipe> ROCK_KNAPPING = register("rock_knapping");
 
     private static <R extends IRecipe<?>> IRecipeType<R> register(String name)
     {

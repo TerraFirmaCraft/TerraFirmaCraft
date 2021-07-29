@@ -94,9 +94,20 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         rm.block_tag('tfc:forge_insulation', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
+        rm.item_tag('tfc:rock_knapping', block('loose'))
+        rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
+
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
+
+    for category in ROCK_CATEGORIES:
+        rm.item_tag('tfc:knives', 'tfc:stone/knife/%s' % category)
+
+    rm.item_tag('tfc:clay_knapping', 'minecraft:clay_ball')
+    rm.item_tag('tfc:fire_clay_knapping', 'tfc:fire_clay')
+    rm.item_tag('tfc:leather_knapping', 'minecraft:leather')
+    rm.item_tag('tfc:knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -122,6 +133,7 @@ def generate(rm: ResourceManager):
     for wood, wood_data in WOODS.items():
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
+        rm.item_tag('forge:rods/wooden',  'tfc:wood/twig/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
 
