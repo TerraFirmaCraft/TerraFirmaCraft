@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -35,6 +36,24 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
     public MultiBlock match(BlockPos posOffset, Predicate<BlockState> stateMatcher)
     {
         conditions.add((world, pos) -> stateMatcher.test(world.getBlockState(pos.offset(posOffset))));
+        return this;
+    }
+
+    public MultiBlock matchEachDirection(BlockPos posOffset, BiPredicate<IWorld, BlockPos> condition, Direction[] directions, int relativeAmount)
+    {
+        for (Direction d : directions)
+        {
+            conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset).relative(d, relativeAmount)));
+        }
+        return this;
+    }
+
+    public MultiBlock matchHorizontal(BlockPos posOffset, BiPredicate<IWorld, BlockPos> condition, int relativeAmount)
+    {
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset).relative(d, relativeAmount)));
+        }
         return this;
     }
 

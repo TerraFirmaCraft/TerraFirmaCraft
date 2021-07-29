@@ -50,27 +50,18 @@ public class CharcoalForgeBlock extends DeviceBlock
     {
         BiPredicate<IWorld, BlockPos> skyMatcher = IWorld::canSeeSky;
         BiPredicate<IWorld, BlockPos> isValidSide = Helpers.createTagCheck(TFCTags.Blocks.FORGE_INSULATION);
+        BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(new BlockPos(0, 1, 0), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))//todo: crucible is also acceptable
+            .match(origin.above(), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))//todo: crucible is also acceptable
             // Chimney
-            .matchOneOf(new BlockPos(0, 1, 0), new MultiBlock()
-                .match(new BlockPos(0, 0, 0), skyMatcher)
-                .match(new BlockPos(0, 0, 1), skyMatcher)
-                .match(new BlockPos(0, 0, 2), skyMatcher)
-                .match(new BlockPos(0, 0, -1), skyMatcher)
-                .match(new BlockPos(0, 0, -2), skyMatcher)
-                .match(new BlockPos(1, 0, 0), skyMatcher)
-                .match(new BlockPos(2, 0, 0), skyMatcher)
-                .match(new BlockPos(-1, 0, 0), skyMatcher)
-                .match(new BlockPos(-2, 0, 0), skyMatcher)
+            .matchOneOf(origin.above(), new MultiBlock()
+                .match(origin, skyMatcher)
+                .matchHorizontal(origin, skyMatcher, 1)
+                .matchHorizontal(origin, skyMatcher, 2)
             )
             // Underneath
-            .match(new BlockPos(1, 0, 0), isValidSide)
-            .match(new BlockPos(-1, 0, 0), isValidSide)
-            .match(new BlockPos(0, 0, 1), isValidSide)
-            .match(new BlockPos(0, 0, -1), isValidSide)
-            .match(new BlockPos(0, -1, 0), isValidSide);
+            .matchEachDirection(origin, isValidSide, new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN}, 1);
     }
 
     public static boolean isValid(IWorld world, BlockPos pos)

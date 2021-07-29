@@ -571,6 +571,19 @@ public final class Helpers
         return perfectMatchDet(matrices, size);
     }
 
+    /**
+     * Common logic for block entities to consume fuel during larger time skips.
+     *
+     * @param deltaPlayerTicks   Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
+     * @param inventory          Inventory to be modified (this should contain the fuel)
+     * @param burnTicks          Remaining burn ticks of the fuel being burned
+     * @param burnTemperature    Current burning temperature of the TE (this is the fuel's target temperature)
+     * @param slotStart          Index of the first fuel slot
+     * @param slotEnd            Index of the last fuel slot
+     *
+     * @return burnTicks, burnTemperature, deltaPlayerTicks. These are modified versions of the variables that got passed in.
+     * They should be directly assigned back to the TE's values, in order. Return 0 for deltaPlayerTicks to indicate that the TE need not be extinguished.
+     */
     public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
     {
         if (burnTicks > deltaPlayerTicks)
