@@ -23,18 +23,18 @@ import net.dries007.tfc.common.container.KnappingContainer;
 
 public class RockKnappingRecipe extends KnappingRecipe
 {
-    protected final Ingredient predicate;
+    protected final Ingredient ingredient;
 
-    public RockKnappingRecipe(ResourceLocation id, SimpleCraftMatrix matrix, ItemStack result, Ingredient predicate)
+    public RockKnappingRecipe(ResourceLocation id, KnappingPattern matrix, ItemStack result, Ingredient ingredient)
     {
         super(id, matrix, result, TFCRecipeSerializers.ROCK_KNAPPING.get());
-        this.predicate = predicate;
+        this.ingredient = ingredient;
     }
 
     @Override
     public boolean matches(KnappingContainer container, World level)
     {
-        return container.matrix.matches(this.matrix) && predicate.test(container.stackCopy);
+        return container.getMatrix().matches(this.matrix) && ingredient.test(container.getStackCopy());
     }
 
     public static class RockSerializer extends TypedRecipeSerializer<RockKnappingRecipe>
@@ -42,11 +42,9 @@ public class RockKnappingRecipe extends KnappingRecipe
         @Override
         public RockKnappingRecipe fromJson(ResourceLocation id, JsonObject json)
         {
-            final boolean outsideSlotRequired = JSONUtils.getAsBoolean(json, "outside_slot_required", true);
-            final String[] pattern = SimpleCraftMatrix.patternFromJson(json.getAsJsonArray("pattern"));
             final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-            final Ingredient predicate = json.has("predicate") ? Ingredient.fromJson(json.get("predicate")) : Ingredient.of(TFCTags.Items.ROCK_KNAPPING);
-            return new RockKnappingRecipe(id, new SimpleCraftMatrix(outsideSlotRequired, pattern), stack, predicate);
+            final Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.get("ingredient")) : Ingredient.of(TFCTags.Items.ROCK_KNAPPING);
+            return new RockKnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, ingredient);
         }
 
         @Nullable
@@ -54,10 +52,10 @@ public class RockKnappingRecipe extends KnappingRecipe
         public RockKnappingRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer)
         {
             final boolean outsideSlotRequired = buffer.readBoolean();
-            final SimpleCraftMatrix matrix = SimpleCraftMatrix.fromNetwork(buffer, outsideSlotRequired);
+            final KnappingPattern matrix = KnappingPattern.fromNetwork(buffer, outsideSlotRequired);
             final ItemStack stack = buffer.readItem();
-            final Ingredient predicate = Ingredient.fromNetwork(buffer);
-            return new RockKnappingRecipe(id, matrix, stack, predicate);
+            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            return new RockKnappingRecipe(id, matrix, stack, ingredient);
         }
 
         @Override
@@ -66,7 +64,7 @@ public class RockKnappingRecipe extends KnappingRecipe
             buffer.writeBoolean(recipe.matrix.outsideSlot);
             recipe.matrix.toNetwork(buffer, recipe.matrix.getWidth(), recipe.matrix.getHeight());
             buffer.writeItem(recipe.getResultItem());
-            recipe.predicate.toNetwork(buffer);
+            recipe.ingredient.toNetwork(buffer);
         }
 
         @Override

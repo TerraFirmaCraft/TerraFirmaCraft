@@ -1,17 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "outside_slot_required": false,
-  "pattern": [
-    "XXXXX",
-    "XXXXX",
-    "  X  "
-  ],
+  "matrix": {
+    "outside_slot_required": false,
+    "pattern": [
+      "XXXXX",
+      "XXXXX",
+      "  X  "
+    ]
+  },
   "result": {
     "count": 1,
     "item": "tfc:stone/hammer_head/igneous_extrusive"
   },
-  "predicate": {
+  "ingredient": {
     "tag": "tfc:igneous_extrusive_rock"
   }
 }

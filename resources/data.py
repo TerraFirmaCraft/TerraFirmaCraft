@@ -103,6 +103,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('tfc:fire_clay_knapping', 'tfc:fire_clay')
     rm.item_tag('tfc:leather_knapping', 'minecraft:leather')
+    rm.item_tag('tfc:knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
 
     # Plants
     for plant, plant_data in PLANTS.items():

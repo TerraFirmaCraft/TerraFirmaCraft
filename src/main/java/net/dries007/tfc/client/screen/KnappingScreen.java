@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 
@@ -30,10 +29,10 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         imageHeight = 186;
         inventoryLabelY += 22;
         titleLabelY -= 2;
-        ResourceLocation regName = container.stackCopy.getItem().getRegistryName();
+        ResourceLocation regName = container.getStackCopy().getItem().getRegistryName();
         assert regName != null;
         buttonLocation = new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + ".png");
-        buttonDisabledLocation = container.usesDisabledTex ? new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + "_disabled.png") : null;
+        buttonDisabledLocation = container.usesDisabledTexture() ? new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + "_disabled.png") : null;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
-                addButton(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.sound));
+                addButton(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound()));
             }
         }
     }
@@ -55,7 +54,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         // Check if the container has been updated
-        if (menu.requiresReset)
+        if (menu.requiresReset())
         {
             for (Widget button : buttons)
             {
@@ -64,10 +63,10 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
                     button.visible = menu.getSlotState((((KnappingButton) button).id));
                 }
             }
-            menu.requiresReset = false;
+            menu.setRequiresReset(false);
         }
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        if (menu.usesDisabledTex && minecraft != null)
+        if (menu.usesDisabledTexture() && minecraft != null)
         {
             minecraft.getTextureManager().bind(buttonDisabledLocation);
             for (Widget button : buttons)
@@ -97,14 +96,22 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         if (clickType == 0)
         {
-            for (Widget widget : buttons)
-            {
-                if (widget instanceof KnappingButton && widget.isMouseOver(x, y))
-                {
-                    menu.setSlotState(((KnappingButton) widget).id, false);
-                }
-            }
+            resetFromPattern(x, y);
         }
         return super.mouseClicked(x, y, clickType);
+    }
+
+    /**
+     * See docs for {@link KnappingContainer#setSlotState(int, boolean)}
+     */
+    private void resetFromPattern(double x, double y)
+    {
+        for (Widget widget : buttons)
+        {
+            if (widget instanceof KnappingButton && widget.isMouseOver(x, y))
+            {
+                menu.setSlotState(((KnappingButton) widget).id, false);
+            }
+        }
     }
 }

@@ -23,11 +23,11 @@ import net.dries007.tfc.common.container.KnappingContainer;
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
-    protected final SimpleCraftMatrix matrix;
+    protected final KnappingPattern matrix;
     protected final ItemStack result;
     protected final TypedRecipeSerializer<?> serializer;
 
-    public KnappingRecipe(ResourceLocation id, SimpleCraftMatrix matrix, ItemStack result, TypedRecipeSerializer<?> serializer)
+    public KnappingRecipe(ResourceLocation id, KnappingPattern matrix, ItemStack result, TypedRecipeSerializer<?> serializer)
     {
         this.id = id;
         this.matrix = matrix;
@@ -38,7 +38,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public boolean matches(KnappingContainer container, World level)
     {
-        return container.matrix.matches(this.matrix);
+        return container.getMatrix().matches(this.matrix);
     }
 
     @Override
@@ -77,10 +77,8 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public KnappingRecipe fromJson(ResourceLocation id, JsonObject json)
         {
-            final boolean outsideSlotRequired = JSONUtils.getAsBoolean(json, "outside_slot_required", true);
-            final String[] pattern = SimpleCraftMatrix.patternFromJson(json.getAsJsonArray("pattern"));
             final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-            return new KnappingRecipe(id, new SimpleCraftMatrix(outsideSlotRequired, pattern), stack, this);
+            return new KnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, this);
         }
 
         @Nullable
@@ -88,7 +86,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         public KnappingRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer)
         {
             final boolean outsideSlotRequired = buffer.readBoolean();
-            final SimpleCraftMatrix matrix = SimpleCraftMatrix.fromNetwork(buffer, outsideSlotRequired);
+            final KnappingPattern matrix = KnappingPattern.fromNetwork(buffer, outsideSlotRequired);
             final ItemStack stack = buffer.readItem();
             return new KnappingRecipe(id, matrix, stack, this);
         }

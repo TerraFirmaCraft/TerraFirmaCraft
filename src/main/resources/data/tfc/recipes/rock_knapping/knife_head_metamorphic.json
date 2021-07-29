@@ -1,19 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "outside_slot_required": false,
-  "pattern": [
-    "X ",
-    "XX",
-    "XX",
-    "XX",
-    "XX"
-  ],
+  "matrix": {
+    "outside_slot_required": false,
+    "pattern": [
+      "X ",
+      "XX",
+      "XX",
+      "XX",
+      "XX"
+    ]
+  },
   "result": {
     "count": 1,
     "item": "tfc:stone/knife_head/metamorphic"
   },
-  "predicate": {
+  "ingredient": {
     "tag": "tfc:metamorphic_rock"
   }
 }

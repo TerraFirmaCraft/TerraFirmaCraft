@@ -1,19 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "outside_slot_required": false,
-  "pattern": [
-    " X X ",
-    "XX XX",
-    "XX XX",
-    "XX XX",
-    "XX XX"
-  ],
+  "matrix": {
+    "outside_slot_required": false,
+    "pattern": [
+      " X X ",
+      "XX XX",
+      "XX XX",
+      "XX XX",
+      "XX XX"
+    ]
+  },
   "result": {
     "count": 2,
     "item": "tfc:stone/knife_head/sedimentary"
   },
-  "predicate": {
+  "ingredient": {
     "tag": "tfc:sedimentary_rock"
   }
 }

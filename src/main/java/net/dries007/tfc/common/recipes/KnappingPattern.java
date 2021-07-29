@@ -9,29 +9,19 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 /**
  * A simple craft matrix for knapping / leather or clay working
- *
- * @author AlcatrazEscapee
  */
-public class SimpleCraftMatrix
+public class KnappingPattern
 {
     private static final int MAX_WIDTH = 5;
     private static final int MAX_HEIGHT = 5;
     private static final int MAX_AREA = MAX_WIDTH * MAX_HEIGHT;
-
-    private static void logMatrix(boolean[] matrix)
-    {
-        StringBuilder b = new StringBuilder();
-        for (boolean m : matrix) b.append(m ? "X" : " ");
-        TerraFirmaCraft.LOGGER.debug("Matrix: {" + b + "}");
-    }
 
     /**
      * This is the actual craft matrix
@@ -47,7 +37,7 @@ public class SimpleCraftMatrix
     /**
      * Create a empty max size craft matrix
      */
-    public SimpleCraftMatrix()
+    public KnappingPattern()
     {
         this.width = MAX_WIDTH;
         this.height = MAX_HEIGHT;
@@ -58,48 +48,22 @@ public class SimpleCraftMatrix
     }
 
     /**
-     * Create a patterned matrix based on a string pattern input.
+     * Create a patterned matrix based on a boolean input.
      *
      * @param outsideSlotRequired If the recipe is smaller than MAX_WIDTH x MAX_HEIGHT, what is the slot outside of the recipe required to be?
      *                            true = outside slots need to be full
      *                            false = outside slots need to be empty
-     * @param pattern             A list of strings. Each string is a row, each character is an element. ' ' represents empty, anything else is full
+     * @param matrix              The actual matrix of booleans in order
+     * @param height              Height of the matrix
+     * @param width               Width of the matrix
      */
-    public SimpleCraftMatrix(boolean outsideSlotRequired, String... pattern)
+    public KnappingPattern(boolean outsideSlotRequired, boolean[] matrix, int width, int height)
     {
-        if (pattern.length == 0 || pattern.length > MAX_HEIGHT)
-            throw new IllegalArgumentException("Pattern height is invalid");
-
-        this.height = pattern.length;
-        this.width = pattern[0].length();
-        this.area = width * height;
-        this.matrix = new boolean[width * height];
-        this.outsideSlot = outsideSlotRequired;
-        if (width > MAX_WIDTH)
-            throw new IllegalArgumentException("Pattern width is invalid");
-
-        for (int i = 0; i < height; i++)
-        {
-            String line = pattern[i];
-            if (line.length() != width)
-                throw new IllegalArgumentException("Line " + i + " in the pattern has the incorrect length");
-            for (int c = 0; c < width; c++)
-                this.matrix[i * width + c] = (line.charAt(c) != ' ');
-        }
-    }
-
-    public SimpleCraftMatrix(boolean outsideSlotRequired, boolean[] matrix, int width, int height)
-    {
-        if (matrix.length == 0 || matrix.length > MAX_HEIGHT)
-            throw new IllegalArgumentException("Pattern height is invalid");
-
         this.height = height;
         this.width = width;
         this.area = width * height;
         this.matrix = matrix;
         this.outsideSlot = outsideSlotRequired;
-        if (width > MAX_WIDTH)
-            throw new IllegalArgumentException("Pattern width is invalid");
     }
 
     public void setAll(boolean value)
@@ -142,7 +106,7 @@ public class SimpleCraftMatrix
      * @param other Another craft matrix
      * @return if the matrices are identical. Not used for checking if recipe matches
      */
-    public boolean isEqual(SimpleCraftMatrix other)
+    public boolean isEqual(KnappingPattern other)
     {
         if (other.width != this.width || other.height != this.height)
             return false;
@@ -160,7 +124,7 @@ public class SimpleCraftMatrix
      * @param other Another craft matrix
      * @return if 'other' is a subset of the current craft matrix (i.e. other is found somewhere within the current matrix)
      */
-    public boolean matches(SimpleCraftMatrix other)
+    public boolean matches(KnappingPattern other)
     {
         // Check all possible shifted positions
         for (int xShift = 0; xShift <= this.width - other.width; xShift++)
@@ -180,7 +144,7 @@ public class SimpleCraftMatrix
         return false;
     }
 
-    private boolean matches(SimpleCraftMatrix other, int startX, int startY, boolean isMirrored)
+    private boolean matches(KnappingPattern other, int startX, int startY, boolean isMirrored)
     {
         for (int x = 0; x < this.width; x++)
         {
@@ -198,9 +162,13 @@ public class SimpleCraftMatrix
                     // Otherwise, the value must equal the value in the pattern
                     int otherIdx;
                     if (isMirrored)
+                    {
                         otherIdx = (y - startY) * other.width + (other.width - 1 - (x - startX));
+                    }
                     else
+                    {
                         otherIdx = (y - startY) * other.width + (x - startX);
+                    }
 
                     if (matrix[patternIdx] != other.matrix[otherIdx])
                         return false;
@@ -220,7 +188,7 @@ public class SimpleCraftMatrix
         buffer.writeShort(packed);
     }
 
-    public static SimpleCraftMatrix fromNetwork(PacketBuffer buffer, boolean outsideSlotRequired)
+    public static KnappingPattern fromNetwork(PacketBuffer buffer, boolean outsideSlotRequired)
     {
         int width = buffer.readVarInt();
         int height = buffer.readVarInt();
@@ -229,42 +197,32 @@ public class SimpleCraftMatrix
         short packed = buffer.readShort();
         for (int i = 0; i < matrix.length; i++)
             matrix[i] = (packed & (1 << i)) != 0;
-        return new SimpleCraftMatrix(outsideSlotRequired, matrix, width, height);
+        return new KnappingPattern(outsideSlotRequired, matrix, width, height);
     }
 
-    /**
-     * From {@link net.minecraft.item.crafting.ShapedRecipe}
-     */
-    public static String[] patternFromJson(JsonArray array)
+    public static KnappingPattern fromJson(JsonObject json)
     {
-        String[] strings = new String[array.size()];
-        if (strings.length > MAX_HEIGHT)
+        JsonArray array = json.getAsJsonArray("pattern");
+        boolean outsideSlotRequired = JSONUtils.getAsBoolean(json, "outside_slot_required", true);
+
+        int height = array.size();
+        if (height > MAX_HEIGHT) throw new JsonSyntaxException("Invalid pattern: too many rows, " + MAX_HEIGHT + " is maximum");
+        if (height == 0) throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
+
+        int width = JSONUtils.convertToString(array.get(0), "pattern[ 0 ]").length();
+        if (width > MAX_WIDTH) throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
+
+        boolean[] matrix = new boolean[width * height];
+        for (int i = 0; i < height; ++i)
         {
-            throw new JsonSyntaxException("Invalid pattern: too many rows, " + MAX_HEIGHT + " is maximum");
-        }
-        else if (strings.length == 0)
-        {
-            throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
-        }
-        else
-        {
-            for (int i = 0; i < strings.length; ++i)
+            String s = JSONUtils.convertToString(array.get(i), "pattern[" + i + "]");
+            if (i > 0 && width != s.length()) throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
+
+            for (int c = 0; c < width; c++)
             {
-                String s = JSONUtils.convertToString(array.get(i), "pattern[" + i + "]");
-                if (s.length() > MAX_WIDTH)
-                {
-                    throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
-                }
-
-                if (i > 0 && strings[0].length() != s.length())
-                {
-                    throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
-                }
-
-                strings[i] = s;
+                matrix[i * width + c] = (s.charAt(c) != ' ');
             }
-
-            return strings;
         }
+        return new KnappingPattern(outsideSlotRequired, matrix, width, height);
     }
 }

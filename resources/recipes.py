@@ -210,19 +210,23 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item:
 
 def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, count: int = 1, outside_slot_required: bool = None):
     return rm.recipe((knap_type, name), 'tfc:%s' % knap_type, {
-        'outside_slot_required': outside_slot_required,
-        'pattern': pattern,
+        'matrix': {
+            'outside_slot_required': outside_slot_required,
+            'pattern': pattern
+        },
         'result': utils.item_stack((count, item))
     })
 
 
-def rock_knapping_recipe(rm: ResourceManager, name, pattern: List[str], item: str, predicate: str = None, count: int = 1, outside_slot_required: bool = False):
-    predicate = None if predicate is None else utils.ingredient(predicate)
+def rock_knapping_recipe(rm: ResourceManager, name, pattern: List[str], item: str, ingredient: str = None, count: int = 1, outside_slot_required: bool = False):
+    ingredient = None if ingredient is None else utils.ingredient(ingredient)
     return rm.recipe(('rock_knapping', name), 'tfc:rock_knapping', {
-        'outside_slot_required': outside_slot_required,
-        'pattern': pattern,
+        'matrix': {
+            'outside_slot_required': outside_slot_required,
+            'pattern': pattern
+        },
         'result': utils.item_stack((count, item)),
-        'predicate': predicate
+        'ingredient': ingredient
     })
 
 

@@ -24,7 +24,7 @@ public class ScreenButtonPacket
 
     public ScreenButtonPacket(PacketBuffer buffer)
     {
-        buttonID = buffer.readInt();
+        buttonID = buffer.readVarInt();
         if (buffer.readBoolean())
         {
             extraNBT = buffer.readNbt();
@@ -43,7 +43,7 @@ public class ScreenButtonPacket
 
     void encode(PacketBuffer buffer)
     {
-        buffer.writeInt(buttonID);
+        buffer.writeVarInt(buttonID);
         buffer.writeBoolean(extraNBT != null);
         if (extraNBT != null)
         {

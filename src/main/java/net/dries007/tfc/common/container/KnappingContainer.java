@@ -15,75 +15,63 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.server.ServerWorld;
-
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.IInventoryNoop;
-import net.dries007.tfc.common.recipes.SimpleCraftMatrix;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.recipes.KnappingPattern;
 
-public class KnappingContainer extends ItemStackContainer implements IButtonHandler, IInventoryNoop
+public class KnappingContainer extends ItemStackContainer implements IButtonHandler, IInventoryNoop, ISlotCallback
 {
-    public final SimpleCraftMatrix matrix;
+    private static ItemStack getItemForKnapping(PlayerInventory inv)
+    {
+        final ItemStack main = inv.player.getMainHandItem();
+        return main.getItem().is(TFCTags.Items.KNAPPING_ANY) ? main : inv.player.getOffhandItem();
+    }
+
+    private final KnappingPattern matrix;
+    private final boolean usesDisabledTex;
+    private final SoundEvent sound;
+    private final ItemStack stackCopy;
     private final int amountToConsume;
-    public final boolean usesDisabledTex;
-    private final boolean needsKnife;
     private final boolean consumeAfterComplete;
-    public final SoundEvent sound;
-    public boolean requiresReset;
+    private final IRecipeType<? extends KnappingRecipe> recipeType;
+    private boolean requiresReset;
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
-    private final IRecipeType<? extends KnappingRecipe> recipeType;
-    public final ItemStack stackCopy;
 
-    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, boolean needsKnife, SoundEvent sound)
+    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
         super(containerType, windowId, playerInv, getItemForKnapping(playerInv), 20);
         this.itemIndex += 1;
         this.amountToConsume = amountToConsume;
         this.usesDisabledTex = usesDisabledTex;
         this.consumeAfterComplete = consumeAfterComplete;
-        this.needsKnife = needsKnife;
         this.recipeType = recipeType;
         this.sound = sound;
 
-        matrix = new SimpleCraftMatrix();
+        matrix = new KnappingPattern();
         hasBeenModified = false;
-        requiresReset = false;
+        setRequiresReset(false);
         hasConsumedIngredient = false;
         stackCopy = this.stack.copy();
     }
 
-    private static ItemStack getItemForKnapping(PlayerInventory inv)
-    {
-        final ItemStack main = inv.player.getMainHandItem();
-        return main.isEmpty() ? inv.player.getOffhandItem() : main;
-    }
 
     @Override
     public void onButtonPress(int buttonID, @Nullable CompoundNBT extraNBT)
     {
-        matrix.set(buttonID, false);
+        getMatrix().set(buttonID, false);
 
         if (!hasBeenModified)
         {
             if (!player.isCreative() && !consumeAfterComplete)
             {
-                ItemStack consumedStack = Helpers.consumeItem(this.stack, amountToConsume);
-                if (isOffhand)
-                {
-                    player.setItemInHand(Hand.OFF_HAND, consumedStack);
-                }
-                else
-                {
-                    player.setItemInHand(Hand.MAIN_HAND, consumedStack);
-                }
+                stack.shrink(amountToConsume);
             }
             hasBeenModified = true;
         }
@@ -105,12 +93,6 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     }
 
     @Override
-    protected void addContainerSlots()
-    {
-        addSlot(new RunnableSlot(new ItemStackHandler(1), 0, 128, 46, this::resetMatrix));
-    }
-
-    @Override
     public void removed(PlayerEntity player)
     {
         Slot slot = slots.get(0);
@@ -128,32 +110,78 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
 
     /**
      * Used in client to check a slot state in the matrix
-     * JEI won't cause issues anymore see https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/718
      *
      * @param index the slot index
      * @return the boolean state for the checked slot
      */
     public boolean getSlotState(int index)
     {
-        return matrix.get(index);
+        return getMatrix().get(index);
     }
 
     /**
      * Used in client to set a slot state in the matrix
-     * JEI won't cause issues anymore see https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/718
      *
      * @param index the slot index
      * @param value the value you wish to set the state to
      */
     public void setSlotState(int index, boolean value)
     {
-        matrix.set(index, value);
+        getMatrix().set(index, value);
+    }
+
+    public KnappingPattern getMatrix()
+    {
+        return matrix;
+    }
+
+    public boolean usesDisabledTexture()
+    {
+        return usesDisabledTex;
+    }
+
+    public SoundEvent getSound()
+    {
+        return sound;
+    }
+
+    public ItemStack getStackCopy()
+    {
+        return stackCopy;
+    }
+
+    public boolean requiresReset()
+    {
+        return requiresReset;
+    }
+
+    public void setRequiresReset(boolean requiresReset)
+    {
+        this.requiresReset = requiresReset;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
+    public void onSlotTake(PlayerEntity player, int slot, ItemStack stack)
+    {
+        resetMatrix();
+    }
+
+    @Override
+    protected void addContainerSlots()
+    {
+        addSlot(new CallbackSlot(this, new ItemStackHandler(1), 0, 128, 46));
     }
 
     private void resetMatrix()
     {
-        matrix.setAll(false);
-        requiresReset = true;
+        getMatrix().setAll(false);
+        setRequiresReset(true);
         consumeIngredientStackAfterComplete();
     }
 
@@ -163,37 +191,12 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         return level.getRecipeManager().getRecipeFor(recipeType, this, level).orElse(null);
     }
 
-    private void consumeIngredientStackAfterComplete()
+    protected void consumeIngredientStackAfterComplete()
     {
         if (consumeAfterComplete && !hasConsumedIngredient)
         {
-            ItemStack stack = Helpers.consumeItem(this.stack, amountToConsume);
-            if (isOffhand)
-            {
-                player.setItemInHand(Hand.OFF_HAND, stack);
-            }
-            else
-            {
-                player.setItemInHand(Hand.MAIN_HAND, stack);
-            }
+            stack.shrink(amountToConsume);
             hasConsumedIngredient = true;
-        }
-        if (needsKnife)
-        {
-            // offhand is not included in 'items'
-            if (player.getOffhandItem().getItem().is(TFCTags.Items.KNIVES))
-            {
-                player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(Hand.OFF_HAND));
-            }
-            for (ItemStack invItem : player.inventory.items)
-            {
-                if (invItem.getItem().is(TFCTags.Items.KNIVES))
-                {
-                    // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
-                    invItem.hurtAndBreak(1, player, p -> {});
-                    break;
-                }
-            }
         }
     }
 }

@@ -32,23 +32,20 @@ public class KnappingButton extends Button
 
     public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture, SoundEvent sound)
     {
-        super(x, y, width, height, StringTextComponent.EMPTY, KnappingButton::doPress);
+        super(x, y, width, height, StringTextComponent.EMPTY, button -> {});
         this.id = id;
         this.texture = texture;
         this.sound = sound;
     }
 
-    public static void doPress(Button widget)
+    @Override
+    public void onPress()
     {
-        if (widget instanceof KnappingButton)
+        if (active)
         {
-            KnappingButton button = (KnappingButton) widget;
-            if (button.active)
-            {
-                button.visible = false;
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(button.id, null));
-                button.playDownSound(Minecraft.getInstance().getSoundManager());
-            }
+            visible = false;
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(id, null));
+            playDownSound(Minecraft.getInstance().getSoundManager());
         }
     }
 
@@ -66,10 +63,7 @@ public class KnappingButton extends Button
             Minecraft.getInstance().getTextureManager().bind(texture);
             isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-            matrixStack.pushPose();
             blit(matrixStack, x, y, 0, 0, 16, 16, 16, 16);
-            matrixStack.popPose();
-            onDrag(mouseX, mouseY, 0, 0); // ?
         }
     }
 }
