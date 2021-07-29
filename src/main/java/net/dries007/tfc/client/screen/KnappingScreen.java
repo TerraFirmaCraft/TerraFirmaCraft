@@ -96,7 +96,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         if (clickType == 0)
         {
-            resetFromPattern(x, y);
+            undoAccidentalButtonPress(x, y);
         }
         return super.mouseClicked(x, y, clickType);
     }
@@ -104,7 +104,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     /**
      * See docs for {@link KnappingContainer#setSlotState(int, boolean)}
      */
-    private void resetFromPattern(double x, double y)
+    private void undoAccidentalButtonPress(double x, double y)
     {
         for (Widget widget : buttons)
         {
