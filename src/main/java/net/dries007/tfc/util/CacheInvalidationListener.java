@@ -51,6 +51,7 @@ public enum CacheInvalidationListener implements IFutureReloadListener
             LandslideRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.LANDSLIDE));
             HeatingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.HEATING));
             QuernRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.QUERN));
+            ScrapingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.SCRAPING));
 
             HeatCapability.CACHE.reload(HeatCapability.MANAGER.getValues());
             MetalItemManager.CACHE.reload(MetalItemManager.MANAGER.getValues());

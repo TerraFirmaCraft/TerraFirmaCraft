@@ -57,6 +57,8 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
                 if item == 'shovel':
                     rm.item_tag('extinguisher', 'tfc:metal/shovel/' + metal)
+                if item == 'knife':
+                    rm.item_tag('knives', 'tfc:metal/knife/' + metal)
 
                 metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
                 heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
@@ -80,6 +82,7 @@ def generate(rm: ResourceManager):
     heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 1)
     heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', 1)
     heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
+    heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
     for pottery in PAIRED_POTTERY:
         heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)
@@ -99,10 +102,23 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone', block('raw'), block('hardened'))
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
+        rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        rm.block_tag('tfc:forge_insulation', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
+        rm.item_tag('tfc:rock_knapping', block('loose'))
+        rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
+    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
+
+    for category in ROCK_CATEGORIES:
+        rm.item_tag('tfc:knives', 'tfc:stone/knife/%s' % category)
+
+    rm.item_tag('tfc:clay_knapping', 'minecraft:clay_ball')
+    rm.item_tag('tfc:fire_clay_knapping', 'tfc:fire_clay')
+    rm.item_tag('tfc:leather_knapping', 'minecraft:leather')
+    rm.item_tag('tfc:knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -128,9 +144,11 @@ def generate(rm: ResourceManager):
     for wood, wood_data in WOODS.items():
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
+        rm.item_tag('forge:rods/wooden',  'tfc:wood/twig/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
 
+    rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_fuel', '#minecraft:logs')
@@ -169,11 +187,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch', 'tfc:pit_kiln')
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
+    rm.block_tag('forge_invisible_whitelist', 'minecraft:glass')  # todo: set this to just be crucibles
     rm.block_tag('any_spreading_bush', '#tfc:spreading_bush')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
+    rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
 
     # Misc
     rm.item_tag('mortar', 'tfc:mortar')

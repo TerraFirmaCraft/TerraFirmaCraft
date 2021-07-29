@@ -54,6 +54,9 @@ public class TFCTags
         public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
         public static final ITag.INamedTag<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
+        public static final ITag.INamedTag<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
+        public static final ITag.INamedTag<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
+        public static final ITag.INamedTag<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
 
         private static ITag.INamedTag<Block> create(String id)
         {
@@ -91,6 +94,17 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
         public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
+        public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
+        public static final ITag.INamedTag<Item> KNIVES = create("knives");
+        public static final ITag.INamedTag<Item> ROCK_KNAPPING = create("rock_knapping");
+        public static final ITag.INamedTag<Item> CLAY_KNAPPING = create("clay_knapping");
+        public static final ITag.INamedTag<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
+        public static final ITag.INamedTag<Item> LEATHER_KNAPPING = create("leather_knapping");
+        public static final ITag.INamedTag<Item> KNAPPING_ANY = create("knapping_any");
+        public static final ITag.INamedTag<Item> SEDIMENTARY_ROCK = create("sedimentary_rock");
+        public static final ITag.INamedTag<Item> METAMORPHIC_ROCK = create("metamorphic_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_INTRUSIVE_ROCK = create("igneous_intrusive_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_EXTRUSIVE_ROCK = create("igneous_extrusive_rock");
 
         private static ITag.INamedTag<Item> create(String id)
         {

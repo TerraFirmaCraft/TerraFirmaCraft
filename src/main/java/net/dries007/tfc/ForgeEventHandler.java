@@ -50,10 +50,12 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
@@ -69,6 +71,7 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
+import net.dries007.tfc.common.tileentity.CharcoalForgeTileEntity;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.common.types.*;
@@ -86,6 +89,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
+
+import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
 
 public final class ForgeEventHandler
 {
@@ -536,6 +541,19 @@ public final class ForgeEventHandler
             {
                 kiln.tryLight();
             }
+        }
+        else if (block.is(TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
+        {
+            world.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(HEAT, 2));
+            CharcoalForgeTileEntity forge = Helpers.getTileEntity(world, pos, CharcoalForgeTileEntity.class);
+            if (forge != null)
+            {
+                forge.onCreate();
+            }
+        }
+        else if (block.is(TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
+        {
+            world.setBlockAndUpdate(pos, state.setValue(HEAT, 2));
         }
     }
 

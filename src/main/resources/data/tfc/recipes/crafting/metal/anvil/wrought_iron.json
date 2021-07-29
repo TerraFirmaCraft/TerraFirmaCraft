@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " X ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/double_ingot/wrought_iron"
+    }
+  },
+  "result": {
+    "item": "tfc:metal/anvil/wrought_iron"
+  }
+}

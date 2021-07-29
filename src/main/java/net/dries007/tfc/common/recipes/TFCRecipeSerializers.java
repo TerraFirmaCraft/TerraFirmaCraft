@@ -29,11 +29,17 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<HeatingRecipe.Serializer> HEATING = register("heating", HeatingRecipe.Serializer::new);
     public static final RegistryObject<SimpleItemRecipe.Serializer<QuernRecipe>> QUERN = register("quern", () -> new SimpleItemRecipe.Serializer<>(QuernRecipe::new));
+    public static final RegistryObject<SimpleItemRecipe.Serializer<ScrapingRecipe>> SCRAPING = register("scraping", () -> new SimpleItemRecipe.Serializer<>(ScrapingRecipe::new));
 
     // Complex Recipes
 
     public static final RegistryObject<FluidPotRecipe.Serializer> POT_FLUID = register("pot_fluid", FluidPotRecipe.Serializer::new);
     public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
+    public static final RegistryObject<KnappingRecipe.Serializer> CLAY_KNAPPING = register("clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.CLAY_KNAPPING));
+    public static final RegistryObject<KnappingRecipe.Serializer> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.FIRE_CLAY_KNAPPING));
+    public static final RegistryObject<KnappingRecipe.Serializer> LEATHER_KNAPPING = register("leather_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.LEATHER_KNAPPING));
+    public static final RegistryObject<RockKnappingRecipe.RockSerializer> ROCK_KNAPPING = register("rock_knapping", RockKnappingRecipe.RockSerializer::new);
+
 
     // Delegate Recipe Types
 

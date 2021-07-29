@@ -26,12 +26,17 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
+import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -211,7 +216,14 @@ public final class InteractionManager
                             }
                             return ActionResultType.SUCCESS;
                         }
-                        return ActionResultType.FAIL;
+
+                        final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                        if (result.consumesAction())
+                        {
+                            insertStack.setCount(1);
+                            cap.insertItem(0, insertStack, false);
+                        }
+                        return result;
                     }).orElse(ActionResultType.PASS);
                 }
                 else
@@ -233,6 +245,35 @@ public final class InteractionManager
             return ActionResultType.PASS;
         });
 
+        register(TFCTags.Items.SCRAPABLE, (stack, context) -> {
+            World level = context.getLevel();
+            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
+            if (recipe != null)
+            {
+                final BlockPos pos = context.getClickedPos();
+                final BlockPos abovePos = pos.above();
+                PlayerEntity player = context.getPlayer();
+                if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
+                {
+                    level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
+                    final ScrapingTileEntity te = Helpers.getTileEntity(level, abovePos, ScrapingTileEntity.class);
+                    if (te != null)
+                    {
+                        return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                            if (!level.isClientSide)
+                            {
+                                ItemStack insertStack = stack.split(1);
+                                stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                                te.setCachedItem(recipe.getResultItem().copy());
+                            }
+                            return ActionResultType.SUCCESS;
+                        }).orElse(ActionResultType.PASS);
+                    }
+                }
+            }
+            return ActionResultType.PASS;
+        });
+
         // BlockItem mechanics for vanilla items that match groundcover types
         for (GroundcoverBlockType type : GroundcoverBlockType.values())
         {
@@ -242,8 +283,57 @@ public final class InteractionManager
             }
         }
 
-        // todo: hide tag right click -> generic scraping recipe
-        // todo: knapping tags
+        register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 4)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 4)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && player.inventory.contains(TFCTags.Items.KNIVES))
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 1)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
     }
 
     public static void register(BlockItemPlacement wrapper)

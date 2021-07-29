@@ -9,6 +9,7 @@ package net.dries007.tfc.util;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -21,6 +22,7 @@ import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.apache.commons.lang3.tuple.Triple;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
@@ -36,6 +38,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +57,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,6 +67,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.types.Fuel;
+import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -149,6 +158,11 @@ public final class Helpers
         {
             throw new JsonParseException(e);
         }
+    }
+
+    public static BiPredicate<IWorld, BlockPos> createTagCheck(ITag<Block> tag)
+    {
+        return ((world, pos) -> world.getBlockState(pos).is(tag));
     }
 
     /**
@@ -601,6 +615,70 @@ public final class Helpers
             }
         }
         return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Common logic for block entities to consume fuel during larger time skips.
+     *
+     * @param deltaPlayerTicks   Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
+     * @param inventory          Inventory to be modified (this should contain the fuel)
+     * @param burnTicks          Remaining burn ticks of the fuel being burned
+     * @param burnTemperature    Current burning temperature of the TE (this is the fuel's target temperature)
+     * @param slotStart          Index of the first fuel slot
+     * @param slotEnd            Index of the last fuel slot
+     *
+     * @return burnTicks, burnTemperature, deltaPlayerTicks. These are modified versions of the variables that got passed in.
+     * They should be directly assigned back to the TE's values, in order. Return 0 for deltaPlayerTicks to indicate that the TE need not be extinguished.
+     */
+    public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
+    {
+        if (burnTicks > deltaPlayerTicks)
+        {
+            burnTicks -= deltaPlayerTicks;
+            return Triple.of(burnTicks, burnTemperature, 0L); // the zero doesn't actually get saved, so this is fine. needed to prevent extinguishing
+        }
+        else
+        {
+            deltaPlayerTicks -= burnTicks;
+            burnTicks = 0;
+        }
+        // Need to consume fuel
+        for (int i = slotStart; i <= slotEnd; i++)
+        {
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = FuelManager.get(fuelStack);
+            if (fuel != null)
+            {
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
+                if (fuel.getDuration() > deltaPlayerTicks)
+                {
+                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
+                    burnTemperature = fuel.getTemperature();
+                    return Triple.of(burnTicks, burnTemperature, 0L); // see above
+                }
+                else
+                {
+                    deltaPlayerTicks -= fuel.getDuration();
+                    burnTicks = 0;
+                }
+            }
+        }
+        return Triple.of(burnTicks, burnTemperature, deltaPlayerTicks);
+    }
+
+    public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
+    {
+        final ItemStack mergeStack = inventory.getStackInSlot(slot);
+        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (filled > 0)
+            {
+                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+            }
+            FluidStack remainder = fluidStack.copy();
+            remainder.shrink(filled);
+            return remainder;
+        }).orElse(FluidStack.EMPTY);
     }
 
     /**

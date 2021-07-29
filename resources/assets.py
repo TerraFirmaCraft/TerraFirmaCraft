@@ -245,9 +245,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
+    rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot(counted_item('minecraft:charcoal', 7, -1))
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
         .with_block_model(textures={'side': 'tfc:block/log_pile_side', 'end': 'tfc:block/log_pile_front'}, parent='minecraft:block/cube_column_horizontal').with_lang(lang('Log Pile'))
     rm.blockstate('burning_log_pile', model='tfc:block/burning_log_pile').with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/devices/charcoal_forge/lit'}).with_lang(lang('Burning Log Pile'))
+    for i in range(0, 7 + 1):
+        rm.block_model('charcoal_forge/heat_%d' % i, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % i})
 
     block = rm.block_model('thatch_bed').with_item_model().with_lang(lang('Thatch Bed'))
     block.with_block_loot({
@@ -284,6 +287,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern'))
 
     rm.blockstate('placed_item', 'tfc:block/empty')
+    rm.blockstate('scraping', 'tfc:block/empty')
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
     # Dirt
@@ -420,8 +424,10 @@ def generate(rm: ResourceManager):
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
-            item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
-            item.with_lang(lang('stone %s', rock_item))
+            for suffix in ('', '_head'):
+                rock_item = rock_item + suffix
+                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
     for rock in ROCKS.keys():
@@ -469,11 +475,34 @@ def generate(rm: ResourceManager):
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+        p = 'tfc:plant/%s' % plant
+        lower_only = block_state_property(p, {'part': 'lower'})
+        if plant_data.type == 'short_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears')],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type == 'tall_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears'), lower_only],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives'), lower_only]}})
+        elif plant_data.type == 'cactus':
+            rm.block_loot(p, p)
+        else:
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives')]}})
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-        # todo: knife harvesting of plants
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
@@ -598,6 +627,7 @@ def generate(rm: ResourceManager):
                 'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
+            block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
             if variant != 'log':
                 block.with_item_model()
             else:
@@ -868,6 +898,13 @@ def silk_touch() -> Dict[str, Any]:
                 'levels': {'min': 1}
             }]
         }
+    }
+
+
+def match_tag(tag: str) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'tag': tag}
     }
 
 
