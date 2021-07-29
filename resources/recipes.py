@@ -149,10 +149,10 @@ def quern_recipe(rm: ResourceManager, name, item: str, result: str, count: int =
     })
 
 
-def scraping_recipe(rm: ResourceManager, name, item: str, result: str) -> RecipeContext:
+def scraping_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('scraping', name), 'tfc:scraping', {
         'ingredient': utils.ingredient(item),
-        'result': utils.item_stack((1, result))
+        'result': utils.item_stack((count, result))
     })
 
 

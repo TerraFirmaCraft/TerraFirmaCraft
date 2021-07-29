@@ -33,7 +33,7 @@ public class ScrapingTileEntityRenderer extends TileEntityRenderer<ScrapingTileE
     {
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             final ItemStack baseStack = cap.getStackInSlot(0);
-            final ItemStack scrapeStack = te.cachedItem;
+            final ItemStack scrapeStack = te.getCachedItem();
             if (!baseStack.isEmpty() && !scrapeStack.isEmpty())
             {
                 ItemModelMesher shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
@@ -46,11 +46,11 @@ public class ScrapingTileEntityRenderer extends TileEntityRenderer<ScrapingTileE
         });
     }
 
+    @SuppressWarnings("deprecation")
     private void drawTiles(IRenderTypeBuffer buffer, MatrixStack matrixStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay)
     {
         Matrix4f mat = matrixStack.last().pose();
         IVertexBuilder builder = buffer.getBuffer(RenderType.cutout());
-        //noinspection deprecation
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(texture);
         for (int xOffset = 0; xOffset < 4; xOffset++)
         {

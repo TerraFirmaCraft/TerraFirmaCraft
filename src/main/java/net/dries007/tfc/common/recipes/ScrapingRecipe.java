@@ -38,10 +38,6 @@ public class ScrapingRecipe extends SimpleItemRecipe
     public ScrapingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
     {
         super(id, ingredient, result);
-        if (result.getCount() != 1)
-        {
-            throw new IllegalArgumentException("Scraping recipes only support a stack size of 1");
-        }
     }
 
     @Override

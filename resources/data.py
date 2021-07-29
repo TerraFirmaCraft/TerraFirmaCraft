@@ -166,7 +166,7 @@ def generate(rm: ResourceManager):
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
-    rm.item_tag('scrapable_item', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
+    rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
 
     # Misc
     rm.item_tag('mortar', 'tfc:mortar')

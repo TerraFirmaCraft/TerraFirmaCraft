@@ -237,13 +237,13 @@ public final class InteractionManager
             return ActionResultType.PASS;
         });
 
-        register(TFCTags.Items.SCRAPABLE_ITEM, (stack, context) -> {
+        register(TFCTags.Items.SCRAPABLE, (stack, context) -> {
             World level = context.getLevel();
             ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
             if (recipe != null)
             {
-                BlockPos pos = context.getClickedPos();
-                BlockPos abovePos = pos.above();
+                final BlockPos pos = context.getClickedPos();
+                final BlockPos abovePos = pos.above();
                 PlayerEntity player = context.getPlayer();
                 if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
@@ -254,8 +254,9 @@ public final class InteractionManager
                         return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
                             if (!level.isClientSide)
                             {
-                                player.setItemInHand(context.getHand(), cap.insertItem(0, stack, false));
-                                te.cachedItem = recipe.getResultItem().copy();
+                                ItemStack insertStack = stack.split(1);
+                                stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                                te.setCachedItem(recipe.getResultItem().copy());
                             }
                             return ActionResultType.SUCCESS;
                         }).orElse(ActionResultType.PASS);

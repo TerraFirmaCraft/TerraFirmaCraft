@@ -92,7 +92,7 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
         public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
-        public static final ITag.INamedTag<Item> SCRAPABLE_ITEM = create("scrapable_item");
+        public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
         public static final ITag.INamedTag<Item> KNIVES = create("knives");
 
         private static ITag.INamedTag<Item> create(String id)

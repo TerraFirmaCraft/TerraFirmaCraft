@@ -24,14 +24,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
 {
     private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.scraping");
-    public ItemStack cachedItem; // for visual purposes only
+    private ItemStack cachedItem; // for visual purposes only
     private short positions; // essentially a boolean[16]
 
     public ScrapingTileEntity()
     {
         super(TFCTileEntities.SCRAPING.get(), defaultInventory(1), NAME);
         positions = 0;
-        cachedItem = ItemStack.EMPTY;
+        setCachedItem(ItemStack.EMPTY);
     }
 
     public boolean isComplete()
@@ -67,12 +67,6 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
     }
 
     @Override
-    public int getSlotStackLimit(int slot)
-    {
-        return 1;
-    }
-
-    @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return getRecipe(stack) != null;
@@ -94,17 +88,27 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
         return super.save(nbt);
     }
 
+    public ItemStack getCachedItem()
+    {
+        return cachedItem;
+    }
+
+    public void setCachedItem(ItemStack cachedItem)
+    {
+        this.cachedItem = cachedItem;
+    }
+
     private void updateDisplayCache()
     {
         if (!isComplete())
         {
             final ItemStack stack = inventory.getStackInSlot(0);
             ScrapingRecipe recipe = getRecipe(stack);
-            cachedItem = recipe == null ? ItemStack.EMPTY : recipe.getResultItem().copy();
+            setCachedItem(recipe == null ? ItemStack.EMPTY : recipe.getResultItem().copy());
         }
         else
         {
-            cachedItem = inventory.getStackInSlot(0);
+            setCachedItem(inventory.getStackInSlot(0));
         }
     }
 
