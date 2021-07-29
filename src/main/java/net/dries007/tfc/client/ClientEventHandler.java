@@ -143,6 +143,7 @@ public final class ClientEventHandler
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PIT_KILN.get(), PitKilnTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.QUERN.get(), QuernTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.SCRAPING.get(), ScrapingTileEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);

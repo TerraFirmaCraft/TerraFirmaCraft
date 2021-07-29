@@ -56,6 +56,7 @@ public class TFCTags
         public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final ITag.INamedTag<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final ITag.INamedTag<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
+        public static final ITag.INamedTag<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
 
         private static ITag.INamedTag<Block> create(String id)
         {
@@ -93,6 +94,8 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
         public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
+        public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
+        public static final ITag.INamedTag<Item> KNIVES = create("knives");
 
         private static ITag.INamedTag<Item> create(String id)
         {

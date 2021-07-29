@@ -99,6 +99,9 @@ def generate(rm: ResourceManager):
     for pottery in PAIRED_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1500, result_item='tfc:ceramic/' + pottery)
 
+    for size in ('small', 'medium', 'large'):
+        scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
+
     # todo: actual pot recipes
     rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
         'ingredients': [utils.ingredient('minecraft:gunpowder')],
@@ -141,6 +144,13 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
 
 def quern_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('quern', name), 'tfc:quern', {
+        'ingredient': utils.ingredient(item),
+        'result': utils.item_stack((count, result))
+    })
+
+
+def scraping_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:
+    return rm.recipe(('scraping', name), 'tfc:scraping', {
         'ingredient': utils.ingredient(item),
         'result': utils.item_stack((count, result))
     })
