@@ -2,6 +2,8 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -26,14 +28,17 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
      * Other modifiers are applied on top of that
      */
     public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
+
     private static final long ROTTEN_DATE = Long.MIN_VALUE;
     private static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
     private static final long UNKNOWN_CREATION_DATE = 0;
-    private static boolean markStacksNonDecaying = true;
 
-    public static void setNonDecaying(boolean markStacksNonDecaying)
+    // Stacks created at certain times during loading, we infer to be non-decaying ones.
+    private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(false);
+
+    public static void setNonDecaying(boolean value)
     {
-        FoodHandler.markStacksNonDecaying = markStacksNonDecaying;
+        FoodHandler.NON_DECAYING.set(value);
     }
 
     protected final List<FoodTrait> foodTraits;
@@ -46,18 +51,18 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
     {
         this.foodTraits = new ArrayList<>(2);
         this.data = data;
-        this.isNonDecaying = FoodHandler.markStacksNonDecaying;
+        this.isNonDecaying = FoodHandler.NON_DECAYING.get();
         this.capability = LazyOptional.of(() -> this);
     }
 
     @Override
-    public long getCreationDate()
+    public long getCreationDate(boolean isClientSide)
     {
         if (isNonDecaying)
         {
             return UNKNOWN_CREATION_DATE;
         }
-        if (calculateRottenDate(creationDate) < Calendars.SERVER.getTicks())
+        if (calculateRottenDate(creationDate) < Calendars.get(isClientSide).getTicks())
         {
             this.creationDate = ROTTEN_DATE;
         }
@@ -71,7 +76,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
     }
 
     @Override
-    public long getRottenDate()
+    public long getRottenDate(boolean isClientSide)
     {
         if (isNonDecaying)
         {
@@ -82,7 +87,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
             return ROTTEN_DATE;
         }
         long rottenDate = calculateRottenDate(creationDate);
-        if (rottenDate < Calendars.SERVER.getTicks())
+        if (rottenDate < Calendars.get(isClientSide).getTicks())
         {
             return ROTTEN_DATE;
         }
@@ -120,6 +125,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
         return foodTraits;
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

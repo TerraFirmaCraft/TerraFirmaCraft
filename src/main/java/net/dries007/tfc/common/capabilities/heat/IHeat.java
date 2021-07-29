@@ -68,7 +68,6 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
 
     /**
      * Adds the heat info tooltip when hovering over.
-     * When overriding this to show additional information, fall back to IItemHeat.super.addHeatInfo()
      *
      * @param stack The stack to add information to
      * @param text  The list of tooltips

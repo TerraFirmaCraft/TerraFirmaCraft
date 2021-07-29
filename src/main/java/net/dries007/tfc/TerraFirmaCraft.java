@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.dries007.tfc.client.ClientEventHandler;
@@ -22,6 +23,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
@@ -68,6 +70,7 @@ public final class TerraFirmaCraft
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::loadComplete);
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
@@ -118,5 +121,10 @@ public final class TerraFirmaCraft
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent event)
+    {
+        FoodHandler.setNonDecaying(false);
     }
 }

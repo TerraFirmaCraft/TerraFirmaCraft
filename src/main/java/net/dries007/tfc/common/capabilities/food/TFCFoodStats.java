@@ -98,7 +98,7 @@ public class TFCFoodStats extends FoodStats
     }
 
     /**
-     * Called from {@link EntityPlayer#onUpdate()} on server side only
+     * Called from {@link PlayerEntity#tick()} on server side only
      *
      * @param player the player who's food stats this is
      */

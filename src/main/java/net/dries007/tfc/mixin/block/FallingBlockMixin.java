@@ -14,8 +14,8 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
-import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

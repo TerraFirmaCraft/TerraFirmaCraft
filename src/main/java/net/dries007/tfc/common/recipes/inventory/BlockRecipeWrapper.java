@@ -4,11 +4,13 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.recipes;
+package net.dries007.tfc.common.recipes.inventory;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+
+import net.dries007.tfc.common.recipes.IBlockRecipe;
 
 /**
  * This is a version of {@link net.minecraftforge.items.wrapper.RecipeWrapper} that is intended to be used for {@link IBlockRecipe}.

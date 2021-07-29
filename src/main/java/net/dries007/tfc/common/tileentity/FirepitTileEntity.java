@@ -23,7 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

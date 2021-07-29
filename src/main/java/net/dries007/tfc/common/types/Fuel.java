@@ -8,7 +8,6 @@ package net.dries007.tfc.common.types;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -17,7 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
+
+import net.dries007.tfc.util.Helpers;
 
 public class Fuel
 {
@@ -26,12 +26,12 @@ public class Fuel
     private final int duration;
     private final float temperature;
 
-    public Fuel(ResourceLocation id, JsonObject obj)
+    public Fuel(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
-        this.duration = JSONUtils.getAsInt(obj, "duration");
-        this.temperature = JSONUtils.getAsFloat(obj, "temperature");
+        this.ingredient = Ingredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
+        this.duration = JSONUtils.getAsInt(json, "duration");
+        this.temperature = JSONUtils.getAsFloat(json, "temperature");
     }
 
     public ResourceLocation getId()

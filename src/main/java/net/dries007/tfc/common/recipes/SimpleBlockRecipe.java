@@ -19,6 +19,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -27,11 +29,11 @@ import net.dries007.tfc.util.Helpers;
 public abstract class SimpleBlockRecipe implements IBlockRecipe
 {
     protected final ResourceLocation id;
-    protected final IBlockIngredient ingredient;
+    protected final BlockIngredient ingredient;
     protected final BlockState outputState;
     protected final boolean copyInputState;
 
-    public SimpleBlockRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    public SimpleBlockRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -63,7 +65,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         return id;
     }
 
-    public IBlockIngredient getBlockIngredient()
+    public BlockIngredient getBlockIngredient()
     {
         return ingredient;
     }
@@ -80,7 +82,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
+            BlockIngredient ingredient = BlockIngredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
             boolean copyInputState = JSONUtils.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
@@ -98,7 +100,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(buffer);
+            BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
             boolean copyInputState = buffer.readBoolean();
             BlockState state;
             if (!copyInputState)
@@ -115,7 +117,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public void toNetwork(PacketBuffer buffer, R recipe)
         {
-            IBlockIngredient.Serializer.INSTANCE.write(buffer, recipe.ingredient);
+            BlockIngredient.toNetwork(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);
             if (!recipe.copyInputState)
             {
@@ -125,7 +127,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
 
         protected interface Factory<R extends SimpleBlockRecipe>
         {
-            R create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState);
+            R create(ResourceLocation id, BlockIngredient ingredient, BlockState state, boolean copyInputState);
         }
     }
 }

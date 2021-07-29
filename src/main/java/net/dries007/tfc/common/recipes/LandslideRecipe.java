@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
@@ -142,7 +144,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
         return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
-    LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    LandslideRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
         super(id, ingredient, outputState, copyInputState);
     }

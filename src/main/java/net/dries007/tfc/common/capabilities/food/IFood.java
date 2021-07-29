@@ -29,7 +29,12 @@ public interface IFood extends INBTSerializable<CompoundNBT>
      *
      * @return the calendar time of creation
      */
-    long getCreationDate();
+    default long getCreationDate()
+    {
+        return getCreationDate(false);
+    }
+
+    long getCreationDate(boolean isClientSide);
 
     /**
      * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link FoodTrait} instead
@@ -43,15 +48,24 @@ public interface IFood extends INBTSerializable<CompoundNBT>
      *
      * @return a calendar time
      */
-    long getRottenDate();
+    default long getRottenDate()
+    {
+        return getRottenDate(false);
+    }
+
+    long getRottenDate(boolean isClientSide);
 
     /**
      * @return true if the food is rotten / decayed.
      */
     default boolean isRotten()
     {
-        // todo: hmmmmmmmmmmmmmmmmmmmmmmm
-        return getRottenDate() < Calendars.SERVER.getTicks();
+        return isRotten(false);
+    }
+
+    default boolean isRotten(boolean isClientSide)
+    {
+        return getRottenDate(isClientSide) < Calendars.get(isClientSide).getTicks();
     }
 
     /**
@@ -66,7 +80,7 @@ public interface IFood extends INBTSerializable<CompoundNBT>
 
     /**
      * Gets the current decay date modifier, including traits
-     * Note: there's a difference between the DECAY modifier, and the DECAY DATE modifier, in that they are reciprocals of eachother
+     * Note: there's a difference between the DECAY modifier, and the DECAY DATE modifier, in that they are reciprocals of each other
      *
      * @return a value between 0 and infinity (0 = instant decay, infinity = never decay)
      */
@@ -75,7 +89,6 @@ public interface IFood extends INBTSerializable<CompoundNBT>
     /**
      * If the item is a food capability item, and it was created before the post init, we assume that it is a technical stack, and will not appear in the world without a copy. As such, we set it to non-decaying.
      * This is NOT SERIALIZED on the capability - as a result it will not persist across {@link ItemStack#copy()},
-     * See TerraFirmaCraft#458
      */
     void setNonDecaying();
 
@@ -96,13 +109,17 @@ public interface IFood extends INBTSerializable<CompoundNBT>
     default void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
     {
         // Expiration dates
-        if (isRotten())
+        if (isRotten(true))
         {
             text.add(new TranslationTextComponent("tfc.tooltip.food_rotten").withStyle(TextFormatting.RED));
+            if (((stack.hashCode() * 1928634918231L) & 0xFF) == 0)
+            {
+                text.add(new TranslationTextComponent("tfc.tooltip.food_rotten_special").withStyle(TextFormatting.RED));
+            }
         }
         else
         {
-            long rottenDate = getRottenDate();
+            long rottenDate = getRottenDate(true);
             if (rottenDate == Long.MAX_VALUE)
             {
                 text.add(new TranslationTextComponent("tfc.tooltip.food_infinite_expiry").withStyle(TextFormatting.GOLD));
@@ -116,7 +133,7 @@ public interface IFood extends INBTSerializable<CompoundNBT>
                 {
                     case EXPIRY:
                         text.add(new TranslationTextComponent("tfc.tooltip.food_expiry_date")
-                            .append(Calendars.CLIENT.getCalendarTimeAndDate())
+                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
                             .withStyle(TextFormatting.DARK_GREEN));
                         break;
                     case TIME_LEFT:
@@ -142,58 +159,72 @@ public interface IFood extends INBTSerializable<CompoundNBT>
                             timeLeft = new TranslationTextComponent("tfc.tooltip.food_expiry_and_days_left", String.valueOf(daysToRotInTicks));
                         }
                         text.add(new TranslationTextComponent("tfc.tooltip.food_expiry_date")
-                            .append(Calendars.CLIENT.getCalendarTimeAndDate())
+                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
                             .append(timeLeft)
                             .withStyle(TextFormatting.DARK_GREEN));
                         break;
                 }
             }
         }
-        if (TFCConfig.CLIENT.enableDebug.get())
-        {
-            text.add(new StringTextComponent("Created at " + getCreationDate()));
-        }
 
         // Nutrition / Hunger / Saturation / Water Values
         // Hide this based on the shift key (because it's a lot of into)
         if (ClientHelpers.hasShiftDown())
         {
-            text.add(new TranslationTextComponent("tfc.tooltip.nutrition").withStyle(TextFormatting.DARK_GREEN));
+            text.add(new TranslationTextComponent("tfc.tooltip.nutrition").withStyle(TextFormatting.GRAY));
 
-            float saturation = getData().getSaturation();
-            if (saturation > 0)
+            boolean any = false;
+            if (!isRotten(true))
             {
-                // This display makes it so 100% saturation means a full hunger bar worth of saturation.
-                text.add(new TranslationTextComponent("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(TextFormatting.GRAY));
-            }
-            float water = getData().getWater();
-            if (water > 0)
-            {
-                text.add(new TranslationTextComponent("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(TextFormatting.GRAY));
-            }
+                final FoodData data = getData();
 
-            final float[] nutrients = getData().getNutrients();
-            for (Nutrient nutrient : Nutrient.VALUES)
-            {
-                float value = nutrients[nutrient.ordinal()];
-                if (value > 0)
+                float saturation = data.getSaturation();
+                if (saturation > 0)
                 {
-                    text.add(new StringTextComponent(" - ")
-                        .append(Helpers.getEnumTranslationKey(nutrient))
-                        .append(": " + String.format("%.1f", value))
-                        .withStyle(nutrient.getColor()));
+                    // This display makes it so 100% saturation means a full hunger bar worth of saturation.
+                    text.add(new TranslationTextComponent("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(TextFormatting.GRAY));
+                    any = true;
                 }
+                float water = data.getWater();
+                if (water > 0)
+                {
+                    text.add(new TranslationTextComponent("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(TextFormatting.GRAY));
+                    any = true;
+                }
+
+                final float[] nutrients = data.getNutrients();
+                for (Nutrient nutrient : Nutrient.VALUES)
+                {
+                    float value = nutrients[nutrient.ordinal()];
+                    if (value > 0)
+                    {
+                        text.add(new StringTextComponent(" - ")
+                            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(nutrient)))
+                            .append(": " + String.format("%.1f", value))
+                            .withStyle(nutrient.getColor()));
+                        any = true;
+                    }
+                }
+            }
+            if (!any)
+            {
+                text.add(new TranslationTextComponent("tfc.tooltip.nutrition_none").withStyle(TextFormatting.GRAY));
             }
         }
         else
         {
-            text.add(new TranslationTextComponent("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(TextFormatting.ITALIC));
+            text.add(new TranslationTextComponent("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
         }
 
         // Add info for each trait
         for (FoodTrait trait : getTraits())
         {
             trait.addTraitInfo(stack, text);
+        }
+
+        if (TFCConfig.CLIENT.enableDebug.get())
+        {
+            text.add(new StringTextComponent("[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }

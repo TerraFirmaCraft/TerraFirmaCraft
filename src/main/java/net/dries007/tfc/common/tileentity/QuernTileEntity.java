@@ -20,8 +20,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.recipes.QuernRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

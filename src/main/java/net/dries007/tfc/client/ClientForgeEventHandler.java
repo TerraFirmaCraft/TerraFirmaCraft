@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -54,6 +55,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.types.FuelManager;
@@ -76,6 +78,7 @@ import static net.minecraft.util.text.TextFormatting.*;
 public class ClientForgeEventHandler
 {
     private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/icons/overlay.png");
+    private static final Field CAP_NBT_FIELD = Helpers.findUnobfField(ItemStack.class, "capNBT");
 
     public static void init()
     {
@@ -152,7 +155,13 @@ public class ClientForgeEventHandler
                 final CompoundNBT stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new StringTextComponent("NBT: " + stackTag));
+                    text.add(new StringTextComponent("[Debug] NBT: " + stackTag));
+                }
+
+                final CompoundNBT capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
+                if (capTag != null)
+                {
+                    text.add(new StringTextComponent("[Debug] Capability NBT: " + capTag));
                 }
             }
         }
@@ -240,7 +249,7 @@ public class ClientForgeEventHandler
 
         float displayModifier = (healthDisplayStyle == HealthDisplayStyle.TFC || healthDisplayStyle == HealthDisplayStyle.TFC_CURRENT) ? 50f : 1f;
         float maxHealth = player.getMaxHealth() * displayModifier; // 20 * 50 = 1000
-        float currentThirst = 100f; // todo: update to fetch from thirst once implemented
+        float currentThirst = player.getFoodData() instanceof TFCFoodStats ? ((TFCFoodStats) player.getFoodData()).getThirst() : 100f;
 
         MainWindow window = event.getWindow();
         int guiScaledHeight = window.getGuiScaledHeight();

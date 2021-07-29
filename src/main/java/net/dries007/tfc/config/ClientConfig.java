@@ -47,7 +47,7 @@ public class ClientConfig
             "2. The 'horizon height' (where the fog changes from sky to black) is moved from 63 -> 96"
         ).define("assumeTFCWorld", true);
 
-        enableDebug = builder.apply("enableDebugNBTTooltip").comment("Enables a series of additional debugging tooltips, displayed information, and logging.").define("enableDebugNBTTooltip", () -> !FMLEnvironment.production);
+        enableDebug = builder.apply("enableDebug").comment("Enables a series of additional debugging tooltips, displayed information, and logging.").define("enableDebug", () -> !FMLEnvironment.production);
 
         innerBuilder.pop().push("display");
 

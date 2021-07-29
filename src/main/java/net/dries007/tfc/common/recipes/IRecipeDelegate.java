@@ -13,7 +13,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public interface IDelegatingRecipe<C extends IInventory> extends IRecipe<C>
+public interface IRecipeDelegate<C extends IInventory> extends IRecipe<C>
 {
     IRecipe<C> getInternal();
 

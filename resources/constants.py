@@ -456,11 +456,15 @@ DEFAULT_LANG = {
     'tfc.tooltip.food_expiry_date': 'Expires on: ',
     'tfc.tooltip.food_expiry_less_than_one_day_left': 'Expires today!',
     'tfc.tooltip.food_expiry_days_left': 'Expires in about %s days',
-    'tfc.tooltip.food_expiry_and_less_than_one_day_left': ' (today!)',
+    'tfc.tooltip.food_expiry_and_less_than_one_day_left': ' (Today!)',
     'tfc.tooltip.food_expiry_and_days_left': ' (about %s days)',
+    'tfc.tooltip.food_infinite_expiry': 'Never expires',
+    'tfc.tooltip.food_rotten': 'Rotten!',
+    'tfc.tooltip.food_rotten_special': 'Ewwww, are you really thinking of eating that? It looks disgusting',
     'tfc.tooltip.nutrition': 'Nutrition:',
     'tfc.tooltip.nutrition_saturation': ' - Saturation: %s%%',
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
+    'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
 
     # Commands

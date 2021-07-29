@@ -25,7 +25,7 @@ import net.dries007.tfc.util.Helpers;
  * The internal recipe must obviously be compatible but we have no way of assuring that, so we rely on users to not screw this up
  * This is more powerful than creating a recipe type for every combination of modifier (e.g. damage inputs, apply food, etc.)
  */
-public abstract class DelegatingRecipe<C extends IInventory> implements IDelegatingRecipe<C>
+public abstract class DelegatingRecipe<C extends IInventory> implements IRecipeDelegate<C>
 {
     public static final ResourceLocation DELEGATE = Helpers.identifier("delegate");
 
