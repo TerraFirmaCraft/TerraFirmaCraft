@@ -69,6 +69,7 @@ def generate(rm: ResourceManager):
     heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 1)
     heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', 1)
     heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
+    heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
     for pottery in PAIRED_POTTERY:
         heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)
@@ -88,10 +89,12 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:stone', block('raw'), block('hardened'))
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
+        rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        rm.block_tag('tfc:forge_insulation', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
-
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
+    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -158,6 +161,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch', 'tfc:pit_kiln')
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
+    rm.block_tag('forge_invisible_whitelist', 'minecraft:glass')  # todo: set this to just be crucibles
     rm.block_tag('any_spreading_bush', '#tfc:spreading_bush')
 
     # Thatch Bed

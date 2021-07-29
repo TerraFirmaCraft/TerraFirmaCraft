@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "heat_level=0": {
+      "model": "tfc:block/charcoal_forge/heat_0"
+    },
+    "heat_level=1": {
+      "model": "tfc:block/charcoal_forge/heat_1"
+    },
+    "heat_level=2": {
+      "model": "tfc:block/charcoal_forge/heat_2"
+    },
+    "heat_level=3": {
+      "model": "tfc:block/charcoal_forge/heat_3"
+    },
+    "heat_level=4": {
+      "model": "tfc:block/charcoal_forge/heat_4"
+    },
+    "heat_level=5": {
+      "model": "tfc:block/charcoal_forge/heat_5"
+    },
+    "heat_level=6": {
+      "model": "tfc:block/charcoal_forge/heat_6"
+    },
+    "heat_level=7": {
+      "model": "tfc:block/charcoal_forge/heat_7"
+    }
+  }
+}

@@ -12,19 +12,18 @@ import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.common.capabilities.heat.Heat;
-import net.dries007.tfc.common.container.PotContainer;
-import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
+import net.dries007.tfc.common.container.CharcoalForgeContainer;
+import net.dries007.tfc.common.tileentity.CharcoalForgeTileEntity;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class PotScreen extends TileEntityScreen<PotTileEntity, PotContainer>
+public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntity, CharcoalForgeContainer>
 {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_cooking_pot.png");
+    private static final ResourceLocation FORGE = new ResourceLocation(MOD_ID, "textures/gui/charcoal_forge.png");
 
-    public PotScreen(PotContainer container, PlayerInventory playerInventory, ITextComponent name)
+    public CharcoalForgeScreen(CharcoalForgeContainer container, PlayerInventory playerInventory, ITextComponent name)
     {
-        super(container, playerInventory, name, BACKGROUND);
+        super(container, playerInventory, name, FORGE);
         inventoryLabelY += 20;
         imageHeight += 20;
     }
@@ -33,8 +32,10 @@ public class PotScreen extends TileEntityScreen<PotTileEntity, PotContainer>
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * tile.getSyncableData().get(AbstractFirepitTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * tile.getSyncableData().get(CharcoalForgeTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temp > 0)
-            blit(matrixStack, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
+        {
+            blit(matrixStack, leftPos + 8, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
+        }
     }
 }

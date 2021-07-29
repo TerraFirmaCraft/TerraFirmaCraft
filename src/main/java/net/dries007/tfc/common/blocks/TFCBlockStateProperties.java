@@ -74,4 +74,5 @@ public class TFCBlockStateProperties
     public static final BooleanProperty ITEM_3 = BooleanProperty.create("item_3");
 
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
+    public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
 }

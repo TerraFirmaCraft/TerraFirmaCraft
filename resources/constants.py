@@ -410,6 +410,7 @@ DEFAULT_LANG = {
     'tfc.tile_entity.grill': 'Grill',
     'tfc.tile_entity.firepit': 'Firepit',
     'tfc.tile_entity.log_pile': 'Log Pile',
+    'tfc.tile_entity.charcoal_forge': 'Forge',
     'item.tfc.handstone': 'Handstone',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',

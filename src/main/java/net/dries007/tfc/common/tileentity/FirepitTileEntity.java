@@ -16,14 +16,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -113,27 +112,12 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
      */
     private void mergeOutputFluids(FluidStack fluidStack, float temperature)
     {
-        fluidStack = mergeOutputFluidIntoSlot(fluidStack, temperature, SLOT_OUTPUT_1);
+        fluidStack = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_1);
         if (fluidStack.isEmpty())
         {
             return;
         }
-        mergeOutputFluidIntoSlot(fluidStack, temperature, SLOT_OUTPUT_2);
+        Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_2);
         // Any remaining fluid is lost at this point
-    }
-
-    private FluidStack mergeOutputFluidIntoSlot(FluidStack fluidStack, float temperature, int slot)
-    {
-        final ItemStack mergeStack = inventory.getStackInSlot(slot);
-        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
-            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-            if (filled > 0)
-            {
-                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
-            }
-            FluidStack remainder = fluidStack.copy();
-            remainder.shrink(filled);
-            return remainder;
-        }).orElse(FluidStack.EMPTY);
     }
 }

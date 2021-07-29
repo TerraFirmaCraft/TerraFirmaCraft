@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -157,38 +158,11 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         assert level != null;
         if (!level.getBlockState(worldPosition).getValue(FirepitBlock.LIT)) return;
 
-        // Consume fuel as dictated by the delta player ticks (don't simulate any input changes), and then extinguish
-        if (burnTicks > deltaPlayerTicks)
-        {
-            burnTicks -= deltaPlayerTicks;
-            return;
-        }
-        else
-        {
-            deltaPlayerTicks -= burnTicks;
-            burnTicks = 0;
-        }
-        needsSlotUpdate = true; // Need to consume fuel
-        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_FUEL_INPUT; i++)
-        {
-            ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = FuelManager.get(fuelStack);
-            if (fuel != null)
-            {
-                inventory.setStackInSlot(i, ItemStack.EMPTY);
-                if (fuel.getDuration() > deltaPlayerTicks)
-                {
-                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
-                    burnTemperature = fuel.getTemperature();
-                    return;
-                }
-                else
-                {
-                    deltaPlayerTicks -= fuel.getDuration();
-                    burnTicks = 0;
-                }
-            }
-        }
+        Triple<Integer, Float, Long> triple = Helpers.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+        burnTicks = triple.getLeft();
+        burnTemperature = triple.getMiddle();
+        deltaPlayerTicks = triple.getRight();
+        needsSlotUpdate = true;
         if (deltaPlayerTicks > 0) // Consumed all fuel, so extinguish and cool instantly
         {
             extinguish(level.getBlockState(worldPosition));
