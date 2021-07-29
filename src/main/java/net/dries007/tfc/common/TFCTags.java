@@ -96,7 +96,6 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
         public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
         public static final ITag.INamedTag<Item> KNIVES = create("knives");
-        public static final ITag.INamedTag<Item> KNIVES = create("knives");
         public static final ITag.INamedTag<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final ITag.INamedTag<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final ITag.INamedTag<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
