@@ -11,6 +11,7 @@ import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootParameter;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -18,12 +19,19 @@ public class TFCLoot
 {
     public static final LootParameter<Boolean> ISOLATED = new LootParameter<>(Helpers.identifier("isolated"));
 
-    public static final LootConditionType IS_ISOLATED = register("is_isolated", new IsIsolatedCondition.Serializer());
+    public static final Lazy<LootConditionType> IS_ISOLATED = register("is_isolated", new IsIsolatedCondition.Serializer());
 
-    public static void setup() {}
-
-    private static LootConditionType register(String id, ILootSerializer<? extends ILootCondition> serializer)
+    public static void setup()
     {
-        return Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), new LootConditionType(serializer));
+
+    }
+
+    private static Lazy<LootConditionType> register(String id, ILootSerializer<? extends ILootCondition> serializer)
+    {
+        return Lazy.of(() -> {
+            final LootConditionType type = new LootConditionType(serializer);
+            Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), type);
+            return type;
+        });
     }
 }

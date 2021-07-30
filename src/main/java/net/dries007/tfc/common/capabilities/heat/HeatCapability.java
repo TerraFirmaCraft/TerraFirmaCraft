@@ -29,11 +29,6 @@ public final class HeatCapability
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
     public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat", true);
 
-    public static void setup()
-    {
-        Helpers.registerSimpleCapability(IHeat.class);
-    }
-
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
         if (temp < target)

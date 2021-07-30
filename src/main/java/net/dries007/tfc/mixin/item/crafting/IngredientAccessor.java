@@ -17,6 +17,6 @@ public interface IngredientAccessor
     /**
      * To call internal ingredients invalidate() method not through super (since it's a delegate)
      */
-    @Invoker(value = "invalidate")
+    @Invoker(value = "invalidate", remap = false)
     void invoke$invalidate();
 }

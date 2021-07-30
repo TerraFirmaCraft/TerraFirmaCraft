@@ -18,8 +18,4 @@ public final class PlayerDataCapability
     public static final Capability<PlayerData> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = Helpers.identifier("player_data");
 
-    public static void setup()
-    {
-        Helpers.registerSimpleCapability(PlayerData.class);
-    }
 }

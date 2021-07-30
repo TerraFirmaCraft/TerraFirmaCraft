@@ -8,7 +8,6 @@ package net.dries007.tfc.common;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -16,7 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Top level class for item-based 'definition' objects that are defined in JSON
@@ -30,7 +30,7 @@ public class ItemDefinition
 
     protected ItemDefinition(ResourceLocation id, JsonObject json)
     {
-        this(id, CraftingHelper.getIngredient(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'")));
+        this(id, Ingredient.fromJson(Helpers.getJsonAsAny(json, "ingredient")));
     }
 
     protected ItemDefinition(ResourceLocation id, Ingredient ingredient)

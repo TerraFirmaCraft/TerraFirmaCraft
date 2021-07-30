@@ -33,7 +33,7 @@ import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.Fuel;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.util.Helpers;

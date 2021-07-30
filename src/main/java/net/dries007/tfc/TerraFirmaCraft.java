@@ -22,11 +22,11 @@ import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.capabilities.forge.IForging;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -42,13 +42,13 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.loot.TFCLoot;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.IWorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placer.TFCBlockPlacers;
@@ -104,17 +104,18 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Common Setup");
 
         // Setup methods
-        HeatCapability.setup();
-        ForgingCapability.setup();
-        ChunkDataCapability.setup();
-        WorldTrackerCapability.setup();
-        FoodCapability.setup();
-        PlayerDataCapability.setup();
-        ServerCalendar.setup();
+        Helpers.registerSimpleCapability(IHeat.class);
+        Helpers.registerSimpleCapability(IForging.class);
+        Helpers.registerSimpleCapability(ChunkData.class);
+        Helpers.registerSimpleCapability(IWorldTracker.class);
+        Helpers.registerSimpleCapability(IFood.class);
+        Helpers.registerSimpleCapability(PlayerData.class);
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+
         ItemSizeManager.setup();
+        ServerCalendar.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 

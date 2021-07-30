@@ -30,11 +30,6 @@ public final class FoodCapability
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = new IndirectHashCollection<>(FoodDefinition::getValidItems);
     public static final DataManager<FoodDefinition> MANAGER = new DataManager.Instance<>(FoodDefinition::new, "food_items", "foods", true);
 
-    public static void setup()
-    {
-        Helpers.registerSimpleCapability(IFood.class);
-    }
-
     @Nullable
     public static FoodDefinition get(ItemStack stack)
     {

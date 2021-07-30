@@ -20,8 +20,4 @@ public class ForgingCapability
     public static final Capability<IForging> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_forge");
 
-    public static void setup()
-    {
-        Helpers.registerSimpleCapability(IForging.class);
-    }
 }

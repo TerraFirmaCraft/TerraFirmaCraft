@@ -16,8 +16,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
