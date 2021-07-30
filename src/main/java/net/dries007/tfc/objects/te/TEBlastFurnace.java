@@ -50,7 +50,6 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
 {
     public static final int SLOT_TUYERE = 0;
     public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
-    private static final int MAX_AIR_TICKS = 600;
     private static final int MAX_AIR_TICKS = ConfigTFC.Devices.BELLOWS.maxTicks;
 
     private final List<ItemStack> oreStacks = new ArrayList<>();
