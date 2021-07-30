@@ -34,6 +34,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -344,12 +345,15 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                     this.setDead();
                 }
             }
-            // Wild animals disappear after 125% lifespan
-            if (this.getFamiliarity() < 0.10F &&
-                (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
-            {
-                this.setDead();
+            if (this instanceof ILivestock){
+                // Wild livestock disappear after 125% lifespan
+                if (this.getFamiliarity() < 0.10F &&
+                    (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
+                {
+                    this.setDead();
+                }
             }
+
         }
     }
 
@@ -386,7 +390,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     public boolean getCanSpawnHere()
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
-            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            //&& this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
             && !this.world.containsAnyLiquid(getEntityBoundingBox())
             && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
