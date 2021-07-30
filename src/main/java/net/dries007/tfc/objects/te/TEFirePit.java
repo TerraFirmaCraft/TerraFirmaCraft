@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -72,6 +71,8 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
     public static final int FIELD_COOKING_POT_SERVINGS = 2;
 
     public static final float COOKING_POT_BOILING_TEMPERATURE = Heat.VERY_HOT.getMin();
+
+    private static final int MAX_AIR_TICKS = ConfigTFC.Devices.BELLOWS.maxTicks;
 
     private final IItemHandler[] inventoryWrappers;
     private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
@@ -178,12 +179,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, 300) : 0);
-                if (temperature != targetTemperature)
-                {
-                    float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
-                    temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
-                }
+                temperature = CapabilityItemHeat.adjustToTargetTemperature(temperature, burnTemperature, airTicks, MAX_AIR_TICKS);
             }
 
             BlockFirePit.FirePitAttachment attachment = state.getValue(ATTACHMENT);
@@ -649,9 +645,9 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
     public void onAirIntake(int amount)
     {
         airTicks += amount;
-        if (airTicks > 600)
+        if (airTicks > MAX_AIR_TICKS)
         {
-            airTicks = 600;
+            airTicks = MAX_AIR_TICKS;
         }
     }
 

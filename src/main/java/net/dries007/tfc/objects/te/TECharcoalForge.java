@@ -15,7 +15,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -48,7 +47,7 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
 
     public static final int FIELD_TEMPERATURE = 0;
 
-    private static final int MAX_AIR_TICKS = 600;
+    private static final int MAX_AIR_TICKS = ConfigTFC.Devices.BELLOWS.maxTicks;
 
     private final HeatRecipe[] cachedRecipes = new HeatRecipe[5];
     private boolean requiresSlotUpdate = false;
@@ -150,12 +149,7 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
             if (temperature > 0 || burnTemperature > 0)
             {
                 // Update temperature
-                float targetTemperature = burnTemperature + (airTicks > 0 ? MathHelper.clamp(burnTemperature, 0, MAX_AIR_TICKS) : 0);
-                if (temperature != targetTemperature)
-                {
-                    float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
-                    temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
-                }
+                temperature = CapabilityItemHeat.adjustToTargetTemperature(temperature, burnTemperature, airTicks, MAX_AIR_TICKS);
 
                 // Provide heat to blocks that are one block above
                 Block blockUp = world.getBlockState(pos.up()).getBlock();
