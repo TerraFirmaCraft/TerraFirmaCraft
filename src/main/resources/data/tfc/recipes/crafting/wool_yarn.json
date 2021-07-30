@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:spindle"
+    },
+    {
+      "item": "tfc:wool"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "item": "tfc:wool_yarn"
+  }
+}

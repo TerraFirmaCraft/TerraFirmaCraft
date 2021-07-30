@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/blackwood"
+    }
+  },
+  "result": {
+    "count": 2,
+    "item": "tfc:wood/planks/blackwood_door"
+  }
+}

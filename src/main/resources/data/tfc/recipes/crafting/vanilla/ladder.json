@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "result": {
+    "count": 16,
+    "item": "minecraft:ladder"
+  }
+}

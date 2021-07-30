@@ -1,0 +1,24 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "SWS",
+    "SRS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/steel"
+    },
+    "W": {
+      "tag": "minecraft:stone_pressure_plates"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "count": 8,
+    "item": "minecraft:detector_rail"
+  }
+}

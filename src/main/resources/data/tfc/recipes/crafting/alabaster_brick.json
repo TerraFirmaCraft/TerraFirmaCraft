@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:damage_inputs_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "tfc:ore/gypsum"
+      },
+      {
+        "tag": "tfc:chisels"
+      }
+    ],
+    "result": {
+      "count": 4,
+      "item": "tfc:alabaster_brick"
+    }
+  }
+}

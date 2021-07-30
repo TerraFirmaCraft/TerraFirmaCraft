@@ -14,7 +14,7 @@ from constants import *
 
 def generate(rm: ResourceManager):
     # Rock block variants
-    for rock in ROCKS.keys():
+    for rock, rock_data in ROCKS.items():
         for block_type in ROCK_BLOCK_TYPES:
             if block_type == 'spike':
                 # Spikes have special block states
@@ -53,6 +53,10 @@ def generate(rm: ResourceManager):
                 # Model for the item
                 rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
 
+            elif block_type == 'pressure_plate':
+                rm.block(('rock', 'pressure_plate', rock)).make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
+            elif block_type == 'button':
+                rm.block(('rock', 'button', rock)).make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
             else:
                 block = rm.blockstate(('rock', block_type, rock))
                 if block_type == 'hardened':
@@ -85,7 +89,7 @@ def generate(rm: ResourceManager):
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall', lang('%s %s Wall', rock, block_type))
                     rm.block_tag('minecraft:walls', 'tfc:rock/' + block_type + '/' + rock + '_wall')
                 # Loot
-                if block_type == 'raw':
+                if block_type == 'raw' or block_type == 'hardened':
                     block.with_block_loot(alternatives([{
                         'name': 'tfc:rock/raw/%s' % rock,
                         'conditions': ['tfc:is_isolated'],
@@ -93,8 +97,6 @@ def generate(rm: ResourceManager):
                         'name': 'tfc:rock/loose/%s' % rock,
                         'functions': [loot_tables.set_count(1, 4)]
                     }]))
-                elif block_type == 'hardened':
-                    block.with_block_loot(counted_item('tfc:rock/loose/%s' % rock, 1, 4))
                 elif block_type == 'gravel':
                     block.with_block_loot({
                         'entries': [{
@@ -124,7 +126,9 @@ def generate(rm: ResourceManager):
                     block.with_lang(lang('%s %s', block_type, rock))
                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
-
+        if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
+            rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot(counted_item('tfc:rock/loose/%s' % rock, 1, 4)).with_item_model()
+            rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
         # Ores
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -252,17 +256,16 @@ def generate(rm: ResourceManager):
     for i in range(0, 7 + 1):
         rm.block_model('charcoal_forge/heat_%d' % i, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % i})
 
-    block = rm.block_model('thatch_bed').with_item_model().with_lang(lang('Thatch Bed'))
+    block = rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
     block.with_block_loot({
-        'entries': [{
-            'type': 'minecraft:item',
-            'name': 'tfc:thatch_bed'
-        }],
+        'entries': 'tfc:thatch',
+        'functions': [loot_tables.set_count(2)],
         'conditions': [
             'minecraft:survives_explosion',
             block_state_property('tfc:thatch_bed', {'part': 'head'})
         ]
     })
+    # todo: should be a TE to drop the hide item used
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
@@ -437,7 +440,8 @@ def generate(rm: ResourceManager):
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
-                item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), 'tfc:item/metal/%s/%s' % (metal_item, metal), parent=metal_item_data.parent_model)
+                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
+                item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
                 item.with_lang(lang('%s %s' % (metal, metal_item)))
 
         # Metal Blocks

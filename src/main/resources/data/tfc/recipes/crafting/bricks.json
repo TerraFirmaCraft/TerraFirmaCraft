@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "YXY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:brick"
+    },
+    "Y": {
+      "tag": "tfc:mortar"
+    }
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:bricks"
+  }
+}
