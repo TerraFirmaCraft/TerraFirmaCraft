@@ -45,6 +45,8 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.EntitySeatOn;
 import net.dries007.tfc.objects.entity.animal.*;
 
+import static com.google.common.math.DoubleMath.mean;
+
 public final class Helpers
 {
     private static final Joiner JOINER_DOT = Joiner.on('.');
@@ -487,5 +489,12 @@ public final class Helpers
     public static <T> T getNull()
     {
         return null;
+    }
+
+    public static double getTPS(World world, int dimId)
+    {
+        if (world == null || world.getMinecraftServer() == null) return -1D;
+        double worldTickTime = mean(world.getMinecraftServer().worldTickTimes.get(dimId)) * 1.0E-6D;
+        return Math.min(1000.0D / worldTickTime, 20.0D);
     }
 }

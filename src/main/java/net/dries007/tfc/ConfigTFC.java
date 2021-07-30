@@ -504,6 +504,11 @@ public final class ConfigTFC
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.world_regen.sticksRocksModifier")
             public double sticksRocksModifier = 0.5;
+
+            @Config.Comment("Minimum server tps to allow chunk regeneration in the spring")
+            @Config.RangeInt(min = 0, max = 20)
+            @Config.LangKey("config." + MOD_ID + ".general.world.minRegenTps")
+            public int minRegenTps = 16;
         }
 
         public static final class FoodCFG

@@ -60,7 +60,7 @@ public class WorldGenWildCrops implements IWorldGenerator
                         final int x = (chunkX << 4) + random.nextInt(16) + 8;
                         final int z = (chunkZ << 4) + random.nextInt(16) + 8;
                         final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-                        if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
+                        if (isValidPosition(world, pos))
                         {
                             double yearProgress = CalendarTFC.CALENDAR_TIME.getMonthOfYear().ordinal() / 11.0;
                             int maxStage = crop.getMaxStage();
@@ -74,5 +74,10 @@ public class WorldGenWildCrops implements IWorldGenerator
                 }
             }
         }
+    }
+
+    protected boolean isValidPosition(World world, BlockPos pos)
+    {
+        return world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down()));
     }
 }

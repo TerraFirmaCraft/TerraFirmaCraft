@@ -30,8 +30,8 @@ import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class WorldGenLooseRocks implements IWorldGenerator
 {
-    private final boolean generateOres;
-    private double factor;
+    protected final boolean generateOres;
+    protected double factor;
 
     public WorldGenLooseRocks(boolean generateOres)
     {
@@ -111,7 +111,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
         }
     }
 
-    private void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
+    protected void generateRock(World world, BlockPos pos, @Nullable Vein vein, Rock rock)
     {
         // Use air, so it doesn't replace other replaceable world gen
         // This matches the check in BlockPlacedItemFlat for if the block can stay
@@ -146,7 +146,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
     }
 
     @Nullable
-    private Vein getRandomVein(List<Vein> veins, BlockPos pos, Random rand)
+    protected Vein getRandomVein(List<Vein> veins, BlockPos pos, Random rand)
     {
         if (!veins.isEmpty() && rand.nextDouble() < 0.4)
         {

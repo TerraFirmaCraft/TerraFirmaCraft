@@ -512,6 +512,8 @@ config.tfc.general.world.enableLooseOres.tooltip=Enable generation of loose ores
 config.tfc.general.world.enableLooseSticks=Enable Loose Rocks
 config.tfc.general.world.enableLooseSticks.tooltip=Enable generation of loose sticks?
 
+config.tfc.general.world_regen.minRegenTps=Minimum Regeneration TPS
+config.tfc.general.world_regen.minRegenTps.tooltip=Minimum server TPS to trigger spring regeneration of surface debris
 
 config.tfc.general.world.sticksDensityModifier=Stick Density Modifier
 config.tfc.general.world.sticksDensityModifier.tooltip=This controls the number of sticks generated on chunk generation. The number of trees in the area and flora density is also a factor in this.
