@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:bananas",
                   "config": {
-                    "state": "tfc:fruit_tree/banana_plant"
+                    "state": "tfc:plant/banana_plant"
                   }
                 },
                 "decorator": {

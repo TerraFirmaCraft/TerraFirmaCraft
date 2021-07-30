@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/berry_bush_2",
+  "textures": {
+    "cane": "tfc:block/berry_bush/dry_blackberry_cane",
+    "bush": "tfc:block/berry_bush/dry_blackberry_bush"
+  }
+}

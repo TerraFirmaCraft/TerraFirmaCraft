@@ -1,0 +1,61 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_core"
+      }
+    },
+    {
+      "when": {
+        "down": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_down"
+      }
+    },
+    {
+      "when": {
+        "up": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_up"
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_side"
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/plant/cherry_branch_side",
+        "y": 180
+      }
+    }
+  ]
+}
