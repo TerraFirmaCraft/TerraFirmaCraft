@@ -24,7 +24,7 @@ public class SurfaceStates
 {
     public static final ISurfaceState RAW = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.RAW).defaultBlockState();
     public static final ISurfaceState COBBLE = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.COBBLE).defaultBlockState();
-    public static final ISurfaceState GRAVEL = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
+    public static final ISurfaceState GRAVEL = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
 
     /**
      * Grass / Dirt / Gravel, or Sand / Sand / Sandstone

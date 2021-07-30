@@ -72,6 +72,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -86,6 +87,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -104,6 +106,7 @@ minecraft {
             environment 'target', 'fmltestserver'
             environment 'targetModId', "${mod_id}"
             args '-mixin.config=' + mod_id + '.mixins.json', '--crashOnFailedTests'
+            jvmArg '-ea'
             forceExit false
             mods {
                 tfc {
