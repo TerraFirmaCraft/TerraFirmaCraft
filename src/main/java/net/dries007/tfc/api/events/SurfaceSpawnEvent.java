@@ -8,8 +8,11 @@ package net.dries007.tfc.api.events;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
+@Cancelable
+@Event.HasResult
 public class SurfaceSpawnEvent extends Event
 {
 
