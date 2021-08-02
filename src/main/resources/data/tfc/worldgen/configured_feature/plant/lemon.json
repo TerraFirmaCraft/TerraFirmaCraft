@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:fruit_trees",
                   "config": {
-                    "state": "tfc:fruit_tree/lemon_growing_branch"
+                    "state": "tfc:plant/lemon_growing_branch"
                   }
                 },
                 "decorator": {

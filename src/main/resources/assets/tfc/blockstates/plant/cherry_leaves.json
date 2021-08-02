@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "lifecycle=flowering": {
+      "model": "tfc:block/plant/cherry_flowering_leaves"
+    },
+    "lifecycle=fruiting": {
+      "model": "tfc:block/plant/cherry_fruiting_leaves"
+    },
+    "lifecycle=dormant": {
+      "model": "tfc:block/plant/cherry_dry_leaves"
+    },
+    "lifecycle=healthy": {
+      "model": "tfc:block/plant/cherry_leaves"
+    }
+  }
+}

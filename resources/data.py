@@ -46,8 +46,14 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
                 if item == 'shovel':
                     rm.item_tag('extinguisher', 'tfc:metal/shovel/' + metal)
-                if item == 'knife':
+                elif item == 'knife':
                     rm.item_tag('knives', 'tfc:metal/knife/' + metal)
+                elif item == 'saw':
+                    rm.item_tag('saws', 'tfc:metal/saw/' + metal)
+                elif item == 'chisel':
+                    rm.item_tag('chisels', 'tfc:metal/chisel/' + metal)
+                elif item == 'hammer':
+                    rm.item_tag('hammers', 'tfc:metal/hammer/' + metal)
 
                 metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
                 heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
@@ -92,14 +98,18 @@ def generate(rm: ResourceManager):
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
-        rm.block_tag('tfc:forge_insulation', block('smooth'))
+        rm.block_tag('forge:smooth_stone', block('smooth'))
+        rm.item_tag('forge:smooth_stone', block('smooth'))
+        rm.item_tag('forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
         rm.item_tag('tfc:rock_knapping', block('loose'))
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
+        rm.block_tag('minecraft:stone_pressure_plates', block('pressure_plate'))
+        rm.item_tag('minecraft:stone_pressure_plates', block('pressure_plate'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
-    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks')
+    rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
 
     for category in ROCK_CATEGORIES:
         rm.item_tag('tfc:knives', 'tfc:stone/knife/%s' % category)
@@ -119,6 +129,12 @@ def generate(rm: ResourceManager):
     for color in SAND_BLOCK_TYPES:
         rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
 
+    for gem in GEMS:
+        rm.item_tag('forge:gems', 'tfc:gem/' + gem)
+    rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
+    rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
+    rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
+
     for wood in WOODS:
         rm.data(('tfc', 'supports', wood), {
             'ingredient': 'tfc:wood/horizontal_support/%s' % wood,
@@ -136,6 +152,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:rods/wooden',  'tfc:wood/twig/%s' % wood)
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
+        rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
 
     rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
@@ -162,6 +179,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
     rm.item_tag('handstone', 'tfc:handstone')
+    rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
+    rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')

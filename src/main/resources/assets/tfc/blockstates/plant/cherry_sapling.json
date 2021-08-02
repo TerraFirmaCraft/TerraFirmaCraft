@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "saplings=1": {
+      "model": "tfc:block/plant/cherry_sapling_1"
+    },
+    "saplings=2": {
+      "model": "tfc:block/plant/cherry_sapling_2"
+    },
+    "saplings=3": {
+      "model": "tfc:block/plant/cherry_sapling_3"
+    },
+    "saplings=4": {
+      "model": "tfc:block/plant/cherry_sapling_4"
+    }
+  }
+}

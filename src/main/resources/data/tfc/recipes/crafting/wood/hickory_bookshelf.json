@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "YYY",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/hickory"
+    },
+    "Y": {
+      "item": "minecraft:book"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/planks/hickory_bookshelf"
+  }
+}

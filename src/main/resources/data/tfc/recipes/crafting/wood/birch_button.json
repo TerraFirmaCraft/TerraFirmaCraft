@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/birch"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/planks/birch_button"
+  }
+}

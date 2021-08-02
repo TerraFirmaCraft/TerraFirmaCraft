@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "powered=false": {
+      "model": "tfc:block/rock/pressure_plate/dacite"
+    },
+    "powered=true": {
+      "model": "tfc:block/rock/pressure_plate/dacite_down"
+    }
+  }
+}

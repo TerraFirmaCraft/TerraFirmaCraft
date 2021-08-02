@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "SWS",
+    "S S"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:rods/wooden"
+    },
+    "S": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "result": {
+    "count": 16,
+    "item": "minecraft:rail"
+  }
+}

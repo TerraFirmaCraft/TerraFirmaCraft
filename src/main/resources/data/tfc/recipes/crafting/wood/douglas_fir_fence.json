@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/douglas_fir"
+    },
+    "Y": {
+      "item": "tfc:wood/lumber/douglas_fir"
+    }
+  },
+  "result": {
+    "count": 8,
+    "item": "tfc:wood/planks/douglas_fir_fence"
+  }
+}

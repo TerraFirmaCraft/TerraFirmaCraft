@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/branch_side",
+  "textures": {
+    "bark": "tfc:block/fruit_tree/green_apple_branch"
+  }
+}

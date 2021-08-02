@@ -410,10 +410,6 @@
       {
         "name": "tfc:thatch_fall1",
         "pitch": 1.0
-      },
-      {
-        "name": "tfc:thatch_fall2",
-        "pitch": 0.8
       }
     ]
   },
@@ -527,12 +523,12 @@
         "pitch": 1.0
       },
       {
-        "name": "tfc:think_break2",
+        "name": "tfc:thin_break2",
         "pitch": 1.0
       }
     ]
   },
-  "think_fall": {
+  "thin_fall": {
     "category": "block",
     "sounds": [
       {

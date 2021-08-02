@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:clay_knapping",
+  "matrix": {
+    "outside_slot_required": false,
+    "pattern": [
+      "  X  ",
+      "XXXXX",
+      "  X  "
+    ]
+  },
+  "result": {
+    "count": 1,
+    "item": "tfc:ceramic/unfired_spindle_head"
+  }
+}
