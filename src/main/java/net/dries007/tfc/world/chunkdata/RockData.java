@@ -171,7 +171,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
         assert data.length == SIZE;
         for (int i = 0; i < data.length; i++)
         {
-            layer[i] = palette.get(i);
+            layer[i] = palette.get(data[i]);
         }
     }
 
