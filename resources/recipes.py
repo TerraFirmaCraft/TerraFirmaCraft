@@ -63,8 +63,12 @@ def generate(rm: ResourceManager):
                 rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
     for wood in WOODS.keys():
-        def item(thing: str): return 'tfc:wood/%s/%s' % (thing, wood)
-        def plank(thing: str): return 'tfc:wood/planks/%s_%s' % (wood, thing)
+        def item(thing: str):
+            return 'tfc:wood/%s/%s' % (thing, wood)
+
+        def plank(thing: str):
+            return 'tfc:wood/planks/%s_%s' % (wood, thing)
+
         rm.crafting_shapeless('crafting/wood/%s_twig' % wood, item('twig'), 'minecraft:stick').with_advancement(item('twig'))
         rm.crafting_shaped('crafting/wood/%s_bookshelf' % wood, ['XXX', 'YYY', 'XXX'], {'X': item('planks'), 'Y': 'minecraft:book'}, plank('bookshelf')).with_advancement('minecraft:book')
         rm.crafting_shapeless('crafting/wood/%s_button' % wood, item('planks'), plank('button')).with_advancement(item('planks'))
@@ -148,8 +152,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': 'tag!forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('tag!forge:sheets/steel')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': 'tag!forge:rods/wooden', 'S': 'tag!forge:rods/steel'}, (16, 'minecraft:rail')).with_advancement('tag!forge:rods/steel')
 
-
-# Heat Recipes
+    # Heat Recipes
     heat_recipe(rm, 'torch_from_stick', 'tag!forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
@@ -166,6 +169,7 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('tag!tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!forge:gravel', 'tag!forge:gravel', 'tag!forge:gravel', 'tag!forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
 
+    # Quern
     quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
     quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
     quern_recipe(rm, 'fluxstone', 'tag!tfc:fluxstone', 'tfc:powder/flux', count=2)
