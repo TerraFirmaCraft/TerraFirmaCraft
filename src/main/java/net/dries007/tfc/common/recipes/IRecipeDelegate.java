@@ -12,62 +12,81 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 
-public interface IDelegatingRecipe<C extends IInventory> extends IRecipe<C>
+public interface IRecipeDelegate<C extends IInventory> extends IRecipe<C>
 {
-    IRecipe<C> getInternal();
+    IRecipe<C> getDelegate();
 
     @Override
     default boolean matches(C inv, World worldIn)
     {
-        return getInternal().matches(inv, worldIn);
+        return getDelegate().matches(inv, worldIn);
     }
 
     @Override
     default ItemStack assemble(C inv)
     {
-        return getInternal().assemble(inv);
+        return getDelegate().assemble(inv);
     }
 
     @Override
     default boolean canCraftInDimensions(int width, int height)
     {
-        return getInternal().canCraftInDimensions(width, height);
+        return getDelegate().canCraftInDimensions(width, height);
     }
 
     @Override
     default ItemStack getResultItem()
     {
-        return getInternal().getResultItem();
+        return getDelegate().getResultItem();
     }
 
     @Override
     default NonNullList<ItemStack> getRemainingItems(C inv)
     {
-        return getInternal().getRemainingItems(inv);
+        return getDelegate().getRemainingItems(inv);
     }
 
     @Override
     default NonNullList<Ingredient> getIngredients()
     {
-        return getInternal().getIngredients();
+        return getDelegate().getIngredients();
     }
 
     @Override
     default boolean isSpecial()
     {
-        return getInternal().isSpecial();
+        return getDelegate().isSpecial();
     }
 
     @Override
     default String getGroup()
     {
-        return getInternal().getGroup();
+        return getDelegate().getGroup();
     }
 
     @Override
     default ItemStack getToastSymbol()
     {
-        return getInternal().getToastSymbol();
+        return getDelegate().getToastSymbol();
+    }
+
+    interface Shaped<C extends IInventory> extends IRecipeDelegate<C>, IShapedRecipe<C>
+    {
+        @Override
+        IShapedRecipe<C> getDelegate();
+
+        @Override
+        default int getRecipeWidth()
+        {
+            return getDelegate().getRecipeWidth();
+        }
+
+        @Override
+        default int getRecipeHeight()
+        {
+            return getDelegate().getRecipeHeight();
+        }
     }
 }

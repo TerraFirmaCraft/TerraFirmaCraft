@@ -181,7 +181,7 @@ def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ite
 def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: utils.Json, result: utils.Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)
     rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
-        'type': 'tfc:damage_inputs_crafting',
+        'type': 'tfc:damage_inputs_shapeless_crafting',
         'recipe': {
             'type': 'minecraft:crafting_shapeless',
             'group': group,
@@ -191,6 +191,9 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
         }
     })
     return RecipeContext(rm, res)
+
+
+# todo: damage inputs shaped, if we need it
 
 
 def quern_recipe(rm: ResourceManager, name, item: str, result: str, count: int = 1) -> RecipeContext:

@@ -14,11 +14,13 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraftforge.common.crafting.IShapedRecipe;
+
 import net.dries007.tfc.util.Helpers;
 
-public class DamageInputsCraftingRecipe extends DelegatingRecipe<CraftingInventory> implements ICraftingRecipe
+public abstract class DamageInputsCraftingRecipe<R extends IRecipe<CraftingInventory>> extends DelegateRecipe<R, CraftingInventory> implements ICraftingRecipe
 {
-    protected DamageInputsCraftingRecipe(ResourceLocation id, IRecipe<CraftingInventory> recipe)
+    protected DamageInputsCraftingRecipe(ResourceLocation id, R recipe)
     {
         super(id, recipe);
     }
@@ -42,9 +44,31 @@ public class DamageInputsCraftingRecipe extends DelegatingRecipe<CraftingInvento
         return items;
     }
 
-    @Override
-    public IRecipeSerializer<?> getSerializer()
+    public static class Shapeless extends DamageInputsCraftingRecipe<IRecipe<CraftingInventory>>
     {
-        return TFCRecipeSerializers.DAMAGE_INPUTS_CRAFTING.get();
+        public Shapeless(ResourceLocation id, IRecipe<CraftingInventory> recipe)
+        {
+            super(id, recipe);
+        }
+
+        @Override
+        public IRecipeSerializer<?> getSerializer()
+        {
+            return TFCRecipeSerializers.DAMAGE_INPUTS_SHAPELESS_CRAFTING.get();
+        }
+    }
+
+    public static class Shaped extends DamageInputsCraftingRecipe<IShapedRecipe<CraftingInventory>> implements IRecipeDelegate.Shaped<CraftingInventory>
+    {
+        public Shaped(ResourceLocation id, IShapedRecipe<CraftingInventory> recipe)
+        {
+            super(id, recipe);
+        }
+
+        @Override
+        public IRecipeSerializer<?> getSerializer()
+        {
+            return TFCRecipeSerializers.DAMAGE_INPUT_SHAPED_CRAFTING.get();
+        }
     }
 }
