@@ -2,14 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:fruit_tree/banana_sapling",
-    "tfc:fruit_tree/cherry_sapling",
-    "tfc:fruit_tree/green_apple_sapling",
-    "tfc:fruit_tree/lemon_sapling",
-    "tfc:fruit_tree/olive_sapling",
-    "tfc:fruit_tree/orange_sapling",
-    "tfc:fruit_tree/peach_sapling",
-    "tfc:fruit_tree/plum_sapling",
-    "tfc:fruit_tree/red_apple_sapling"
+    "tfc:plant/banana_sapling",
+    "tfc:plant/cherry_sapling",
+    "tfc:plant/green_apple_sapling",
+    "tfc:plant/lemon_sapling",
+    "tfc:plant/olive_sapling",
+    "tfc:plant/orange_sapling",
+    "tfc:plant/peach_sapling",
+    "tfc:plant/plum_sapling",
+    "tfc:plant/red_apple_sapling"
   ]
 }

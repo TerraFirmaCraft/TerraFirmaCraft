@@ -169,19 +169,19 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
 
-    public static final Map<FruitBlocks.StationaryBush, RegistryObject<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("berry_bush/" + bush.name() + "_bush", bush::create, FLORA));
-    public static final Map<FruitBlocks.SpreadingBush, RegistryObject<Block>> SPREADING_CANES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("berry_bush/" + bush.name() + "_bush_cane", bush::createCane));
-    public static final Map<FruitBlocks.SpreadingBush, RegistryObject<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("berry_bush/" + bush.name() + "_bush", bush::createBush, FLORA));
-    public static final RegistryObject<Block> CRANBERRY_BUSH = register("berry_bush/cranberry_bush", FruitBlocks::createCranberry, FLORA);
+    public static final Map<FruitBlocks.StationaryBush, RegistryObject<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::create, FLORA));
+    public static final Map<FruitBlocks.SpreadingBush, RegistryObject<Block>> SPREADING_CANES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush_cane", bush::createCane));
+    public static final Map<FruitBlocks.SpreadingBush, RegistryObject<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::createBush, FLORA));
+    public static final RegistryObject<Block> CRANBERRY_BUSH = register("plant/cranberry_bush", FruitBlocks::createCranberry, FLORA);
 
-    public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("berry_bush/dead_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
-    public static final RegistryObject<Block> DEAD_CANE = register("berry_bush/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
-    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("fruit_tree/" + tree.name() + "_leaves", tree::createLeaves, FLORA));
-    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("fruit_tree/" + tree.name() + "_branch", tree::createBranch));
-    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("fruit_tree/" + tree.name() + "_growing_branch", tree::createGrowingBranch));
-    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("fruit_tree/" + tree.name() + "_sapling", tree::createSapling, FLORA));
-    public static final RegistryObject<Block> BANANA_PLANT = register("fruit_tree/banana_plant", FruitBlocks::createBananaPlant);
-    public static final RegistryObject<Block> BANANA_SAPLING = register("fruit_tree/banana_sapling", FruitBlocks::createBananaSapling, FLORA);
+    public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("plant/dead_berry_bush", () -> new DeadBerryBushBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
+    public static final RegistryObject<Block> DEAD_CANE = register("plant/dead_cane", () -> new DeadCaneBlock(new ForgeBlockProperties(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).tileEntity(TickCounterTileEntity::new).flammable(120, 90)));
+    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_leaves", tree::createLeaves, FLORA));
+    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_branch", tree::createBranch));
+    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_growing_branch", tree::createGrowingBranch));
+    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_sapling", tree::createSapling, FLORA));
+    public static final RegistryObject<Block> BANANA_PLANT = register("plant/banana_plant", FruitBlocks::createBananaPlant);
+    public static final RegistryObject<Block> BANANA_SAPLING = register("plant/banana_sapling", FruitBlocks::createBananaSapling, FLORA);
 
     // Decorations
 
@@ -221,7 +221,7 @@ public final class TFCBlocks
     // Misc
 
     public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(TFCSounds.THATCH)).flammable(50, 100)), MISC);
-    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F)), MISC);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F)));
 
     public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(BurningLogPileTileEntity::new)));
     public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(LogPileTileEntity::new)));

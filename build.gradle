@@ -59,6 +59,16 @@ repositories {
         name 'Blame'
         url "https://nexus.resourcefulbees.com/repository/maven-public/"
     }
+    maven {
+        // JEI
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // Mirror for JEI
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
 }
 
 minecraft {
@@ -72,6 +82,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -86,6 +97,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -104,6 +116,7 @@ minecraft {
             environment 'target', 'fmltestserver'
             environment 'targetModId', "${mod_id}"
             args '-mixin.config=' + mod_id + '.mixins.json', '--crashOnFailedTests'
+            jvmArg '-ea'
             forceExit false
             mods {
                 tfc {
@@ -125,6 +138,10 @@ dependencies {
 
     // Add Blame, useful for running certain diagnostics
     runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
+
+    // JEI
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
 

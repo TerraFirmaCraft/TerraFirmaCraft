@@ -3,7 +3,7 @@
   "parent": "block/block",
   "textures": {
     "1": "#all",
-    "2": "tfc:blocks/lamp_unlit"
+    "2": "tfc:block/lamp_unlit"
   },
   "elements": [
     {

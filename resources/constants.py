@@ -216,7 +216,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='river', height=4)
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
+ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose', 'pressure_plate', 'button')
 ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')

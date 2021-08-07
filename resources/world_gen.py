@@ -534,7 +534,7 @@ def generate(rm: ResourceManager):
             'max_forest': info.max_forest,
             'fuzzy': False
         }
-        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:berry_bush/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
     for fruit, info in FRUITS.items():
         config = {
             'min_temperature': info.min_temp,
@@ -544,10 +544,10 @@ def generate(rm: ResourceManager):
             'max_forest': 'normal'
         }
         feature = 'tfc:fruit_trees'
-        state = 'tfc:fruit_tree/%s_growing_branch' % fruit
+        state = 'tfc:plant/%s_growing_branch' % fruit
         if fruit == 'banana':
             feature = 'tfc:bananas'
-            state = 'tfc:fruit_tree/banana_plant'
+            state = 'tfc:plant/banana_plant'
         rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
 
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here

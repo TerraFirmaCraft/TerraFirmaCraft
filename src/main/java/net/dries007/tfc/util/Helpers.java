@@ -99,24 +99,6 @@ public final class Helpers
         return null;
     }
 
-    public static <T> byte[] createByteArray(T[] array, ToByteFunction<T> byteConverter)
-    {
-        byte[] bytes = new byte[array.length];
-        for (int i = 0; i < array.length; i++)
-        {
-            bytes[i] = byteConverter.get(array[i]);
-        }
-        return bytes;
-    }
-
-    public static <T> void createArrayFromBytes(byte[] byteArray, T[] array, FromByteFunction<T> byteConverter)
-    {
-        for (int i = 0; i < byteArray.length; i++)
-        {
-            array[i] = byteConverter.get(byteArray[i]);
-        }
-    }
-
     public static BlockState readBlockState(String block) throws JsonParseException
     {
         BlockStateParser parser = parseBlockState(block, false);

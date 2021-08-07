@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:fruit_trees",
                   "config": {
-                    "state": "tfc:fruit_tree/cherry_growing_branch"
+                    "state": "tfc:plant/cherry_growing_branch"
                   }
                 },
                 "decorator": {

@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    " Y "
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:sheets/steel"
+    },
+    "Y": {
+      "tag": "forge:chests/wooden"
+    }
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:hopper"
+  }
+}

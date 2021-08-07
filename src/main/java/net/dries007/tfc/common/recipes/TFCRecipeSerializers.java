@@ -9,7 +9,9 @@ package net.dries007.tfc.common.recipes;
 import java.util.function.Supplier;
 
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,7 +45,8 @@ public class TFCRecipeSerializers
 
     // Delegate Recipe Types
 
-    public static final RegistryObject<DelegatingRecipe.Serializer<CraftingInventory, DamageInputsCraftingRecipe>> DAMAGE_INPUTS_CRAFTING = register("damage_inputs_crafting", () -> new DelegatingRecipe.Serializer<>(DamageInputsCraftingRecipe::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
 
     private static <S extends IRecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

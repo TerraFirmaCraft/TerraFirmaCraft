@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
+import net.minecraft.nbt.ByteArrayNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
@@ -28,6 +29,8 @@ import net.dries007.tfc.util.Helpers;
 public class RockData implements INBTSerializable<CompoundNBT>
 {
     public static final RockData EMPTY = new Immutable();
+
+    private static final int SIZE = 16 * 16;
 
     private static int index(int x, int z)
     {
@@ -53,7 +56,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
     public RockData(CompoundNBT nbt)
     {
         // The null rock layer height is replaced immediately after in deserializeNBT(), as opposed to the final fields which require them to be pre-initialized to the correct length
-        this(new Rock[256], new Rock[256], new Rock[256], null);
+        this(new Rock[SIZE], new Rock[SIZE], new Rock[SIZE], null);
         deserializeNBT(nbt);
     }
 
@@ -110,19 +113,18 @@ public class RockData implements INBTSerializable<CompoundNBT>
         // This should really be shorts (but NBT does not have a short array, only ints), since three rock layers *technically* can use up to 3 * 256 unique rocks. However I think it's probably safe to assume there will never be (in chunk data), more than 256 rocks per chunk.
         // However, at that point it's not actually more efficient to store a pallet, as the int ID of the rock is probably shorter.
         // But, it does safeguard this chunk against changing rocks in the future, which is important.
-        List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
-        ListNBT pallet = new ListNBT();
-        byte index = 0;
+        final List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
+        final ListNBT pallet = new ListNBT();
         for (Rock rock : uniqueRocks)
         {
-            pallet.add(index, StringNBT.valueOf(rock.getId().toString()));
+            pallet.add(StringNBT.valueOf(rock.getId().toString()));
         }
         nbt.put("pallet", pallet);
 
         // Record the raw byte values
-        nbt.putByteArray("bottomLayer", Helpers.createByteArray(topLayer, r -> (byte) uniqueRocks.indexOf(r)));
-        nbt.putByteArray("middleLayer", Helpers.createByteArray(middleLayer, r -> (byte) uniqueRocks.indexOf(r)));
-        nbt.putByteArray("topLayer", Helpers.createByteArray(bottomLayer, r -> (byte) uniqueRocks.indexOf(r)));
+        nbt.putByteArray("bottomLayer", toByteArray(topLayer, uniqueRocks));
+        nbt.putByteArray("middleLayer", toByteArray(middleLayer, uniqueRocks));
+        nbt.putByteArray("topLayer", toByteArray(bottomLayer, uniqueRocks));
 
         nbt.putIntArray("height", rockLayerHeight);
         if (surfaceHeight != null)
@@ -143,14 +145,33 @@ public class RockData implements INBTSerializable<CompoundNBT>
             uniqueRocks.add(RockManager.INSTANCE.getOrDefault(new ResourceLocation(pallet.getString(i))));
         }
 
-        Helpers.createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
-        Helpers.createArrayFromBytes(nbt.getByteArray("middleLayer"), middleLayer, uniqueRocks::get);
-        Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
+        fromByteArray(bottomLayer, nbt.getByteArray("bottomLayer"), uniqueRocks);
+        fromByteArray(middleLayer, nbt.getByteArray("middleLayer"), uniqueRocks);
+        fromByteArray(topLayer, nbt.getByteArray("topLayer"), uniqueRocks);
 
         rockLayerHeight = nbt.getIntArray("height");
         if (nbt.contains("surfaceHeight"))
         {
             surfaceHeight = nbt.getIntArray("surfaceHeight");
+        }
+    }
+
+    private byte[] toByteArray(Rock[] layer, List<Rock> palette)
+    {
+        byte[] array = new byte[SIZE];
+        for (int i = 0; i < array.length; i++)
+        {
+            array[i] = (byte) palette.indexOf(layer[i]); // indexOf() is O(n) but should be fast enough for our purposes, this isn't called that often
+        }
+        return array;
+    }
+
+    private void fromByteArray(Rock[] layer, byte[] data, List<Rock> palette)
+    {
+        assert data.length == SIZE;
+        for (int i = 0; i < data.length; i++)
+        {
+            layer[i] = palette.get(data[i]);
         }
     }
 
