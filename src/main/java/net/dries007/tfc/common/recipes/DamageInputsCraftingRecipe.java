@@ -16,8 +16,6 @@ import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.util.Helpers;
 
-// todo: this is good but we need a shaped and unshaped variant for it
-// why? because of IShapedRecipe. JEI uses it to determine filling the recipe and we need to correctly report these based on the delegate
 public class DamageInputsCraftingRecipe extends DelegatingRecipe<CraftingInventory> implements ICraftingRecipe
 {
     protected DamageInputsCraftingRecipe(ResourceLocation id, IRecipe<CraftingInventory> recipe)

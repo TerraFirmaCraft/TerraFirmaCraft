@@ -483,8 +483,11 @@ DEFAULT_LANG = {
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
-    'tfc.commands.player.query_hunger': 'Hunger is %s',
-    'tfc.commands.player.query_saturation': 'Saturation is %s',
+    'tfc.commands.player.query_hunger': 'Hunger is %s / 20',
+    'tfc.commands.player.query_saturation': 'Saturation is %s / 20',
+    'tfc.commands.player.query_water': 'Water is %s / 100',
+    'tfc.commands.player.query_nutrition': 'Player nutrition:',
+    'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data.',
     'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
     'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
 

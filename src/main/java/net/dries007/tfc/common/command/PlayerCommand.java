@@ -10,6 +10,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import com.mojang.brigadier.Command;
@@ -18,6 +19,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
+import net.dries007.tfc.util.Helpers;
 
 public final class PlayerCommand
 {
@@ -25,7 +27,6 @@ public final class PlayerCommand
     private static final String QUERY_SATURATION = "tfc.commands.player.query_saturation";
     private static final String QUERY_WATER = "tfc.commands.player.query_water";
     private static final String QUERY_NUTRITION = "tfc.commands.player.query_nutrition";
-    private static final String QUERY_NUTRITION_VALUE = "tfc.commands.player.query_nutrition_value";
     private static final String FAIL_INVALID_FOOD_STATS = "tfc.commands.player.fail_invalid_food_stats";
 
     public static LiteralArgumentBuilder<CommandSource> create()
@@ -111,9 +112,14 @@ public final class PlayerCommand
 
     private static int queryWater(CommandContext<CommandSource> context, PlayerEntity player)
     {
-        float water = player.getFoodData() instanceof TFCFoodStats ? ((TFCFoodStats) player.getFoodData()).getThirst() : 0;
-        context.getSource().sendSuccess(new TranslationTextComponent(QUERY_WATER, water), true);
-        return Command.SINGLE_SUCCESS;
+        if (player.getFoodData() instanceof TFCFoodStats)
+        {
+            float water = ((TFCFoodStats) player.getFoodData()).getThirst();
+            context.getSource().sendSuccess(new TranslationTextComponent(QUERY_WATER, water), true);
+            return Command.SINGLE_SUCCESS;
+        }
+        context.getSource().sendFailure(new TranslationTextComponent(FAIL_INVALID_FOOD_STATS));
+        return 0;
     }
 
     private static int queryNutrition(CommandContext<CommandSource> context, PlayerEntity player)
@@ -125,7 +131,10 @@ public final class PlayerCommand
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 int percent = (int) (100 * nutrition[nutrient.ordinal()]);
-                context.getSource().sendSuccess(new TranslationTextComponent(QUERY_NUTRITION_VALUE, String.valueOf(percent)), true);
+                context.getSource().sendSuccess(
+                    new StringTextComponent(" - ")
+                        .append(Helpers.translateEnum(nutrient))
+                        .append(": " + percent + "%"), true);
             }
             return Command.SINGLE_SUCCESS;
         }

@@ -24,14 +24,18 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
  * Capability for any food item
- * Allows foods to have nutrients, and also to decay / rot
+ * Allows foods to have nutrients, and also to decay / rot.
+ *
+ * Important: A lot of these methods take a {@code isClientSide} boolean. This is in order for the internal handlers to query the right calendar instance for the current logical side. DO NOT just use the overloads that pass {@code false} in, especially if you are on client side!
  */
 public interface IFood extends INBTSerializable<CompoundNBT>
 {
     /**
-     * The timestamp that this food was created
-     * Used to calculate expiration date
-     * Rotten food uses {@code Long.MIN_VALUE} as the creation date
+     * The timestamp that this food was created, used to calculate expiration date.
+     * There are a few special meanings:
+     * - {@link FoodHandler#UNKNOWN_CREATION_DATE} = The food was created at an unknown time. This will be reset whenever possible.
+     * - {@link FoodHandler#ROTTEN_DATE} = The food is currently rotten
+     * - {@link FoodHandler#NEVER_DECAY_DATE} = The food will never decay
      *
      * @return the calendar time of creation
      */
@@ -205,7 +209,7 @@ public interface IFood extends INBTSerializable<CompoundNBT>
                     if (value > 0)
                     {
                         text.add(new StringTextComponent(" - ")
-                            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(nutrient)))
+                            .append(Helpers.translateEnum(nutrient))
                             .append(": " + String.format("%.1f", value))
                             .withStyle(nutrient.getColor()));
                         any = true;

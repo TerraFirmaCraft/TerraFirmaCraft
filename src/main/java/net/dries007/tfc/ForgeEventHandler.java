@@ -450,7 +450,7 @@ public final class ForgeEventHandler
 
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
+        if (event.getWorld() instanceof ServerWorld)
         {
             final ServerWorld world = (ServerWorld) event.getWorld();
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())

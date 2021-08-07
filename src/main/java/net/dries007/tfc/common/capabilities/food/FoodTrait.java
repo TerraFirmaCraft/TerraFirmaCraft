@@ -17,29 +17,20 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class FoodTrait
 {
-    public static final FoodTrait SALTED;
-    public static final FoodTrait BRINED; // No decay modifier, required to pickle foods
-    public static final FoodTrait PICKLED;
-    public static final FoodTrait PRESERVED; // Large / Small vessels
-    public static final FoodTrait VINEGAR; // Used for the state of being sealed in vinegar
-    public static final FoodTrait CHARCOAL_GRILLED; // Slight debuff from cooking in a charcoal forge
-    public static final FoodTrait WOOD_GRILLED; // Slight buff when cooking in a grill
-    public static final FoodTrait BURNT_TO_A_CRISP; // Cooking food in something that's WAY TOO HOT too cook food in you fool!
+    public static final Map<String, FoodTrait> TRAITS = new HashMap<>();
 
-    private static final Map<String, FoodTrait> TRAITS = new HashMap<>();
+    public static final FoodTrait SALTED = register("salted", 0.5f);
+    public static final FoodTrait BRINED = register("brined", 1.0f); // No decay modifier, required to pickle foods
+    public static final FoodTrait PICKLED = register("pickled", 0.5f);
+    public static final FoodTrait PRESERVED = register("preserved", 0.5f); // Large / Small vessels
+    public static final FoodTrait VINEGAR = register("vinegar", 0.1f); // Used for the state of being sealed in vinegar
+    public static final FoodTrait CHARCOAL_GRILLED = register("charcoal_grilled", 1.25f); // Slight debuff from cooking in a charcoal forge
+    public static final FoodTrait WOOD_GRILLED = register("wood_grilled", 0.8f); // Slight buff when cooking in a grill
+    public static final FoodTrait BURNT_TO_A_CRISP = register("burnt_to_a_crisp", 2.5f); // Cooking food in something that's WAY TOO HOT too cook food in you fool!
 
-    static
+    public static FoodTrait register(String name, float decayModifier)
     {
-        // These must be initialized after TRAITS is, to avoid NPE
-
-        BRINED = new FoodTrait("brined", 1.0f);
-        SALTED = new FoodTrait("salted", 0.5f);
-        PICKLED = new FoodTrait("pickled", 0.5f);
-        PRESERVED = new FoodTrait("preserved", 0.5f);
-        VINEGAR = new FoodTrait("vinegar", 0.1f);
-        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 1.25f);
-        WOOD_GRILLED = new FoodTrait("wood_grilled", 0.8f);
-        BURNT_TO_A_CRISP = new FoodTrait("burnt_to_a_crisp", 2.5f); // This one is so high as it is meant to be > the existing gain from cooking meat.
+        return TRAITS.computeIfAbsent(name, key -> new FoodTrait(name, decayModifier));
     }
 
     public static Map<String, FoodTrait> getTraits()

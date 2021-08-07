@@ -42,6 +42,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -241,6 +242,11 @@ public final class Helpers
             throw new JsonSyntaxException(error);
         }
         return obj;
+    }
+
+    public static TranslationTextComponent translateEnum(Enum<?> anEnum)
+    {
+        return new TranslationTextComponent(getEnumTranslationKey(anEnum));
     }
 
     /**

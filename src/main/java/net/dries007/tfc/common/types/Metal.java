@@ -212,7 +212,7 @@ public class Metal
 
         Tier()
         {
-            translationKey = Helpers.getEnumTranslationKey(this, "tier");
+            translationKey = Helpers.getEnumTranslationKey(this);
         }
 
         public Tier next()

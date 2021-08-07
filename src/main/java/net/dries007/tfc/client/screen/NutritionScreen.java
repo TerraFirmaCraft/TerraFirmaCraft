@@ -52,9 +52,9 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderBg(MatrixStack stack, float partialTicks, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack stack, int mouseX, int mouseY)
     {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
+        super.renderLabels(stack, mouseX, mouseY);
 
         final PlayerEntity player = ClientHelpers.getPlayer();
         if (player != null && player.getFoodData() instanceof TFCFoodStats)

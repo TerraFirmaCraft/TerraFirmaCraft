@@ -35,9 +35,9 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
      */
     public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
 
-    private static final long ROTTEN_DATE = Long.MIN_VALUE;
-    private static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
-    private static final long UNKNOWN_CREATION_DATE = 0;
+    public static final long ROTTEN_DATE = Long.MIN_VALUE;
+    public static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
+    public static final long UNKNOWN_CREATION_DATE = -1;
 
     // Stacks created at certain times during loading, we infer to be non-decaying ones.
     private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(false);
@@ -59,6 +59,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
         this.data = data;
         this.isNonDecaying = FoodHandler.NON_DECAYING.get();
         this.capability = LazyOptional.of(() -> this);
+        this.creationDate = UNKNOWN_CREATION_DATE;
     }
 
     @Override
@@ -168,14 +169,9 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
         ListNBT traitList = nbt.getList("traits", Constants.NBT.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
         {
-            foodTraits.add(FoodTrait.getTraits().get(traitList.getString(i)));
+            foodTraits.add(FoodTrait.TRAITS.get(traitList.getString(i)));
         }
-        creationDate = nbt.getLong("creationDate");
-        if (creationDate == 0)
-        {
-            // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
-            creationDate = FoodCapability.getRoundedCreationDate();
-        }
+        creationDate = nbt.contains("creationDate") ? nbt.getLong("creationDate") : FoodCapability.getRoundedCreationDate();
     }
 
     /**

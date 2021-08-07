@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.util.loot;
 
+import java.util.function.Supplier;
+
 import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootParameter;
@@ -14,22 +16,21 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.LazyRegistry;
 
 public class TFCLoot
 {
+    // Loot Parameters
     public static final LootParameter<Boolean> ISOLATED = new LootParameter<>(Helpers.identifier("isolated"));
 
-    public static final Lazy<LootConditionType> IS_ISOLATED = register("is_isolated", new IsIsolatedCondition.Serializer());
+    // Loot Conditions
+    public static final LazyRegistry<LootConditionType> LOOT_CONDITIONS = new LazyRegistry<>();
+    public static final Lazy<LootConditionType> IS_ISOLATED = register("is_isolated", IsIsolatedCondition.Serializer::new);
 
-    public static void setup()
+    private static Lazy<LootConditionType> register(String id, Supplier<ILootSerializer<? extends ILootCondition>> serializer)
     {
-
-    }
-
-    private static Lazy<LootConditionType> register(String id, ILootSerializer<? extends ILootCondition> serializer)
-    {
-        return Lazy.of(() -> {
-            final LootConditionType type = new LootConditionType(serializer);
+        return LOOT_CONDITIONS.register(() -> {
+            final LootConditionType type = new LootConditionType(serializer.get());
             Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), type);
             return type;
         });

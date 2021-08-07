@@ -61,9 +61,9 @@ public final class ItemSizeManager
     {
         IItemSize size = ItemSizeManager.get(stack);
         text.add(new StringTextComponent("\u2696 ")
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(size.getWeight(stack))))
+            .append(Helpers.translateEnum(size.getWeight(stack)))
             .append(" \u21F2 ")
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(size.getSize(stack))))
+            .append(Helpers.translateEnum(size.getSize(stack)))
             .withStyle(TextFormatting.GRAY));
     }
 

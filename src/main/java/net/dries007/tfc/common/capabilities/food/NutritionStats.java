@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.function.IntToFloatFunction;
 
 /**
  * A wrapper class for nutrition stats for a player
@@ -201,8 +202,4 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
         }
     }
 
-    private interface IntToFloatFunction
-    {
-        float apply(int i);
-    }
 }

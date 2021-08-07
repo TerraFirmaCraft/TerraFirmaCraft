@@ -98,7 +98,7 @@ public interface ICalendar
     static IFormattableTextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         return new StringTextComponent(String.format("%d:%02d ", hour, minute))
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
+            .append(Helpers.translateEnum(month))
             .append(" ")
             .append(new TranslationTextComponent("tfc.tooltip.calendar_days_years", day, years));
     }

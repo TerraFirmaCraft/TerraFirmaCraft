@@ -259,14 +259,10 @@ public class TFCFoodStats extends FoodStats
     public void eat(IFood food)
     {
         // Eating items has nutritional benefits
-        FoodData data = food.getData();
+        final FoodData data = food.getData();
         if (!food.isRotten())
         {
-            addThirst(data.getWater());
-            nutritionStats.addNutrients(data);
-
-            // In order to get the exact saturation we want, apply this scaling factor here
-            delegate.eat(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
+            eat(data);
         }
         else if (this.sourcePlayer instanceof ServerPlayerEntity) // Check for server side first
         {
@@ -281,6 +277,15 @@ public class TFCFoodStats extends FoodStats
                 }
             }
         }
+    }
+
+    public void eat(FoodData data)
+    {
+        addThirst(data.getWater());
+        nutritionStats.addNutrients(data);
+
+        // In order to get the exact saturation we want, apply this scaling factor here
+        delegate.eat(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
     }
 
     public CompoundNBT serializeToPlayerData()

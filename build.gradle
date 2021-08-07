@@ -144,8 +144,6 @@ processResources {
     }
 }
 
-
-
 // Automatically apply a license header when running checkLicense / updateLicense
 license {
     header = project.file('HEADER.txt')

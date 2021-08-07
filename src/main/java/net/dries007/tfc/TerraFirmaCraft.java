@@ -110,9 +110,9 @@ public final class TerraFirmaCraft
         Helpers.registerSimpleCapability(IWorldTracker.class);
         Helpers.registerSimpleCapability(IFood.class);
         Helpers.registerSimpleCapability(PlayerData.class);
+        TFCLoot.LOOT_CONDITIONS.registerAll();
         InteractionManager.setup();
         TFCWorldType.setup();
-        TFCLoot.setup();
 
         ItemSizeManager.setup();
         ServerCalendar.setup();
