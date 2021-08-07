@@ -28,8 +28,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class RockData implements INBTSerializable<CompoundNBT>
 {
-    public static final RockData EMPTY = new Immutable();
-
     private static final int SIZE = 16 * 16;
 
     private static int index(int x, int z)
@@ -138,8 +136,8 @@ public class RockData implements INBTSerializable<CompoundNBT>
     public void deserializeNBT(CompoundNBT nbt)
     {
         // Build pallet
-        ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
-        List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
+        final ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
+        final List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
         for (int i = 0; i < pallet.size(); i++)
         {
             uniqueRocks.add(RockManager.INSTANCE.getOrDefault(new ResourceLocation(pallet.getString(i))));
@@ -150,10 +148,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
         fromByteArray(topLayer, nbt.getByteArray("topLayer"), uniqueRocks);
 
         rockLayerHeight = nbt.getIntArray("height");
-        if (nbt.contains("surfaceHeight"))
-        {
-            surfaceHeight = nbt.getIntArray("surfaceHeight");
-        }
+        surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
     }
 
     private byte[] toByteArray(Rock[] layer, List<Rock> palette)
@@ -172,34 +167,6 @@ public class RockData implements INBTSerializable<CompoundNBT>
         for (int i = 0; i < data.length; i++)
         {
             layer[i] = palette.get(data[i]);
-        }
-    }
-
-    private static class Immutable extends RockData
-    {
-        @SuppressWarnings("ConstantConditions")
-        Immutable()
-        {
-            // This will crash, but it will crash in expected locations, and we don't have much to add to the crash if we overrode the methods here anyway
-            super(null, null, null, null);
-        }
-
-        @Override
-        public void setSurfaceHeight(int[] surfaceHeightMap)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable rock data");
-        }
-
-        @Override
-        public CompoundNBT serializeNBT()
-        {
-            return new CompoundNBT();
-        }
-
-        @Override
-        public void deserializeNBT(@Nullable CompoundNBT nbt)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable rock data");
         }
     }
 }

@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -17,6 +19,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
@@ -35,7 +38,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      * If on client, will query capability, falling back to cache, and send request packets if necessary
      * If on server, will either query capability falling back to cache, or query provider to generate the data.
      *
-     * @see #get(ChunkPos) to directly force chunk generation, or if a world is not available
      * @see ChunkDataCache#get(ChunkPos) to directly access the cache
      */
     public static ChunkData get(IWorld world, ChunkPos pos)
@@ -87,9 +89,18 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         return pos;
     }
 
+    /**
+     * Can be null when the chunk data's underlying status is EMPTY or CLIENT
+     */
+    @Nullable
     public RockData getRockData()
     {
         return rockData;
+    }
+
+    public RockData getRockDataOrThrow()
+    {
+        return Objects.requireNonNull(rockData, () -> "Expected rock data to be present on " + this);
     }
 
     public void setRockData(RockData rockData)
@@ -213,6 +224,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -222,29 +234,39 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     @Override
     public CompoundNBT serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
-        nbt.put("rainfall", rainfallLayer.serializeNBT());
-        nbt.put("temperature", temperatureLayer.serializeNBT());
-        nbt.put("rockData", rockData.serializeNBT());
-        nbt.putByte("forestType", (byte) forestType.ordinal());
-        nbt.putFloat("forestWeirdness", forestWeirdness);
-        nbt.putFloat("forestDensity", forestDensity);
+        final CompoundNBT nbt = new CompoundNBT();
         nbt.putByte("status", (byte) status.ordinal());
+        if (status == Status.FULL)
+        {
+            nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
+            nbt.put("rainfall", rainfallLayer.serializeNBT());
+            nbt.put("temperature", temperatureLayer.serializeNBT());
+            nbt.putByte("forestType", (byte) forestType.ordinal());
+            nbt.putFloat("forestWeirdness", forestWeirdness);
+            nbt.putFloat("forestDensity", forestDensity);
+            if (rockData != null)
+            {
+                nbt.put("rockData", rockData.serializeNBT());
+            }
+        }
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
-        rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
-        temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
-        rockData = new RockData(nbt.getCompound("rockData"));
-        forestType = ForestType.valueOf(nbt.getByte("forestType"));
-        forestWeirdness = nbt.getFloat("forestWeirdness");
-        forestDensity = nbt.getFloat("forestDensity");
+        reset();
         status = Status.valueOf(nbt.getByte("status"));
+        if (status == Status.FULL)
+        {
+            plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
+            rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
+            temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
+            rockData = nbt.contains("rockData", Constants.NBT.TAG_COMPOUND) ? new RockData(nbt.getCompound("rockData")) : null;
+            forestType = ForestType.valueOf(nbt.getByte("forestType"));
+            forestWeirdness = nbt.getFloat("forestWeirdness");
+            forestDensity = nbt.getFloat("forestDensity");
+        }
     }
 
     @Override
@@ -255,7 +277,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     private void reset()
     {
-        rockData = RockData.EMPTY;
+        rockData = null;
         rainfallLayer = new LerpFloatLayer(250);
         temperatureLayer = new LerpFloatLayer(10);
         forestWeirdness = 0.5f;

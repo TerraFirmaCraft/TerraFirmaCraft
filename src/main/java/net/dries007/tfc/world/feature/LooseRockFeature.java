@@ -37,7 +37,7 @@ public class LooseRockFeature extends Feature<NoFeatureConfig>
     {
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);
-        final Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
+        final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), pos.getY(), pos.getZ());
         final BlockState stateAt = worldIn.getBlockState(pos);
         final BlockState rockState = FluidHelpers.fillWithFluid(rock.getBlock(Rock.BlockType.LOOSE).defaultBlockState(), stateAt.getFluidState().getType());
 
