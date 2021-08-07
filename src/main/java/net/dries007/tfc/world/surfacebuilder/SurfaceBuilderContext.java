@@ -26,6 +26,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.RockData;
 
 public class SurfaceBuilderContext
 {
@@ -33,6 +34,7 @@ public class SurfaceBuilderContext
     private final ChunkPrimer chunk;
     private final Heightmap worldSurfaceHeightmap, oceanFloorHeightmap;
     private final ChunkData chunkData;
+    private final RockData rockData;
     private final Random random;
     private final long seed;
     private final DimensionSettings settings;
@@ -46,6 +48,7 @@ public class SurfaceBuilderContext
         this.worldSurfaceHeightmap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
         this.oceanFloorHeightmap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
         this.chunkData = chunkData;
+        this.rockData = chunkData.getRockDataOrThrow();
         this.random = random;
         this.seed = seed;
         this.settings = settings;
@@ -84,7 +87,7 @@ public class SurfaceBuilderContext
 
     public void setBlockState(BlockPos pos, ISurfaceState state, float temperature, float rainfall, boolean salty)
     {
-        state.place(this, pos, chunkX | pos.getX(), chunkZ | pos.getZ(), chunkData.getRockData(), temperature, rainfall, salty);
+        state.place(this, pos, chunkX | pos.getX(), chunkZ | pos.getZ(), rockData, temperature, rainfall, salty);
     }
 
     public void setBlockState(BlockPos pos, BlockState state)
