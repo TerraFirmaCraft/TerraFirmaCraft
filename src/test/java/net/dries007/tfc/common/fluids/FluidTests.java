@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.integration;
+package net.dries007.tfc.common.fluids;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FlowingFluid;
@@ -16,7 +16,6 @@ import com.alcatrazescapee.mcjunitlib.framework.IntegrationTest;
 import com.alcatrazescapee.mcjunitlib.framework.IntegrationTestClass;
 import com.alcatrazescapee.mcjunitlib.framework.IntegrationTestHelper;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.fluids.TFCFluids;
 
 @IntegrationTestClass("fluids")
 public class FluidTests

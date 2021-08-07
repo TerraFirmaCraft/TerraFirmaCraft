@@ -4,60 +4,52 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.layer.traits;
+package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.area.LazyArea;
-import net.minecraft.world.gen.layer.traits.IPixelTransformer;
 
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
- * A variant of {@link LazyArea} which implements a non-synchronized, lossy cache
+ * @see Area
  */
-public class FastArea implements IArea
+public class TypedArea<A>
 {
-    private final IPixelTransformer factory;
+    private final TypedAreaSource<A> factory;
     private final long[] keys;
-    private final int[] values;
+    private final Object[] values;
     private final int mask;
 
-    public FastArea(IPixelTransformer factory, int maxCacheSize)
+    public TypedArea(TypedAreaSource<A> factory, int maxCacheSize)
     {
         maxCacheSize = MathHelper.smallestEncompassingPowerOfTwo(maxCacheSize);
 
         this.factory = factory;
         this.keys = new long[maxCacheSize];
-        this.values = new int[maxCacheSize];
+        this.values = new Object[maxCacheSize];
         this.mask = maxCacheSize - 1;
 
         Arrays.fill(this.keys, Long.MIN_VALUE);
     }
 
-    @Override
-    public int get(int x, int z)
+    @SuppressWarnings("unchecked")
+    public A get(int x, int z)
     {
         final long key = ChunkPos.asLong(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
         if (keys[index] == key)
         {
-            return values[index];
+            return (A) values[index];
         }
         else
         {
-            final int value = factory.apply(x, z);
+            final A value = factory.apply(x, z);
             values[index] = value;
             keys[index] = key;
             return value;
         }
-    }
-
-    public int getSize()
-    {
-        return mask + 1;
     }
 }

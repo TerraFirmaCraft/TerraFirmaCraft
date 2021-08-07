@@ -6,25 +6,21 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
-
+import net.dries007.tfc.world.layer.framework.AreaContext;
+import net.dries007.tfc.world.layer.framework.SourceLayer;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public enum ForestInitLayer implements IAreaTransformer0
+public class ForestInitLayer implements SourceLayer
 {
-    INSTANCE;
-
     private final INoise2D forestBaseNoise;
 
-    ForestInitLayer()
+    ForestInitLayer(INoise2D forestBaseNoise)
     {
-        forestBaseNoise = new OpenSimplex2D(2).spread(0.3f);
+        this.forestBaseNoise = forestBaseNoise;
     }
 
     @Override
-    public int applyPixel(INoiseRandom context, int x, int z)
+    public int apply(AreaContext context, int x, int z)
     {
         final float noise = forestBaseNoise.noise(x, z);
         if (noise < 0)

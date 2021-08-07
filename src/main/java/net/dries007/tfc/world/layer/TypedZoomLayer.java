@@ -6,147 +6,75 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
+import net.dries007.tfc.world.layer.framework.AreaContext;
+import net.dries007.tfc.world.layer.framework.TypedArea;
+import net.dries007.tfc.world.layer.framework.TypedTransformLayer;
 
-import net.dries007.tfc.world.layer.traits.ITypedAreaTransformer1;
-import net.dries007.tfc.world.layer.traits.ITypedNoiseRandom;
-import net.dries007.tfc.world.layer.traits.TypedArea;
-
-/**
- * Modified version of {@link net.minecraft.world.gen.layer.ZoomLayer} for {@link TypedArea}
- */
-public abstract class TypedZoomLayer<A> implements ITypedAreaTransformer1<A>
+public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
 {
-    public static <A> TypedZoomLayer<A> normal()
+    @Override
+    public A apply(AreaContext context, TypedArea<A> area, int x, int z)
     {
-        return new TypedZoomLayer<A>()
-        {
-            @Override
-            protected A pick(INoiseRandom context, A first, A second, A third, A fourth)
-            {
-                if (second.equals(third) && third.equals(fourth))
-                {
-                    return second;
-                }
-                else if (first.equals(second) && first.equals(third))
-                {
-                    return first;
-                }
-                else if (first.equals(second) && first.equals(fourth))
-                {
-                    return first;
-                }
-                else if (first.equals(third) && first.equals(fourth))
-                {
-                    return first;
-                }
-                else if (first.equals(second) && !third.equals(fourth))
-                {
-                    return first;
-                }
-                else if (first.equals(third) && !second.equals(fourth))
-                {
-                    return first;
-                }
-                else if (first.equals(fourth) && !second.equals(third))
-                {
-                    return first;
-                }
-                else if (second.equals(third) && !first.equals(fourth))
-                {
-                    return second;
-                }
-                else if (second.equals(fourth) && !first.equals(third))
-                {
-                    return second;
-                }
-                else
-                {
-                    return third.equals(fourth) && !first.equals(second) ? third : TypedZoomLayer.pickRandom(context, first, second, third, fourth);
-                }
-            }
-        };
-    }
+        final int parentX = x >> 1, parentZ = z >> 1;
+        final int offsetX = x & 1, offsetZ = z & 1;
+        final A northWest = area.get(parentX, parentZ);
 
-    public static <A> TypedZoomLayer<A> fuzzy()
-    {
-        return new TypedZoomLayer<A>()
+        context.initSeed(parentX, parentZ);
+        if (offsetX == 0 && offsetZ == 0)
         {
-            @Override
-            protected A pick(INoiseRandom context, A first, A second, A third, A fourth)
-            {
-                return TypedZoomLayer.pickRandom(context, first, second, third, fourth);
-            }
-        };
-    }
-
-    private static <A> A pickRandom(INoiseRandom context, A first, A second)
-    {
-        return context.nextRandom(2) == 0 ? first : second;
-    }
-
-    private static <A> A pickRandom(INoiseRandom context, A first, A second, A third, A fourth)
-    {
-        int choice = context.nextRandom(4);
-        switch (choice)
-        {
-            case 0:
-                return first;
-            case 1:
-                return second;
-            case 2:
-                return third;
-            case 3:
-            default:
-                return fourth;
+            return northWest;
         }
-    }
-
-    @Override
-    public int getParentX(int x)
-    {
-        return x >> 1;
-    }
-
-    @Override
-    public int getParentY(int z)
-    {
-        return z >> 1;
-    }
-
-    @Override
-    public A apply(ITypedNoiseRandom<A> context, TypedArea<A> area, int x, int z)
-    {
-        A baseValue = area.get(getParentX(x), getParentY(z));
-        context.initRandom((x >> 1) << 1, (z >> 1) << 1);
-        int xOffset = x & 1;
-        int zOffset = z & 1;
-        if (xOffset == 0 && zOffset == 0)
+        else if (offsetX == 0)
         {
-            return baseValue;
+            return context.choose(northWest, area.get(parentX, parentZ + 1));
+        }
+        else if (offsetZ == 0)
+        {
+            return context.choose(northWest, area.get(parentX + 1, parentZ));
         }
         else
         {
-            A valuePlusZ = area.get(getParentX(x), getParentY(z + 1));
-            if (xOffset == 0)
-            {
-                return pickRandom(context, baseValue, valuePlusZ);
-            }
-            else
-            {
-                A valuePlusX = area.get(getParentX(x + 1), getParentY(z));
-                if (zOffset == 0)
-                {
-                    return pickRandom(context, baseValue, valuePlusX);
-                }
-                else
-                {
-                    A valuePlusBoth = area.get(getParentX(x + 1), getParentY(z + 1));
-                    return pick(context, baseValue, valuePlusX, valuePlusZ, valuePlusBoth);
-                }
-            }
+            return choose(context, northWest, area.get(parentX, parentZ + 1), area.get(parentX + 1, parentZ), area.get(parentX + 1, parentZ + 1));
         }
     }
 
-    protected abstract A pick(INoiseRandom context, A first, A second, A third, A fourth);
+    protected abstract A choose(AreaContext context, A first, A second, A third, A fourth);
+
+    public static class Normal<A> extends TypedZoomLayer<A>
+    {
+        @Override
+        protected A choose(AreaContext context, A first, A second, A third, A fourth)
+        {
+            if (first == second)
+            {
+                return first == third || third != fourth ? first : context.choose(first, third);
+            }
+            else if (first == third)
+            {
+                return second != fourth ? first : context.choose(first, second);
+            }
+            else if (first == fourth)
+            {
+                return second != third ? first : context.choose(first, second);
+            }
+            else if (second == third || second == fourth)
+            {
+                return second;
+            }
+            else if (third == fourth)
+            {
+                return third;
+            }
+            return context.choose(first, second, third, fourth);
+        }
+    }
+
+    public static class Fuzzy<A> extends TypedZoomLayer<A>
+    {
+        @Override
+        protected A choose(AreaContext context, A first, A second, A third, A fourth)
+        {
+            return context.choose(first, second, third, fourth);
+        }
+    }
 }

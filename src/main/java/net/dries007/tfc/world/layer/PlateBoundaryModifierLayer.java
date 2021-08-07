@@ -6,20 +6,20 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 /**
  * Modifies various types of plate tectonic boundaries after initial assignment from plate layers
  */
-public enum PlateBoundaryModifierLayer implements ICastleTransformer
+public enum PlateBoundaryModifierLayer implements AdjacentTransformLayer
 {
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
+    public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         // Expand ocean-continent diverging boundaries - create two types of areas, continental shelf, and oceanic diverging boundary
         if (center == OCEAN_CONTINENT_DIVERGING)

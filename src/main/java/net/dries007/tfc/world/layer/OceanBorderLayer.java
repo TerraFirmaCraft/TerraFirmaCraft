@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.DEEP_OCEAN;
 import static net.dries007.tfc.world.layer.TFCLayerUtil.OCEAN;
@@ -15,12 +15,12 @@ import static net.dries007.tfc.world.layer.TFCLayerUtil.OCEAN;
 /**
  * Creates oceans on borders between land and deep ocean
  */
-public enum OceanBorderLayer implements ICastleTransformer
+public enum OceanBorderLayer implements AdjacentTransformLayer
 {
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
+    public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         if (center == DEEP_OCEAN)
         {

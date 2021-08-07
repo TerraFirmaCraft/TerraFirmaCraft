@@ -6,7 +6,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.world.layer.traits;
+package net.dries007.tfc.world.layer.framework;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

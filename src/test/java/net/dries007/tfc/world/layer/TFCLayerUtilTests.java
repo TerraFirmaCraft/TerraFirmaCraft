@@ -4,44 +4,41 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.visualization;
+package net.dries007.tfc.world.layer;
 
 import java.awt.*;
+import javax.annotation.Nullable;
 
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.area.IAreaFactory;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.VolcanoNoise;
-import net.dries007.tfc.world.layer.Plate;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
-import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
-import net.dries007.tfc.world.layer.traits.TypedArea;
+import net.dries007.tfc.world.layer.framework.Area;
+import net.dries007.tfc.world.layer.framework.AreaFactory;
+import net.dries007.tfc.world.layer.framework.TypedArea;
+import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
-@Disabled
 public class TFCLayerUtilTests
 {
     // These inner lambdas could be shortened to factory.make()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
-    static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
-        final TypedArea<Plate> area = factory.make();
+    static final Artist.Typed<TypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
+        final TypedArea<Plate> area = factory.get();
         return Artist.Pixel.coerceInt(area::get);
     });
-    static final Artist.Typed<IAreaFactory<? extends IArea>, Integer> AREA = Artist.forMap(factory -> {
-        final IArea area = factory.make();
+    static final Artist.Typed<AreaFactory, Integer> AREA = Artist.forMap(factory -> {
+        final Area area = factory.get();
         return Artist.Pixel.coerceInt(area::get);
     });
-    static final Artist.Noise<IAreaFactory<? extends IArea>> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
+    static final Artist.Noise<AreaFactory> FLOAT_AREA = AREA.mapNoise(Float::intBitsToFloat);
     static final Artist.Raw RAW = Artist.raw().size(1000);
 
     @Test
@@ -51,13 +48,13 @@ public class TFCLayerUtilTests
         final TFCBiomeProvider.LayerSettings settings = new TFCBiomeProvider.LayerSettings();
 
         // Drawing is done via callbacks in TFCLayerUtil
-        IArtist<ITypedAreaFactory<Plate>> plateArtist = (name, index, instance) -> {
+        IArtist<TypedAreaFactory<Plate>> plateArtist = (name, index, instance) -> {
             PLATES.color(this::plateElevationColor);
             PLATES.centerSized(index == 1 ? 10 : 20).draw(name + '_' + index, instance);
             PLATES.centerSized(index == 1 ? 100 : 200).draw(name + '_' + index + "_wide", instance);
         };
 
-        IArtist<IAreaFactory<? extends IArea>> layerArtist = (name, index, instance) -> {
+        IArtist<AreaFactory> layerArtist = (name, index, instance) -> {
             switch (name)
             {
                 case "plate_boundary":
@@ -103,7 +100,9 @@ public class TFCLayerUtilTests
             }
         };
 
-        TFCLayerUtil.createOverworldBiomeLayer(seed, settings, plateArtist, layerArtist);
+        AreaFactory layer = TFCLayerUtil.createOverworldBiomeLayer(seed, settings, plateArtist, layerArtist);
+        AREA.color(this::biomeColor).center(2500).size(1000); // 20km image (biomes are 1/4 scale)
+        AREA.draw("biomes_20km", layer);
     }
 
     @Test
@@ -112,19 +111,22 @@ public class TFCLayerUtilTests
         final long seed = System.currentTimeMillis();
         final TFCBiomeProvider.LayerSettings settings = new TFCBiomeProvider.LayerSettings();
 
-        IArtist<IAreaFactory<? extends IArea>> artist = (name, index, instance) -> {
+        IArtist<AreaFactory> artist = (name, index, instance) -> {
             int zoom;
             if (index <= 2) zoom = 1;
             else if (index <= 4) zoom = 2;
             else if (index == 5) zoom = 3;
             else if (index <= 8) zoom = 4;
-            else zoom = 5;
+            else if (index <= 12) zoom = index - 4;
+            else zoom = 8;
 
-            AREA.color(this::forestColor).centerSized(4 * (1 << zoom));
+            AREA.color(this::forestColor).centerSized((1 << zoom));
             AREA.draw(name + '_' + index, instance);
         };
 
-        TFCLayerUtil.createOverworldForestLayer(seed, settings, artist);
+        AreaFactory layer = TFCLayerUtil.createOverworldForestLayer(seed, settings, artist);
+        AREA.color(this::forestColor).center(1250).size(1250); // 10km image (biomes are 1/4 scale), at 1 pixel = 4 blocks
+        AREA.draw("forest_10km", layer);
     }
 
     @Test
@@ -135,10 +137,10 @@ public class TFCLayerUtilTests
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
         INoise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
-        IArea biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).make();
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
 
-        Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceFloat((x, z) -> {
-            int value = biomeArea.get(((int) x) >> 2, ((int) z) >> 2);
+        Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
+            int value = biomeArea.get(x >> 2, z >> 2);
             BiomeVariants biome = TFCLayerUtil.getFromLayerId(value);
             if (biome.isVolcanic())
             {
@@ -153,8 +155,30 @@ public class TFCLayerUtilTests
             return biomeColor(value);
         });
 
-        RAW.center(20_000).size(1_000); // 40 km image, at 1 pixel = 20 blocks
-        RAW.draw("volcano_biome_map", volcanoBiomeMap);
+        RAW.center(10_000).size(1_000); // 20 km image, at 1 pixel = 10 blocks
+        RAW.draw("volcanos_20km", volcanoBiomeMap);
+    }
+
+    @Test
+    public void testBiomesWithForest()
+    {
+        long seed = System.currentTimeMillis();
+
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
+        Area forestArea = TFCLayerUtil.createOverworldForestLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope()).get();
+
+        Artist.Pixel<Color> forestBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
+            int value = biomeArea.get(x, z);
+            Color oceanBiomeColor = waterBiomeColor(value);
+            if (oceanBiomeColor != null)
+            {
+                return oceanBiomeColor;
+            }
+            return forestColor(forestArea.get(x, z));
+        });
+
+        RAW.center(1250).size(1250); // 10 km image, at 1 pixel = 4 blocks
+        RAW.draw("biomes_with_forests_10km", forestBiomeMap);
     }
 
     private Color plateElevationColor(Plate plate)
@@ -189,8 +213,8 @@ public class TFCLayerUtilTests
 
     private Color biomeColor(int id)
     {
-        if (id == DEEP_OCEAN) return new Color(0, 0, 250);
-        if (id == OCEAN) return new Color(60, 100, 250);
+        Color water = waterBiomeColor(id);
+        if (water != null) return water;
         if (id == PLAINS) return new Color(0, 150, 0);
         if (id == HILLS) return new Color(30, 130, 30);
         if (id == LOWLANDS) return new Color(20, 200, 180);
@@ -204,6 +228,14 @@ public class TFCLayerUtilTests
         if (id == OCEANIC_MOUNTAINS) return new Color(180, 180, 250);
         if (id == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(255, 140, 200);
         if (id == CANYONS) return new Color(160, 60, 60);
+        return Color.BLACK;
+    }
+
+    @Nullable
+    private Color waterBiomeColor(int id)
+    {
+        if (id == DEEP_OCEAN) return new Color(0, 0, 250);
+        if (id == OCEAN) return new Color(60, 100, 250);
         if (id == SHORE) return new Color(255, 230, 160);
         if (id == LAKE) return new Color(120, 200, 255);
         if (id == RIVER) return new Color(80, 140, 255);
@@ -216,7 +248,7 @@ public class TFCLayerUtilTests
         if (id == OCEAN_OCEAN_DIVERGING_MARKER) return new Color(0, 0, 100);
         if (id == OCEAN_REEF_MARKER) return new Color(200, 200, 0);
         if (id == OCEAN_REEF) return new Color(200, 250, 100);
-        return Color.BLACK;
+        return null;
     }
 
     private Color riverColor(int id)
@@ -234,10 +266,10 @@ public class TFCLayerUtilTests
 
     private Color forestColor(int id)
     {
-        if (id == FOREST_NONE) return new Color(140, 140, 140);
-        if (id == FOREST_NORMAL) return new Color(50, 200, 50);
-        if (id == FOREST_SPARSE) return new Color(100, 180, 100);
-        if (id == FOREST_EDGE) return new Color(180, 140, 40);
+        if (id == FOREST_NONE) return new Color(140, 160, 140);
+        if (id == FOREST_NORMAL) return new Color(70, 180, 70);
+        if (id == FOREST_SPARSE) return new Color(30, 120, 30);
+        if (id == FOREST_EDGE) return new Color(110, 140, 40);
         if (id == FOREST_OLD) return new Color(0, 80, 0);
         return Color.BLACK;
     }

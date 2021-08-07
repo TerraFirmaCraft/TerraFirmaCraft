@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.NULL_MARKER;
 import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
 
-public enum RiverLayer implements ICastleTransformer
+public enum RiverLayer implements AdjacentTransformLayer
 {
     INSTANCE;
 
-    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
+    public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         if (center != north || center != south || center != west || center != east)
         {
