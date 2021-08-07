@@ -22,12 +22,15 @@ public class LazyRegistry<T>
 
     public void registerAll()
     {
-        for (Delayed<? extends T> lazy : values)
+        if (!registered)
         {
-            lazy.set();
+            for (Delayed<? extends T> lazy : values)
+            {
+                lazy.set();
+            }
+            registered = true;
+            values = null;
         }
-        registered = true;
-        values = null;
     }
 
     public <V extends T> Lazy<V> register(Supplier<V> factory)
@@ -35,6 +38,7 @@ public class LazyRegistry<T>
         final Delayed<V> lazy = new Delayed<>();
         lazy.factory = factory;
         lazy.value = null;
+        values.add(lazy);
         return lazy;
     }
 

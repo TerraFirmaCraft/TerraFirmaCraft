@@ -52,9 +52,9 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(MatrixStack stack, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack stack, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderLabels(stack, mouseX, mouseY);
+        super.renderBg(stack, partialTicks, mouseX, mouseY);
 
         final PlayerEntity player = ClientHelpers.getPlayer();
         if (player != null && player.getFoodData() instanceof TFCFoodStats)
@@ -62,12 +62,21 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
             final NutritionStats nutrition = ((TFCFoodStats) player.getFoodData()).getNutrition();
             for (Nutrient nutrient : Nutrient.VALUES)
             {
-                final String text = I18n.get(Helpers.getEnumTranslationKey(nutrient));
-                int width = (int) (nutrition.getNutrient(nutrient) * 50);
-
-                font.draw(stack, text, 112 - font.width(text), 19 * 13 * nutrient.ordinal(), 0x404040);
+                final int width = (int) (nutrition.getNutrient(nutrient) * 50);
                 blit(stack, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
             }
+        }
+    }
+
+    @Override
+    protected void renderLabels(MatrixStack stack, int mouseX, int mouseY)
+    {
+        super.renderLabels(stack, mouseX, mouseY);
+
+        for (Nutrient nutrient : Nutrient.VALUES)
+        {
+            final ITextComponent text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
+            font.draw(stack, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
         }
     }
 }

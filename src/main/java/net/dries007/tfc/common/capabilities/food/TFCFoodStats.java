@@ -23,6 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.entity.player.PlayerEntityAccessor;
 import net.dries007.tfc.mixin.util.FoodStatsAccessor;
@@ -42,7 +43,8 @@ import net.dries007.tfc.util.calendar.ICalendar;
  * - PlayerEvent.LoadFromFile fires later, and has access to the save data, but is too early as the player's connection is not yet set, so we can't properly sync that change to client.
  * - PlayerLoggedInEvent is where we can reliably update the FoodStats instance on server, and then sync that change to client.
  *
- * Now, at this point, we can actually read directly from our capability, as it has been deserialized much earlier in Entity#load
+ * Now, at this point, we can actually read directly from our capability, as it has been deserialized much earlier in Entity#load.
+ * Reading is a bit different: we read from the capability data early, store the NBT, and then copy it to the food stats on the instantiation of the custom food stats.
  */
 public class TFCFoodStats extends FoodStats
 {
@@ -57,20 +59,15 @@ public class TFCFoodStats extends FoodStats
         final FoodStats foodStats = player.getFoodData();
         if (!(foodStats instanceof TFCFoodStats))
         {
-            ((PlayerEntityAccessor) player).accessor$setFoodData(new TFCFoodStats(player, foodStats));
+            // Replace, and then read from the cached data on the player capability
+            final TFCFoodStats newStats = new TFCFoodStats(player, foodStats);
+            ((PlayerEntityAccessor) player).accessor$setFoodData(newStats);
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
         }
         // Send the update regardless so the client can perform the same logic
         if (player instanceof ServerPlayerEntity)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new FoodStatsReplacePacket());
-        }
-    }
-
-    public static void onRepeatPlayerLoading(ServerPlayerEntity player, @Nullable CompoundNBT nbt)
-    {
-        if (nbt != null && player.getFoodData() instanceof TFCFoodStats)
-        {
-            player.getFoodData().readAdditionalSaveData(nbt);
         }
     }
 

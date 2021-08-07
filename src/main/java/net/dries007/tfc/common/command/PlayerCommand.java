@@ -133,7 +133,7 @@ public final class PlayerCommand
                 int percent = (int) (100 * nutrition[nutrient.ordinal()]);
                 context.getSource().sendSuccess(
                     new StringTextComponent(" - ")
-                        .append(Helpers.translateEnum(nutrient))
+                        .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
                         .append(": " + percent + "%"), true);
             }
             return Command.SINGLE_SUCCESS;

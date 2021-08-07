@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +22,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
 {
     private final PlayerEntity player;
     private final LazyOptional<PlayerData> capability;
+    private CompoundNBT delayedFoodNbt;
 
     public PlayerData(PlayerEntity player)
     {
@@ -28,8 +30,9 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
         this.capability = LazyOptional.of(() -> this);
     }
 
+    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
         return cap == PlayerDataCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
     }
@@ -37,7 +40,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
     @Override
     public CompoundNBT serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        final CompoundNBT nbt = new CompoundNBT();
         if (player.getFoodData() instanceof TFCFoodStats)
         {
             nbt.put("food", ((TFCFoodStats) player.getFoodData()).serializeToPlayerData());
@@ -48,10 +51,15 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        CompoundNBT foodNbt = nbt.getCompound("food");
+        delayedFoodNbt = nbt.getCompound("food");
         if (player.getFoodData() instanceof TFCFoodStats)
         {
-            ((TFCFoodStats) player.getFoodData()).deserializeFromPlayerData(foodNbt);
+            writeTo((TFCFoodStats) player.getFoodData());
         }
+    }
+
+    public void writeTo(TFCFoodStats stats)
+    {
+        stats.deserializeFromPlayerData(delayedFoodNbt);
     }
 }
