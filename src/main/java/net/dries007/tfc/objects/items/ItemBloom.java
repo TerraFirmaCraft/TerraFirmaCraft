@@ -72,7 +72,6 @@ public class ItemBloom extends ItemTFC implements IMetalItem
         if (cap instanceof IForgeableMeasurableMetal)
         {
             int amount = ((IForgeableMeasurableMetal) cap).getMetalAmount();
-            if (amount > 100) amount = 100;
             return amount;
         }
         return 0;
