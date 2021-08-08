@@ -21,15 +21,16 @@ import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.CellularNoiseType;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
+@Disabled
 public class TFCLayerUtilTests
 {
-    // These inner lambdas could be shortened to factory.make()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
+    // These inner lambdas could be shortened to factory.get()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
     static final Artist.Typed<TypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
         final TypedArea<Plate> area = factory.get();
         return Artist.Pixel.coerceInt(area::get);
@@ -135,7 +136,7 @@ public class TFCLayerUtilTests
         long seed = System.currentTimeMillis();
 
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
-        INoise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
+        Noise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
         Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
 
@@ -144,9 +145,9 @@ public class TFCLayerUtilTests
             BiomeVariants biome = TFCLayerUtil.getFromLayerId(value);
             if (biome.isVolcanic())
             {
-                float distance = volcanoNoise.noise(x, z) + volcanoJitterNoise.noise(x, z);
+                float chance = volcanoNoise.noise(x, z);
+                float distance = volcanoNoise.f1() + volcanoJitterNoise.noise(x, z);
                 float volcano = VolcanoNoise.calculateEasing(distance);
-                float chance = volcanoNoise.noise(x, z, CellularNoiseType.VALUE);
                 if (volcano > 0 && chance < biome.getVolcanoChance())
                 {
                     return new Color(MathHelper.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano

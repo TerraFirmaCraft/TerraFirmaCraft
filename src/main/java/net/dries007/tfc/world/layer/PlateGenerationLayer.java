@@ -29,8 +29,8 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
     public Plate apply(AreaContext context, int x, int z)
     {
         plateNoise.noise(x, z);
-        float centerX = plateNoise.getCenterX();
-        float centerZ = plateNoise.getCenterY();
+        float centerX = plateNoise.centerX();
+        float centerZ = plateNoise.centerZ();
         context.initSeed(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
         for (int j = 0; j < 10; j++) context.nextInt(1);
         boolean oceanic = context.nextInt(100) < oceanPercent;

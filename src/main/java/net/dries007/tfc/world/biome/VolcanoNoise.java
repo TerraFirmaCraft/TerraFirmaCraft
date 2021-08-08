@@ -7,8 +7,7 @@
 package net.dries007.tfc.world.biome;
 
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.CellularNoiseType;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 /**
@@ -20,7 +19,7 @@ public final class VolcanoNoise
     private static final float SEPARATION_MODIFIER = 0.0035f;
     private static final float SIZE_MODIFIER = 0.05f;
 
-    public static INoise2D easingNoise(long seed)
+    public static Noise2D easingNoise(long seed)
     {
         return cellNoise(seed).map(VolcanoNoise::calculateEasing);
     }
@@ -77,7 +76,7 @@ public final class VolcanoNoise
      * @param seed The world seed
      * @return A noise function which, when added to the distance noise from {@link VolcanoNoise#cellNoise(long)}, produces the actual distance used for further noise calculations
      */
-    public static INoise2D distanceVariationNoise(long seed)
+    public static Noise2D distanceVariationNoise(long seed)
     {
         return new OpenSimplex2D(seed + SEED_MODIFIER * 2).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
     }
@@ -90,6 +89,6 @@ public final class VolcanoNoise
      */
     public static Cellular2D cellNoise(long seed)
     {
-        return new Cellular2D(seed + SEED_MODIFIER, 0.8f, CellularNoiseType.F1).spread(SEPARATION_MODIFIER);
+        return new Cellular2D(seed + SEED_MODIFIER).spread(SEPARATION_MODIFIER);
     }
 }

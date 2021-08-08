@@ -49,13 +49,13 @@ public final class TFCBiomes
     public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
     public static final BiomeVariants HILLS = register("hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 16)).types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
     public static final BiomeVariants LOWLANDS = register("lowlands", builder().heightmap(BiomeNoise::lowlands).types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
-    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -5, 15)).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
+    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
     public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
     public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
     public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
-    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, 2, 32)).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
+    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
 
     // High biomes
     public static final BiomeVariants MOUNTAINS = register("mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.

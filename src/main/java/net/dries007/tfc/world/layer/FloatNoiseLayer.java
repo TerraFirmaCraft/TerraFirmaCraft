@@ -8,13 +8,13 @@ package net.dries007.tfc.world.layer;
 
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.SourceLayer;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 
 public class FloatNoiseLayer implements SourceLayer
 {
-    private final INoise2D noise;
+    private final Noise2D noise;
 
-    public FloatNoiseLayer(INoise2D noise)
+    public FloatNoiseLayer(Noise2D noise)
     {
         this.noise = noise;
     }

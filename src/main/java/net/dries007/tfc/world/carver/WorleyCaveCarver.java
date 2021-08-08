@@ -21,12 +21,13 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.*;
 
+// todo: fuck this piece of trash with a rusty spoon
 public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
     private final AirBlockCarver blockCarver;
 
     private long cachedSeed;
-    private INoise3D caveNoiseWorley;
+    private Noise3D worleyCaveNoise;
     private boolean initialized;
 
     public WorleyCaveCarver(Codec<WorleyCaveConfig> codec)
@@ -43,11 +44,8 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     {
         if (this.cachedSeed != worldSeed || !initialized)
         {
-            caveNoiseWorley = new Cellular3D(worldSeed + 2, 2.0f, CellularNoiseType.F1_MUL_F2).spread(0.04f).warped(
-                new OpenSimplex3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
-                new OpenSimplex3D(worldSeed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
-                new OpenSimplex3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
-            ).scaled(0, 1);
+            final OpenSimplex3D warpNoise = new OpenSimplex3D(worldSeed + 1).octaves(4).spread(0.08f).scaled(-18, 18);
+            worleyCaveNoise = new Cellular3D(worldSeed).type(FastNoiseLite.CellularReturnType.Distance2Mul).spread(0.04f).scaled(0, 1).warped(warpNoise);
 
             cachedSeed = worldSeed;
             initialized = true;
@@ -87,6 +85,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     @SuppressWarnings("PointlessArithmeticExpression")
     private void carve(IChunk chunkIn, int chunkX, int chunkZ, Random random, int seaLevel, WorleyCaveConfig config)
     {
+        if (true) return; // fuck this
         final int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
         final float[] noiseValues = new float[5 * 5 * heightSampleRange];
 
@@ -97,7 +96,8 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
             {
                 for (int y = 0; y < heightSampleRange; y++)
                 {
-                    noiseValues[x + (z * 5) + (y * 25)] = caveNoiseWorley.noise((float) (chunkX + x * 4), y * 7f, (float) (chunkZ + z * 4));
+                    worleyCaveNoise.noise((float) (chunkX + x * 4), y * 7f, (float) (chunkZ + z * 4));
+                    noiseValues[x + (z * 5) + (y * 25)] = worleyCaveNoise.noise((float) (chunkX + x * 4), y * 7f, (float) (chunkZ + z * 4));
                 }
             }
         }

@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.world.noise.INoise3D;
 import net.dries007.tfc.world.noise.Metaballs3D;
 
 public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeature.ClusterVein>
@@ -25,7 +24,7 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
     @Override
     protected float getChanceToGenerate(int x, int y, int z, ClusterVein vein, VeinConfig config)
     {
-        return vein.metaballs.noise(x, y, z) * config.getDensity();
+        return vein.metaballs.inside(x, y, z) ? config.getDensity() : 0;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
 
     static class ClusterVein extends Vein
     {
-        final INoise3D metaballs;
+        final Metaballs3D metaballs;
 
         ClusterVein(BlockPos pos, Random random, int size)
         {

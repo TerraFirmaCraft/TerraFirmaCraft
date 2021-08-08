@@ -16,13 +16,13 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private BlockState[] sandLayers;
-    private INoise2D heightVariationNoise;
+    private Noise2D heightVariationNoise;
 
     public BadlandsSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {

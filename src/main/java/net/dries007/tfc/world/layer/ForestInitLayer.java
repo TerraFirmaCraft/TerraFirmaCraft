@@ -8,13 +8,13 @@ package net.dries007.tfc.world.layer;
 
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.SourceLayer;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 
 public class ForestInitLayer implements SourceLayer
 {
-    private final INoise2D forestBaseNoise;
+    private final Noise2D forestBaseNoise;
 
-    ForestInitLayer(INoise2D forestBaseNoise)
+    ForestInitLayer(Noise2D forestBaseNoise)
     {
         this.forestBaseNoise = forestBaseNoise;
     }

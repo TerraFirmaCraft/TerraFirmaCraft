@@ -249,7 +249,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
         final RockData rockData = chunkDataProvider.get(chunk.getPos()).getRockDataOrThrow();
 
-        assert rockData != null;
         if (stage == GenerationStage.Carving.AIR)
         {
             // In vanilla, air carvers fire first. We do water carvers first instead, to catch them with the water adjacency mask later

@@ -11,28 +11,44 @@ import java.util.Random;
 /**
  * A 2D Implementation of <a href="https://en.wikipedia.org/wiki/Metaballs">Metaballs</a>, primarily using the techniques outlined in <a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/">this blog</a>
  */
-public class Metaballs2D implements INoise2D
+public class Metaballs2D
 {
-    private final Vec3[] balls; // x, y, weight
+    private final Ball[] balls; // x, y, weight
 
     public Metaballs2D(int size, Random random)
     {
-        balls = new Vec3[3 + random.nextInt(5)];
+        balls = new Ball[3 + random.nextInt(5)];
         for (int i = 0; i < balls.length; i++)
         {
             float ballSize = (0.1f + random.nextFloat() * 0.2f) * size;
-            balls[i] = new Vec3((random.nextFloat() - random.nextFloat()) * size * 0.5f, (random.nextFloat() - random.nextFloat()) * size * 0.5f, ballSize);
+            balls[i] = new Ball((random.nextFloat() - random.nextFloat()) * size * 0.5f, (random.nextFloat() - random.nextFloat()) * size * 0.5f, ballSize);
         }
     }
 
-    @Override
-    public float noise(float x, float z)
+    public boolean inside(float x, float z)
     {
         float f = 0;
-        for (Vec3 ball : balls)
+        for (Ball ball : balls)
         {
-            f += ball.z * Math.abs(ball.z) / ((x - ball.x) * (x - ball.x) + (z - ball.y) * (z - ball.y));
+            f += ball.weight * Math.abs(ball.weight) / ((x - ball.x) * (x - ball.x) + (z - ball.z) * (z - ball.z));
+            if (f > 1)
+            {
+                return true;
+            }
         }
-        return f > 1 ? 1 : 0;
+        return false;
+    }
+
+    // todo: record in j16
+    static final class Ball
+    {
+        final float x, z, weight;
+
+        Ball(float x, float z, float weight)
+        {
+            this.x = x;
+            this.z = z;
+            this.weight = weight;
+        }
     }
 }

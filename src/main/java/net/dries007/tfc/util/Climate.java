@@ -22,7 +22,6 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.NoiseUtil;
 
 /**
@@ -196,7 +195,7 @@ public final class Climate
     private static float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
         float temperatureScale = TFCConfig.SERVER.temperatureScale.get();
-        return monthTemperatureModifier * INoise1D.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
+        return monthTemperatureModifier * NoiseUtil.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
     }
 
     /**

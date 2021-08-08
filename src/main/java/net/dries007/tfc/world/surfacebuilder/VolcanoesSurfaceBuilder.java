@@ -18,7 +18,6 @@ import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.CellularNoiseType;
 
 public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfaceBuilderConfig>
 {
@@ -36,8 +35,8 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
         if (variants.isVolcanic())
         {
             // Sample volcano noise
-            final float distance = cellNoise.noise(x, z, CellularNoiseType.F1);
-            final float value = cellNoise.noise(x, z, CellularNoiseType.VALUE);
+            final float value = cellNoise.noise(x, z);
+            final float distance = cellNoise.f1();
             final float easing = VolcanoNoise.calculateEasing(distance);
             final double heightNoise = noise * 2f + startHeight;
             if (value < variants.getVolcanoChance() && easing > 0.6f && heightNoise > variants.getVolcanoBasaltHeight())

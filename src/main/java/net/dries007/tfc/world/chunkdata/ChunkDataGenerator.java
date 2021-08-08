@@ -20,8 +20,8 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
-import net.dries007.tfc.world.noise.INoise1D;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 /**
@@ -40,11 +40,11 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     private final LayerFactory<Rock> bottomRockLayer, middleRockLayer, topRockLayer;
     private final LayerFactory<ForestType> forestTypeLayer;
 
-    private final INoise2D temperatureNoise;
-    private final INoise2D rainfallNoise;
-    private final INoise2D layerHeightNoise;
-    private final INoise2D forestWeirdnessNoise;
-    private final INoise2D forestDensityNoise;
+    private final Noise2D temperatureNoise;
+    private final Noise2D rainfallNoise;
+    private final Noise2D layerHeightNoise;
+    private final Noise2D forestWeirdnessNoise;
+    private final Noise2D forestDensityNoise;
 
     private final LayerFactory<PlateTectonicsClassification> plateTectonicsInfo;
 
@@ -54,20 +54,18 @@ public class ChunkDataGenerator implements IChunkDataGenerator
         this.middleRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getMidRocks());
         this.topRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getTopRocks());
 
-        this.layerHeightNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(2).scaled(-10, 10).spread(0.03f);
+        this.layerHeightNoise = new OpenSimplex2D(seedGenerator.nextInt()).octaves(2).scaled(-10, 10).spread(0.03f);
 
         // Climate
-        temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)
-            .extendX()
+        temperatureNoise = ((Noise2D) (x, z) -> NoiseUtil.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0, z))
             .scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE)
-            .add(new OpenSimplex2D(seedGenerator.nextLong())
+            .add(new OpenSimplex2D(seedGenerator.nextInt())
                 .octaves(2)
                 .spread(12f / TFCConfig.SERVER.temperatureScale.get())
                 .scaled(-Climate.REGIONAL_TEMPERATURE_SCALE, Climate.REGIONAL_TEMPERATURE_SCALE));
-        rainfallNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.rainfallScale.get()), 0)
-            .extendY()
+        rainfallNoise = ((Noise2D) (x, z) -> NoiseUtil.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.rainfallScale.get()), 0, x))
             .scaled(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL)
-            .add(new OpenSimplex2D(seedGenerator.nextLong())
+            .add(new OpenSimplex2D(seedGenerator.nextInt())
                 .octaves(2)
                 .spread(12f / TFCConfig.SERVER.rainfallScale.get())
                 .scaled(-Climate.REGIONAL_RAINFALL_SCALE, Climate.REGIONAL_RAINFALL_SCALE))
@@ -75,8 +73,8 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
         // Flora
         forestTypeLayer = LayerFactory.forest(TFCLayerUtil.createOverworldForestLayer(seedGenerator.nextLong(), layerSettings, IArtist.nope()));
-        forestWeirdnessNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
-        forestDensityNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
+        forestWeirdnessNoise = new OpenSimplex2D(seedGenerator.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
+        forestDensityNoise = new OpenSimplex2D(seedGenerator.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
         // Plate Tectonics
         plateTectonicsInfo = LayerFactory.plateTectonics(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed, layerSettings));
@@ -129,13 +127,13 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     }
 
     @VisibleForTesting
-    public INoise2D getTemperatureNoise()
+    public Noise2D getTemperatureNoise()
     {
         return temperatureNoise;
     }
 
     @VisibleForTesting
-    public INoise2D getRainfallNoise()
+    public Noise2D getRainfallNoise()
     {
         return rainfallNoise;
     }

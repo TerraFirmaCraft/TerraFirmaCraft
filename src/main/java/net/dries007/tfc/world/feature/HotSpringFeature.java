@@ -61,7 +61,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 final int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
                 // Disallow underwater locations
-                if (y <= TFCChunkGenerator.SEA_LEVEL || noise.noise(x, z) == 0)
+                if (y <= TFCChunkGenerator.SEA_LEVEL || !noise.inside(x, z))
                 {
                     continue;
                 }

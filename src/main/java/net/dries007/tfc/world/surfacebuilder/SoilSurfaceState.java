@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.world.chunkdata.RockData;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class SoilSurfaceState implements ISurfaceState
@@ -30,7 +30,7 @@ public class SoilSurfaceState implements ISurfaceState
     private static final long PATCH_NOISE_SEED = 18273952837592L;
 
     protected final SoilBlockType soil;
-    protected final INoise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);
+    protected final Noise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);
 
     public SoilSurfaceState(SoilBlockType soil)
     {

@@ -25,7 +25,7 @@ import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class TFCLayerUtil
@@ -239,10 +239,8 @@ public class TFCLayerUtil
         // River Setup
         final float riverScale = 1.7f;
         final float riverSpread = 0.15f;
-        final INoise2D riverNoise = new Cellular2D(random.nextLong()).spread(0.072f).warped(
-            new OpenSimplex2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
-            new OpenSimplex2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
-        ).terraces(5);
+        final OpenSimplex2D riverWarpNoise = new OpenSimplex2D(random.nextInt()).spread(riverSpread).scaled(-riverScale, riverScale);
+        final Noise2D riverNoise = new Cellular2D(random.nextInt()).spread(0.072f).warped(riverWarpNoise).terraces(5);
 
         // River Noise
         riverLayer = new FloatNoiseLayer(riverNoise).apply(context.get());
@@ -282,7 +280,7 @@ public class TFCLayerUtil
 
         AreaFactory mainLayer;
 
-        mainLayer = new ForestInitLayer(new OpenSimplex2D(random.nextLong()).spread(0.3f)).apply(context.get());
+        mainLayer = new ForestInitLayer(new OpenSimplex2D(random.nextInt()).spread(0.3f)).apply(context.get());
         artist.draw("forest", 1, mainLayer);
         mainLayer = ForestRandomizeLayer.INSTANCE.apply(context.get(), mainLayer);
         artist.draw("forest", 2, mainLayer);
