@@ -74,7 +74,7 @@ public class ServerConfig
             "  doInsomnia = false (No phantoms)",
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
-        ).define("enableForcedTFCGameRules", false);
+        ).define("enableForcedTFCGameRules", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
 

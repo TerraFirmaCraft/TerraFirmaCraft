@@ -31,18 +31,18 @@ public class DeepSoilSurfaceState extends SoilSurfaceState
         {
             // Sandy - Sand Transition Zone
             float noise = patchNoise.noise(x, z);
-            return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sandstone(rockData, x, z) : gravel(rockData, x, z);
+            return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sandstone(rockData, x, z) : gravel(rockData, x, y, z);
         }
         else
         {
             // All others
-            return gravel(rockData, x, z);
+            return gravel(rockData, x, y, z);
         }
     }
 
-    private BlockState gravel(RockData rockData, int x, int z)
+    private BlockState gravel(RockData rockData, int x, int y, int z)
     {
-        return rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
+        return rockData.getRock(x, y, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
     }
 
     private BlockState sandstone(RockData rockData, int x, int z)
