@@ -155,7 +155,7 @@ public class WorldRegenHandler
     {
         for (ClassInheritanceMultiMap<Entity> target : world.getChunk(pos.x, pos.z).getEntityLists())
             target.forEach(entity -> {
-                if (entity instanceof IPredator || entity instanceof IHuntable)
+                if (entity instanceof IPredator || entity instanceof IHuntable && !entity.hasCustomName())
                 {
                     entity.setDropItemsWhenDead(false);
                     entity.setDead();
