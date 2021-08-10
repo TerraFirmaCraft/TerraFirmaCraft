@@ -507,7 +507,7 @@ public final class ConfigTFC
 
             @Config.Comment("Minimum server tps to allow chunk regeneration in the spring")
             @Config.RangeInt(min = 0, max = 20)
-            @Config.LangKey("config." + MOD_ID + ".general.world.minRegenTps")
+            @Config.LangKey("config." + MOD_ID + ".general.world_regen.minRegenTps")
             public int minRegenTps = 16;
         }
 

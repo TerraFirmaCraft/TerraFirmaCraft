@@ -138,6 +138,7 @@ public class WorldRegenHandler
                         int worldZ = pos.z << 4;
                         BlockPos blockpos = new BlockPos(worldX, 0, worldZ);
                         Biome biome = event.world.getBiome(blockpos.add(16, 0, 16));
+                        removePredators(event.world, pos);
                         regenPredators(event.world, biome, worldX + 8, worldZ + 8, 16, 16, RANDOM);
 
                         // notably missing: berry bushes
@@ -148,6 +149,18 @@ public class WorldRegenHandler
                 }
             }
         }
+    }
+
+    private static void removePredators(World world, ChunkPos pos)
+    {
+        for (ClassInheritanceMultiMap<Entity> target : world.getChunk(pos.x, pos.z).getEntityLists())
+            target.forEach(entity -> {
+                if (entity instanceof IPredator || entity instanceof IHuntable)
+                {
+                    entity.setDropItemsWhenDead(false);
+                    entity.setDead();
+                }
+            });
     }
 
     private static void removeCropsAndMushrooms(World world, ChunkPos pos)
