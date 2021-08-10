@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
@@ -22,7 +23,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
 {
     private final PlayerEntity player;
     private final LazyOptional<PlayerData> capability;
-    private CompoundNBT delayedFoodNbt;
+    @Nullable private CompoundNBT delayedFoodNbt;
 
     public PlayerData(PlayerEntity player)
     {
@@ -51,7 +52,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        delayedFoodNbt = nbt.getCompound("food");
+        delayedFoodNbt = nbt.contains("food", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("food") : null;
         if (player.getFoodData() instanceof TFCFoodStats)
         {
             writeTo((TFCFoodStats) player.getFoodData());
@@ -60,6 +61,10 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
 
     public void writeTo(TFCFoodStats stats)
     {
-        stats.deserializeFromPlayerData(delayedFoodNbt);
+        if (delayedFoodNbt != null)
+        {
+            stats.deserializeFromPlayerData(delayedFoodNbt);
+            delayedFoodNbt = null;
+        }
     }
 }
