@@ -13,16 +13,12 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -75,7 +71,7 @@ import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
-import net.dries007.tfc.world.biome.ITFCBiomeProvider;
+import net.dries007.tfc.world.biome.ITFCBiomeSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
@@ -129,7 +125,7 @@ public final class ForgeEventHandler
             final ChunkGenerator generator = world.getChunkSource().getGenerator();
             if (generator instanceof ITFCChunkGenerator)
             {
-                final ITFCBiomeProvider biomeProvider = ((ITFCChunkGenerator) generator).getBiomeSource();
+                final ITFCBiomeSource biomeProvider = ((ITFCChunkGenerator) generator).getBiomeSource();
                 final Random random = new Random(world.getSeed());
                 final int spawnDistance = biomeProvider.getSpawnDistance();
 

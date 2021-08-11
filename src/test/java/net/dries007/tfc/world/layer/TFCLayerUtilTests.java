@@ -9,12 +9,13 @@ package net.dries007.tfc.world.layer;
 import java.awt.*;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -46,7 +47,7 @@ public class TFCLayerUtilTests
     public void testCreateOverworldBiomeLayer()
     {
         final long seed = System.currentTimeMillis();
-        final TFCBiomeProvider.LayerSettings settings = new TFCBiomeProvider.LayerSettings();
+        final TFCBiomeSource.LayerSettings settings = new TFCBiomeSource.LayerSettings();
 
         // Drawing is done via callbacks in TFCLayerUtil
         IArtist<TypedAreaFactory<Plate>> plateArtist = (name, index, instance) -> {
@@ -110,7 +111,7 @@ public class TFCLayerUtilTests
     public void testOverworldForestLayer()
     {
         final long seed = System.currentTimeMillis();
-        final TFCBiomeProvider.LayerSettings settings = new TFCBiomeProvider.LayerSettings();
+        final TFCBiomeSource.LayerSettings settings = new TFCBiomeSource.LayerSettings();
 
         IArtist<AreaFactory> artist = (name, index, instance) -> {
             int zoom;
@@ -138,7 +139,7 @@ public class TFCLayerUtilTests
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
         Noise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
-        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
 
         Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
             int value = biomeArea.get(x >> 2, z >> 2);
@@ -165,8 +166,8 @@ public class TFCLayerUtilTests
     {
         long seed = System.currentTimeMillis();
 
-        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
-        Area forestArea = TFCLayerUtil.createOverworldForestLayer(seed, new TFCBiomeProvider.LayerSettings(), IArtist.nope()).get();
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
+        Area forestArea = TFCLayerUtil.createOverworldForestLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope()).get();
 
         Artist.Pixel<Color> forestBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
             int value = biomeArea.get(x, z);
@@ -184,13 +185,13 @@ public class TFCLayerUtilTests
 
     private Color plateElevationColor(Plate plate)
     {
-        if (plate.isOceanic())
+        if (plate.oceanic())
         {
-            return new Color(0, MathHelper.clamp((int) (plate.getElevation() * 255), 0, 255), 255);
+            return new Color(0, Mth.clamp((int) (plate.elevation() * 255), 0, 255), 255);
         }
         else
         {
-            return new Color(0, MathHelper.clamp((int) (100 + 155 * plate.getElevation()), 100, 255), 0);
+            return new Color(0, Mth.clamp((int) (100 + 155 * plate.elevation()), 100, 255), 0);
         }
     }
 

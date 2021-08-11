@@ -9,8 +9,11 @@ package net.dries007.tfc.world.biome;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.LongFunction;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -29,8 +32,8 @@ public class BiomeBuilder
 
     private final List<BiomeDictionary.Type> dictionaryTypes;
 
-    private LongFunction<Noise2D> heightNoiseFactory;
-    private LongFunction<IBiomeNoiseSampler> noiseFactory;
+    @Nullable private LongFunction<Noise2D> heightNoiseFactory;
+    @Nullable private LongFunction<IBiomeNoiseSampler> noiseFactory;
 
     private BiomeVariants.Group group;
     private boolean salty;
@@ -57,6 +60,7 @@ public class BiomeBuilder
 
     public BiomeBuilder carving(BiFunction<Long, Noise2D, IBiomeNoiseSampler> carvingNoiseFactory)
     {
+        Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> carvingNoiseFactory.apply(seed, baseHeightNoiseFactory.apply(seed));
         return this;
@@ -92,6 +96,7 @@ public class BiomeBuilder
         this.volcanoFrequency = frequency;
         this.volcanoBasaltHeight = TFCChunkGenerator.SEA_LEVEL + volcanoBasaltHeight;
 
+        Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
         this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
         this.noiseFactory = seed -> IBiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
@@ -105,6 +110,6 @@ public class BiomeBuilder
 
     public BiomeVariants build()
     {
-        return new BiomeVariants(noiseFactory, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        return new BiomeVariants(Objects.requireNonNull(noiseFactory), group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
     }
 }

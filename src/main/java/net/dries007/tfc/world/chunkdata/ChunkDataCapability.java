@@ -20,9 +20,4 @@ public final class ChunkDataCapability
     @CapabilityInject(ChunkData.class)
     public static final Capability<ChunkData> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
-
-    public static void setup()
-    {
-        CapabilityManager.INSTANCE.register((Class<?>) ChunkData.class);
-    }
 }

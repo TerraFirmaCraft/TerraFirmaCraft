@@ -22,7 +22,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 public class SaltWaterBlockCarver extends BlockCarver
 {
     @Override
-    @SuppressWarnings("deprecation")
     public boolean carve(ChunkAccess chunk, BlockPos pos, Random random, int seaLevel)
     {
         final int maskIndex = CarverHelpers.maskIndex(pos);

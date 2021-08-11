@@ -16,13 +16,14 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
- * Various extensions to {@link net.minecraft.world.gen.feature.RandomPatchFeature}
+ * Various extensions to {@link net.minecraft.world.level.levelgen.feature.RandomPatchFeature}
  */
 public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
 {
@@ -32,9 +33,13 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, TFCRandomPatchConfig config)
+    public boolean place(FeaturePlaceContext<TFCRandomPatchConfig> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random random = context.random();
+        final TFCRandomPatchConfig config = context.config();
+
         BlockPos posAt;
         if (config.project && !config.projectEachLocation)
         {
@@ -90,7 +95,7 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
                         if (config.onlyUnderground)
                         {
                             final int surfaceHeight = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
-                            if (!stateAt.getBlock().is(Blocks.CAVE_AIR) || pos.getY() >= surfaceHeight - 1)
+                            if (stateAt.getBlock() != Blocks.CAVE_AIR || pos.getY() >= surfaceHeight - 1)
                             {
                                 continue;
                             }

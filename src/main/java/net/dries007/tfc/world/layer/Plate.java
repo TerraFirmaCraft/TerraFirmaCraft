@@ -6,55 +6,8 @@
 
 package net.dries007.tfc.world.layer;
 
-public final class Plate
+public record Plate(float x, float z, float driftX, float driftZ, float elevation, boolean oceanic)
 {
-    private final float x;
-    private final float z;
-    private final float driftX;
-    private final float driftZ;
-    private final float elevation;
-    private final boolean oceanic;
-
-    public Plate(float x, float z, float driftX, float driftZ, float elevation, boolean oceanic)
-    {
-        this.x = x;
-        this.z = z;
-        this.driftX = driftX;
-        this.driftZ = driftZ;
-        this.elevation = elevation;
-        this.oceanic = oceanic;
-    }
-
-    public float getX()
-    {
-        return x;
-    }
-
-    public float getZ()
-    {
-        return z;
-    }
-
-    public float getDriftX()
-    {
-        return driftX;
-    }
-
-    public float getDriftZ()
-    {
-        return driftZ;
-    }
-
-    public float getElevation()
-    {
-        return elevation;
-    }
-
-    public boolean isOceanic()
-    {
-        return oceanic;
-    }
-
     @Override
     public int hashCode()
     {
@@ -70,9 +23,8 @@ public final class Plate
         {
             return true;
         }
-        if (other instanceof Plate)
+        if (other instanceof Plate plate)
         {
-            Plate plate = (Plate) other;
             return this.x == plate.x && this.z == plate.z;
         }
         return false;

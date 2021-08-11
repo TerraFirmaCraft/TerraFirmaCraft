@@ -28,7 +28,7 @@ public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
     public Stream<BlockPos> getPositions(DecorationContext worldIn, Random random, FlatEnoughConfig config, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int y = 0; y < config.maxDepth; y++)
+        for (int y = 0; y < config.maxDepth(); y++)
         {
             if (isFlatEnough(worldIn, pos, -y, mutablePos, config))
             {
@@ -38,13 +38,12 @@ public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
         return Stream.empty();
     }
 
-    @SuppressWarnings("deprecation")
     private boolean isFlatEnough(DecorationContext worldIn, BlockPos pos, int y, BlockPos.MutableBlockPos mutablePos, FlatEnoughConfig config)
     {
         int flatAmount = 0;
-        for (int x = -config.radius; x <= config.radius; x++)
+        for (int x = -config.radius(); x <= config.radius(); x++)
         {
-            for (int z = -config.radius; z <= config.radius; z++)
+            for (int z = -config.radius(); z <= config.radius(); z++)
             {
                 mutablePos.set(pos).move(x, y, z);
                 BlockState stateAt = worldIn.getBlockState(mutablePos);
@@ -54,6 +53,6 @@ public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
                 }
             }
         }
-        return flatAmount / ((1f + 2 * config.radius) * (1f + 2 * config.radius)) > config.flatness;
+        return flatAmount / ((1f + 2 * config.radius()) * (1f + 2 * config.radius())) > config.flatness();
     }
 }

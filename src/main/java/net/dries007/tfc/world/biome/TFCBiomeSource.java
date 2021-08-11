@@ -33,17 +33,17 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 
-public class TFCBiomeProvider extends BiomeSource implements ITFCBiomeProvider
+public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
 {
-    public static final Codec<TFCBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
-        Codec.INT.optionalFieldOf("spawn_distance", 8_000).forGetter(TFCBiomeProvider::getSpawnDistance),
+        Codec.INT.optionalFieldOf("spawn_distance", 8_000).forGetter(TFCBiomeSource::getSpawnDistance),
         Codec.INT.optionalFieldOf("spawn_center_x", 0).forGetter(c -> c.spawnCenterX),
         Codec.INT.optionalFieldOf("spawn_center_z", 0).forGetter(c -> c.spawnCenterZ),
-        LayerSettings.CODEC.forGetter(TFCBiomeProvider::getLayerSettings),
+        LayerSettings.CODEC.forGetter(TFCBiomeSource::getLayerSettings),
         ClimateSettings.CODEC.forGetter(c -> c.climateSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
-    ).apply(instance, TFCBiomeProvider::new));
+    ).apply(instance, TFCBiomeSource::new));
 
     // Set from codec
     private final long seed;
@@ -56,7 +56,7 @@ public class TFCBiomeProvider extends BiomeSource implements ITFCBiomeProvider
     private final LayerFactory<BiomeVariants> biomeLayer;
     private ChunkDataProvider chunkDataProvider;
 
-    public TFCBiomeProvider(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
+    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
@@ -67,6 +67,7 @@ public class TFCBiomeProvider extends BiomeSource implements ITFCBiomeProvider
         this.layerSettings = layerSettings;
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
+        this.chunkDataProvider = new ChunkDataProvider(data -> {}); // no-op
 
         this.biomeLayer = LayerFactory.biomes(TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings, IArtist.nope(), IArtist.nope()));
     }
@@ -220,15 +221,15 @@ public class TFCBiomeProvider extends BiomeSource implements ITFCBiomeProvider
     }
 
     @Override
-    protected Codec<TFCBiomeProvider> codec()
+    protected Codec<TFCBiomeSource> codec()
     {
         return CODEC;
     }
 
     @Override
-    public TFCBiomeProvider withSeed(long seedIn)
+    public TFCBiomeSource withSeed(long seedIn)
     {
-        return new TFCBiomeProvider(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, layerSettings, climateSettings, biomeRegistry);
+        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, layerSettings, climateSettings, biomeRegistry);
     }
 
     public static final class LayerSettings

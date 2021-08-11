@@ -93,7 +93,6 @@ public abstract class BlockCarver implements IContextCarver
      * Set the block to be supported. This should be called from any carved block, with the above position and state.
      * If the block can be supported via property, set that. Otherwise replace with raw rock of the correct type (supported), but only if the block above that is also not air (as otherwise this creates unsightly floating raw rock blocks.
      */
-    @SuppressWarnings("deprecation")
     protected void setSupported(ChunkAccess chunk, BlockPos pos, BlockState state, RockData rockData)
     {
         if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())

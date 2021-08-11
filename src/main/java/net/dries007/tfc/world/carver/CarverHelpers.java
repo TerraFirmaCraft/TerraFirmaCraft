@@ -101,7 +101,8 @@ public final class CarverHelpers
         // Setup IContextCarvers
         for (Supplier<ConfiguredWorldCarver<?>> lazyCarver : carvers)
         {
-            final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
+            // todo: mixin / accessor
+            final WorldCarver<?> carver = lazyCarver.get().worldCarver;
             if (carver instanceof IContextCarver)
             {
                 ((IContextCarver) carver).setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
@@ -114,14 +115,14 @@ public final class CarverHelpers
             for (int z = chunkPos.z - 8; z <= chunkPos.z + 8; ++z)
             {
                 int index = 0;
-                for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
+                for (Supplier<ConfiguredWorldCarver<?>> lazyCarver : carvers)
                 {
-                    final ConfiguredCarver<?> carver = lazyCarver.get();
+                    final ConfiguredWorldCarver<?> carver = lazyCarver.get();
 
                     random.setLargeFeatureSeed(worldSeed + index, x, z);
-                    if (carver.isStartChunk(random, x, z))
+                    if (carver.isStartChunk(random))
                     {
-                        carver.carve(chunk, delegateBiomeManager::getBiome, random, seaLevel, x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
+                        carver.carve(context, chunk, delegateBiomeManager::getBiome, random, aquifer, chunkPos, stage == GenerationStep.Carving.AIR ? airCarvingMask : liquidCarvingMask);
                     }
                     index++;
                 }

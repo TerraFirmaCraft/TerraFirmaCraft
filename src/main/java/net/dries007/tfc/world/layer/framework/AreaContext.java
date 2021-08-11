@@ -48,18 +48,13 @@ public class AreaContext
 
     public int choose(int first, int second, int third, int fourth)
     {
-        // todo: java 16
-        switch (nextInt(4))
-        {
-            case 0:
-                return first;
-            case 1:
-                return second;
-            case 2:
-                return third;
-            default:
-                return fourth;
-        }
+        return switch (nextInt(4))
+            {
+                case 0 -> first;
+                case 1 -> second;
+                case 2 -> third;
+                default -> fourth;
+            };
     }
 
     public <A> A choose(A first, A second)
@@ -69,18 +64,13 @@ public class AreaContext
 
     public <A> A choose(A first, A second, A third, A fourth)
     {
-        // todo: java 16
-        switch (nextInt(4))
-        {
-            case 0:
-                return first;
-            case 1:
-                return second;
-            case 2:
-                return third;
-            default:
-                return fourth;
-        }
+        return switch (nextInt(4))
+            {
+                case 0 -> first;
+                case 1 -> second;
+                case 2 -> third;
+                default -> fourth;
+            };
     }
 
     public int nextInt()

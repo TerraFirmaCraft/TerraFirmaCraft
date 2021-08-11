@@ -173,7 +173,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
      */
     public static TFCChunkGenerator createDefaultPreset(Supplier<NoiseGeneratorSettings> dimensionSettings, Registry<Biome> biomeRegistry, long seed)
     {
-        return new TFCChunkGenerator(new TFCBiomeProvider(seed, 8_000, 0, 0, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
+        return new TFCChunkGenerator(new TFCBiomeSource(seed, 8_000, 0, 0, new TFCBiomeSource.LayerSettings(), new TFCBiomeSource.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
     }
 
     // Noise
@@ -182,7 +182,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     private final ChunkDataProvider chunkDataProvider;
 
     // Properties set from codec
-    private final TFCBiomeProvider biomeProvider;
+    private final TFCBiomeSource biomeProvider;
     private final NoiseGeneratorSettings settings;
     private final boolean flatBedrock;
     private final long seed;
@@ -193,11 +193,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     {
         super(biomeProvider, settings.get().structureSettings());
 
-        if (!(biomeProvider instanceof TFCBiomeProvider))
+        if (!(biomeProvider instanceof TFCBiomeSource))
         {
             throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
         }
-        this.biomeProvider = (TFCBiomeProvider) biomeProvider;
+        this.biomeProvider = (TFCBiomeSource) biomeProvider;
         this.settings = settings.get();
         this.flatBedrock = flatBedrock;
         this.seed = seed;
@@ -292,7 +292,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     @Override
-    public TFCBiomeProvider getBiomeSource()
+    public TFCBiomeSource getBiomeSource()
     {
         return biomeProvider;
     }

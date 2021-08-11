@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -25,7 +24,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 /**
- * Modified from {@link BlockClusterFeatureConfig}
+ * Modified from {@link net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration}
  */
 public class TFCRandomPatchConfig implements FeatureConfiguration
 {

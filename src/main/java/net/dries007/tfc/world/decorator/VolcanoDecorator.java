@@ -11,11 +11,10 @@ import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.DecorationContext;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.mixin.world.gen.feature.WorldDecoratingHelperAccessor;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
@@ -37,9 +36,9 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
     }
 
     @Override
-    protected Stream<BlockPos> getSeededPositions(DecorationContext helper, Random rand, VolcanoConfig config, BlockPos pos)
+    protected Stream<BlockPos> getSeededPositions(DecorationContext context, Random rand, VolcanoConfig config, BlockPos pos)
     {
-        final WorldGenLevel world = ((WorldDecoratingHelperAccessor) helper).accessor$getLevel();
+        final WorldGenLevel world = context.getLevel();
         final Biome biome = world.getBiome(pos);
         final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
         if (variants.isVolcanic())
@@ -49,7 +48,7 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
             final float distance = cellNoise.f1();
             if (value < variants.getVolcanoChance())
             {
-                if (config.useCenter())
+                if (config.center())
                 {
                     final BlockPos centerPos = new BlockPos((int) cellNoise.centerX(), pos.getY(), (int) cellNoise.centerZ());
                     if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
@@ -60,7 +59,7 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
                 else
                 {
                     final float easing = VolcanoNoise.calculateEasing(distance);
-                    if (easing > config.getDistance())
+                    if (easing > config.distance())
                     {
                         return Stream.of(pos);
                     }

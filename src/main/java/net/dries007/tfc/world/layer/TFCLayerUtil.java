@@ -17,7 +17,7 @@ import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
 
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
@@ -156,7 +156,7 @@ public class TFCLayerUtil
         return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
     }
 
-    public static AreaFactory createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
+    public static AreaFactory createOverworldBiomeLayer(long seed, TFCBiomeSource.LayerSettings layerSettings, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
@@ -273,7 +273,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static AreaFactory createOverworldForestLayer(long seed, TFCBiomeProvider.LayerSettings settings, IArtist<AreaFactory> artist)
+    public static AreaFactory createOverworldForestLayer(long seed, TFCBiomeSource.LayerSettings settings, IArtist<AreaFactory> artist)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
@@ -305,7 +305,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static AreaFactory createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
+    public static AreaFactory createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeSource.LayerSettings layerSettings)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());

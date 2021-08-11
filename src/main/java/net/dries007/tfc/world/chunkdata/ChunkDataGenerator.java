@@ -17,7 +17,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -32,7 +32,7 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
  */
 public class ChunkDataGenerator implements IChunkDataGenerator
 {
-    private static LayerFactory<Rock> createRockLayer(Random seedGenerator, TFCBiomeProvider.LayerSettings settings, List<ResourceLocation> rocks)
+    private static LayerFactory<Rock> createRockLayer(Random seedGenerator, TFCBiomeSource.LayerSettings settings, List<ResourceLocation> rocks)
     {
         return LayerFactory.rocks(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getRockLayerScale(), rocks.size()), rocks);
     }
@@ -48,7 +48,7 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
     private final LayerFactory<PlateTectonicsClassification> plateTectonicsInfo;
 
-    public ChunkDataGenerator(long worldSeed, Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
+    public ChunkDataGenerator(long worldSeed, Random seedGenerator, TFCBiomeSource.LayerSettings layerSettings)
     {
         this.bottomRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getBottomRocks());
         this.middleRockLayer = createRockLayer(seedGenerator, layerSettings, layerSettings.getMidRocks());

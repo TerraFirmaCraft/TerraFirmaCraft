@@ -79,16 +79,12 @@ public class ClimateConfig implements DecoratorConfiguration
 
     private float getTemperature(ChunkData data, BlockPos pos)
     {
-        switch (tempType)
-        {
-            case AVERAGE:
-                return data.getAverageTemp(pos);
-            case MONTHLY:
-                return Climate.calculateMonthlyAverageTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarMonthOfYear().getTemperatureModifier());
-            case ACTUAL:
-                return Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.SERVER);
-        }
-        throw new IllegalStateException("Unknown temperature type: " + tempType);
+        return switch (tempType)
+            {
+                case AVERAGE -> data.getAverageTemp(pos);
+                case MONTHLY -> Climate.calculateMonthlyAverageTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarMonthOfYear().getTemperatureModifier());
+                case ACTUAL -> Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.SERVER);
+            };
     }
 
     public enum TemperatureType implements StringRepresentable

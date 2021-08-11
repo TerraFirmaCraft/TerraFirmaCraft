@@ -14,12 +14,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 
 import com.mojang.serialization.Codec;
 
 /**
- * A cleaned up version of {@link net.minecraft.world.gen.feature.SpringFeature}
+ * A cleaned up version of {@link SpringFeature}
  */
 public class SpringFeature extends Feature<SpringConfiguration>
 {
@@ -29,9 +30,13 @@ public class SpringFeature extends Feature<SpringConfiguration>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos pos, SpringConfiguration config)
+    public boolean place(FeaturePlaceContext<SpringConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random random = context.random();
+        final SpringConfiguration config = context.config();
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos).move(0, 1, 0);
         final BlockState stateAbove = worldIn.getBlockState(mutablePos);
         if (config.validBlocks.contains(stateAbove.getBlock()))

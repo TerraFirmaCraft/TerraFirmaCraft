@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -41,10 +42,10 @@ import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placer.TFCBlockPlacers;
@@ -101,7 +102,7 @@ public final class TerraFirmaCraft
         // Setup methods
         HeatCapability.setup();
         ForgingCapability.setup();
-        ChunkDataCapability.setup();
+        CapabilityManager.INSTANCE.register(ChunkData.class);
         WorldTrackerCapability.setup();
         ServerCalendar.setup();
         InteractionManager.setup();
@@ -113,6 +114,6 @@ public final class TerraFirmaCraft
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
     }
 }

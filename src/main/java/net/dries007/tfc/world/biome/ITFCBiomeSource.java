@@ -17,7 +17,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 /**
  * Marker for TFC biome providers
  */
-public interface ITFCBiomeProvider
+public interface ITFCBiomeSource
 {
     int getSpawnDistance();
 
@@ -26,7 +26,7 @@ public interface ITFCBiomeProvider
     int getSpawnCenterZ();
 
     /**
-     * An optional implementation, see {@link TFCBiomeProvider}
+     * An optional implementation, see {@link TFCBiomeSource}
      */
     @Nullable
     default BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> predicate, Random rand)

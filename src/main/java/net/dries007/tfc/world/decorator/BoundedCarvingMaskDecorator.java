@@ -29,9 +29,9 @@ public class BoundedCarvingMaskDecorator extends FeatureDecorator<BoundedCarving
     public Stream<BlockPos> getPositions(DecorationContext helper, Random rand, BoundedCarvingMaskConfig config, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step);
-        return IntStream.range(config.minY << 8, config.maxY << 8)
-            .filter(i -> carvingMask.get(i) && rand.nextFloat() < config.probability)
+        final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step());
+        return IntStream.range(config.minY() << 8, config.maxY() << 8)
+            .filter(i -> carvingMask.get(i) && rand.nextFloat() < config.probability())
             .mapToObj(i -> {
                 final int x = i & 15;
                 final int z = i >> 4 & 15;

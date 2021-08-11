@@ -80,21 +80,21 @@ public enum PlateBoundaryLayer
 
     private int boundary(Plate center, Plate other)
     {
-        float distX = center.getX() - other.getX(), distZ = center.getZ() - other.getZ();
-        float vX = center.getDriftX() - other.getDriftX(), vZ = center.getDriftZ() - other.getDriftZ();
+        float distX = center.x() - other.x(), distZ = center.z() - other.z();
+        float vX = center.driftX() - other.driftX(), vZ = center.driftZ() - other.driftZ();
         float delta = distX * vX + distZ * vZ;
         if (delta > SHEAR_THRESHOLD)
         {
             // Converging
-            if (center.isOceanic() && other.isOceanic())
+            if (center.oceanic() && other.oceanic())
             {
-                return center.getElevation() > other.getElevation() ? OCEAN_OCEAN_CONVERGING_UPPER : OCEAN_OCEAN_CONVERGING_LOWER;
+                return center.elevation() > other.elevation() ? OCEAN_OCEAN_CONVERGING_UPPER : OCEAN_OCEAN_CONVERGING_LOWER;
             }
-            else if (center.isOceanic())
+            else if (center.oceanic())
             {
                 return OCEAN_CONTINENT_CONVERGING_LOWER;
             }
-            else if (other.isOceanic())
+            else if (other.oceanic())
             {
                 return OCEAN_CONTINENT_CONVERGING_UPPER;
             }
@@ -103,11 +103,11 @@ public enum PlateBoundaryLayer
         else if (delta < -SHEAR_THRESHOLD)
         {
             // Diverging
-            if (center.isOceanic() && other.isOceanic())
+            if (center.oceanic() && other.oceanic())
             {
                 return OCEAN_OCEAN_DIVERGING;
             }
-            else if (center.isOceanic() || other.isOceanic())
+            else if (center.oceanic() || other.oceanic())
             {
                 return OCEAN_CONTINENT_DIVERGING;
             }
@@ -118,15 +118,15 @@ public enum PlateBoundaryLayer
 
     private int plate(Plate center)
     {
-        if (center.isOceanic())
+        if (center.oceanic())
         {
             return OCEANIC;
         }
-        if (center.getElevation() > HIGH_ELEVATION)
+        if (center.elevation() > HIGH_ELEVATION)
         {
             return CONTINENTAL_HIGH;
         }
-        if (center.getElevation() > MID_ELEVATION)
+        if (center.elevation() > MID_ELEVATION)
         {
             return CONTINENTAL_MID;
         }

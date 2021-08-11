@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.ByteArrayNBT;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -24,7 +23,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
-import net.dries007.tfc.util.Helpers;
 
 public class RockData implements INBTSerializable<CompoundTag>
 {
@@ -39,7 +37,7 @@ public class RockData implements INBTSerializable<CompoundTag>
     private final Rock[] middleLayer;
     private final Rock[] topLayer;
     private int[] rockLayerHeight;
-    private int[] surfaceHeight;
+    @Nullable private int[] surfaceHeight;
 
     public RockData(Rock[] bottomLayer, Rock[] middleLayer, Rock[] topLayer, int[] rockLayerHeight)
     {
@@ -65,6 +63,8 @@ public class RockData implements INBTSerializable<CompoundTag>
 
     public Rock getRock(int x, int y, int z)
     {
+        assert surfaceHeight != null;
+
         final int i = index(x, z);
         final int sh = surfaceHeight[i];
         final int rh = rockLayerHeight[i];

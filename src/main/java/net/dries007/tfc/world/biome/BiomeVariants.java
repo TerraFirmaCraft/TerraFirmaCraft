@@ -10,15 +10,15 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.LongFunction;
 
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import net.dries007.tfc.world.IBiomeNoiseSampler;
 
 /**
  * This is a version of {@link RegistryObject} for biomes.
  * Since we have variants in both temperature and rainfall, we use this as the "biome main type" object.
- * To get the variant holder from the biome, use {@link TFCBiome#getVariants()}
- * To get the biome from the variants, use one of the {@link BiomeVariants#get()} methods.
+ * To get the variant holder from the biome, use {@link TFCBiomes#getVariants()}
+ * To get the biome from the variants, use one of the {@link BiomeVariants#get(BiomeTemperature, BiomeRainfall)} methods.
  */
 public class BiomeVariants
 {

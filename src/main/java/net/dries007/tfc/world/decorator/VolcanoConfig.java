@@ -11,29 +11,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfig
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class VolcanoConfig implements DecoratorConfiguration
+public record VolcanoConfig(boolean center, float distance) implements DecoratorConfiguration
 {
     public static final Codec<VolcanoConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
         Codec.floatRange(0, 1).optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
     ).apply(instance, VolcanoConfig::new));
-
-    private final boolean center;
-    private final float distance;
-
-    public VolcanoConfig(boolean center, float distance)
-    {
-        this.center = center;
-        this.distance = distance;
-    }
-
-    public boolean useCenter()
-    {
-        return center;
-    }
-
-    public float getDistance()
-    {
-        return distance;
-    }
 }

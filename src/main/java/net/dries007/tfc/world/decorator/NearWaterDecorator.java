@@ -28,7 +28,7 @@ public class NearWaterDecorator extends FeatureDecorator<NearWaterConfig>
     public Stream<BlockPos> getPositions(DecorationContext helper, Random random, NearWaterConfig config, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final int radius = config.getRadius();
+        final int radius = config.radius();
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)

@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfig
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.mixin.world.gen.feature.WorldDecoratingHelperAccessor;
 
 public abstract class SeededDecorator<C extends DecoratorConfiguration> extends FeatureDecorator<C>
 {
@@ -28,19 +27,19 @@ public abstract class SeededDecorator<C extends DecoratorConfiguration> extends 
     }
 
     @Override
-    public final Stream<BlockPos> getPositions(DecorationContext helper, Random rand, C config, BlockPos pos)
+    public final Stream<BlockPos> getPositions(DecorationContext context, Random rand, C config, BlockPos pos)
     {
-        long seed = ((WorldDecoratingHelperAccessor) helper).accessor$getLevel().getSeed();
+        long seed = context.getLevel().getSeed();
         if (!initialized || cachedSeed != seed)
         {
             initSeed(seed);
             cachedSeed = seed;
             initialized = true;
         }
-        return getSeededPositions(helper, rand, config, pos);
+        return getSeededPositions(context, rand, config, pos);
     }
 
     protected abstract void initSeed(long seed);
 
-    protected abstract Stream<BlockPos> getSeededPositions(WorldDecoratingHelper helper, Random rand, C config, BlockPos pos);
+    protected abstract Stream<BlockPos> getSeededPositions(DecorationContext helper, Random rand, C config, BlockPos pos);
 }

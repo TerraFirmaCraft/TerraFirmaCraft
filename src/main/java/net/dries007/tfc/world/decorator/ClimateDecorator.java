@@ -10,11 +10,11 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.levelgen.placement.DecorationContext;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.mixin.world.gen.feature.WorldDecoratingHelperAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
@@ -26,9 +26,9 @@ public class ClimateDecorator extends FeatureDecorator<ClimateConfig>
     }
 
     @Override
-    public Stream<BlockPos> getPositions(DecorationContext helper, Random random, ClimateConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(DecorationContext context, Random random, ClimateConfig config, BlockPos pos)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.get(((WorldDecoratingHelperAccessor) helper).accessor$getGenerator());
+        final ChunkDataProvider provider = ChunkDataProvider.get(((ServerChunkCache) context.getLevel().getChunkSource()).getGenerator());
         final ChunkData data = provider.get(pos);
         if (config.isValid(data, pos, random))
         {

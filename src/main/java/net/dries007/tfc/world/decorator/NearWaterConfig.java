@@ -12,21 +12,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class NearWaterConfig implements DecoratorConfiguration
+public record NearWaterConfig(int radius) implements DecoratorConfiguration
 {
     public static final Codec<NearWaterConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(NearWaterConfig::getRadius)
+        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius)
     ).apply(instance, NearWaterConfig::new));
-
-    private final int radius;
-
-    public NearWaterConfig(int radius)
-    {
-        this.radius = radius;
-    }
-
-    public int getRadius()
-    {
-        return radius;
-    }
 }
