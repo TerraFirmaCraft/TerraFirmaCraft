@@ -11,11 +11,11 @@ import javax.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -46,13 +46,13 @@ public class FuelManager extends DataManager<Fuel>
         CACHE.reload(INSTANCE.getValues());
     }
 
-    public static void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
+    public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         final Fuel fuel = get(stack);
         if (fuel != null)
         {
             // todo: color and convert temperature to words
-            text.add(new TranslationTextComponent(TOOLTIP_KEY, fuel.getDuration(), fuel.getTemperature()));
+            text.add(new TranslatableComponent(TOOLTIP_KEY, fuel.getDuration(), fuel.getTemperature()));
         }
     }
 

@@ -9,14 +9,14 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.container.KnappingContainer;
 
@@ -36,7 +36,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     }
 
     @Override
-    public boolean matches(KnappingContainer container, World level)
+    public boolean matches(KnappingContainer container, Level level)
     {
         return container.getMatrix().matches(this.matrix);
     }
@@ -54,22 +54,22 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return serializer;
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return serializer.getRecipeType();
     }
 
     public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
     {
-        private final IRecipeType<?> type;
+        private final RecipeType<?> type;
 
-        public Serializer(IRecipeType<?> type)
+        public Serializer(RecipeType<?> type)
         {
             this.type = type;
         }
@@ -77,13 +77,13 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public KnappingRecipe fromJson(ResourceLocation id, JsonObject json)
         {
-            final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            final ItemStack stack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
             return new KnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, this);
         }
 
         @Nullable
         @Override
-        public KnappingRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer)
+        public KnappingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
         {
             final boolean outsideSlotRequired = buffer.readBoolean();
             final KnappingPattern matrix = KnappingPattern.fromNetwork(buffer, outsideSlotRequired);
@@ -92,7 +92,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, KnappingRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
         {
             buffer.writeBoolean(recipe.matrix.outsideSlot);
             recipe.matrix.toNetwork(buffer, recipe.matrix.getWidth(), recipe.matrix.getHeight());
@@ -100,7 +100,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         }
 
         @Override
-        public IRecipeType<?> getRecipeType()
+        public RecipeType<?> getRecipeType()
         {
             return type;
         }

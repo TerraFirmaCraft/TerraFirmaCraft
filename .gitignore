@@ -29,3 +29,6 @@
 __pycache__/
 *.pyc
 *.pdn
+
+# Temp location for 1.16 era mixins
+!/mixin/**

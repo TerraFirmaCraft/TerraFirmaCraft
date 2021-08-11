@@ -8,15 +8,15 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IClearable;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Clearable;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -34,18 +34,18 @@ import net.dries007.tfc.util.Helpers;
  * An abstraction for a tile entity containing at least, an inventory (item handler) capability
  * However, the inventory itself is generic.
  */
-public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends TFCTileEntity implements ISlotCallback, IClearable
+public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TFCTileEntity implements ISlotCallback, Clearable
 {
-    public static <C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>> InventoryFactory<ItemStackHandler> defaultInventory(int slots)
+    public static <C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> InventoryFactory<ItemStackHandler> defaultInventory(int slots)
     {
         return self -> new ItemStackHandlerCallback(self, slots);
     }
 
     protected final C inventory;
     protected final SidedHandler.Builder<IItemHandler> sidedInventory;
-    protected ITextComponent customName, defaultName;
+    protected Component customName, defaultName;
 
-    public InventoryTileEntity(TileEntityType<?> type, InventoryFactory<C> inventoryFactory, ITextComponent defaultName)
+    public InventoryTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
         super(type);
 
@@ -57,33 +57,33 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
     /**
      * Default implementation of {@link INamedContainerProvider#getDisplayName()} but without implementing the interface.
      */
-    public ITextComponent getDisplayName()
+    public Component getDisplayName()
     {
         return customName == null ? defaultName : customName;
     }
 
-    public void setCustomName(ITextComponent customName)
+    public void setCustomName(Component customName)
     {
         this.customName = customName;
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         if (nbt.contains("CustomName"))
         {
-            customName = ITextComponent.Serializer.fromJson(nbt.getString("CustomName"));
+            customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
         }
         inventory.deserializeNBT(nbt.getCompound("inventory"));
         super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         if (customName != null)
         {
-            nbt.putString("CustomName", ITextComponent.Serializer.toJson(customName));
+            nbt.putString("CustomName", Component.Serializer.toJson(customName));
         }
         nbt.put("inventory", inventory.serializeNBT());
         return super.save(nbt);
@@ -131,7 +131,7 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
         markDirtyFast();
     }
 
-    public boolean canInteractWith(PlayerEntity player)
+    public boolean canInteractWith(Player player)
     {
         if (level == null || level.getBlockEntity(worldPosition) != this)
         {
@@ -147,7 +147,7 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
      * A factory interface for the inventory field, allows self references in the constructor
      */
     @FunctionalInterface
-    public interface InventoryFactory<C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>>
+    public interface InventoryFactory<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>>
     {
         C create(InventoryTileEntity<C> entity);
     }

@@ -10,26 +10,26 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.SixWayBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -57,37 +57,37 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
         int saplings = state.getValue(SAPLINGS);
-        if (!worldIn.isClientSide() && handIn == Hand.MAIN_HAND && saplings < 4)
+        if (!worldIn.isClientSide() && handIn == InteractionHand.MAIN_HAND && saplings < 4)
         {
-            ItemStack held = player.getItemInHand(Hand.MAIN_HAND);
+            ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
             //ItemStack off = player.getItemInHand(Hand.OFF_HAND);
             //todo: require knife in offhand
             if (defaultBlockState().getBlock().asItem() == held.getItem() && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
                 if (saplings > 2 && worldIn.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
-                    return ActionResultType.FAIL;
+                    return InteractionResult.FAIL;
                 if (!player.isCreative())
                     held.shrink(1);
                 worldIn.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return SeasonalPlantBlock.PLANT_SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te != null)
@@ -103,7 +103,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
                 else*/
                 {
                     boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
-                    world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SixWayBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                    world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
                     TickCounterTileEntity newTE = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
                     if (newTE != null)
                     {
@@ -115,7 +115,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos downPos = pos.below();
         BlockState downState = worldIn.getBlockState(downPos);
@@ -127,7 +127,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
             }
             for (Direction d : Direction.Plane.HORIZONTAL)
             {
-                if (downState.getValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(d)))
+                if (downState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(d)))
                 {
                     return true;
                 }
@@ -138,7 +138,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
         if (te != null)
@@ -149,7 +149,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockPrope
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(SAPLINGS));
     }

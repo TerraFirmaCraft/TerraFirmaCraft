@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
 
 public class FruitTreeLeavesTileEntity extends BerryBushTileEntity
 {
@@ -20,14 +20,14 @@ public class FruitTreeLeavesTileEntity extends BerryBushTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         onYear = nbt.getBoolean("onYear");
         super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putBoolean("onYear", onYear);
         return super.save(nbt);

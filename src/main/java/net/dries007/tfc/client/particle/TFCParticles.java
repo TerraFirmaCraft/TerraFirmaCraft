@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.client.particle;
 
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,6 +18,6 @@ public class TFCParticles
 {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 
-    public static final RegistryObject<BasicParticleType> BUBBLE = PARTICLE_TYPES.register("bubble", () -> new BasicParticleType(false));
-    public static final RegistryObject<BasicParticleType> STEAM = PARTICLE_TYPES.register("steam", () -> new BasicParticleType(false));
+    public static final RegistryObject<SimpleParticleType> BUBBLE = PARTICLE_TYPES.register("bubble", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> STEAM = PARTICLE_TYPES.register("steam", () -> new SimpleParticleType(false));
 }

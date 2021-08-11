@@ -8,7 +8,7 @@ package net.dries007.tfc.common.container;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IButtonHandler
 {
@@ -19,5 +19,5 @@ public interface IButtonHandler
      * @param buttonID the button ID that was pressed
      * @param extraNBT any extra NBT stored data from the individual button, null if empty
      */
-    void onButtonPress(int buttonID, @Nullable CompoundNBT extraNBT);
+    void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT);
 }

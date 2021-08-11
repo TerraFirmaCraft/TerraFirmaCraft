@@ -11,44 +11,50 @@ import java.util.function.Supplier;
 
 import net.minecraft.block.*;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
-public class BodyPlantBlock extends AbstractBodyPlantBlock
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantBodyBlock;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BodyPlantBlock extends GrowingPlantBodyBlock
 {
     private final Supplier<? extends Block> headBlock;
 
-    public BodyPlantBlock(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
+    public BodyPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
         super(properties, direction, shape, false);
         this.headBlock = headBlock;
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
 
     @Override
-    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state)
+    public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state)
     {
         return false;
     }
 
     @Override
-    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state)
+    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state)
     {
 
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.relative(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
@@ -64,8 +70,8 @@ public class BodyPlantBlock extends AbstractBodyPlantBlock
     }
 
     @Override
-    protected AbstractTopPlantBlock getHeadBlock()
+    protected GrowingPlantHeadBlock getHeadBlock()
     {
-        return (AbstractTopPlantBlock) headBlock.get();
+        return (GrowingPlantHeadBlock) headBlock.get();
     }
 }

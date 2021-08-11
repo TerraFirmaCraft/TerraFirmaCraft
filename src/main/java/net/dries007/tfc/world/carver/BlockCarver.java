@@ -9,10 +9,10 @@ package net.dries007.tfc.world.carver;
 import java.util.*;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -46,7 +46,7 @@ public abstract class BlockCarver implements IContextCarver
         reload();
     }
 
-    public abstract boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel);
+    public abstract boolean carve(ChunkAccess chunk, BlockPos pos, Random random, int seaLevel);
 
     @Override
     public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
@@ -94,7 +94,7 @@ public abstract class BlockCarver implements IContextCarver
      * If the block can be supported via property, set that. Otherwise replace with raw rock of the correct type (supported), but only if the block above that is also not air (as otherwise this creates unsightly floating raw rock blocks.
      */
     @SuppressWarnings("deprecation")
-    protected void setSupported(IChunk chunk, BlockPos pos, BlockState state, RockData rockData)
+    protected void setSupported(ChunkAccess chunk, BlockPos pos, BlockState state, RockData rockData)
     {
         if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())
         {

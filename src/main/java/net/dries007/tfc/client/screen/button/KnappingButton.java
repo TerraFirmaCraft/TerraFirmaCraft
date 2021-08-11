@@ -7,19 +7,19 @@
 package net.dries007.tfc.client.screen.button;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
 
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
@@ -32,7 +32,7 @@ public class KnappingButton extends Button
 
     public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture, SoundEvent sound)
     {
-        super(x, y, width, height, StringTextComponent.EMPTY, button -> {});
+        super(x, y, width, height, TextComponent.EMPTY, button -> {});
         this.id = id;
         this.texture = texture;
         this.sound = sound;
@@ -50,13 +50,13 @@ public class KnappingButton extends Button
     }
 
     @Override
-    public void playDownSound(SoundHandler handler)
+    public void playDownSound(SoundManager handler)
     {
-        handler.play(SimpleSound.forUI(sound, 1.0F));
+        handler.play(SimpleSoundInstance.forUI(sound, 1.0F));
     }
 
     @Override
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         if (visible)
         {

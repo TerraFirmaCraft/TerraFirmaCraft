@@ -6,16 +6,16 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -26,9 +26,9 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> implements ITickableTileEntity
+public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> implements TickableBlockEntity
 {
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.quern");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.quern");
 
     public static final int SLOT_HANDSTONE = 0;
     public static final int SLOT_INPUT = 1;
@@ -77,7 +77,7 @@ public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> imple
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         rotationTimer = nbt.getInt("rotationTimer");
         super.load(state, nbt);
@@ -85,14 +85,14 @@ public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> imple
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putInt("rotationTimer", rotationTimer);
         return super.save(nbt);
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity player)
+    public boolean canInteractWith(Player player)
     {
         return super.canInteractWith(player) && rotationTimer == 0;
     }
@@ -151,7 +151,7 @@ public class QuernTileEntity extends InventoryTileEntity<ItemStackHandler> imple
         assert level != null;
         if (level.isClientSide && !item.isEmpty())
         {
-            level.addParticle(new ItemParticleData(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
+            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
         }
     }
 

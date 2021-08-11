@@ -15,8 +15,8 @@ import javax.annotation.Nullable;
 import com.google.gson.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class TypeBasedDeserializer<T> implements JsonDeserializer<T>
 {
@@ -52,11 +52,11 @@ public abstract class TypeBasedDeserializer<T> implements JsonDeserializer<T>
 
     public T read(JsonElement element)
     {
-        JsonObject json = JSONUtils.convertToJsonObject(element, typeName);
+        JsonObject json = GsonHelper.convertToJsonObject(element, typeName);
         ResourceLocation type;
         if (json.has("type"))
         {
-            type = new ResourceLocation(JSONUtils.getAsString(json, "type"));
+            type = new ResourceLocation(GsonHelper.getAsString(json, "type"));
         }
         else
         {

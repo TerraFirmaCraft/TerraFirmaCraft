@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * A simple {@link IRecipe} extension for {@link BlockRecipeWrapper}
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
 {
     @Override
-    default boolean matches(BlockRecipeWrapper inv, World worldIn)
+    default boolean matches(BlockRecipeWrapper inv, Level worldIn)
     {
         return matches(worldIn, inv.getPos(), inv.getState());
     }
@@ -41,7 +41,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     /**
      * Specific parameter version of {@link net.minecraft.item.crafting.IRecipe#matches(IInventory, World)} for block recipes
      */
-    default boolean matches(World worldIn, BlockPos pos, BlockState state)
+    default boolean matches(Level worldIn, BlockPos pos, BlockState state)
     {
         return false;
     }

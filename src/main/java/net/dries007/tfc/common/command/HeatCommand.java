@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -22,7 +22,7 @@ public final class HeatCommand
 {
     private static final String QUERY_HEAT = "tfc.commands.heat.set_heat";
 
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("heat").requires(source -> source.hasPermission(2))
             .then(Commands.argument("value", IntegerArgumentType.integer(0))
@@ -30,16 +30,16 @@ public final class HeatCommand
             );
     }
 
-    private static int heatItem(CommandSource source, int value) throws CommandSyntaxException
+    private static int heatItem(CommandSourceStack source, int value) throws CommandSyntaxException
     {
-        final ServerPlayerEntity player = source.getPlayerOrException();
+        final ServerPlayer player = source.getPlayerOrException();
         final ItemStack stack = player.getMainHandItem();
         if (!stack.isEmpty())
         {
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendSuccess(new TranslationTextComponent(QUERY_HEAT, value), true);
+                source.sendSuccess(new TranslatableComponent(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

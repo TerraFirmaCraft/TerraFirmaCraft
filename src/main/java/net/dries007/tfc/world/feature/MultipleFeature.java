@@ -9,11 +9,11 @@ package net.dries007.tfc.world.feature;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
@@ -25,7 +25,7 @@ public class MultipleFeature extends Feature<MultipleConfig>
     }
 
     @Override
-    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, MultipleConfig config)
+    public boolean place(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos, MultipleConfig config)
     {
         boolean result = false;
         for (Supplier<ConfiguredFeature<?, ?>> feature : config.features)

@@ -11,13 +11,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -33,7 +33,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 
-public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
+public class TFCBiomeProvider extends BiomeSource implements ITFCBiomeProvider
 {
     public static final Codec<TFCBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
@@ -110,7 +110,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         final int centerBiomeX = x >> 2;
         final int centerBiomeZ = z >> 2;
         final int biomeRadius = radius >> 2;
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         int found = 0;
 
         for (int stepZ = -biomeRadius; stepZ <= biomeRadius; stepZ += increment)

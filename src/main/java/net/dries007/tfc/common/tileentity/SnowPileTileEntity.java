@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SnowBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class SnowPileTileEntity extends TFCTileEntity
 {
@@ -22,7 +22,7 @@ public class SnowPileTileEntity extends TFCTileEntity
         this(TFCTileEntities.SNOW_PILE.get());
     }
 
-    protected SnowPileTileEntity(TileEntityType<?> type)
+    protected SnowPileTileEntity(BlockEntityType<?> type)
     {
         super(type);
 
@@ -37,25 +37,25 @@ public class SnowPileTileEntity extends TFCTileEntity
 
     public BlockState getDestroyedState(BlockState prevState)
     {
-        int prevLayers = prevState.getValue(SnowBlock.LAYERS);
+        int prevLayers = prevState.getValue(SnowLayerBlock.LAYERS);
         if (prevLayers == 1)
         {
             return internalState;
         }
-        return prevState.setValue(SnowBlock.LAYERS, prevLayers - 1);
+        return prevState.setValue(SnowLayerBlock.LAYERS, prevLayers - 1);
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
-        internalState = NBTUtil.readBlockState(nbt.getCompound("internalState"));
+        internalState = NbtUtils.readBlockState(nbt.getCompound("internalState"));
         super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
-        nbt.put("internalState", NBTUtil.writeBlockState(internalState));
+        nbt.put("internalState", NbtUtils.writeBlockState(internalState));
         return super.save(nbt);
     }
 }

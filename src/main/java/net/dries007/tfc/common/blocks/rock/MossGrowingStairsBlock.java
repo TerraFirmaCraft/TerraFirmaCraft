@@ -8,17 +8,19 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 
-public class MossGrowingStairsBlock extends StairsBlock implements IMossGrowingBlock
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class MossGrowingStairsBlock extends StairBlock implements IMossGrowingBlock
 {
     private final Supplier<? extends Block> mossy;
 
@@ -30,7 +32,7 @@ public class MossGrowingStairsBlock extends StairsBlock implements IMossGrowingB
     }
 
     @Override
-    public void convertToMossy(World worldIn, BlockPos pos, BlockState state, boolean needsWater)
+    public void convertToMossy(Level worldIn, BlockPos pos, BlockState state, boolean needsWater)
     {
         if (!needsWater || FluidHelpers.isSame(worldIn.getFluidState(pos), Fluids.WATER))
         {

@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -26,7 +26,7 @@ public final class TimeCommand
     private static final String PLAYER_TICKS = "tfc.commands.time.query.player_ticks";
     private static final String CALENDAR_TICKS = "tfc.commands.time.query.calendar_ticks";
 
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("time")
             .requires(source -> source.hasPermission(2))
@@ -98,7 +98,7 @@ public final class TimeCommand
 
     private static int setTime(MinecraftServer server, int dayTime)
     {
-        for (ServerWorld world : server.getAllLevels())
+        for (ServerLevel world : server.getAllLevels())
         {
             long dayTimeJump = dayTime - (world.getDayTime() % ICalendar.TICKS_IN_DAY);
             if (dayTimeJump < 0)
@@ -117,9 +117,9 @@ public final class TimeCommand
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int sendQueryResults(CommandSource source, String translationKey, long value)
+    private static int sendQueryResults(CommandSourceStack source, String translationKey, long value)
     {
-        source.sendSuccess(new TranslationTextComponent(translationKey, (int) value), false);
+        source.sendSuccess(new TranslatableComponent(translationKey, (int) value), false);
         return Command.SINGLE_SUCCESS;
     }
 }

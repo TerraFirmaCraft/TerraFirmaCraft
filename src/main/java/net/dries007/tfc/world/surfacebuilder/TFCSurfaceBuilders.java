@@ -8,9 +8,9 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.function.Function;
 
-import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,12 +33,12 @@ public class TFCSurfaceBuilders
 
     public static final RegistryObject<VolcanoesSurfaceBuilder> WITH_VOLCANOES = register("with_volcanoes", VolcanoesSurfaceBuilder::new, ParentedSurfaceBuilderConfig.CODEC);
 
-    private static <S extends SurfaceBuilder<SurfaceBuilderConfig>> RegistryObject<S> register(String name, Function<Codec<SurfaceBuilderConfig>, S> factory)
+    private static <S extends SurfaceBuilder<SurfaceBuilderBaseConfiguration>> RegistryObject<S> register(String name, Function<Codec<SurfaceBuilderBaseConfiguration>, S> factory)
     {
         return register(name, factory, Codecs.NOOP_SURFACE_BUILDER_CONFIG);
     }
 
-    private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Function<Codec<C>, S> factory, Codec<C> codec)
+    private static <C extends SurfaceBuilderConfiguration, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Function<Codec<C>, S> factory, Codec<C> codec)
     {
         return SURFACE_BUILDERS.register(name, () -> factory.apply(codec));
     }

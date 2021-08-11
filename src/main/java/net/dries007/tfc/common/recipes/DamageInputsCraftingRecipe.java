@@ -6,19 +6,19 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import net.dries007.tfc.util.Helpers;
 
-public abstract class DamageInputsCraftingRecipe<R extends IRecipe<CraftingInventory>> extends DelegateRecipe<R, CraftingInventory> implements ICraftingRecipe
+public abstract class DamageInputsCraftingRecipe<R extends Recipe<CraftingContainer>> extends DelegateRecipe<R, CraftingContainer> implements CraftingRecipe
 {
     protected DamageInputsCraftingRecipe(ResourceLocation id, R recipe)
     {
@@ -26,7 +26,7 @@ public abstract class DamageInputsCraftingRecipe<R extends IRecipe<CraftingInven
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
+    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv)
     {
         NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
         for (int i = 0; i < items.size(); ++i)
@@ -44,29 +44,29 @@ public abstract class DamageInputsCraftingRecipe<R extends IRecipe<CraftingInven
         return items;
     }
 
-    public static class Shapeless extends DamageInputsCraftingRecipe<IRecipe<CraftingInventory>>
+    public static class Shapeless extends DamageInputsCraftingRecipe<Recipe<CraftingContainer>>
     {
-        public Shapeless(ResourceLocation id, IRecipe<CraftingInventory> recipe)
+        public Shapeless(ResourceLocation id, Recipe<CraftingContainer> recipe)
         {
             super(id, recipe);
         }
 
         @Override
-        public IRecipeSerializer<?> getSerializer()
+        public RecipeSerializer<?> getSerializer()
         {
             return TFCRecipeSerializers.DAMAGE_INPUTS_SHAPELESS_CRAFTING.get();
         }
     }
 
-    public static class Shaped extends DamageInputsCraftingRecipe<IShapedRecipe<CraftingInventory>> implements IRecipeDelegate.Shaped<CraftingInventory>
+    public static class Shaped extends DamageInputsCraftingRecipe<IShapedRecipe<CraftingContainer>> implements IRecipeDelegate.Shaped<CraftingContainer>
     {
-        public Shaped(ResourceLocation id, IShapedRecipe<CraftingInventory> recipe)
+        public Shaped(ResourceLocation id, IShapedRecipe<CraftingContainer> recipe)
         {
             super(id, recipe);
         }
 
         @Override
-        public IRecipeSerializer<?> getSerializer()
+        public RecipeSerializer<?> getSerializer()
         {
             return TFCRecipeSerializers.DAMAGE_INPUT_SHAPED_CRAFTING.get();
         }

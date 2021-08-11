@@ -10,15 +10,15 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.capabilities.FluidIngredient;
@@ -38,7 +38,7 @@ public class SoupPotRecipe extends PotRecipe
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.POT_SOUP.get();
     }
@@ -65,29 +65,29 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        public ActionResultType onInteract(PotTileEntity entity, PlayerEntity player, ItemStack clickedWith)
+        public InteractionResult onInteract(PotTileEntity entity, Player player, ItemStack clickedWith)
         {
             if (clickedWith.getItem() == Items.BOWL) // todo: proper soup item and output
             {
                 servings--;
                 clickedWith.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.BEETROOT_SOUP));
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
         @Nullable
         @Override
-        public CompoundNBT serializeNBT()
+        public CompoundTag serializeNBT()
         {
-            CompoundNBT nbt = new CompoundNBT();
+            CompoundTag nbt = new CompoundTag();
             nbt.putInt("servings", servings);
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(@Nullable CompoundNBT nbt)
+        public void deserializeNBT(@Nullable CompoundTag nbt)
         {
             if (nbt != null)
             {
@@ -105,7 +105,7 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        protected SoupPotRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected SoupPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             return new SoupPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp);
         }

@@ -13,16 +13,16 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.common.capabilities.FluidIngredient;
@@ -50,7 +50,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
     }
 
     @Override
-    public boolean matches(PotTileEntity.PotInventory inventory, World worldIn)
+    public boolean matches(PotTileEntity.PotInventory inventory, Level worldIn)
     {
         if (!fluidIngredient.test(inventory.getFluidInTank(0)))
         {
@@ -81,7 +81,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return TFCRecipeTypes.POT;
     }
@@ -115,7 +115,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
      * 3. THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...
      * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotTileEntity, PlayerEntity, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
      */
-    public interface Output extends INBTSerializable<CompoundNBT>
+    public interface Output extends INBTSerializable<CompoundTag>
     {
         /**
          * If there is still something to be extracted from this output. If this returns false at any time the output must be serializable
@@ -141,17 +141,17 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
         /**
          * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
          */
-        default ActionResultType onInteract(PotTileEntity entity, PlayerEntity player, ItemStack clickedWith)
+        default InteractionResult onInteract(PotTileEntity entity, Player player, ItemStack clickedWith)
         {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
-        default CompoundNBT serializeNBT()
+        default CompoundTag serializeNBT()
         {
             throw new UnsupportedOperationException();
         }
 
-        default void deserializeNBT(CompoundNBT nbt) {}
+        default void deserializeNBT(CompoundTag nbt) {}
     }
 
     public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializer<R>
@@ -159,22 +159,22 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final JsonArray array = JSONUtils.getAsJsonArray(json, "ingredients");
+            final JsonArray array = GsonHelper.getAsJsonArray(json, "ingredients");
             final List<Ingredient> ingredients = new ArrayList<>();
             for (JsonElement element : array)
             {
                 ingredients.add(Ingredient.fromJson(element));
             }
 
-            final FluidIngredient fluidIngredient = FluidIngredient.fromJson(JSONUtils.getAsJsonObject(json, "fluid_ingredient"));
-            final int duration = JSONUtils.getAsInt(json, "duration");
-            final float minTemp = JSONUtils.getAsFloat(json, "temperature");
+            final FluidIngredient fluidIngredient = FluidIngredient.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
+            final int duration = GsonHelper.getAsInt(json, "duration");
+            final float minTemp = GsonHelper.getAsFloat(json, "temperature");
             return fromJson(recipeId, json, ingredients, fluidIngredient, duration, minTemp);
         }
 
         @Nullable
         @Override
-        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final int count = buffer.readVarInt();
             final List<Ingredient> ingredients = new ArrayList<>();
@@ -189,7 +189,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, R recipe)
+        public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
             buffer.writeVarInt(recipe.itemIngredients.size());
             for (Ingredient ingredient : recipe.itemIngredients)
@@ -203,6 +203,6 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
 
         protected abstract R fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp);
 
-        protected abstract R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp);
+        protected abstract R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp);
     }
 }

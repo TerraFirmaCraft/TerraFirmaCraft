@@ -7,10 +7,10 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
@@ -24,7 +24,7 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/player_nutrition.png");
 
-    public NutritionScreen(SimpleContainer container, PlayerInventory playerInventory, ITextComponent name)
+    public NutritionScreen(SimpleContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, TEXTURE);
     }

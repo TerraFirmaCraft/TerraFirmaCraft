@@ -8,13 +8,13 @@ package net.dries007.tfc.util.events;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
@@ -34,12 +34,12 @@ import net.dries007.tfc.util.InteractionManager;
 @Cancelable
 public class StartFireEvent extends Event
 {
-    public static boolean startFire(World world, BlockPos pos, BlockState state, Direction direction, @Nullable PlayerEntity player, @Nullable ItemStack stack)
+    public static boolean startFire(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack)
     {
         return startFire(world, pos, state, direction, player, stack, true);
     }
 
-    public static boolean startFire(World world, BlockPos pos, BlockState state, Direction direction, @Nullable PlayerEntity player, @Nullable ItemStack stack, boolean placeFireBlockIfFailed)
+    public static boolean startFire(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack, boolean placeFireBlockIfFailed)
     {
         boolean cancelled = MinecraftForge.EVENT_BUS.post(new StartFireEvent(world, pos, state, direction, player, stack));
         if (cancelled)
@@ -49,23 +49,23 @@ public class StartFireEvent extends Event
         if (placeFireBlockIfFailed)
         {
             pos = pos.relative(direction);
-            if (AbstractFireBlock.canBePlacedAt(world, pos, direction))
+            if (BaseFireBlock.canBePlacedAt(world, pos, direction))
             {
-                world.setBlock(pos, AbstractFireBlock.getState(world, pos), 11);
+                world.setBlock(pos, BaseFireBlock.getState(world, pos), 11);
                 return true;
             }
         }
         return false;
     }
 
-    private final World world;
+    private final Level world;
     private final BlockPos pos;
     private final BlockState state;
     private final Direction direction;
-    private final PlayerEntity player;
+    private final Player player;
     private final ItemStack stack;
 
-    private StartFireEvent(World world, BlockPos pos, BlockState state, Direction direction, @Nullable PlayerEntity player, ItemStack stack)
+    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack)
     {
         this.world = world;
         this.pos = pos;
@@ -75,7 +75,7 @@ public class StartFireEvent extends Event
         this.stack = stack;
     }
 
-    public World getLevel()
+    public Level getLevel()
     {
         return world;
     }
@@ -96,7 +96,7 @@ public class StartFireEvent extends Event
     }
 
     @Nullable
-    public PlayerEntity getPlayer()
+    public Player getPlayer()
     {
         return player;
     }

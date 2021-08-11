@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.VineBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -32,9 +32,9 @@ public class TFCVinesFeature extends Feature<VineConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, VineConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, VineConfig config)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
         BlockState state = config.getState();
         List<Direction> dirs = new ArrayList<>(4);
         int r = config.getRadius();

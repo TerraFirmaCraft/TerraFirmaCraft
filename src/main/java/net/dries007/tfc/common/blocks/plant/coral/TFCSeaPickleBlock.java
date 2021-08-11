@@ -8,23 +8,23 @@ package net.dries007.tfc.common.blocks.plant.coral;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -50,7 +50,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         return state.getValue(property) == property.keyFor(Fluids.EMPTY);
     }
 
-    public TFCSeaPickleBlock(AbstractBlock.Properties properties)
+    public TFCSeaPickleBlock(BlockBehaviour.Properties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(PICKLES, 1));
@@ -58,7 +58,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
         if (blockstate.is(this))
@@ -74,14 +74,14 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PICKLES, getFluidProperty());
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canSurvive(worldIn, currentPos))
         {
@@ -107,14 +107,14 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext)
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext)
     {
         return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(PICKLES) < 4 || super.canBeReplaced(state, useContext);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.below();
         return mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
@@ -122,7 +122,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         switch (state.getValue(PICKLES))
         {
@@ -144,7 +144,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         return FLUID;
     }
 
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
         return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isFaceSturdy(worldIn, pos, Direction.UP);
     }

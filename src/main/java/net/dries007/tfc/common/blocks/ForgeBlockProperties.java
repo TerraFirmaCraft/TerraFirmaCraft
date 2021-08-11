@@ -9,19 +9,19 @@ package net.dries007.tfc.common.blocks;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ForgeBlockProperties
 {
-    private final AbstractBlock.Properties properties;
+    private final BlockBehaviour.Properties properties;
 
     @Nullable
-    private Supplier<? extends TileEntity> tileEntityFactory;
+    private Supplier<? extends BlockEntity> tileEntityFactory;
     private int flammability;
     private int fireSpreadSpeed;
 
-    public ForgeBlockProperties(AbstractBlock.Properties properties)
+    public ForgeBlockProperties(BlockBehaviour.Properties properties)
     {
         this.properties = properties;
 
@@ -30,7 +30,7 @@ public class ForgeBlockProperties
         fireSpreadSpeed = 0;
     }
 
-    public ForgeBlockProperties tileEntity(Supplier<? extends TileEntity> tileEntityFactory)
+    public ForgeBlockProperties tileEntity(Supplier<? extends BlockEntity> tileEntityFactory)
     {
         this.tileEntityFactory = tileEntityFactory;
         return this;
@@ -43,7 +43,7 @@ public class ForgeBlockProperties
         return this;
     }
 
-    public AbstractBlock.Properties properties()
+    public BlockBehaviour.Properties properties()
     {
         return properties;
     }
@@ -54,7 +54,7 @@ public class ForgeBlockProperties
     }
 
     @Nullable
-    TileEntity createTileEntity()
+    BlockEntity createTileEntity()
     {
         return tileEntityFactory != null ? tileEntityFactory.get() : null;
     }

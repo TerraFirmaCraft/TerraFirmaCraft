@@ -8,13 +8,13 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.Optional;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class OverlayTreeConfig implements IFeatureConfig
+public class OverlayTreeConfig implements FeatureConfiguration
 {
     public static final Codec<OverlayTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("base").forGetter(c -> c.base),

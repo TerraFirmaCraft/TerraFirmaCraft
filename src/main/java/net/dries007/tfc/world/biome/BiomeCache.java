@@ -22,10 +22,10 @@ package net.dries007.tfc.world.biome;
 
 import java.util.Arrays;
 
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeManager;
 
 import it.unimi.dsi.fastutil.HashCommon;
 
@@ -35,11 +35,11 @@ public class BiomeCache
     private final Biome[] values;
 
     private final int mask;
-    private final BiomeManager.IBiomeReader source;
+    private final BiomeManager.NoiseBiomeSource source;
 
-    public BiomeCache(int size, BiomeManager.IBiomeReader source)
+    public BiomeCache(int size, BiomeManager.NoiseBiomeSource source)
     {
-        size = MathHelper.smallestEncompassingPowerOfTwo(size);
+        size = Mth.smallestEncompassingPowerOfTwo(size);
 
         this.source = source;
         this.mask = size - 1;

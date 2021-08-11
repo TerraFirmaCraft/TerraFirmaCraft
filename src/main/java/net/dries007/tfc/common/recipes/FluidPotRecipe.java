@@ -9,11 +9,11 @@ package net.dries007.tfc.common.recipes;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -37,7 +37,7 @@ public class FluidPotRecipe extends PotRecipe
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.POT_FLUID.get();
     }
@@ -61,7 +61,7 @@ public class FluidPotRecipe extends PotRecipe
     public static class Serializer extends PotRecipe.Serializer<FluidPotRecipe>
     {
         @Override
-        public void toNetwork(PacketBuffer buffer, FluidPotRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, FluidPotRecipe recipe)
         {
             super.toNetwork(buffer, recipe);
             buffer.writeFluidStack(recipe.outputFluid);
@@ -70,12 +70,12 @@ public class FluidPotRecipe extends PotRecipe
         @Override
         protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
-            JsonObject output = JSONUtils.getAsJsonObject(json, "fluid_output");
+            JsonObject output = GsonHelper.getAsJsonObject(json, "fluid_output");
             return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, FluidIngredient.fluidStackFromJson(output));
         }
 
         @Override
-        protected FluidPotRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected FluidPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, buffer.readFluidStack());
         }

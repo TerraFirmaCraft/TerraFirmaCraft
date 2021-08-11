@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.carver;
 
-import net.minecraft.world.gen.carver.ICarverConfig;
+import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class WorleyCaveConfig implements ICarverConfig
+public class WorleyCaveConfig implements CarverConfiguration
 {
     public static final Codec<WorleyCaveConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.intRange(0, 256).optionalFieldOf("height_fade_threshold", 94).forGetter(c -> c.heightFadeThreshold),

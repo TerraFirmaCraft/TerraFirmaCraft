@@ -9,15 +9,15 @@ package net.dries007.tfc.world.decorator;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.WorldDecoratingHelper;
-import net.minecraft.world.gen.placement.IPlacementConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.placement.DecorationContext;
+import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.mixin.world.gen.feature.WorldDecoratingHelperAccessor;
 
-public abstract class SeededDecorator<C extends IPlacementConfig> extends Placement<C>
+public abstract class SeededDecorator<C extends DecoratorConfiguration> extends FeatureDecorator<C>
 {
     private long cachedSeed;
     private boolean initialized;
@@ -28,7 +28,7 @@ public abstract class SeededDecorator<C extends IPlacementConfig> extends Placem
     }
 
     @Override
-    public final Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random rand, C config, BlockPos pos)
+    public final Stream<BlockPos> getPositions(DecorationContext helper, Random rand, C config, BlockPos pos)
     {
         long seed = ((WorldDecoratingHelperAccessor) helper).accessor$getLevel().getSeed();
         if (!initialized || cachedSeed != seed)

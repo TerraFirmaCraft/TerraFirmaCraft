@@ -12,11 +12,11 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.carver.CanyonWorldCarver;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.mixin.world.gen.carver.CanyonWorldCarverAccessor;
@@ -27,7 +27,7 @@ public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
     private final AirBlockCarver blockCarver;
     private boolean initialized;
 
-    public TFCRavineCarver(Codec<ProbabilityConfig> codec)
+    public TFCRavineCarver(Codec<ProbabilityFeatureConfiguration> codec)
     {
         super(codec);
         blockCarver = new AirBlockCarver();
@@ -35,7 +35,7 @@ public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
     }
 
     @Override
-    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig configIn)
+    public boolean carve(ChunkAccess chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityFeatureConfiguration configIn)
     {
         if (!initialized)
         {

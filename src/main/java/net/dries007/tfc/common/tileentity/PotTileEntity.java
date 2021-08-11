@@ -8,16 +8,16 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,7 +47,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
 {
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.pot");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.pot");
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     private PotRecipe.Output output;
     private PotRecipe cachedRecipe;
@@ -71,7 +71,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         if (nbt.contains("output"))
         {
@@ -82,7 +82,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         if (output != null)
         {
@@ -169,11 +169,11 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
     }
 
-    public ActionResultType interactWithOutput(PlayerEntity player, ItemStack stack)
+    public InteractionResult interactWithOutput(Player player, ItemStack stack)
     {
         if (output != null)
         {
-            ActionResultType result = output.onInteract(this, player, stack);
+            InteractionResult result = output.onInteract(this, player, stack);
             if (output.isEmpty())
             {
                 output = null;
@@ -181,7 +181,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
             }
             return result;
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Nullable
@@ -202,12 +202,12 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
 
     @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return new PotContainer(this, playerInv, windowID);
     }
 
-    public static class PotInventory implements IInventoryNoop, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundNBT>
+    public static class PotInventory implements IInventoryNoop, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>
     {
         private final ItemStackHandler inventory;
         private final FluidTank tank;
@@ -231,16 +231,16 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
         }
 
         @Override
-        public CompoundNBT serializeNBT()
+        public CompoundTag serializeNBT()
         {
-            CompoundNBT nbt = new CompoundNBT();
+            CompoundTag nbt = new CompoundTag();
             nbt.put("inventory", inventory.serializeNBT());
-            nbt.put("tank", tank.writeToNBT(new CompoundNBT()));
+            nbt.put("tank", tank.writeToNBT(new CompoundTag()));
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(CompoundNBT nbt)
+        public void deserializeNBT(CompoundTag nbt)
         {
             inventory.deserializeNBT(nbt.getCompound("inventory"));
             tank.readFromNBT(nbt.getCompound("tank"));

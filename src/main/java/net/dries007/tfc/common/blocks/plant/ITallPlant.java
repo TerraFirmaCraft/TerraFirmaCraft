@@ -8,13 +8,13 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 public interface ITallPlant
 {
-    default Part getPlantPart(IBlockReader world, BlockPos pos)
+    default Part getPlantPart(BlockGetter world, BlockPos pos)
     {
         if (world.getBlockState(pos.below()).getBlock() != this)
         {
@@ -23,7 +23,7 @@ public interface ITallPlant
         return Part.UPPER;
     }
 
-    enum Part implements IStringSerializable
+    enum Part implements StringRepresentable
     {
         UPPER,
         LOWER;

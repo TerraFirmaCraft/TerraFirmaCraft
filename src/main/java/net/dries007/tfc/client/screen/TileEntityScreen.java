@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 import net.dries007.tfc.common.container.TileEntityContainer;
 import net.dries007.tfc.common.tileentity.InventoryTileEntity;
@@ -17,7 +17,7 @@ public class TileEntityScreen<T extends InventoryTileEntity<?>, C extends TileEn
 {
     protected final T tile;
 
-    public TileEntityScreen(C container, PlayerInventory playerInventory, ITextComponent name, ResourceLocation texture)
+    public TileEntityScreen(C container, Inventory playerInventory, Component name, ResourceLocation texture)
     {
         super(container, playerInventory, name, texture);
         this.tile = container.getTileEntity();

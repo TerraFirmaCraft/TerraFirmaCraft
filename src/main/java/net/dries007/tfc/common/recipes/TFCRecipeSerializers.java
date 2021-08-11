@@ -8,9 +8,9 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.function.Supplier;
 
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,7 +20,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCRecipeSerializers
 {
-    public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
 
     // Block Recipes
 
@@ -45,10 +45,10 @@ public class TFCRecipeSerializers
 
     // Delegate Recipe Types
 
-    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
-    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
 
-    private static <S extends IRecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
+    private static <S extends RecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {
         return RECIPE_SERIALIZERS.register(name, factory);
     }

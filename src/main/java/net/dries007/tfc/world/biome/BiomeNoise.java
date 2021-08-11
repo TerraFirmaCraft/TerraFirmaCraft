@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.IBiomeNoiseSampler;
 import net.dries007.tfc.world.noise.*;
@@ -250,7 +250,7 @@ public final class BiomeNoise
             @Override
             public void setColumn(int x, int z)
             {
-                float h0 = MathHelper.clamp((0.7f - blobsNoise.noise(x, z)) * (1 / 0.3f), 0, 1);
+                float h0 = Mth.clamp((0.7f - blobsNoise.noise(x, z)) * (1 / 0.3f), 0, 1);
                 float h1 = depthNoise.noise(x, z);
 
                 surfaceHeight = heightNoise.noise(x, z);
@@ -268,7 +268,7 @@ public final class BiomeNoise
             public double noise(int y)
             {
                 float delta = Math.abs(center - y);
-                return MathHelper.clamp(0.4f + 0.05f * (height - delta), 0, 1);
+                return Mth.clamp(0.4f + 0.05f * (height - delta), 0, 1);
             }
         };
     }

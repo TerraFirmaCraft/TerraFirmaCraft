@@ -12,10 +12,10 @@ import java.util.Set;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 import net.dries007.tfc.util.data.DataManager;
 
@@ -26,7 +26,7 @@ public class SupportManager extends DataManager<Support>
     /**
      * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link SupportManager#isSupported(IBlockReader, BlockPos)}
      */
-    public static Set<BlockPos> findUnsupportedPositions(IBlockReader worldIn, BlockPos from, BlockPos to)
+    public static Set<BlockPos> findUnsupportedPositions(BlockGetter worldIn, BlockPos from, BlockPos to)
     {
         Set<BlockPos> listSupported = new HashSet<>();
         Set<BlockPos> listUnsupported = new HashSet<>();
@@ -57,7 +57,7 @@ public class SupportManager extends DataManager<Support>
         return listUnsupported;
     }
 
-    public static boolean isSupported(IBlockReader world, BlockPos pos)
+    public static boolean isSupported(BlockGetter world, BlockPos pos)
     {
         for (BlockPos supportPos : INSTANCE.getMaximumSupportedAreaAround(pos, pos))
         {

@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
@@ -22,7 +22,7 @@ public class FirepitScreen extends TileEntityScreen<FirepitTileEntity, FirepitCo
 {
     private static final ResourceLocation FIREPIT = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
 
-    public FirepitScreen(FirepitContainer container, PlayerInventory playerInventory, ITextComponent name)
+    public FirepitScreen(FirepitContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, FIREPIT);
         inventoryLabelY += 20;
@@ -30,7 +30,7 @@ public class FirepitScreen extends TileEntityScreen<FirepitTileEntity, FirepitCo
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         int temp = (int) (51 * tile.getSyncableData().get(AbstractFirepitTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());

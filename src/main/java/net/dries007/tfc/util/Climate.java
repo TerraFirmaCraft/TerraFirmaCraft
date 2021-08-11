@@ -9,10 +9,10 @@ package net.dries007.tfc.util;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendar;
@@ -63,7 +63,7 @@ public final class Climate
      * Gets the equivalent to {@link Biome#getTemperature(BlockPos)} for TFC biomes.
      * Called from injected code.
      */
-    public static float getVanillaBiomeTemperature(Biome biome, @Nullable IWorld world, BlockPos pos)
+    public static float getVanillaBiomeTemperature(Biome biome, @Nullable LevelAccessor world, BlockPos pos)
     {
         if (world != null && TFCBiomes.getExtension(biome) != null)
         {
@@ -72,7 +72,7 @@ public final class Climate
         return biome.getTemperature(pos);
     }
 
-    public static Biome.RainType getVanillaBiomePrecipitation(Biome biome, @Nullable IWorld world, BlockPos pos)
+    public static Biome.Precipitation getVanillaBiomePrecipitation(Biome biome, @Nullable LevelAccessor world, BlockPos pos)
     {
         if (world != null && TFCBiomes.getExtension(biome) != null)
         {
@@ -86,24 +86,24 @@ public final class Climate
      * Will be valid when used on both logical sides.
      * MUST NOT be used by world generation, it should use {@link Climate#calculateTemperature(BlockPos, float, Calendar)} instead, with the average temperature obtained through the correct chunk data source
      */
-    public static float getTemperature(IWorld world, BlockPos pos)
+    public static float getTemperature(LevelAccessor world, BlockPos pos)
     {
         ChunkData data = ChunkData.get(world, pos);
         ICalendar calendar = Calendars.get(world);
         return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
-    public static Biome.RainType getPrecipitation(IWorld world, BlockPos pos)
+    public static Biome.Precipitation getPrecipitation(LevelAccessor world, BlockPos pos)
     {
         ChunkData data = ChunkData.get(world, pos);
         ICalendar calendar = Calendars.get(world);
         float rainfall = data.getRainfall(pos);
         if (rainfall < 100)
         {
-            return Biome.RainType.NONE;
+            return Biome.Precipitation.NONE;
         }
         float temperature = calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
-        return temperature < 0 ? Biome.RainType.SNOW : Biome.RainType.RAIN;
+        return temperature < 0 ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
     }
 
     /**
@@ -166,18 +166,18 @@ public final class Climate
         // Above sea level, temperature lowers linearly with y.
         // Below sea level, temperature tends towards the average temperature for the area (having less influence from daily and monthly temperature)
         // Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"
-        y = MathHelper.clamp(y, 0, 255); // Future proofing for 1.17
+        y = Mth.clamp(y, 0, 255); // Future proofing for 1.17
         if (y > SEA_LEVEL)
         {
             // -1.6 C / 10 blocks above sea level
-            float elevationTemperature = MathHelper.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
             return averageTemperature + monthTemperature - elevationTemperature + dailyTemperature;
         }
         else if (y > DEPTH_LEVEL)
         {
             // The influence of daily and monthly temperature is reduced as depth increases
             float monthInfluence = (y - DEPTH_LEVEL) / (SEA_LEVEL - DEPTH_LEVEL); // Range 0 - 1
-            float dailyInfluence = MathHelper.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
+            float dailyInfluence = Mth.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
             return averageTemperature + NoiseUtil.lerp(0, monthTemperature, monthInfluence) + NoiseUtil.lerp(0, dailyTemperature, dailyInfluence);
         }
         else // y <= DEPTH_LEVEL

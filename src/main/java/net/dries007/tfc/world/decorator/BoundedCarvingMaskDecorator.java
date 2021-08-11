@@ -11,14 +11,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.gen.feature.WorldDecoratingHelper;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.placement.DecorationContext;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
 
-public class BoundedCarvingMaskDecorator extends Placement<BoundedCarvingMaskConfig>
+public class BoundedCarvingMaskDecorator extends FeatureDecorator<BoundedCarvingMaskConfig>
 {
     public BoundedCarvingMaskDecorator(Codec<BoundedCarvingMaskConfig> codec)
     {
@@ -26,7 +26,7 @@ public class BoundedCarvingMaskDecorator extends Placement<BoundedCarvingMaskCon
     }
 
     @Override
-    public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random rand, BoundedCarvingMaskConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(DecorationContext helper, Random rand, BoundedCarvingMaskConfig config, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step);

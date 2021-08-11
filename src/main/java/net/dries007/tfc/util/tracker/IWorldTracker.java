@@ -8,8 +8,8 @@ package net.dries007.tfc.util.tracker;
 
 import java.util.Collection;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Interface for the capability attached to {@link net.minecraft.world.World}s
@@ -38,5 +38,5 @@ public interface IWorldTracker
      */
     void addCollapsePositions(BlockPos centerPos, Collection<BlockPos> positions);
 
-    void tick(World world);
+    void tick(Level world);
 }

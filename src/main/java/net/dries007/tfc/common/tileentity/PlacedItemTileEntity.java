@@ -9,17 +9,17 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -31,7 +31,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
 {
     public static final int SLOT_LARGE_ITEM = 0;
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.placed_item");
     public boolean isHoldingLargeItem;
 
     public PlacedItemTileEntity()
@@ -39,21 +39,21 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
         this(TFCTileEntities.PLACED_ITEM.get());
     }
 
-    protected PlacedItemTileEntity(TileEntityType<?> type)
+    protected PlacedItemTileEntity(BlockEntityType<?> type)
     {
         super(type, self -> new ItemStackHandlerCallback(self, 4), NAME);
         this.isHoldingLargeItem = false;
     }
 
-    public boolean onRightClick(PlayerEntity player, ItemStack stack, BlockRayTraceResult rayTrace)
+    public boolean onRightClick(Player player, ItemStack stack, BlockHitResult rayTrace)
     {
-        Vector3d location = rayTrace.getLocation();
+        Vec3 location = rayTrace.getLocation();
         return onRightClick(player, stack, Math.round(location.x) < location.x, Math.round(location.z) < location.z);
     }
 
-    public boolean insertItem(PlayerEntity player, ItemStack stack, BlockRayTraceResult rayTrace)
+    public boolean insertItem(Player player, ItemStack stack, BlockHitResult rayTrace)
     {
-        Vector3d location = rayTrace.getLocation();
+        Vec3 location = rayTrace.getLocation();
         boolean x = Math.round(location.x) < location.x;
         boolean z = Math.round(location.z) < location.z;
         final int slot = (x ? 1 : 0) + (z ? 2 : 0);
@@ -63,10 +63,10 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
     /**
      * @return true if an action was taken (passed back through onItemRightClick)
      */
-    public boolean onRightClick(PlayerEntity player, ItemStack stack, boolean x, boolean z)
+    public boolean onRightClick(Player player, ItemStack stack, boolean x, boolean z)
     {
         final int slot = (x ? 1 : 0) + (z ? 2 : 0);
-        if (player.getItemInHand(Hand.MAIN_HAND).isEmpty() || player.isShiftKeyDown())
+        if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || player.isShiftKeyDown())
         {
             ItemStack current;
             if (isHoldingLargeItem)
@@ -98,7 +98,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
         return false;
     }
 
-    public boolean insertItem(PlayerEntity player, ItemStack stack, int slot)
+    public boolean insertItem(Player player, ItemStack stack, int slot)
     {
         // Try and insert an item
         // Check the size of item to determine if insertion is possible, or if it requires the large slot
@@ -153,7 +153,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
         super.load(state, nbt);
@@ -161,7 +161,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
 
     @Override
     @Nonnull
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putBoolean("isHoldingLargeItem", isHoldingLargeItem);
         return super.save(nbt);

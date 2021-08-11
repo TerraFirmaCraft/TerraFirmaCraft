@@ -11,13 +11,13 @@ import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -25,8 +25,8 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
 {
     public static FluidStack fluidStackFromJson(JsonObject json)
     {
-        int amount = JSONUtils.getAsInt(json, "amount", -1);
-        String fluidName = JSONUtils.getAsString(json, "fluid");
+        int amount = GsonHelper.getAsInt(json, "amount", -1);
+        String fluidName = GsonHelper.getAsString(json, "fluid");
         Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidName));
         if (fluid == null)
         {
@@ -37,14 +37,14 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
 
     public static FluidIngredient fromJson(JsonObject json)
     {
-        int amount = JSONUtils.getAsInt(json, "amount", -1);
+        int amount = GsonHelper.getAsInt(json, "amount", -1);
         if (json.has("tag") && json.has("fluid"))
         {
             throw new JsonParseException("Fluid ingredient cannot have both 'tag' and 'fluid' entries");
         }
         else if (json.has("fluid"))
         {
-            String fluidName = JSONUtils.getAsString(json, "fluid");
+            String fluidName = GsonHelper.getAsString(json, "fluid");
             Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidName));
             if (fluid == null)
             {
@@ -54,8 +54,8 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
         else if (json.has("tag"))
         {
-            String tagName = JSONUtils.getAsString(json, "tag");
-            ITag<Fluid> tag = FluidTags.getAllTags().getTag(new ResourceLocation(tagName));
+            String tagName = GsonHelper.getAsString(json, "tag");
+            Tag<Fluid> tag = FluidTags.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag == null)
             {
                 throw new JsonParseException("Not a fluid tag: " + tagName);
@@ -68,7 +68,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
     }
 
-    public static FluidIngredient fromNetwork(PacketBuffer buffer)
+    public static FluidIngredient fromNetwork(FriendlyByteBuf buffer)
     {
         int amount = buffer.readVarInt();
         switch (buffer.readByte())
@@ -80,7 +80,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
             }
             case 1:
             {
-                ITag<Fluid> tag = FluidTags.getAllTags().getTag(buffer.readResourceLocation());
+                Tag<Fluid> tag = FluidTags.getAllTags().getTag(buffer.readResourceLocation());
                 return new Tag(Objects.requireNonNull(tag), amount);
             }
             default:
@@ -88,7 +88,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
     }
 
-    public static void toNetwork(FluidIngredient ingredient, PacketBuffer buffer)
+    public static void toNetwork(FluidIngredient ingredient, FriendlyByteBuf buffer)
     {
         buffer.writeInt(ingredient.amount);
         ingredient.toNetwork(buffer);
@@ -117,7 +117,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
 
     public abstract boolean testIgnoreCount(FluidStack stack);
 
-    protected abstract void toNetwork(PacketBuffer buffer);
+    protected abstract void toNetwork(FriendlyByteBuf buffer);
 
     static class Simple extends FluidIngredient
     {
@@ -136,7 +136,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
 
         @Override
-        protected void toNetwork(PacketBuffer buffer)
+        protected void toNetwork(FriendlyByteBuf buffer)
         {
             buffer.writeByte(0);
             buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
@@ -145,9 +145,9 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
 
     static class Tag extends FluidIngredient
     {
-        private final ITag<Fluid> tag;
+        private final Tag<Fluid> tag;
 
-        Tag(ITag<Fluid> tag, int amount)
+        Tag(Tag<Fluid> tag, int amount)
         {
             super(amount);
             this.tag = tag;
@@ -160,7 +160,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
 
         @Override
-        protected void toNetwork(PacketBuffer buffer)
+        protected void toNetwork(FriendlyByteBuf buffer)
         {
             buffer.writeByte(1);
             buffer.writeResourceLocation(Objects.requireNonNull(FluidTags.getAllTags().getId(tag)));

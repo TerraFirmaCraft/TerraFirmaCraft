@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.placer;
 
-import net.minecraft.world.gen.blockplacer.BlockPlacer;
-import net.minecraft.world.gen.blockplacer.BlockPlacerType;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

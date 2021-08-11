@@ -6,22 +6,22 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public abstract class ItemStackContainer extends SimpleContainer
 {
     protected final ItemStack stack;
-    protected final PlayerEntity player;
+    protected final Player player;
     protected int itemIndex;
     protected int itemDragIndex;
     protected boolean isOffhand;
 
-    public ItemStackContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv, ItemStack stack, int yOffset)
+    public ItemStackContainer(MenuType<?> type, int windowId, Inventory playerInv, ItemStack stack, int yOffset)
     {
         super(type, windowId);
         this.player = playerInv.player;
@@ -43,13 +43,13 @@ public abstract class ItemStackContainer extends SimpleContainer
         addPlayerInventorySlots(playerInv, yOffset);
     }
 
-    public ItemStackContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv, ItemStack stack)
+    public ItemStackContainer(MenuType<?> type, int windowId, Inventory playerInv, ItemStack stack)
     {
         this(type, windowId, playerInv, stack, 0);
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int index)
+    public ItemStack quickMoveStack(Player player, int index)
     {
         ItemStack stackCopy = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
@@ -103,7 +103,7 @@ public abstract class ItemStackContainer extends SimpleContainer
     }
 
     @Override
-    public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player)
+    public ItemStack clicked(int slot, int dragType, ClickType clickType, Player player)
     {
         if (slot == itemIndex && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.THROW || clickType == ClickType.SWAP))
         {

@@ -8,17 +8,17 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractTopPlantBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -30,9 +30,9 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int radius = config.getRadius();
 
         boolean placedAny = false;
@@ -40,7 +40,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         for (int i = 0; i < config.getTries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
-            mutablePos.set(world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, mutablePos));
+            mutablePos.set(world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, mutablePos));
 
             final BlockState state = world.getBlockState(mutablePos);
             final Fluid fluid = state.getFluidState().getType();
@@ -56,7 +56,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         return placedAny;
     }
 
-    private void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    private void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {
@@ -66,7 +66,7 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
                 {
                     if (!world.getBlockState(mutablePos.below()).is(head.getBlock()))
                     {
-                        world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 16);
+                        world.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 16);
                     }
                     return;
                 }

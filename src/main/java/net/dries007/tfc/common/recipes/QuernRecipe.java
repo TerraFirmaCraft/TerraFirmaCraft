@@ -8,13 +8,13 @@ package net.dries007.tfc.common.recipes;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -23,7 +23,7 @@ public class QuernRecipe extends SimpleItemRecipe
     public static final IndirectHashCollection<Item, QuernRecipe> CACHE = new IndirectHashCollection<>(QuernRecipe::getValidItems);
 
     @Nullable
-    public static QuernRecipe getRecipe(World world, ItemStackRecipeWrapper wrapper)
+    public static QuernRecipe getRecipe(Level world, ItemStackRecipeWrapper wrapper)
     {
         for (QuernRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {
@@ -41,13 +41,13 @@ public class QuernRecipe extends SimpleItemRecipe
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.QUERN.get();
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return TFCRecipeTypes.QUERN;
     }

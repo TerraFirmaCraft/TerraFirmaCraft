@@ -17,16 +17,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
-public abstract class DataManager<T> extends JsonReloadListener
+public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
 {
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -96,13 +96,13 @@ public abstract class DataManager<T> extends JsonReloadListener
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn)
+    protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet())
         {
             ResourceLocation name = entry.getKey();
-            JsonObject json = JSONUtils.convertToJsonObject(entry.getValue(), "root");
+            JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "root");
             try
             {
                 if (CraftingHelper.processConditions(json, "conditions"))

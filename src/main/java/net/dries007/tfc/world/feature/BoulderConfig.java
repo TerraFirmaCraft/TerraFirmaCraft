@@ -9,9 +9,9 @@ package net.dries007.tfc.world.feature;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -20,7 +20,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.Codecs;
 
-public class BoulderConfig implements IFeatureConfig
+public class BoulderConfig implements FeatureConfiguration
 {
     public static final Codec<BoulderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(

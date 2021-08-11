@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Block that can be converted into a mossy variant
@@ -17,5 +17,5 @@ import net.minecraft.world.World;
  */
 public interface IMossGrowingBlock
 {
-    void convertToMossy(World worldIn, BlockPos pos, BlockState state, boolean needsWater);
+    void convertToMossy(Level worldIn, BlockPos pos, BlockState state, boolean needsWater);
 }

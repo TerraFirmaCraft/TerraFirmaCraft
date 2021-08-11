@@ -8,9 +8,9 @@ package net.dries007.tfc.util.calendar;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum Season implements IStringSerializable
+public enum Season implements StringRepresentable
 {
     SPRING,
     SUMMER,

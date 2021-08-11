@@ -9,9 +9,9 @@ package net.dries007.tfc.client;
 import java.util.function.ToIntFunction;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ColorResolver;
 
 import net.dries007.tfc.util.Climate;
@@ -213,14 +213,14 @@ public final class TFCColors
      */
     private static int getClimateColor(int[] colorCache, float temperature, float rainfall)
     {
-        final int temperatureIndex = 255 - MathHelper.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
-        final int rainfallIndex = 255 - MathHelper.clamp((int) (rainfall * 255f / 500f), 0, 255);
+        final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
+        final int rainfallIndex = 255 - Mth.clamp((int) (rainfall * 255f / 500f), 0, 255);
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 
     private static ColorResolver waterColorResolver(ToIntFunction<BlockPos> colorAccessor)
     {
-        final BlockPos.Mutable cursor = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         return (biome, x, z) -> {
             cursor.set(x, TFCChunkGenerator.SEA_LEVEL, z);
             return colorAccessor.applyAsInt(cursor);

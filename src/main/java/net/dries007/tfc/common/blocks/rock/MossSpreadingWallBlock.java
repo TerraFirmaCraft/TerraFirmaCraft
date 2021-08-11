@@ -8,10 +8,12 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class MossSpreadingWallBlock extends WallBlock
 {
@@ -22,7 +24,7 @@ public class MossSpreadingWallBlock extends WallBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
     {
         MossSpreadingBlock.spreadMoss(worldIn, pos, random);
     }

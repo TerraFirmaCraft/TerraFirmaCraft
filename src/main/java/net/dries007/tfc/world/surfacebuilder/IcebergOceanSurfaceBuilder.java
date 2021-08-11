@@ -10,14 +10,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.PerlinNoiseGenerator;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Climate;
@@ -26,19 +26,19 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 /**
  * Modified from {@link net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
  */
-public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
+public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
-    private PerlinNoiseGenerator icebergNoise;
-    private PerlinNoiseGenerator icebergRoofNoise;
+    private PerlinSimplexNoise icebergNoise;
+    private PerlinSimplexNoise icebergRoofNoise;
 
-    public IcebergOceanSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public IcebergOceanSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
     {
         super(codec);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
@@ -49,7 +49,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;
 
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(x, startHeight, z);
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(x, startHeight, z);
         final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL, context.getChunkData().getAverageTemp(mutablePos), 1);
 
         double thresholdTemperature = -1f;
@@ -163,8 +163,8 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
     @Override
     protected void initSeed(long seed)
     {
-        SharedSeedRandom random = new SharedSeedRandom(seed);
-        this.icebergNoise = new PerlinNoiseGenerator(random, IntStream.rangeClosed(-3, 0));
-        this.icebergRoofNoise = new PerlinNoiseGenerator(random, ImmutableList.of(0));
+        WorldgenRandom random = new WorldgenRandom(seed);
+        this.icebergNoise = new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
+        this.icebergRoofNoise = new PerlinSimplexNoise(random, ImmutableList.of(0));
     }
 }

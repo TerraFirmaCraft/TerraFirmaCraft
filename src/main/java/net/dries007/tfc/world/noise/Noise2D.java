@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.noise;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 import net.dries007.tfc.util.function.FloatUnaryFunction;
 
@@ -135,7 +135,7 @@ public interface Noise2D
      */
     default Noise2D flattened(float min, float max)
     {
-        return (x, y) -> MathHelper.clamp(Noise2D.this.noise(x, y), min, max);
+        return (x, y) -> Mth.clamp(Noise2D.this.noise(x, y), min, max);
     }
 
     default Noise2D add(Noise2D other)

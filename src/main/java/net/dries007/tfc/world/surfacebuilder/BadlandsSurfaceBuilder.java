@@ -8,10 +8,10 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -19,18 +19,18 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
+public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
     private BlockState[] sandLayers;
     private Noise2D heightVariationNoise;
 
-    public BadlandsSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public BadlandsSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         float heightVariation = heightVariationNoise.noise(x, z);
         if (startHeight > heightVariation)
@@ -69,7 +69,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     @SuppressWarnings("deprecation")
     private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, float rainfall, float temperature, boolean saltWater)
     {
-        final BlockPos.Mutable pos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int surfaceDepth = -1;
         int localX = x & 15;
         int localZ = z & 15;

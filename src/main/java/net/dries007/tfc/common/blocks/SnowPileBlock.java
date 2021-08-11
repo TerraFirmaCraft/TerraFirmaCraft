@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SnowBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.tileentity.SnowPileTileEntity;
 import net.dries007.tfc.util.Helpers;
@@ -25,7 +25,7 @@ import net.dries007.tfc.util.Helpers;
  * This block is a snow layer block that hides / covers a block underneath
  * When it melts, it will transform into the underlying block, with one level of snow active
  */
-public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
+public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockProperties
 {
     /**
      * Converts an existing block state to a snow pile consisting of that block state
@@ -35,7 +35,7 @@ public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
      * @param state      The original state
      * @param snowLayers How many layers of snow were in the original state (may be 0 if the state doesn't pile up it's own snow)
      */
-    public static void convertToPile(IWorld world, BlockPos pos, BlockState state)
+    public static void convertToPile(LevelAccessor world, BlockPos pos, BlockState state)
     {
         world.setBlock(pos, TFCBlocks.SNOW_PILE.get().defaultBlockState(), 3);
         Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class).setInternalState(state);
@@ -62,7 +62,7 @@ public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
      * - Once removed enough, they convert to the underlying block state.
      */
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
+    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
         SnowPileTileEntity te = Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class);
@@ -71,7 +71,7 @@ public class SnowPileBlock extends SnowBlock implements IForgeBlockProperties
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Blocks.SNOW);
     }

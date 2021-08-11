@@ -8,8 +8,8 @@ package net.dries007.tfc.world.feature.vein;
 
 import java.util.Random;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.Metaballs2D;
@@ -38,9 +38,9 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     }
 
     @Override
-    protected MutableBoundingBox getBoundingBox(DiscVeinConfig config, DiscVein vein)
+    protected BoundingBox getBoundingBox(DiscVeinConfig config, DiscVein vein)
     {
-        return new MutableBoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
+        return new BoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
     }
 
     static class DiscVein extends Vein

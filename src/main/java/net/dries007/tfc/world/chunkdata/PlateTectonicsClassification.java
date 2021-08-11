@@ -8,14 +8,14 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * Values for plate tectonics
  *
  * These must match the compile time constants in {@link net.dries007.tfc.world.layer.TFCLayerUtil}
  */
-public enum PlateTectonicsClassification implements IStringSerializable
+public enum PlateTectonicsClassification implements StringRepresentable
 {
     OCEANIC,
     CONTINENTAL_LOW,

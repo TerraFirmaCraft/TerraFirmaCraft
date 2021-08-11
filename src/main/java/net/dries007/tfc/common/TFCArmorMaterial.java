@@ -8,10 +8,10 @@ package net.dries007.tfc.common;
 
 import java.util.function.Supplier;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -94,13 +94,13 @@ public final class TFCArmorMaterial implements ITFCArmorMaterial
     }
 
     @Override
-    public int getDurabilityForSlot(EquipmentSlotType slotIn)
+    public int getDurabilityForSlot(EquipmentSlot slotIn)
     {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * maxDamageFactor;
     }
 
     @Override
-    public int getDefenseForSlot(EquipmentSlotType slotIn)
+    public int getDefenseForSlot(EquipmentSlot slotIn)
     {
         return damageReductionAmounts[slotIn.getIndex()];
     }

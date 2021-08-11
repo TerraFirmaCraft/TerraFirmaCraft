@@ -25,6 +25,9 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
 public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);

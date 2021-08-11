@@ -10,28 +10,28 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BushBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -44,6 +44,12 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockProperties
 {
     public static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
@@ -54,9 +60,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * This function is essentially min(blocks to reach the ground, provided distance value)
      */
-    public static int distanceToGround(World world, BlockPos pos, int distance)
+    public static int distanceToGround(Level world, BlockPos pos, int distance)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
         for (int i = 1; i <= distance; i++)
         {
             mutablePos.move(Direction.DOWN);
@@ -94,9 +100,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        if (!worldIn.isClientSide() && handIn == Hand.MAIN_HAND && state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
+        if (!worldIn.isClientSide() && handIn == InteractionHand.MAIN_HAND && state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
             BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
             if (te != null)
@@ -108,33 +114,33 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
                     te.setHarvested(true);
                     te.stopUsing();
                     worldIn.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
-                    return ActionResultType.CONSUME;
+                    return InteractionResult.CONSUME;
                 }
                 if (worldIn.getGameTime() % 3 == 0)
                     Helpers.playSound(worldIn, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        return state.getValue(STAGE) == 2 ? VoxelShapes.block() : PLANT_SHAPE;
+        return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        return VoxelShapes.empty();
+        return Shapes.empty();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
         BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
         if (te == null) return;
@@ -175,7 +181,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
@@ -190,13 +196,13 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * A means of performing X amount of random ticks to catch up with the calendar.
      */
-    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
 
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = worldIn.getBlockState(belowPos);
@@ -204,7 +210,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
         if (te != null)
@@ -216,7 +222,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIFECYCLE, STAGE);
     }

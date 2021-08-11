@@ -9,19 +9,19 @@ package net.dries007.tfc.world.feature;
 import java.util.Random;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SnowyDirtBlock;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -35,7 +35,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class IceAndSnowFeature extends Feature<NoFeatureConfig>
+public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {
     private long cachedSeed;
     private boolean initialized;
@@ -43,18 +43,18 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     private Noise2D temperatureNoise;
     private Noise2D seaIceNoise;
 
-    public IceAndSnowFeature(Codec<NoFeatureConfig> codec)
+    public IceAndSnowFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration config)
     {
         initSeed(worldIn.getSeed());
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         // Since this feature may be run *both* during world generation, and after during climate updates, we need to query both the existing data, and fallback to the world gen data if empty.
         ChunkData chunkData = ChunkData.get(worldIn, chunkPos);
@@ -69,7 +69,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
         {
             for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++)
             {
-                mutablePos.set(x, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, x, z), z);
+                mutablePos.set(x, worldIn.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
                 final float noise = temperatureNoise.noise(x, z);
                 final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER);
@@ -110,7 +110,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
                 }
                 else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
                 {
-                    final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + MathHelper.clamp(temperature * 0.1f, -0.2f, 0.2f);
+                    final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
                     if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
                     {
                         worldIn.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);

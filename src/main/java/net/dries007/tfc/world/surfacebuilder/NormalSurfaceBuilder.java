@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 
-public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderConfig>
+public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
-    public NormalSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public NormalSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
     }
@@ -30,7 +30,7 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderCo
     @SuppressWarnings("deprecation")
     public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
     {
-        final BlockPos.Mutable pos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int surfaceDepth = -1;
         int localX = x & 15;
         int localZ = z & 15;

@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 
-public abstract class TypedRecipeSerializer<R extends IRecipe<?>> extends RecipeSerializer<R>
+public abstract class TypedRecipeSerializer<R extends Recipe<?>> extends RecipeSerializer<R>
 {
-    public abstract IRecipeType<?> getRecipeType();
+    public abstract RecipeType<?> getRecipeType();
 }

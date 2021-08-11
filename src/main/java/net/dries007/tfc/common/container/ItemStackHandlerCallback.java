@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemStackHandlerCallback extends ItemStackHandler implements ISlotCallback
@@ -51,7 +51,7 @@ public class ItemStackHandlerCallback extends ItemStackHandler implements ISlotC
     }
 
     @Override
-    public void onSlotTake(PlayerEntity player, int slot, ItemStack stack)
+    public void onSlotTake(Player player, int slot, ItemStack stack)
     {
         callback.onSlotTake(player, slot, stack);
     }

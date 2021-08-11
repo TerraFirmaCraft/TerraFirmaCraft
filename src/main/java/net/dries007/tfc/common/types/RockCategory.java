@@ -8,11 +8,11 @@ package net.dries007.tfc.common.types;
 
 import java.util.Locale;
 
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.util.StringRepresentable;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.TFCItemTier;
@@ -21,7 +21,7 @@ import net.dries007.tfc.common.items.tools.TFCAxeItem;
 import net.dries007.tfc.common.items.tools.TFCShovelItem;
 import net.dries007.tfc.common.items.tools.TFCToolItem;
 
-public enum RockCategory implements IStringSerializable
+public enum RockCategory implements StringRepresentable
 {
     IGNEOUS_EXTRUSIVE(TFCItemTier.IGNEOUS_EXTRUSIVE, 0f),
     IGNEOUS_INTRUSIVE(TFCItemTier.IGNEOUS_INTRUSIVE, 0.2f),
@@ -29,17 +29,17 @@ public enum RockCategory implements IStringSerializable
     SEDIMENTARY(TFCItemTier.SEDIMENTARY, -0.4f);
 
     private final String serializedName;
-    private final IItemTier itemTier;
+    private final Tier itemTier;
     private final float hardnessModifier;
 
-    RockCategory(IItemTier itemTier, float hardnessModifier)
+    RockCategory(Tier itemTier, float hardnessModifier)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.itemTier = itemTier;
         this.hardnessModifier = hardnessModifier;
     }
 
-    public IItemTier getItemTier()
+    public Tier getItemTier()
     {
         return itemTier;
     }
@@ -57,18 +57,18 @@ public enum RockCategory implements IStringSerializable
 
     public enum ItemType
     {
-        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        AXE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        HAMMER_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        HOE(rock -> new HoeItem(rock.getItemTier(), -1, -3.0f, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        HOE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        JAVELIN(rock -> new JavelinItem(rock.getItemTier(), 0.7F, -1.8F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        JAVELIN_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        KNIFE(rock -> new TFCToolItem(rock.getItemTier(), 0.54F, -1.5F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        KNIFE_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS))),
-        SHOVEL(rock -> new TFCShovelItem(rock.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
-        SHOVEL_HEAD(rock -> new Item((new Item.Properties()).tab(ItemGroup.TAB_MATERIALS)));
+        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        AXE_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS))),
+        HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        HAMMER_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS))),
+        HOE(rock -> new HoeItem(rock.getItemTier(), -1, -3.0f, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        HOE_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS))),
+        JAVELIN(rock -> new JavelinItem(rock.getItemTier(), 0.7F, -1.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        JAVELIN_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS))),
+        KNIFE(rock -> new TFCToolItem(rock.getItemTier(), 0.54F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        KNIFE_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS))),
+        SHOVEL(rock -> new TFCShovelItem(rock.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        SHOVEL_HEAD(rock -> new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS)));
 
         private final NonNullFunction<RockCategory, Item> itemFactory;
 

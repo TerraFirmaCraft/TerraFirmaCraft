@@ -11,27 +11,27 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SixWayBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockVoxelShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.SupportType;
+import net.minecraft.core.Direction;
+import net.minecraft.Util;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -39,13 +39,13 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockProperties
 {
-    public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
+    public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
         .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 
-    public static final BooleanProperty NORTH = SixWayBlock.NORTH;
-    public static final BooleanProperty EAST = SixWayBlock.EAST;
-    public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
-    public static final BooleanProperty WEST = SixWayBlock.WEST;
+    public static final BooleanProperty NORTH = PipeBlock.NORTH;
+    public static final BooleanProperty EAST = PipeBlock.EAST;
+    public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
+    public static final BooleanProperty WEST = PipeBlock.WEST;
 
     private final Map<BlockState, VoxelShape> cachedShapes;
     private final ForgeBlockProperties properties;
@@ -67,10 +67,10 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
 
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = defaultBlockState();
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutablePos.setWithOffset(context.getClickedPos(), d);
@@ -80,7 +80,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         if (worldIn.isClientSide() || placer == null) return;
         if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the stack yet
@@ -89,10 +89,10 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
             BlockPos above2 = above.above();
             if (worldIn.isEmptyBlock(above) && worldIn.isEmptyBlock(above2))
             {
-                if (worldIn.getEntities(null, new AxisAlignedBB(above)).isEmpty())
+                if (worldIn.getEntities(null, new AABB(above)).isEmpty())
                 {
                     worldIn.setBlock(above, defaultBlockState(), 2);
-                    if (worldIn.getEntities(null, new AxisAlignedBB(above2)).isEmpty())
+                    if (worldIn.getEntities(null, new AABB(above2)).isEmpty())
                     {
                         worldIn.setBlock(above2, defaultBlockState(), 2);
                         stack.shrink(2);
@@ -107,14 +107,14 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getAxis().isHorizontal())
         {
@@ -122,7 +122,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
         }
         else if (facing == Direction.DOWN)
         {
-            if (facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(world, facingPos, Direction.UP, BlockVoxelShape.CENTER))
+            if (facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(world, facingPos, Direction.UP, SupportType.CENTER))
             {
                 return stateIn;
             }
@@ -133,16 +133,16 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(worldIn, belowPos, Direction.UP, BlockVoxelShape.CENTER);
+        return belowState.is(TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(worldIn, belowPos, Direction.UP, SupportType.CENTER);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;
@@ -159,7 +159,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
             {
                 if (state.getValue(PROPERTY_BY_DIRECTION.get(d)))
                 {
-                    VoxelShape joinShape = VoxelShapes.empty();
+                    VoxelShape joinShape = Shapes.empty();
                     switch (d)
                     {
                         case NORTH:
@@ -175,7 +175,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockProperties
                             joinShape = box(0.0D, 10.0D, 5.0D, 5.0D, 16.0D, 11.0D);
                             break;
                     }
-                    shape = VoxelShapes.or(shape, joinShape);
+                    shape = Shapes.or(shape, joinShape);
                 }
             }
             builder.put(state, shape);

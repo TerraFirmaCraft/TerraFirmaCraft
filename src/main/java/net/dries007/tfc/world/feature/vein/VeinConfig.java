@@ -12,13 +12,13 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.FastRandom;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.LinearCongruentialGenerator;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
@@ -28,7 +28,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
-public class VeinConfig implements IFeatureConfig
+public class VeinConfig implements FeatureConfiguration
 {
     @SuppressWarnings("deprecation")
     public static final MapCodec<VeinConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -44,7 +44,7 @@ public class VeinConfig implements IFeatureConfig
         Codec.intRange(0, 256).optionalFieldOf("max_y", 128).forGetter(VeinConfig::getMaxY),
         Codec.LONG.optionalFieldOf("salt").forGetter(c -> Optional.of(c.salt)),
         Codec.either( // Filter can't accept biomes as it ends up resolving the biomes too early (circular reference)
-            Biome.Category.CODEC.fieldOf("category").codec(),
+            Biome.BiomeCategory.CODEC.fieldOf("category").codec(),
             Codecs.BIOME_DICTIONARY.fieldOf("biome_dictionary").codec()
         ).listOf().optionalFieldOf("biomes", new ArrayList<>()).forGetter(c -> c.biomeFilter)
     ).apply(instance, VeinConfig::new));
@@ -59,7 +59,7 @@ public class VeinConfig implements IFeatureConfig
     private final int minY;
     private final int maxY;
     private final long salt;
-    private final List<Either<Biome.Category, BiomeDictionary.Type>> biomeFilter;
+    private final List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter;
     private final Predicate<Supplier<Biome>> resolvedBiomeFilter;
 
     public VeinConfig(VeinConfig other)
@@ -67,7 +67,7 @@ public class VeinConfig implements IFeatureConfig
         this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt), other.biomeFilter);
     }
 
-    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt, List<Either<Biome.Category, BiomeDictionary.Type>> biomeFilter)
+    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
     {
         this.states = states;
         this.indicator = indicator.orElse(null);
@@ -77,11 +77,11 @@ public class VeinConfig implements IFeatureConfig
         this.minY = minY;
         this.maxY = maxY;
         this.salt = salt.orElseGet(() -> {
-            long seed = FastRandom.next(size, Float.floatToIntBits(density));
-            seed = FastRandom.next(seed, minY);
-            seed = FastRandom.next(seed, maxY);
-            seed = FastRandom.next(seed, rarity);
-            seed = FastRandom.next(seed, rarity);
+            long seed = LinearCongruentialGenerator.next(size, Float.floatToIntBits(density));
+            seed = LinearCongruentialGenerator.next(seed, minY);
+            seed = LinearCongruentialGenerator.next(seed, maxY);
+            seed = LinearCongruentialGenerator.next(seed, rarity);
+            seed = LinearCongruentialGenerator.next(seed, rarity);
             return seed;
         });
         this.biomeFilter = biomeFilter;
@@ -166,8 +166,8 @@ public class VeinConfig implements IFeatureConfig
         else
         {
             final List<BiomeDictionary.Type> types = new ArrayList<>();
-            final Set<Biome.Category> categories = EnumSet.noneOf(Biome.Category.class);
-            for (Either<Biome.Category, BiomeDictionary.Type> either : biomeFilter)
+            final Set<Biome.BiomeCategory> categories = EnumSet.noneOf(Biome.BiomeCategory.class);
+            for (Either<Biome.BiomeCategory, BiomeDictionary.Type> either : biomeFilter)
             {
                 either.map(categories::add, types::add);
             }
@@ -181,7 +181,7 @@ public class VeinConfig implements IFeatureConfig
                 {
                     return true;
                 }
-                final Set<BiomeDictionary.Type> biomeTypes = BiomeDictionary.getTypes(RegistryKey.create(Registry.BIOME_REGISTRY, Objects.requireNonNull(biome.getRegistryName())));
+                final Set<BiomeDictionary.Type> biomeTypes = BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, Objects.requireNonNull(biome.getRegistryName())));
                 for (BiomeDictionary.Type requiredType : types)
                 {
                     if (biomeTypes.contains(requiredType))

@@ -10,19 +10,21 @@ import java.util.Collections;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
+
+import net.minecraft.world.item.Item.Properties;
 
 /**
  * Generic class for tools that shouldn't override vanilla's {@link ToolItem}
@@ -32,13 +34,13 @@ import net.dries007.tfc.common.TFCTags;
  * Vanilla: Tool value (ie: 3.0 for swords) + material damage value (ie: 2.0 for iron) + 1.0 (hand) = 6.0
  * TFC: Tool value (ie: 1.3 for maces) * material damage value (ie: 5.75 for steel) + 1.0 (hand) ~= 7.5
  */
-public class TFCToolItem extends ToolItem
+public class TFCToolItem extends DiggerItem
 {
     protected final float attackDamage;
     protected final float attackSpeed;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
-    public TFCToolItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
+    public TFCToolItem(Tier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(0, attackSpeed, tier, Collections.emptySet(), builder);
         this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
@@ -60,18 +62,18 @@ public class TFCToolItem extends ToolItem
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack)
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
     {
-        return slot == EquipmentSlotType.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
+        return slot == EquipmentSlot.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, World level, BlockState state, BlockPos pos, LivingEntity entity)
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
         // tfc: mining plants should consume durability
         if (!level.isClientSide && (state.getBlock().is(TFCTags.Blocks.PLANT) || state.getDestroySpeed(level, pos) != 0.0F))
         {
-            stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+            stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
         return true;
     }

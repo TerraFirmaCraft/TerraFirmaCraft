@@ -8,22 +8,22 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -42,7 +42,7 @@ import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPU
 
 public class GrillBlock extends FirepitBlock
 {
-    private static final VoxelShape GRILL_SHAPE = VoxelShapes.or(
+    private static final VoxelShape GRILL_SHAPE = Shapes.or(
         BASE_SHAPE,
         box(2, 9.5, 3, 14, 10, 13),
         box(2, 0, 13, 3, 11, 14),
@@ -57,7 +57,7 @@ public class GrillBlock extends FirepitBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
         super.animateTick(state, world, pos, rand);
         if (!state.getValue(LIT)) return;
@@ -72,7 +72,7 @@ public class GrillBlock extends FirepitBlock
                         double x = pos.getX() + 0.5D;
                         double y = pos.getY() + 0.5D;
                         double z = pos.getZ() + 0.5D;
-                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
                         world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
                         break;
                     }
@@ -82,7 +82,7 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
         if (firepit != null)
@@ -102,27 +102,27 @@ public class GrillBlock extends FirepitBlock
                         AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
                     }
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
             {
                 firepit.extinguish(state);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, firepit, pos);
+                    NetworkHooks.openGui((ServerPlayer) player, firepit, pos);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return GRILL_SHAPE;
     }

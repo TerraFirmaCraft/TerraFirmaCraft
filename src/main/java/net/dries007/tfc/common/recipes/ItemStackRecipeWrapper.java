@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A {@link net.minecraftforge.items.wrapper.RecipeWrapper} for single item stacks.

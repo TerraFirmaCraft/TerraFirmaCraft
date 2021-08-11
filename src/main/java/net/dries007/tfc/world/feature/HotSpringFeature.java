@@ -8,17 +8,17 @@ package net.dries007.tfc.world.feature;
 
 import java.util.*;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
@@ -37,10 +37,10 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, HotSpringConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, HotSpringConfig config)
     {
         final Metaballs2D noise = new Metaballs2D(config.radius, rand);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);
         final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
@@ -58,7 +58,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             {
                 final int localX = pos.getX() + x;
                 final int localZ = pos.getZ() + z;
-                final int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, localX, localZ) - 1;
+                final int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
                 // Disallow underwater locations
                 if (y <= TFCChunkGenerator.SEA_LEVEL || !noise.inside(x, z))
@@ -93,7 +93,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
                 // surface depth is deeper near the center of the hot spring
                 // Range: [0.3, 1.0]
-                final float centerFactor = 1 - 0.7f * MathHelper.clamp(2 * (x * x + z * z) / (float) (config.radius * config.radius), 0, 1);
+                final float centerFactor = 1 - 0.7f * Mth.clamp(2 * (x * x + z * z) / (float) (config.radius * config.radius), 0, 1);
                 final int surfaceDepth = (int) ((8 + rand.nextInt(3)) * centerFactor);
                 if (edge)
                 {
@@ -140,7 +140,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             return false;
         }
 
-        final int fissureStarts = 1 + rand.nextInt(1 + rand.nextInt(MathHelper.clamp(fissureStartPositions.size(), 1, 7)));
+        final int fissureStarts = 1 + rand.nextInt(1 + rand.nextInt(Mth.clamp(fissureStartPositions.size(), 1, 7)));
         final List<BlockPos> selected = Helpers.uniqueRandomSample(fissureStartPositions, fissureStarts, rand);
         for (BlockPos start : selected)
         {
@@ -151,7 +151,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     }
 
     @SuppressWarnings("deprecation")
-    private boolean setFissureBaseBlock(ISeedReader world, BlockPos pos, BlockState state)
+    private boolean setFissureBaseBlock(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         final BlockState stateAt = world.getBlockState(pos);
         if (stateAt.isAir())

@@ -9,13 +9,13 @@ package net.dries007.tfc.world.feature;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
@@ -24,7 +24,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class FissureFeature extends Feature<FissureConfig>
 {
-    public static void placeFissure(ISeedReader world, BlockPos startPos, BlockPos centerPos, BlockPos.Mutable mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
+    public static void placeFissure(WorldGenLevel world, BlockPos startPos, BlockPos centerPos, BlockPos.MutableBlockPos mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
     {
         // Carve a fissure down from this position, by carving a series of tubes straight down
         final int pieces = minPieces + random.nextInt(maxPieces - minPieces);
@@ -124,9 +124,9 @@ public class FissureFeature extends Feature<FissureConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FissureConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, FissureConfig config)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int placeCount = 1 + rand.nextInt(config.count);
         final BlockState insideState = config.wallState.orElseGet(() -> {
             final ChunkDataProvider provider = ChunkDataProvider.get(generator);
@@ -138,7 +138,7 @@ public class FissureFeature extends Feature<FissureConfig>
         for (int i = 0; i < placeCount; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(config.radius) - rand.nextInt(config.radius), 0, rand.nextInt(config.radius) - rand.nextInt(config.radius));
-            mutablePos.setY(world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+            mutablePos.setY(world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
             FissureFeature.placeFissure(world, pos, mutablePos.immutable(), mutablePos, rand, config.fluidState, insideState, config.minPieces, config.maxPieces, config.maxPieceLength, config.minDepth, config.radius, config.decoration.orElse(null));
         }
         return true;

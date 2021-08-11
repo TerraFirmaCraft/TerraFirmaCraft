@@ -8,11 +8,11 @@ package net.dries007.tfc.world.carver;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 
@@ -23,7 +23,7 @@ public class SaltWaterBlockCarver extends BlockCarver
 {
     @Override
     @SuppressWarnings("deprecation")
-    public boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel)
+    public boolean carve(ChunkAccess chunk, BlockPos pos, Random random, int seaLevel)
     {
         final int maskIndex = CarverHelpers.maskIndex(pos);
         if (!liquidCarvingMask.get(maskIndex) && !airCarvingMask.get(maskIndex))

@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -91,17 +90,17 @@ public interface ICalendar
 
     /* Format Methods */
 
-    static ITextComponent getTimeAndDate(long time, long daysInMonth)
+    static Component getTimeAndDate(long time, long daysInMonth)
     {
         return ICalendar.getTimeAndDate(ICalendar.getHourOfDay(time), ICalendar.getMinuteOfHour(time), ICalendar.getMonthOfYear(time, daysInMonth), ICalendar.getDayOfMonth(time, daysInMonth), ICalendar.getTotalYears(time, daysInMonth));
     }
 
-    static ITextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
+    static Component getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
-        return new StringTextComponent(String.format("%d:%02d ", hour, minute))
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
+        return new TextComponent(String.format("%d:%02d ", hour, minute))
+            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(month)))
             .append(" ")
-            .append(new TranslationTextComponent("tfc.tooltip.calendar_days_years", day, years));
+            .append(new TranslatableComponent("tfc.tooltip.calendar_days_years", day, years));
     }
 
     /**
@@ -227,7 +226,7 @@ public interface ICalendar
     /**
      * Calculates the current day from a calendar time.
      */
-    default IFormattableTextComponent getCalendarDayOfYear()
+    default MutableComponent getCalendarDayOfYear()
     {
         return Day.getDayName(getTotalCalendarDays(), getCalendarMonthOfYear(), getCalendarDayOfMonth());
     }
@@ -256,7 +255,7 @@ public interface ICalendar
         return (long) getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
     }
 
-    default ITextComponent getCalendarTimeAndDate()
+    default Component getCalendarTimeAndDate()
     {
         return ICalendar.getTimeAndDate(getCalendarTicks(), getCalendarDaysInMonth());
     }

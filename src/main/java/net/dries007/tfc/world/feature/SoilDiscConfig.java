@@ -10,16 +10,16 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class SoilDiscConfig implements IFeatureConfig
+public class SoilDiscConfig implements FeatureConfiguration
 {
     @SuppressWarnings("deprecation")
     public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(

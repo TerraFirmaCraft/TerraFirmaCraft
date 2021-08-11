@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
@@ -30,7 +30,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);
@@ -40,12 +40,12 @@ public class BouldersFeature extends Feature<BoulderConfig>
         return true;
     }
 
-    private void place(ISeedReader worldIn, BlockPos pos, List<BlockState> states, Random rand)
+    private void place(WorldGenLevel worldIn, BlockPos pos, List<BlockState> states, Random rand)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
         final float radiusSquared = radius * radius;
-        final int size = MathHelper.ceil(radius);
+        final int size = Mth.ceil(radius);
 
         Supplier<BlockState> state;
         if (states.size() == 1)

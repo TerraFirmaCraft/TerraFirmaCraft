@@ -14,18 +14,18 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.*;
-import net.minecraft.state.properties.BedPart;
+import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -39,6 +39,17 @@ import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
+
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 
 /**
  * This exists due to problems in handling right click events
@@ -57,8 +68,8 @@ public final class InteractionManager
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
-            final World world = context.getLevel();
-            final PlayerEntity player = context.getPlayer();
+            final Level world = context.getLevel();
+            final Player player = context.getPlayer();
             if (!world.isClientSide() && player != null)
             {
                 final BlockPos basePos = context.getClickedPos();
@@ -75,18 +86,18 @@ public final class InteractionManager
                             world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
                             world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
                             stack.shrink(1);
-                            return ActionResultType.SUCCESS;
+                            return InteractionResult.SUCCESS;
                         }
 
                     }
                 }
             }
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         });
 
         register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
-            final PlayerEntity player = context.getPlayer();
-            final World world = context.getLevel();
+            final Player player = context.getPlayer();
+            final Level world = context.getLevel();
             final BlockPos pos = context.getClickedPos();
             if (player != null && StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
             {
@@ -94,36 +105,36 @@ public final class InteractionManager
                 {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
-            final PlayerEntity playerEntity = context.getPlayer();
-            if (playerEntity instanceof ServerPlayerEntity)
+            final Player playerEntity = context.getPlayer();
+            if (playerEntity instanceof ServerPlayer)
             {
-                final World world = context.getLevel();
+                final Level world = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
-                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
+                final ServerPlayer player = (ServerPlayer) playerEntity;
                 if (!player.isCreative())
                     stack.shrink(1);
                 if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
             }
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         });
 
         register(Items.SNOW, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (player != null && !player.abilities.mayBuild)
             {
-                return ActionResultType.PASS;
+                return InteractionResult.PASS;
             }
             else
             {
-                final BlockItemUseContext blockContext = new BlockItemUseContext(context);
-                final World world = context.getLevel();
+                final BlockPlaceContext blockContext = new BlockPlaceContext(context);
+                final Level world = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = world.getBlockState(blockContext.getClickedPos());
                 if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
@@ -131,13 +142,13 @@ public final class InteractionManager
                     SnowPileBlock.convertToPile(world, pos, stateAt);
                     BlockState placedState = world.getBlockState(pos);
                     SoundType placementSound = placedState.getSoundType(world, pos, player);
-                    world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
+                    world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
                     if (player == null || !player.abilities.instabuild)
                     {
                         stack.shrink(1);
                     }
 
-                    ActionResultType result = ActionResultType.sidedSuccess(world.isClientSide);
+                    InteractionResult result = InteractionResult.sidedSuccess(world.isClientSide);
                     if (player != null && result.consumesAction())
                     {
                         player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
@@ -150,19 +161,19 @@ public final class InteractionManager
                 {
                     return ((BlockItem) snow).place(blockContext);
                 }
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
         });
 
         register(Items.CHARCOAL, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (player != null && !player.abilities.mayBuild)
             {
-                return ActionResultType.PASS;
+                return InteractionResult.PASS;
             }
             else
             {
-                final World world = context.getLevel();
+                final Level world = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = world.getBlockState(pos);
                 if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
@@ -172,16 +183,16 @@ public final class InteractionManager
                     {
                         world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
                         Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
                 }
                 if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
                 {
                     world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
                     Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
         });
 
@@ -192,10 +203,10 @@ public final class InteractionManager
         // - holding log, targeting log pile, click normally = insert one
         final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
         register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
-            final PlayerEntity player = context.getPlayer();
+            final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
-                final World world = context.getLevel();
+                final Level world = context.getLevel();
                 final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = world.getBlockState(posClicked);
@@ -215,23 +226,23 @@ public final class InteractionManager
                                 Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
                                 stack.setCount(insertStack.getCount());
                             }
-                            return ActionResultType.SUCCESS;
+                            return InteractionResult.SUCCESS;
                         }
 
-                        final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                        final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                         if (result.consumesAction())
                         {
                             insertStack.setCount(1);
                             cap.insertItem(0, insertStack, false);
                         }
                         return result;
-                    }).orElse(ActionResultType.PASS);
+                    }).orElse(InteractionResult.PASS);
                 }
                 else
                 {
                     // Trying to place a log pile.
                     final ItemStack insertStack = stack.copy();
-                    final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                    final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
                         final LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
@@ -243,17 +254,17 @@ public final class InteractionManager
                     return result;
                 }
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         register(TFCTags.Items.SCRAPABLE, (stack, context) -> {
-            World level = context.getLevel();
+            Level level = context.getLevel();
             ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
             if (recipe != null)
             {
                 final BlockPos pos = context.getClickedPos();
                 final BlockPos abovePos = pos.above();
-                PlayerEntity player = context.getPlayer();
+                Player player = context.getPlayer();
                 if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
@@ -267,12 +278,12 @@ public final class InteractionManager
                                 stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
                                 te.setCachedItem(recipe.getResultItem().copy());
                             }
-                            return ActionResultType.SUCCESS;
-                        }).orElse(ActionResultType.PASS);
+                            return InteractionResult.SUCCESS;
+                        }).orElse(InteractionResult.PASS);
                     }
                 }
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         // BlockItem mechanics for vanilla items that match groundcover types
@@ -285,55 +296,55 @@ public final class InteractionManager
         }
 
         register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (stack.getCount() > 4)
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.CLAY_KNAPPING);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (stack.getCount() > 4)
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (player != null && player.inventory.contains(TFCTags.Items.KNIVES))
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.LEATHER_KNAPPING);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
 
         register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             if (stack.getCount() > 1)
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
+                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.ROCK_KNAPPING);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         });
     }
 
@@ -347,12 +358,12 @@ public final class InteractionManager
         ACTIONS.add(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
     }
 
-    public static void register(ITag<Item> tag, OnItemUseAction action)
+    public static void register(Tag<Item> tag, OnItemUseAction action)
     {
         ACTIONS.add(new Entry(action, stack -> stack.getItem().is(tag), tag::getValues));
     }
 
-    public static Optional<ActionResultType> onItemUse(ItemStack stack, ItemUseContext context)
+    public static Optional<InteractionResult> onItemUse(ItemStack stack, UseOnContext context)
     {
         if (!ACTIVE.get())
         {
@@ -360,7 +371,7 @@ public final class InteractionManager
             {
                 if (entry.test.test(stack))
                 {
-                    ActionResultType result;
+                    InteractionResult result;
                     ACTIVE.set(true);
                     try
                     {
@@ -370,7 +381,7 @@ public final class InteractionManager
                     {
                         ACTIVE.set(false);
                     }
-                    return result == ActionResultType.PASS ? Optional.empty() : Optional.of(result);
+                    return result == InteractionResult.PASS ? Optional.empty() : Optional.of(result);
                 }
             }
         }
@@ -388,7 +399,7 @@ public final class InteractionManager
     @FunctionalInterface
     public interface OnItemUseAction
     {
-        ActionResultType onItemUse(ItemStack stack, ItemUseContext context);
+        InteractionResult onItemUse(ItemStack stack, UseOnContext context);
     }
 
     private static class Entry

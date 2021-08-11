@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -43,7 +43,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
     private static final Random RANDOM = new Random();
 
     @Nullable
-    public static CollapseRecipe getRecipe(World world, BlockRecipeWrapper wrapper)
+    public static CollapseRecipe getRecipe(Level world, BlockRecipeWrapper wrapper)
     {
         for (CollapseRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
         {
@@ -60,7 +60,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      *
      * @return true if a collapse occurred.
      */
-    public static boolean tryTriggerCollapse(World world, BlockPos pos)
+    public static boolean tryTriggerCollapse(Level world, BlockPos pos)
     {
         if (!world.isClientSide() && world.isAreaLoaded(pos, 32))
         {
@@ -75,7 +75,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                     if (canStartCollapse(world, checking))
                     {
                         startCollapse(world, checking);
-                        world.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundCategory.BLOCKS, 1.0f, 1.0f);
+                        world.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
                         return true; // Don't need to check other blocks
                     }
                 }
@@ -87,7 +87,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
     /**
      * Checks if a single block is possible to be the locus of a collapse
      */
-    public static boolean canStartCollapse(IWorld world, BlockPos pos)
+    public static boolean canStartCollapse(LevelAccessor world, BlockPos pos)
     {
         return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
     }
@@ -98,7 +98,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      * - many more blocks can collapse, even if they can't trigger or start collapses.
      * - this is much more in-depth than previous implementations, and searches aggressively for next-tick collapse blocks
      */
-    public static void startCollapse(World world, BlockPos centerPos)
+    public static void startCollapse(Level world, BlockPos centerPos)
     {
         int radius = TFCConfig.SERVER.collapseMinRadius.get() + RANDOM.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
         int radiusSquared = radius * radius;
@@ -143,7 +143,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      *
      * @return true if the collapse actually occurred
      */
-    public static boolean collapseBlock(World world, BlockPos pos, BlockState state)
+    public static boolean collapseBlock(Level world, BlockPos pos, BlockState state)
     {
         BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
         CollapseRecipe recipe = getRecipe(world, wrapper);
@@ -163,13 +163,13 @@ public class CollapseRecipe extends SimpleBlockRecipe
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.COLLAPSE.get();
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return TFCRecipeTypes.COLLAPSE;
     }

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Helper interface for interacting with ItemStackHandler
@@ -42,5 +42,5 @@ public interface ISlotCallback
     /**
      * Called when a slot is taken from
      */
-    default void onSlotTake(PlayerEntity player, int slot, ItemStack stack) {}
+    default void onSlotTake(Player player, int slot, ItemStack stack) {}
 }

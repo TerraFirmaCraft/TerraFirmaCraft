@@ -11,19 +11,19 @@ import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.VineBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.LilyPadItem;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.WaterLilyBlockItem;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -254,8 +254,8 @@ public enum Plant implements IPlant
         KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
         KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
         KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()), TFCBlockStateProperties.SALT_WATER)),
-        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), LilyPadItem::new),
-        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), LilyPadItem::new),
+        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), WaterLilyBlockItem::new),
+        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), WaterLilyBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
@@ -266,29 +266,29 @@ public enum Plant implements IPlant
         /**
          * Default properties to avoid rewriting them out every time
          */
-        private static AbstractBlock.Properties solid()
+        private static BlockBehaviour.Properties solid()
         {
             return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
         }
 
-        private static AbstractBlock.Properties nonSolid(Plant plant)
+        private static BlockBehaviour.Properties nonSolid(Plant plant)
         {
             return solid().speedFactor(plant.speedFactor).noCollission();
         }
 
-        private static AbstractBlock.Properties solidTallPlant()
+        private static BlockBehaviour.Properties solidTallPlant()
         {
-            return AbstractBlock.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().instabreak().sound(SoundType.WEEPING_VINES);
+            return BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().instabreak().sound(SoundType.WEEPING_VINES);
         }
 
-        private static AbstractBlock.Properties nonSolidTallPlant(Plant plant)
+        private static BlockBehaviour.Properties nonSolidTallPlant(Plant plant)
         {
             return solidTallPlant().noCollission().speedFactor(plant.speedFactor);
         }
 
-        private static AbstractBlock.Properties kelp(Plant plant)
+        private static BlockBehaviour.Properties kelp(Plant plant)
         {
-            return AbstractBlock.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+            return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
         }
 
         private static VoxelShape getBodyShape()

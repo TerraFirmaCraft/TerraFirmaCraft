@@ -8,25 +8,25 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -37,6 +37,13 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.util.Helpers;
+
+import net.minecraft.Util;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 
 public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
 {
@@ -51,13 +58,13 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
         }
         for (int i = 0; i < 4; i++)
         {
-            shapes[8 + i] = VoxelShapes.or(shapes[7 + i], Block.box(4 * i, 8.0D, 0.0D, 4 * (i + 1), 12.0D, 16.0D));
+            shapes[8 + i] = Shapes.or(shapes[7 + i], Block.box(4 * i, 8.0D, 0.0D, 4 * (i + 1), 12.0D, 16.0D));
         }
         for (int i = 0; i < 4; i++)
         {
-            shapes[12 + i] = VoxelShapes.or(shapes[11 + i], Block.box(4 * i, 12.0D, 0.0D, 4 * (i + 1), 16.0D, 16.0D));
+            shapes[12 + i] = Shapes.or(shapes[11 + i], Block.box(4 * i, 12.0D, 0.0D, 4 * (i + 1), 16.0D, 16.0D));
         }
-        shapes[16] = VoxelShapes.block(); // lit stage
+        shapes[16] = Shapes.block(); // lit stage
     });
 
     public PitKilnBlock(ForgeBlockProperties properties)
@@ -68,7 +75,7 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
     {
         if (stateIn.getValue(STAGE) == LIT)
         {
@@ -83,26 +90,26 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(STAGE));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         return !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!world.isClientSide() && hand == Hand.MAIN_HAND)
+        if (!world.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
             PitKilnTileEntity te = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
-            if (te == null) return ActionResultType.FAIL;
+            if (te == null) return InteractionResult.FAIL;
 
             ItemStack held = player.getItemInHand(hand);
             Item item = held.getItem();
@@ -150,21 +157,21 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
                     }
                 }
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getBlockSupportShape(BlockState state, IBlockReader reader, BlockPos pos)
+    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockState blockstate = worldIn.getBlockState(pos.below());
         return Block.isFaceFull(blockstate.getCollisionShape(worldIn, pos.below()), Direction.UP);
@@ -172,21 +179,21 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getVisualShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)
+    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }

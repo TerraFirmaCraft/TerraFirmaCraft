@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.DataSlot;
 
-public class IntArrayBuilder implements IIntArray
+public class IntArrayBuilder implements ContainerData
 {
     /**
      * A single {@link IntReferenceHolder} for one tracked value
      */
-    public static IntReferenceHolder of(IntSupplier getter, IntConsumer setter)
+    public static DataSlot of(IntSupplier getter, IntConsumer setter)
     {
-        return new IntReferenceHolder()
+        return new DataSlot()
         {
             @Override
             public int get()

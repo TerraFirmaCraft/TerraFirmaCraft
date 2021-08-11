@@ -9,7 +9,7 @@ package net.dries007.tfc.client;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 /**
  * Client side methods for proxy use
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class ClientHelpers
 {
     @Nullable
-    public static World getWorld()
+    public static Level getWorld()
     {
         return Minecraft.getInstance().level;
     }

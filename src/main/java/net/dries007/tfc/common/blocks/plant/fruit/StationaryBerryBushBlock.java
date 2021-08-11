@@ -9,20 +9,20 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -45,9 +45,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
+        if (worldIn.isClientSide() || handIn != InteractionHand.MAIN_HAND) return InteractionResult.FAIL;
         if (state.getValue(STAGE) == 2 && state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
         {
             ItemStack held = player.getItemInHand(handIn);
@@ -61,7 +61,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
                     if (worldIn.getRandom().nextInt(3) != 0)
                         Helpers.spawnItem(worldIn, pos, new ItemStack(defaultBlockState().getBlock()));
                     worldIn.destroyBlock(pos, true, null);
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
@@ -69,13 +69,13 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return HALF_PLANT;
     }
 
     @Override
-    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -113,9 +113,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
         }
     }
 
-    private void propagate(World world, BlockPos pos, Random rand)
+    private void propagate(Level world, BlockPos pos, Random rand)
     {
-        BlockPos.Mutable mutablePos = pos.mutable();
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
         for (int i = 0; i < 12; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), 0, rand.nextInt(10) - rand.nextInt(10));

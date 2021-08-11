@@ -11,41 +11,41 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
-public class RivuletFeature extends Feature<BlockStateFeatureConfig>
+public class RivuletFeature extends Feature<BlockStateConfiguration>
 {
-    public RivuletFeature(Codec<BlockStateFeatureConfig> codec)
+    public RivuletFeature(Codec<BlockStateConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
 
         // Basic pathfinding down the slope
         final Set<BlockPos> chosen = new HashSet<>();
         final LinkedList<BlockPos> branches = new LinkedList<>();
 
-        final BlockPos startPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ()), pos.getZ());
+        final BlockPos startPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()), pos.getZ());
         if (!world.getFluidState(startPos.below()).isEmpty()) return false;
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         branches.add(startPos);
 
         boolean mainBranch = true;
@@ -78,7 +78,7 @@ public class RivuletFeature extends Feature<BlockStateFeatureConfig>
                     {
                         continue; // Outside of the bounding box, skip!
                     }
-                    final int height = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
+                    final int height = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
                     if (height <= mutablePos.getY())
                     {
                         // Check that the block below is solid

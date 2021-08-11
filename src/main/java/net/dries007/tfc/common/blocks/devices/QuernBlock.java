@@ -6,28 +6,28 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -41,24 +41,24 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     private static final VoxelShape BASE_SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
 
     private static final VoxelShape HANDSTONE_SHAPE = box(3.0D, 10.0D, 3.0D, 13.0D, 13.76D, 13.0D);
-    private static final AxisAlignedBB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
+    private static final AABB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape HANDLE_SHAPE = box(4.34D, 13.76D, 4.34D, 5.36D, 16.24D, 5.36D);
-    private static final AxisAlignedBB HANDLE_AABB = HANDLE_SHAPE.bounds().inflate(0.01D);
+    private static final AABB HANDLE_AABB = HANDLE_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape INPUT_SLOT_SHAPE = box(6.0D, 13.76D, 6.0D, 10.0D, 16.24D, 10.0D);
-    private static final AxisAlignedBB INPUT_SLOT_AABB = INPUT_SLOT_SHAPE.bounds().inflate(0.01D);
+    private static final AABB INPUT_SLOT_AABB = INPUT_SLOT_SHAPE.bounds().inflate(0.01D);
 
-    private static final VoxelShape FULL_SHAPE = VoxelShapes.join(VoxelShapes.or(BASE_SHAPE, HANDSTONE_SHAPE, HANDLE_SHAPE), INPUT_SLOT_SHAPE, IBooleanFunction.ONLY_FIRST);
+    private static final VoxelShape FULL_SHAPE = Shapes.join(Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE, HANDLE_SHAPE), INPUT_SLOT_SHAPE, BooleanOp.ONLY_FIRST);
 
-    private static SelectionPlace getPlayerSelection(IBlockReader world, BlockPos pos, PlayerEntity player, BlockRayTraceResult result)
+    private static SelectionPlace getPlayerSelection(BlockGetter world, BlockPos pos, Player player, BlockHitResult result)
     {
         QuernTileEntity te = Helpers.getTileEntity(world, pos, QuernTileEntity.class);
         if (te != null)
         {
             return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> {
-                ItemStack held = player.getItemInHand(Hand.MAIN_HAND);
-                Vector3d hit = result.getLocation();
+                ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
+                Vec3 hit = result.getLocation();
                 if (te.hasHandstone())
                 {
                     if (!te.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
@@ -87,9 +87,9 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (hand == Hand.MAIN_HAND)
+        if (hand == InteractionHand.MAIN_HAND)
         {
             QuernTileEntity teQuern = Helpers.getTileEntity(level, pos, QuernTileEntity.class);
             if (teQuern != null && !teQuern.isGrinding())
@@ -100,8 +100,8 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                     if (selection == SelectionPlace.HANDLE)
                     {
                         teQuern.grind();
-                        level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundCategory.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                        return ActionResultType.sidedSuccess(level.isClientSide);
+                        level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     else if (selection == SelectionPlace.INPUT_SLOT)
                     {
@@ -115,37 +115,37 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                     {
                         return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
                     }
-                    return ActionResultType.FAIL;
-                }).orElse(ActionResultType.PASS);
+                    return InteractionResult.FAIL;
+                }).orElse(InteractionResult.PASS);
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
-    private static ActionResultType insertOrExtract(World level, QuernTileEntity teQuern, IItemHandler inventory, PlayerEntity player, ItemStack stack, int slot)
+    private static InteractionResult insertOrExtract(Level level, QuernTileEntity teQuern, IItemHandler inventory, Player player, ItemStack stack, int slot)
     {
         if (!stack.isEmpty())
         {
-            player.setItemInHand(Hand.MAIN_HAND, inventory.insertItem(slot, stack, false));
+            player.setItemInHand(InteractionHand.MAIN_HAND, inventory.insertItem(slot, stack, false));
         }
         else
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
         }
         teQuern.setAndUpdateSlots(slot);
-        return ActionResultType.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
     {
         QuernTileEntity te = Helpers.getTileEntity(world, pos, QuernTileEntity.class);
         return te != null && te.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
     }
 
     @Override
-    public boolean drawHighlight(World level, BlockPos pos, PlayerEntity player, BlockRayTraceResult rayTrace, MatrixStack matrixStack, IRenderTypeBuffer buffers, Vector3d renderPos)
+    public boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack matrixStack, MultiBufferSource buffers, Vec3 renderPos)
     {
         SelectionPlace selection = getPlayerSelection(level, pos, player, rayTrace);
         if (selection != SelectionPlace.BASE)

@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 
@@ -22,7 +22,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     protected static final VoxelShape SHORT_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
     protected static final VoxelShape SHORTEST_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
 
-    public static TFCSeagrassBlock create(IPlant plant, FluidProperty fluid, AbstractBlock.Properties properties)
+    public static TFCSeagrassBlock create(IPlant plant, FluidProperty fluid, BlockBehaviour.Properties properties)
     {
         return new TFCSeagrassBlock(properties)
         {
@@ -40,13 +40,13 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
         };
     }
 
-    protected TFCSeagrassBlock(AbstractBlock.Properties properties)
+    protected TFCSeagrassBlock(BlockBehaviour.Properties properties)
     {
         super(properties);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         switch (state.getValue(AGE))
         {
@@ -62,8 +62,8 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     }
 
     @Override
-    public AbstractBlock.OffsetType getOffsetType()
+    public BlockBehaviour.OffsetType getOffsetType()
     {
-        return AbstractBlock.OffsetType.XZ;
+        return BlockBehaviour.OffsetType.XZ;
     }
 }

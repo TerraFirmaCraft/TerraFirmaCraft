@@ -9,15 +9,15 @@ package net.dries007.tfc.world.decorator;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.WorldDecoratingHelper;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.placement.DecorationContext;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
 
-public class NearWaterDecorator extends Placement<NearWaterConfig>
+public class NearWaterDecorator extends FeatureDecorator<NearWaterConfig>
 {
     public NearWaterDecorator(Codec<NearWaterConfig> codec)
     {
@@ -25,9 +25,9 @@ public class NearWaterDecorator extends Placement<NearWaterConfig>
     }
 
     @Override
-    public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random random, NearWaterConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(DecorationContext helper, Random random, NearWaterConfig config, BlockPos pos)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int radius = config.getRadius();
         for (int x = -radius; x <= radius; x++)
         {

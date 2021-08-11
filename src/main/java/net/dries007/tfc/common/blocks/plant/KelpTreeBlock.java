@@ -9,27 +9,32 @@ package net.dries007.tfc.common.blocks.plant;
 import java.util.Random;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
-public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggable
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
 {
-    public static KelpTreeBlock create(AbstractBlock.Properties builder, FluidProperty fluid)
+    public static KelpTreeBlock create(BlockBehaviour.Properties builder, FluidProperty fluid)
     {
         return new KelpTreeBlock(builder)
         {
@@ -41,33 +46,33 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         };
     }
 
-    protected KelpTreeBlock(AbstractBlock.Properties builder)
+    protected KelpTreeBlock(BlockBehaviour.Properties builder)
     {
         super(0.3125F, builder);
         registerDefaultState(stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return getStateForPlacement(context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player)
     {
         updateFluid(worldIn, state, pos);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
         builder.add(getFluidProperty());
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }
 
-    public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
+    public BlockState getStateForPlacement(BlockGetter world, BlockPos pos)
     {
         Block downBlock = world.getBlockState(pos.below()).getBlock();
         Block upBlock = world.getBlockState(pos.above()).getBlock();
@@ -86,7 +91,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canSurvive(worldIn, currentPos))
         {
@@ -114,7 +119,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
      */
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -136,7 +141,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         if (!state.canSurvive(worldIn, pos))
         {
@@ -144,7 +149,7 @@ public abstract class KelpTreeBlock extends SixWayBlock implements IFluidLoggabl
         }
     }
 
-    private void updateFluid(IWorld world, BlockState state, BlockPos pos)
+    private void updateFluid(LevelAccessor world, BlockState state, BlockPos pos)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)

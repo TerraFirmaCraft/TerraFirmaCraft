@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -21,7 +21,7 @@ public class TickCounterTileEntity extends TFCTileEntity
         this(TFCTileEntities.TICK_COUNTER.get());
     }
 
-    protected TickCounterTileEntity(TileEntityType<?> type)
+    protected TickCounterTileEntity(BlockEntityType<?> type)
     {
         super(type);
     }
@@ -44,14 +44,14 @@ public class TickCounterTileEntity extends TFCTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         lastUpdateTick = nbt.getLong("tick");
         super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putLong("tick", lastUpdateTick);
         return super.save(nbt);

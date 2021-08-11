@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.decorator;
 
-import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class VolcanoConfig implements IPlacementConfig
+public class VolcanoConfig implements DecoratorConfiguration
 {
     public static final Codec<VolcanoConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),

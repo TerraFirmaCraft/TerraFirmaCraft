@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.capabilities.FluidIngredient;
@@ -33,7 +33,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
 
     @Nullable
-    public static HeatingRecipe getRecipe(World world, ItemStackRecipeWrapper wrapper)
+    public static HeatingRecipe getRecipe(Level world, ItemStackRecipeWrapper wrapper)
     {
         for (HeatingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {
@@ -61,7 +61,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     @Override
-    public boolean matches(ItemStackRecipeWrapper inv, World worldIn)
+    public boolean matches(ItemStackRecipeWrapper inv, Level worldIn)
     {
         return ingredient.test(inv.getStack());
     }
@@ -79,13 +79,13 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.HEATING.get();
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return TFCRecipeTypes.HEATING;
     }
@@ -129,13 +129,13 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
             final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
             final ItemStack outputItem = json.has("result_item") ? ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item")) : ItemStack.EMPTY;
             final FluidStack outputFluid = json.has("result_fluid") ? FluidIngredient.fluidStackFromJson(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
-            final float temperature = JSONUtils.getAsFloat(json, "temperature");
+            final float temperature = GsonHelper.getAsFloat(json, "temperature");
             return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
         }
 
         @Nullable
         @Override
-        public HeatingRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public HeatingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack outputItem = buffer.readItem();
@@ -145,7 +145,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, HeatingRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, HeatingRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.outputItem);

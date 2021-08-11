@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Rock;

@@ -8,11 +8,11 @@ package net.dries007.tfc.world.feature.coral;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SeaPickleBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -29,7 +29,7 @@ public final class CoralHelpers
      *
      * {@link net.minecraft.world.gen.feature.CoralFeature#placeCoralBlock(IWorld, Random, BlockPos, BlockState)}
      */
-    public static boolean placeCoralBlock(IWorld world, Random rand, BlockPos pos, BlockState coralBlockState)
+    public static boolean placeCoralBlock(LevelAccessor world, Random rand, BlockPos pos, BlockState coralBlockState)
     {
         BlockPos abovePos = pos.above();
         BlockState blockstate = world.getBlockState(pos);

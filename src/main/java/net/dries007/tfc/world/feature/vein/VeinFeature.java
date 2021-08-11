@@ -12,16 +12,16 @@ import java.util.Random;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.FastRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.LinearCongruentialGenerator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
@@ -33,7 +33,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, C config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos pos, C config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final List<V> veins = getNearbyVeins(worldIn, chunkPos, config.getChunkRadius(), config, worldIn::getBiome);
@@ -48,7 +48,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         return false;
     }
 
-    public final List<V> getNearbyVeins(ISeedReader world, ChunkPos pos, int radius, C config, Function<BlockPos, Biome> biomeQuery)
+    public final List<V> getNearbyVeins(WorldGenLevel world, ChunkPos pos, int radius, C config, Function<BlockPos, Biome> biomeQuery)
     {
         final List<V> veins = new ArrayList<>();
         final Random random = new Random();
@@ -62,12 +62,12 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         return veins;
     }
 
-    public final void getVeinsAtChunk(ISeedReader world, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Biome> biomeQuery)
+    public final void getVeinsAtChunk(WorldGenLevel world, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Biome> biomeQuery)
     {
-        long seed = FastRandom.next(world.getSeed(), config.getSalt());
-        seed = FastRandom.next(seed, chunkPosX);
-        seed = FastRandom.next(seed, chunkPosZ);
-        seed = FastRandom.next(seed, config.getSalt());
+        long seed = LinearCongruentialGenerator.next(world.getSeed(), config.getSalt());
+        seed = LinearCongruentialGenerator.next(seed, chunkPosX);
+        seed = LinearCongruentialGenerator.next(seed, chunkPosZ);
+        seed = LinearCongruentialGenerator.next(seed, config.getSalt());
         random.setSeed(seed);
         if (random.nextInt(config.getRarity()) == 0)
         {
@@ -80,10 +80,10 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @SuppressWarnings("deprecation")
-    protected void place(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
+    protected void place(WorldGenLevel world, Random random, int blockX, int blockZ, V vein, C config)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        final MutableBoundingBox box = getBoundingBox(config, vein);
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        final BoundingBox box = getBoundingBox(config, vein);
         box.move(vein.getPos());
 
         // Intersect the bounding box with the chunk allowed region
@@ -118,7 +118,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                     // Pick a random position
                     final int indicatorX = x + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
                     final int indicatorZ = z + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
-                    final int indicatorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
+                    final int indicatorY = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
                     if (Math.abs(indicatorY - maxVeinY) < indicator.getDepth())
                     {
                         mutablePos.set(indicatorX, indicatorY, indicatorZ);
@@ -172,5 +172,5 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     /**
      * Gets the total bounding box around where the vein can spawn, using relative position to the center of the vein
      */
-    protected abstract MutableBoundingBox getBoundingBox(C config, V vein);
+    protected abstract BoundingBox getBoundingBox(C config, V vein);
 }

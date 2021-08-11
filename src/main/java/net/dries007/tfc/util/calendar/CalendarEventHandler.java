@@ -10,10 +10,10 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -64,11 +64,11 @@ public class CalendarEventHandler
 
     public static void onOverworldTick(TickEvent.WorldTickEvent event)
     {
-        World world = event.world;
+        Level world = event.world;
         // todo: verify this is the correct overworld dimension check
-        if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.dimension() == World.OVERWORLD)
+        if (event.phase == TickEvent.Phase.END && world instanceof ServerLevel && event.world.dimension() == Level.OVERWORLD)
         {
-            Calendars.SERVER.onOverworldTick((ServerWorld) world);
+            Calendars.SERVER.onOverworldTick((ServerLevel) world);
         }
     }
 
@@ -101,15 +101,15 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayerEntity)
+        if (event.getPlayer() instanceof ServerPlayer)
         {
-            ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+            ServerPlayer player = (ServerPlayer) event.getPlayer();
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();
             if (server != null)
             {
                 LOGGER.info("Player Logged Out - Checking for Calendar Updates.");
-                List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
+                List<ServerPlayer> players = server.getPlayerList().getPlayers();
                 int playerCount = players.size();
                 // The player logging out doesn't count
                 if (players.contains(player))
@@ -128,9 +128,9 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayerEntity)
+        if (event.getPlayer() instanceof ServerPlayer)
         {
-            ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+            ServerPlayer player = (ServerPlayer) event.getPlayer();
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();
             if (server != null)

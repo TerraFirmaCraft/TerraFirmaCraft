@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class BerryBushTileEntity extends TickCounterTileEntity
 {
@@ -22,7 +22,7 @@ public class BerryBushTileEntity extends TickCounterTileEntity
         this(TFCTileEntities.BERRY_BUSH.get());
     }
 
-    protected BerryBushTileEntity(TileEntityType<?> type)
+    protected BerryBushTileEntity(BlockEntityType<?> type)
     {
         super(type);
         harvested = true;
@@ -32,7 +32,7 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         isGrowing = nbt.getBoolean("isGrowing");
         harvested = nbt.getBoolean("harvested");
@@ -42,7 +42,7 @@ public class BerryBushTileEntity extends TickCounterTileEntity
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putBoolean("isGrowing", isGrowing);
         nbt.putBoolean("harvested", harvested);

@@ -10,9 +10,9 @@ import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 
 /**
  * Marker for TFC biome providers
@@ -37,8 +37,8 @@ public interface ITFCBiomeProvider
     /**
      * @return itself, or the underlying biome provider / source
      */
-    default BiomeProvider biomeSource()
+    default BiomeSource biomeSource()
     {
-        return (BiomeProvider) this;
+        return (BiomeSource) this;
     }
 }

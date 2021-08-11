@@ -9,18 +9,18 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.trees.Tree;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.server.level.ServerLevel;
 
-public class TFCTree extends Tree
+public class TFCTree extends AbstractTreeGrower
 {
     private final ResourceLocation normalTree;
     private final ResourceLocation oldGrowthTree;
@@ -43,13 +43,13 @@ public class TFCTree extends Tree
 
     @Nullable
     @Override
-    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
+    protected ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
     {
         return null; // Not using vanilla's feature config
     }
 
     @Override
-    public boolean growTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
+    public boolean growTree(ServerLevel worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
         ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY));
         worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);

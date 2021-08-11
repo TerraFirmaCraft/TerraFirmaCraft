@@ -8,15 +8,15 @@ package net.dries007.tfc.common.container;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -27,7 +27,7 @@ import net.dries007.tfc.common.recipes.KnappingPattern;
 
 public class KnappingContainer extends ItemStackContainer implements IButtonHandler, IInventoryNoop, ISlotCallback
 {
-    private static ItemStack getItemForKnapping(PlayerInventory inv)
+    private static ItemStack getItemForKnapping(Inventory inv)
     {
         final ItemStack main = inv.player.getMainHandItem();
         return main.getItem().is(TFCTags.Items.KNAPPING_ANY) ? main : inv.player.getOffhandItem();
@@ -39,12 +39,12 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     private final ItemStack stackCopy;
     private final int amountToConsume;
     private final boolean consumeAfterComplete;
-    private final IRecipeType<? extends KnappingRecipe> recipeType;
+    private final RecipeType<? extends KnappingRecipe> recipeType;
     private boolean requiresReset;
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
 
-    public KnappingContainer(ContainerType<?> containerType, IRecipeType<? extends KnappingRecipe> recipeType, int windowId, PlayerInventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
+    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
         super(containerType, windowId, playerInv, getItemForKnapping(playerInv), 20);
         this.itemIndex += 1;
@@ -63,7 +63,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
 
 
     @Override
-    public void onButtonPress(int buttonID, @Nullable CompoundNBT extraNBT)
+    public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
     {
         getMatrix().set(buttonID, false);
 
@@ -78,9 +78,9 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
 
         // check the pattern
         Slot slot = slots.get(0);
-        if (slot != null && player.level instanceof ServerWorld)
+        if (slot != null && player.level instanceof ServerLevel)
         {
-            KnappingRecipe recipe = getMatchingRecipe((ServerWorld) player.level);
+            KnappingRecipe recipe = getMatchingRecipe((ServerLevel) player.level);
             if (recipe != null)
             {
                 slot.set(recipe.assemble(this));
@@ -93,7 +93,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     }
 
     @Override
-    public void removed(PlayerEntity player)
+    public void removed(Player player)
     {
         Slot slot = slots.get(0);
         ItemStack stack = slot.getItem();
@@ -167,7 +167,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     }
 
     @Override
-    public void onSlotTake(PlayerEntity player, int slot, ItemStack stack)
+    public void onSlotTake(Player player, int slot, ItemStack stack)
     {
         resetMatrix();
     }
@@ -186,7 +186,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     }
 
     @Nullable
-    private KnappingRecipe getMatchingRecipe(ServerWorld level)
+    private KnappingRecipe getMatchingRecipe(ServerLevel level)
     {
         return level.getRecipeManager().getRecipeFor(recipeType, this, level).orElse(null);
     }

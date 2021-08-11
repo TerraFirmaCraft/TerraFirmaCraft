@@ -11,28 +11,34 @@ import java.util.function.Supplier;
 
 import net.minecraft.block.*;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.config.TFCConfig;
 
-public class TopPlantBlock extends AbstractTopPlantBlock
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.NetherVines;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class TopPlantBlock extends GrowingPlantHeadBlock
 {
     private final Supplier<? extends Block> bodyBlock;
 
-    public TopPlantBlock(AbstractBlock.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
+    public TopPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
         super(properties, direction, shape, false, 0);
         this.bodyBlock = bodyBlock;
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
     {
         if (state.getValue(AGE) < 25 && ForgeHooks.onCropsGrowPre(worldIn, pos.relative(growthDirection), worldIn.getBlockState(pos.relative(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
         {
@@ -46,7 +52,7 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
@@ -60,11 +66,11 @@ public class TopPlantBlock extends AbstractTopPlantBlock
     @Override
     protected boolean canGrowInto(BlockState state)
     {
-        return PlantBlockHelper.isValidGrowthState(state);
+        return NetherVines.isValidGrowthState(state);
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.relative(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);

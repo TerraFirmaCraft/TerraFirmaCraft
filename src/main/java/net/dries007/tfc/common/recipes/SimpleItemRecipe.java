@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 /**
  * Handling for simple Ingredient -> ItemStack recipes
@@ -44,7 +44,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
     }
 
     @Override
-    public boolean matches(ItemStackRecipeWrapper wrapper, World worldIn)
+    public boolean matches(ItemStackRecipeWrapper wrapper, Level worldIn)
     {
         return this.ingredient.test(wrapper.getStack());
     }
@@ -80,13 +80,13 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
-            final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            final ItemStack stack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
             return factory.create(recipeId, ingredient, stack);
         }
 
         @Nullable
         @Override
-        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
             final ItemStack stack = buffer.readItem();
@@ -94,7 +94,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, R recipe)
+        public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());

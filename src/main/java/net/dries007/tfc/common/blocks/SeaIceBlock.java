@@ -8,16 +8,18 @@ package net.dries007.tfc.common.blocks;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IceBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.IceBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class SeaIceBlock extends IceBlock
 {
@@ -30,7 +32,7 @@ public class SeaIceBlock extends IceBlock
      * Override to change a reference to water to salt water
      */
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack)
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack)
     {
         super.playerDestroy(worldIn, player, pos, state, te, stack);
         if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
@@ -50,7 +52,7 @@ public class SeaIceBlock extends IceBlock
     }
 
     @Override
-    protected void melt(BlockState state, World worldIn, BlockPos pos)
+    protected void melt(BlockState state, Level worldIn, BlockPos pos)
     {
         if (worldIn.dimensionType().ultraWarm())
         {

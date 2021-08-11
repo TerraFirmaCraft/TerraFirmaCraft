@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.world.decorator;
 
-import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class FlatEnoughConfig implements IPlacementConfig
+public class FlatEnoughConfig implements DecoratorConfiguration
 {
     public static final Codec<FlatEnoughConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.floatRange(0, 1).optionalFieldOf("flatness", 0.5f).forGetter(c -> c.flatness),

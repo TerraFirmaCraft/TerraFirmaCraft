@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.feature.vein;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 public class Vein
 {

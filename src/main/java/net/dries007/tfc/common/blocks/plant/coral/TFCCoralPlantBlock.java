@@ -8,25 +8,25 @@ package net.dries007.tfc.common.blocks.plant.coral;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -51,7 +51,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     private final VoxelShape shape;
 
-    public TFCCoralPlantBlock(VoxelShape shape, AbstractBlock.Properties properties)
+    public TFCCoralPlantBlock(VoxelShape shape, BlockBehaviour.Properties properties)
     {
         super(properties);
 
@@ -59,21 +59,21 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor((fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {
@@ -91,7 +91,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockPos posBelow = pos.below();
         return worldIn.getBlockState(posBelow).isFaceSturdy(worldIn, posBelow, Direction.UP);
@@ -99,14 +99,14 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return shape;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
     {
         entityIn.hurt(DamageSource.CACTUS, 1.0F);
     }
@@ -120,7 +120,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     /**
      * {@link net.minecraft.block.AbstractCoralPlantBlock#tryScheduleDieTick(BlockState, IWorld, BlockPos)}
      */
-    protected void tryScheduleDieTick(BlockState state, IWorld worldIn, BlockPos pos)
+    protected void tryScheduleDieTick(BlockState state, LevelAccessor worldIn, BlockPos pos)
     {
         if (!scanForWater(state, worldIn, pos))
         {
@@ -131,7 +131,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     /**
      * {@link net.minecraft.block.AbstractCoralPlantBlock#scanForWater(BlockState, IBlockReader, BlockPos)}
      */
-    protected boolean scanForWater(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected boolean scanForWater(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
         if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {

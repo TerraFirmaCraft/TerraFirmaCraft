@@ -8,14 +8,14 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -33,12 +33,12 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, TFCRandomPatchConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, TFCRandomPatchConfig config)
     {
         BlockPos posAt;
         if (config.project && !config.projectEachLocation)
         {
-            posAt = world.getHeightmapPos(config.projectToOceanFloor ? Heightmap.Type.OCEAN_FLOOR_WG : Heightmap.Type.WORLD_SURFACE_WG, pos);
+            posAt = world.getHeightmapPos(config.projectToOceanFloor ? Heightmap.Types.OCEAN_FLOOR_WG : Heightmap.Types.WORLD_SURFACE_WG, pos);
         }
         else
         {
@@ -54,7 +54,7 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
             tries *= (data.getAdjustedForestDensity() + 0.5f);
         }
 
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockState baseState = config.stateProvider.getState(random, posAt);
         for (int i = 0; i < tries; ++i)
         {
@@ -63,7 +63,7 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
             final int y = random.nextInt(config.ySpread + 1) - random.nextInt(config.ySpread + 1);
             if (config.projectEachLocation)
             {
-                mutablePos.set(x, y + world.getHeight(config.projectToOceanFloor ? Heightmap.Type.OCEAN_FLOOR_WG : Heightmap.Type.WORLD_SURFACE_WG, x, z), z);
+                mutablePos.set(x, y + world.getHeight(config.projectToOceanFloor ? Heightmap.Types.OCEAN_FLOOR_WG : Heightmap.Types.WORLD_SURFACE_WG, x, z), z);
             }
             else
             {
@@ -89,7 +89,7 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
                         // Fourth check: for extra conditions such as only allowing placement underground
                         if (config.onlyUnderground)
                         {
-                            final int surfaceHeight = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
+                            final int surfaceHeight = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
                             if (!stateAt.getBlock().is(Blocks.CAVE_AIR) || pos.getY() >= surfaceHeight - 1)
                             {
                                 continue;

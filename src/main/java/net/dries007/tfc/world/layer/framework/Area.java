@@ -8,8 +8,8 @@ package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
 
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
 
 import it.unimi.dsi.fastutil.HashCommon;
 
@@ -25,7 +25,7 @@ public class Area
 
     public Area(AreaSource source, int maxCacheSize)
     {
-        maxCacheSize = MathHelper.smallestEncompassingPowerOfTwo(maxCacheSize);
+        maxCacheSize = Mth.smallestEncompassingPowerOfTwo(maxCacheSize);
 
         this.source = source;
         this.keys = new long[maxCacheSize];

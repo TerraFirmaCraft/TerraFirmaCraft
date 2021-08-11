@@ -9,14 +9,14 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.container.KnappingContainer;
@@ -32,7 +32,7 @@ public class RockKnappingRecipe extends KnappingRecipe
     }
 
     @Override
-    public boolean matches(KnappingContainer container, World level)
+    public boolean matches(KnappingContainer container, Level level)
     {
         return container.getMatrix().matches(this.matrix) && ingredient.test(container.getStackCopy());
     }
@@ -42,14 +42,14 @@ public class RockKnappingRecipe extends KnappingRecipe
         @Override
         public RockKnappingRecipe fromJson(ResourceLocation id, JsonObject json)
         {
-            final ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            final ItemStack stack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
             final Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.get("ingredient")) : Ingredient.of(TFCTags.Items.ROCK_KNAPPING);
             return new RockKnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, ingredient);
         }
 
         @Nullable
         @Override
-        public RockKnappingRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer)
+        public RockKnappingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
         {
             final boolean outsideSlotRequired = buffer.readBoolean();
             final KnappingPattern matrix = KnappingPattern.fromNetwork(buffer, outsideSlotRequired);
@@ -59,7 +59,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, RockKnappingRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, RockKnappingRecipe recipe)
         {
             buffer.writeBoolean(recipe.matrix.outsideSlot);
             recipe.matrix.toNetwork(buffer, recipe.matrix.getWidth(), recipe.matrix.getHeight());
@@ -68,7 +68,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         }
 
         @Override
-        public IRecipeType<?> getRecipeType()
+        public RecipeType<?> getRecipeType()
         {
             return TFCRecipeTypes.ROCK_KNAPPING;
         }

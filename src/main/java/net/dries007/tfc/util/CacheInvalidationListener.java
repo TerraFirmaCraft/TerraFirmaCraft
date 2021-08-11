@@ -10,12 +10,12 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -28,15 +28,17 @@ import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.mixin.item.crafting.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
+import net.minecraft.server.packs.resources.PreparableReloadListener.PreparationBarrier;
+
 /**
  * This is a manager for various cache invalidations, either on resource reload or server start/stop
  */
-public enum CacheInvalidationListener implements IFutureReloadListener
+public enum CacheInvalidationListener implements PreparableReloadListener
 {
     INSTANCE;
 
     @Override
-    public CompletableFuture<Void> reload(IStage stage, IResourceManager resourceManager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
+    public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
     {
         return CompletableFuture.runAsync(() -> {}, backgroundExecutor).thenCompose(stage::wait).thenRunAsync(this::invalidateAll, gameExecutor);
     }
@@ -65,7 +67,7 @@ public enum CacheInvalidationListener implements IFutureReloadListener
     }
 
     @SuppressWarnings("unchecked")
-    private <C extends IInventory, R extends IRecipe<C>> Collection<R> getRecipes(MinecraftServer server, IRecipeType<R> recipeType)
+    private <C extends Container, R extends Recipe<C>> Collection<R> getRecipes(MinecraftServer server, RecipeType<R> recipeType)
     {
         return (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
     }

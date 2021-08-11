@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -16,11 +16,11 @@ import net.dries007.tfc.world.noise.NoiseUtil;
  * This is a simple linearly interpolated float grid.
  * It records the value at the corner, and interpolates the values between on demand.
  */
-public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
+public class LerpFloatLayer implements INBTSerializable<CompoundTag>
 {
     private float valueNW, valueNE, valueSW, valueSE;
 
-    public LerpFloatLayer(PacketBuffer buffer)
+    public LerpFloatLayer(FriendlyByteBuf buffer)
     {
         deserialize(buffer);
     }
@@ -50,9 +50,9 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putFloat("nw", valueNW);
         nbt.putFloat("ne", valueNE);
         nbt.putFloat("sw", valueSW);
@@ -61,7 +61,7 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         valueNW = nbt.getFloat("nw");
         valueNE = nbt.getFloat("ne");
@@ -69,7 +69,7 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
         valueSE = nbt.getFloat("se");
     }
 
-    public void serialize(PacketBuffer buffer)
+    public void serialize(FriendlyByteBuf buffer)
     {
         buffer.writeFloat(valueNW);
         buffer.writeFloat(valueNE);
@@ -77,7 +77,7 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
         buffer.writeFloat(valueSE);
     }
 
-    public void deserialize(PacketBuffer buffer)
+    public void deserialize(FriendlyByteBuf buffer)
     {
         valueNW = buffer.readFloat();
         valueNE = buffer.readFloat();

@@ -8,22 +8,22 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.Containers;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -35,14 +35,14 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickableTileEntity
+public class PitKilnTileEntity extends PlacedItemTileEntity implements TickableBlockEntity
 {
-    public static final Vector3i[] DIAGONALS = new Vector3i[] {new Vector3i(1, 0, 1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, -1)};
+    public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
     private static final float MAX_TEMP = 1200f;
 
-    public static void convertPitKilnToPlacedItem(World world, BlockPos pos)
+    public static void convertPitKilnToPlacedItem(Level world, BlockPos pos)
     {
         PitKilnTileEntity teOld = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
         if (teOld != null)
@@ -80,7 +80,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         }
     }
 
-    public static boolean isValid(World level, BlockPos worldPosition)
+    public static boolean isValid(Level level, BlockPos worldPosition)
     {
         for (Direction face : Direction.Plane.HORIZONTAL)
         {
@@ -106,31 +106,31 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         this(TFCTileEntities.PIT_KILN.get());
     }
 
-    protected PitKilnTileEntity(TileEntityType<?> type)
+    protected PitKilnTileEntity(BlockEntityType<?> type)
     {
         super(type);
         cachedRecipes = new HeatingRecipe[4];
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         isLit = nbt.getBoolean("isLit");
         litTick = nbt.getLong("litTick");
-        ItemStackHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
-        ItemStackHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
+        ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
+        ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
         updateCache();
         super.load(state, nbt);
     }
 
     @Override
     @Nonnull
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putBoolean("isLit", isLit);
         nbt.putLong("litTick", litTick);
-        nbt.put("strawItems", ItemStackHelper.saveAllItems(new CompoundNBT(), strawItems));
-        nbt.put("logItems", ItemStackHelper.saveAllItems(new CompoundNBT(), logItems));
+        nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems));
+        nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems));
         return super.save(nbt);
     }
 
@@ -189,8 +189,8 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         int x = worldPosition.getX();
         int y = worldPosition.getY();
         int z = worldPosition.getZ();
-        strawItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
-        logItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
+        strawItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
+        logItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
     }
 
     public void deleteStraw(int slot)
@@ -224,7 +224,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         if (hasFuel() && level != null && isValid(level, worldPosition) && !isLit())
         {
             BlockPos above = worldPosition.above();
-            if (AbstractFireBlock.canBePlacedAt(level, above, Direction.UP))
+            if (BaseFireBlock.canBePlacedAt(level, above, Direction.UP))
             {
                 for (Direction facing : Direction.Plane.HORIZONTAL)
                 {
@@ -239,7 +239,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
                 level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PitKilnBlock.STAGE, PitKilnBlock.LIT));
                 level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
                 //Light other adjacent pit kilns
-                for (Vector3i diagonal : DIAGONALS)
+                for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
                     PitKilnTileEntity pitKiln = Helpers.getTileEntity(level, pitPos, PitKilnTileEntity.class);
@@ -285,7 +285,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         for (int i = 0; i < inventory.getSlots(); i++)
         {
             ItemStack stack = inventory.getStackInSlot(i);
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> heat.setTemperature(MathHelper.clamp(heat.getTemperature() - remainingTicks / 10.0f, 0, MAX_TEMP)));
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> heat.setTemperature(Mth.clamp(heat.getTemperature() - remainingTicks / 10.0f, 0, MAX_TEMP)));
         }
     }
 

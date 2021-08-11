@@ -9,13 +9,13 @@ package net.dries007.tfc.client;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-import net.minecraft.client.resources.ColorMapLoader;
-import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.LegacyStuffWrapper;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.ResourceLocation;
 
-public class ColorMapReloadListener extends ReloadListener<int[]>
+public class ColorMapReloadListener extends SimplePreparableReloadListener<int[]>
 {
     private final ResourceLocation textureLocation;
     private final Consumer<int[]> consumer;
@@ -28,11 +28,11 @@ public class ColorMapReloadListener extends ReloadListener<int[]>
 
     @Override
     @SuppressWarnings("deprecation")
-    protected int[] prepare(IResourceManager resourceManagerIn, IProfiler profilerIn)
+    protected int[] prepare(ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         try
         {
-            return ColorMapLoader.getPixels(resourceManagerIn, textureLocation);
+            return LegacyStuffWrapper.getPixels(resourceManagerIn, textureLocation);
         }
         catch (IOException ioexception)
         {
@@ -41,7 +41,7 @@ public class ColorMapReloadListener extends ReloadListener<int[]>
     }
 
     @Override
-    protected void apply(int[] objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn)
+    protected void apply(int[] objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         consumer.accept(objectIn);
     }

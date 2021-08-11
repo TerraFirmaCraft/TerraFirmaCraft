@@ -8,8 +8,8 @@ package net.dries007.tfc.common.container;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -20,7 +20,7 @@ public class CharcoalForgeContainer extends TileEntityContainer<CharcoalForgeTil
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public CharcoalForgeContainer(CharcoalForgeTileEntity tile, PlayerInventory playerInventory, int windowId)
+    public CharcoalForgeContainer(CharcoalForgeTileEntity tile, Inventory playerInventory, int windowId)
     {
         super(TFCContainerTypes.CHARCOAL_FORGE.get(), tile, playerInventory, windowId);
 
@@ -65,7 +65,7 @@ public class CharcoalForgeContainer extends TileEntityContainer<CharcoalForgeTil
     }
 
     @Override
-    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    protected void addPlayerInventorySlots(Inventory playerInv)
     {
         addPlayerInventorySlots(playerInv, 20);
     }

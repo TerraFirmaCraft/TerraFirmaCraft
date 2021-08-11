@@ -12,26 +12,28 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ToolType;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 @SuppressWarnings("deprecation")
 public class ConnectedGrassBlock extends Block implements IGrassBlock
@@ -69,7 +71,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.UP)
         {
@@ -83,13 +85,13 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         worldIn.getBlockTicks().scheduleTick(pos, this, 0);
     }
 
     @Override
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -98,7 +100,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -108,7 +110,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
     {
         if (!canBeGrass(state, worldIn, pos))
         {
@@ -141,7 +143,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         if (worldIn.isAreaLoaded(pos, 2))
         {
@@ -150,14 +152,14 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState stateUp = context.getLevel().getBlockState(context.getClickedPos().above());
         return updateStateFromNeighbors(context.getLevel(), context.getClickedPos(), defaultBlockState()).setValue(SNOWY, stateUp.is(Blocks.SNOW_BLOCK) || stateUp.is(Blocks.SNOW));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST, SNOWY);
     }
@@ -170,7 +172,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, World world, BlockPos pos, PlayerEntity player, ItemStack stack, ToolType toolType)
+    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolType toolType)
     {
         if (toolType == ToolType.HOE && TFCConfig.SERVER.enableFarmlandCreation.get() && farmland != null)
         {
@@ -189,7 +191,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      * @param world The world
      * @param pos   The position of the changing grass block
      */
-    protected void updateSurroundingGrassConnections(IWorld world, BlockPos pos)
+    protected void updateSurroundingGrassConnections(LevelAccessor world, BlockPos pos)
     {
         if (world.isAreaLoaded(pos, 2))
         {
@@ -213,7 +215,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      * @param state   The initial state
      * @return The updated state
      */
-    protected BlockState updateStateFromNeighbors(IBlockReader worldIn, BlockPos pos, BlockState state)
+    protected BlockState updateStateFromNeighbors(BlockGetter worldIn, BlockPos pos, BlockState state)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -231,7 +233,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      * @param direction The direction in which to look for adjacent, diagonal grass blocks
      * @return The updated state
      */
-    protected BlockState updateStateFromDirection(IBlockReader worldIn, BlockPos pos, BlockState stateIn, Direction direction)
+    protected BlockState updateStateFromDirection(BlockGetter worldIn, BlockPos pos, BlockState stateIn, Direction direction)
     {
         return stateIn.setValue(PROPERTIES.get(direction), worldIn.getBlockState(pos.relative(direction).below()).getBlock() instanceof IGrassBlock);
     }

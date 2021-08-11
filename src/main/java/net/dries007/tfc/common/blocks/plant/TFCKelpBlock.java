@@ -8,28 +8,28 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.AbstractTopPlantBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLoggable
 {
-    public static TFCKelpBlock create(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
+    public static TFCKelpBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
         return new TFCKelpBlock(properties, headBlock, shape, direction)
         {
@@ -43,21 +43,21 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
 
     private final Supplier<? extends Block> headBlock;
 
-    protected TFCKelpBlock(AbstractBlock.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
+    protected TFCKelpBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
         super(properties, headBlock, shape, direction);
         this.headBlock = headBlock;
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(worldIn, currentPos))
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
         //This is where vanilla assumes (wrongly) that the abstract block has correct waterlogged handling
-        AbstractTopPlantBlock abstracttopplantblock = this.getHeadBlock();
+        GrowingPlantHeadBlock abstracttopplantblock = this.getHeadBlock();
         if (facing == this.growthDirection)
         {
             Block block = facingState.getBlock();
@@ -81,41 +81,41 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public AbstractBlock.OffsetType getOffsetType()
+    public BlockBehaviour.OffsetType getOffsetType()
     {
-        return AbstractBlock.OffsetType.XZ;
+        return BlockBehaviour.OffsetType.XZ;
     }
 
     @Override
-    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    public boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
         return false;
     }
 
     @Override
-    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
         return false;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
-        Vector3d vector3d = state.getOffset(worldIn, pos);
+        Vec3 vector3d = state.getOffset(worldIn, pos);
         return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
         builder.add(getFluidProperty());
     }
 
-    protected AbstractTopPlantBlock getHeadBlock()
+    protected GrowingPlantHeadBlock getHeadBlock()
     {
-        return (AbstractTopPlantBlock) headBlock.get();
+        return (GrowingPlantHeadBlock) headBlock.get();
     }
 }

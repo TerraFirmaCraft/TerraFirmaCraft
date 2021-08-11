@@ -13,24 +13,24 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.command.impl.LocateCommand;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -45,8 +45,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class LocateVeinCommand
 {
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslationTextComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));
-    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslationTextComponent(MOD_ID + ".commands.locatevein.vein_not_found", args));
+    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));
+    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.vein_not_found", args));
 
     private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE;
 
@@ -74,7 +74,7 @@ public class LocateVeinCommand
         VEINS_CACHE = null;
     }
 
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("locatevein").requires(source -> source.hasPermission(2))
             .then(Commands.argument("vein", new VeinArgumentType())
@@ -83,9 +83,9 @@ public class LocateVeinCommand
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static int locateVein(CommandContext<CommandSource> context, ResourceLocation veinName) throws CommandSyntaxException
+    private static int locateVein(CommandContext<CommandSourceStack> context, ResourceLocation veinName) throws CommandSyntaxException
     {
-        final ServerWorld world = context.getSource().getLevel();
+        final ServerLevel world = context.getSource().getLevel();
         final BlockPos sourcePos = new BlockPos(context.getSource().getPosition());
         final ChunkPos pos = new ChunkPos(sourcePos);
         final ConfiguredFeature<?, ? extends VeinFeature<?, ?>> vein = LocateVeinCommand.getVeins().get(veinName);
@@ -121,12 +121,12 @@ public class LocateVeinCommand
     /**
      * Modified from {@link LocateCommand#showLocateResult(CommandSource, String, BlockPos, BlockPos, String)} in order to also show the y position
      */
-    private static int showLocateResult(CommandSource context, String nameOfThing, BlockPos source, BlockPos dest, String translationKey)
+    private static int showLocateResult(CommandSourceStack context, String nameOfThing, BlockPos source, BlockPos dest, String translationKey)
     {
         final int distance = (int) Math.sqrt(source.distSqr(dest));
-        final ITextComponent text = TextComponentUtils.wrapInSquareBrackets(new TranslationTextComponent("chat.coordinates", dest.getX(), dest.getY(), dest.getZ()))
-            .withStyle(styleIn -> styleIn.withColor(TextFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + dest.getY() + " " + dest.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.coordinates.tooltip"))));
-        context.sendSuccess(new TranslationTextComponent(translationKey, nameOfThing, text, distance), false);
+        final Component text = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("chat.coordinates", dest.getX(), dest.getY(), dest.getZ()))
+            .withStyle(styleIn -> styleIn.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + dest.getY() + " " + dest.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip"))));
+        context.sendSuccess(new TranslatableComponent(translationKey, nameOfThing, text, distance), false);
         return distance;
     }
 }

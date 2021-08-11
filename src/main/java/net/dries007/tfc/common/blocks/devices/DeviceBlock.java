@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
@@ -31,7 +31,7 @@ public class DeviceBlock extends Block implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
     {
         InventoryTileEntity<?> entity = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
         if (entity != null && !(state.is(newState.getBlock())))

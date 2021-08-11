@@ -6,15 +6,15 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * No-op implementation of {@link IInventory}, as the generic for recipes requires this implementation but using it is never required.
  * Methods are deprecated because we really shouldn't be calling them in lieu of specific methods on the subclasses
  */
-public interface IInventoryNoop extends IInventory
+public interface IInventoryNoop extends Container
 {
     @Override
     @Deprecated
@@ -61,7 +61,7 @@ public interface IInventoryNoop extends IInventory
 
     @Override
     @Deprecated
-    default boolean stillValid(PlayerEntity player)
+    default boolean stillValid(Player player)
     {
         return true;
     }

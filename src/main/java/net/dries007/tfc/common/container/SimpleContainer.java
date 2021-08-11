@@ -6,32 +6,32 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A very simple container implementation.
  * Used for gui's that have no internal inventory, or no TE they need to access
  */
-public class SimpleContainer extends Container
+public class SimpleContainer extends AbstractContainerMenu
 {
-    public SimpleContainer(ContainerType<?> type, int windowId)
+    public SimpleContainer(MenuType<?> type, int windowId)
     {
         super(type, windowId);
     }
 
-    public SimpleContainer(ContainerType<?> type, int windowId, PlayerInventory playerInv)
+    public SimpleContainer(MenuType<?> type, int windowId, Inventory playerInv)
     {
         super(type, windowId);
         addPlayerInventorySlots(playerInv);
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int index)
+    public ItemStack quickMoveStack(Player player, int index)
     {
         ItemStack stackCopy = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
@@ -81,17 +81,17 @@ public class SimpleContainer extends Container
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn)
+    public boolean stillValid(Player playerIn)
     {
         return true;
     }
 
-    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    protected void addPlayerInventorySlots(Inventory playerInv)
     {
         addPlayerInventorySlots(playerInv, 0);
     }
 
-    protected void addPlayerInventorySlots(PlayerInventory playerInv, int yOffset)
+    protected void addPlayerInventorySlots(Inventory playerInv, int yOffset)
     {
         // Add Player Inventory Slots
         for (int i = 0; i < 3; i++)

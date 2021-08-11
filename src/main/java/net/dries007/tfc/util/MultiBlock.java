@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.World;
 
-public class MultiBlock implements BiPredicate<IWorld, BlockPos>
+public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
 {
-    private final List<BiPredicate<IWorld, BlockPos>> conditions;
+    private final List<BiPredicate<LevelAccessor, BlockPos>> conditions;
 
     public MultiBlock()
     {
         this.conditions = new ArrayList<>();
     }
 
-    public MultiBlock match(BlockPos posOffset, BiPredicate<IWorld, BlockPos> condition)
+    public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)
     {
         conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset)));
         return this;
@@ -39,7 +39,7 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
         return this;
     }
 
-    public MultiBlock matchEachDirection(BlockPos posOffset, BiPredicate<IWorld, BlockPos> condition, Direction[] directions, int relativeAmount)
+    public MultiBlock matchEachDirection(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition, Direction[] directions, int relativeAmount)
     {
         for (Direction d : directions)
         {
@@ -48,7 +48,7 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
         return this;
     }
 
-    public MultiBlock matchHorizontal(BlockPos posOffset, BiPredicate<IWorld, BlockPos> condition, int relativeAmount)
+    public MultiBlock matchHorizontal(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition, int relativeAmount)
     {
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
@@ -57,7 +57,7 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
         return this;
     }
 
-    public <T extends TileEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, Class<T> teClass)
+    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, Class<T> teClass)
     {
         conditions.add((world, pos) -> {
             T tile = Helpers.getTileEntity(world, pos.offset(posOffset), teClass);
@@ -72,9 +72,9 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
 
     public MultiBlock matchOneOf(BlockPos baseOffset, MultiBlock subMultiBlock)
     {
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         conditions.add((world, pos) -> {
-            for (BiPredicate<IWorld, BlockPos> condition : subMultiBlock.conditions)
+            for (BiPredicate<LevelAccessor, BlockPos> condition : subMultiBlock.conditions)
             {
                 if (condition.test(world, mutable.set(pos).move(baseOffset)))
                 {
@@ -87,9 +87,9 @@ public class MultiBlock implements BiPredicate<IWorld, BlockPos>
     }
 
     @Override
-    public boolean test(IWorld world, BlockPos pos)
+    public boolean test(LevelAccessor world, BlockPos pos)
     {
-        for (BiPredicate<IWorld, BlockPos> condition : conditions)
+        for (BiPredicate<LevelAccessor, BlockPos> condition : conditions)
         {
             if (!condition.test(world, pos))
             {

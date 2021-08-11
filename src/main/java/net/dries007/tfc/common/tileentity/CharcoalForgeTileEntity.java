@@ -11,18 +11,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -43,7 +43,7 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemStackHandler> implements ICalendarTickable, INamedContainerProvider
+public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemStackHandler> implements ICalendarTickable, MenuProvider
 {
     public static final int SLOT_FUEL_MIN = 0;
     public static final int SLOT_FUEL_MAX = 4;
@@ -52,10 +52,10 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
     public static final int DATA_SLOT_TEMPERATURE = 0;
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.charcoal_forge");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.charcoal_forge");
     private static final int MAX_AIR_TICKS = 600;
 
-    protected final IIntArray syncableData;
+    protected final ContainerData syncableData;
     private final HeatingRecipe[] cachedRecipes = new HeatingRecipe[5];
     private boolean needsSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -104,7 +104,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                 {
                     Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
                 }
-                int heatLevel = MathHelper.clamp((int) (temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
+                int heatLevel = Mth.clamp((int) (temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
                 if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))
                 {
                     level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, heatLevel));
@@ -221,7 +221,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         lastPlayerTick = tick;
     }
 
-    public IIntArray getSyncableData()
+    public ContainerData getSyncableData()
     {
         return syncableData;
     }
@@ -234,13 +234,13 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
 
     @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return new CharcoalForgeContainer(this, playerInv, windowID);
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -254,7 +254,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
 
     @Override
     @Nonnull
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);

@@ -6,15 +6,15 @@
 
 package net.dries007.tfc.util.tracker;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 
 public class TickEntry
 {
     private final BlockPos pos;
     private int ticks;
 
-    public TickEntry(CompoundNBT nbt)
+    public TickEntry(CompoundTag nbt)
     {
         this(BlockPos.of(nbt.getLong("pos")), nbt.getInt("ticks"));
     }
@@ -36,9 +36,9 @@ public class TickEntry
         return this.ticks == 0;
     }
 
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putLong("pos", pos.asLong());
         nbt.putInt("ticks", ticks);
         return nbt;

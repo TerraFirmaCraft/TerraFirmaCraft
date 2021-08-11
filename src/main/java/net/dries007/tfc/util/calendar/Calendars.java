@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.LevelReader;
 
 import net.dries007.tfc.client.ClientCalendar;
 import net.dries007.tfc.util.Helpers;
@@ -31,7 +31,7 @@ public final class Calendars
     /**
      * Gets the correct calendar for the current world context
      */
-    public static ICalendar get(IWorldReader world)
+    public static ICalendar get(LevelReader world)
     {
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }

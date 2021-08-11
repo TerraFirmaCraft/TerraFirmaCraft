@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraftforge.fml.RegistryObject;
 
 /**
@@ -18,10 +18,10 @@ import net.minecraftforge.fml.RegistryObject;
 public class DecorationBlockRegistryObject
 {
     private final RegistryObject<? extends SlabBlock> slab;
-    private final RegistryObject<? extends StairsBlock> stair;
+    private final RegistryObject<? extends StairBlock> stair;
     private final RegistryObject<? extends WallBlock> wall;
 
-    public DecorationBlockRegistryObject(RegistryObject<? extends SlabBlock> slab, RegistryObject<? extends StairsBlock> stair, RegistryObject<? extends WallBlock> wall)
+    public DecorationBlockRegistryObject(RegistryObject<? extends SlabBlock> slab, RegistryObject<? extends StairBlock> stair, RegistryObject<? extends WallBlock> wall)
     {
         this.slab = slab;
         this.stair = stair;
@@ -33,7 +33,7 @@ public class DecorationBlockRegistryObject
         return slab.get();
     }
 
-    public StairsBlock getStair()
+    public StairBlock getStair()
     {
         return stair.get();
     }

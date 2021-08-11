@@ -8,34 +8,34 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
 
-public class BananaFeature extends Feature<BlockStateFeatureConfig>
+public class BananaFeature extends Feature<BlockStateConfiguration>
 {
-    public BananaFeature(Codec<BlockStateFeatureConfig> codec)
+    public BananaFeature(Codec<BlockStateConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
     {
         BlockState banana = config.state;
 
-        pos = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, pos);
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        pos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < 15; i++)
         {

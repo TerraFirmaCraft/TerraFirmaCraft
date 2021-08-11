@@ -8,8 +8,8 @@ package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
 
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
 
 import it.unimi.dsi.fastutil.HashCommon;
 
@@ -25,7 +25,7 @@ public class TypedArea<A>
 
     public TypedArea(TypedAreaSource<A> factory, int maxCacheSize)
     {
-        maxCacheSize = MathHelper.smallestEncompassingPowerOfTwo(maxCacheSize);
+        maxCacheSize = Mth.smallestEncompassingPowerOfTwo(maxCacheSize);
 
         this.factory = factory;
         this.keys = new long[maxCacheSize];

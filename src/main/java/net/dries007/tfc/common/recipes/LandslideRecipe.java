@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -42,7 +42,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     private static final Random RANDOM = new Random();
 
     @Nullable
-    public static LandslideRecipe getRecipe(World world, BlockRecipeWrapper wrapper)
+    public static LandslideRecipe getRecipe(Level world, BlockRecipeWrapper wrapper)
     {
         for (LandslideRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
         {
@@ -60,7 +60,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
      * @return true if a land slide actually occurred
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
+    public static boolean tryLandslide(Level world, BlockPos pos, BlockState state)
     {
         if (!world.isClientSide() && TFCConfig.SERVER.enableBlockLandslides.get())
         {
@@ -77,7 +77,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                         world.removeBlock(pos, false);
                     }
                     world.setBlockAndUpdate(fallPos, fallingState);
-                    world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
+                    world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
                     world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }
                 return true;
@@ -87,7 +87,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     }
 
     @Nullable
-    public static BlockPos getLandSlidePos(World world, BlockPos pos)
+    public static BlockPos getLandSlidePos(Level world, BlockPos pos)
     {
         if (SupportManager.isSupported(world, pos))
         {
@@ -135,7 +135,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
         return null;
     }
 
-    public static boolean isSupportedOnSide(IBlockReader world, BlockPos pos, Direction side)
+    public static boolean isSupportedOnSide(BlockGetter world, BlockPos pos, Direction side)
     {
         BlockPos sidePos = pos.relative(side);
         BlockState sideState = world.getBlockState(sidePos);
@@ -148,13 +148,13 @@ public class LandslideRecipe extends SimpleBlockRecipe
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
+    public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.LANDSLIDE.get();
     }
 
     @Override
-    public IRecipeType<?> getType()
+    public RecipeType<?> getType()
     {
         return TFCRecipeTypes.LANDSLIDE;
     }

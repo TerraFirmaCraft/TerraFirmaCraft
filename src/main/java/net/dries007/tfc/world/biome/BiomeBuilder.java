@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.LongFunction;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 import net.dries007.tfc.world.IBiomeNoiseSampler;
@@ -98,7 +98,7 @@ public class BiomeBuilder
         return this;
     }
 
-    public void registerTypes(RegistryKey<Biome> biome)
+    public void registerTypes(ResourceKey<Biome> biome)
     {
         dictionaryTypes.forEach(type -> BiomeDictionary.addTypes(biome, type));
     }

@@ -10,9 +10,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.dries007.tfc.common.container.IButtonHandler;
@@ -20,9 +20,9 @@ import net.dries007.tfc.common.container.IButtonHandler;
 public class ScreenButtonPacket
 {
     private final int buttonID;
-    private final CompoundNBT extraNBT;
+    private final CompoundTag extraNBT;
 
-    public ScreenButtonPacket(PacketBuffer buffer)
+    public ScreenButtonPacket(FriendlyByteBuf buffer)
     {
         buttonID = buffer.readVarInt();
         if (buffer.readBoolean())
@@ -35,13 +35,13 @@ public class ScreenButtonPacket
         }
     }
 
-    public ScreenButtonPacket(int buttonID, @Nullable CompoundNBT extraNBT)
+    public ScreenButtonPacket(int buttonID, @Nullable CompoundTag extraNBT)
     {
         this.buttonID = buttonID;
         this.extraNBT = extraNBT;
     }
 
-    void encode(PacketBuffer buffer)
+    void encode(FriendlyByteBuf buffer)
     {
         buffer.writeVarInt(buttonID);
         buffer.writeBoolean(extraNBT != null);
@@ -54,7 +54,7 @@ public class ScreenButtonPacket
     void handle(Supplier<NetworkEvent.Context> contextSupplier)
     {
         contextSupplier.get().enqueueWork(() -> {
-            ServerPlayerEntity sender = contextSupplier.get().getSender();
+            ServerPlayer sender = contextSupplier.get().getSender();
             if (sender != null && sender.containerMenu instanceof IButtonHandler)
             {
                 ((IButtonHandler) sender.containerMenu).onButtonPress(buttonID, extraNBT);

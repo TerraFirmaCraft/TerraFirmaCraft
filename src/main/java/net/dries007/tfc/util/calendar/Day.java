@@ -9,8 +9,8 @@ package net.dries007.tfc.util.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -50,14 +50,14 @@ public enum Day
         return i < 0 ? MONDAY : i >= VALUES.length ? SUNDAY : VALUES[i];
     }
 
-    public static IFormattableTextComponent getDayName(long totalDays, Month month, int dayOfMonth)
+    public static MutableComponent getDayName(long totalDays, Month month, int dayOfMonth)
     {
         String birthday = BIRTHDAYS.get(month.name() + dayOfMonth);
         if (birthday != null)
         {
-            return new TranslationTextComponent("tfc.tooltip.calendar_birthday", birthday);
+            return new TranslatableComponent("tfc.tooltip.calendar_birthday", birthday);
         }
         Day day = Day.valueOf((int) totalDays % 7);
-        return new TranslationTextComponent(Helpers.getEnumTranslationKey(day));
+        return new TranslatableComponent(Helpers.getEnumTranslationKey(day));
     }
 }

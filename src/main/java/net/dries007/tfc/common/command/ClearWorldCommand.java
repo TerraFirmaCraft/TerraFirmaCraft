@@ -12,19 +12,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.server.command.EnumArgument;
 
@@ -42,7 +42,7 @@ public final class ClearWorldCommand
     private static final String STARTING = "tfc.commands.clear_world.starting";
     private static final String DONE = "tfc.commands.clear_world.done";
 
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("clearworld")
             .requires(source -> source.hasPermission(2))
@@ -55,15 +55,15 @@ public final class ClearWorldCommand
     }
 
     @SuppressWarnings("deprecation")
-    private static int clearWorld(CommandSource source, int radius, Preset preset)
+    private static int clearWorld(CommandSourceStack source, int radius, Preset preset)
     {
-        source.sendSuccess(new TranslationTextComponent(STARTING), true);
+        source.sendSuccess(new TranslatableComponent(STARTING), true);
 
-        final World world = source.getLevel();
+        final Level world = source.getLevel();
         final BlockPos center = new BlockPos(source.getPosition());
         final BlockState air = Blocks.AIR.defaultBlockState();
 
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final Predicate<BlockState> predicate = preset.make(source.getServer());
 
         int blocksRemoved = 0;
@@ -72,7 +72,7 @@ public final class ClearWorldCommand
         {
             for (int z = -radius; z <= radius; z++)
             {
-                final int height = world.getHeight(Heightmap.Type.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
+                final int height = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
                 for (int y = 0; y < height; y++)
                 {
                     mutablePos.set(center).move(x, 0, z).setY(y);
@@ -85,7 +85,7 @@ public final class ClearWorldCommand
                 }
             }
         }
-        source.sendSuccess(new TranslationTextComponent(DONE, blocksRemoved), true);
+        source.sendSuccess(new TranslatableComponent(DONE, blocksRemoved), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -115,7 +115,7 @@ public final class ClearWorldCommand
             Set<Block> blocks = registry.stream()
                 .filter(feature -> feature.feature instanceof VeinFeature<?, ?>)
                 .flatMap(feature -> ((VeinConfig) feature.config).getOreStates().stream())
-                .map(AbstractBlock.AbstractBlockState::getBlock)
+                .map(BlockBehaviour.BlockStateBase::getBlock)
                 .collect(Collectors.toSet());
             return state -> !blocks.contains(state.getBlock());
         });

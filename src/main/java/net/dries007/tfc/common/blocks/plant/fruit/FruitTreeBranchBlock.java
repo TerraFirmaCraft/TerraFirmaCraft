@@ -8,25 +8,25 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SixWayBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
-public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProperties
+public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockProperties
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
     private final ForgeBlockProperties properties;
@@ -39,19 +39,19 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return getStateForPlacement(context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
     }
 
-    public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
+    public BlockState getStateForPlacement(BlockGetter world, BlockPos pos)
     {
         Block downBlock = world.getBlockState(pos.below()).getBlock();
         Block upBlock = world.getBlockState(pos.above()).getBlock();
@@ -70,7 +70,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canSurvive(worldIn, currentPos))
         {
@@ -86,7 +86,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -107,7 +107,7 @@ public class FruitTreeBranchBlock extends SixWayBlock implements IForgeBlockProp
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
         {

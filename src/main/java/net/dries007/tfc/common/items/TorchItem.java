@@ -8,27 +8,29 @@ package net.dries007.tfc.common.items;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
-import net.minecraft.item.WallOrFloorItem;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.StartFireEvent;
 
-public class TorchItem extends WallOrFloorItem
+import net.minecraft.world.item.Item.Properties;
+
+public class TorchItem extends StandingAndWallBlockItem
 {
     public TorchItem(Block floorBlock, Block wallBlockIn, Properties propertiesIn)
     {
@@ -36,13 +38,13 @@ public class TorchItem extends WallOrFloorItem
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context)
+    public InteractionResult useOn(UseOnContext context)
     {
-        final World world = context.getLevel();
+        final Level world = context.getLevel();
         final BlockPos pos = context.getClickedPos();
         if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
         {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         return super.useOn(context);
     }
@@ -50,13 +52,13 @@ public class TorchItem extends WallOrFloorItem
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity itemEntity)
     {
-        final World world = itemEntity.level;
+        final Level world = itemEntity.level;
         final BlockPos pos = itemEntity.blockPosition();
         final BlockState stateAt = world.getBlockState(pos);
         if (stateAt.getFluidState().is(FluidTags.WATER))
         {
             itemEntity.setItem(new ItemStack(Items.STICK, stack.getCount()));
-            int ash = (int) MathHelper.clamp(stack.getCount() * 0.5 - 4, 0, 8);
+            int ash = (int) Mth.clamp(stack.getCount() * 0.5 - 4, 0, 8);
             if (ash > 0)
             {
                 Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));

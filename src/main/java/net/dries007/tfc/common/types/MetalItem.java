@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class MetalItem
@@ -29,14 +29,14 @@ public class MetalItem
     public MetalItem(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(json, "ingredient"));
-        ResourceLocation metalId = new ResourceLocation(JSONUtils.getAsString(json, "metal"));
+        ingredient = CraftingHelper.getIngredient(GsonHelper.getAsJsonObject(json, "ingredient"));
+        ResourceLocation metalId = new ResourceLocation(GsonHelper.getAsString(json, "metal"));
         metal = MetalManager.INSTANCE.get(metalId);
         if (metal == null)
         {
             throw new JsonSyntaxException("Invalid metal specified: " + metalId);
         }
-        amount = JSONUtils.getAsInt(json, "amount");
+        amount = GsonHelper.getAsInt(json, "amount");
     }
 
     public ResourceLocation getId()

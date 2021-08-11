@@ -9,9 +9,9 @@ package net.dries007.tfc.common.blocks;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum GroundcoverBlockType
 {

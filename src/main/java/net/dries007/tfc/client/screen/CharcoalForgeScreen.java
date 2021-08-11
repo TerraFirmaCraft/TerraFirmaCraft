@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.tileentity.CharcoalForgeTileEntity;
@@ -21,7 +21,7 @@ public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntit
 {
     private static final ResourceLocation FORGE = new ResourceLocation(MOD_ID, "textures/gui/charcoal_forge.png");
 
-    public CharcoalForgeScreen(CharcoalForgeContainer container, PlayerInventory playerInventory, ITextComponent name)
+    public CharcoalForgeScreen(CharcoalForgeContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, FORGE);
         inventoryLabelY += 20;
@@ -29,7 +29,7 @@ public class CharcoalForgeScreen extends TileEntityScreen<CharcoalForgeTileEntit
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         int temp = (int) (51 * tile.getSyncableData().get(CharcoalForgeTileEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());

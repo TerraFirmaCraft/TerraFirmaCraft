@@ -8,11 +8,11 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
@@ -25,10 +25,10 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, ThinSpikeConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, ThinSpikeConfig config)
     {
         final BlockState spike = config.getState();
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean placedAny = false;
 
         for (int attempt = 0; attempt < config.getTries(); attempt++)
@@ -53,7 +53,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
         return placedAny;
     }
 
-    private void placeSpike(ISeedReader world, BlockPos.Mutable mutablePos, BlockState spike, Random rand, ThinSpikeConfig config)
+    private void placeSpike(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, BlockState spike, Random rand, ThinSpikeConfig config)
     {
         final int height = config.getHeight(rand);
         for (int i = 0; i < height; i++)

@@ -6,24 +6,24 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.WorkbenchContainer;
-import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 
 import net.dries007.tfc.common.TFCTags;
 
-public class TFCWorkbenchContainer extends WorkbenchContainer
+public class TFCWorkbenchContainer extends CraftingMenu
 {
-    private final IWorldPosCallable access;
+    private final ContainerLevelAccess access;
 
-    public TFCWorkbenchContainer(int id, PlayerInventory playerInventory)
+    public TFCWorkbenchContainer(int id, Inventory playerInventory)
     {
         super(id, playerInventory);
-        this.access = IWorldPosCallable.NULL;
+        this.access = ContainerLevelAccess.NULL;
     }
 
-    public TFCWorkbenchContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPos)
+    public TFCWorkbenchContainer(int id, Inventory playerInventory, ContainerLevelAccess worldPos)
     {
         super(id, playerInventory, worldPos);
         this.access = worldPos;
@@ -34,7 +34,7 @@ public class TFCWorkbenchContainer extends WorkbenchContainer
      * TFC: use a tag instead of hardcoding
      */
     @Override
-    public boolean stillValid(PlayerEntity playerIn)
+    public boolean stillValid(Player playerIn)
     {
         return access.evaluate((world, pos) -> world.getBlockState(pos).is(TFCTags.Blocks.WORKBENCH) && playerIn.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
     }

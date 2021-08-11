@@ -9,15 +9,15 @@ package net.dries007.tfc.world.feature.cave;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
@@ -29,9 +29,9 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, CaveVegetationConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, CaveVegetationConfig config)
     {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 128; i++)
         {
             if (rand.nextFloat() < 0.8f)//mossy cobble

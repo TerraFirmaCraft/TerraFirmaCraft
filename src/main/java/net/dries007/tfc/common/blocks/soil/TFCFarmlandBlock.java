@@ -9,26 +9,26 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForgeBlockProperties
+public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlockProperties
 {
     public static final IntegerProperty MOISTURE = BlockStateProperties.MOISTURE;
 
-    public static void turnToDirt(BlockState state, World worldIn, BlockPos pos)
+    public static void turnToDirt(BlockState state, Level worldIn, BlockPos pos)
     {
         worldIn.setBlockAndUpdate(pos, pushEntitiesUp(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
     }
@@ -50,14 +50,14 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final BlockState defaultState = defaultBlockState();
         return defaultState.canSurvive(context.getLevel(), context.getClickedPos()) ? defaultState : getDirt();
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         if (!state.canSurvive(worldIn, pos))
         {
@@ -67,14 +67,14 @@ public class TFCFarmlandBlock extends FarmlandBlock implements ISoilBlock, IForg
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
     {
         // No-op
         // todo: trigger TE updates for moisture?
     }
 
     @Override
-    public void fallOn(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
+    public void fallOn(Level worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         // No-op
     }

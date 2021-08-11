@@ -8,10 +8,10 @@ package net.dries007.tfc.util.support;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 
 import net.dries007.tfc.common.recipes.IBlockIngredient;
 
@@ -26,9 +26,9 @@ public class Support
         this.id = id;
 
         this.ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-        this.supportUp = JSONUtils.getAsInt(json, "support_up", 0);
-        this.supportDown = JSONUtils.getAsInt(json, "support_down", 0);
-        this.supportHorizontal = JSONUtils.getAsInt(json, "support_horizontal", 0);
+        this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
+        this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
+        this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);
 
         if (supportUp < 0 || supportDown < 0 || supportHorizontal < 0)
         {

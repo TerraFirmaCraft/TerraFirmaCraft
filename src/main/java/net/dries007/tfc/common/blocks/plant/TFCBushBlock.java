@@ -6,12 +6,14 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BushBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 import net.dries007.tfc.common.TFCTags;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TFCBushBlock extends BushBlock
 {
@@ -21,7 +23,7 @@ public class TFCBushBlock extends BushBlock
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
         return super.mayPlaceOn(state, worldIn, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
     }

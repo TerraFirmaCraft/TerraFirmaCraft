@@ -6,21 +6,23 @@
 
 package net.dries007.tfc.common.items.tools;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class TFCShieldItem extends ShieldItem
 {
-    private final IItemTier tier;
+    private final Tier tier;
 
-    public TFCShieldItem(IItemTier tier, Properties builder)
+    public TFCShieldItem(Tier tier, Properties builder)
     {
         super(builder.defaultDurability(tier.getUses()));
         this.tier = tier;
     }
 
-    public IItemTier getTier()
+    public Tier getTier()
     {
         return this.tier;
     }

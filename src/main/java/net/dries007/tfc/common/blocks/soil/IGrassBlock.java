@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.lighting.LightEngine;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.lighting.LayerLightEngine;
 
 /**
  * Grass blocks, which MUST
@@ -25,7 +25,7 @@ public interface IGrassBlock extends ISoilBlock
      * Like {@link net.minecraft.block.SpreadableSnowyDirtBlock#canBeGrass(BlockState, IWorldReader, BlockPos)}, but omits the requirement that snow layers only be one thick.
      * Represents if the current block state can be grass
      */
-    default boolean canBeGrass(BlockState state, IWorldReader world, BlockPos pos)
+    default boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos)
     {
         BlockPos posUp = pos.above();
         BlockState stateUp = world.getBlockState(posUp);
@@ -39,7 +39,7 @@ public interface IGrassBlock extends ISoilBlock
         }
         else
         {
-            return LightEngine.getLightBlockInto(world, state, pos, stateUp, posUp, Direction.UP, stateUp.getLightBlock(world, posUp)) < world.getMaxLightLevel();
+            return LayerLightEngine.getLightBlockInto(world, state, pos, stateUp, posUp, Direction.UP, stateUp.getLightBlock(world, posUp)) < world.getMaxLightLevel();
         }
     }
 
@@ -49,7 +49,7 @@ public interface IGrassBlock extends ISoilBlock
      *
      * @param state The grass state to place
      */
-    default boolean canPropagate(BlockState state, IWorldReader world, BlockPos pos)
+    default boolean canPropagate(BlockState state, LevelReader world, BlockPos pos)
     {
         BlockPos posUp = pos.above();
         return canBeGrass(state, world, pos) && !world.getFluidState(posUp).is(FluidTags.WATER);

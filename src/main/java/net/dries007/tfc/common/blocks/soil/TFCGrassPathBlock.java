@@ -9,15 +9,17 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.GrassPathBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.GrassPathBlock;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
 {
@@ -36,7 +38,7 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = defaultBlockState();
         if (!state.canSurvive(context.getLevel(), context.getClickedPos()))
@@ -47,7 +49,7 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         worldIn.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), worldIn, pos));
     }

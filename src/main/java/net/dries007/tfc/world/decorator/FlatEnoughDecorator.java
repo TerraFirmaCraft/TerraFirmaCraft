@@ -9,15 +9,15 @@ package net.dries007.tfc.world.decorator;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.WorldDecoratingHelper;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.placement.DecorationContext;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
 
-public class FlatEnoughDecorator extends Placement<FlatEnoughConfig>
+public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
 {
     public FlatEnoughDecorator(Codec<FlatEnoughConfig> codec)
     {
@@ -25,9 +25,9 @@ public class FlatEnoughDecorator extends Placement<FlatEnoughConfig>
     }
 
     @Override
-    public Stream<BlockPos> getPositions(WorldDecoratingHelper worldIn, Random random, FlatEnoughConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(DecorationContext worldIn, Random random, FlatEnoughConfig config, BlockPos pos)
     {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int y = 0; y < config.maxDepth; y++)
         {
             if (isFlatEnough(worldIn, pos, -y, mutablePos, config))
@@ -39,7 +39,7 @@ public class FlatEnoughDecorator extends Placement<FlatEnoughConfig>
     }
 
     @SuppressWarnings("deprecation")
-    private boolean isFlatEnough(WorldDecoratingHelper worldIn, BlockPos pos, int y, BlockPos.Mutable mutablePos, FlatEnoughConfig config)
+    private boolean isFlatEnough(DecorationContext worldIn, BlockPos pos, int y, BlockPos.MutableBlockPos mutablePos, FlatEnoughConfig config)
     {
         int flatAmount = 0;
         for (int x = -config.radius; x <= config.radius; x++)

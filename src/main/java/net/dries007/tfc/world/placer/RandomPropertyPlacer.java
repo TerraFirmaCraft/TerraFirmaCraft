@@ -13,14 +13,14 @@ import java.util.function.BiFunction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.Property;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.blockplacer.BlockPlacer;
-import net.minecraft.world.gen.blockplacer.BlockPlacerType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -67,7 +67,7 @@ public class RandomPropertyPlacer extends BlockPlacer
     }
 
     @Override
-    public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
+    public void place(LevelAccessor worldIn, BlockPos pos, BlockState state, Random random)
     {
         worldIn.setBlock(pos, propertySetter.apply(state, random), 2);
     }

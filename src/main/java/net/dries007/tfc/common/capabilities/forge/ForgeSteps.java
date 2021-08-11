@@ -9,11 +9,11 @@ package net.dries007.tfc.common.capabilities.forge;
 import java.util.LinkedList;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public class ForgeSteps
 {
-    public static ForgeSteps get(CompoundNBT tag)
+    public static ForgeSteps get(CompoundTag tag)
     {
         if (tag.isEmpty())
         {
@@ -32,7 +32,7 @@ public class ForgeSteps
 
     private final LinkedList<ForgeStep> steps;
 
-    private ForgeSteps(CompoundNBT nbt)
+    private ForgeSteps(CompoundTag nbt)
     {
         steps = new LinkedList<>();
         deserialize(nbt);
@@ -59,16 +59,16 @@ public class ForgeSteps
         return this;
     }
 
-    public CompoundNBT serialize()
+    public CompoundTag serialize()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putInt("last", getStepInt(0));
         nbt.putInt("second", getStepInt(1));
         nbt.putInt("third", getStepInt(2));
         return nbt;
     }
 
-    public void deserialize(CompoundNBT nbt)
+    public void deserialize(CompoundTag nbt)
     {
         addStep(ForgeStep.valueOf(nbt.getInt("last")));
         addStep(ForgeStep.valueOf(nbt.getInt("second")));

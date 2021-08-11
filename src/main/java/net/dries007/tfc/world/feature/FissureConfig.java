@@ -11,17 +11,17 @@ import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
-public class FissureConfig implements IFeatureConfig
+public class FissureConfig implements FeatureConfiguration
 {
     public static final Codec<FissureConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),

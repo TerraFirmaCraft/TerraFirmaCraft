@@ -8,13 +8,15 @@ package net.dries007.tfc.common.items.tools;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
+
+import net.minecraft.world.item.Item.Properties;
 
 /**
  * This is needed so we override the damage math done by vanilla
@@ -29,7 +31,7 @@ public class TFCShovelItem extends ShovelItem
     protected final float attackSpeed;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
-    public TFCShovelItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
+    public TFCShovelItem(Tier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(tier, 0, attackSpeed, builder);
         this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
@@ -51,8 +53,8 @@ public class TFCShovelItem extends ShovelItem
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack)
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
     {
-        return slot == EquipmentSlotType.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
+        return slot == EquipmentSlot.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
     }
 }

@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
@@ -21,7 +21,7 @@ public interface ICalendarTickable
      */
     default void checkForCalendarUpdate()
     {
-        TileEntity te = ((TileEntity) this).getTileEntity();
+        BlockEntity te = ((BlockEntity) this).getTileEntity();
         if (te.getLevel() != null && !te.getLevel().isClientSide())
         {
             long playerTick = Calendars.SERVER.getTicks();

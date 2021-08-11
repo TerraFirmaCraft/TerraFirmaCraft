@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 
 public class TypedDataManager<T> extends DataManager<T>
 {
@@ -47,7 +47,7 @@ public class TypedDataManager<T> extends DataManager<T>
         ResourceLocation type;
         if (json.has("type"))
         {
-            type = new ResourceLocation(JSONUtils.getAsString(json, "type"));
+            type = new ResourceLocation(GsonHelper.getAsString(json, "type"));
         }
         else
         {

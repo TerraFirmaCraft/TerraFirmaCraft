@@ -8,10 +8,10 @@ package net.dries007.tfc.common.capabilities.forge;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -39,7 +39,7 @@ public class ForgingHandler implements IForging
     @Override
     public int getWork()
     {
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag != null && tag.contains("forging"))
         {
             return tag.getCompound("forging").getInt("work");
@@ -58,7 +58,7 @@ public class ForgingHandler implements IForging
     @Override
     public ResourceLocation getRecipeName()
     {
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag != null && tag.contains("forging") && tag.getCompound("forging").contains("recipe"))
         {
             return new ResourceLocation(tag.getCompound("forging").getString("recipe"));
@@ -83,7 +83,7 @@ public class ForgingHandler implements IForging
     @Override
     public ForgeSteps getSteps()
     {
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag != null && tag.contains("forging"))
         {
             return ForgeSteps.get(tag.getCompound("forging").getCompound("steps"));
@@ -101,7 +101,7 @@ public class ForgingHandler implements IForging
     @Override
     public void reset()
     {
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag != null)
         {
             tag.remove("forging");
@@ -123,23 +123,23 @@ public class ForgingHandler implements IForging
      * Initialize tag if needed, returns a tag with forging data
      * Only call this when adding work / forge step
      */
-    private CompoundNBT getTag()
+    private CompoundTag getTag()
     {
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag == null)
         {
-            tag = new CompoundNBT();
+            tag = new CompoundTag();
             container.setTag(tag);
         }
-        tag.put("forging", new CompoundNBT());
-        tag.getCompound("forging").put("steps", new CompoundNBT());
+        tag.put("forging", new CompoundTag());
+        tag.getCompound("forging").put("steps", new CompoundTag());
         return tag.getCompound("forging");
     }
 
     private void checkEmpty()
     {
         // Checks if the capability is empty and resets the container tag
-        CompoundNBT tag = container.getTag();
+        CompoundTag tag = container.getTag();
         if (tag != null && tag.contains("forging"))
         {
             if (getWork() == 0 && !getSteps().hasWork() && getRecipeName() == null)

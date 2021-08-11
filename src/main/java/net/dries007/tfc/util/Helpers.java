@@ -20,34 +20,34 @@ import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.tuple.Triple;
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.BlockStateParser;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.state.Property;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -70,6 +70,13 @@ import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
+import net.minecraft.ResourceLocationException;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
 public final class Helpers
 {
@@ -123,7 +130,7 @@ public final class Helpers
     {
         try
         {
-            String id = JSONUtils.getAsString(json, key);
+            String id = GsonHelper.getAsString(json, key);
             ResourceLocation res = new ResourceLocation(id);
             Block block = ForgeRegistries.BLOCKS.getValue(res);
             if (block == null)
@@ -138,7 +145,7 @@ public final class Helpers
         }
     }
 
-    public static BiPredicate<IWorld, BlockPos> createTagCheck(ITag<Block> tag)
+    public static BiPredicate<LevelAccessor, BlockPos> createTagCheck(Tag<Block> tag)
     {
         return ((world, pos) -> world.getBlockState(pos).is(tag));
     }
@@ -191,7 +198,7 @@ public final class Helpers
     @SuppressWarnings("ConstantConditions")
     public static <E extends Enum<E>> E getEnumFromJson(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
     {
-        final String enumName = JSONUtils.getAsString(obj, key, null);
+        final String enumName = GsonHelper.getAsString(obj, key, null);
         if (enumName != null)
         {
             try
@@ -235,16 +242,16 @@ public final class Helpers
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
-    public static boolean isClientSide(IWorldReader world)
+    public static boolean isClientSide(LevelReader world)
     {
-        return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
+        return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
     }
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T extends TileEntity> T getTileEntity(IBlockReader world, BlockPos pos, Class<T> tileEntityClass)
+    public static <T extends BlockEntity> T getTileEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
+        BlockEntity te = world.getBlockEntity(pos);
         if (tileEntityClass.isInstance(te))
         {
             return (T) te;
@@ -252,7 +259,7 @@ public final class Helpers
         return null;
     }
 
-    public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    public static <T extends BlockEntity> T getTileEntityOrThrow(LevelReader world, BlockPos pos, Class<T> tileEntityClass)
     {
         return Objects.requireNonNull(getTileEntity(world, pos, tileEntityClass));
     }
@@ -276,7 +283,7 @@ public final class Helpers
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
     {
-        Vector3d motion = entity.getDeltaMovement();
+        Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
@@ -296,10 +303,10 @@ public final class Helpers
      * Copy pasta from {@link net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
      */
     @Nullable
-    public static BlockPos findValidSpawnLocation(ServerWorld world, ChunkPos chunkPos)
+    public static BlockPos findValidSpawnLocation(ServerLevel world, ChunkPos chunkPos)
     {
-        final Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final LevelChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); ++x)
         {
             for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); ++z)
@@ -307,9 +314,9 @@ public final class Helpers
                 mutablePos.set(x, 0, z);
 
                 final Biome biome = world.getBiome(mutablePos);
-                final int motionBlockingHeight = chunk.getHeight(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
-                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
-                final int oceanFloorHeight = chunk.getHeight(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15);
+                final int motionBlockingHeight = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, x & 15, z & 15);
+                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
+                final int oceanFloorHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR, x & 15, z & 15);
                 if (worldSurfaceHeight >= oceanFloorHeight && biome.getMobSettings().playerSpawnFriendly())
                 {
                     for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
@@ -353,7 +360,7 @@ public final class Helpers
 
     public static void damageCraftingItem(ItemStack stack, int amount)
     {
-        PlayerEntity player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
+        Player player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
         if (player != null)
         {
             stack.hurtAndBreak(amount, player, entity -> {});
@@ -445,31 +452,31 @@ public final class Helpers
      * Allows the loot context to be modified
      */
     @SuppressWarnings("deprecation")
-    public static void destroyBlockAndDropBlocksManually(World worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void destroyBlockAndDropBlocksManually(Level worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
         BlockState state = worldIn.getBlockState(pos);
         if (!state.isAir())
         {
             FluidState fluidstate = worldIn.getFluidState(pos);
-            if (!(state.getBlock() instanceof AbstractFireBlock))
+            if (!(state.getBlock() instanceof BaseFireBlock))
             {
                 worldIn.levelEvent(2001, pos, Block.getId(state));
             }
 
-            if (worldIn instanceof ServerWorld)
+            if (worldIn instanceof ServerLevel)
             {
-                TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+                BlockEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
 
                 // Copied from Block.getDrops()
-                LootContext.Builder lootContext = new LootContext.Builder((ServerWorld) worldIn)
+                LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) worldIn)
                     .withRandom(worldIn.random)
-                    .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos))
-                    .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
-                    .withOptionalParameter(LootParameters.THIS_ENTITY, null)
-                    .withOptionalParameter(LootParameters.BLOCK_ENTITY, tileEntity);
+                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                    .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
+                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
                 builder.accept(lootContext);
                 state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
-                state.spawnAfterBreak((ServerWorld) worldIn, pos, ItemStack.EMPTY);
+                state.spawnAfterBreak((ServerLevel) worldIn, pos, ItemStack.EMPTY);
             }
             worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
@@ -483,18 +490,18 @@ public final class Helpers
         return (rand.nextDouble() - rand.nextDouble()) * 0.5;
     }
 
-    public static void playSound(World world, BlockPos pos, SoundEvent sound)
+    public static void playSound(Level world, BlockPos pos, SoundEvent sound)
     {
         Random rand = world.getRandom();
-        world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+        world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
-    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)
+    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack, double yOffset)
     {
         return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
     }
 
-    public static boolean spawnItem(World world, BlockPos pos, ItemStack stack)
+    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack)
     {
         return spawnItem(world, pos, stack, 0.5D);
     }

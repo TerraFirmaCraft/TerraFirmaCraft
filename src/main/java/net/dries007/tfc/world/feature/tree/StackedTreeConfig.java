@@ -9,13 +9,13 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class StackedTreeConfig implements IFeatureConfig
+public class StackedTreeConfig implements FeatureConfiguration
 {
     public static final Codec<StackedTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Layer.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),

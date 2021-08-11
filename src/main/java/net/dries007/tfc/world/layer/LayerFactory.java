@@ -13,7 +13,7 @@ import java.util.function.IntFunction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.common.types.Rock;

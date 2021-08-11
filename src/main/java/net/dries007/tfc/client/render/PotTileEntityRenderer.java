@@ -7,42 +7,42 @@
 package net.dries007.tfc.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_START;
 
-public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
+public class PotTileEntityRenderer extends BlockEntityRenderer<PotTileEntity>
 {
-    public PotTileEntityRenderer(TileEntityRendererDispatcher dispatcher)
+    public PotTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
     {
         super(dispatcher);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void render(PotTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+    public void render(PotTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (te.getLevel() == null) return;
 
@@ -56,7 +56,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
             Fluid fluid = fluidStack.getFluid();
             FluidAttributes attributes = fluid.getAttributes();
             ResourceLocation texture = attributes.getStillTexture(fluidStack);
-            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(texture);
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
             int color = attributes.getColor();
 
             float r = ((color >> 16) & 0xFF) / 255F;
@@ -71,7 +71,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
                 r *= 3;
             }
 
-            IVertexBuilder builder = buffer.getBuffer(RenderType.entityTranslucentCull(AtlasTexture.LOCATION_BLOCKS));
+            VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
             Matrix4f matrix4f = matrixStack.last().pose();
 
             builder.vertex(matrix4f, 0.3125F, 0.625F, 0.3125F).color(r, g, b, a).uv(sprite.getU(5), sprite.getV(5)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
@@ -97,7 +97,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
                     ordinal++;
                     matrixStack.translate(0, 0, -0.12F * ordinal);
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemCameraTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
                     matrixStack.popPose();
                 }
             }

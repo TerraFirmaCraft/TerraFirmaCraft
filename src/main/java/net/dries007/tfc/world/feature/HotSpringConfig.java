@@ -8,14 +8,14 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Optional;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class HotSpringConfig implements IFeatureConfig
+public class HotSpringConfig implements FeatureConfiguration
 {
     public static final Codec<HotSpringConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),

@@ -10,25 +10,25 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
@@ -54,9 +54,9 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        if (worldIn.isClientSide() || handIn != Hand.MAIN_HAND) return ActionResultType.FAIL;
+        if (worldIn.isClientSide() || handIn != InteractionHand.MAIN_HAND) return InteractionResult.FAIL;
         if (state.getValue(STAGE) == 2)
         {
             ItemStack held = player.getItemInHand(handIn);
@@ -72,7 +72,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
                         held.hurt(1, worldIn.getRandom(), null);
                         Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
                         worldIn.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
                     else if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
                     {
@@ -81,7 +81,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
                         if (worldIn.getRandom().nextInt(3) != 0)
                             Helpers.spawnItem(worldIn, pos, new ItemStack(companion.get()));
                         worldIn.destroyBlock(pos, true, null);
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
                 }
             }
@@ -90,7 +90,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         switch (state.getValue(FACING))
         {
@@ -107,13 +107,13 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIFECYCLE, STAGE, FACING);
     }
 
     @Override
-    public void cycle(BerryBushTileEntity te, World world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -160,20 +160,20 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 
     @Nonnull
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
         return true;
     }

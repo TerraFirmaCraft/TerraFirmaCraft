@@ -12,11 +12,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class Fuel
@@ -30,8 +30,8 @@ public class Fuel
     {
         this.id = id;
         this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
-        this.duration = JSONUtils.getAsInt(obj, "duration");
-        this.temperature = JSONUtils.getAsFloat(obj, "temperature");
+        this.duration = GsonHelper.getAsInt(obj, "duration");
+        this.temperature = GsonHelper.getAsFloat(obj, "temperature");
     }
 
     public ResourceLocation getId()

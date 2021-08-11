@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 
 /**
  * A simple set of implementations for {@link IRecipe}, that skips some of the more unused methods for non-crafting uses.
  */
-public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
+public interface ISimpleRecipe<C extends Container> extends Recipe<C>
 {
     @Override
     default ItemStack assemble(C inventory)

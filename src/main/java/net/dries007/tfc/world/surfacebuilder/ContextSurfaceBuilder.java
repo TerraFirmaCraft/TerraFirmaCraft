@@ -8,17 +8,17 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.TFCChunkGenerator;
 
-public abstract class ContextSurfaceBuilder<C extends ISurfaceBuilderConfig> extends SurfaceBuilder<C>
+public abstract class ContextSurfaceBuilder<C extends SurfaceBuilderConfiguration> extends SurfaceBuilder<C>
 {
     protected ContextSurfaceBuilder(Codec<C> codec)
     {
@@ -28,7 +28,7 @@ public abstract class ContextSurfaceBuilder<C extends ISurfaceBuilderConfig> ext
     public abstract void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, C config);
 
     @Override
-    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, C config)
+    public void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, C config)
     {
         throw new IllegalStateException("Surface Builder [" + getRegistryName() + "] of class [" + getClass().getSimpleName() + "] is a ContextSurfaceBuilder and cannot be invoked directly.");
     }
@@ -46,16 +46,16 @@ public abstract class ContextSurfaceBuilder<C extends ISurfaceBuilderConfig> ext
     protected int calculateAltitudeSlopeSurfaceDepth(int y, double slope, int maxDepth, double falloff, int minimumReturnValue)
     {
         final int seaLevel = TFCChunkGenerator.SEA_LEVEL;
-        double slopeFactor = MathHelper.clamp(slope / 15d, 0, 1); // in [0, 1]
-        double altitudeFactor = MathHelper.clamp((y - seaLevel) / 100d, 0, 1);
+        double slopeFactor = Mth.clamp(slope / 15d, 0, 1); // in [0, 1]
+        double altitudeFactor = Mth.clamp((y - seaLevel) / 100d, 0, 1);
         if (y < TFCChunkGenerator.SEA_LEVEL)
         {
             // Below sea level, slope influence falls off, and levels off at 40% influence
-            slopeFactor *= MathHelper.clamp(1 - (seaLevel - y) / 15d, 0.4, 1);
+            slopeFactor *= Mth.clamp(1 - (seaLevel - y) / 15d, 0.4, 1);
         }
         double t = (1 - altitudeFactor) * (1 - slopeFactor);
         t = (t - falloff) / (1 - falloff);
         t = (t * maxDepth) + 0.3d;
-        return MathHelper.clamp((int) t, minimumReturnValue, maxDepth);
+        return Mth.clamp((int) t, minimumReturnValue, maxDepth);
     }
 }

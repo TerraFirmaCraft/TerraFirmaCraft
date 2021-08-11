@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -36,11 +36,11 @@ public class ForestFeature extends Feature<ForestConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
 
         int treeCount;
@@ -98,13 +98,13 @@ public class ForestFeature extends Feature<ForestConfig>
         return placedTrees || placedBushes;
     }
 
-    private boolean placeTree(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
+    private boolean placeTree(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, boolean allowOldGrowth)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
@@ -123,13 +123,13 @@ public class ForestFeature extends Feature<ForestConfig>
         return false;
     }
 
-    private boolean placeBush(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.Mutable mutablePos)
+    private boolean placeBush(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
@@ -149,13 +149,13 @@ public class ForestFeature extends Feature<ForestConfig>
         return false;
     }
 
-    private void placeGroundcover(ISeedReader worldIn, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.Mutable mutablePos, int tries)
+    private void placeGroundcover(WorldGenLevel worldIn, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(worldIn.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
@@ -167,7 +167,7 @@ public class ForestFeature extends Feature<ForestConfig>
                 BlockState placementState = random.nextInt(2) == 1 ? leafState : twigState;
 
                 mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-                mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+                mutablePos.setY(worldIn.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
                 placementState = FluidHelpers.fillWithFluid(placementState, worldIn.getFluidState(mutablePos).getType());
                 if (placementState != null && (worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))

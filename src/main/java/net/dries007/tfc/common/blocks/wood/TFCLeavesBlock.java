@@ -8,29 +8,31 @@ package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 {
@@ -78,7 +80,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         int distance = getDistance(facingState) + 1;
         if (distance != 1 || stateIn.getValue(getDistanceProperty()) != distance)
@@ -90,21 +92,21 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
         return 1;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        return VoxelShapes.empty();
+        return Shapes.empty();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         int distance = updateDistance(worldIn, pos);
         if (distance > maxDecayDistance)
@@ -128,7 +130,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
@@ -143,13 +145,13 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, getDistanceProperty());
     }
@@ -159,10 +161,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     protected abstract IntegerProperty getDistanceProperty();
 
-    private int updateDistance(IWorld worldIn, BlockPos pos)
+    private int updateDistance(LevelAccessor worldIn, BlockPos pos)
     {
         int distance = 1 + maxDecayDistance;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.values())
         {
             mutablePos.set(pos).move(direction);

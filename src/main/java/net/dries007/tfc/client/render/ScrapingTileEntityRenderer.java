@@ -8,35 +8,35 @@ package net.dries007.tfc.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Matrix4f;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 
-public class ScrapingTileEntityRenderer extends TileEntityRenderer<ScrapingTileEntity>
+public class ScrapingTileEntityRenderer extends BlockEntityRenderer<ScrapingTileEntity>
 {
-    public ScrapingTileEntityRenderer(TileEntityRendererDispatcher dispatcher)
+    public ScrapingTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
     {
         super(dispatcher);
     }
 
     @Override
-    public void render(ScrapingTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+    public void render(ScrapingTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             final ItemStack baseStack = cap.getStackInSlot(0);
             final ItemStack scrapeStack = te.getCachedItem();
             if (!baseStack.isEmpty() && !scrapeStack.isEmpty())
             {
-                ItemModelMesher shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
+                ItemModelShaper shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
                 final ResourceLocation base = shaper.getParticleIcon(baseStack).getName();
                 final ResourceLocation scraped = shaper.getParticleIcon(scrapeStack).getName();
                 final short positions = te.getScrapedPositions();
@@ -47,11 +47,11 @@ public class ScrapingTileEntityRenderer extends TileEntityRenderer<ScrapingTileE
     }
 
     @SuppressWarnings("deprecation")
-    private void drawTiles(IRenderTypeBuffer buffer, MatrixStack matrixStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay)
+    private void drawTiles(MultiBufferSource buffer, PoseStack matrixStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay)
     {
         Matrix4f mat = matrixStack.last().pose();
-        IVertexBuilder builder = buffer.getBuffer(RenderType.cutout());
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(texture);
+        VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
         for (int xOffset = 0; xOffset < 4; xOffset++)
         {
             for (int zOffset = 0; zOffset < 4; zOffset++)

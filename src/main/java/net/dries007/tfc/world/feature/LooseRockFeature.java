@@ -8,12 +8,12 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -25,15 +25,15 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 /**
  * Places a single loose rock at the target position
  */
-public class LooseRockFeature extends Feature<NoFeatureConfig>
+public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
 {
-    public LooseRockFeature(Codec<NoFeatureConfig> codec)
+    public LooseRockFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
     {
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);

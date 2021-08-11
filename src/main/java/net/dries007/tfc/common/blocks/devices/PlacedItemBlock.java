@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -33,6 +33,12 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 import net.dries007.tfc.util.Helpers;
+
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockProperties
 {
@@ -50,7 +56,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
     /**
      * Pos refers to below block, state refers to the placed item state.
      */
-    public static BlockState updateStateValues(IWorld world, BlockPos pos, BlockState state)
+    public static BlockState updateStateValues(LevelAccessor world, BlockPos pos, BlockState state)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -62,13 +68,13 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
     /**
      * Pos and state refer to the below block
      */
-    public static boolean isSlotSupportedOn(IWorld world, BlockPos pos, BlockState state, int slot)
+    public static boolean isSlotSupportedOn(LevelAccessor world, BlockPos pos, BlockState state, int slot)
     {
         VoxelShape supportShape = state.getBlockSupportShape(world, pos).getFaceShape(Direction.UP);
-        return !VoxelShapes.joinIsNotEmpty(supportShape, SHAPES[slot], IBooleanFunction.ONLY_SECOND);
+        return !Shapes.joinIsNotEmpty(supportShape, SHAPES[slot], BooleanOp.ONLY_SECOND);
     }
 
-    private static void convertPlacedItemToPitKiln(World world, BlockPos pos, ItemStack strawStack)
+    private static void convertPlacedItemToPitKiln(Level world, BlockPos pos, ItemStack strawStack)
     {
         PlacedItemTileEntity teOld = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
         if (teOld != null)
@@ -87,7 +93,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
             world.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
             teOld.setRemoved();
             // Play placement sound
-            world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
             PitKilnTileEntity teNew = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
             if (teNew != null)
@@ -117,7 +123,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         BlockState updateState = updateStateValues(worldIn, currentPos.below(), stateIn);
         PlacedItemTileEntity te = Helpers.getTileEntity(worldIn, currentPos, PlacedItemTileEntity.class);
@@ -133,7 +139,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
         if (!worldIn.isClientSide())
         {
@@ -144,32 +150,32 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
                 if (held.getItem().is(TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnTileEntity.isValid(worldIn, pos))
                 {
                     convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
-                return te.onRightClick(player, held, hit) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+                return te.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        VoxelShape shape = VoxelShapes.empty();
+        VoxelShape shape = Shapes.empty();
         for (int i = 0; i < 4; i++)
         {
             if (state.getValue(ITEMS[i]))
-                shape = VoxelShapes.or(shape, SHAPES[i]);
+                shape = Shapes.or(shape, SHAPES[i]);
         }
         return shape;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        return VoxelShapes.empty();
+        return Shapes.empty();
     }
 
     public boolean isEmpty(BlockState state)
@@ -183,7 +189,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(ITEM_0, ITEM_1, ITEM_2, ITEM_3);
     }

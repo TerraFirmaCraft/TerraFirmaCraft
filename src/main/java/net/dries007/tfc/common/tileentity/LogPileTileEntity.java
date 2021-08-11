@@ -8,14 +8,14 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -24,9 +24,9 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> implements INamedContainerProvider
+public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> implements MenuProvider
 {
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.log_pile");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.log_pile");
 
     private int playersUsing;
 
@@ -49,7 +49,7 @@ public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> imp
         }
     }
 
-    public void onOpen(PlayerEntity player)
+    public void onOpen(Player player)
     {
         if (!player.isSpectator())
         {
@@ -57,7 +57,7 @@ public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> imp
         }
     }
 
-    public void onClose(PlayerEntity player)
+    public void onClose(Player player)
     {
         if (!player.isSpectator())
         {
@@ -106,7 +106,7 @@ public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> imp
 
     @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory inv, PlayerEntity player)
+    public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
     {
         return new LogPileContainer(this, inv, windowID);
     }

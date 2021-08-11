@@ -8,8 +8,8 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -97,9 +97,9 @@ public class HeatHandler implements IHeat
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         if (getTemperature() <= 0)
         {
             // Reset temperature to zero
@@ -117,7 +117,7 @@ public class HeatHandler implements IHeat
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         temperature = nbt.getFloat("heat");
         lastUpdateTick = nbt.getLong("ticks");

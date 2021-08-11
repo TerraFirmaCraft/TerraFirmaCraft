@@ -6,24 +6,24 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
+public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
     private Noise2D variantNoise;
 
-    public ShoreSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public ShoreSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)

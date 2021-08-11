@@ -7,12 +7,12 @@
 package net.dries007.tfc.client.particle;
 
 import net.minecraft.client.particle.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
 
-public class SteamParticle extends SpriteTexturedParticle
+public class SteamParticle extends TextureSheetParticle
 {
-    private SteamParticle(ClientWorld worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
+    private SteamParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
     {
         super(worldIn, x, y, z, motionX, motionY, motionZ);
         setAlpha(0.05F);
@@ -20,21 +20,21 @@ public class SteamParticle extends SpriteTexturedParticle
     }
 
     @Override
-    public IParticleRenderType getRenderType()
+    public ParticleRenderType getRenderType()
     {
-        return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public static class Factory implements IParticleFactory<BasicParticleType>
+    public static class Factory implements ParticleProvider<SimpleParticleType>
     {
-        private final IAnimatedSprite sprite;
+        private final SpriteSet sprite;
 
-        public Factory(IAnimatedSprite spriteSet)
+        public Factory(SpriteSet spriteSet)
         {
             sprite = spriteSet;
         }
 
-        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             SteamParticle particle = new SteamParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprite);

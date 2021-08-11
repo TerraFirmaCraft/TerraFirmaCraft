@@ -8,8 +8,8 @@ package net.dries007.tfc.common.container;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
@@ -19,14 +19,14 @@ public class LogPileContainer extends TileEntityContainer<LogPileTileEntity>
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public LogPileContainer(LogPileTileEntity tile, PlayerInventory playerInventory, int windowId)
+    public LogPileContainer(LogPileTileEntity tile, Inventory playerInventory, int windowId)
     {
         super(TFCContainerTypes.LOG_PILE.get(), tile, playerInventory, windowId);
         tile.onOpen(playerInventory.player);
     }
 
     @Override
-    public void removed(PlayerEntity player)
+    public void removed(Player player)
     {
         tile.onClose(player);
         super.removed(player);

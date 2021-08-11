@@ -8,17 +8,17 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.SectionPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.LightType;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
@@ -28,16 +28,16 @@ import net.dries007.tfc.common.blocks.soil.IDirtBlock;
  * - It only works with water, since this is going to be used primarily for surface lakes
  * - It handles TFC dirt / grass transformations correctly
  */
-public class LakeFeature extends Feature<NoFeatureConfig>
+public class LakeFeature extends Feature<NoneFeatureConfiguration>
 {
-    public LakeFeature(Codec<NoFeatureConfig> codec)
+    public LakeFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
     @SuppressWarnings("ALL")
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration config)
     {
         while (pos.getY() > 5 && worldIn.isEmptyBlock(pos))
         {
@@ -51,7 +51,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
         else
         {
             pos = pos.below(4);
-            if (worldIn.startsForFeature(SectionPos.of(pos), Structure.VILLAGE).findAny().isPresent())
+            if (worldIn.startsForFeature(SectionPos.of(pos), StructureFeature.VILLAGE).findAny().isPresent())
             {
                 return false;
             }
@@ -136,7 +136,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                             {
                                 BlockPos dirtPos = pos.offset(x, y - 1, z);
                                 BlockState dirtState = worldIn.getBlockState(dirtPos);
-                                if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(LightType.SKY, pos.offset(x, y, z)) > 0)
+                                if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(LightLayer.SKY, pos.offset(x, y, z)) > 0)
                                 {
                                     BlockState grassState = ((IDirtBlock) dirtState.getBlock()).getGrass();
                                     worldIn.setBlock(dirtPos, grassState, 2);

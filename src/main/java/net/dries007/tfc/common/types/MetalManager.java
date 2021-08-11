@@ -8,7 +8,7 @@ package net.dries007.tfc.common.types;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.util.data.DataManager;
 

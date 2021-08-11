@@ -7,29 +7,29 @@
 package net.dries007.tfc.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.item.ItemStack;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.tileentity.GrillTileEntity;
 
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
 
-public class GrillTileEntityRenderer extends TileEntityRenderer<GrillTileEntity>
+public class GrillTileEntityRenderer extends BlockEntityRenderer<GrillTileEntity>
 {
-    public GrillTileEntityRenderer(TileEntityRendererDispatcher dispatcher)
+    public GrillTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
     {
         super(dispatcher);
     }
 
     @Override
-    public void render(GrillTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+    public void render(GrillTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
@@ -59,7 +59,7 @@ public class GrillTileEntityRenderer extends TileEntityRenderer<GrillTileEntity>
                         matrixStack.translate(translateAmount / 2, translateAmount / 2, 0);
                     }
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemCameraTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
                     matrixStack.popPose();
                 }
             }

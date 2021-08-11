@@ -9,11 +9,11 @@ package net.dries007.tfc.common.tileentity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
@@ -23,7 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
 {
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.scraping");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.scraping");
     private ItemStack cachedItem; // for visual purposes only
     private short positions; // essentially a boolean[16]
 
@@ -73,7 +73,7 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         super.load(state, nbt);
         positions = nbt.getShort("positions");
@@ -82,7 +82,7 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
 
     @Override
     @Nonnull
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putShort("positions", positions);
         return super.save(nbt);

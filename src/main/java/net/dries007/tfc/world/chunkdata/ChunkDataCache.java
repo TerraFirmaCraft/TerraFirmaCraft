@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.network.PacketHandler;
@@ -57,7 +57,7 @@ public final class ChunkDataCache
     /**
      * Gets the normal (not world gen) cache of chunk data for the current logical side
      */
-    public static ChunkDataCache get(IWorldReader world)
+    public static ChunkDataCache get(LevelReader world)
     {
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
@@ -139,21 +139,21 @@ public final class ChunkDataCache
 
     public static class WatchQueue
     {
-        private final Map<ChunkPos, Set<ServerPlayerEntity>> queue;
+        private final Map<ChunkPos, Set<ServerPlayer>> queue;
 
         private WatchQueue()
         {
             queue = new HashMap<>(256);
         }
 
-        public void enqueueUnloadedChunk(ChunkPos pos, ServerPlayerEntity player)
+        public void enqueueUnloadedChunk(ChunkPos pos, ServerPlayer player)
         {
             queue.computeIfAbsent(pos, key -> new HashSet<>()).add(player);
         }
 
-        public void dequeueChunk(ChunkPos pos, ServerPlayerEntity player)
+        public void dequeueChunk(ChunkPos pos, ServerPlayer player)
         {
-            Set<ServerPlayerEntity> players = queue.get(pos);
+            Set<ServerPlayer> players = queue.get(pos);
             if (players != null)
             {
                 players.remove(player);
@@ -168,8 +168,8 @@ public final class ChunkDataCache
         {
             if (queue.containsKey(pos))
             {
-                Set<ServerPlayerEntity> players = queue.remove(pos);
-                for (ServerPlayerEntity player : players)
+                Set<ServerPlayer> players = queue.remove(pos);
+                for (ServerPlayer player : players)
                 {
                     PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), data.getUpdatePacket());
                 }

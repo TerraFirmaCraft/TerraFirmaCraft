@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.TypedSourceLayer;
@@ -37,8 +37,8 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
         float angle = 2 * PI * context.nextInt(100) / 100f;
         float velocity = context.nextInt(100) / 100f;
         float elevation = context.nextInt(100) / 100f;
-        float driftX = MathHelper.cos(angle) * velocity;
-        float driftZ = MathHelper.sin(angle) * velocity;
+        float driftX = Mth.cos(angle) * velocity;
+        float driftZ = Mth.sin(angle) * velocity;
         return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);
     }
 }

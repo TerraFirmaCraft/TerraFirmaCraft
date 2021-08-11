@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import net.minecraft.util.IntIdentityHashBiMap;
+import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
 
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
@@ -106,7 +106,7 @@ public class TFCLayerUtil
     public static final int INLAND_MARKER;
     public static final int OCEAN_REEF_MARKER;
 
-    private static final IntIdentityHashBiMap<BiomeVariants> REGISTRY = new IntIdentityHashBiMap<>(32);
+    private static final CrudeIncrementalIntIdentityHashBiMap<BiomeVariants> REGISTRY = new CrudeIncrementalIntIdentityHashBiMap<>(32);
 
     static
     {

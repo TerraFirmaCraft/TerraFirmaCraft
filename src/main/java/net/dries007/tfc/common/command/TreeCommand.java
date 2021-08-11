@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.server.command.EnumArgument;
 
 import com.mojang.brigadier.Command;
@@ -22,7 +22,7 @@ import net.dries007.tfc.world.feature.tree.TFCTree;
 
 public final class TreeCommand
 {
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("tree")
             .requires(source -> source.hasPermission(2))
@@ -36,7 +36,7 @@ public final class TreeCommand
             );
     }
 
-    private static int placeTree(ServerWorld world, BlockPos pos, Wood wood, Variant variant)
+    private static int placeTree(ServerLevel world, BlockPos pos, Wood wood, Variant variant)
     {
         TFCTree tree = wood.getTree();
         Registry<ConfiguredFeature<?, ?>> registry = world.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);

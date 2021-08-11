@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.blockplacer.BlockPlacer;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,7 +27,7 @@ import net.dries007.tfc.world.Codecs;
 /**
  * Modified from {@link BlockClusterFeatureConfig}
  */
-public class TFCRandomPatchConfig implements IFeatureConfig
+public class TFCRandomPatchConfig implements FeatureConfiguration
 {
     public static final Codec<TFCRandomPatchConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(c -> c.stateProvider),
@@ -69,7 +69,7 @@ public class TFCRandomPatchConfig implements IFeatureConfig
     {
         this.stateProvider = stateProvider;
         this.blockPlacer = blockPlacer;
-        this.whitelist = whitelist.stream().map(AbstractBlock.AbstractBlockState::getBlock).collect(Collectors.toSet());
+        this.whitelist = whitelist.stream().map(BlockBehaviour.BlockStateBase::getBlock).collect(Collectors.toSet());
         this.blacklist = ImmutableSet.copyOf(blacklist);
         this.tries = tries;
         this.useDensity = useDensity;

@@ -8,16 +8,18 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class MossGrowingSlabBlock extends SlabBlock implements IMossGrowingBlock
 {
@@ -31,7 +33,7 @@ public class MossGrowingSlabBlock extends SlabBlock implements IMossGrowingBlock
     }
 
     @Override
-    public void convertToMossy(World worldIn, BlockPos pos, BlockState state, boolean needsWater)
+    public void convertToMossy(Level worldIn, BlockPos pos, BlockState state, boolean needsWater)
     {
         if (state.getValue(TYPE) == SlabType.DOUBLE)
         {

@@ -6,18 +6,18 @@
 
 package net.dries007.tfc.common.tileentity;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public abstract class TickableInventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends InventoryTileEntity<C> implements ITickableTileEntity
+public abstract class TickableInventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends InventoryTileEntity<C> implements TickableBlockEntity
 {
     protected boolean needsClientUpdate;
 
-    public TickableInventoryTileEntity(TileEntityType<?> type, InventoryFactory<C> inventory, ITextComponent defaultName)
+    public TickableInventoryTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventory, Component defaultName)
     {
         super(type, inventory, defaultName);
     }

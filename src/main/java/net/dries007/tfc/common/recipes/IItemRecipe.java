@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public interface IItemRecipe extends ISimpleRecipe<ItemStackRecipeWrapper>
 {
     @Override
-    default boolean matches(ItemStackRecipeWrapper inv, World worldIn)
+    default boolean matches(ItemStackRecipeWrapper inv, Level worldIn)
     {
         return false;
     }

@@ -8,7 +8,7 @@ package net.dries007.tfc.network;
 
 import java.util.function.Supplier;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.dries007.tfc.util.calendar.Calendar;
@@ -23,13 +23,13 @@ public class CalendarUpdatePacket
         this.instance = instance;
     }
 
-    public CalendarUpdatePacket(PacketBuffer buffer)
+    public CalendarUpdatePacket(FriendlyByteBuf buffer)
     {
         instance = new Calendar();
         instance.read(buffer);
     }
 
-    void encode(PacketBuffer buffer)
+    void encode(FriendlyByteBuf buffer)
     {
         instance.write(buffer);
     }

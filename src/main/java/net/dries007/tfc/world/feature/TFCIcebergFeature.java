@@ -8,14 +8,14 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.IcebergFeature;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.feature.IcebergFeature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -26,13 +26,13 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
  */
 public class TFCIcebergFeature extends IcebergFeature
 {
-    public TFCIcebergFeature(Codec<BlockStateFeatureConfig> codec)
+    public TFCIcebergFeature(Codec<BlockStateConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public void carve(int int1_, int yDiff, BlockPos pos, IWorld worldIn, boolean placeWater, double double_, BlockPos pos1, int int2_, int int_)
+    public void carve(int int1_, int yDiff, BlockPos pos, LevelAccessor worldIn, boolean placeWater, double double_, BlockPos pos1, int int2_, int int_)
     {
         int i = int1_ + 1 + int2_ / 3;
         int j = Math.min(int1_ - 3, 3) + int_ / 2 - 1;
@@ -64,7 +64,7 @@ public class TFCIcebergFeature extends IcebergFeature
     }
 
     @Override
-    public void setIcebergBlock(BlockPos pos, IWorld worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
+    public void setIcebergBlock(BlockPos pos, LevelAccessor worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
     {
         BlockState blockstate = worldIn.getBlockState(pos);
         if (blockstate.getMaterial() == Material.AIR || blockstate.is(Blocks.SNOW_BLOCK) || blockstate.is(Blocks.ICE) || blockstate.is(TFCBlocks.SALT_WATER.get()))

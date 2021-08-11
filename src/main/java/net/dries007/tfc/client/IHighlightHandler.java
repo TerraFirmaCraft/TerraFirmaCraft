@@ -6,16 +6,16 @@
 
 package net.dries007.tfc.client;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.World;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.mixin.client.renderer.WorldRendererAccessor;
 
 public interface IHighlightHandler
@@ -32,7 +32,7 @@ public interface IHighlightHandler
      * @param blue      [0-1] blue value
      * @param alpha     [0-1] alpha value
      */
-    static void drawBox(MatrixStack stack, VoxelShape shape, IRenderTypeBuffer buffers, BlockPos pos, Vector3d renderPos, float red, float green, float blue, float alpha)
+    static void drawBox(PoseStack stack, VoxelShape shape, MultiBufferSource buffers, BlockPos pos, Vec3 renderPos, float red, float green, float blue, float alpha)
     {
         WorldRendererAccessor.invoke$renderShape(stack, buffers.getBuffer(RenderType.lines()), shape, pos.getX() - renderPos.x, pos.getY() - renderPos.y, pos.getZ() - renderPos.z, red, green, blue, alpha);
     }

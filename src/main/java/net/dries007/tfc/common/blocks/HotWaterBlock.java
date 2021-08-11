@@ -9,18 +9,20 @@ package net.dries007.tfc.common.blocks;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 
-public class HotWaterBlock extends FlowingFluidBlock
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class HotWaterBlock extends LiquidBlock
 {
     public HotWaterBlock(Supplier<? extends FlowingFluid> supplier, Properties properties)
     {
@@ -29,7 +31,7 @@ public class HotWaterBlock extends FlowingFluidBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
     {
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 1.0D;

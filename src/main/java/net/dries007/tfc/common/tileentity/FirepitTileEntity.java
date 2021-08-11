@@ -8,13 +8,13 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -32,7 +32,7 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
     public static final int SLOT_OUTPUT_1 = 5; // generic output slot
     public static final int SLOT_OUTPUT_2 = 6; // extra output slot
 
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.firepit");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.firepit");
 
     protected HeatingRecipe cachedRecipe;
 
@@ -43,7 +43,7 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
 
     @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return new FirepitContainer(this, playerInv, windowID);
     }
@@ -104,7 +104,7 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
         }
 
         assert level != null;
-        InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), outputStack);
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), outputStack);
     }
 
     /**

@@ -13,11 +13,11 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 /**
@@ -31,9 +31,9 @@ public class HeatDefinition
 
     public HeatDefinition(ResourceLocation id, JsonObject obj)
     {
-        float heatCapacity = JSONUtils.getAsFloat(obj, "heat_capacity");
-        float forgingTemp = JSONUtils.getAsFloat(obj, "forging_temperature", 0);
-        float weldingTemp = JSONUtils.getAsFloat(obj, "welding_temperature", 0);
+        float heatCapacity = GsonHelper.getAsFloat(obj, "heat_capacity");
+        float forgingTemp = GsonHelper.getAsFloat(obj, "forging_temperature", 0);
+        float weldingTemp = GsonHelper.getAsFloat(obj, "welding_temperature", 0);
 
         this.id = id;
         this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));

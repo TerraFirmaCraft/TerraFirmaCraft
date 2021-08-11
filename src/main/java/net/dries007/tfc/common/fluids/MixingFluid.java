@@ -12,15 +12,15 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
@@ -30,6 +30,9 @@ import it.unimi.dsi.fastutil.shorts.Short2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.dries007.tfc.mixin.fluid.FlowingFluidAccessor;
+
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
 
 public abstract class MixingFluid extends ForgeFlowingFluid
 {
@@ -54,7 +57,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * @return The number of adjacent source blocks of this fluid
      * @see net.minecraft.fluid.FlowingFluid#sourceNeighborCount(IWorldReader, BlockPos)
      */
-    public int sourceNeighborCount(IWorldReader worldIn, BlockPos pos)
+    public int sourceNeighborCount(LevelReader worldIn, BlockPos pos)
     {
         int adjacentSources = 0;
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -85,7 +88,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     /**
      * Copy pasta from {@link net.minecraft.fluid.FlowingFluid#spreadToSides(IWorld, BlockPos, FluidState, BlockState)}
      */
-    public void spreadToSides(IWorld world, BlockPos pos, FluidState fluidState, BlockState blockState)
+    public void spreadToSides(LevelAccessor world, BlockPos pos, FluidState fluidState, BlockState blockState)
     {
         int adjacentAmount = fluidState.getAmount() - getDropOff(world);
         if (fluidState.getValue(FALLING))
@@ -111,7 +114,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         }
     }
 
-    public boolean isWaterHole(IBlockReader world, Fluid fluid, BlockPos pos, BlockState state, BlockPos adjacentPos, BlockState adjacentState)
+    public boolean isWaterHole(BlockGetter world, Fluid fluid, BlockPos pos, BlockState state, BlockPos adjacentPos, BlockState adjacentState)
     {
         if (!((FlowingFluidAccessor) this).invoke$canPassThroughWall(Direction.DOWN, world, pos, state, adjacentPos, adjacentState))
         {

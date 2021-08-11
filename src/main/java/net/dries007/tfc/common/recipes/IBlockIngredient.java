@@ -12,15 +12,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.gson.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.BlockStateParser;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.Property;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -111,11 +111,11 @@ public interface IBlockIngredient extends Predicate<BlockState>
                 }
                 else if (obj.has("block"))
                 {
-                    return createSingle(JSONUtils.getAsString(obj, "block"));
+                    return createSingle(GsonHelper.getAsString(obj, "block"));
                 }
                 else if (obj.has("tag"))
                 {
-                    return createTag(JSONUtils.getAsString(obj, "tag"));
+                    return createTag(GsonHelper.getAsString(obj, "tag"));
                 }
                 else
                 {
@@ -132,7 +132,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
         /**
          * This is not a direct read, it only populates the block list
          */
-        public IBlockIngredient read(PacketBuffer buffer)
+        public IBlockIngredient read(FriendlyByteBuf buffer)
         {
             int amount = buffer.readVarInt();
             List<Block> validBlocks = new ArrayList<>();
@@ -156,7 +156,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
             };
         }
 
-        public void write(PacketBuffer buffer, IBlockIngredient ingredient)
+        public void write(FriendlyByteBuf buffer, IBlockIngredient ingredient)
         {
             Collection<Block> validBlocks = ingredient.getValidBlocks();
             buffer.writeVarInt(validBlocks.size());
@@ -224,7 +224,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
 
         private IBlockIngredient createTag(String tagName) throws JsonParseException
         {
-            ITag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
+            Tag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag != null)
             {
                 return new IBlockIngredient()

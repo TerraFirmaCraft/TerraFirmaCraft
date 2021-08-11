@@ -9,21 +9,21 @@ package net.dries007.tfc.util;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.SnowBlock;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -43,12 +43,12 @@ public final class EnvironmentHelpers
      * - Convert possible blocks to snow piles
      * - Freeze sea water into sea ice
      */
-    public static void onEnvironmentTick(ServerWorld world, Chunk chunkIn, Random random)
+    public static void onEnvironmentTick(ServerLevel world, LevelChunk chunkIn, Random random)
     {
         ChunkPos chunkPos = chunkIn.getPos();
         if (random.nextInt(16) == 0)
         {
-            BlockPos pos = world.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, world.getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15));
+            BlockPos pos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, world.getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15));
             if (world.isAreaLoaded(pos, 2))
             {
                 float temperature = Climate.getTemperature(world, pos);
@@ -95,12 +95,12 @@ public final class EnvironmentHelpers
     }
 
     @SuppressWarnings("deprecation")
-    private static boolean tryStackSnow(IWorld world, BlockPos pos, BlockState state)
+    private static boolean tryStackSnow(LevelAccessor world, BlockPos pos, BlockState state)
     {
-        if ((state.is(Blocks.SNOW) || state.is(TFCBlocks.SNOW_PILE.get())) && state.getValue(SnowBlock.LAYERS) < 7)
+        if ((state.is(Blocks.SNOW) || state.is(TFCBlocks.SNOW_PILE.get())) && state.getValue(SnowLayerBlock.LAYERS) < 7)
         {
             // Vanilla snow block stacking
-            BlockState newState = state.setValue(SnowBlock.LAYERS, state.getValue(SnowBlock.LAYERS) + 1);
+            BlockState newState = state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1);
             if (newState.canSurvive(world, pos))
             {
                 world.setBlock(pos, newState, 3);
@@ -124,15 +124,15 @@ public final class EnvironmentHelpers
     /**
      * Logic is borrowed from {@link net.minecraft.world.biome.Biome#shouldFreeze(IWorldReader, BlockPos)} but with the water fluid swapped out, and the temperature check changed (in the original code it's redirected by mixin)
      */
-    private static void tryFreezeSeaIce(IWorld worldIn, BlockPos pos)
+    private static void tryFreezeSeaIce(LevelAccessor worldIn, BlockPos pos)
     {
         if (Climate.getTemperature(worldIn, pos) < Climate.SEA_ICE_FREEZE_TEMPERATURE)
         {
-            if (pos.getY() >= 0 && pos.getY() < 256 && worldIn.getBrightness(LightType.BLOCK, pos) < 10)
+            if (pos.getY() >= 0 && pos.getY() < 256 && worldIn.getBrightness(LightLayer.BLOCK, pos) < 10)
             {
                 BlockState state = worldIn.getBlockState(pos);
                 FluidState fluid = worldIn.getFluidState(pos);
-                if (fluid.getType() == TFCFluids.SALT_WATER.getSource() && state.getBlock() instanceof FlowingFluidBlock)
+                if (fluid.getType() == TFCFluids.SALT_WATER.getSource() && state.getBlock() instanceof LiquidBlock)
                 {
                     if (!worldIn.isWaterAt(pos.west()) || !worldIn.isWaterAt(pos.east()) || !worldIn.isWaterAt(pos.north()) || !worldIn.isWaterAt(pos.south()))
                     {
@@ -144,7 +144,7 @@ public final class EnvironmentHelpers
     }
 
     @SuppressWarnings("deprecation")
-    private static BlockPos findOptimalSnowLocation(IWorld world, BlockPos pos, Random random)
+    private static BlockPos findOptimalSnowLocation(LevelAccessor world, BlockPos pos, Random random)
     {
         BlockState state = world.getBlockState(pos);
         BlockPos targetPos = null;
@@ -155,7 +155,7 @@ public final class EnvironmentHelpers
             {
                 BlockPos adjPos = pos.relative(direction);
                 BlockState adjState = world.getBlockState(adjPos);
-                if (((adjState.is(Blocks.SNOW) || adjState.is(TFCBlocks.SNOW_PILE.get())) && adjState.getValue(SnowBlock.LAYERS) < state.getValue(SnowBlock.LAYERS)) || (adjState.isAir() && Blocks.SNOW.defaultBlockState().canSurvive(world, adjPos)))
+                if (((adjState.is(Blocks.SNOW) || adjState.is(TFCBlocks.SNOW_PILE.get())) && adjState.getValue(SnowLayerBlock.LAYERS) < state.getValue(SnowLayerBlock.LAYERS)) || (adjState.isAir() && Blocks.SNOW.defaultBlockState().canSurvive(world, adjPos)))
                 {
                     found++;
                     if (targetPos == null || random.nextInt(found) == 0)
@@ -174,11 +174,11 @@ public final class EnvironmentHelpers
 
     @Nullable
     @SuppressWarnings("deprecation")
-    private static BlockPos findIcicleLocation(World world, BlockPos pos, Random random)
+    private static BlockPos findIcicleLocation(Level world, BlockPos pos, Random random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         BlockPos adjacentPos = pos.relative(side);
-        final int adjacentHeight = world.getHeight(Heightmap.Type.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
+        final int adjacentHeight = world.getHeight(Heightmap.Types.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
         BlockPos foundPos = null;
         int found = 0;
         for (int y = 0; y < adjacentHeight; y++)

@@ -6,26 +6,27 @@ buildscript {
         maven {
             url = 'https://maven.minecraftforge.net'
         }
-        maven {
+        /*maven {
             url "https://repo.spongepowered.org/repository/maven-public/"
             content { includeGroup "org.spongepowered" }
+        }*/
+        maven {
+            url = 'https://sizableshrimp.me/maven'
         }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.1.+', changing: true
+        //classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
 plugins {
-    id 'net.minecrell.licenser' version '0.4.1'
-    id 'idea'
+    // id 'net.minecrell.licenser' version '0.4.1'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
+// apply plugin: 'org.spongepowered.mixin'
 
 def localProperties = new File('./dev.gradle')
 localProperties.createNewFile()
@@ -45,13 +46,12 @@ archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 // Use version from environment variable, if set
 def envVersion = System.getenv('VERSION')
 version = envVersion == null ? 'indev' : envVersion
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaVersion.VERSION_1_8 // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven {
+    /*maven {
         name 'Jitpack' // Used by mcjunitlib
         url 'https://jitpack.io'
     }
@@ -68,7 +68,7 @@ repositories {
         // Mirror for JEI
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
-    }
+    }*/
 }
 
 minecraft {
@@ -78,10 +78,10 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            args '-mixin.config=' + mod_id + '.mixins.json'
+            // args '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            // property 'mixin.env.remapRefMap', 'true'
+            // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             jvmArg '-ea'
 
             mods {
@@ -93,10 +93,10 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
+            // args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            // property 'mixin.env.remapRefMap', 'true'
+            // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             jvmArg '-ea'
 
             mods {
@@ -105,31 +105,6 @@ minecraft {
                 }
             }
         }
-
-        serverTest {
-            parent runs.server
-            workingDirectory project.file('run')
-            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher'
-            ideaModule "${project.name}.test"
-            property 'forge.logging.console.level', 'unittest'
-            environment 'MOD_CLASSES', String.join(File.pathSeparator, "${mod_id}%%${sourceSets.main.output.resourcesDir}", "${mod_id}%%${sourceSets.main.output.classesDirs.asPath}", "${mod_id}%%${sourceSets.test.output.resourcesDir}", "${mod_id}%%${sourceSets.test.output.classesDirs.asPath}")
-            environment 'target', 'fmltestserver'
-            environment 'targetModId', "${mod_id}"
-            args '-mixin.config=' + mod_id + '.mixins.json', '--crashOnFailedTests'
-            jvmArg '-ea'
-            forceExit false
-            mods {
-                tfc {
-                    sources sourceSets.main, sourceSets.test
-                }
-            }
-        }
-
-        serverTestDebug {
-            parent runs.serverTest
-            property 'forge.logging.console.level', 'debug'
-            args '-mixin.config=' + mod_id + '.mixins.json'
-        }
     }
 }
 
@@ -137,17 +112,15 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Add Blame, useful for running certain diagnostics
-    runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
+    // runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
 
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    // runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
-
-    if (System.getProperty("idea.sync.active") != "true") {
+    /* if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    }
+    } */
 }
 
 processResources {
@@ -161,26 +134,30 @@ processResources {
     }
 }
 
+/*
 // Automatically apply a license header when running checkLicense / updateLicense
 license {
     header = project.file('HEADER.txt')
 
-    include '**/*.java'
+    include '** /*.java'
 
     exclude 'net/dries007/tfc/world/noise/FastNoiseLite.java' // Fast Noise
     exclude 'net/dries007/tfc/world/biome/BiomeCache.java' // From Overworld Two
 }
+*/
 
 // Puts the mod version into the jar for mods.toml to read from
 jar {
     manifest {
         attributes ([
-                "Implementation-Version": "${version}",
-                "MixinConfigs": "${mod_id}.mixins.json"
+                "Implementation-Version": "${version}"
+                // "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }
 }
 
+/*
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
 }
+ */

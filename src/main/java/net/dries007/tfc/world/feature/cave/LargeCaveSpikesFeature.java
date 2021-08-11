@@ -8,17 +8,17 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
-    public LargeCaveSpikesFeature(Codec<NoFeatureConfig> codec)
+    public LargeCaveSpikesFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
@@ -26,9 +26,9 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
     /**
      * Much larger spikes, calls to the smaller spikes on the outsides
      */
-    public void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    public void place(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         int height = 6 + rand.nextInt(11);
         int radius = 2 + rand.nextInt(1);
         int maxHeightReached = 0;

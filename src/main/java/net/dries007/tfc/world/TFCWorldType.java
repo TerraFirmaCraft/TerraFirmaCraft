@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world;
 
-import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.world.ForgeWorldType;
@@ -22,7 +22,7 @@ public class TFCWorldType
 {
     public static final DeferredRegister<ForgeWorldType> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.WORLD_TYPES, MOD_ID);
 
-    public static final RegistryObject<ForgeWorldType> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldType((biomeRegistry, dimensionSettingsRegistry, seed) -> TFCChunkGenerator.createDefaultPreset(() -> dimensionSettingsRegistry.getOrThrow(DimensionSettings.OVERWORLD), biomeRegistry, seed)));
+    public static final RegistryObject<ForgeWorldType> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldType((biomeRegistry, dimensionSettingsRegistry, seed) -> TFCChunkGenerator.createDefaultPreset(() -> dimensionSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD), biomeRegistry, seed)));
 
     /**
      * Override the default world type, in a safe, mixin free, and API providing manner :D

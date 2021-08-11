@@ -12,10 +12,10 @@ import java.util.Random;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.carver.WorldCarver;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.RockData;
@@ -55,7 +55,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @Override
-    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
+    public boolean carve(ChunkAccess chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
     {
         // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
         if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
@@ -83,7 +83,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    private void carve(IChunk chunkIn, int chunkX, int chunkZ, Random random, int seaLevel, WorleyCaveConfig config)
+    private void carve(ChunkAccess chunkIn, int chunkX, int chunkZ, Random random, int seaLevel, WorleyCaveConfig config)
     {
         if (true) return; // fuck this
         final int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
@@ -104,7 +104,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
         float[] section = new float[16 * 16];
         float[] prevSection = null;
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         // Create caves, layer by layer
         for (int y = heightSampleRange - 1; y >= 0; y--)

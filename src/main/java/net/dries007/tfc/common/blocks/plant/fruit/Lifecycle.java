@@ -8,9 +8,9 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum Lifecycle implements IStringSerializable
+public enum Lifecycle implements StringRepresentable
 {
     HEALTHY, FLOWERING, FRUITING, DORMANT;
 

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 
 /**
  * This is a wrapper class around extra data, which is assigned to particular biomes
@@ -19,10 +19,10 @@ public class BiomeExtension
     @SuppressWarnings("ConstantConditions")
     public static final BiomeExtension EMPTY = new BiomeExtension(null, null);
 
-    private final RegistryKey<Biome> id;
+    private final ResourceKey<Biome> id;
     private final BiomeVariants variants;
 
-    public BiomeExtension(RegistryKey<Biome> id, BiomeVariants variants)
+    public BiomeExtension(ResourceKey<Biome> id, BiomeVariants variants)
     {
         this.id = id;
         this.variants = variants;
@@ -40,7 +40,7 @@ public class BiomeExtension
         return variants;
     }
 
-    public RegistryKey<Biome> getRegistryKey()
+    public ResourceKey<Biome> getRegistryKey()
     {
         return id;
     }

@@ -8,25 +8,25 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
 public enum Heat
 {
-    WARMING("warming", 1f, 80f, TextFormatting.GRAY),
-    HOT("hot", 80f, 210f, TextFormatting.GRAY),
-    VERY_HOT("very_hot", 210f, 480f, TextFormatting.GRAY),
-    FAINT_RED("faint_red", 480f, 580f, TextFormatting.DARK_RED),
-    DARK_RED("dark_red", 580f, 730f, TextFormatting.DARK_RED),
-    BRIGHT_RED("bright_red", 730f, 930f, TextFormatting.RED),
-    ORANGE("orange", 930f, 1100f, TextFormatting.GOLD),
-    YELLOW("yellow", 1100f, 1300f, TextFormatting.YELLOW),
-    YELLOW_WHITE("yellow_white", 1300f, 1400f, TextFormatting.YELLOW),
-    WHITE("white", 1400f, 1500f, TextFormatting.WHITE),
-    BRILLIANT_WHITE("brilliant_white", 1500f, 1601f, TextFormatting.WHITE);
+    WARMING("warming", 1f, 80f, ChatFormatting.GRAY),
+    HOT("hot", 80f, 210f, ChatFormatting.GRAY),
+    VERY_HOT("very_hot", 210f, 480f, ChatFormatting.GRAY),
+    FAINT_RED("faint_red", 480f, 580f, ChatFormatting.DARK_RED),
+    DARK_RED("dark_red", 580f, 730f, ChatFormatting.DARK_RED),
+    BRIGHT_RED("bright_red", 730f, 930f, ChatFormatting.RED),
+    ORANGE("orange", 930f, 1100f, ChatFormatting.GOLD),
+    YELLOW("yellow", 1100f, 1300f, ChatFormatting.YELLOW),
+    YELLOW_WHITE("yellow_white", 1300f, 1400f, ChatFormatting.YELLOW),
+    WHITE("white", 1400f, 1500f, ChatFormatting.WHITE),
+    BRILLIANT_WHITE("brilliant_white", 1500f, 1601f, ChatFormatting.WHITE);
 
     private static final Heat[] VALUES = values();
 
@@ -53,12 +53,12 @@ public enum Heat
     }
 
     @Nullable
-    public static IFormattableTextComponent getTooltipColorless(float temperature)
+    public static MutableComponent getTooltipColorless(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
         if (heat != null)
         {
-            IFormattableTextComponent base = heat.getDisplayName();
+            MutableComponent base = heat.getDisplayName();
             if (heat != Heat.BRILLIANT_WHITE)
             {
                 for (int i = 1; i <= 4; i++)
@@ -74,10 +74,10 @@ public enum Heat
     }
 
     @Nullable
-    public static IFormattableTextComponent getTooltip(float temperature)
+    public static MutableComponent getTooltip(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
-        IFormattableTextComponent tooltip = getTooltipColorless(temperature);
+        MutableComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
             tooltip.withStyle(heat.color);
@@ -85,12 +85,12 @@ public enum Heat
         return tooltip;
     }
 
-    private final TextFormatting color;
+    private final ChatFormatting color;
     private final String translationKey;
     private final float min;
     private final float max;
 
-    Heat(String name, float min, float max, TextFormatting color)
+    Heat(String name, float min, float max, ChatFormatting color)
     {
         this.min = min;
         this.max = max;
@@ -108,8 +108,8 @@ public enum Heat
         return max;
     }
 
-    public IFormattableTextComponent getDisplayName()
+    public MutableComponent getDisplayName()
     {
-        return new TranslationTextComponent(translationKey);
+        return new TranslatableComponent(translationKey);
     }
 }

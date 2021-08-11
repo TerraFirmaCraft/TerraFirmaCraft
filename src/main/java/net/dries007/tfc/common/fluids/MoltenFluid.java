@@ -9,20 +9,22 @@ package net.dries007.tfc.common.fluids;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.LavaFluid;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.LavaFluid;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+
+import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
 
 public abstract class MoltenFluid extends ForgeFlowingFluid
 {
@@ -36,13 +38,13 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void animateTick(World worldIn, BlockPos pos, FluidState state, Random random)
+    protected void animateTick(Level worldIn, BlockPos pos, FluidState state, Random random)
     {
         lava.animateTick(worldIn, pos, state, random);
     }
 
     @Override
-    protected void randomTick(World worldIn, BlockPos pos, FluidState state, Random random)
+    protected void randomTick(Level worldIn, BlockPos pos, FluidState state, Random random)
     {
         lava.randomTick(worldIn, pos, state, random);
     }
@@ -50,7 +52,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
-    protected IParticleData getDripParticle()
+    protected ParticleOptions getDripParticle()
     {
         return lava.getDripParticle();
     }
@@ -62,31 +64,31 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected void beforeDestroyingBlock(IWorld worldIn, BlockPos pos, BlockState state)
+    protected void beforeDestroyingBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
     {
         worldIn.levelEvent(1501, pos, 0);
     }
 
     @Override
-    protected int getSlopeFindDistance(IWorldReader worldIn)
+    protected int getSlopeFindDistance(LevelReader worldIn)
     {
         return lava.getSlopeFindDistance(worldIn);
     }
 
     @Override
-    protected int getDropOff(IWorldReader worldIn)
+    protected int getDropOff(LevelReader worldIn)
     {
         return lava.getDropOff(worldIn);
     }
 
     @Override
-    public int getTickDelay(IWorldReader world)
+    public int getTickDelay(LevelReader world)
     {
         return lava.getTickDelay(world);
     }
 
     @Override
-    protected int getSpreadDelay(World worldIn, BlockPos pos, FluidState fluidState_, FluidState fluidState1_)
+    protected int getSpreadDelay(Level worldIn, BlockPos pos, FluidState fluidState_, FluidState fluidState1_)
     {
         return lava.getSpreadDelay(worldIn, pos, fluidState_, fluidState1_);
     }
@@ -108,7 +110,7 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
             return state.getValue(LEVEL);
         }
 
-        protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)
+        protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder)
         {
             super.createFluidStateDefinition(builder.add(LEVEL));
         }

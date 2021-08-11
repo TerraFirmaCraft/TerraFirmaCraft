@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Blocks that can be turned into their underlying soil, such as farmland, paths and grass.

@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -22,7 +22,7 @@ public final class PlayerCommand
     private static final String QUERY_HUNGER = "tfc.commands.player.query_hunger";
     private static final String QUERY_SATURATION = "tfc.commands.player.query_saturation";
 
-    public static LiteralArgumentBuilder<CommandSource> create()
+    public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("player")
             .requires(source -> source.hasPermission(2))
@@ -84,33 +84,33 @@ public final class PlayerCommand
             );
     }
 
-    private static int queryHunger(CommandContext<CommandSource> context, PlayerEntity player)
+    private static int queryHunger(CommandContext<CommandSourceStack> context, Player player)
     {
         int hunger = player.getFoodData().getFoodLevel();
-        context.getSource().sendSuccess(new TranslationTextComponent(QUERY_HUNGER, hunger), true);
+        context.getSource().sendSuccess(new TranslatableComponent(QUERY_HUNGER, hunger), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int querySaturation(CommandContext<CommandSource> context, PlayerEntity player)
+    private static int querySaturation(CommandContext<CommandSourceStack> context, Player player)
     {
         float saturation = player.getFoodData().getSaturationLevel();
-        context.getSource().sendSuccess(new TranslationTextComponent(QUERY_SATURATION, saturation), true);
+        context.getSource().sendSuccess(new TranslatableComponent(QUERY_SATURATION, saturation), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int queryWater(CommandContext<CommandSource> context, PlayerEntity player)
+    private static int queryWater(CommandContext<CommandSourceStack> context, Player player)
     {
         // todo
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    private static int queryNutrition(CommandContext<CommandSource> context, PlayerEntity player)
+    private static int queryNutrition(CommandContext<CommandSourceStack> context, Player player)
     {
         // todo
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    private static int setHunger(PlayerEntity player, int hunger, boolean add)
+    private static int setHunger(Player player, int hunger, boolean add)
     {
         if (add)
         {
@@ -120,7 +120,7 @@ public final class PlayerCommand
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setSaturation(PlayerEntity player, int saturation, boolean add)
+    private static int setSaturation(Player player, int saturation, boolean add)
     {
         if (add)
         {
@@ -130,7 +130,7 @@ public final class PlayerCommand
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setWater(PlayerEntity player, int water, boolean add)
+    private static int setWater(Player player, int water, boolean add)
     {
         // todo
         throw new UnsupportedOperationException("Not implemented");

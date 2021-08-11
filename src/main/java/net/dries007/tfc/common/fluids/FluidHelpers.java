@@ -8,18 +8,18 @@ package net.dries007.tfc.common.fluids;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -118,7 +118,7 @@ public class FluidHelpers
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)
      */
-    public static FluidState getNewFluidWithMixing(FlowingFluid self, IWorldReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
+    public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;

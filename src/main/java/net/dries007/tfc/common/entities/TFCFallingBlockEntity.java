@@ -6,25 +6,25 @@
 
 package net.dries007.tfc.common.entities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.DirectionalPlaceContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
@@ -36,12 +36,12 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public class TFCFallingBlockEntity extends FallingBlockEntity
 {
-    public static boolean canFallThrough(IBlockReader world, BlockPos pos)
+    public static boolean canFallThrough(BlockGetter world, BlockPos pos)
     {
         return canFallThrough(world, pos, world.getBlockState(pos));
     }
 
-    public static boolean canFallThrough(IBlockReader world, BlockPos pos, BlockState state)
+    public static boolean canFallThrough(BlockGetter world, BlockPos pos, BlockState state)
     {
         return !state.isFaceSturdy(world, pos, Direction.UP);
     }
@@ -49,7 +49,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     private final boolean dontSetBlock;
     private boolean failedBreakCheck;
 
-    public TFCFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world)
+    public TFCFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, Level world)
     {
         super(entityType, world);
 
@@ -57,7 +57,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         dontSetBlock = false;
     }
 
-    public TFCFallingBlockEntity(World worldIn, double x, double y, double z, BlockState fallingBlockState)
+    public TFCFallingBlockEntity(Level worldIn, double x, double y, double z, BlockState fallingBlockState)
     {
         super(worldIn, x, y, z, fallingBlockState);
 

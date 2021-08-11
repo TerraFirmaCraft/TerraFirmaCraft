@@ -12,15 +12,15 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -39,7 +39,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
 
-    private static boolean canGrowIntoLocations(IWorldReader world, BlockPos... pos)
+    private static boolean canGrowIntoLocations(LevelReader world, BlockPos... pos)
     {
         for (BlockPos p : pos)
         {
@@ -52,15 +52,15 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     }
 
     @SuppressWarnings("deprecation")
-    private static boolean canGrowInto(IWorldReader world, BlockPos pos)
+    private static boolean canGrowInto(LevelReader world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
         return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
-    private static boolean allNeighborsEmpty(IWorldReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
+    private static boolean allNeighborsEmpty(LevelReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
     {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             mutablePos.set(pos).move(direction);
@@ -87,7 +87,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
         if (te == null || world.isClientSide()) return;
@@ -103,7 +103,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         super.randomTick(state, world, pos, random);
     }
 
-    public void grow(BlockState state, ServerWorld world, BlockPos pos, Random random, int cyclesLeft)
+    public void grow(BlockState state, ServerLevel world, BlockPos pos, Random random, int cyclesLeft)
     {
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
@@ -121,7 +121,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                 }
                 else if (belowBlock == body)
                 {
-                    BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+                    BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
                     int j = 1;
                     for (int k = 0; k < 4; ++k)
                     {
@@ -150,7 +150,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                 else if (stage < 2)
                 {
                     int branches = Math.max(0, state.getValue(SAPLINGS) - stage);
-                    BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+                    BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
                     List<Direction> directions = Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList());
                     while (branches > 0)
                     {
@@ -183,14 +183,14 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
         builder.add(SAPLINGS);
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
     {
         super.tick(state, world, pos, rand);
         TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
@@ -205,7 +205,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         }
     }
 
-    private void placeGrownFlower(ServerWorld worldIn, BlockPos pos, int stage, int saplings, int cycles)
+    private void placeGrownFlower(ServerLevel worldIn, BlockPos pos, int stage, int saplings, int cycles)
     {
         worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
         TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
@@ -218,7 +218,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
         worldIn.getBlockState(pos).randomTick(worldIn, pos, worldIn.random);
     }
 
-    private void placeBody(IWorld worldIn, BlockPos pos, int stage)
+    private void placeBody(LevelAccessor worldIn, BlockPos pos, int stage)
     {
         FruitTreeBranchBlock plant = (FruitTreeBranchBlock) this.body.get();
         worldIn.setBlock(pos, plant.getStateForPlacement(worldIn, pos).setValue(STAGE, stage), 3);
@@ -226,13 +226,13 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
     }
 
     @SuppressWarnings("deprecation")
-    private void addLeaves(IWorld world, BlockPos pos)
+    private void addLeaves(LevelAccessor world, BlockPos pos)
     {
         final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = world.getBlockState(pos.below(2));
         if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
             return;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {
             mutablePos.setWithOffset(pos, d);

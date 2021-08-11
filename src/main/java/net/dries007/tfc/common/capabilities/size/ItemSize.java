@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Util;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.Util;
 
 /**
  * A fixed, immutable, cached implementation of {@link ItemSize}

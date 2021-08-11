@@ -12,8 +12,8 @@ import javax.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.util.data.DataManager;
 

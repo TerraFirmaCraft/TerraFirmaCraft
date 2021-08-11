@@ -10,13 +10,13 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
@@ -24,11 +24,11 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
 
-public class ChunkData implements ICapabilitySerializable<CompoundNBT>
+public class ChunkData implements ICapabilitySerializable<CompoundTag>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
 
-    public static ChunkData get(IWorld world, BlockPos pos)
+    public static ChunkData get(LevelAccessor world, BlockPos pos)
     {
         return get(world, new ChunkPos(pos));
     }
@@ -40,7 +40,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      *
      * @see ChunkDataCache#get(ChunkPos) to directly access the cache
      */
-    public static ChunkData get(IWorld world, ChunkPos pos)
+    public static ChunkData get(LevelAccessor world, ChunkPos pos)
     {
         // Query cache first, picking the correct cache for the current logical side
         ChunkData data = ChunkDataCache.get(world).get(pos);
@@ -54,11 +54,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     /**
      * Helper method, since lazy optionals and instanceof checks together are ugly
      */
-    public static LazyOptional<ChunkData> getCapability(@Nullable IChunk chunk)
+    public static LazyOptional<ChunkData> getCapability(@Nullable ChunkAccess chunk)
     {
-        if (chunk instanceof Chunk)
+        if (chunk instanceof LevelChunk)
         {
-            return ((Chunk) chunk).getCapability(ChunkDataCapability.CAPABILITY);
+            return ((LevelChunk) chunk).getCapability(ChunkDataCapability.CAPABILITY);
         }
         return LazyOptional.empty();
     }
@@ -232,9 +232,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        final CompoundNBT nbt = new CompoundNBT();
+        final CompoundTag nbt = new CompoundTag();
         nbt.putByte("status", (byte) status.ordinal());
         if (status == Status.FULL)
         {
@@ -253,7 +253,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         reset();
         status = Status.valueOf(nbt.getByte("status"));
@@ -355,7 +355,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
-        public void deserializeNBT(CompoundNBT nbt)
+        public void deserializeNBT(CompoundTag nbt)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;

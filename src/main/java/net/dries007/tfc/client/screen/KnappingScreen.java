@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 
@@ -23,7 +23,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     private final ResourceLocation buttonLocation;
     private final ResourceLocation buttonDisabledLocation;
 
-    public KnappingScreen(KnappingContainer container, PlayerInventory inv, ITextComponent name)
+    public KnappingScreen(KnappingContainer container, Inventory inv, Component name)
     {
         super(container, inv, name, KNAPPING_BACKGROUND);
         imageHeight = 186;
@@ -51,12 +51,12 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         // Check if the container has been updated
         if (menu.requiresReset())
         {
-            for (Widget button : buttons)
+            for (AbstractWidget button : buttons)
             {
                 if (button instanceof KnappingButton)
                 {
@@ -69,7 +69,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         if (menu.usesDisabledTexture() && minecraft != null)
         {
             minecraft.getTextureManager().bind(buttonDisabledLocation);
-            for (Widget button : buttons)
+            for (AbstractWidget button : buttons)
             {
                 if (!button.visible && button instanceof KnappingButton)
                 {
@@ -106,7 +106,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
      */
     private void undoAccidentalButtonPress(double x, double y)
     {
-        for (Widget widget : buttons)
+        for (AbstractWidget widget : buttons)
         {
             if (widget instanceof KnappingButton && widget.isMouseOver(x, y))
             {

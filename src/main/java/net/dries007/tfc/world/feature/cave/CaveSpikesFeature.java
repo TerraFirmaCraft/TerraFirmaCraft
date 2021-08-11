@@ -8,32 +8,32 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 
-public class CaveSpikesFeature extends Feature<NoFeatureConfig>
+public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 {
-    public CaveSpikesFeature(Codec<NoFeatureConfig> codec)
+    public CaveSpikesFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
     {
         // The direction that the spike is pointed
         Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
@@ -57,17 +57,17 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         return true;
     }
 
-    protected void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void place(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         placeSmallSpike(worldIn, pos, spike, raw, direction, rand);
     }
 
-    protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void placeSmallSpike(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         placeSmallSpike(worldIn, pos, spike, raw, direction, rand, rand.nextFloat());
     }
 
-    protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
+    protected void placeSmallSpike(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
     {
         if (!raw.is(BlockTags.BASE_STONE_OVERWORLD))
             return;
@@ -92,7 +92,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         }
     }
 
-    protected void replaceBlock(ISeedReader world, BlockPos pos, BlockState state)
+    protected void replaceBlock(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         // We check explicitly for cave air here, because spikes shouldn't generate not in caves
         // Otherwise, try and fill in all possible fluids this allows
@@ -111,7 +111,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         }
     }
 
-    protected void replaceBlockWithoutFluid(ISeedReader world, BlockPos pos, BlockState state)
+    protected void replaceBlockWithoutFluid(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)

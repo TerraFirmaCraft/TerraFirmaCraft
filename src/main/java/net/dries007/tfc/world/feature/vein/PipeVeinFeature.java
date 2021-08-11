@@ -8,9 +8,9 @@ package net.dries007.tfc.world.feature.vein;
 
 import java.util.Random;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
 
@@ -44,11 +44,11 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     }
 
     @Override
-    protected MutableBoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
+    protected BoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
     {
         int radius = config.getRadius();
         int skew = vein.skew;
-        return new MutableBoundingBox(-radius - skew, -config.getSize(), -radius - skew, radius + skew, config.getSize(), radius + skew);
+        return new BoundingBox(-radius - skew, -config.getSize(), -radius - skew, radius + skew, config.getSize(), radius + skew);
     }
 
     static class PipeVein extends Vein
@@ -64,10 +64,10 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
             super(pos);
             this.sign = config.getSign() < random.nextFloat() ? 1 : -1; // if 0: always \/ if 1: always /\
             float angle = random.nextFloat() * (float) Math.PI * 2;
-            this.skewX = MathHelper.cos(angle);
-            this.skewZ = MathHelper.sin(angle);
-            this.skew = MathHelper.nextInt(random, config.getMinSkew(), config.getMaxSkew());
-            this.slant = MathHelper.nextInt(random, config.getMinSlant(), config.getMaxSlant());
+            this.skewX = Mth.cos(angle);
+            this.skewZ = Mth.sin(angle);
+            this.skew = Mth.nextInt(random, config.getMinSkew(), config.getMaxSkew());
+            this.slant = Mth.nextInt(random, config.getMinSlant(), config.getMaxSlant());
         }
     }
 }

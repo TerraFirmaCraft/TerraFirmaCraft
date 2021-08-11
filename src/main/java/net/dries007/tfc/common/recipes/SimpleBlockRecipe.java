@@ -9,14 +9,14 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
@@ -40,7 +40,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     }
 
     @Override
-    public boolean matches(World worldIn, BlockPos pos, BlockState state)
+    public boolean matches(Level worldIn, BlockPos pos, BlockState state)
     {
         return ingredient.test(state);
     }
@@ -81,11 +81,11 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-            boolean copyInputState = JSONUtils.getAsBoolean(json, "copy_input", false);
+            boolean copyInputState = GsonHelper.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
             {
-                state = Helpers.readBlockState(JSONUtils.getAsString(json, "result"));
+                state = Helpers.readBlockState(GsonHelper.getAsString(json, "result"));
             }
             else
             {
@@ -96,7 +96,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
 
         @Nullable
         @Override
-        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(buffer);
             boolean copyInputState = buffer.readBoolean();
@@ -113,7 +113,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, R recipe)
+        public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
             IBlockIngredient.Serializer.INSTANCE.write(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);

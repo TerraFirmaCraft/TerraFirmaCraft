@@ -6,25 +6,25 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.minecraft.util.IObjectIntIterable;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeContainer;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.core.IdMap;
+import net.minecraft.Util;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkBiomeContainer;
+import net.minecraft.world.level.biome.BiomeSource;
 
 /**
  * An optimized {@link BiomeContainer} for world generation where biomes are not actually 3D
  * Avoids the expensive call to {@link BiomeProvider#getNoiseBiome(int, int, int)}
  */
-public class ColumnBiomeContainer extends BiomeContainer
+public class ColumnBiomeContainer extends ChunkBiomeContainer
 {
     // Copied from BiomeContainer
     public static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2; // 2
     public static final int HEIGHT_BITS = (int) Math.round(Math.log(256.0D) / Math.log(2.0D)) - 2; // 6
     public static final int HORIZONTAL_BITS = WIDTH_BITS + WIDTH_BITS; // 4
 
-    public ColumnBiomeContainer(IObjectIntIterable<Biome> biomeIdRegistry, ChunkPos chunkPosIn, BiomeProvider biomeProviderIn)
+    public ColumnBiomeContainer(IdMap<Biome> biomeIdRegistry, ChunkPos chunkPosIn, BiomeSource biomeProviderIn)
     {
         // Use Util.make to pass the already initialized biomes array into the correct constructor
         // This copies the initialization except it only queries the biome provider once per column, saving 98% of the biome generation calls

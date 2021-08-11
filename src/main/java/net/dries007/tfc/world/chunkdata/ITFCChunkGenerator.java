@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import net.dries007.tfc.world.biome.ITFCBiomeProvider;
 

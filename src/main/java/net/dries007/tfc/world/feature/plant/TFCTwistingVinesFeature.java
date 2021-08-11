@@ -8,23 +8,23 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractTopPlantBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 
 public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
 {
-    public static void placeColumn(IWorld world, Random rand, BlockPos.Mutable mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    public static void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {
@@ -32,7 +32,7 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
             {
                 if (i == height || !world.isEmptyBlock(mutablePos.above()))
                 {
-                    world.setBlock(mutablePos, head.setValue(AbstractTopPlantBlock.AGE, MathHelper.nextInt(rand, minAge, maxAge)), 2);
+                    world.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 2);
                     break;
                 }
                 world.setBlock(mutablePos, body, 2);
@@ -46,9 +46,9 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
     {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean placedAny = false;
         int radius = config.getRadius();
         for (int i = 0; i < config.getTries(); i++)
@@ -60,7 +60,7 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
             mutablePos.move(Direction.UP);
             if (world.isEmptyBlock(mutablePos))
             {
-                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
+                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
                 placedAny = true;
             }
         }

@@ -11,8 +11,8 @@ import java.util.Arrays;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
 
 /**
  * A simple craft matrix for knapping / leather or clay working
@@ -178,7 +178,7 @@ public class KnappingPattern
         return true;
     }
 
-    public void toNetwork(PacketBuffer buffer, int width, int height)
+    public void toNetwork(FriendlyByteBuf buffer, int width, int height)
     {
         buffer.writeVarInt(width);
         buffer.writeVarInt(height);
@@ -188,7 +188,7 @@ public class KnappingPattern
         buffer.writeShort(packed);
     }
 
-    public static KnappingPattern fromNetwork(PacketBuffer buffer, boolean outsideSlotRequired)
+    public static KnappingPattern fromNetwork(FriendlyByteBuf buffer, boolean outsideSlotRequired)
     {
         int width = buffer.readVarInt();
         int height = buffer.readVarInt();
@@ -203,19 +203,19 @@ public class KnappingPattern
     public static KnappingPattern fromJson(JsonObject json)
     {
         JsonArray array = json.getAsJsonArray("pattern");
-        boolean outsideSlotRequired = JSONUtils.getAsBoolean(json, "outside_slot_required", true);
+        boolean outsideSlotRequired = GsonHelper.getAsBoolean(json, "outside_slot_required", true);
 
         int height = array.size();
         if (height > MAX_HEIGHT) throw new JsonSyntaxException("Invalid pattern: too many rows, " + MAX_HEIGHT + " is maximum");
         if (height == 0) throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
 
-        int width = JSONUtils.convertToString(array.get(0), "pattern[ 0 ]").length();
+        int width = GsonHelper.convertToString(array.get(0), "pattern[ 0 ]").length();
         if (width > MAX_WIDTH) throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
 
         boolean[] matrix = new boolean[width * height];
         for (int i = 0; i < height; ++i)
         {
-            String s = JSONUtils.convertToString(array.get(i), "pattern[" + i + "]");
+            String s = GsonHelper.convertToString(array.get(i), "pattern[" + i + "]");
             if (i > 0 && width != s.length()) throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
 
             for (int c = 0; c < width; c++)

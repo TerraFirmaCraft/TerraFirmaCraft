@@ -8,8 +8,8 @@ package net.dries007.tfc.util;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.Tag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
@@ -21,13 +21,13 @@ public final class NoopStorage<T> implements Capability.IStorage<T>
 {
     @Nullable
     @Override
-    public INBT writeNBT(Capability<T> capability, T instance, Direction side)
+    public Tag writeNBT(Capability<T> capability, T instance, Direction side)
     {
         throw new UnsupportedOperationException("This storage is non functional. Do not use it.");
     }
 
     @Override
-    public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt)
+    public void readNBT(Capability<T> capability, T instance, Direction side, Tag nbt)
     {
         throw new UnsupportedOperationException("This storage is non functional. Do not use it.");
     }

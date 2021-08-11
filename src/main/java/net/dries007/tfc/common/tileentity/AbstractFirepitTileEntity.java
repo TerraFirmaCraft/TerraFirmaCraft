@@ -7,18 +7,18 @@
 package net.dries007.tfc.common.tileentity;
 
 import org.apache.commons.lang3.tuple.Triple;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -32,14 +32,14 @@ import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
-public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends TickableInventoryTileEntity<C> implements ICalendarTickable, INamedContainerProvider
+public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TickableInventoryTileEntity<C> implements ICalendarTickable, MenuProvider
 {
     public static final int SLOT_FUEL_CONSUME = 0; // where fuel is taken by the firepit
     public static final int SLOT_FUEL_INPUT = 3; // where fuel is inserted into the firepit (0-3 are all fuel slots)
 
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    public static void convertTo(IWorld world, BlockPos pos, BlockState state, AbstractFirepitTileEntity<?> firepit, Block newBlock)
+    public static void convertTo(LevelAccessor world, BlockPos pos, BlockState state, AbstractFirepitTileEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
         // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryTileEntity
@@ -57,7 +57,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         }
     }
 
-    protected final IIntArray syncableData;
+    protected final ContainerData syncableData;
     protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
     protected int burnTicks; // ticks remaining for the burning of the fuel item
     protected int airTicks; // ticks remaining for bellows provided air
@@ -65,7 +65,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     protected float temperature; // current actual temperature
     private long lastPlayerTick;
 
-    public AbstractFirepitTileEntity(TileEntityType<?> type, InventoryFactory<C> inventoryFactory, ITextComponent defaultName)
+    public AbstractFirepitTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
         super(type, inventoryFactory, defaultName);
 
@@ -78,7 +78,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -92,7 +92,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt)
+    public CompoundTag save(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
@@ -252,7 +252,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         }
     }
 
-    public IIntArray getSyncableData()
+    public ContainerData getSyncableData()
     {
         return syncableData;
     }

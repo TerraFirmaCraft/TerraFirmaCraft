@@ -6,13 +6,15 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public abstract class DryPlantBlock extends PlantBlock
 {
@@ -37,7 +39,7 @@ public abstract class DryPlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         BlockState belowState = worldIn.getBlockState(pos.below());
         return belowState.is(BlockTags.SAND) || belowState.is(Tags.Blocks.SAND) || belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON);

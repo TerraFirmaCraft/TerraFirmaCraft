@@ -8,8 +8,8 @@ package net.dries007.tfc.common.command;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -34,7 +34,7 @@ public class VeinArgumentType implements ArgumentType<ResourceLocation>
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
     {
-        ISuggestionProvider.suggest(LocateVeinCommand.getVeins().keySet().stream().map(ResourceLocation::toString), builder);
+        SharedSuggestionProvider.suggest(LocateVeinCommand.getVeins().keySet().stream().map(ResourceLocation::toString), builder);
         return builder.buildFuture();
     }
 }

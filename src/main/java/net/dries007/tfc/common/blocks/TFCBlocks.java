@@ -12,20 +12,18 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.block.*;
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -51,6 +49,18 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;
 
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Collection of all TFC blocks.
@@ -87,7 +97,7 @@ public final class TFCBlocks
     public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockRegistryObject>> SANDSTONE_DECORATIONS = Helpers.mapOfKeys(SandBlockType.class, color ->
         Helpers.mapOfKeys(SandstoneBlockType.class, type -> new DecorationBlockRegistryObject(
             register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color)), EARTH),
-            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairsBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)), EARTH),
+            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)), EARTH),
             register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)), EARTH)
         ))
     );
@@ -96,7 +106,7 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), block -> new BlockItem(block, new Item.Properties().tab(EARTH)), type.shouldCreateBlockItem())
     );
 
-    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(AbstractBlock.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
+    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW).harvestTool(ToolType.SHOVEL).harvestLevel(0)).tileEntity(SnowPileTileEntity::new)), EARTH);
     public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new ThinSpikeBlock(Properties.of(Material.ICE).noDrops().strength(0.4f).sound(SoundType.GLASS).noOcclusion()));
     public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of(Material.GLASS).noDrops().strength(0.2f).sound(TFCSounds.THIN)));
@@ -167,7 +177,7 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(AbstractBlock.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
+    public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(BlockBehaviour.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
 
     public static final Map<FruitBlocks.StationaryBush, RegistryObject<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::create, FLORA));
     public static final Map<FruitBlocks.SpreadingBush, RegistryObject<Block>> SPREADING_CANES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush_cane", bush::createCane));
@@ -192,26 +202,26 @@ public final class TFCBlocks
     public static final RegistryObject<Block> AGGREGATE = register("aggregate", () -> new GravelBlock(Properties.of(Material.SAND, MaterialColor.STONE).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
 
     public static final Map<DyeColor, RegistryObject<Block>> RAW_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_raw_alabaster", () -> new Block(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)), DECORATIONS)
+        register(("alabaster/stained/" + color.getName()) + "_raw_alabaster", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)), DECORATIONS)
     );
     public static final Map<DyeColor, RegistryObject<Block>> ALABASTER_BRICKS = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_alabaster_bricks", () -> new Block(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+        register(("alabaster/stained/" + color.getName()) + "_alabaster_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
     public static final Map<DyeColor, RegistryObject<Block>> POLISHED_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_polished_alabaster", () -> new Block(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+        register(("alabaster/stained/" + color.getName()) + "_polished_alabaster", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
 
     public static final Map<DyeColor, DecorationBlockRegistryObject> ALABASTER_BRICK_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockRegistryObject(
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_slab"), () -> new SlabBlock(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_stairs"), () -> new StairsBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_wall"), () -> new WallBlock(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
         )
     );
 
     public static final Map<DyeColor, DecorationBlockRegistryObject> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockRegistryObject(
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_slab"), () -> new SlabBlock(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_stairs"), () -> new StairsBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_wall"), () -> new WallBlock(AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
         )
     );
 
@@ -223,8 +233,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(TFCSounds.THATCH)).flammable(50, 100)), MISC);
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F)));
 
-    public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(BurningLogPileTileEntity::new)));
-    public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(LogPileTileEntity::new)));
+    public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(BurningLogPileTileEntity::new)));
+    public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).tileEntity(LogPileTileEntity::new)));
 
     public static final RegistryObject<Block> FIREPIT = register("firepit", () -> new FirepitBlock(new ForgeBlockProperties(Properties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).noOcclusion().lightLevel(litBlockEmission(15))).tileEntity(FirepitTileEntity::new)), MISC);
     public static final RegistryObject<Block> GRILL = register("grill", () -> new GrillBlock(new ForgeBlockProperties(Properties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).noOcclusion().lightLevel(litBlockEmission(15))).tileEntity(GrillTileEntity::new)), MISC);
@@ -238,30 +248,30 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL)));
     public static final RegistryObject<Block> CHARCOAL_FORGE = register("charcoal_forge", () -> new CharcoalForgeBlock(new ForgeBlockProperties(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2)).tileEntity(CharcoalForgeTileEntity::new)));
 
-    public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
-    public static final RegistryObject<Block> WALL_TORCH = register("wall_torch", () -> new TFCWallTorchBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
-    public static final RegistryObject<Block> DEAD_TORCH = register("dead_torch", () -> new DeadTorchBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
-    public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
+    public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
+    public static final RegistryObject<Block> WALL_TORCH = register("wall_torch", () -> new TFCWallTorchBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).tileEntity(TickCounterTileEntity::new), ParticleTypes.FLAME));
+    public static final RegistryObject<Block> DEAD_TORCH = register("dead_torch", () -> new DeadTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
+    public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
 
     // Fluids
 
-    public static final Map<Metal.Default, RegistryObject<FlowingFluidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        register("fluid/metal/" + metal.name(), () -> new FlowingFluidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
+    public static final Map<Metal.Default, RegistryObject<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
     );
-    public static final RegistryObject<FlowingFluidBlock> SALT_WATER = register("fluid/salt_water", () -> new FlowingFluidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
-    public static final RegistryObject<FlowingFluidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
+    public static final RegistryObject<LiquidBlock> SALT_WATER = register("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
+    public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
 
-    public static boolean always(BlockState state, IBlockReader world, BlockPos pos)
+    public static boolean always(BlockState state, BlockGetter world, BlockPos pos)
     {
         return true;
     }
 
-    public static boolean never(BlockState state, IBlockReader world, BlockPos pos)
+    public static boolean never(BlockState state, BlockGetter world, BlockPos pos)
     {
         return false;
     }
 
-    public static boolean onlyPolarBears(BlockState state, IBlockReader world, BlockPos pos, EntityType<?> type)
+    public static boolean onlyPolarBears(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
     {
         return type == EntityType.POLAR_BEAR; // todo: does this need to be expanded?
     }
@@ -276,7 +286,7 @@ public final class TFCBlocks
         return register(name, blockSupplier, block -> null, false);
     }
 
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, CreativeModeTab group)
     {
         return register(name, blockSupplier, block -> new BlockItem(block, new Item.Properties().tab(group)), true);
     }

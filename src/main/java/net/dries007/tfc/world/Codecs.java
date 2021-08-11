@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
@@ -54,9 +54,9 @@ public final class Codecs
      * Additional codecs for existing configs.
      */
 
-    public static final Codec<SurfaceBuilderConfig> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
+    public static final Codec<SurfaceBuilderBaseConfiguration> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
 
-    public static final Codec<BlockStateFeatureConfig> LENIENT_BLOCK_STATE_FEATURE_CONFIG = LENIENT_BLOCKSTATE.fieldOf("state").xmap(BlockStateFeatureConfig::new, c -> c.state).codec();
+    public static final Codec<BlockStateConfiguration> LENIENT_BLOCK_STATE_FEATURE_CONFIG = LENIENT_BLOCKSTATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
 
 
     /**

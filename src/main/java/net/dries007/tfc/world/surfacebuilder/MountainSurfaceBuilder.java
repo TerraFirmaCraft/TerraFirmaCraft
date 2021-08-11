@@ -7,24 +7,24 @@
 package net.dries007.tfc.world.surfacebuilder;
 
 
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
+public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
     private Noise2D surfaceMaterialNoise;
 
-    public MountainSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
+    public MountainSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         final NormalSurfaceBuilder surfaceBuilder = TFCSurfaceBuilders.NORMAL.get();
         final double heightNoise = noise * 3f + startHeight;

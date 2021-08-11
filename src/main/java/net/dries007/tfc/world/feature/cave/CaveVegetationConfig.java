@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -21,7 +21,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
-public class CaveVegetationConfig implements IFeatureConfig
+public class CaveVegetationConfig implements FeatureConfiguration
 {
     @SuppressWarnings("deprecation")
     public static final MapCodec<CaveVegetationConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

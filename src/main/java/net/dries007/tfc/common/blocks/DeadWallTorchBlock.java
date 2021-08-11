@@ -8,23 +8,25 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallTorchBlock;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WallTorchBlock;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class DeadWallTorchBlock extends WallTorchBlock
 {
-    public DeadWallTorchBlock(Properties properties, IParticleData particle)
+    public DeadWallTorchBlock(Properties properties, ParticleOptions particle)
     {
         super(properties, particle);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
     {
 
     }

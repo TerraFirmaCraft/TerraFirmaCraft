@@ -8,11 +8,11 @@ package net.dries007.tfc.world.placer;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.blockplacer.BlockPlacer;
-import net.minecraft.world.gen.blockplacer.BlockPlacerType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
@@ -22,7 +22,7 @@ public class EmergentPlantPlacer extends BlockPlacer
     public static final Codec<EmergentPlantPlacer> CODEC = Codec.unit(new EmergentPlantPlacer());
 
     @Override
-    public void place(IWorld worldIn, BlockPos pos, BlockState state, Random random)
+    public void place(LevelAccessor worldIn, BlockPos pos, BlockState state, Random random)
     {
         ((TallWaterPlantBlock) state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
     }

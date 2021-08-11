@@ -8,11 +8,11 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -22,7 +22,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 /**
  * This is the capability interface for an instance of a heat applied to an item stack
  */
-public interface IHeat extends ICapabilitySerializable<CompoundNBT>
+public interface IHeat extends ICapabilitySerializable<CompoundTag>
 {
     /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally
@@ -74,20 +74,20 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
      * @param text  The list of tooltips
      */
     @OnlyIn(Dist.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<ITextComponent> text)
+    default void addHeatInfo(ItemStack stack, List<Component> text)
     {
         float temperature = getTemperature();
-        IFormattableTextComponent tooltip = Heat.getTooltip(temperature);
+        MutableComponent tooltip = Heat.getTooltip(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
             if (getWeldingTemperature() > 0 && getWeldingTemperature() <= temperature)
             {
-                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
+                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.welding"));
             }
             else if (getForgingTemperature() > 0 && getForgingTemperature() <= temperature)
             {
-                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
+                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.forging"));
             }
             text.add(tooltip);
         }

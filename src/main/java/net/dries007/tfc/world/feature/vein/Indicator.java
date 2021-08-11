@@ -8,7 +8,7 @@ package net.dries007.tfc.world.feature.vein;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

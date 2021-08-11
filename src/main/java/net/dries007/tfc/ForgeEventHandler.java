@@ -10,28 +10,28 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.chunk.EmptyChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.EmptyLevelChunk;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -92,8 +92,8 @@ public final class ForgeEventHandler
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
-        bus.addGenericListener(Chunk.class, ForgeEventHandler::attachChunkCapabilities);
-        bus.addGenericListener(World.class, ForgeEventHandler::attachWorldCapabilities);
+        bus.addGenericListener(LevelChunk.class, ForgeEventHandler::attachChunkCapabilities);
+        bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
@@ -124,10 +124,10 @@ public final class ForgeEventHandler
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerWorld)
+        if (event.getWorld() instanceof ServerLevel)
         {
-            final ServerWorld world = (ServerWorld) event.getWorld();
-            final IServerWorldInfo settings = event.getSettings();
+            final ServerLevel world = (ServerLevel) event.getWorld();
+            final ServerLevelData settings = event.getSettings();
             final ChunkGenerator generator = world.getChunkSource().getGenerator();
             if (generator instanceof ITFCChunkGenerator)
             {
@@ -189,11 +189,11 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void attachChunkCapabilities(AttachCapabilitiesEvent<Chunk> event)
+    public static void attachChunkCapabilities(AttachCapabilitiesEvent<LevelChunk> event)
     {
         if (!event.getObject().isEmpty())
         {
-            World world = event.getObject().getLevel();
+            Level world = event.getObject().getLevel();
             ChunkPos chunkPos = event.getObject().getPos();
             ChunkData data;
             if (!Helpers.isClientSide(world))
@@ -217,7 +217,7 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event)
+    public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event)
     {
         event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
     }
@@ -265,7 +265,7 @@ public final class ForgeEventHandler
 
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
+        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyLevelChunk))
         {
             ChunkPos pos = event.getChunk().getPos();
             ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
@@ -278,7 +278,7 @@ public final class ForgeEventHandler
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
         // Clear server side chunk data cache
-        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
+        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyLevelChunk))
         {
             ChunkDataCache.SERVER.remove(event.getChunk().getPos());
         }
@@ -291,7 +291,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK)
         {
             final ChunkPos pos = event.getChunk().getPos();
             final ChunkData data = ChunkDataCache.WORLD_GEN.get(pos);
@@ -307,7 +307,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.Type.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND))
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND))
         {
             final ChunkPos pos = event.getChunk().getPos();
             final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
@@ -318,7 +318,7 @@ public final class ForgeEventHandler
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
         // Resource reload listeners
-        IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
+        ReloadableResourceManager resourceManager = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
@@ -349,21 +349,21 @@ public final class ForgeEventHandler
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
         // Check for possible collapse
-        IWorld world = event.getWorld();
+        LevelAccessor world = event.getWorld();
         BlockPos pos = event.getPos();
         BlockState state = world.getBlockState(pos);
 
-        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof World)
+        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof Level)
         {
-            CollapseRecipe.tryTriggerCollapse((World) world, pos);
+            CollapseRecipe.tryTriggerCollapse((Level) world, pos);
         }
     }
 
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
-        if (event.getWorld() instanceof ServerWorld)
+        if (event.getWorld() instanceof ServerLevel)
         {
-            final ServerWorld world = (ServerWorld) event.getWorld();
+            final ServerLevel world = (ServerLevel) event.getWorld();
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
 
@@ -381,9 +381,9 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        if (event.getWorld() instanceof ServerWorld)
+        if (event.getWorld() instanceof ServerLevel)
         {
-            final ServerWorld world = (ServerWorld) event.getWorld();
+            final ServerLevel world = (ServerLevel) event.getWorld();
             for (Direction direction : event.getNotifiedSides())
             {
                 // Check each notified block for a potential gravity block
@@ -421,9 +421,9 @@ public final class ForgeEventHandler
 
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
+        if (event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).dimension() == Level.OVERWORLD)
         {
-            final ServerWorld world = (ServerWorld) event.getWorld();
+            final ServerLevel world = (ServerLevel) event.getWorld();
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
                 final GameRules rules = world.getGameRules();
@@ -466,7 +466,7 @@ public final class ForgeEventHandler
 
     public static void onFireStart(StartFireEvent event)
     {
-        World world = event.getLevel();
+        Level world = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         Block block = state.getBlock();
@@ -531,13 +531,13 @@ public final class ForgeEventHandler
     public static void onArrowImpact(ProjectileImpactEvent.Arrow event)
     {
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
-        AbstractArrowEntity arrow = event.getArrow();
-        RayTraceResult result = event.getRayTraceResult();
-        if (result.getType() == RayTraceResult.Type.BLOCK && arrow.isOnFire())
+        AbstractArrow arrow = event.getArrow();
+        HitResult result = event.getRayTraceResult();
+        if (result.getType() == HitResult.Type.BLOCK && arrow.isOnFire())
         {
-            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockHitResult blockResult = (BlockHitResult) result;
             BlockPos pos = blockResult.getBlockPos();
-            World world = arrow.level;
+            Level world = arrow.level;
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
@@ -545,13 +545,13 @@ public final class ForgeEventHandler
     public static void onFireballImpact(ProjectileImpactEvent.Fireball event)
     {
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
-        DamagingProjectileEntity fireball = event.getFireball();
-        RayTraceResult result = event.getRayTraceResult();
-        if (result.getType() == RayTraceResult.Type.BLOCK)
+        AbstractHurtingProjectile fireball = event.getFireball();
+        HitResult result = event.getRayTraceResult();
+        if (result.getType() == HitResult.Type.BLOCK)
         {
-            BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            BlockHitResult blockResult = (BlockHitResult) result;
             BlockPos pos = blockResult.getBlockPos();
-            World world = fireball.level;
+            Level world = fireball.level;
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }

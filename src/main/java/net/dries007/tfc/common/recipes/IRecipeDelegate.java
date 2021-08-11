@@ -6,20 +6,20 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
-public interface IRecipeDelegate<C extends IInventory> extends IRecipe<C>
+public interface IRecipeDelegate<C extends Container> extends Recipe<C>
 {
-    IRecipe<C> getDelegate();
+    Recipe<C> getDelegate();
 
     @Override
-    default boolean matches(C inv, World worldIn)
+    default boolean matches(C inv, Level worldIn)
     {
         return getDelegate().matches(inv, worldIn);
     }
@@ -72,7 +72,7 @@ public interface IRecipeDelegate<C extends IInventory> extends IRecipe<C>
         return getDelegate().getToastSymbol();
     }
 
-    interface Shaped<C extends IInventory> extends IRecipeDelegate<C>, IShapedRecipe<C>
+    interface Shaped<C extends Container> extends IRecipeDelegate<C>, IShapedRecipe<C>
     {
         @Override
         IShapedRecipe<C> getDelegate();

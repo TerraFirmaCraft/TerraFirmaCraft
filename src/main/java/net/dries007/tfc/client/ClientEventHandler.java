@@ -9,22 +9,16 @@ package net.dries007.tfc.client;
 import java.util.stream.Stream;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.gui.screen.inventory.CraftingScreen;
-import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -41,7 +35,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
 import static net.dries007.tfc.common.types.Wood.BlockType.*;
 
@@ -60,19 +53,19 @@ public final class ClientEventHandler
     public static void clientSetup(FMLClientSetupEvent event)
     {
         // Screens
-        ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
-        ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
-        ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
-        ScreenManager.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
-        ScreenManager.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
-        ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
-        ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
-        ScreenManager.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
-        ScreenManager.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
-        ScreenManager.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
-        ScreenManager.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
-        ScreenManager.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
-        ScreenManager.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
+        MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
+        MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+        MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+        MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
+        MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
+        MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
+        MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+        MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+        MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
+        MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
+        MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
+        MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
+        MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
@@ -84,58 +77,58 @@ public final class ClientEventHandler
         final RenderType translucent = RenderType.translucent();
 
         // Rock blocks
-        TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
-        TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout)));
-        TFCBlocks.GRADED_ORES.values().forEach(map -> map.values().forEach(inner -> inner.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout))));
+        TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
+        TFCBlocks.GRADED_ORES.values().forEach(map -> map.values().forEach(inner -> inner.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout))));
 
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG).forEach(type -> RenderTypeLookup.setRenderLayer(map.get(type).get(), cutout));
-            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> RenderTypeLookup.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
         });
 
         // Grass
-        TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutoutMipped));
-        TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutoutMipped));
-        RenderTypeLookup.setRenderLayer(TFCBlocks.PEAT_GRASS.get(), cutoutMipped);
+        TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
+        TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PEAT_GRASS.get(), cutoutMipped);
 
         // Metal blocks
-        TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout)));
+        TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
 
         // Groundcover
-        TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
-        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
-        RenderTypeLookup.setRenderLayer(TFCBlocks.CALCITE.get(), cutout);
+        TFCBlocks.GROUNDCOVER.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.SMALL_ORES.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.CALCITE.get(), cutout);
 
-        RenderTypeLookup.setRenderLayer(TFCBlocks.ICICLE.get(), translucent);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.SEA_ICE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICICLE.get(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SEA_ICE.get(), cutout);
 
         // Plants
-        TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout));
-        TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), cutout)));
-        TFCBlocks.SPREADING_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
-        TFCBlocks.SPREADING_CANES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
-        TFCBlocks.STATIONARY_BUSHES.values().forEach(bush -> RenderTypeLookup.setRenderLayer(bush.get(), cutoutMipped));
-        RenderTypeLookup.setRenderLayer(TFCBlocks.CRANBERRY_BUSH.get(), cutoutMipped);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_BERRY_BUSH.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_CANE.get(), cutout);
-        TFCBlocks.FRUIT_TREE_LEAVES.values().forEach(leaves -> RenderTypeLookup.setRenderLayer(leaves.get(), cutoutMipped));
-        TFCBlocks.FRUIT_TREE_SAPLINGS.values().forEach(leaves -> RenderTypeLookup.setRenderLayer(leaves.get(), cutout));
-        RenderTypeLookup.setRenderLayer(TFCBlocks.BANANA_PLANT.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.BANANA_SAPLING.get(), cutout);
+        TFCBlocks.PLANTS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
+        TFCBlocks.SPREADING_BUSHES.values().forEach(bush -> ItemBlockRenderTypes.setRenderLayer(bush.get(), cutoutMipped));
+        TFCBlocks.SPREADING_CANES.values().forEach(bush -> ItemBlockRenderTypes.setRenderLayer(bush.get(), cutoutMipped));
+        TFCBlocks.STATIONARY_BUSHES.values().forEach(bush -> ItemBlockRenderTypes.setRenderLayer(bush.get(), cutoutMipped));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.CRANBERRY_BUSH.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_BERRY_BUSH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_CANE.get(), cutout);
+        TFCBlocks.FRUIT_TREE_LEAVES.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutoutMipped));
+        TFCBlocks.FRUIT_TREE_SAPLINGS.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutout));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_PLANT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_SAPLING.get(), cutout);
 
         // Other
-        RenderTypeLookup.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
 
         // Fluids
-        RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), translucent);
-        RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getSource(), translucent);
-        RenderTypeLookup.setRenderLayer(TFCFluids.SPRING_WATER.getFlowing(), translucent);
-        RenderTypeLookup.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(TFCFluids.SALT_WATER.getSource(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getFlowing(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), translucent);
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
@@ -156,9 +149,9 @@ public final class ClientEventHandler
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
-        final IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
-        final IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
-        final IBlockColor seasonalFoliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
+        final BlockColor grassColor = (state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
+        final BlockColor foliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
+        final BlockColor seasonalFoliageColor = (state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
 
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> registry.register(grassColor, reg.get()));
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> registry.register(grassColor, reg.get()));

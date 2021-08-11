@@ -8,27 +8,27 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.function.Function;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 
 public enum SandstoneBlockType
 {
-    RAW(color -> AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).strength(0.8f)),
-    SMOOTH(color -> AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f)),
-    CUT(color -> AbstractBlock.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f)),
+    RAW(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(0.8f)),
+    SMOOTH(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f)),
+    CUT(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f)),
     // todo: chiseled?
     ;
 
-    private final Function<SandBlockType, AbstractBlock.Properties> factory;
+    private final Function<SandBlockType, BlockBehaviour.Properties> factory;
 
-    SandstoneBlockType(Function<SandBlockType, AbstractBlock.Properties> factory)
+    SandstoneBlockType(Function<SandBlockType, BlockBehaviour.Properties> factory)
     {
         this.factory = factory;
     }
 
-    public AbstractBlock.Properties properties(SandBlockType color)
+    public BlockBehaviour.Properties properties(SandBlockType color)
     {
         return factory.apply(color);
     }

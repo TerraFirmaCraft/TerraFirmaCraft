@@ -9,13 +9,13 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class RandomTreeConfig implements IFeatureConfig
+public class RandomTreeConfig implements FeatureConfiguration
 {
     public static final Codec<RandomTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter(c -> c.structureNames),

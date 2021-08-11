@@ -8,21 +8,21 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidUtil;
@@ -40,7 +40,7 @@ import net.dries007.tfc.util.TFCDamageSources;
 
 public class PotBlock extends FirepitBlock
 {
-    private static final VoxelShape POT_SHAPE = VoxelShapes.or(
+    private static final VoxelShape POT_SHAPE = Shapes.or(
         BASE_SHAPE,
         box(4, 6, 3, 12, 9, 4),
         box(5, 9, 4, 12, 10, 5),
@@ -69,7 +69,7 @@ public class PotBlock extends FirepitBlock
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
         super.animateTick(state, world, pos, rand);
         PotTileEntity te = Helpers.getTileEntity(world, pos, PotTileEntity.class);
@@ -83,12 +83,12 @@ public class PotBlock extends FirepitBlock
                 world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
             }
             world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.fastGaussian(rand), 0.5, Helpers.fastGaussian(rand));
-            world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
+            world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
         }
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final PotTileEntity firepit = Helpers.getTileEntity(world, pos, PotTileEntity.class);
         if (firepit != null)
@@ -105,38 +105,38 @@ public class PotBlock extends FirepitBlock
                 {
                     AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
             {
                 firepit.extinguish(state);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, null))
             {
                 firepit.markForSync();
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else
             {
-                final ActionResultType interactResult = firepit.interactWithOutput(player, stack);
-                if (interactResult != ActionResultType.PASS)
+                final InteractionResult interactResult = firepit.interactWithOutput(player, stack);
+                if (interactResult != InteractionResult.PASS)
                 {
                     return interactResult;
                 }
 
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, firepit, pos);
+                    NetworkHooks.openGui((ServerPlayer) player, firepit, pos);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return POT_SHAPE;
     }

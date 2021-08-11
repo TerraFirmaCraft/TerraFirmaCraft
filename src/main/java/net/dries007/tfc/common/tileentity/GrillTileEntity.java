@@ -8,13 +8,13 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
@@ -32,7 +32,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.grill");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.grill");
 
     private final HeatingRecipe[] cachedRecipes;
 
@@ -48,7 +48,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
 
     @Nullable
     @Override
-    public Container createMenu(int windowID, PlayerInventory playerInv, PlayerEntity player)
+    public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return new GrillContainer(this, playerInv, windowID);
     }

@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -35,9 +35,9 @@ public class ScrapingBlock extends DeviceBlock
 {
     private static final VoxelShape SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-    private static Vector3d calculatePoint(Vector3d rayVector, Vector3d rayPoint)
+    private static Vec3 calculatePoint(Vec3 rayVector, Vec3 rayPoint)
     {
-        Vector3d planeNormal = new Vector3d(0.0, 1.0, 0.0);
+        Vec3 planeNormal = new Vec3(0.0, 1.0, 0.0);
         return rayPoint.subtract(rayVector.scale(rayPoint.dot(planeNormal) / rayVector.dot(planeNormal)));
     }
 
@@ -48,7 +48,7 @@ public class ScrapingBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !facingState.is(TFCTags.Blocks.SCRAPING_SURFACE))
         {
@@ -59,7 +59,7 @@ public class ScrapingBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         ScrapingTileEntity te = Helpers.getTileEntity(level, pos, ScrapingTileEntity.class);
         if (te != null)
@@ -67,7 +67,7 @@ public class ScrapingBlock extends DeviceBlock
             ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem().is(TFCTags.Items.KNIVES))
             {
-                Vector3d point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vector3d(pos.getX(), pos.getY(), pos.getZ())));
+                Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
                 te.onClicked((float) point.x, (float) point.z);
                 if (!level.isClientSide)
                 {
@@ -76,18 +76,18 @@ public class ScrapingBlock extends DeviceBlock
                 else
                 {
                     te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                        level.addParticle(new ItemParticleData(ParticleTypes.ITEM, cap.getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
+                        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, cap.getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
                     });
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }

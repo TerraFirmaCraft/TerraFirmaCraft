@@ -8,14 +8,14 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
@@ -26,20 +26,20 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
 
-public class ErosionFeature extends Feature<NoFeatureConfig>
+public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
-    public ErosionFeature(Codec<NoFeatureConfig> codec)
+    public ErosionFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
         final RockData rockData = ChunkDataProvider.get(generator).get(chunkPos).getRockDataOrThrow();
 
@@ -48,7 +48,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
             for (int z = 0; z < 16; z++)
             {
                 // Top down iteration, attempt to either fix unstable locations, or remove the offending blocks.
-                final int baseHeight = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
+                final int baseHeight = worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
                 boolean prevBlockCanLandslide = false;
                 int lastSafeY = baseHeight;
 

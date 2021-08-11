@@ -7,15 +7,15 @@
 package net.dries007.tfc.client.particle;
 
 import net.minecraft.client.particle.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
 
 /**
  * This is {@link BubbleColumnUpParticle} minus the fluid tag check and with a short lifecycle
  */
-public class BubbleParticle extends SpriteTexturedParticle
+public class BubbleParticle extends TextureSheetParticle
 {
-    private BubbleParticle(ClientWorld worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
+    private BubbleParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
     {
         super(worldIn, x, y, z);
         this.setSize(0.02F, 0.02F);
@@ -46,21 +46,21 @@ public class BubbleParticle extends SpriteTexturedParticle
         }
     }
 
-    public IParticleRenderType getRenderType()
+    public ParticleRenderType getRenderType()
     {
-        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    public static class Factory implements IParticleFactory<BasicParticleType>
+    public static class Factory implements ParticleProvider<SimpleParticleType>
     {
-        private final IAnimatedSprite sprite;
+        private final SpriteSet sprite;
 
-        public Factory(IAnimatedSprite spriteSet)
+        public Factory(SpriteSet spriteSet)
         {
             sprite = spriteSet;
         }
 
-        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             BubbleParticle particle = new BubbleParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprite);

@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.noise;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 /**
  * A collection of fast noise utility functions
@@ -43,6 +43,6 @@ public final class NoiseUtil
     public static float triangle(float amplitude, float midpoint, float frequency, float phaseShift, float q)
     {
         float p = phaseShift + frequency * q;
-        return midpoint + amplitude * (Math.abs(2f * p + 1f - 4f * MathHelper.floor(p / 2f + 0.75f)) - 1f);
+        return midpoint + amplitude * (Math.abs(2f * p + 1f - 4f * Mth.floor(p / 2f + 0.75f)) - 1f);
     }
 }

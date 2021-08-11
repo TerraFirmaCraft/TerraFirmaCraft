@@ -8,11 +8,11 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
@@ -24,12 +24,12 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SoilDiscConfig config)
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, SoilDiscConfig config)
     {
         boolean placed = false;
         final int radius = config.getRadius(random);
         final int radiusSquared = radius * radius;
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = pos.getX() - radius; x <= pos.getX() + radius; ++x)
         {
             for (int z = pos.getZ() - radius; z <= pos.getZ() + radius; ++z)

@@ -8,14 +8,14 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class ParentedSurfaceBuilderConfig extends SurfaceBuilderConfig
+public class ParentedSurfaceBuilderConfig extends SurfaceBuilderBaseConfiguration
 {
     public static final Codec<ParentedSurfaceBuilderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ConfiguredSurfaceBuilder.CODEC.fieldOf("parent").forGetter(c -> c.parent)

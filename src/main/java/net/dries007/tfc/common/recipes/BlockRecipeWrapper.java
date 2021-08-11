@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
 
 /**
  * This is a version of {@link net.minecraftforge.items.wrapper.RecipeWrapper} that is intended to be used for {@link IBlockRecipe}.
@@ -37,14 +37,14 @@ public class BlockRecipeWrapper implements IInventoryNoop
 
     public static class Mutable extends BlockRecipeWrapper
     {
-        private final BlockPos.Mutable cursor;
+        private final BlockPos.MutableBlockPos cursor;
 
         public Mutable()
         {
-            this(new BlockPos.Mutable());
+            this(new BlockPos.MutableBlockPos());
         }
 
-        private Mutable(BlockPos.Mutable pos)
+        private Mutable(BlockPos.MutableBlockPos pos)
         {
             super(pos, Blocks.AIR.defaultBlockState()); // Since the position is not expected to be initialized, we set a default null block state
             this.cursor = pos;

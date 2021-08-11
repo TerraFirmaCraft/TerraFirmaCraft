@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Size and weight data attached to every item via {@link ItemSizeManager}

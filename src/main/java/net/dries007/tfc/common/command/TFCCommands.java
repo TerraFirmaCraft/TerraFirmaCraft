@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.common.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 
 public final class TFCCommands
 {
-    public static void register(CommandDispatcher<CommandSource> dispatcher)
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
     {
         // Register all new commands as sub commands of the `tfc` root
         dispatcher.register(Commands.literal("tfc")

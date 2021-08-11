@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.item.IArmorMaterial;
+import net.minecraft.world.item.ArmorMaterial;
 
 /**
  * @see TFCArmorMaterial
  */
-public interface ITFCArmorMaterial extends IArmorMaterial
+public interface ITFCArmorMaterial extends ArmorMaterial
 {
     /**
      * Returns the crushing modifier this armor has

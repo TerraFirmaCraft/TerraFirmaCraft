@@ -12,15 +12,15 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SUpdateRecipesPacket;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
@@ -33,7 +33,7 @@ import net.dries007.tfc.util.Helpers;
  *
  * @param <R> The recipe type this must delegate to. Either for requiring shaped, or shapeless recipes
  */
-public abstract class DelegateRecipe<R extends IRecipe<C>, C extends IInventory> implements IRecipeDelegate<C>
+public abstract class DelegateRecipe<R extends Recipe<C>, C extends Container> implements IRecipeDelegate<C>
 {
     public static final ResourceLocation DELEGATE = Helpers.identifier("delegate");
 
@@ -58,9 +58,9 @@ public abstract class DelegateRecipe<R extends IRecipe<C>, C extends IInventory>
         return id;
     }
 
-    protected static class Serializer<C extends IInventory> extends RecipeSerializer<DelegateRecipe<?, C>>
+    protected static class Serializer<C extends Container> extends RecipeSerializer<DelegateRecipe<?, C>>
     {
-        public static <C extends IInventory> Serializer<C> shapeless(BiFunction<ResourceLocation, IRecipe<C>, DelegateRecipe<IRecipe<C>, C>> factory)
+        public static <C extends Container> Serializer<C> shapeless(BiFunction<ResourceLocation, Recipe<C>, DelegateRecipe<Recipe<C>, C>> factory)
         {
             return new Serializer<>((id, delegate) -> {
                 if (delegate instanceof IShapedRecipe)
@@ -71,7 +71,7 @@ public abstract class DelegateRecipe<R extends IRecipe<C>, C extends IInventory>
             });
         }
 
-        public static <C extends IInventory> Serializer<C> shaped(BiFunction<ResourceLocation, IShapedRecipe<C>, DelegateRecipe<IShapedRecipe<C>, C>> factory)
+        public static <C extends Container> Serializer<C> shaped(BiFunction<ResourceLocation, IShapedRecipe<C>, DelegateRecipe<IShapedRecipe<C>, C>> factory)
         {
             return new Serializer<>((id, delegate) -> {
                 if (!(delegate instanceof IShapedRecipe))
@@ -82,9 +82,9 @@ public abstract class DelegateRecipe<R extends IRecipe<C>, C extends IInventory>
             });
         }
 
-        private final BiFunction<ResourceLocation, IRecipe<C>, DelegateRecipe<?, C>> factory;
+        private final BiFunction<ResourceLocation, Recipe<C>, DelegateRecipe<?, C>> factory;
 
-        protected Serializer(BiFunction<ResourceLocation, IRecipe<C>, DelegateRecipe<?, C>> factory)
+        protected Serializer(BiFunction<ResourceLocation, Recipe<C>, DelegateRecipe<?, C>> factory)
         {
             this.factory = factory;
         }
@@ -93,23 +93,23 @@ public abstract class DelegateRecipe<R extends IRecipe<C>, C extends IInventory>
         @SuppressWarnings("unchecked")
         public DelegateRecipe<?, C> fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            IRecipe<C> internal = (IRecipe<C>) RecipeManager.fromJson(DELEGATE, JSONUtils.getAsJsonObject(json, "recipe"));
+            Recipe<C> internal = (Recipe<C>) RecipeManager.fromJson(DELEGATE, GsonHelper.getAsJsonObject(json, "recipe"));
             return factory.apply(recipeId, internal);
         }
 
         @Nullable
         @Override
         @SuppressWarnings("unchecked")
-        public DelegateRecipe<?, C> fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
+        public DelegateRecipe<?, C> fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            IRecipe<C> internal = (IRecipe<C>) SUpdateRecipesPacket.fromNetwork(buffer);
+            Recipe<C> internal = (Recipe<C>) ClientboundUpdateRecipesPacket.fromNetwork(buffer);
             return factory.apply(recipeId, internal);
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, DelegateRecipe<?, C> recipe)
+        public void toNetwork(FriendlyByteBuf buffer, DelegateRecipe<?, C> recipe)
         {
-            SUpdateRecipesPacket.toNetwork(recipe.getDelegate(), buffer);
+            ClientboundUpdateRecipesPacket.toNetwork(recipe.getDelegate(), buffer);
         }
     }
 }

@@ -11,21 +11,27 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 
 /**
  * This is a fake {@link BlockItem} copy pasta for a vanilla item that we want to behave like a block item for a specific block.
@@ -63,17 +69,17 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
      * Copy paste from {@link ItemStack#useOn(ItemUseContext)}
      */
     @Override
-    public ActionResultType onItemUse(ItemStack stack, ItemUseContext context)
+    public InteractionResult onItemUse(ItemStack stack, UseOnContext context)
     {
-        PlayerEntity player = context.getPlayer();
+        Player player = context.getPlayer();
         if (player != null && !player.abilities.mayBuild)
         {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
         else
         {
             Item item = getItem();
-            ActionResultType result = place(new BlockItemUseContext(context));
+            InteractionResult result = place(new BlockPlaceContext(context));
             if (player != null && result.consumesAction())
             {
                 player.awardStat(Stats.ITEM_USED.get(item));
@@ -85,28 +91,28 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     /**
      * Copy pasta from {@link net.minecraft.item.BlockItem#place(BlockItemUseContext)}
      */
-    public ActionResultType place(BlockItemUseContext context)
+    public InteractionResult place(BlockPlaceContext context)
     {
         if (!context.canPlace())
         {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
         else
         {
             BlockState placementState = getPlacementState(context);
             if (placementState == null)
             {
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
             else if (!this.placeBlock(context, placementState))
             {
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
             else
             {
                 BlockPos pos = context.getClickedPos();
-                World world = context.getLevel();
-                PlayerEntity player = context.getPlayer();
+                Level world = context.getLevel();
+                Player player = context.getPlayer();
                 ItemStack stack = context.getItemInHand();
                 BlockState placedState = world.getBlockState(pos);
                 Block placedBlock = placedState.getBlock();
@@ -115,40 +121,40 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
                     placedState = updateBlockStateFromTag(pos, world, stack, placedState);
                     BlockItem.updateCustomBlockEntityTag(world, player, pos, stack);
                     placedBlock.setPlacedBy(world, pos, placedState, player, stack);
-                    if (player instanceof ServerPlayerEntity)
+                    if (player instanceof ServerPlayer)
                     {
-                        CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
+                        CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
                     }
                 }
 
                 SoundType placementSound = placedState.getSoundType(world, pos, player);
-                world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
+                world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
                 if (player == null || !player.abilities.instabuild)
                 {
                     stack.shrink(1);
                 }
 
-                return ActionResultType.sidedSuccess(world.isClientSide);
+                return InteractionResult.sidedSuccess(world.isClientSide);
             }
         }
     }
 
     @Nullable
-    protected BlockState getPlacementState(BlockItemUseContext context)
+    protected BlockState getPlacementState(BlockPlaceContext context)
     {
         BlockState placementState = block.get().getStateForPlacement(context);
         return placementState != null && canPlace(context, placementState) ? placementState : null;
     }
 
-    protected boolean placeBlock(BlockItemUseContext context, BlockState state)
+    protected boolean placeBlock(BlockPlaceContext context, BlockState state)
     {
         return context.getLevel().setBlock(context.getClickedPos(), state, 11);
     }
 
-    protected boolean canPlace(BlockItemUseContext context, BlockState stateToPlace)
+    protected boolean canPlace(BlockPlaceContext context, BlockState stateToPlace)
     {
-        PlayerEntity player = context.getPlayer();
-        ISelectionContext selectionContext = player == null ? ISelectionContext.empty() : ISelectionContext.of(player);
+        Player player = context.getPlayer();
+        CollisionContext selectionContext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
         return (stateToPlace.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(stateToPlace, context.getClickedPos(), selectionContext);
     }
 
@@ -156,14 +162,14 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
      * Copy pasta from {@link BlockItem#updateBlockStateFromTag(BlockPos, World, ItemStack, BlockState)}
      */
     @SuppressWarnings("ALL")
-    private BlockState updateBlockStateFromTag(BlockPos pos, World world, ItemStack stack, BlockState state)
+    private BlockState updateBlockStateFromTag(BlockPos pos, Level world, ItemStack stack, BlockState state)
     {
         BlockState newState = state;
-        CompoundNBT nbt = stack.getTag();
+        CompoundTag nbt = stack.getTag();
         if (nbt != null)
         {
-            CompoundNBT blockStateNbt = nbt.getCompound("BlockStateTag");
-            StateContainer<Block, BlockState> container = state.getBlock().getStateDefinition();
+            CompoundTag blockStateNbt = nbt.getCompound("BlockStateTag");
+            StateDefinition<Block, BlockState> container = state.getBlock().getStateDefinition();
 
             for (String propertyKey : blockStateNbt.getAllKeys())
             {

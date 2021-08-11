@@ -8,14 +8,14 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.Random;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 import com.mojang.serialization.Codec;
 
@@ -27,12 +27,12 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, StackedTreeConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, StackedTreeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
-        final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
-        final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
+        final StructureManager manager = TreeHelpers.getTemplateManager(worldIn);
+        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
 
         if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 2))
         {
@@ -50,7 +50,7 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
             for (int i = 0; i < layerCount; i++)
             {
                 final ResourceLocation structureId = layer.templates.get(random.nextInt(layer.templates.size()));
-                final Template structure = manager.getOrCreate(structureId);
+                final StructureTemplate structure = manager.getOrCreate(structureId);
                 TreeHelpers.placeTemplate(structure, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
                 mutablePos.move(0, structure.getSize().getY(), 0);
             }

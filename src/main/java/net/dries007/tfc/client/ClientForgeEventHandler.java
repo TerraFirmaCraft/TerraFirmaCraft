@@ -15,24 +15,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IngameGui;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.color.ColorCache;
+import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
@@ -70,7 +70,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-import static net.minecraft.util.text.TextFormatting.*;
+import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
 {
@@ -129,7 +129,7 @@ public class ClientForgeEventHandler
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();
-        final List<ITextComponent> text = event.getToolTip();
+        final List<Component> text = event.getToolTip();
         if (!stack.isEmpty())
         {
             ItemSizeManager.addTooltipInfo(stack, text);
@@ -142,10 +142,10 @@ public class ClientForgeEventHandler
 
             if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
             {
-                CompoundNBT stackTag = stack.getTag();
+                CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TranslationTextComponent("tfc.tooltip.debug_tag", stackTag));
+                    text.add(new TranslatableComponent("tfc.tooltip.debug_tag", stackTag));
                 }
             }
         }
@@ -153,7 +153,7 @@ public class ClientForgeEventHandler
 
     public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
-        PlayerEntity player = Minecraft.getInstance().player;
+        Player player = Minecraft.getInstance().player;
         if (event.getGui() instanceof InventoryScreen && player != null && !player.isCreative())
         {
             InventoryScreen screen = (InventoryScreen) event.getGui();
@@ -169,12 +169,12 @@ public class ClientForgeEventHandler
 
     public static void onClientWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ClientWorld)
+        if (event.getWorld() instanceof ClientLevel)
         {
-            final ClientWorld world = (ClientWorld) event.getWorld();
+            final ClientLevel world = (ClientLevel) event.getWorld();
 
             // Add our custom tints to the color resolver caches
-            final Object2ObjectArrayMap<ColorResolver, ColorCache> colorCaches = ((ClientWorldAccessor) world).getTintCaches();
+            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientWorldAccessor) world).getTintCaches();
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new ColorCache());
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new ColorCache());

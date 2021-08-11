@@ -9,18 +9,18 @@ package net.dries007.tfc.common.blocks.wood;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -37,9 +37,9 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         Direction d = null;
         for (Direction checkDir : Direction.Plane.HORIZONTAL)
         {
@@ -74,7 +74,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getAxis().isHorizontal())
         {
@@ -98,7 +98,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
      * This eliminates cases of placing and then immediately breaking.
      */
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
@@ -114,17 +114,17 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = SHAPE_BY_STATE.get(state);
         if (shape != null) return shape;
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }
 
-    private int getHorizontalDistance(Direction d, IWorldReader world, BlockPos pos)
+    private int getHorizontalDistance(Direction d, LevelReader world, BlockPos pos)
     {
         int distance = -1;
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 5; i++)
         {
             mutablePos.set(pos).move(d, i);

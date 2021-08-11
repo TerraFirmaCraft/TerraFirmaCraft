@@ -8,11 +8,11 @@ package net.dries007.tfc.common.blocks;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraftforge.common.extensions.IForgeBlock;
 
 /**
@@ -31,19 +31,19 @@ public interface IForgeBlockProperties extends IForgeBlock
 
     @Nullable
     @Override
-    default TileEntity createTileEntity(BlockState state, IBlockReader world)
+    default BlockEntity createTileEntity(BlockState state, BlockGetter world)
     {
         return getForgeProperties().createTileEntity();
     }
 
     @Override
-    default int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    default int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
         return getForgeProperties().getFlammability();
     }
 
     @Override
-    default int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    default int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
         return getForgeProperties().getFireSpreadSpeed();
     }

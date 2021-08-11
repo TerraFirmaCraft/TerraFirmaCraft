@@ -8,8 +8,8 @@ package net.dries007.tfc.common.container;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.tileentity.PotTileEntity;
@@ -23,7 +23,7 @@ public class PotContainer extends TileEntityContainer<PotTileEntity>
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public PotContainer(PotTileEntity tile, PlayerInventory playerInv, int windowId)
+    public PotContainer(PotTileEntity tile, Inventory playerInv, int windowId)
     {
         super(TFCContainerTypes.POT.get(), tile, playerInv, windowId);
 
@@ -52,7 +52,7 @@ public class PotContainer extends TileEntityContainer<PotTileEntity>
     }
 
     @Override
-    protected void addPlayerInventorySlots(PlayerInventory playerInv)
+    protected void addPlayerInventorySlots(Inventory playerInv)
     {
         addPlayerInventorySlots(playerInv, 20);
     }

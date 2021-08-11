@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.state.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.util.calendar.Month;
 

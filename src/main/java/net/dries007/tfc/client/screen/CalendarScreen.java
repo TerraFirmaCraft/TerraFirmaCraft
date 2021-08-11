@@ -7,14 +7,14 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -28,7 +28,7 @@ public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
 {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_calendar.png");
 
-    public CalendarScreen(SimpleContainer container, PlayerInventory playerInv, ITextComponent name)
+    public CalendarScreen(SimpleContainer container, Inventory playerInv, Component name)
     {
         super(container, playerInv, name, BACKGROUND);
     }
@@ -48,7 +48,7 @@ public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY)
     {
         super.renderLabels(matrixStack, mouseX, mouseY);
 

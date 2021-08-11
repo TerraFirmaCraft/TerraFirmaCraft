@@ -11,17 +11,17 @@ import java.util.Random;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
@@ -40,9 +40,9 @@ public final class TreeHelpers
      * Allows replacing leaves and air blocks
      */
     @SuppressWarnings("deprecation")
-    public static void placeTemplate(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
+    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
+        List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
         for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {

@@ -11,33 +11,33 @@ import java.util.List;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
 import net.dries007.tfc.mixin.world.gen.carver.ConfiguredCarverAccessor;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public final class CarverHelpers
 {
-    public static BitSet createWaterAdjacencyMask(ChunkPrimer chunk, int seaLevel)
+    public static BitSet createWaterAdjacencyMask(ProtoChunk chunk, int seaLevel)
     {
         final BitSet waterAdjacencyMask = new BitSet(16 * 16 * (1 + seaLevel));
 
         // Sections
         for (int sectionY = 0; sectionY < 16; sectionY++)
         {
-            final ChunkSection section = chunk.getOrCreateSection(sectionY);
+            final LevelChunkSection section = chunk.getOrCreateSection(sectionY);
             for (int localY = 0; localY < 16; localY++)
             {
                 final int y = (sectionY << 4) | localY;
@@ -93,13 +93,13 @@ public final class CarverHelpers
         return (x & 15) | ((z & 15) << 4) | (y << 8);
     }
 
-    public static void runCarversWithContext(long worldSeed, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask, int seaLevel)
+    public static void runCarversWithContext(long worldSeed, ChunkAccess chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, WorldgenRandom random, GenerationStep.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask, int seaLevel)
     {
         final ChunkPos chunkPos = chunk.getPos();
-        final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
+        final List<Supplier<ConfiguredWorldCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
 
         // Setup IContextCarvers
-        for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
+        for (Supplier<ConfiguredWorldCarver<?>> lazyCarver : carvers)
         {
             final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
             if (carver instanceof IContextCarver)

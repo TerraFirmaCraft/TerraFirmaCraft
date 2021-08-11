@@ -11,15 +11,15 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
@@ -37,13 +37,13 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
+    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final MutableBoundingBox box = new MutableBoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
 
         final Set<BlockPos> filled = new HashSet<>();
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         // First, make sure we're currently at the lowest point in the column.
         mutablePos.set(pos);
@@ -86,7 +86,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         return false;
     }
 
-    private boolean floodFill(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos, FloodFillLakeConfig config)
+    private boolean floodFill(WorldGenLevel worldIn, BlockPos startPos, BoundingBox box, Set<BlockPos> filled, BlockPos.MutableBlockPos mutablePos, FloodFillLakeConfig config)
     {
         boolean result = floodFillLayer(worldIn, startPos, box, filled, mutablePos, config);
         if (!result)
@@ -116,7 +116,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         return true;
     }
 
-    private boolean floodFillLayer(ISeedReader worldIn, BlockPos startPos, MutableBoundingBox box, Set<BlockPos> filled, BlockPos.Mutable mutablePos, FloodFillLakeConfig config)
+    private boolean floodFillLayer(WorldGenLevel worldIn, BlockPos startPos, BoundingBox box, Set<BlockPos> filled, BlockPos.MutableBlockPos mutablePos, FloodFillLakeConfig config)
     {
         // First check the start position, this must be fillable
         if (!isFloodFillable(worldIn.getBlockState(startPos), config))

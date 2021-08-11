@@ -7,13 +7,18 @@
 package net.dries007.tfc.common.fluids;
 
 import net.minecraft.block.*;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A generic interface for a block which is able to contain any number of predetermined fluid properties
@@ -21,10 +26,10 @@ import net.minecraft.world.IWorld;
  * @see FluidProperty
  * @see FluidHelpers
  */
-public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucketPickupHandler
+public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockContainer, BucketPickup
 {
     @Override
-    default boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    default boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid == Fluids.EMPTY)
@@ -35,7 +40,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
     }
 
     @Override
-    default boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    default boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid == Fluids.EMPTY && getFluidProperty().getPossibleFluids().contains(fluidStateIn.getType()))
@@ -51,7 +56,7 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
     }
 
     @Override
-    default Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state)
+    default Fluid takeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)

@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class ForestConfig implements IFeatureConfig
+public class ForestConfig implements FeatureConfiguration
 {
     public static final Codec<ForestConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Entry.CODEC.listOf().fieldOf("entries").forGetter(c -> c.entries)

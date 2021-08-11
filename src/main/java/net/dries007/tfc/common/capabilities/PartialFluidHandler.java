@@ -11,6 +11,8 @@ import javax.annotation.Nonnull;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+
 /**
  * A partially exposed fluid handler, implementing the actual handler part of {@link SidedHandler} for {@link IFluidHandler}s
  * This allows either inserting or extracting to be allowed. Any other operations are denied.

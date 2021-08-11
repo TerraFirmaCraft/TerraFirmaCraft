@@ -8,28 +8,28 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -43,11 +43,18 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.util.Helpers;
 
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+
 public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
 
-    public static final VoxelShape BASE_SHAPE = VoxelShapes.or(
+    public static final VoxelShape BASE_SHAPE = Shapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
         box(5, 0, 0.5, 9, 1, 3),
         box(11, 0, 0, 13, 1.5, 2),
@@ -74,7 +81,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
         box(2, 0, 2, 14, 1.0, 14)
     );
 
-    public static boolean canSurvive(IWorldReader world, BlockPos pos)
+    public static boolean canSurvive(LevelReader world, BlockPos pos)
     {
         return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
     }
@@ -88,7 +95,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
         double x = pos.getX() + 0.5;
@@ -97,7 +104,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 
         if (rand.nextInt(10) == 0)
         {
-            world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
@@ -114,7 +121,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
     }
 
     @Override
-    public void stepOn(World world, BlockPos pos, Entity entity)
+    public void stepOn(Level world, BlockPos pos, Entity entity)
     {
         if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(LIT))
         {
@@ -124,14 +131,14 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIT);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (!stateIn.canSurvive(worldIn, currentPos))
         {
@@ -142,7 +149,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
         if (firepit != null)
@@ -155,35 +162,35 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
                     AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
                     stack.shrink(1);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
             {
                 firepit.extinguish(state);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, firepit, pos);
+                    NetworkHooks.openGui((ServerPlayer) player, firepit, pos);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
     {
         return FirepitBlock.canSurvive(world, pos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return BASE_SHAPE;
     }

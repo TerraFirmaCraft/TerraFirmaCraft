@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -57,7 +57,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
     @SuppressWarnings("deprecation")
     private void buildVolcanicSurface(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, float easing)
     {
-        final BlockPos.Mutable pos = new BlockPos.Mutable();
+        final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
 
         int surfaceDepth = -1;
@@ -79,7 +79,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
                 {
                     // Reached surface. Place top state and switch to subsurface layers
                     surfaceDepth = calculateAltitudeSlopeSurfaceDepth(y, slope, 13, 0, 4);
-                    surfaceDepth = MathHelper.clamp((int) (surfaceDepth * (easing - 0.6f) / 0.4f), 2, 11);
+                    surfaceDepth = Mth.clamp((int) (surfaceDepth * (easing - 0.6f) / 0.4f), 2, 11);
                     context.setBlockState(pos, basalt);
                 }
                 else if (surfaceDepth > 0)

@@ -6,26 +6,26 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -46,26 +46,26 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(AXIS));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!worldIn.isClientSide() && worldIn instanceof World)
+        if (!worldIn.isClientSide() && worldIn instanceof Level)
         {
             if (facingState.is(BlockTags.FIRE))
             {
-                BurningLogPileBlock.tryLightLogPile((World) worldIn, currentPos);
+                BurningLogPileBlock.tryLightLogPile((Level) worldIn, currentPos);
             }
         }
         return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -73,7 +73,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         if (!player.isShiftKeyDown())
         {
@@ -92,25 +92,25 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
                             Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
                             stack.shrink(1);
                         }
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
-                    return ActionResultType.FAIL;
-                }).orElse(ActionResultType.PASS);
+                    return InteractionResult.FAIL;
+                }).orElse(InteractionResult.PASS);
             }
             else
             {
-                if (player instanceof ServerPlayerEntity)
+                if (player instanceof ServerPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+                    NetworkHooks.openGui((ServerPlayer) player, te, pos);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
         if (te != null)

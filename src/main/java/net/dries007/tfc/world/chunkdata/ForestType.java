@@ -8,11 +8,11 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 import com.mojang.serialization.Codec;
 
-public enum ForestType implements IStringSerializable
+public enum ForestType implements StringRepresentable
 {
     NONE,
     SPARSE,
@@ -20,7 +20,7 @@ public enum ForestType implements IStringSerializable
     NORMAL,
     OLD_GROWTH;
 
-    public static final Codec<ForestType> CODEC = IStringSerializable.fromEnum(ForestType::values, ForestType::byName);
+    public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values, ForestType::byName);
 
     private static final ForestType[] VALUES = values();
 

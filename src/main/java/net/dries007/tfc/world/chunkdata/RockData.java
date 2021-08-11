@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.ByteArrayNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -26,7 +26,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.util.Helpers;
 
-public class RockData implements INBTSerializable<CompoundNBT>
+public class RockData implements INBTSerializable<CompoundTag>
 {
     private static final int SIZE = 16 * 16;
 
@@ -51,7 +51,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
     }
 
     @SuppressWarnings("ConstantConditions")
-    public RockData(CompoundNBT nbt)
+    public RockData(CompoundTag nbt)
     {
         // The null rock layer height is replaced immediately after in deserializeNBT(), as opposed to the final fields which require them to be pre-initialized to the correct length
         this(new Rock[SIZE], new Rock[SIZE], new Rock[SIZE], null);
@@ -103,19 +103,19 @@ public class RockData implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
 
         // Record a map from bytes -> rocks (pallet, similar to vanilla world save format)
         // This should really be shorts (but NBT does not have a short array, only ints), since three rock layers *technically* can use up to 3 * 256 unique rocks. However I think it's probably safe to assume there will never be (in chunk data), more than 256 rocks per chunk.
         // However, at that point it's not actually more efficient to store a pallet, as the int ID of the rock is probably shorter.
         // But, it does safeguard this chunk against changing rocks in the future, which is important.
         final List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
-        final ListNBT pallet = new ListNBT();
+        final ListTag pallet = new ListTag();
         for (Rock rock : uniqueRocks)
         {
-            pallet.add(StringNBT.valueOf(rock.getId().toString()));
+            pallet.add(StringTag.valueOf(rock.getId().toString()));
         }
         nbt.put("pallet", pallet);
 
@@ -133,10 +133,10 @@ public class RockData implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         // Build pallet
-        final ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
+        final ListTag pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
         final List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
         for (int i = 0; i < pallet.size(); i++)
         {

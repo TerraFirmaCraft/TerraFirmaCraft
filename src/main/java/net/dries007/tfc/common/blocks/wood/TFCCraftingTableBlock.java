@@ -6,15 +6,15 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CraftingTableBlock;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CraftingTableBlock;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockProperties;
@@ -22,7 +22,7 @@ import net.dries007.tfc.common.container.TFCWorkbenchContainer;
 
 public class TFCCraftingTableBlock extends CraftingTableBlock implements IForgeBlockProperties
 {
-    private static final ITextComponent CONTAINER_TITLE = new TranslationTextComponent("container.crafting");
+    private static final Component CONTAINER_TITLE = new TranslatableComponent("container.crafting");
     private final ForgeBlockProperties properties;
 
     public TFCCraftingTableBlock(ForgeBlockProperties properties)
@@ -38,8 +38,8 @@ public class TFCCraftingTableBlock extends CraftingTableBlock implements IForgeB
     }
 
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos)
+    public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos)
     {
-        return new SimpleNamedContainerProvider((id, inv, player) -> new TFCWorkbenchContainer(id, inv, IWorldPosCallable.create(world, pos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((id, inv, player) -> new TFCWorkbenchContainer(id, inv, ContainerLevelAccess.create(world, pos)), CONTAINER_TITLE);
     }
 }

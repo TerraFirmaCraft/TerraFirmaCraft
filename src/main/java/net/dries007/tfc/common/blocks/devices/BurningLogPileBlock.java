@@ -8,21 +8,21 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,7 +36,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends Block implements IForgeBlockProperties
 {
-    public static void tryLightLogPile(World world, BlockPos pos)
+    public static void tryLightLogPile(Level world, BlockPos pos)
     {
         LogPileTileEntity pile = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
         if (pile != null)
@@ -55,7 +55,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         }
     }
 
-    private static boolean isValidCoverBlock(BlockState offsetState, World world, BlockPos pos, Direction side)
+    private static boolean isValidCoverBlock(BlockState offsetState, Level world, BlockPos pos, Direction side)
     {
         if (offsetState.is(TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
         {
@@ -64,7 +64,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         return !offsetState.getMaterial().isFlammable() && offsetState.isFaceSturdy(world, pos, side);
     }
 
-    private static void tryLightNearby(World world, BlockPos pos)
+    private static void tryLightNearby(Level world, BlockPos pos)
     {
         if (world.isClientSide()) return;
         for (Direction side : Helpers.DIRECTIONS)
@@ -101,14 +101,14 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
     {
         tryLightNearby(world, pos);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
     {
         double x = pos.getX() + rand.nextFloat();
         double y = pos.getY() + 1;
@@ -116,7 +116,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
         worldIn.addParticle(ParticleTypes.SMOKE, x, y, z, 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
         if (rand.nextInt(12) == 0)
         {
-            worldIn.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            worldIn.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         }
         for (int i = 0; i < rand.nextInt(3); i++)
         {
@@ -125,7 +125,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockProperties
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
     }
