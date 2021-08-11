@@ -9,11 +9,9 @@ package net.dries007.tfc.common.entities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import net.dries007.tfc.mixin.entity.EntityTypeAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -35,9 +33,10 @@ public class TFCEntities
             // This is a hack to avoid the data fixer lookup and error message when it can't find one
             // This could be resolved by MinecraftForge#7636 which would put it behind a config option - hopefully, defaulting to true.
             final String id = MOD_ID + ":" + name;
-            final EntityType<E> type = builder.noSave().build(id);
+            /*final EntityType<E> type = builder.noSave().build(id);
             ((EntityTypeAccessor) type).accessor$setSerialize(serialize);
-            return type;
+            return type;*/
+            return builder.build(id);
         });
     }
 }

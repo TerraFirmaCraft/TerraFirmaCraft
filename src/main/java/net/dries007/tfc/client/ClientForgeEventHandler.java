@@ -9,34 +9,21 @@ package net.dries007.tfc.client;
 import java.awt.*;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.potion.Effects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
-import net.minecraftforge.client.event.DrawHighlightEvent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -46,9 +33,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -59,8 +45,6 @@ import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.HealthDisplayFormat;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.client.world.ClientWorldAccessor;
-import net.dries007.tfc.mixin.client.world.DimensionRenderInfoAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
@@ -87,7 +71,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onRenderOverlay);
-        bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
+        // bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -154,9 +138,8 @@ public class ClientForgeEventHandler
     public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
         Player player = Minecraft.getInstance().player;
-        if (event.getGui() instanceof InventoryScreen && player != null && !player.isCreative())
+        if (event.getGui() instanceof InventoryScreen screen && player != null && !player.isCreative())
         {
-            InventoryScreen screen = (InventoryScreen) event.getGui();
             int guiLeft = ((InventoryScreen) event.getGui()).getGuiLeft();
             int guiTop = ((InventoryScreen) event.getGui()).getGuiTop();
 
@@ -169,10 +152,10 @@ public class ClientForgeEventHandler
 
     public static void onClientWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ClientLevel)
+        if (event.getWorld() instanceof final ClientLevel world)
         {
-            final ClientLevel world = (ClientLevel) event.getWorld();
-
+            // todo: mixin, accessors
+/*
             // Add our custom tints to the color resolver caches
             final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientWorldAccessor) world).getTintCaches();
 
@@ -182,12 +165,13 @@ public class ClientForgeEventHandler
             // Update cloud height
             final float cloudHeight = TFCConfig.CLIENT.assumeTFCWorld.get() ? 210 : 160;
             ((DimensionRenderInfoAccessor) DimensionRenderInfoAccessor.accessor$Effects().get(DimensionType.OVERWORLD_EFFECTS)).accessor$setCloudLevel(cloudHeight);
+ */
         }
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)
     {
-        World world = Minecraft.getInstance().level;
+        Level world = Minecraft.getInstance().level;
         if (event.phase == TickEvent.Phase.END && world != null && !Minecraft.getInstance().isPaused())
         {
             Calendars.CLIENT.onClientTick();
@@ -211,6 +195,8 @@ public class ClientForgeEventHandler
         {
             return;
         }
+        // todo: this all needs to be rewritten with the new forge thing
+        /*
         final IngameGui gui = mc.gui;
         final PlayerEntity player = mc.player;
 
@@ -376,13 +362,16 @@ public class ClientForgeEventHandler
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             }
         }
+
+         */
     }
 
     /**
      * Handles custom bounding boxes drawing
      * eg: Chisel, Quern handle
+     * todo: where?
      */
-    public static void onHighlightBlockEvent(DrawHighlightEvent.HighlightBlock event)
+    public static void onHighlightBlockEvent(){}/*DrawHighlightEvent.HighlightBlock event)
     {
         final ActiveRenderInfo info = event.getInfo();
         final MatrixStack mStack = event.getMatrix();
@@ -408,5 +397,5 @@ public class ClientForgeEventHandler
                 }
             }
         }
-    }
+    }*/
 }

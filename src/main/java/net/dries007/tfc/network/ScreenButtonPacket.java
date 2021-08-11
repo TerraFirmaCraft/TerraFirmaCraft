@@ -13,7 +13,8 @@ import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
+
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.common.container.IButtonHandler;
 
@@ -55,9 +56,9 @@ public class ScreenButtonPacket
     {
         contextSupplier.get().enqueueWork(() -> {
             ServerPlayer sender = contextSupplier.get().getSender();
-            if (sender != null && sender.containerMenu instanceof IButtonHandler)
+            if (sender != null && sender.containerMenu instanceof IButtonHandler buttonHandler)
             {
-                ((IButtonHandler) sender.containerMenu).onButtonPress(buttonID, extraNBT);
+                buttonHandler.onButtonPress(buttonID, extraNBT);
             }
         });
     }

@@ -8,8 +8,7 @@ package net.dries007.tfc.world.feature;
 
 import java.util.function.Function;
 
-import net.minecraft.world.gen.feature.*;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

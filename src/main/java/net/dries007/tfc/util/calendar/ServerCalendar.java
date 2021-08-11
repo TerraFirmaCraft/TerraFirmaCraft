@@ -7,13 +7,12 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.GameRules;
 
-import net.dries007.tfc.mixin.world.GameRulesAccessor;
-import net.dries007.tfc.mixin.world.GameRulesRuleTypeAccessor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantRunnable;
@@ -27,8 +26,9 @@ public class ServerCalendar extends Calendar
 
     public static void setup()
     {
-        GameRulesRuleTypeAccessor type = (GameRulesRuleTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
-        type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
+        // todo: mixins (accessors only)
+        // GameRulesRuleTypeAccessor type = (GameRulesRuleTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
+        // type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
     }
 
     private int syncCounter;
@@ -71,7 +71,7 @@ public class ServerCalendar extends Calendar
         playerTicks += timeJump;
 
         // Update the actual world times
-        for (ServerWorld world : getServer().getAllLevels())
+        for (ServerLevel world : getServer().getAllLevels())
         {
             long currentDayTime = world.getDayTime();
             world.setDayTime(currentDayTime + timeJump);
@@ -83,7 +83,7 @@ public class ServerCalendar extends Calendar
     /**
      * Sets the current player time and calendar time from an overworld day time timestamp, e.g. sleeping will set the time to morning.
      *
-     * @param worldTimeToSetTo a world time, obtained from {@link ServerWorld#getDayTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
+     * @param worldTimeToSetTo a world time, obtained from {@link ServerLevel#getDayTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
      * @return the number of ticks skipped (in world time)
      */
     public long setTimeFromDayTime(long worldTimeToSetTo)
@@ -180,7 +180,7 @@ public class ServerCalendar extends Calendar
     /**
      * Called on each overworld tick, increments and syncs calendar time
      */
-    void onOverworldTick(ServerWorld world)
+    void onOverworldTick(ServerLevel world)
     {
         if (doDaylightCycle && arePlayersLoggedOn)
         {

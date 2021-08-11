@@ -41,9 +41,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -114,19 +114,17 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFireStart);
-        bus.addListener(ForgeEventHandler::onArrowImpact);
-        bus.addListener(ForgeEventHandler::onFireballImpact);
+        bus.addListener(ForgeEventHandler::onProjectileImpact);
     }
 
     /**
-     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerWorld, IServerWorldInfo, boolean, boolean, boolean)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerLevel)
+        if (event.getWorld() instanceof ServerLevel world)
         {
-            final ServerLevel world = (ServerLevel) event.getWorld();
             final ServerLevelData settings = event.getSettings();
             final ChunkGenerator generator = world.getChunkSource().getGenerator();
             if (generator instanceof ITFCChunkGenerator)
@@ -144,7 +142,7 @@ public final class ForgeEventHandler
                 }
                 chunkPos = new ChunkPos(pos);
 
-                settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(), 8), 0.0F);
+                settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(world), 8), 0.0F);
                 boolean foundExactSpawn = false;
                 int x = 0, z = 0;
                 int xStep = 0;
@@ -471,7 +469,7 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block.is(TFCBlocks.FIREPIT.get()) || block.is(TFCBlocks.POT.get()) || block.is(TFCBlocks.GRILL.get()))
+        if (block == (TFCBlocks.FIREPIT.get()) || block == (TFCBlocks.POT.get()) || block == (TFCBlocks.GRILL.get()))
         {
             AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
             if (firepit != null)
@@ -480,7 +478,7 @@ public final class ForgeEventHandler
             }
             event.setCanceled(true);
         }
-        else if (block.is(TFCBlocks.TORCH.get()) || block.is(TFCBlocks.WALL_TORCH.get()))
+        else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
             TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
             if (te != null)
@@ -489,23 +487,23 @@ public final class ForgeEventHandler
             }
             event.setCanceled(true);
         }
-        else if (block.is(TFCBlocks.DEAD_TORCH.get()))
+        else if (block == (TFCBlocks.DEAD_TORCH.get()))
         {
             world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
             event.setCanceled(true);
         }
-        else if (block.is(TFCBlocks.DEAD_WALL_TORCH.get()))
+        else if (block == (TFCBlocks.DEAD_WALL_TORCH.get()))
         {
             Direction direction = state.getValue(DeadWallTorchBlock.FACING);
             world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
             event.setCanceled(true);
         }
-        else if (block.is(TFCBlocks.LOG_PILE.get()))
+        else if (block == (TFCBlocks.LOG_PILE.get()))
         {
             BurningLogPileBlock.tryLightLogPile(world, pos);
             event.setCanceled(true);
         }
-        else if (block.is(TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+        else if (block == (TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
         {
             PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
             if (kiln != null)
@@ -513,7 +511,7 @@ public final class ForgeEventHandler
                 kiln.tryLight();
             }
         }
-        else if (block.is(TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == (TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(HEAT, 2));
             CharcoalForgeTileEntity forge = Helpers.getTileEntity(world, pos, CharcoalForgeTileEntity.class);
@@ -522,14 +520,16 @@ public final class ForgeEventHandler
                 forge.onCreate();
             }
         }
-        else if (block.is(TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == (TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, state.setValue(HEAT, 2));
         }
     }
 
-    public static void onArrowImpact(ProjectileImpactEvent.Arrow event)
+    public static void onProjectileImpact(ProjectileImpactEvent event)
     {
+        // todo: find a way to use this event generically for both arrows and fireballs
+        /*
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
         AbstractArrow arrow = event.getArrow();
         HitResult result = event.getRayTraceResult();
@@ -540,10 +540,7 @@ public final class ForgeEventHandler
             Level world = arrow.level;
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
-    }
 
-    public static void onFireballImpact(ProjectileImpactEvent.Fireball event)
-    {
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
         AbstractHurtingProjectile fireball = event.getFireball();
         HitResult result = event.getRayTraceResult();
@@ -554,5 +551,6 @@ public final class ForgeEventHandler
             Level world = fireball.level;
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
+         */
     }
 }

@@ -19,7 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 
 /**
  * Event handler for calendar related ticking
@@ -64,11 +64,11 @@ public class CalendarEventHandler
 
     public static void onOverworldTick(TickEvent.WorldTickEvent event)
     {
-        Level world = event.world;
+        Level level = event.world;
         // todo: verify this is the correct overworld dimension check
-        if (event.phase == TickEvent.Phase.END && world instanceof ServerLevel && event.world.dimension() == Level.OVERWORLD)
+        if (event.phase == TickEvent.Phase.END && level instanceof ServerLevel && event.world.dimension() == Level.OVERWORLD)
         {
-            Calendars.SERVER.onOverworldTick((ServerLevel) world);
+            Calendars.SERVER.onOverworldTick((ServerLevel) level);
         }
     }
 
@@ -101,9 +101,8 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        if (event.getPlayer() instanceof ServerPlayer player)
         {
-            ServerPlayer player = (ServerPlayer) event.getPlayer();
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();
             if (server != null)
@@ -128,9 +127,8 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        if (event.getPlayer() instanceof ServerPlayer player)
         {
-            ServerPlayer player = (ServerPlayer) event.getPlayer();
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();
             if (server != null)

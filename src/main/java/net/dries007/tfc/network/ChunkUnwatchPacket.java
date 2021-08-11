@@ -10,7 +10,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraftforge.fml.network.NetworkEvent;
+
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 

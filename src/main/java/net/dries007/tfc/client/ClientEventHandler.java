@@ -11,16 +11,22 @@ import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
@@ -130,6 +136,8 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getFlowing(), translucent);
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), translucent);
 
+        // todo: rendering went where?
+        /*
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
@@ -141,9 +149,11 @@ public final class ClientEventHandler
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PIT_KILN.get(), PitKilnTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.QUERN.get(), QuernTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.SCRAPING.get(), ScrapingTileEntityRenderer::new);
+*/
 
         // Misc
-        BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
+        // todo: mixin
+        //BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
@@ -167,8 +177,8 @@ public final class ClientEventHandler
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();
-        final IItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
-        final IItemColor seasonalFoliageColor = (stack, tintIndex) -> TFCColors.getFoliageColor(null, tintIndex);
+        final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
+        final ItemColor seasonalFoliageColor = (stack, tintIndex) -> TFCColors.getFoliageColor(null, tintIndex);
 
         TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
         TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
@@ -177,7 +187,7 @@ public final class ClientEventHandler
     public static void registerParticleFactoriesAndOtherStuff(ParticleFactoryRegisterEvent event)
     {
         // Add client reload listeners here, as it's closest to the location where they are added in vanilla
-        IReloadableResourceManager resourceManager = (IReloadableResourceManager) Minecraft.getInstance().getResourceManager();
+        ReloadableResourceManager resourceManager = (ReloadableResourceManager) Minecraft.getInstance().getResourceManager();
 
         // Color maps
         // We maintain a series of color maps independent and beyond the vanilla color maps
@@ -194,7 +204,7 @@ public final class ClientEventHandler
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
 
-        ParticleManager particleEngine = Minecraft.getInstance().particleEngine;
+        ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
         particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
         particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
     }

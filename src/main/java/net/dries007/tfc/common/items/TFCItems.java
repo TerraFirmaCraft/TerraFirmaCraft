@@ -10,8 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.item.*;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

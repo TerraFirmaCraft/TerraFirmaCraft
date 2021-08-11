@@ -9,10 +9,8 @@ package net.dries007.tfc.common.recipes;
 import java.util.function.Supplier;
 
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

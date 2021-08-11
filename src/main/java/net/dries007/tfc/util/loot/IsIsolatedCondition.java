@@ -32,7 +32,7 @@ public class IsIsolatedCondition implements LootItemCondition
         return context.hasParam(TFCLoot.ISOLATED);
     }
 
-    public static class Serializer implements Serializer<IsIsolatedCondition>
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<IsIsolatedCondition>
     {
         @Override
         public void serialize(JsonObject json, IsIsolatedCondition condition, JsonSerializationContext context) {}

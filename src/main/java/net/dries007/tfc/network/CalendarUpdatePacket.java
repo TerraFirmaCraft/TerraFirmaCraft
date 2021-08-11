@@ -9,7 +9,8 @@ package net.dries007.tfc.network;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
+
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;

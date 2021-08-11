@@ -16,7 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.NetworkEvent;
+
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
@@ -34,9 +35,8 @@ public class PlaceBlockSpecialPacket
         {
             Level world = player.getLevel();
             HitResult rayTrace = player.pick(5.0F, 1.0F, false);
-            if (rayTrace instanceof BlockHitResult)
+            if (rayTrace instanceof BlockHitResult blockResult)
             {
-                BlockHitResult blockResult = (BlockHitResult) rayTrace;
                 Direction face = blockResult.getDirection();
                 if (face == Direction.UP)
                 {
