@@ -20,12 +20,13 @@ import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.tuple.Triple;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
@@ -234,11 +235,11 @@ public final class Helpers
     }
 
     /**
-     * Normally, one would just call {@link IWorld#isClientSide()}
+     * Normally, one would just call {@link Level#isClientSide()}
      * HOWEVER
      * There exists a BIG HUGE PROBLEM in very specific scenarios with this
      * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link IWorld#isClientSide()}
+     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link Level#isClientSide()}
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
@@ -265,7 +266,7 @@ public final class Helpers
     }
 
     /**
-     * This returns the previous result of {@link ServerWorld#getBlockRandomPos(int, int, int, int)}.
+     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
      */
     public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
     {
@@ -287,20 +288,14 @@ public final class Helpers
         entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
-            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f);
+            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
         }
         entity.fallDistance = 0;
     }
 
-    public static void registerSimpleCapability(Class<?> clazz)
-    {
-        CapabilityManager.INSTANCE.register(clazz, new NoopStorage<>(), () -> {
-            throw new UnsupportedOperationException("Creating default instances is not supported. Why would you ever do this");
-        });
-    }
-
     /**
-     * Copy pasta from {@link net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
+     * todo: where?
+     * Copy pasta from {@link net.minecraft.world.entity.SpawnPlacements} except one that doesn't require the spawn block be equal to the surface builder config top block
      */
     @Nullable
     public static BlockPos findValidSpawnLocation(ServerLevel world, ChunkPos chunkPos)
@@ -448,7 +443,7 @@ public final class Helpers
     }
 
     /**
-     * Copied from {@link World#destroyBlock(BlockPos, boolean, Entity, int)}
+     * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
     @SuppressWarnings("deprecation")
@@ -465,7 +460,7 @@ public final class Helpers
 
             if (worldIn instanceof ServerLevel)
             {
-                BlockEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+                BlockEntity tileEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 
                 // Copied from Block.getDrops()
                 LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) worldIn)

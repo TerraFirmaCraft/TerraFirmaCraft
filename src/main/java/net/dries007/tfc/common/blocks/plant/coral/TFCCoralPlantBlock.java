@@ -40,7 +40,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
  * - 'coral fan' blocks, which are the fan item, placed flat
  * - 'coral wall fan' blocks, which are the fan item, placed on the side of a block
  *
- * {@link net.minecraft.block.AbstractCoralPlantBlock}
+ * {@link net.minecraft.world.level.block.CoralBlock}
  */
 public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 {
@@ -118,6 +118,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     }
 
     /**
+     * todo: where?
      * {@link net.minecraft.block.AbstractCoralPlantBlock#tryScheduleDieTick(BlockState, IWorld, BlockPos)}
      */
     protected void tryScheduleDieTick(BlockState state, LevelAccessor worldIn, BlockPos pos)
@@ -129,6 +130,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     }
 
     /**
+     * todo: where?
      * {@link net.minecraft.block.AbstractCoralPlantBlock#scanForWater(BlockState, IBlockReader, BlockPos)}
      */
     protected boolean scanForWater(BlockState state, BlockGetter worldIn, BlockPos pos)

@@ -26,7 +26,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -79,7 +79,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockProperties
         {
             final ItemStack stack = player.getItemInHand(hand);
             final LogPileTileEntity te = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
-            if (stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS))
+            if (TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem()))
             {
                 return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
                     ItemStack insertStack = stack.copy();

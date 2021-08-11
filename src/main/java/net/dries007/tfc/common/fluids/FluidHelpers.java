@@ -8,9 +8,10 @@ package net.dries007.tfc.common.fluids;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -20,13 +21,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.mixin.fluid.FlowingFluidAccessor;
 
 public class FluidHelpers
 {
@@ -35,10 +34,9 @@ public class FluidHelpers
      *
      * @return true if the provided state is a source block of it's current fluid
      */
-    @SuppressWarnings("deprecation")
     public static boolean isAirOrEmptyFluid(BlockState state)
     {
-        return state.isAir() || state.getBlock().is(state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock());
+        return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
     }
 
     /**
@@ -107,7 +105,7 @@ public class FluidHelpers
     }
 
     /**
-     * This is the main logic from {@link FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
+     * This is the main logic from {@link FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
      *
      * @param self               The fluid instance this would've been called upon
      * @param worldIn            The world
@@ -116,7 +114,7 @@ public class FluidHelpers
      * @param canConvertToSource The result of {@code self.canConvertToSource()} as it's protected
      * @param dropOff            The result of {@code self.getDropOff(worldIn)} as it's protected
      * @return The fluid state that should exist at that position
-     * @see FlowingFluid#getNewLiquid(IWorldReader, BlockPos, BlockState)
+     * @see FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)
      */
     public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
@@ -134,7 +132,8 @@ public class FluidHelpers
 
             // Look for adjacent fluids that are the same, for purposes of flow into this fluid
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
-            if (offsetFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
+            // todo: mixin
+            if (offsetFluid.getType() instanceof FlowingFluid /* && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState) */)
             {
                 if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(worldIn, offsetPos, offsetState, canConvertToSource))
                 {
@@ -190,7 +189,8 @@ public class FluidHelpers
         BlockPos abovePos = pos.above();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
-        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
+        // todo: mixin
+        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid /* && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState) */)
         {
             return ((FlowingFluid) aboveFluid.getType()).getFlowing(8, true);
         }
@@ -209,13 +209,14 @@ public class FluidHelpers
     }
 
     /**
-     * Copy pasta from {@link net.minecraft.block.FlowingFluidBlock#shouldSpreadLiquid(World, BlockPos, BlockState)}
+     * todo: where?
+     * Copy pasta from {@link net.minecraft.block.FlowingFluidBlock#s(World, BlockPos, BlockState)}
      * Used for lava-like or lava-logged blocks that need to share the same behavior.
      * This uses vanilla mechanics to determine the block as TFC will modify them via event later
      *
      * @return true if the block was modified
      */
-    public static boolean reactLavaWithNeighbors(World worldIn, BlockPos pos, FluidState fluidStateAt)
+    public static boolean reactLavaWithNeighbors(Level worldIn, BlockPos pos, FluidState fluidStateAt)
     {
         boolean soulSoilBelow = worldIn.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
         for (Direction direction : Direction.values())

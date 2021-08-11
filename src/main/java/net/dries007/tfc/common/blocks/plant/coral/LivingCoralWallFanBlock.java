@@ -24,7 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.CoralWallFanBlock}
+ * {@link CoralWallFanBlock}
  */
 public class LivingCoralWallFanBlock extends CoralWallFanBlock
 {

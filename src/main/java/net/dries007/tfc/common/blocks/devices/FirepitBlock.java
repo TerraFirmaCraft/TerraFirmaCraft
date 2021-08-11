@@ -32,7 +32,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -121,13 +121,13 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, Entity entity)
+    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
     {
         if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(LIT))
         {
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
-        super.stepOn(world, pos, entity);
+        super.stepOn(world, pos, state, entity);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

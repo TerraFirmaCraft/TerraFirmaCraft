@@ -37,7 +37,7 @@ public abstract class TileEntityContainer<T extends InventoryTileEntity<?>> exte
             ItemStack stack = slot.getItem();
             ItemStack stackCopy = stack.copy();
 
-            int containerSlots = slots.size() - playerIn.inventory.items.size();
+            int containerSlots = slots.size() - playerIn.getInventory().items.size();
             if (index < containerSlots)
             {
                 if (transferStackOutOfContainer(stack, containerSlots))

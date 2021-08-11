@@ -65,7 +65,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
         if (!world.isClientSide())
         {
             ItemStack held = player.getItemInHand(hand);
-            if (held.getItem().is(TFCTags.Items.CAN_BE_LIT_ON_TORCH))
+            if (TFCTags.Items.CAN_BE_LIT_ON_TORCH.contains(held.getItem()))
             {
                 held.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));

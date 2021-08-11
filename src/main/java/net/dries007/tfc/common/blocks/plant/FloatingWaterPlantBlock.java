@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.LilyPadBlock;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.material.Fluid;
@@ -57,7 +56,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     }
 
     /**
-     * {@link LilyPadBlock#entityInside}
+     * {@link net.minecraft.world.level.block.WaterlilyBlock#entityInside}
      */
     @Override
     @SuppressWarnings("deprecation")

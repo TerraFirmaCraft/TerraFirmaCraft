@@ -51,7 +51,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
         if (state.getValue(STAGE) == 2 && state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
         {
             ItemStack held = player.getItemInHand(handIn);
-            if (held.getItem().is(Tags.Items.SHEARS))
+            if (Tags.Items.SHEARS.contains(held.getItem()))
             {
                 BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
                 if (te != null)

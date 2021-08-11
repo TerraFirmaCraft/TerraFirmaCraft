@@ -9,19 +9,18 @@ package net.dries007.tfc.common.fluids;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import com.mojang.datafixers.util.Pair;
@@ -29,15 +28,14 @@ import it.unimi.dsi.fastutil.shorts.Short2BooleanMap;
 import it.unimi.dsi.fastutil.shorts.Short2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
-import net.dries007.tfc.mixin.fluid.FlowingFluidAccessor;
 
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
+import net.minecraft.world.level.material.Material;
 
 public abstract class MixingFluid extends ForgeFlowingFluid
 {
     /**
-     * @see net.minecraft.fluid.FlowingFluid#getCacheKey(BlockPos, BlockPos)
+     * @see net.minecraft.world.level.material.FlowingFluid#getCacheKey(BlockPos, BlockPos)
      */
     public static short getCacheKey(BlockPos from, BlockPos to)
     {
@@ -55,7 +53,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * @param worldIn The world
      * @param pos     A position
      * @return The number of adjacent source blocks of this fluid
-     * @see net.minecraft.fluid.FlowingFluid#sourceNeighborCount(IWorldReader, BlockPos)
+     * @see net.minecraft.world.level.material.FlowingFluid#sourceNeighborCount(LevelReader, BlockPos)
      */
     public int sourceNeighborCount(LevelReader worldIn, BlockPos pos)
     {
@@ -78,7 +76,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      *
      * @param stateIn A fluid state
      * @return If the fluid state is a source block of this fluid
-     * @see net.minecraft.fluid.FlowingFluid#isSourceBlockOfThisType(FluidState)
+     * @see net.minecraft.world.level.material.FlowingFluid#isSourceBlockOfThisType(FluidState)
      */
     public boolean isSourceBlockOfThisType(FluidState stateIn)
     {
@@ -86,7 +84,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     /**
-     * Copy pasta from {@link net.minecraft.fluid.FlowingFluid#spreadToSides(IWorld, BlockPos, FluidState, BlockState)}
+     * @see net.minecraft.world.level.material.FlowingFluid#spreadToSides(LevelAccessor, BlockPos, FluidState, BlockState)
      */
     public void spreadToSides(LevelAccessor world, BlockPos pos, FluidState fluidState, BlockState blockState)
     {
@@ -116,7 +114,8 @@ public abstract class MixingFluid extends ForgeFlowingFluid
 
     public boolean isWaterHole(BlockGetter world, Fluid fluid, BlockPos pos, BlockState state, BlockPos adjacentPos, BlockState adjacentState)
     {
-        if (!((FlowingFluidAccessor) this).invoke$canPassThroughWall(Direction.DOWN, world, pos, state, adjacentPos, adjacentState))
+        // todo: mixin
+        if (/* !((FlowingFluidAccessor) this).invoke$canPassThroughWall(Direction.DOWN, world, pos, state, adjacentPos, adjacentState)*/ true)
         {
             return false;
         }
@@ -126,12 +125,12 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         }
     }
 
-    public boolean canPassThrough(IBlockReader world, Fluid fluid, BlockPos pos, BlockState state, Direction direction, BlockPos adjacentPos, BlockState adjacentState, FluidState otherFluid)
+    public boolean canPassThrough(Level world, Fluid fluid, BlockPos pos, BlockState state, Direction direction, BlockPos adjacentPos, BlockState adjacentState, FluidState otherFluid)
     {
         return !this.isSourceBlockOfThisType(otherFluid) && ((FlowingFluidAccessor) this).invoke$canPassThroughWall(direction, world, pos, state, adjacentPos, adjacentState) && this.canHoldFluid(world, adjacentPos, adjacentState, fluid);
     }
 
-    public boolean canHoldFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    public boolean canHoldFluid(Level worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
         Block block = state.getBlock();
         if (block instanceof ILiquidContainer)
@@ -157,7 +156,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected void spread(IWorld worldIn, BlockPos pos, FluidState stateIn)
+    protected void spread(Level worldIn, BlockPos pos, FluidState stateIn)
     {
         // Only spread if the current state has actual fluid
         if (!stateIn.isEmpty())
@@ -198,7 +197,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, IWorldReader, BlockPos, BlockState, boolean, int)
      */
     @Override
-    protected FluidState getNewLiquid(IWorldReader worldIn, BlockPos pos, BlockState blockStateIn)
+    protected FluidState getNewLiquid(Level worldIn, BlockPos pos, BlockState blockStateIn)
     {
         return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canConvertToSource(), getDropOff(worldIn));
     }
@@ -207,7 +206,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
      * This is the recursive helper method for {@link net.minecraft.fluid.FlowingFluid#getSpread(IWorldReader, BlockPos, BlockState)}
      */
     @Override
-    public int getSlopeDistance(IWorldReader world, BlockPos pos, int currentDistance, Direction directionFrom, BlockState state, BlockPos posFrom, Short2ObjectMap<Pair<BlockState, FluidState>> nearbyStates, Short2BooleanMap nearbyHoles)
+    public int getSlopeDistance(Level world, BlockPos pos, int currentDistance, Direction directionFrom, BlockState state, BlockPos posFrom, Short2ObjectMap<Pair<BlockState, FluidState>> nearbyStates, Short2BooleanMap nearbyHoles)
     {
         int minimumDistance = 1000;
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -261,7 +260,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     @Override
-    public Map<Direction, FluidState> getSpread(IWorldReader world, BlockPos pos, BlockState blockState)
+    public Map<Direction, FluidState> getSpread(Level world, BlockPos pos, BlockState blockState)
     {
         int minimumFlowDistance = 1000;
         Map<Direction, FluidState> adjacentFluidStates = Maps.newEnumMap(Direction.class);
@@ -325,7 +324,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     @Override
-    public void tick(World worldIn, BlockPos pos, FluidState state)
+    public void tick(Level worldIn, BlockPos pos, FluidState state)
     {
         if (!state.isSource())
         {

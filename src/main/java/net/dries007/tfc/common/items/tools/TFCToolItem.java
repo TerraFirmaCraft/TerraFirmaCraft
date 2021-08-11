@@ -10,6 +10,8 @@ import java.util.Collections;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -27,7 +29,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.minecraft.world.item.Item.Properties;
 
 /**
- * Generic class for tools that shouldn't override vanilla's {@link ToolItem}
+ * todo: wut this desc doesn't make sense anymore?
+ * Generic class for tools that shouldn't override vanilla's {@link net.minecraft.world.item.TieredItem}
  * Main issue here is that TFC damage is not additive like vanilla but instead multiplicative
  *
  * For comparison:
@@ -42,7 +45,8 @@ public class TFCToolItem extends DiggerItem
 
     public TFCToolItem(Tier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
-        super(0, attackSpeed, tier, Collections.emptySet(), builder);
+        // todo: tag
+        super(0, attackSpeed, tier, BlockTags.BUTTONS, builder);
         this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
         this.attackSpeed = attackSpeed;
         this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
@@ -71,7 +75,7 @@ public class TFCToolItem extends DiggerItem
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
         // tfc: mining plants should consume durability
-        if (!level.isClientSide && (state.getBlock().is(TFCTags.Blocks.PLANT) || state.getDestroySpeed(level, pos) != 0.0F))
+        if (!level.isClientSide && (TFCTags.Blocks.PLANT.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F))
         {
             stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }

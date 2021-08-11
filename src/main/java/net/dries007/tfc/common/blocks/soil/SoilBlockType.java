@@ -22,7 +22,7 @@ public enum SoilBlockType
 {
     DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
     GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    GRASS_PATH((self, variant) -> new TFCGrassPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
+    GRASS_PATH((self, variant) -> new TFCDirtPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
     CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
     FARMLAND((self, variant) -> new TFCFarmlandBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).tileEntity(FarmlandTileEntity::new), variant));
@@ -51,20 +51,13 @@ public enum SoilBlockType
      */
     private SoilBlockType transform()
     {
-        switch (this)
-        {
-            case DIRT:
-                return GRASS;
-            case GRASS:
-            case GRASS_PATH:
-            case FARMLAND:
-                return DIRT;
-            case CLAY:
-                return CLAY_GRASS;
-            case CLAY_GRASS:
-                return CLAY;
-        }
-        throw new IllegalStateException("SoilBlockType." + name() + " missing from switch in SoilBlockType#transform");
+        return switch (this)
+            {
+                case DIRT -> GRASS;
+                case GRASS, GRASS_PATH, FARMLAND -> DIRT;
+                case CLAY -> CLAY_GRASS;
+                case CLAY_GRASS -> CLAY;
+            };
     }
 
     public enum Variant

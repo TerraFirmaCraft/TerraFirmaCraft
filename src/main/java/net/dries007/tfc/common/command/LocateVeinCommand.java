@@ -13,12 +13,14 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.command.impl.LocateCommand;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -31,7 +33,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -48,7 +50,7 @@ public class LocateVeinCommand
     public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));
     public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.vein_not_found", args));
 
-    private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE;
+    @Nullable private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE = null;
 
     @SuppressWarnings("unchecked")
     public static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> getVeins()
@@ -119,7 +121,7 @@ public class LocateVeinCommand
     }
 
     /**
-     * Modified from {@link LocateCommand#showLocateResult(CommandSource, String, BlockPos, BlockPos, String)} in order to also show the y position
+     * Modified from {@link LocateCommand#showLocateResult(CommandSourceStack, String, BlockPos, BlockPos, String)} in order to also show the y position
      */
     private static int showLocateResult(CommandSourceStack context, String nameOfThing, BlockPos source, BlockPos dest, String translationKey)
     {

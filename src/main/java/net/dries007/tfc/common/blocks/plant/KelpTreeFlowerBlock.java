@@ -38,7 +38,7 @@ import net.dries007.tfc.config.TFCConfig;
 
 /**
  * Almost all methods in here are adapted from
- * {@link net.minecraft.block.ChorusFlowerBlock}
+ * {@link net.minecraft.world.level.block.ChorusFlowerBlock}
  */
 public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggable
 {
@@ -186,7 +186,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 boolean foundGroundFurtherDown = false;
                 BlockState belowState = worldIn.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (belowBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlock))
                 {
                     shouldPlaceNewBody = true;
                 }
@@ -199,7 +199,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                         Block belowBlockOffset = worldIn.getBlockState(pos.below(j + 1)).getBlock();
                         if (belowBlockOffset != body)
                         {
-                            if (belowBlockOffset.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                            if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlockOffset))
                             {
                                 foundGroundFurtherDown = true;
                             }
@@ -326,14 +326,14 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
     private void placeGrownFlower(Level worldIn, BlockPos pos, int age)
     {
-        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
+        Fluid fluid = worldIn.getFluidState(pos).getType();
         worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age), 2);
         worldIn.levelEvent(1033, pos, 0);
     }
 
     private void placeDeadFlower(Level worldIn, BlockPos pos)
     {
-        Fluid fluid = worldIn.getFluidState(pos).getType().getFluid();
+        Fluid fluid = worldIn.getFluidState(pos).getType();
         worldIn.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5), 2);
         worldIn.levelEvent(1034, pos, 0);
     }

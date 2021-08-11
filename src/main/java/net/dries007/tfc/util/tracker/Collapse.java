@@ -45,11 +45,8 @@ public class Collapse implements INBTSerializable<CompoundTag>
     @Override
     public void deserializeNBT(CompoundTag nbt)
     {
-        if (nbt != null)
-        {
-            centerPos = BlockPos.of(nbt.getLong("centerPos"));
-            nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::of).collect(Collectors.toList());
-            radiusSquared = nbt.getDouble("radiusSquared");
-        }
+        centerPos = BlockPos.of(nbt.getLong("centerPos"));
+        nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::of).collect(Collectors.toList());
+        radiusSquared = nbt.getDouble("radiusSquared");
     }
 }

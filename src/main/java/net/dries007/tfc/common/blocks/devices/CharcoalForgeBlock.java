@@ -30,7 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -110,13 +110,13 @@ public class CharcoalForgeBlock extends DeviceBlock
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, Entity entity)
+    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
     {
         if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(HEAT) > 0)
         {
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
-        super.stepOn(world, pos, entity);
+        super.stepOn(world, pos, state, entity);
     }
 
     @Override

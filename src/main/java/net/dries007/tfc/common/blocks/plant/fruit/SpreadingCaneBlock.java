@@ -60,7 +60,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
         if (state.getValue(STAGE) == 2)
         {
             ItemStack held = player.getItemInHand(handIn);
-            if (held.getItem().is(Tags.Items.SHEARS))
+            if (Tags.Items.SHEARS.contains(held.getItem()))
             {
                 BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
                 if (te != null)

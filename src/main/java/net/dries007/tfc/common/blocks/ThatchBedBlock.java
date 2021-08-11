@@ -31,6 +31,7 @@ import net.minecraft.world.level.Level;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
+// todo: need to extend to avoid having the EntityBlock in hiearchy?
 public class ThatchBedBlock extends BedBlock
 {
     private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
@@ -79,9 +80,9 @@ public class ThatchBedBlock extends BedBlock
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockGetter worldIn)
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return null; // Need to override as the super class is a ITileEntityProvider
+        return null; // Need to override as the super class is a EntityBlock
     }
 
     @SuppressWarnings("deprecation")
@@ -93,12 +94,6 @@ public class ThatchBedBlock extends BedBlock
         {
             world.destroyBlock(pos, true);
         }
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return false; // Need to override as the super class is a ITileEntityProvider
     }
 
     @Override

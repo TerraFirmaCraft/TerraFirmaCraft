@@ -10,27 +10,24 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirtPathBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.GrassPathBlock;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
+public class TFCDirtPathBlock extends DirtPathBlock implements ISoilBlock
 {
     private final Supplier<Block> dirtBlock;
 
-    public TFCGrassPathBlock(Properties builder, SoilBlockType soil, SoilBlockType.Variant variant)
+    public TFCDirtPathBlock(Properties builder, SoilBlockType soil, SoilBlockType.Variant variant)
     {
         this(builder, TFCBlocks.SOIL.get(soil).get(variant));
     }
 
-    protected TFCGrassPathBlock(Properties builder, Supplier<Block> dirtBlock)
+    protected TFCDirtPathBlock(Properties builder, Supplier<Block> dirtBlock)
     {
         super(builder);
 

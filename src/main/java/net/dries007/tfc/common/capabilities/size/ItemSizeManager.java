@@ -11,22 +11,19 @@ import java.util.List;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.mixin.item.ItemAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.*;
 
 public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
 {
@@ -61,18 +58,19 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         {
             final ItemStack stack = new ItemStack(item);
             final IItemSize size = get(stack);
-            ((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
+            // todo: mixin
+            //((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
         }
     }
 
-    public static void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
+    public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         IItemSize size = ItemSizeManager.get(stack);
-        text.add(new StringTextComponent("\u2696 ")
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(size.getWeight(stack))))
+        text.add(new TextComponent("\u2696 ")
+            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(size.getWeight(stack))))
             .append(" \u21F2 ")
-            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(size.getSize(stack))))
-            .withStyle(TextFormatting.GRAY));
+            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(size.getSize(stack))))
+            .withStyle(ChatFormatting.GRAY));
     }
 
     /**

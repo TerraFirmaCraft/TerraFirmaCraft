@@ -7,15 +7,12 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
@@ -58,7 +55,7 @@ public abstract class DelegateRecipe<R extends Recipe<C>, C extends Container> i
         return id;
     }
 
-    protected static class Serializer<C extends Container> extends RecipeSerializer<DelegateRecipe<?, C>>
+    protected static class Serializer<C extends Container> extends RecipeSerializerImpl<DelegateRecipe<?, C>>
     {
         public static <C extends Container> Serializer<C> shapeless(BiFunction<ResourceLocation, Recipe<C>, DelegateRecipe<Recipe<C>, C>> factory)
         {
@@ -109,7 +106,7 @@ public abstract class DelegateRecipe<R extends Recipe<C>, C extends Container> i
         @Override
         public void toNetwork(FriendlyByteBuf buffer, DelegateRecipe<?, C> recipe)
         {
-            ClientboundUpdateRecipesPacket.toNetwork(recipe.getDelegate(), buffer);
+            ClientboundUpdateRecipesPacket.toNetwork(buffer, recipe.getDelegate());
         }
     }
 }

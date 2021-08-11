@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -66,13 +65,13 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     }
 
     /**
-     * Copy paste from {@link ItemStack#useOn(ItemUseContext)}
+     * Copy paste from {@link ItemStack#useOn(UseOnContext)}
      */
     @Override
     public InteractionResult onItemUse(ItemStack stack, UseOnContext context)
     {
         Player player = context.getPlayer();
-        if (player != null && !player.abilities.mayBuild)
+        if (player != null && !player.getAbilities().mayBuild)
         {
             return InteractionResult.PASS;
         }
@@ -89,7 +88,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     }
 
     /**
-     * Copy pasta from {@link net.minecraft.item.BlockItem#place(BlockItemUseContext)}
+     * Copy pasta from {@link BlockItem#place(BlockPlaceContext)}
      */
     public InteractionResult place(BlockPlaceContext context)
     {
@@ -129,7 +128,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
 
                 SoundType placementSound = placedState.getSoundType(world, pos, player);
                 world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
-                if (player == null || !player.abilities.instabuild)
+                if (player == null || !player.getAbilities().instabuild)
                 {
                     stack.shrink(1);
                 }

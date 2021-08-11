@@ -238,18 +238,13 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        switch (slot)
-        {
-            case SLOT_FUEL_INPUT:
-                return FuelManager.get(stack) != null && stack.getItem().is(TFCTags.Items.FIREPIT_FUEL);
-            case FirepitTileEntity.SLOT_ITEM_INPUT:
-                return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
-            case FirepitTileEntity.SLOT_OUTPUT_1:
-            case FirepitTileEntity.SLOT_OUTPUT_2:
-                return true;
-            default:
-                return false;
-        }
+        return switch (slot)
+            {
+                case SLOT_FUEL_INPUT -> FuelManager.get(stack) != null && TFCTags.Items.FIREPIT_FUEL == stack.getItem();
+                case FirepitTileEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+                case FirepitTileEntity.SLOT_OUTPUT_1, FirepitTileEntity.SLOT_OUTPUT_2 -> true;
+                default -> false;
+            };
     }
 
     public ContainerData getSyncableData()

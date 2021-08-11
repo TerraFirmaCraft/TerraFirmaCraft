@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolType;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
@@ -50,6 +49,7 @@ public class DirtBlock extends Block implements IDirtBlock
         return grass.get().defaultBlockState();
     }
 
+    /*
     @Nullable
     @Override
     public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolType toolType)
@@ -64,4 +64,6 @@ public class DirtBlock extends Block implements IDirtBlock
         }
         return state;
     }
+    todo: tool modified states
+     */
 }

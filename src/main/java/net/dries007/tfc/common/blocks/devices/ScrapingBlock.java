@@ -65,7 +65,7 @@ public class ScrapingBlock extends DeviceBlock
         if (te != null)
         {
             ItemStack stack = player.getItemInHand(hand);
-            if (stack.getItem().is(TFCTags.Items.KNIVES))
+            if (TFCTags.Items.KNIVES.contains(stack.getItem()))
             {
                 Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
                 te.onClicked((float) point.x, (float) point.z);

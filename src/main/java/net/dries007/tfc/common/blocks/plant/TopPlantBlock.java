@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.plant;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.block.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
@@ -75,7 +74,7 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
         BlockPos blockpos = pos.relative(growthDirection.getOpposite());
         BlockState blockstate = worldIn.getBlockState(blockpos);
         Block block = blockstate.getBlock();
-        if (!canAttachToBlock(block))
+        if (!canAttachTo(blockstate))
         {
             return false;
         }

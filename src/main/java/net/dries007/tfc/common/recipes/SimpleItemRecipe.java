@@ -67,7 +67,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         return result.copy();
     }
 
-    public static class Serializer<R extends SimpleItemRecipe> extends RecipeSerializer<R>
+    public static class Serializer<R extends SimpleItemRecipe> extends RecipeSerializerImpl<R>
     {
         private final SimpleItemRecipe.Serializer.Factory<R> factory;
 
@@ -80,7 +80,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
-            final ItemStack stack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             return factory.create(recipeId, ingredient, stack);
         }
 

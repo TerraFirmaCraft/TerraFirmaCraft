@@ -26,7 +26,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -104,7 +104,7 @@ public class GrillBlock extends FirepitBlock
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

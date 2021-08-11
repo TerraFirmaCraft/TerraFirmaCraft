@@ -7,6 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -17,7 +18,6 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -25,10 +25,10 @@ import net.dries007.tfc.common.command.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
-import net.dries007.tfc.mixin.item.crafting.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 import net.minecraft.server.packs.resources.PreparableReloadListener.PreparationBarrier;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 /**
  * This is a manager for various cache invalidations, either on resource reload or server start/stop
@@ -69,6 +69,7 @@ public enum CacheInvalidationListener implements PreparableReloadListener
     @SuppressWarnings("unchecked")
     private <C extends Container, R extends Recipe<C>> Collection<R> getRecipes(MinecraftServer server, RecipeType<R> recipeType)
     {
-        return (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
+        // todo: mixin / accessor
+        return Collections.emptyList(); // (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
     }
 }

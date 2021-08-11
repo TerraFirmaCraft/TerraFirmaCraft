@@ -21,7 +21,7 @@ import net.dries007.tfc.common.container.IButtonHandler;
 public class ScreenButtonPacket
 {
     private final int buttonID;
-    private final CompoundTag extraNBT;
+    @Nullable private final CompoundTag extraNBT;
 
     public ScreenButtonPacket(FriendlyByteBuf buffer)
     {

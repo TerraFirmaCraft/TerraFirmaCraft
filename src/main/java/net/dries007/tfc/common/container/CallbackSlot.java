@@ -23,10 +23,10 @@ public class CallbackSlot extends SlotItemHandler
     }
 
     @Override
-    public ItemStack onTake(Player thePlayer, ItemStack stack)
+    public void onTake(Player thePlayer, ItemStack stack)
     {
         callback.onSlotTake(thePlayer, getSlotIndex(), stack);
-        return super.onTake(thePlayer, stack);
+        super.onTake(thePlayer, stack);
     }
 
     @Override

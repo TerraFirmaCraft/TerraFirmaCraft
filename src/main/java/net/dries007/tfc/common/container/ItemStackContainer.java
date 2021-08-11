@@ -60,7 +60,7 @@ public abstract class ItemStackContainer extends SimpleContainer
             stackCopy = stack.copy();
 
             // begin custom transfer code here
-            int containerSlots = slots.size() - player.inventory.items.size();
+            int containerSlots = slots.size() - player.getInventory().items.size();
             if (index < containerSlots)
             {
                 // Transfer out of the container
@@ -92,30 +92,32 @@ public abstract class ItemStackContainer extends SimpleContainer
                 return ItemStack.EMPTY;
             }
 
-            ItemStack stackTake = slot.onTake(player, stack);
-            if (index == 0)
-            {
-                player.drop(stackTake, false);
-            }
+            // todo: what? slot.onTake() has no return value anymore
+            //ItemStack stackTake = slot.onTake(player, stack);
+            //if (index == 0)
+            //{
+            //    player.drop(stackTake, false);
+            //}
         }
 
         return stackCopy;
     }
 
     @Override
-    public ItemStack clicked(int slot, int dragType, ClickType clickType, Player player)
+    public void clicked(int slot, int dragType, ClickType clickType, Player player)
     {
+        // todo: wot?
         if (slot == itemIndex && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP || clickType == ClickType.THROW || clickType == ClickType.SWAP))
         {
-            return ItemStack.EMPTY;
+            // return ItemStack.EMPTY;
         }
         else if ((dragType == itemDragIndex) && clickType == ClickType.SWAP)
         {
-            return ItemStack.EMPTY;
+            // return ItemStack.EMPTY;
         }
         else
         {
-            return super.clicked(slot, dragType, clickType, player);
+            // return super.clicked(slot, dragType, clickType, player);
         }
     }
 

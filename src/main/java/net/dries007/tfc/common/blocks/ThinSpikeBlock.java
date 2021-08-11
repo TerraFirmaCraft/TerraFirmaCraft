@@ -106,7 +106,7 @@ public class ThinSpikeBlock extends Block
         {
             worldIn.destroyBlock(pos, false);
         }
-        if (blockIn.is(TFCTags.Blocks.SMALL_SPIKE))
+        if (TFCTags.Blocks.SMALL_SPIKE.contains(blockIn))
         {
             worldIn.setBlock(pos, state.setValue(TIP, false), 2);
         }

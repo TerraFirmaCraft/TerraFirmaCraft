@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -107,7 +107,7 @@ public class PotBlock extends FirepitBlock
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

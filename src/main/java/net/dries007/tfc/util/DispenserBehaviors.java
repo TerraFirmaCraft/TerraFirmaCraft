@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util;
 
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.BlockSource;
@@ -13,7 +14,6 @@ import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
@@ -31,9 +31,9 @@ public class DispenserBehaviors
             BucketItem bucket = (BucketItem) stack.getItem();
             BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             Level world = source.getLevel();
-            if (bucket.emptyBucket(null, world, pos, null))
+            if (bucket.emptyContents(null, world, pos, null))
             {
-                bucket.checkExtraContent(world, stack, pos);
+                bucket.checkExtraContent(null, world, stack, pos);
                 return new ItemStack(Items.BUCKET);
             }
             else
@@ -44,7 +44,7 @@ public class DispenserBehaviors
     };
 
     /**
-     * {@link DispenserBlock#registerBehavior(IItemProvider, IDispenseItemBehavior)} is not thread safe
+     * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
     public static void syncSetup()
     {

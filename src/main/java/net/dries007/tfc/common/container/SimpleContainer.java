@@ -70,11 +70,13 @@ public class SimpleContainer extends AbstractContainerMenu
                 return ItemStack.EMPTY;
             }
 
+            // todo: what?
+            /*
             ItemStack stackTake = slot.onTake(player, stack);
             if (index == 0)
             {
                 player.drop(stackTake, false);
-            }
+            }*/
         }
 
         return stackCopy;

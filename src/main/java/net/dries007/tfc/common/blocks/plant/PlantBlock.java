@@ -72,7 +72,7 @@ public abstract class PlantBlock extends TFCBushBlock
     /**
      * Gets the plant metadata for this block.
      *
-     * The stage property is isolated and referenced via this as it is needed in the {@link net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateContainer.Builder)}.
+     * The stage property is isolated and referenced via this as it is needed in the {@link Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateDefinition.Builder)}.
      *
      * See the various {@link PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
      */

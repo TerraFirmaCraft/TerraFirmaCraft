@@ -9,8 +9,9 @@ package net.dries007.tfc.util.calendar;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
+ * todo: block entity ticking is totally different?
  * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
- * Note: the default {@code update()} casts the implementor to {@link TileEntity}
+ * Note: the default {@code update()} casts the implementor to {@link BlockEntity}
  */
 public interface ICalendarTickable
 {
@@ -21,7 +22,7 @@ public interface ICalendarTickable
      */
     default void checkForCalendarUpdate()
     {
-        BlockEntity te = ((BlockEntity) this).getTileEntity();
+        BlockEntity te = ((BlockEntity) this);
         if (te.getLevel() != null && !te.getLevel().isClientSide())
         {
             long playerTick = Calendars.SERVER.getTicks();

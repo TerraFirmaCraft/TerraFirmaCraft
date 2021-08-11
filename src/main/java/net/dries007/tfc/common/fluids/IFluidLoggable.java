@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.fluids;
 
-import net.minecraft.block.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -56,20 +56,19 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
     }
 
     @Override
-    default Fluid takeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    default ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
             worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
         }
-        return containedFluid;
+        return ItemStack.EMPTY; // todo: what? return value changed containedFluid;
     }
 
     /**
-     * Default implementation of {@link AbstractBlock#getFluidState(BlockState)} which allows arbitrary fluids based on the contained property.
+     * Default implementation of {@link net.minecraft.world.level.block.state.BlockBehaviour#getFluidState(BlockState)} which allows arbitrary fluids based on the contained property.
      */
-    @SuppressWarnings("deprecation")
     default FluidState getFluidState(BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();

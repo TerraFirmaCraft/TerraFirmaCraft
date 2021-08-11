@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 
-import net.minecraft.block.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -81,12 +80,12 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
         Block southBlock = world.getBlockState(pos.south()).getBlock();
         Block westBlock = world.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
-            .setValue(DOWN, downBlock.is(TFCTags.Blocks.KELP_TREE) || downBlock.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-            .setValue(UP, upBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(NORTH, northBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(EAST, eastBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(SOUTH, southBlock.is(TFCTags.Blocks.KELP_TREE))
-            .setValue(WEST, westBlock.is(TFCTags.Blocks.KELP_TREE));
+            .setValue(DOWN, TFCTags.Blocks.KELP_TREE.contains(downBlock) || TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(downBlock))
+            .setValue(UP, TFCTags.Blocks.KELP_TREE.contains(upBlock))
+            .setValue(NORTH, TFCTags.Blocks.KELP_TREE.contains(northBlock))
+            .setValue(EAST, TFCTags.Blocks.KELP_TREE.contains(eastBlock))
+            .setValue(SOUTH, TFCTags.Blocks.KELP_TREE.contains(southBlock))
+            .setValue(WEST, TFCTags.Blocks.KELP_TREE.contains(westBlock));
     }
 
     @Override
@@ -115,7 +114,7 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
     }
 
     /**
-     * {@link ChorusPlantBlock#canSurvive}
+     * {@link net.minecraft.world.level.block.ChorusPlantBlock#canSurvive}
      */
     @Override
     @SuppressWarnings("deprecation")
@@ -125,18 +124,18 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (worldIn.getBlockState(relativePos).getBlock().is(TFCTags.Blocks.KELP_BRANCH))
+            if (TFCTags.Blocks.KELP_BRANCH.contains(worldIn.getBlockState(relativePos).getBlock()))
             {
 
                 Block below = worldIn.getBlockState(relativePos.below()).getBlock();
-                if (below.is(TFCTags.Blocks.KELP_BRANCH) || below.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                if (TFCTags.Blocks.KELP_BRANCH.contains(below) || TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(below))
                 {
                     return true;
                 }
             }
         }
         Block blockIn = belowState.getBlock();
-        return blockIn.is(TFCTags.Blocks.KELP_BRANCH) || blockIn.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+        return TFCTags.Blocks.KELP_BRANCH.contains(blockIn) || TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(blockIn);
     }
 
     @Override

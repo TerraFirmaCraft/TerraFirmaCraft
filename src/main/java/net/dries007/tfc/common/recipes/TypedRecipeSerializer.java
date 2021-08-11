@@ -9,7 +9,7 @@ package net.dries007.tfc.common.recipes;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public abstract class TypedRecipeSerializer<R extends Recipe<?>> extends RecipeSerializer<R>
+public abstract class TypedRecipeSerializer<R extends Recipe<?>> extends RecipeSerializerImpl<R>
 {
     public abstract RecipeType<?> getRecipeType();
 }

@@ -147,7 +147,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockPropertie
             if (te != null)
             {
                 ItemStack held = player.getItemInHand(handIn);
-                if (held.getItem().is(TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnTileEntity.isValid(worldIn, pos))
+                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKilnTileEntity.isValid(worldIn, pos))
                 {
                     convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
                     return InteractionResult.SUCCESS;

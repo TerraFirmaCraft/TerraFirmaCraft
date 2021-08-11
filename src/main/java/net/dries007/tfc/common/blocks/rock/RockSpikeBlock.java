@@ -67,16 +67,12 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(PART))
-        {
-            case BASE:
-                return BASE_SHAPE;
-            case MIDDLE:
-                return MIDDLE_SHAPE;
-            case TIP:
-            default:
-                return TIP_SHAPE;
-        }
+        return switch (state.getValue(PART))
+            {
+                case BASE -> BASE_SHAPE;
+                case MIDDLE -> MIDDLE_SHAPE;
+                default -> TIP_SHAPE;
+            };
     }
 
     @Override

@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.world.Container;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 /**
- * A simple {@link IRecipe} extension for {@link BlockRecipeWrapper}
+ * A simple {@link net.minecraft.world.item.crafting.Recipe} extension for {@link BlockRecipeWrapper}
  */
 public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
 {
@@ -39,7 +39,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     /**
-     * Specific parameter version of {@link net.minecraft.item.crafting.IRecipe#matches(IInventory, World)} for block recipes
+     * Specific parameter version of {@link net.minecraft.world.item.crafting.Recipe#matches(Container, Level)} for block recipes
      */
     default boolean matches(Level worldIn, BlockPos pos, BlockState state)
     {
@@ -47,7 +47,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     /**
-     * Specific parameter version of {@link net.minecraft.item.crafting.IRecipe#getCraftingResult(IInventory)} for block recipes.
+     * Specific parameter version of {@link Recipe#assemble(Container)} for block recipes.
      */
     default BlockState getBlockCraftingResult(BlockRecipeWrapper wrapper)
     {
@@ -55,7 +55,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     /**
-     * Specific parameter version of {@link IRecipe#getRecipeOutput()} for block recipes.
+     * Specific parameter version of {@link Recipe#getResultItem()} for block recipes.
      */
     default Block getBlockRecipeOutput()
     {

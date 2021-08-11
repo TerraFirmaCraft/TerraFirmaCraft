@@ -32,7 +32,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.SeaPickleBlock}
+ * {@link net.minecraft.world.level.block.SeaPickleBlock}
  */
 public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 {

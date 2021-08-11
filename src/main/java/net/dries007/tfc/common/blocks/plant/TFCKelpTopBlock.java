@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -68,9 +67,9 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    protected boolean canAttachToBlock(Block blockIn)
+    protected boolean canAttachTo(BlockState state)
     {
-        return blockIn != Blocks.MAGMA_BLOCK;
+        return state.getBlock() != Blocks.MAGMA_BLOCK;
     }
 
     @Override
@@ -136,7 +135,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     protected boolean canGrowInto(BlockState state)
     {
-        Fluid fluid = state.getFluidState().getType().getFluid();
+        Fluid fluid = state.getFluidState().getType();
         return getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
     }
 

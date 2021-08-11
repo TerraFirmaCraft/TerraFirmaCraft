@@ -144,7 +144,8 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return te != null && te.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
     }
 
-    @Override
+    // todo
+    // @Override
     public boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack matrixStack, MultiBufferSource buffers, Vec3 renderPos)
     {
         SelectionPlace selection = getPlayerSelection(level, pos, player, rayTrace);

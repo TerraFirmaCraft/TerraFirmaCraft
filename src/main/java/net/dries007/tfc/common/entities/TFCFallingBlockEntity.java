@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.common.entities;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
@@ -16,10 +19,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.GameRules;
@@ -28,7 +28,6 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
-import net.dries007.tfc.mixin.entity.item.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
@@ -72,7 +71,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         final BlockState fallingBlockState = getBlockState();
         if (fallingBlockState.isAir())
         {
-            remove();
+            remove(RemovalReason.DISCARDED);
         }
         else
         {
@@ -81,13 +80,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             {
                 // First tick, replace the existing block
                 BlockPos blockpos = blockPosition();
-                if (level.getBlockState(blockpos).getBlock().is(block))
+                if (block == level.getBlockState(blockpos).getBlock())
                 {
                     level.removeBlock(blockpos, false);
                 }
                 else if (!level.isClientSide)
                 {
-                    remove();
+                    remove(RemovalReason.DISCARDED);
                     return;
                 }
             }
@@ -111,7 +110,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         {
                             spawnAtLocation(block);
                         }
-                        remove();
+                        remove(RemovalReason.DISCARDED);
                     }
                 }
                 else
@@ -138,14 +137,15 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
                     if (hitBlockState.getBlock() != Blocks.MOVING_PISTON)
                     {
-                        remove();
+                        remove(RemovalReason.DISCARDED);
                         if (!dontSetBlock)
                         {
                             if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
                             {
                                 if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
                                 {
-                                    ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
+                                    // todo: mixin
+                                    // ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
                                 }
 
                                 if (level.setBlockAndUpdate(posAt, fallingBlockState))
@@ -161,21 +161,21 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                     }
 
                                     // Sets the tile entity if it exists
-                                    if (blockData != null && fallingBlockState.hasTileEntity())
+                                    if (blockData != null && fallingBlockState.hasBlockEntity())
                                     {
-                                        TileEntity tileEntity = level.getBlockEntity(posAt);
+                                        BlockEntity tileEntity = level.getBlockEntity(posAt);
                                         if (tileEntity != null)
                                         {
-                                            CompoundNBT tileEntityData = tileEntity.save(new CompoundNBT());
+                                            CompoundTag tileEntityData = tileEntity.save(new CompoundTag());
                                             for (String dataKey : tileEntityData.getAllKeys())
                                             {
-                                                INBT dataElement = tileEntityData.get(dataKey);
+                                                Tag dataElement = tileEntityData.get(dataKey);
                                                 if (!"x".equals(dataKey) && !"y".equals(dataKey) && !"z".equals(dataKey) && dataElement != null)
                                                 {
                                                     tileEntityData.put(dataKey, dataElement.copy());
                                                 }
                                             }
-                                            tileEntity.load(fallingBlockState, tileEntityData);
+                                            tileEntity.load(tileEntityData);
                                             tileEntity.setChanged();
                                         }
                                     }

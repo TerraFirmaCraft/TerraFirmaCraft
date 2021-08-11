@@ -33,7 +33,6 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockProperti
      * @param world      The world
      * @param pos        The position
      * @param state      The original state
-     * @param snowLayers How many layers of snow were in the original state (may be 0 if the state doesn't pile up it's own snow)
      */
     public static void convertToPile(LevelAccessor world, BlockPos pos, BlockState state)
     {

@@ -60,12 +60,12 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockProper
         Block southBlock = world.getBlockState(pos.south()).getBlock();
         Block westBlock = world.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
-            .setValue(DOWN, downBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || downBlock.is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
-            .setValue(UP, upBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || upBlock.is(TFCTags.Blocks.FRUIT_TREE_SAPLING))
-            .setValue(NORTH, northBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
-            .setValue(EAST, eastBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
-            .setValue(SOUTH, southBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
-            .setValue(WEST, westBlock.is(TFCTags.Blocks.FRUIT_TREE_BRANCH));
+            .setValue(DOWN, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(downBlock) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(downBlock))
+            .setValue(UP, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(upBlock) || TFCTags.Blocks.FRUIT_TREE_SAPLING.contains(upBlock))
+            .setValue(NORTH, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(northBlock))
+            .setValue(EAST, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(eastBlock))
+            .setValue(SOUTH, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(southBlock))
+            .setValue(WEST, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(westBlock));
     }
 
     @Override
@@ -92,17 +92,17 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockProper
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (worldIn.getBlockState(relativePos).getBlock().is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(worldIn.getBlockState(relativePos).getBlock()))
             {
                 Block below = worldIn.getBlockState(relativePos.below()).getBlock();
-                if (below.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || below.is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+                if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(below) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(below))
                 {
                     return true;
                 }
             }
         }
         Block blockIn = belowState.getBlock();
-        return blockIn.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || blockIn.is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(blockIn) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(blockIn);
     }
 
     @Override

@@ -9,6 +9,7 @@ package net.dries007.tfc.util;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -16,11 +17,6 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.server.level.ServerLevel;
@@ -122,7 +118,7 @@ public final class EnvironmentHelpers
     }
 
     /**
-     * Logic is borrowed from {@link net.minecraft.world.biome.Biome#shouldFreeze(IWorldReader, BlockPos)} but with the water fluid swapped out, and the temperature check changed (in the original code it's redirected by mixin)
+     * Logic is borrowed from {@link net.minecraft.world.level.biome.Biome#shouldFreeze(LevelReader, BlockPos)} but with the water fluid swapped out, and the temperature check changed (in the original code it's redirected by mixin)
      */
     private static void tryFreezeSeaIce(LevelAccessor worldIn, BlockPos pos)
     {
@@ -186,7 +182,7 @@ public final class EnvironmentHelpers
             final BlockState stateAt = world.getBlockState(adjacentPos);
             final BlockPos posAbove = adjacentPos.above();
             final BlockState stateAbove = world.getBlockState(posAbove);
-            if (stateAt.isAir() && (stateAbove.getBlock().is(TFCBlocks.ICICLE.get()) || stateAbove.isFaceSturdy(world, posAbove, Direction.DOWN)))
+            if (stateAt.isAir() && (stateAbove.getBlock() == TFCBlocks.ICICLE.get() || stateAbove.isFaceSturdy(world, posAbove, Direction.DOWN)))
             {
                 found++;
                 if (foundPos == null || random.nextInt(found) == 0)

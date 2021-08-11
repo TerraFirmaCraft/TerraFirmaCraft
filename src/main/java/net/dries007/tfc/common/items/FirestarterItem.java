@@ -50,78 +50,79 @@ public class FirestarterItem extends Item
     @Override
     public void onUseTick(Level world, LivingEntity livingEntityIn, ItemStack stack, int countLeft)
     {
-        if (!(livingEntityIn instanceof Player)) return;
-        final Player player = (Player) livingEntityIn;
-        final BlockHitResult result = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
+        if (livingEntityIn instanceof final Player player)
+        {
+            final BlockHitResult result = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
 
-        final BlockPos pos = result.getBlockPos();
-        final BlockPos abovePos = pos.above();
-        double chance = TFCConfig.SERVER.fireStarterChance.get() * (world.isRainingAt(abovePos) ? 0.3 : 1);
-        if (world.isClientSide())
-        {
-            Vec3 location = result.getLocation();
-            makeEffects(world, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack), random);
-        }
-        else if (countLeft == 1)
-        {
-            if (!player.isCreative())
+            final BlockPos pos = result.getBlockPos();
+            final BlockPos abovePos = pos.above();
+            double chance = TFCConfig.SERVER.fireStarterChance.get() * (world.isRainingAt(abovePos) ? 0.3 : 1);
+            if (world.isClientSide())
             {
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                Vec3 location = result.getLocation();
+                makeEffects(world, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack), world.random);
             }
-            if (FirepitBlock.canSurvive(world, pos)) // firepit
+            else if (countLeft == 1)
             {
-                final List<ItemEntity> items = world.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos, abovePos.offset(1, 2, 1)));
-                final List<ItemEntity> usableItems = new ArrayList<>();
-
-                int sticks = 0, kindling = 0;
-                ItemEntity logEntity = null;
-
-                for (ItemEntity entity : items)
+                if (!player.isCreative())
                 {
-                    ItemStack foundStack = entity.getItem();
-                    Item foundItem = foundStack.getItem();
-                    int itemCount = foundStack.getCount();
-                    if (foundItem.is(TFCTags.Items.FIREPIT_STICKS))
-                    {
-                        sticks += itemCount;
-                        usableItems.add(entity);
-                    }
-                    else if (foundItem.is(TFCTags.Items.FIREPIT_KINDLING))
-                    {
-                        kindling += itemCount;
-                        usableItems.add(entity);
-                    }
-                    else if (logEntity == null && foundItem.is(TFCTags.Items.FIREPIT_LOGS))
-                    {
-                        logEntity = entity;
-                    }
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                 }
-                if (sticks >= 3 && logEntity != null)
+                if (FirepitBlock.canSurvive(world, pos)) // firepit
                 {
-                    final float kindlingModifier = Math.min(0.1F * (float) kindling, 0.5F);
-                    if (random.nextFloat() < chance + kindlingModifier)
+                    final List<ItemEntity> items = world.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos, abovePos.offset(1, 2, 1)));
+                    final List<ItemEntity> usableItems = new ArrayList<>();
+
+                    int sticks = 0, kindling = 0;
+                    ItemEntity logEntity = null;
+
+                    for (ItemEntity entity : items)
                     {
-                        usableItems.forEach(Entity::kill);
-                        logEntity.kill();
-
-                        ItemStack initialLog = logEntity.getItem().copy();
-                        initialLog.setCount(1);
-
-                        final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
-                        world.setBlock(abovePos, state, 3);
-                        AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, abovePos, AbstractFirepitTileEntity.class);
-                        if (firepit != null)
+                        ItemStack foundStack = entity.getItem();
+                        Item foundItem = foundStack.getItem();
+                        int itemCount = foundStack.getCount();
+                        if (TFCTags.Items.FIREPIT_STICKS.contains(foundItem))
                         {
-                            firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                .ifPresent(cap -> ((IItemHandlerModifiable) cap).setStackInSlot(AbstractFirepitTileEntity.SLOT_FUEL_CONSUME, initialLog));
-                            firepit.light(state);
+                            sticks += itemCount;
+                            usableItems.add(entity);
+                        }
+                        else if (TFCTags.Items.FIREPIT_KINDLING.contains(foundItem))
+                        {
+                            kindling += itemCount;
+                            usableItems.add(entity);
+                        }
+                        else if (logEntity == null && TFCTags.Items.FIREPIT_LOGS.contains(foundItem))
+                        {
+                            logEntity = entity;
                         }
                     }
-                    return;
+                    if (sticks >= 3 && logEntity != null)
+                    {
+                        final float kindlingModifier = Math.min(0.1F * (float) kindling, 0.5F);
+                        if (world.random.nextFloat() < chance + kindlingModifier)
+                        {
+                            usableItems.forEach(Entity::kill);
+                            logEntity.kill();
+
+                            ItemStack initialLog = logEntity.getItem().copy();
+                            initialLog.setCount(1);
+
+                            final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
+                            world.setBlock(abovePos, state, 3);
+                            AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, abovePos, AbstractFirepitTileEntity.class);
+                            if (firepit != null)
+                            {
+                                firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                                    .ifPresent(cap -> ((IItemHandlerModifiable) cap).setStackInSlot(AbstractFirepitTileEntity.SLOT_FUEL_CONSUME, initialLog));
+                                firepit.light(state);
+                            }
+                        }
+                        return;
+                    }
                 }
+                // if can't make a firepit, try to light the block
+                StartFireEvent.startFire(world, pos, world.getBlockState(pos), result.getDirection(), player, stack);
             }
-            // if can't make a firepit, try to light the block
-            StartFireEvent.startFire(world, pos, world.getBlockState(pos), result.getDirection(), player, stack);
         }
     }
 

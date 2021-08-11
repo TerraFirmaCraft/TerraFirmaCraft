@@ -154,7 +154,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
         default void deserializeNBT(CompoundTag nbt) {}
     }
 
-    public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializer<R>
+    public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializerImpl<R>
     {
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)

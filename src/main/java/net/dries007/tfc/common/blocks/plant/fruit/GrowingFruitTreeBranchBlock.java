@@ -115,7 +115,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
                 boolean willGrowUpward = false;
                 BlockState belowState = world.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (belowBlock.is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+                if (TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(belowBlock))
                 {
                     willGrowUpward = true;
                 }

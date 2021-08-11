@@ -24,7 +24,7 @@ public class SupportManager extends DataManager<Support>
     public static final SupportManager INSTANCE = new SupportManager();
 
     /**
-     * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link SupportManager#isSupported(IBlockReader, BlockPos)}
+     * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link SupportManager#isSupported(BlockGetter, BlockPos)}
      */
     public static Set<BlockPos> findUnsupportedPositions(BlockGetter worldIn, BlockPos from, BlockPos to)
     {

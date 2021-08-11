@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import net.minecraft.block.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -36,7 +35,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * {@link net.minecraft.block.DeadCoralWallFanBlock}
+ * {@link CoralWallFanBlock}
  */
 public class CoralWallFanBlock extends TFCCoralPlantBlock
 {

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.wood;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.BlockPlaceContext;

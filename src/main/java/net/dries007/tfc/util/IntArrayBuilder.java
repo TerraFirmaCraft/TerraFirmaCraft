@@ -17,7 +17,7 @@ import net.minecraft.world.inventory.DataSlot;
 public class IntArrayBuilder implements ContainerData
 {
     /**
-     * A single {@link IntReferenceHolder} for one tracked value
+     * A single {@link DataSlot} for one tracked value
      */
     public static DataSlot of(IntSupplier getter, IntConsumer setter)
     {

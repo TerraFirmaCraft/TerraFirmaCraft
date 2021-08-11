@@ -18,27 +18,21 @@ public class CalendarWorldData extends SavedData
 
     public static CalendarWorldData get(ServerLevel world)
     {
-        return world.getDataStorage().computeIfAbsent(CalendarWorldData::new, NAME);
+        return world.getDataStorage().computeIfAbsent(CalendarWorldData::load, CalendarWorldData::new, NAME);
+    }
+
+    private static CalendarWorldData load(CompoundTag nbt)
+    {
+        final CalendarWorldData data = new CalendarWorldData();
+        data.calendar.read(nbt.getCompound("calendar"));
+        return data;
     }
 
     private final Calendar calendar;
 
     public CalendarWorldData()
     {
-        super(NAME);
         this.calendar = new Calendar();
-    }
-
-    public CalendarWorldData(String name)
-    {
-        super(name);
-        this.calendar = new Calendar();
-    }
-
-    @Override
-    public void load(CompoundTag nbt)
-    {
-        calendar.read(nbt.getCompound("calendar"));
     }
 
     @Override

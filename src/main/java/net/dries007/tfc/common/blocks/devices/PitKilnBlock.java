@@ -114,13 +114,13 @@ public class PitKilnBlock extends DeviceBlock implements IForgeBlockProperties
             ItemStack held = player.getItemInHand(hand);
             Item item = held.getItem();
             int stage = state.getValue(STAGE);
-            if (stage < STRAW_END && item.is(TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4)
+            if (stage < STRAW_END && TFCTags.Items.PIT_KILN_STRAW.contains(item) && held.getCount() >= 4)
             {
                 world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                 te.addStraw(held.split(4), stage + 1);
                 Helpers.playSound(world, pos, SoundEvents.GRASS_PLACE);
             }
-            else if (stage >= STRAW_END && stage < LIT - 1 && item.is(TFCTags.Items.PIT_KILN_LOGS))
+            else if (stage >= STRAW_END && stage < LIT - 1 && TFCTags.Items.PIT_KILN_LOGS.contains(item))
             {
                 world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                 te.addLog(held.split(1), stage - LOG_START + 1);

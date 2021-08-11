@@ -30,7 +30,7 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     private static ItemStack getItemForKnapping(Inventory inv)
     {
         final ItemStack main = inv.player.getMainHandItem();
-        return main.getItem().is(TFCTags.Items.KNAPPING_ANY) ? main : inv.player.getOffhandItem();
+        return TFCTags.Items.KNAPPING_ANY.contains(main.getItem()) ? main : inv.player.getOffhandItem();
     }
 
     private final KnappingPattern matrix;

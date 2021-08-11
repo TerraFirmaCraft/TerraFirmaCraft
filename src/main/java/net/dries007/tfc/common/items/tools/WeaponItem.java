@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
@@ -25,7 +24,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
 
 /**
- * Generic class for weapons that shouldn't override vanilla's {@link SwordItem}
+ * todo: wut?
+ * Generic class for weapons that shouldn't override vanilla's {@link }
  * Possible reasons to avoid extending it: Sweeping effect, enchantments, other mods would think it is a sword.
  *
  * Also, TFC material damage is multiplicative instead of additive.

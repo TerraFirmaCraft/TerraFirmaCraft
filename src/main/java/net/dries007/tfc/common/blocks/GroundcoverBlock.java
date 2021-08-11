@@ -130,7 +130,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         worldIn.removeBlock(pos, false);
         if (!player.isCreative() && worldIn instanceof ServerLevel)
         {
-            BlockEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+            BlockEntity tileEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
             getDrops(state, (ServerLevel) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
         }
         return InteractionResult.SUCCESS;

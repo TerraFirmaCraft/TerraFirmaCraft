@@ -25,7 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
 /**
- * {@link net.minecraft.block.CoralPlantBlock}
+ * {@link net.minecraft.world.level.block.CoralPlantBlock}
  */
 public class LivingCoralPlantBlock extends TFCCoralPlantBlock
 {

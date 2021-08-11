@@ -68,7 +68,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         return ingredient;
     }
 
-    public static class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializer<R>
+    public static class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializerImpl<R>
     {
         private final Factory<R> factory;
 

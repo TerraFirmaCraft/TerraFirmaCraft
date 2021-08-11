@@ -9,6 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -22,6 +23,6 @@ public final class ChunkDataCapability
 
     public static void setup()
     {
-        Helpers.registerSimpleCapability(ChunkData.class);
+        CapabilityManager.INSTANCE.register((Class<?>) ChunkData.class);
     }
 }

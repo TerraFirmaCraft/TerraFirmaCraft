@@ -9,6 +9,7 @@ package net.dries007.tfc.common.capabilities.forge;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -22,6 +23,6 @@ public class ForgingCapability
 
     public static void setup()
     {
-        Helpers.registerSimpleCapability(IForging.class);
+        CapabilityManager.INSTANCE.register((Class<?>) IForging.class);
     }
 }

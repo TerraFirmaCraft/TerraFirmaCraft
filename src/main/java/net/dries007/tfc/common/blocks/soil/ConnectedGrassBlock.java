@@ -27,7 +27,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.ToolType;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -170,6 +169,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         return dirt.get().defaultBlockState();
     }
 
+    /*
     @Nullable
     @Override
     public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolType toolType)
@@ -183,7 +183,9 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
             return grassPath.get().defaultBlockState();
         }
         return state;
-    }
+    }*/
+
+    // todo: tool actions
 
     /**
      * When a grass block changes (is placed or added), this is called to send updates to all diagonal neighbors to update their state from this one

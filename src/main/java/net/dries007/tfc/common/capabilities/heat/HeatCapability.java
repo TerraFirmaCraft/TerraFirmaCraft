@@ -9,6 +9,7 @@ package net.dries007.tfc.common.capabilities.heat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -23,7 +24,7 @@ public final class HeatCapability
 
     public static void setup()
     {
-        Helpers.registerSimpleCapability(IHeat.class);
+        CapabilityManager.INSTANCE.register((Class<?>) IHeat.class);
     }
 
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)

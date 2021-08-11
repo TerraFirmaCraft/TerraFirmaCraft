@@ -121,13 +121,13 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
-    public static class Serializer extends RecipeSerializer<HeatingRecipe>
+    public static class Serializer extends RecipeSerializerImpl<HeatingRecipe>
     {
         @Override
         public HeatingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
-            final ItemStack outputItem = json.has("result_item") ? ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item")) : ItemStack.EMPTY;
+            final ItemStack outputItem = json.has("result_item") ? new ItemStack(ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item"))) : ItemStack.EMPTY;
             final FluidStack outputFluid = json.has("result_fluid") ? FluidIngredient.fluidStackFromJson(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
             final float temperature = GsonHelper.getAsFloat(json, "temperature");
             return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);

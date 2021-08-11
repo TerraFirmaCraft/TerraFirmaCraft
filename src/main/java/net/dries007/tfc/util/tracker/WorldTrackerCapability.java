@@ -9,6 +9,7 @@ package net.dries007.tfc.util.tracker;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -20,6 +21,6 @@ public class WorldTrackerCapability
 
     public static void setup()
     {
-        Helpers.registerSimpleCapability(IWorldTracker.class);
+        CapabilityManager.INSTANCE.register((Class<?>) IWorldTracker.class);
     }
 }

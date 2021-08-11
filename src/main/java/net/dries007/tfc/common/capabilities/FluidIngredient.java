@@ -50,7 +50,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
             {
                 throw new JsonParseException("Not a fluid: " + fluidName);
             }
-            return new Simple(fluid, amount);
+            return new SimpleIngredient(fluid, amount);
         }
         else if (json.has("tag"))
         {
@@ -60,7 +60,7 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
             {
                 throw new JsonParseException("Not a fluid tag: " + tagName);
             }
-            return new Tag(tag, amount);
+            return new TagIngredient(tag, amount);
         }
         else
         {
@@ -76,15 +76,15 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
             case 0:
             {
                 Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
-                return new Simple(fluid, amount);
+                return new SimpleIngredient(fluid, amount);
             }
             case 1:
             {
                 Tag<Fluid> tag = FluidTags.getAllTags().getTag(buffer.readResourceLocation());
-                return new Tag(Objects.requireNonNull(tag), amount);
+                return new TagIngredient(Objects.requireNonNull(tag), amount);
             }
             default:
-                return new Simple(Fluids.EMPTY, 0);
+                return new SimpleIngredient(Fluids.EMPTY, 0);
         }
     }
 
@@ -119,11 +119,11 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
 
     protected abstract void toNetwork(FriendlyByteBuf buffer);
 
-    static class Simple extends FluidIngredient
+    static class SimpleIngredient extends FluidIngredient
     {
         private final Fluid fluid;
 
-        Simple(Fluid fluid, int amount)
+        SimpleIngredient(Fluid fluid, int amount)
         {
             super(amount);
             this.fluid = fluid;
@@ -143,11 +143,11 @@ public abstract class FluidIngredient implements Predicate<FluidStack>
         }
     }
 
-    static class Tag extends FluidIngredient
+    static class TagIngredient extends FluidIngredient
     {
         private final Tag<Fluid> tag;
 
-        Tag(Tag<Fluid> tag, int amount)
+        TagIngredient(Tag<Fluid> tag, int amount)
         {
             super(amount);
             this.tag = tag;
