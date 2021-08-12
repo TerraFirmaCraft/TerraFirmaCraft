@@ -22,7 +22,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.feature.tree.TFCTree;
+import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
@@ -67,7 +67,7 @@ public enum Wood implements StringRepresentable
     private final MaterialColor mainColor;
     private final MaterialColor topColor;
     private final MaterialColor barkColor;
-    private final TFCTree tree;
+    private final TFCTreeGrower tree;
     private final int maxDecayDistance;
     private final int daysToGrow;
 
@@ -78,7 +78,7 @@ public enum Wood implements StringRepresentable
         this.mainColor = mainColor;
         this.topColor = topColor;
         this.barkColor = barkColor;
-        this.tree = new TFCTree(Helpers.identifier("tree/" + serializedName), Helpers.identifier("tree/" + serializedName + "_large"));
+        this.tree = new TFCTreeGrower(Helpers.identifier("tree/" + serializedName), Helpers.identifier("tree/" + serializedName + "_large"));
         this.maxDecayDistance = maxDecayDistance;
         this.daysToGrow = daysToGrow;
     }
@@ -94,7 +94,7 @@ public enum Wood implements StringRepresentable
         return conifer;
     }
 
-    public TFCTree getTree()
+    public TFCTreeGrower getTree()
     {
         return tree;
     }

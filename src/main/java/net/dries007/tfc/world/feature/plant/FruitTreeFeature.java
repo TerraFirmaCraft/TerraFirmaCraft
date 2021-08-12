@@ -25,6 +25,8 @@ import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class FruitTreeFeature extends Feature<BlockStateConfiguration>
 {
     public FruitTreeFeature(Codec<BlockStateConfiguration> codec)
@@ -33,8 +35,13 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
+    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final BlockStateConfiguration config = context.config();
+
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < 12; i++)

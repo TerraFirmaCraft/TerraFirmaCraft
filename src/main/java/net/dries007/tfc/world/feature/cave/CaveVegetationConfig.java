@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -21,24 +20,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
-public class CaveVegetationConfig implements FeatureConfiguration
+public record CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states) implements FeatureConfiguration
 {
-    @SuppressWarnings("deprecation")
-    public static final MapCodec<CaveVegetationConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<CaveVegetationConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.mapKeyListCodec(Codec.mapPair(
-            Registry.BLOCK.listOf().fieldOf("stone"),
+            Codecs.BLOCK.listOf().fieldOf("stone"),
             Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("ore")
         ).codec()).fieldOf("blocks").forGetter(c -> c.states)
     ).apply(instance, CaveVegetationConfig::new));
-
-    public static final Codec<CaveVegetationConfig> CODEC = MAP_CODEC.codec();
-
-    private final Map<Block, IWeighted<BlockState>> states;
-
-    public CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states)
-    {
-        this.states = states;
-    }
 
     @Nullable
     public BlockState getStateToGenerate(BlockState stoneState, Random random)

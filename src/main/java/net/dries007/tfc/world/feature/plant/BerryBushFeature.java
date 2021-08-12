@@ -26,6 +26,8 @@ import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class BerryBushFeature extends Feature<BlockStateConfiguration>
 {
     private static final int REDUCTION_AMOUNT = -60 * ICalendar.TICKS_IN_DAY;
@@ -36,8 +38,13 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
+    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final BlockStateConfiguration config = context.config();
+
         BlockState bushState = config.state;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 15; i++)

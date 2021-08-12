@@ -27,7 +27,7 @@ public final class CoralHelpers
      * Copied out into it's own static method so all our subclasses can call to this
      * Replaces references to vanilla blocks with TFC ones
      *
-     * {@link net.minecraft.world.gen.feature.CoralFeature#placeCoralBlock(IWorld, Random, BlockPos, BlockState)}
+     * {@link net.minecraft.world.level.levelgen.feature.CoralFeature#placeCoralBlock(LevelAccessor, Random, BlockPos, BlockState)}
      */
     public static boolean placeCoralBlock(LevelAccessor world, Random rand, BlockPos pos, BlockState coralBlockState)
     {

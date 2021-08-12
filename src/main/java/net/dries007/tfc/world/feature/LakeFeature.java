@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -24,7 +25,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 
 /**
- * This is a big copy pasta from {@link net.minecraft.world.gen.feature.LakesFeature} with the following changes:
+ * This is a big copy pasta from {@link net.minecraft.world.level.levelgen.feature.LakeFeature} with the following changes:
  * - It only works with water, since this is going to be used primarily for surface lakes
  * - It handles TFC dirt / grass transformations correctly
  */
@@ -37,8 +38,13 @@ public class LakeFeature extends Feature<NoneFeatureConfiguration>
 
     @Override
     @SuppressWarnings("ALL")
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration config)
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        BlockPos pos = context.origin();
+        final Random random = context.random();
+        final NoneFeatureConfiguration config = context.config();
+
         while (pos.getY() > 5 && worldIn.isEmptyBlock(pos))
         {
             pos = pos.below();

@@ -21,6 +21,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
 {
     public CaveVegetationFeature(Codec<CaveVegetationConfig> codec)
@@ -29,8 +31,13 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, CaveVegetationConfig config)
+    public boolean place(FeaturePlaceContext<CaveVegetationConfig> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final CaveVegetationConfig config = context.config();
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 128; i++)
         {
@@ -81,11 +88,5 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
             }
         }
         return true;
-    }
-
-    @Nullable
-    protected BlockState getStateToGenerate(BlockState stoneState, Random random, CaveVegetationConfig config)
-    {
-        return config.getStateToGenerate(stoneState, random);
     }
 }

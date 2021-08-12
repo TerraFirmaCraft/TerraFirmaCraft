@@ -22,6 +22,8 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class BouldersFeature extends Feature<BoulderConfig>
 {
     public BouldersFeature(Codec<BoulderConfig> codec)
@@ -30,9 +32,14 @@ public class BouldersFeature extends Feature<BoulderConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
+    public boolean place(FeaturePlaceContext<BoulderConfig> context)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final BoulderConfig config = context.config();
+
+        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
         final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), pos.getY(), pos.getZ());
         final List<BlockState> states = config.getStates(rock);

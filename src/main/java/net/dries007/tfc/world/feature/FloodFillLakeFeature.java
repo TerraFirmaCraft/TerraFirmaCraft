@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
@@ -37,10 +38,14 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, FloodFillLakeConfig config)
+    public boolean place(FeaturePlaceContext<FloodFillLakeConfig> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        BlockPos pos = context.origin();
+        final FloodFillLakeConfig config = context.config();
+
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, Integer.MIN_VALUE, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, Integer.MAX_VALUE, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
 
         final Set<BlockPos> filled = new HashSet<>();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();

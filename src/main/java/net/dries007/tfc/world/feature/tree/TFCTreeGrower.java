@@ -20,12 +20,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.server.level.ServerLevel;
 
-public class TFCTree extends AbstractTreeGrower
+public class TFCTreeGrower extends AbstractTreeGrower
 {
     private final ResourceLocation normalTree;
     private final ResourceLocation oldGrowthTree;
 
-    public TFCTree(ResourceLocation normalTree, ResourceLocation oldGrowthFeatureFactory)
+    public TFCTreeGrower(ResourceLocation normalTree, ResourceLocation oldGrowthFeatureFactory)
     {
         this.normalTree = normalTree;
         this.oldGrowthTree = oldGrowthFeatureFactory;

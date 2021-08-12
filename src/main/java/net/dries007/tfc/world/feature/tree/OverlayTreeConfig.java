@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class OverlayTreeConfig implements FeatureConfiguration
+public record OverlayTreeConfig(ResourceLocation base, ResourceLocation overlay, int radius, Optional<TrunkConfig> trunk, float overlayIntegrity) implements FeatureConfiguration
 {
     public static final Codec<OverlayTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("base").forGetter(c -> c.base),
@@ -23,19 +23,4 @@ public class OverlayTreeConfig implements FeatureConfiguration
         TrunkConfig.CODEC.optionalFieldOf("trunk").forGetter(c -> c.trunk),
         Codec.floatRange(0, 1).optionalFieldOf("overlay_integrity", 0.5f).forGetter(c -> c.overlayIntegrity)
     ).apply(instance, OverlayTreeConfig::new));
-
-    public final ResourceLocation base;
-    public final ResourceLocation overlay;
-    public final int radius;
-    public final Optional<TrunkConfig> trunk;
-    public final float overlayIntegrity;
-
-    public OverlayTreeConfig(ResourceLocation base, ResourceLocation overlay, int radius, Optional<TrunkConfig> trunk, float overlayIntegrity)
-    {
-        this.base = base;
-        this.overlay = overlay;
-        this.radius = radius;
-        this.trunk = trunk;
-        this.overlayIntegrity = overlayIntegrity;
-    }
 }

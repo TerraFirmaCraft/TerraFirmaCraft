@@ -34,25 +34,24 @@ public class SpringFeature extends Feature<SpringConfiguration>
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
         final SpringConfiguration config = context.config();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos).move(0, 1, 0);
-        final BlockState stateAbove = worldIn.getBlockState(mutablePos);
+        final BlockState stateAbove = world.getBlockState(mutablePos);
         if (config.validBlocks.contains(stateAbove.getBlock()))
         {
             mutablePos.move(0, -2, 0);
-            final BlockState stateBelow = worldIn.getBlockState(mutablePos);
+            final BlockState stateBelow = world.getBlockState(mutablePos);
             if (!config.requiresBlockBelow || config.validBlocks.contains(stateBelow.getBlock()))
             {
-                final BlockState stateAt = worldIn.getBlockState(pos);
+                final BlockState stateAt = world.getBlockState(pos);
                 if (stateAt.isAir() || config.validBlocks.contains(stateAt.getBlock()))
                 {
                     int rockCount = 0, holeCount = 0;
                     for (Direction direction : Direction.values())
                     {
                         mutablePos.set(pos).move(direction);
-                        final BlockState stateAdjacent = worldIn.getBlockState(mutablePos);
+                        final BlockState stateAdjacent = world.getBlockState(mutablePos);
                         if (config.validBlocks.contains(stateAdjacent.getBlock()))
                         {
                             rockCount++;
@@ -65,8 +64,8 @@ public class SpringFeature extends Feature<SpringConfiguration>
 
                     if (rockCount == config.rockCount && holeCount == config.holeCount)
                     {
-                        worldIn.setBlock(pos, config.state.createLegacyBlock(), 2);
-                        worldIn.getLiquidTicks().scheduleTick(pos, config.state.getType(), 0);
+                        world.setBlock(pos, config.state.createLegacyBlock(), 2);
+                        world.getLiquidTicks().scheduleTick(pos, config.state.getType(), 0);
                         return true;
                     }
                 }

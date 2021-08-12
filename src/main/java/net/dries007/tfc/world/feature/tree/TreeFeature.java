@@ -23,7 +23,6 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
         super(codec);
     }
 
-    @SuppressWarnings("deprecation")
     protected boolean isValidLocation(LevelAccessor worldIn, BlockPos pos)
     {
         BlockState stateDown = worldIn.getBlockState(pos.below());
@@ -33,10 +32,9 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
         }
 
         BlockState stateAt = worldIn.getBlockState(pos);
-        return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir(worldIn, pos);
+        return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir();
     }
 
-    @SuppressWarnings("deprecation")
     protected boolean isAreaClear(LevelAccessor world, BlockPos pos, int radius, int height)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();

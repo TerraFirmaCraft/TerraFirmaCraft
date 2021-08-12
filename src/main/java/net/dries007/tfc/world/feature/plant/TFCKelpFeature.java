@@ -16,12 +16,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class TFCKelpFeature extends Feature<TallPlantConfig>
 {
@@ -30,26 +31,31 @@ public class TFCKelpFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean place(FeaturePlaceContext<TallPlantConfig> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final TallPlantConfig config = context.config();
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final int radius = config.getRadius();
+        final int radius = config.radius();
 
         boolean placedAny = false;
 
-        for (int i = 0; i < config.getTries(); i++)
+        for (int i = 0; i < config.tries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.set(world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, mutablePos));
 
             final BlockState state = world.getBlockState(mutablePos);
             final Fluid fluid = state.getFluidState().getType();
-            final BlockState bodyState = FluidHelpers.fillWithFluid(config.getBodyState(), fluid);
-            final BlockState headState = FluidHelpers.fillWithFluid(config.getHeadState(), fluid);
+            final BlockState bodyState = FluidHelpers.fillWithFluid(config.bodyState(), fluid);
+            final BlockState headState = FluidHelpers.fillWithFluid(config.headState(), fluid);
 
             if (bodyState != null && headState != null && bodyState.canSurvive(world, mutablePos) && FluidHelpers.isAirOrEmptyFluid(state))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, bodyState, headState);
+                placeColumn(world, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, bodyState, headState);
                 placedAny = true;
             }
         }

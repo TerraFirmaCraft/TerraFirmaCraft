@@ -35,6 +35,8 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {
     private long cachedSeed;
@@ -49,9 +51,11 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration config)
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+
         initSeed(worldIn.getSeed());
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -60,7 +64,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
         ChunkData chunkData = ChunkData.get(worldIn, chunkPos);
         if (chunkData.getStatus() == ChunkData.Status.EMPTY)
         {
-            chunkData = ChunkDataProvider.get(chunkGenerator).get(chunkPos);
+            chunkData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos);
         }
 
         final BlockState snowState = Blocks.SNOW.defaultBlockState();

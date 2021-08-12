@@ -25,6 +25,8 @@ import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 {
     public CaveSpikesFeature(Codec<NoneFeatureConfiguration> codec)
@@ -33,8 +35,12 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+
         // The direction that the spike is pointed
         Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
         BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));

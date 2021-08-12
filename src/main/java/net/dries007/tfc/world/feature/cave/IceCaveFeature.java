@@ -26,6 +26,8 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
 {
     public IceCaveFeature(Codec<NoneFeatureConfiguration> codec)
@@ -34,11 +36,15 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData chunkData = provider.get(chunkPos);
         for (int i = 0; i < 72; i++)
         {
@@ -48,7 +54,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
             {
                 return false;
             }
-            if (world.getBlockState(mutablePos).getBlock().is(Blocks.CAVE_AIR))
+            if (world.getBlockState(mutablePos).getBlock() == Blocks.CAVE_AIR)
             {
                 for (int j = 0; j < 7; j++)
                 {

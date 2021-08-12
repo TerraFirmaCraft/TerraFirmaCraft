@@ -24,14 +24,14 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.feature.tree.TFCTree;
+import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockProperties
 {
     private final ForgeBlockProperties properties;
     private final int daysToGrow;
 
-    public TFCSaplingBlock(TFCTree tree, ForgeBlockProperties properties, int days)
+    public TFCSaplingBlock(TFCTreeGrower tree, ForgeBlockProperties properties, int days)
     {
         super(tree, properties.properties());
         this.properties = properties;

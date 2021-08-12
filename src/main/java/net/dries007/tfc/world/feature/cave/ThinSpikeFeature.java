@@ -11,11 +11,12 @@ import java.util.Random;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
+
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
 {
@@ -25,15 +26,20 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, ThinSpikeConfig config)
+    public boolean place(FeaturePlaceContext<ThinSpikeConfig> context)
     {
-        final BlockState spike = config.getState();
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final ThinSpikeConfig config = context.config();
+
+        final BlockState spike = config.state();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean placedAny = false;
 
-        for (int attempt = 0; attempt < config.getTries(); attempt++)
+        for (int attempt = 0; attempt < config.tries(); attempt++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(config.getRadius()) - rand.nextInt(config.getRadius()), rand.nextInt(config.getRadius() - rand.nextInt(config.getRadius())), rand.nextInt(config.getRadius()) - rand.nextInt(config.getRadius()));
+            mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), rand.nextInt(config.radius() - rand.nextInt(config.radius())), rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
             // Move upwards to find a suitable spot
             for (int i = 0; i < 7; i++)
             {

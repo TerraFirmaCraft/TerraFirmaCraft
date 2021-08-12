@@ -8,14 +8,17 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.config.HealthDisplayFormat;
 
-public class StackedTreeConfig implements FeatureConfiguration
+public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius) implements FeatureConfiguration
 {
     public static final Codec<StackedTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Layer.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
@@ -23,39 +26,19 @@ public class StackedTreeConfig implements FeatureConfiguration
         Codec.INT.fieldOf("radius").forGetter(c -> c.radius)
     ).apply(instance, StackedTreeConfig::new));
 
-    public final List<Layer> layers;
-    public final TrunkConfig trunk;
-    public final int radius;
-
-    public StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius)
+    public record Layer(List<ResourceLocation> templates, int minCount, int maxCount)
     {
-        this.layers = layers;
-        this.trunk = trunk;
-        this.radius = radius;
-    }
-
-    public static class Layer
-    {
-        public static final Codec<Layer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        public static final Codec<Layer> CODEC = RecordCodecBuilder.<Layer>create(instance -> instance.group(
             ResourceLocation.CODEC.listOf().fieldOf("templates").forGetter(c -> c.templates),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
             Codec.INT.fieldOf("max_count").forGetter(c -> c.maxCount)
-        ).apply(instance, Layer::new));
-
-        public final List<ResourceLocation> templates;
-        private final int minCount;
-        private final int maxCount;
-
-        public Layer(List<ResourceLocation> templates, int minCount, int maxCount)
-        {
-            this.templates = templates;
-            this.minCount = minCount;
-            this.maxCount = maxCount;
-            if (maxCount < minCount)
+        ).apply(instance, Layer::new)).comapFlatMap(c -> {
+            if (c.maxCount < c.minCount)
             {
-                throw new IllegalStateException("max count must be greater than min count");
+                return DataResult.error("max count (provided = " + c.maxCount + ") must be greater than min count (provided = " + c.minCount + ")");
             }
-        }
+            return DataResult.success(c);
+        }, Function.identity());
 
         public int getCount(Random random)
         {

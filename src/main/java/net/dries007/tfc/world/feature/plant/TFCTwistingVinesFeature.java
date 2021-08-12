@@ -15,12 +15,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
 {
@@ -46,12 +47,17 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         super(codec);
     }
 
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, TallPlantConfig config)
+    public boolean place(FeaturePlaceContext<TallPlantConfig> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final TallPlantConfig config = context.config();
+
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean placedAny = false;
-        int radius = config.getRadius();
-        for (int i = 0; i < config.getTries(); i++)
+        int radius = config.radius();
+        for (int i = 0; i < config.tries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
             mutablePos.move(Direction.DOWN);
@@ -60,7 +66,7 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
             mutablePos.move(Direction.UP);
             if (world.isEmptyBlock(mutablePos))
             {
-                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.getMaxHeight() - config.getMinHeight()) + config.getMinHeight(), 17, 25, config.getBodyState(), config.getHeadState());
+                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
                 placedAny = true;
             }
         }

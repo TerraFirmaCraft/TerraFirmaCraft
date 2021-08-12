@@ -7,58 +7,31 @@
 package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class ThinSpikeConfig implements FeatureConfiguration
+public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight) implements FeatureConfiguration
 {
-    public static final Codec<ThinSpikeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(ThinSpikeConfig::getState),
-        Codec.intRange(1, 16).fieldOf("radius").forGetter(ThinSpikeConfig::getRadius),
-        Codecs.POSITIVE_INT.fieldOf("tries").forGetter(ThinSpikeConfig::getTries),
+    public static final Codec<ThinSpikeConfig> CODEC = RecordCodecBuilder.<ThinSpikeConfig>create(instance -> instance.group(
+        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(c -> c.state),
+        Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
+        Codecs.POSITIVE_INT.fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 256).fieldOf("min_height").forGetter(c -> c.minHeight),
         Codec.intRange(1, 256).fieldOf("max_height").forGetter(c -> c.maxHeight)
-    ).apply(instance, ThinSpikeConfig::new));
-
-    private final BlockState state;
-    private final int radius;
-    private final int tries;
-    private final int minHeight;
-    private final int maxHeight;
-
-    public ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight)
-    {
-        this.state = state;
-        this.radius = radius;
-        this.tries = tries;
-        this.minHeight = minHeight;
-        this.maxHeight = maxHeight;
-
-        if (maxHeight < minHeight)
+    ).apply(instance, ThinSpikeConfig::new)).comapFlatMap(c -> {
+        if (c.maxHeight < c.minHeight)
         {
-            throw new IllegalStateException("maxHeight (" + minHeight + ") must be greater or equal to minHeight (" + maxHeight + ')');
+            return DataResult.error("maxHeight (" + c.minHeight + ") must be greater or equal to minHeight (" + c.maxHeight + ')');
         }
-    }
-
-    public BlockState getState()
-    {
-        return state;
-    }
-
-    public int getRadius()
-    {
-        return radius;
-    }
-
-    public int getTries()
-    {
-        return tries;
-    }
+        return DataResult.success(c);
+    }, Function.identity());
 
     public int getHeight(Random random)
     {

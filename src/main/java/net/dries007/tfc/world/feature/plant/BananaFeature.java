@@ -22,6 +22,8 @@ import net.dries007.tfc.common.TFCTags;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class BananaFeature extends Feature<BlockStateConfiguration>
 {
     public BananaFeature(Codec<BlockStateConfiguration> codec)
@@ -30,8 +32,13 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
+    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        BlockPos pos = context.origin();
+        final Random random = context.random();
+        final BlockStateConfiguration config = context.config();
+
         BlockState banana = config.state;
 
         pos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
@@ -39,7 +46,7 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
 
         for (int i = 0; i < 15; i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.setWithOffset(pos, random.nextInt(10) - random.nextInt(10), -1, random.nextInt(10) - random.nextInt(10));
             if (world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
             {
                 boolean blocked = false;
@@ -57,7 +64,7 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
                     mutablePos.move(Direction.DOWN, 10);
                     for (int stage = 0; stage <= 2; stage++)
                     {
-                        for (int k = 1; k < rand.nextInt(3) + 1; k++)
+                        for (int k = 1; k < random.nextInt(3) + 1; k++)
                         {
                             mutablePos.move(Direction.UP);
                             world.setBlock(mutablePos, banana.setValue(STAGE, 0), 3);

@@ -19,6 +19,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 
 import com.mojang.serialization.Codec;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
 {
     public RandomTreeFeature(Codec<RandomTreeConfig> codec)
@@ -27,21 +29,26 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos pos, RandomTreeConfig config)
+    public boolean place(FeaturePlaceContext<RandomTreeConfig> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random random = context.random();
+        final RandomTreeConfig config = context.config();
+
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         final StructureManager manager = TreeHelpers.getTemplateManager(worldIn);
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
-        final ResourceLocation structureId = config.structureNames.get(random.nextInt(config.structureNames.size()));
+        final ResourceLocation structureId = config.structureNames().get(random.nextInt(config.structureNames().size()));
         final StructureTemplate structure = manager.getOrCreate(structureId);
 
-        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 2))
+        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius(), 2))
         {
             return false;
         }
 
-        config.trunk.ifPresent(trunk -> {
+        config.trunk().ifPresent(trunk -> {
             final int height = TreeHelpers.placeTrunk(worldIn, mutablePos, random, settings, trunk);
             mutablePos.move(0, height, 0);
         });

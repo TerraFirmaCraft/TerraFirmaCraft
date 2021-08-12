@@ -16,10 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
@@ -33,8 +33,13 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos pos, C config)
+    public boolean place(FeaturePlaceContext<C> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random random = context.random();
+        final C config = context.config();
+
         final ChunkPos chunkPos = new ChunkPos(pos);
         final List<V> veins = getNearbyVeins(worldIn, chunkPos, config.getChunkRadius(), config, worldIn::getBiome);
         if (!veins.isEmpty())
@@ -79,7 +84,6 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         }
     }
 
-    @SuppressWarnings("deprecation")
     protected void place(WorldGenLevel world, Random random, int blockX, int blockZ, V vein, C config)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -87,9 +91,9 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         box.move(vein.getPos());
 
         // Intersect the bounding box with the chunk allowed region
-        int minX = Math.max(blockX, box.x0), maxX = Math.min(blockX + 15, box.x1);
-        int minY = Math.max(config.getMinY(), box.y0), maxY = Math.min(config.getMaxY(), box.y1);
-        int minZ = Math.max(blockZ, box.z0), maxZ = Math.min(blockZ + 15, box.z1);
+        int minX = Math.max(blockX, box.minX()), maxX = Math.min(blockX + 15, box.maxX());
+        int minY = Math.max(config.getMinY(), box.minY()), maxY = Math.min(config.getMaxY(), box.maxY());
+        int minZ = Math.max(blockZ, box.minZ()), maxZ = Math.min(blockZ + 15, box.maxZ());
 
         for (int x = minX; x <= maxX; x++)
         {
@@ -113,13 +117,13 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                 }
 
                 final Indicator indicator = config.getIndicator();
-                if (indicator != null && maxVeinY != -1 && random.nextInt(indicator.getRarity()) == 0)
+                if (indicator != null && maxVeinY != -1 && random.nextInt(indicator.rarity()) == 0)
                 {
                     // Pick a random position
-                    final int indicatorX = x + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
-                    final int indicatorZ = z + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
+                    final int indicatorX = x + random.nextInt(indicator.spread()) - random.nextInt(indicator.spread());
+                    final int indicatorZ = z + random.nextInt(indicator.spread()) - random.nextInt(indicator.spread());
                     final int indicatorY = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
-                    if (Math.abs(indicatorY - maxVeinY) < indicator.getDepth())
+                    if (Math.abs(indicatorY - maxVeinY) < indicator.depth())
                     {
                         mutablePos.set(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = world.getBlockState(mutablePos);

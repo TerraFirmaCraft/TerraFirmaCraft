@@ -16,11 +16,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class TFCVinesFeature extends Feature<VineConfig>
 {
@@ -32,16 +33,21 @@ public class TFCVinesFeature extends Feature<VineConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, VineConfig config)
+    public boolean place(FeaturePlaceContext<VineConfig> context)
     {
-        BlockPos.MutableBlockPos mutablePos = pos.mutable();
-        BlockState state = config.getState();
-        List<Direction> dirs = new ArrayList<>(4);
-        int r = config.getRadius();
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final VineConfig config = context.config();
 
-        for (int j = 0; j < config.getTries(); j++)
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
+        BlockState state = config.state();
+        List<Direction> dirs = new ArrayList<>(4);
+        int r = config.radius();
+
+        for (int j = 0; j < config.tries(); j++)
         {
-            for (int y = config.getMinHeight(); y < config.getMaxHeight(); ++y)
+            for (int y = config.minHeight(); y < config.maxHeight(); ++y)
             {
                 mutablePos.set(pos);
                 mutablePos.move(rand.nextInt(r) - rand.nextInt(r), 0, rand.nextInt(r) - rand.nextInt(r));

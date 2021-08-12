@@ -17,6 +17,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class MultipleFeature extends Feature<MultipleConfig>
 {
     public MultipleFeature(Codec<MultipleConfig> codec)
@@ -25,12 +27,12 @@ public class MultipleFeature extends Feature<MultipleConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos, MultipleConfig config)
+    public boolean place(FeaturePlaceContext<MultipleConfig> context)
     {
         boolean result = false;
-        for (Supplier<ConfiguredFeature<?, ?>> feature : config.features)
+        for (Supplier<ConfiguredFeature<?, ?>> feature : context.config().features)
         {
-            result |= feature.get().place(reader, generator, rand, pos);
+            result |= feature.get().place(context.level(), context.chunkGenerator(), context.random(), context.origin());
         }
         return result;
     }

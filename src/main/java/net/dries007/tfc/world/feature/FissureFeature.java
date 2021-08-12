@@ -22,6 +22,8 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class FissureFeature extends Feature<FissureConfig>
 {
     public static void placeFissure(WorldGenLevel world, BlockPos startPos, BlockPos centerPos, BlockPos.MutableBlockPos mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
@@ -45,11 +47,11 @@ public class FissureFeature extends Feature<FissureConfig>
                 if (decoration != null)
                 {
                     // At each step, place count / rarity blocks (average) within radius, and +/- 2 blocks vertically
-                    for (int j = 0; j < decoration.count; j++)
+                    for (int j = 0; j < decoration.count(); j++)
                     {
-                        if (random.nextInt(decoration.rarity) == 0)
+                        if (random.nextInt(decoration.rarity()) == 0)
                         {
-                            mutablePos.setWithOffset(topPos, random.nextInt(decoration.radius) - random.nextInt(decoration.radius), random.nextInt(3) - random.nextInt(3) - dy, random.nextInt(decoration.radius) - random.nextInt(decoration.radius));
+                            mutablePos.setWithOffset(topPos, random.nextInt(decoration.radius()) - random.nextInt(decoration.radius()), random.nextInt(3) - random.nextInt(3) - dy, random.nextInt(decoration.radius()) - random.nextInt(decoration.radius()));
                             final BlockState stoneState = world.getBlockState(mutablePos);
                             final BlockState decorationState = decoration.getState(stoneState, random);
                             if (decorationState != null)
@@ -124,12 +126,17 @@ public class FissureFeature extends Feature<FissureConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, FissureConfig config)
+    public boolean place(FeaturePlaceContext<FissureConfig> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final FissureConfig config = context.config();
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final int placeCount = 1 + rand.nextInt(config.count);
-        final BlockState insideState = config.wallState.orElseGet(() -> {
-            final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final int placeCount = 1 + rand.nextInt(config.count());
+        final BlockState insideState = config.wallState().orElseGet(() -> {
+            final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
             final ChunkData data = provider.get(pos);
             final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
             return rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
@@ -137,9 +144,9 @@ public class FissureFeature extends Feature<FissureConfig>
 
         for (int i = 0; i < placeCount; i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(config.radius) - rand.nextInt(config.radius), 0, rand.nextInt(config.radius) - rand.nextInt(config.radius));
+            mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), 0, rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
             mutablePos.setY(world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
-            FissureFeature.placeFissure(world, pos, mutablePos.immutable(), mutablePos, rand, config.fluidState, insideState, config.minPieces, config.maxPieces, config.maxPieceLength, config.minDepth, config.radius, config.decoration.orElse(null));
+            FissureFeature.placeFissure(world, pos, mutablePos.immutable(), mutablePos, rand, config.fluidState(), insideState, config.minPieces(), config.maxPieces(), config.maxPieceLength(), config.minDepth(), config.radius(), config.decoration().orElse(null));
         }
         return true;
     }

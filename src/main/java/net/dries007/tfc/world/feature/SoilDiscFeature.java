@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class SoilDiscFeature extends Feature<SoilDiscConfig>
 {
     public SoilDiscFeature(Codec<SoilDiscConfig> codec)
@@ -24,8 +26,13 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, SoilDiscConfig config)
+    public boolean place(FeaturePlaceContext<SoilDiscConfig> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random random = context.random();
+        final SoilDiscConfig config = context.config();
+
         boolean placed = false;
         final int radius = config.getRadius(random);
         final int radiusSquared = radius * radius;
@@ -53,7 +60,6 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
                 }
             }
         }
-        //if (placed) world.setBlock(pos.above(10), Blocks.REDSTONE_BLOCK.defaultBlockState(), 2);
         return placed;
     }
 }

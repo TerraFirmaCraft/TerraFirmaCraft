@@ -26,6 +26,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class RivuletFeature extends Feature<BlockStateConfiguration>
 {
     public RivuletFeature(Codec<BlockStateConfiguration> codec)
@@ -34,10 +36,15 @@ public class RivuletFeature extends Feature<BlockStateConfiguration>
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config)
+    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final BlockStateConfiguration config = context.config();
+
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
+        final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, Integer.MIN_VALUE, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, Integer.MAX_VALUE, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
 
         // Basic pathfinding down the slope
         final Set<BlockPos> chosen = new HashSet<>();

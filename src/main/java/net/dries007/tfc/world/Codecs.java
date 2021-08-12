@@ -39,6 +39,8 @@ public final class Codecs
 
     public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.xmap(BiomeDictionary.Type::getType, BiomeDictionary.Type::getName);
 
+    @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(Registry.BLOCK);
+
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.
      * In the former case, the default state will be used.

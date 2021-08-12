@@ -21,7 +21,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
-public class FissureConfig implements FeatureConfiguration
+public record FissureConfig(Optional<BlockState> wallState, BlockState fluidState, int count, int radius, int minDepth, int minPieces, int maxPieces, int maxPieceLength, Optional<Decoration> decoration) implements FeatureConfiguration
 {
     public static final Codec<FissureConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
@@ -35,30 +35,7 @@ public class FissureConfig implements FeatureConfiguration
         Decoration.CODEC.optionalFieldOf("decoration").forGetter(c -> c.decoration)
     ).apply(instance, FissureConfig::new));
 
-    public final Optional<BlockState> wallState;
-    public final BlockState fluidState;
-    public final int count;
-    public final int radius;
-    public final int minDepth;
-    public final int minPieces;
-    public final int maxPieces;
-    public final int maxPieceLength;
-    public final Optional<Decoration> decoration;
-
-    public FissureConfig(Optional<BlockState> wallState, BlockState fluidState, int count, int radius, int minDepth, int minPieces, int maxPieces, int maxPieceLength, Optional<Decoration> decoration)
-    {
-        this.wallState = wallState;
-        this.fluidState = fluidState;
-        this.count = count;
-        this.radius = radius;
-        this.minDepth = minDepth;
-        this.minPieces = minPieces;
-        this.maxPieces = maxPieces;
-        this.maxPieceLength = maxPieceLength;
-        this.decoration = decoration;
-    }
-
-    public static class Decoration
+    public record Decoration(Map<Block, IWeighted<BlockState>> states, int rarity, int radius, int count)
     {
         @SuppressWarnings("deprecation")
         public static final Codec<Decoration> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -70,18 +47,6 @@ public class FissureConfig implements FeatureConfiguration
             Codecs.POSITIVE_INT.fieldOf("radius").forGetter(c -> c.radius),
             Codecs.POSITIVE_INT.fieldOf("count").forGetter(c -> c.count)
         ).apply(instance, Decoration::new));
-        public final int rarity;
-        public final int radius;
-        public final int count;
-        private final Map<Block, IWeighted<BlockState>> states;
-
-        public Decoration(Map<Block, IWeighted<BlockState>> states, int rarity, int radius, int count)
-        {
-            this.states = states;
-            this.rarity = rarity;
-            this.radius = radius;
-            this.count = count;
-        }
 
         @Nullable
         public BlockState getState(BlockState stoneState, Random random)

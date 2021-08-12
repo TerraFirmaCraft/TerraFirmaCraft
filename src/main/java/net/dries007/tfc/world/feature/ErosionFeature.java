@@ -26,6 +26,8 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
     public ErosionFeature(Codec<NoneFeatureConfiguration> codec)
@@ -34,14 +36,16 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config)
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+
         final ChunkPos chunkPos = new ChunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
-        final RockData rockData = ChunkDataProvider.get(generator).get(chunkPos).getRockDataOrThrow();
+        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockDataOrThrow();
 
         for (int x = 0; x < 16; x++)
         {

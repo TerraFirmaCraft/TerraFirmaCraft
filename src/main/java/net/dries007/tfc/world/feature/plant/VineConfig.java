@@ -13,53 +13,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class VineConfig implements FeatureConfiguration
+public record VineConfig(BlockState state, int tries, int radius, int minHeight, int maxHeight) implements FeatureConfiguration
 {
     public static final Codec<VineConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(VineConfig::getState),
+        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(vineConfig -> vineConfig.state),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
-        Codec.intRange(1, 255).fieldOf("minHeight").forGetter(c -> c.minHeight), // todo: min_height and max_height in json, find and fix references
-        Codec.intRange(1, 255).fieldOf("maxHeight").forGetter(c -> c.maxHeight)
+        Codec.INT.fieldOf("minHeight").forGetter(c -> c.minHeight), // todo: min_height and max_height in json, find and fix references
+        Codec.INT.fieldOf("maxHeight").forGetter(c -> c.maxHeight)
     ).apply(instance, VineConfig::new));
-
-    private final BlockState state;
-    private final int tries;
-    private final int radius;
-    private final int minHeight;
-    private final int maxHeight;
-
-    public VineConfig(BlockState state, int tries, int radius, int minHeight, int maxHeight)
-    {
-        this.state = state;
-        this.tries = tries;
-        this.radius = radius;
-        this.minHeight = minHeight;
-        this.maxHeight = maxHeight;
-    }
-
-    public BlockState getState()
-    {
-        return state;
-    }
-
-    public int getTries()
-    {
-        return tries;
-    }
-
-    public int getRadius()
-    {
-        return radius;
-    }
-
-    public int getMinHeight()
-    {
-        return minHeight;
-    }
-
-    public int getMaxHeight()
-    {
-        return maxHeight;
-    }
 }

@@ -28,6 +28,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class ForestFeature extends Feature<ForestConfig>
 {
     public ForestFeature(Codec<ForestConfig> codec)
@@ -36,9 +38,14 @@ public class ForestFeature extends Feature<ForestConfig>
     }
 
     @Override
-    public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
+    public boolean place(FeaturePlaceContext<ForestConfig> context)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final WorldGenLevel worldIn = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final ForestConfig config = context.config();
+
+        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
@@ -54,7 +61,7 @@ public class ForestFeature extends Feature<ForestConfig>
                 int trees = 1 + rand.nextInt(3);
                 for (int i = 0; i < trees; i++)
                 {
-                    placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, false);
+                    placedTrees |= placeTree(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos, false);
                 }
                 placeGroundcover(worldIn, rand, pos, config, data, mutablePos, 10);
             }
@@ -84,12 +91,12 @@ public class ForestFeature extends Feature<ForestConfig>
         treeCount = (int) (treeCount * (0.6f + 0.9f * density));
         for (int i = 0; i < treeCount; i++)
         {
-            placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
+            placedTrees |= placeTree(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
         }
         int bushCount = (int) (treeCount * 2 * density);
         for (int j = 0; j < bushCount; j++)
         {
-            placedBushes |= placeBush(worldIn, generator, rand, pos, config, data, mutablePos);
+            placedBushes |= placeBush(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos);
         }
         if (placedTrees)
         {
@@ -134,14 +141,14 @@ public class ForestFeature extends Feature<ForestConfig>
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            setBlock(worldIn, mutablePos, entry.getLog());
+            setBlock(worldIn, mutablePos, entry.log());
             for (Direction facing : Direction.values())
             {
                 if (facing != Direction.DOWN)
                 {
                     BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
                     if (worldIn.isEmptyBlock(offsetPos) || worldIn.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT))
-                        setBlock(worldIn, offsetPos, entry.getLeaves());
+                        setBlock(worldIn, offsetPos, entry.leaves());
                 }
             }
             return true;
@@ -160,8 +167,8 @@ public class ForestFeature extends Feature<ForestConfig>
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
         {
-            final BlockState leafState = entry.getFallenLeaves();
-            final BlockState twigState = entry.getTwig();
+            final BlockState leafState = entry.fallenLeaves();
+            final BlockState twigState = entry.twig();
             for (int j = 0; j < tries; ++j)
             {
                 BlockState placementState = random.nextInt(2) == 1 ? leafState : twigState;
@@ -184,7 +191,7 @@ public class ForestFeature extends Feature<ForestConfig>
         List<ForestConfig.Entry> entries = new ArrayList<>(4);
         float rainfall = chunkData.getRainfall(pos);
         float averageTemperature = chunkData.getAverageTemp(pos);
-        for (ForestConfig.Entry entry : config.getEntries())
+        for (ForestConfig.Entry entry : config.entries())
         {
             // silly way to halfway guarantee that stuff is in general order of dominance
             float lastRain = entry.getAverageRain();

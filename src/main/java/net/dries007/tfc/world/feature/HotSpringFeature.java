@@ -28,6 +28,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs2D;
 
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
 public class HotSpringFeature extends Feature<HotSpringConfig>
 {
     public HotSpringFeature(Codec<HotSpringConfig> codec)
@@ -36,25 +38,29 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, HotSpringConfig config)
+    public boolean place(FeaturePlaceContext<HotSpringConfig> context)
     {
-        final Metaballs2D noise = new Metaballs2D(config.radius, rand);
+        final WorldGenLevel world = context.level();
+        final BlockPos pos = context.origin();
+        final Random rand = context.random();
+        final HotSpringConfig config = context.config();
+
+        final Metaballs2D noise = new Metaballs2D(config.radius(), rand);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final ChunkDataProvider provider = ChunkDataProvider.get(generator);
+        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
         final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
         final BlockState rockState = rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
         final BlockState gravelState = rock.getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
-        final Fluid fluid = config.fluidState.getFluidState().getType();
+        final Fluid fluid = config.fluidState().getFluidState().getType();
 
-        final boolean useFilledEmptyCheck = config.fluidState.isAir();
+        final boolean useFilledEmptyCheck = config.fluidState().isAir();
         final Set<BlockPos> filledEmptyPositions = new HashSet<>(); // Only used if the fill state is air - prevents positions from being 'filled' with air and affecting the shape of the spring
         final List<BlockPos> fissureStartPositions = new ArrayList<>();
 
-        for (int x = -config.radius; x <= config.radius; x++)
+        for (int x = -config.radius(); x <= config.radius(); x++)
         {
-            for (int z = -config.radius; z <= config.radius; z++)
+            for (int z = -config.radius(); z <= config.radius(); z++)
             {
                 final int localX = pos.getX() + x;
                 final int localZ = pos.getZ() + z;
@@ -93,7 +99,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
                 // surface depth is deeper near the center of the hot spring
                 // Range: [0.3, 1.0]
-                final float centerFactor = 1 - 0.7f * Mth.clamp(2 * (x * x + z * z) / (float) (config.radius * config.radius), 0, 1);
+                final float centerFactor = 1 - 0.7f * Mth.clamp(2 * (x * x + z * z) / (float) (config.radius() * config.radius()), 0, 1);
                 final int surfaceDepth = (int) ((8 + rand.nextInt(3)) * centerFactor);
                 if (edge)
                 {
@@ -110,7 +116,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     final BlockPos posAt = mutablePos.immutable();
                     fissureStartPositions.add(posAt);
 
-                    setBlock(world, mutablePos, config.fluidState);
+                    setBlock(world, mutablePos, config.fluidState());
                     if (fluid != Fluids.EMPTY)
                     {
                         world.getLiquidTicks().scheduleTick(mutablePos, fluid, 0);
@@ -144,13 +150,12 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final List<BlockPos> selected = Helpers.uniqueRandomSample(fissureStartPositions, fissureStarts, rand);
         for (BlockPos start : selected)
         {
-            FissureFeature.placeFissure(world, start, pos, mutablePos, rand, config.fluidState, rockState, 10, 22, 6, 16, 12, config.decoration.orElse(null));
+            FissureFeature.placeFissure(world, start, pos, mutablePos, rand, config.fluidState(), rockState, 10, 22, 6, 16, 12, config.decoration().orElse(null));
         }
 
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     private boolean setFissureBaseBlock(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         final BlockState stateAt = world.getBlockState(pos);

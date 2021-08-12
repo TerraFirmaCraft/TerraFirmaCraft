@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
@@ -16,39 +17,27 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class SoilDiscConfig implements FeatureConfiguration
+public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int maxRadius, int height) implements FeatureConfiguration
 {
-    @SuppressWarnings("deprecation")
-    public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.<SoilDiscConfig>create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
-            Registry.BLOCK, "replace",
+            Codecs.BLOCK, "replace",
             Codecs.LENIENT_BLOCKSTATE, "with"
         )).fieldOf("states").forGetter(c -> c.states),
         Codecs.POSITIVE_INT.fieldOf("min_radius").forGetter(c -> c.minRadius),
         Codecs.POSITIVE_INT.fieldOf("max_radius").forGetter(c -> c.maxRadius),
         Codec.intRange(0, 256).fieldOf("height").forGetter(c -> c.height)
-    ).apply(instance, SoilDiscConfig::new));
-
-    private final Map<Block, BlockState> states;
-    private final int minRadius;
-    private final int maxRadius;
-    private final int height;
-
-    public SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int maxRadius, int height)
-    {
-        this.states = states;
-        this.minRadius = minRadius;
-        this.maxRadius = maxRadius;
-        this.height = height;
-
-        if (maxRadius < minRadius)
+    ).apply(instance, SoilDiscConfig::new)).comapFlatMap(c -> {
+        if (c.maxRadius < c.minRadius)
         {
-            throw new IllegalArgumentException("Maximum radius (provided = " + maxRadius + ") must be >= min radius (provided = " + minRadius + ")");
+            return DataResult.error("Maximum radius (provided = " + c.maxRadius + ") must be >= min radius (provided = " + c.minRadius + ")");
         }
-    }
+        return DataResult.success(c);
+    }, Function.identity());
 
     public int getRadius(Random random)
     {

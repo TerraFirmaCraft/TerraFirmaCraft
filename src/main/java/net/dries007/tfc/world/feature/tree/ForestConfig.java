@@ -18,25 +18,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class ForestConfig implements FeatureConfiguration
+public record ForestConfig(List<Entry> entries) implements FeatureConfiguration
 {
     public static final Codec<ForestConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Entry.CODEC.listOf().fieldOf("entries").forGetter(c -> c.entries)
     ).apply(instance, ForestConfig::new));
 
-    private final List<Entry> entries;
-
-    public ForestConfig(List<Entry> entries)
-    {
-        this.entries = entries;
-    }
-
-    public List<Entry> getEntries()
-    {
-        return entries;
-    }
-
-    public static class Entry
+    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, BlockState twig, BlockState fallenLeaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
@@ -46,35 +34,10 @@ public class ForestConfig implements FeatureConfiguration
             Codecs.LENIENT_BLOCKSTATE.fieldOf("log").forGetter(c -> c.log),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("leaves").forGetter(c -> c.leaves),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("twig").forGetter(c -> c.twig),
-            Codecs.LENIENT_BLOCKSTATE.fieldOf("fallen_leaves").forGetter(c -> c.fallen_leaves),
+            Codecs.LENIENT_BLOCKSTATE.fieldOf("fallen_leaves").forGetter(c -> c.fallenLeaves),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));
-
-        private final float minRainfall;
-        private final float maxRainfall;
-        private final float minAverageTemp;
-        private final float maxAverageTemp;
-        private final BlockState log;
-        private final BlockState leaves;
-        private final BlockState twig;
-        private final BlockState fallen_leaves;
-        private final Supplier<ConfiguredFeature<?, ?>> treeFeature;
-        private final Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature;
-
-        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, BlockState twig, BlockState fallen_leaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
-        {
-            this.minRainfall = minRainfall;
-            this.maxRainfall = maxRainfall;
-            this.minAverageTemp = minAverageTemp;
-            this.maxAverageTemp = maxAverageTemp;
-            this.log = log;
-            this.leaves = leaves;
-            this.twig = twig;
-            this.fallen_leaves = fallen_leaves;
-            this.treeFeature = treeFeature;
-            this.oldGrowthFeature = oldGrowthFeature;
-        }
 
         public boolean isValid(float temperature, float rainfall)
         {
@@ -104,26 +67,6 @@ public class ForestConfig implements FeatureConfiguration
         public ConfiguredFeature<?, ?> getOldGrowthFeature()
         {
             return oldGrowthFeature.orElse(treeFeature).get();
-        }
-
-        public BlockState getLog()
-        {
-            return log;
-        }
-
-        public BlockState getLeaves()
-        {
-            return leaves;
-        }
-
-        public BlockState getTwig()
-        {
-            return twig;
-        }
-
-        public BlockState getFallenLeaves()
-        {
-            return fallen_leaves;
         }
     }
 }

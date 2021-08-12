@@ -20,7 +20,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.Codecs;
 
-public class BoulderConfig implements FeatureConfiguration
+public record BoulderConfig(Map<Rock, List<BlockState>> states) implements FeatureConfiguration
 {
     public static final Codec<BoulderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
@@ -31,13 +31,6 @@ public class BoulderConfig implements FeatureConfiguration
             Codecs.LENIENT_BLOCKSTATE.listOf(), "blocks"
         )).fieldOf("states").forGetter(c -> c.states)
     ).apply(instance, BoulderConfig::new));
-
-    private final Map<Rock, List<BlockState>> states;
-
-    public BoulderConfig(Map<Rock, List<BlockState>> states)
-    {
-        this.states = states;
-    }
 
     public List<BlockState> getStates(Rock rock)
     {

@@ -15,22 +15,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public class RandomTreeConfig implements FeatureConfiguration
+public record RandomTreeConfig(List<ResourceLocation> structureNames, Optional<TrunkConfig> trunk, int radius) implements FeatureConfiguration
 {
     public static final Codec<RandomTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter(c -> c.structureNames),
         TrunkConfig.CODEC.optionalFieldOf("trunk").forGetter(c -> c.trunk),
         Codec.INT.fieldOf("radius").forGetter(c -> c.radius)
     ).apply(instance, RandomTreeConfig::new));
-
-    public final List<ResourceLocation> structureNames;
-    public final Optional<TrunkConfig> trunk;
-    public final int radius;
-
-    public RandomTreeConfig(List<ResourceLocation> structureNames, Optional<TrunkConfig> trunk, int radius)
-    {
-        this.structureNames = structureNames;
-        this.trunk = trunk;
-        this.radius = radius;
-    }
 }

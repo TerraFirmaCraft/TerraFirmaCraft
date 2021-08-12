@@ -15,7 +15,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class HotSpringConfig implements FeatureConfiguration
+public record HotSpringConfig(Optional<BlockState> wallState, BlockState fluidState, int radius, Optional<FissureConfig.Decoration> decoration) implements FeatureConfiguration
 {
     public static final Codec<HotSpringConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
@@ -24,16 +24,4 @@ public class HotSpringConfig implements FeatureConfiguration
         FissureConfig.Decoration.CODEC.optionalFieldOf("decoration").forGetter(c -> c.decoration)
     ).apply(instance, HotSpringConfig::new));
 
-    public final Optional<BlockState> wallState;
-    public final BlockState fluidState;
-    public final int radius;
-    public final Optional<FissureConfig.Decoration> decoration;
-
-    public HotSpringConfig(Optional<BlockState> wallState, BlockState fluidState, int radius, Optional<FissureConfig.Decoration> decoration)
-    {
-        this.wallState = wallState;
-        this.fluidState = fluidState;
-        this.radius = radius;
-        this.decoration = decoration;
-    }
 }
