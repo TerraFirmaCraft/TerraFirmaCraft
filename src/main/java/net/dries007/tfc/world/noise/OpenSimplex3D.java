@@ -41,7 +41,7 @@ public class OpenSimplex3D implements Noise3D
     {
         fnl.SetFractalOctaves(octaves);
         fnl.SetFractalType(FastNoiseLite.FractalType.FBm);
-        return this;
+        return spread(1f / (1 << (octaves - 1))); // Due to legacy reasons, most callers expect this scale factor
     }
 
     @Override

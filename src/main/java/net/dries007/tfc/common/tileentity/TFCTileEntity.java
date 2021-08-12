@@ -88,8 +88,10 @@ public abstract class TFCTileEntity extends BlockEntity
      */
     protected void markDirtyFast()
     {
-        assert level != null;
-        level.blockEntityChanged(worldPosition);
+        if (level != null)
+        {
+            level.blockEntityChanged(worldPosition);
+        }
     }
 
     protected void sendVanillaUpdatePacket()
