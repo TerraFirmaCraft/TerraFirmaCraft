@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -65,7 +66,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
                     int saplings = Mth.clamp(rand.nextInt(5) + 1, 2, 4);
                     BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
                     setBlock(world, mutablePos, branch);
-                    Helpers.getTileEntityOrThrow(world, mutablePos, TickCounterTileEntity.class).reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300);
+                    world.getBlockEntity(mutablePos, TFCTileEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
                     world.getBlockTicks().scheduleTick(mutablePos, branch.getBlock(), 1);
                     return true;
                 }

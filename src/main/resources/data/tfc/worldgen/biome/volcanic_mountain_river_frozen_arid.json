@@ -14,11 +14,7 @@
     "water_fog_color": 329011
   },
   "carvers": {
-    "air": [
-      "tfc:worley_cave",
-      "tfc:cave",
-      "tfc:canyon"
-    ],
+    "air": [],
     "liquid": []
   },
   "surface_builder": "tfc:volcanic_mountains",

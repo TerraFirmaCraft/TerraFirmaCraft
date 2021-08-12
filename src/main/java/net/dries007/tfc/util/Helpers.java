@@ -250,6 +250,7 @@ public final class Helpers
 
     @Nullable
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static <T extends BlockEntity> T getTileEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
     {
         BlockEntity te = world.getBlockEntity(pos);
@@ -258,11 +259,6 @@ public final class Helpers
             return (T) te;
         }
         return null;
-    }
-
-    public static <T extends BlockEntity> T getTileEntityOrThrow(LevelReader world, BlockPos pos, Class<T> tileEntityClass)
-    {
-        return Objects.requireNonNull(getTileEntity(world, pos, tileEntityClass));
     }
 
     /**

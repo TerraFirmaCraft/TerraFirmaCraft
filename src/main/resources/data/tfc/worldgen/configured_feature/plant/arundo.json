@@ -59,8 +59,10 @@
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface",
-      "config": {}
+      "type": "minecraft:heightmap",
+      "config": {
+        "heightmap": "WORLD_SURFACE_WG"
+      }
     }
   }
 }

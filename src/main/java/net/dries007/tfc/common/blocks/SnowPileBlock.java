@@ -22,6 +22,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.tileentity.SnowPileTileEntity;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -40,7 +41,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public static void convertToPile(LevelAccessor world, BlockPos pos, BlockState state)
     {
         world.setBlock(pos, TFCBlocks.SNOW_PILE.get().defaultBlockState(), 3);
-        Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class).setInternalState(state);
+        world.getBlockEntity(pos, TFCTileEntities.SNOW_PILE.get()).ifPresent(entity -> entity.setInternalState(state));
     }
 
     private final ForgeBlockProperties properties;
@@ -67,9 +68,10 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
-        SnowPileTileEntity te = Helpers.getTileEntityOrThrow(world, pos, SnowPileTileEntity.class);
-        BlockState newState = te.getDestroyedState(state);
-        return world.setBlock(pos, newState, world.isClientSide ? 11 : 3);
+        return world.getBlockEntity(pos, TFCTileEntities.SNOW_PILE.get()).map(entity -> {
+            BlockState newState = entity.getDestroyedState(state);
+            return world.setBlock(pos, newState, world.isClientSide ? 11 : 3);
+        }).orElse(false);
     }
 
     @Override

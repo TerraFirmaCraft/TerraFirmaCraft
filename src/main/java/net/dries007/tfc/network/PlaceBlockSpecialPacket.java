@@ -22,6 +22,7 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.util.Helpers;
 
 public class PlaceBlockSpecialPacket
@@ -57,8 +58,7 @@ public class PlaceBlockSpecialPacket
                         if (y == 0 || y == 1)
                         {
                             world.setBlockAndUpdate(pos.above(), PlacedItemBlock.updateStateValues(world, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState()));
-                            PlacedItemTileEntity te = Helpers.getTileEntityOrThrow(world, pos.above(), PlacedItemTileEntity.class);
-                            te.insertItem(player, stack, blockResult);
+                            world.getBlockEntity(pos.above(), TFCTileEntities.PLACED_ITEM.get()).ifPresent(entity -> entity.insertItem(player, stack, blockResult));
                         }
                     }
                 }

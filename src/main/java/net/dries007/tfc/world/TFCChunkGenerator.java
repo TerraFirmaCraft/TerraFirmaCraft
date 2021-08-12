@@ -672,7 +672,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final int localZ = z & 15;
 
         int maxActualHeight = Math.max((int) actualHeight, 1 + SEA_LEVEL);
-        int maxSection = maxActualHeight >> 4;
+        int maxSection = Math.max(maxActualHeight >> 4, 15); // todo: sections / level height?
 
         // Top down iteration
         // 1. We need to mark exposed air below the first solid ground as carving mask applicable.

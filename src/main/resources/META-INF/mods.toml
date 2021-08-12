@@ -1,38 +1,38 @@
 # Loader metadata
 modLoader = "javafml" # mandatory
-loaderVersion = "[35,)" # mandatory
+loaderVersion = "[37,)" # mandatory
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
-modId = "tfc" # mandatory
-version = "${file.jarVersion}" #mandatory
-displayName = "TerraFirmaCraft" #mandatory
-# A URL to query for updates for this mod. See the JSON update specification <here>
-#updateJSONURL="http://myurl.me/" #optional
-# A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="http://example.com/" #optional
-# A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
-# A text field displayed in the mod UI
-credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
-# A text field displayed in the mod UI
-authors = "AlcatrazEscapee" #optional
-# The description text for the mod (multi line!) (#mandatory)
-description = '''TerraFirmaCraft - The Next Generation'''
+    modId = "tfc" # mandatory
+    version = "${file.jarVersion}" #mandatory
+    displayName = "TerraFirmaCraft" #mandatory
+    # A URL to query for updates for this mod. See the JSON update specification <here>
+    #updateJSONURL="http://myurl.me/" #optional
+    # A URL for the "homepage" for this mod, displayed in the mod UI
+    #displayURL="http://example.com/" #optional
+    # A file name (in the root of the mod JAR) containing a logo for display
+    #logoFile="examplemod.png" #optional
+    # A text field displayed in the mod UI
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
+    # A text field displayed in the mod UI
+    authors = "AlcatrazEscapee" #optional
+    # The description text for the mod (multi line!) (#mandatory)
+    description = '''TerraFirmaCraft - The Next Generation'''
 
 # dependencies
 [[dependencies.tfc]]
-modId = "forge"
-mandatory = true
-versionRange = "[35.0.3,)"
-ordering = "AFTER"
-side = "BOTH"
+    modId = "forge"
+    mandatory = true
+    versionRange = "[37.0.32,)"
+    ordering = "AFTER"
+    side = "BOTH"
 
 [[dependencies.tfc]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.16.4,)"
-ordering = "AFTER"
-side = "BOTH"
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.17.1,)"
+    ordering = "AFTER"
+    side = "BOTH"

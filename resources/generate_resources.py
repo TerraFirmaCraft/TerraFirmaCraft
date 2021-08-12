@@ -18,7 +18,7 @@ from constants import *
 def main():
     parser = argparse.ArgumentParser(description='Generate resources for TFC')
     parser.add_argument('--clean', action='store_true', dest='clean', help='Clean all auto generated resources')
-    parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Also generate resources into the /out/production/resources directory, creates an asset hotswap')
+    parser.add_argument('--hotswap', type=str, default=None, help='A secondary target directory to write resources to, creates a resource hotswap.')
     args = parser.parse_args()
 
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
@@ -38,9 +38,9 @@ def main():
     generate_all(rm)
     print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))
 
-    if args.hotswap:
+    if args.hotswap is not None:
         # Generate into the /out/production/resources folder, which is used when build + run with Intellij
-        rm = ResourceManager('tfc', resource_dir='../out/production/resources')
+        rm = ResourceManager('tfc', resource_dir=args.hotswap)
         generate_all(rm)
         print('Hotswap Finished')
 

@@ -24,13 +24,14 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class BananaPlantBlock extends SeasonalPlantBlock
+public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockExtension
 {
     public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
@@ -44,14 +45,12 @@ public class BananaPlantBlock extends SeasonalPlantBlock
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(STAGE))
-        {
-            case 0:
-                return TRUNK_0;
-            case 1:
-                return TRUNK_1;
-        }
-        return PLANT;
+        return switch (state.getValue(STAGE))
+            {
+                case 0 -> TRUNK_0;
+                case 1 -> TRUNK_1;
+                default -> PLANT;
+            };
     }
 
     @Override

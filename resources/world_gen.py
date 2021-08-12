@@ -61,21 +61,21 @@ def generate(rm: ResourceManager):
         rm.feature('iceberg_%s' % block, wg.configure_decorated(wg.configure('tfc:iceberg', {'state': wg.block_state('minecraft:%s_ice' % block)}), decorate_chance(14), 'minecraft:square', decorate_climate(max_temp=-23)))
         rm.feature('iceberg_%s_rare' % block, wg.configure_decorated(wg.configure('tfc:iceberg', {'state': wg.block_state('minecraft:%s_ice' % block)}), decorate_chance(30), 'minecraft:square', decorate_climate(max_temp=-18)))
 
-    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), decorate_heightmap('world_surface_wg'), 'minecraft:square'))
     rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
         'state': 'minecraft:water',
         'replace_fluids': [],
-    }), decorate_chance(5), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    }), decorate_chance(5), 'minecraft:square', decorate_heightmap('world_surface_wg')))
     rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
         'state': 'minecraft:water',
         'replace_fluids': [],
-    }), decorate_count(3), 'minecraft:square', ('minecraft:range', {'bottom_offset': 16, 'top_offset': 16, 'maximum': 100})))
+    }), decorate_count(3), 'minecraft:square', decorate_range(16, 80)))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
             'state': wg.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
-        }), decorate_count(spring_cfg[1]), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 256})))
+        }), decorate_count(spring_cfg[1]), 'minecraft:square', decorate_range_biased(8, 180)))
 
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
@@ -99,7 +99,7 @@ def generate(rm: ResourceManager):
         'height': 7,
         'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
-    }), decorate_chance(10), 'minecraft:square', 'minecraft:heightmap_world_surface', decorate_climate(min_rain=350, min_temp=12)))
+    }), decorate_chance(10), 'minecraft:square', decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12)))
     rm.feature('loam_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
@@ -108,7 +108,7 @@ def generate(rm: ResourceManager):
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:grass/loam'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:clay/%s' % soil, 'with': 'tfc:clay/loam'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:clay_grass/%s' % soil, 'with': 'tfc:clay_grass/loam'} for soil in SOIL_BLOCK_VARIANTS]
-    }), decorate_chance(120), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 400})))
+    }), decorate_chance(120), 'minecraft:square', decorate_heightmap('world_surface_wg'), ('tfc:climate', {'min_rainfall': 400})))
 
     for step, prefix in (('air', ''), ('liquid', 'underwater_')):
         rm.feature('%scave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': step, 'probability': 0.09})))
@@ -120,14 +120,14 @@ def generate(rm: ResourceManager):
         'tries': 20,
         'min_height': 2,
         'max_height': 5
-    }), decorate_count(4), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 100})))
+    }), decorate_count(4), 'minecraft:square', decorate_range_biased(8, 100)))
     rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
         'radius': 12,
         'tries': 70,
         'min_height': 3,
         'max_height': 9
-    }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
+    }), decorate_chance(20), 'minecraft:square', decorate_range_biased(8, 60)))
 
     rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:icicle',
@@ -135,7 +135,7 @@ def generate(rm: ResourceManager):
         'tries': 50,
         'min_height': 2,
         'max_height': 5
-    }), decorate_count(3), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128}), decorate_climate(max_temp=-4)))
+    }), decorate_count(3), 'minecraft:square', decorate_range_biased(8, 128), decorate_climate(max_temp=-4)))
 
     for boulder_cfg in (('raw_boulder', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
@@ -143,7 +143,7 @@ def generate(rm: ResourceManager):
                 'rock': 'tfc:' + rock,
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
-        }), decorate_chance(12), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:flat_enough'))
+        }), decorate_chance(12), 'minecraft:square', decorate_heightmap('world_surface_wg'), 'tfc:flat_enough'))
 
     rm.feature('volcano_rivulet', wg.configure_decorated(wg.configure('tfc:rivulet', {
         'state': 'minecraft:magma_block'
@@ -153,7 +153,7 @@ def generate(rm: ResourceManager):
         'overfill': True,
         'replace_fluids': ['minecraft:water'],
         'state': 'minecraft:lava'
-    }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
+    }), ('tfc:volcano', {'center': True}), decorate_heightmap('world_surface_wg')))
 
     rm.feature('random_volcano_fissure', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {
         'features': count_weighted_list(
@@ -179,7 +179,7 @@ def generate(rm: ResourceManager):
                 'count': 6,
                 'rarity': 3
             }
-        }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
+        }), ('tfc:volcano', {'center': True}), decorate_heightmap('world_surface_wg')))
 
     # six different variants: both filled + not, and both sapphire, emerald, and no decoration
     for ore in ('sapphire', 'emerald', ''):
@@ -469,16 +469,16 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'water_lily'), wg.configure_decorated(plant_feature('tfc:plant/water_lily[age=1,stage=1]', 1, 7, 100), decorate_chance(5), 'minecraft:square', decorate_climate(-5, 38, 0, 500), ('tfc:near_water', {'radius': 9})))
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
-    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), 'minecraft:heightmap_world_surface', 'minecraft:square', decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
+    rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), 'minecraft:square', decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
     rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(0.003, 0, 190), decorate_range(64, 130), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
     rm.feature(('plant', 'liana'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(0.003, 0, 110), decorate_range(64, 110), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
     rm.feature(('plant', 'ivy'), wg.configure_decorated(vine_feature('tfc:plant/ivy', 15, 7, 96, 150), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_chance(5)))
     rm.feature(('plant', 'jungle_vines'), wg.configure_decorated(vine_feature('tfc:plant/jungle_vines', 33, 7, 64, 160), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_chance(5)))
-    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), 'minecraft:heightmap_world_surface', decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
-    rm.feature(('plant', 'arundo'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), 'minecraft:heightmap_world_surface', decorate_chance(3), 'minecraft:square', decorate_climate(5, 22, 100, 500), ('tfc:near_water', {'radius': 6})))
-    rm.feature(('plant', 'winged_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True)))
-    rm.feature(('plant', 'leafy_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True)))
-    rm.feature(('plant', 'giant_kelp'), wg.configure_decorated(random_patch('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', {'type': 'tfc:kelp_tree'}, 2, 10, 20, target='water'), 'minecraft:top_solid_heightmap', 'minecraft:square', decorate_climate(-18, 18, 0, 500, fuzzy=True)))
+    rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
+    rm.feature(('plant', 'arundo'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), 'minecraft:square', decorate_climate(5, 22, 100, 500), ('tfc:near_water', {'radius': 6})))
+    rm.feature(('plant', 'winged_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), 'minecraft:square', decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True)))
+    rm.feature(('plant', 'leafy_kelp'), wg.configure_decorated(tall_feature('tfc:kelp', 'tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), 'minecraft:square', decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True)))
+    rm.feature(('plant', 'giant_kelp'), wg.configure_decorated(random_patch('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', {'type': 'tfc:kelp_tree'}, 2, 10, 20, target='water'), decorate_heightmap('ocean_floor_wg'), 'minecraft:square', decorate_climate(-18, 18, 0, 500, fuzzy=True)))
 
     # Grass-Type / Basic Plants
     rm.feature(('plant', 'fountain_grass'), wg.configure_decorated(plant_feature('tfc:plant/fountain_grass[age=1,stage=1]', 1, 20, 128), decorate_count(2), 'minecraft:square', decorate_climate(-12, 40, 75, 150)))
@@ -516,13 +516,13 @@ def generate(rm: ResourceManager):
             'tfc:clay_disc',
             *clay_plant_features
         ]
-    }), decorate_chance(20), 'minecraft:square', 'minecraft:heightmap_world_surface', decorate_climate(min_rain=175)))
+    }), decorate_chance(20), 'minecraft:square', decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175)))
     rm.feature('water_clay_disc_with_indicator', wg.configure_decorated(wg.configure('tfc:multiple', {
         'features': [
             'tfc:water_clay_disc',
             *clay_plant_features
         ]
-    }), decorate_chance(10), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:near_water'))
+    }), decorate_chance(10), 'minecraft:square', decorate_heightmap('world_surface_wg'), 'tfc:near_water'))
 
     for berry, info in BERRIES.items():
         config = {
@@ -534,7 +534,7 @@ def generate(rm: ResourceManager):
             'max_forest': info.max_forest,
             'fuzzy': False
         }
-        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry}), decorate_heightmap('world_surface_wg'), 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
     for fruit, info in FRUITS.items():
         config = {
             'min_temperature': info.min_temp,
@@ -548,7 +548,7 @@ def generate(rm: ResourceManager):
         if fruit == 'banana':
             feature = 'tfc:bananas'
             state = 'tfc:plant/banana_plant'
-        rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
+        rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), decorate_heightmap('world_surface_wg'), 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
 
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
 
@@ -556,7 +556,7 @@ def generate(rm: ResourceManager):
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3
-    }), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    }), 'minecraft:square', decorate_heightmap('world_surface_wg')))
 
     rm.feature('coral_reef', wg.configure_decorated(wg.configure('minecraft:simple_random_selector', {'features': [
         wg.configure('tfc:coral_tree'),
@@ -566,7 +566,7 @@ def generate(rm: ResourceManager):
         "noise_to_count_ratio": 10,
         "noise_factor": 200,
         "noise_offset": 1
-    }), 'minecraft:square', 'minecraft:top_solid_heightmap'))
+    }), 'minecraft:square', decorate_heightmap('ocean_floor_wg')))
 
     # Groundcover
     # Whitelist / Blacklist elements. Lenient block states are used as only the block is referenced.
@@ -591,19 +591,19 @@ def generate(rm: ResourceManager):
     rm.feature('dead_grass', wg.configure_decorated(simple_patch_feature('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100, grass), decorate_chance(70), 'minecraft:square', decorate_climate(10, 20, 0, 150, True, fuzzy=True)))
 
     # Loose Rocks - Both Surface + Underground
-    rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', 'minecraft:top_solid_heightmap'))
+    rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', decorate_heightmap('ocean_floor_wg')))
 
     # Underground decoration
     rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, 12, 90)))
     rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
 
     # Carvers
-    rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
-    rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
-    rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
+    #rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
+    #rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
+    #rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
 
-    rm.carver('underwater_cave', wg.configure('tfc:underwater_cave', {'probability': 0.03}))
-    rm.carver('underwater_canyon', wg.configure('tfc:underwater_canyon', {'probability': 0.02}))
+    #rm.carver('underwater_cave', wg.configure('tfc:underwater_cave', {'probability': 0.03}))
+    #rm.carver('underwater_canyon', wg.configure('tfc:underwater_canyon', {'probability': 0.02}))
 
     # Biomes
     for temp in TEMPERATURES:
@@ -830,15 +830,10 @@ def vine_feature(state: str, tries: int, radius: int, min_height: int, max_heigh
     })
 
 
-def decorate_range(bottom: int, top: int) -> Tuple[str, Dict[str, Any]]:
-    return ('minecraft:range', {
-        'bottom_offset': bottom,
-        'top_offset': 0,
-        'maximum': top
-    })
+Decorator = Tuple[str, Dict[str, Any]]
 
 
-def decorate_carving_mask(probability: float, min_y: Optional[int] = None, max_y: Optional[int] = None) -> Tuple[str, Dict[str, Any]]:
+def decorate_carving_mask(probability: float, min_y: Optional[int] = None, max_y: Optional[int] = None) -> Decorator:
     return ('tfc:bounded_carving_mask', utils.del_none({
         'step': 'air',
         'probability': probability,
@@ -847,7 +842,7 @@ def decorate_carving_mask(probability: float, min_y: Optional[int] = None, max_y
     }))
 
 
-def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Tuple[str, Dict[str, Any]]:
+def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Decorator:
     return ('tfc:climate', utils.del_none({
         'min_temperature': min_temp,
         'max_temperature': max_temp,
@@ -858,12 +853,32 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
     }))
 
 
-def decorate_chance(chance: int) -> Tuple[str, Dict[str, Any]]:
+def decorate_chance(chance: int) -> Decorator:
     return 'minecraft:chance', {'chance': chance}
 
 
-def decorate_count(count: int) -> Tuple[str, Dict[str, Any]]:
+def decorate_count(count: int) -> Decorator:
     return 'minecraft:count', {'count': count}
+
+
+def decorate_heightmap(heightmap: str) -> Decorator:
+    heightmap = heightmap.upper()
+    assert heightmap in {'MOTION_BLOCKING', 'MOTION_BLOCKING_NO_LEAVES', 'OCEAN_FLOOR', 'OCEAN_FLOOR_WG', 'WORLD_SURFACE', 'WORLD_SURFACE_WG'}
+    return 'minecraft:heightmap', {'heightmap': heightmap}
+
+
+def decorate_range_biased(min_y: int, max_y: int) -> Decorator:
+    return decorate_range(min_y, max_y, height_type='biased_to_bottom')
+
+
+def decorate_range(min_y: int, max_y: int, height_type: str = 'uniform') -> Tuple[str, Dict[str, Any]]:
+    return 'minecraft:range', {
+        'height': {
+            'type': height_type,
+            'min_inclusive': {'above_bottom': min_y},
+            'max_inclusive': {'above_bottom': max_y}
+        }
+    }
 
 
 def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
@@ -968,10 +983,10 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     features[Decoration.TOP_LAYER_MODIFICATION].append('tfc:ice_and_snow')  # This must go last
 
     # Carvers
-    air_carvers = ['tfc:worley_cave', 'tfc:cave', 'tfc:canyon']
+    air_carvers = []
     water_carvers = []
     if ocean_carvers:
-        water_carvers += ['tfc:underwater_cave', 'tfc:underwater_canyon']
+        water_carvers += []
 
     # Generate based on properties
     rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))

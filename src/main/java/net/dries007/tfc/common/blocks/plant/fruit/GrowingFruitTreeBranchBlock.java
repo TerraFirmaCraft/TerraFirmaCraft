@@ -23,6 +23,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
@@ -34,7 +35,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
  *
  * @author EERussianguy
  */
-public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock
+public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements EntityBlockExtension
 {
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
