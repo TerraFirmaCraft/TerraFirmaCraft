@@ -24,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -154,18 +155,18 @@ public class ClientForgeEventHandler
     {
         if (event.getWorld() instanceof final ClientLevel world)
         {
-            // todo: mixin, accessors
-/*
             // Add our custom tints to the color resolver caches
-            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientWorldAccessor) world).getTintCaches();
+            // todo: mixin accessor
+            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = world.tintCaches;
 
-            colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new ColorCache());
-            colorCaches.putIfAbsent(TFCColors.SALT_WATER, new ColorCache());
+            colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache());
+            colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache());
 
             // Update cloud height
             final float cloudHeight = TFCConfig.CLIENT.assumeTFCWorld.get() ? 210 : 160;
-            ((DimensionRenderInfoAccessor) DimensionRenderInfoAccessor.accessor$Effects().get(DimensionType.OVERWORLD_EFFECTS)).accessor$setCloudLevel(cloudHeight);
- */
+            // todo: if we switch the world height to default I don't think this accessor/mixin is needed anymore
+            //((DimensionRenderInfoAccessor) DimensionRenderInfoAccessor.accessor$Effects().get(DimensionType.OVERWORLD_EFFECTS)).accessor$setCloudLevel(cloudHeight);
+
         }
     }
 

@@ -16,6 +16,7 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -150,10 +151,9 @@ public final class ClientEventHandler
         BlockEntityRenderers.register(TFCTileEntities.QUERN.get(), context -> new QuernTileEntityRenderer());
         BlockEntityRenderers.register(TFCTileEntities.SCRAPING.get(), context -> new ScrapingTileEntityRenderer());
 
-
         // Misc
-        // todo: mixin
-        //BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
+        // todo: mixin accessor
+        // BiomeColors.WATER_COLOR_RESOLVER = TFCColors.FRESH_WATER;
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)

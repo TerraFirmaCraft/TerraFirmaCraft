@@ -58,7 +58,8 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         {
             final ItemStack stack = new ItemStack(item);
             final IItemSize size = get(stack);
-            // todo: mixin
+            // todo: mixin accessor
+            item.maxStackSize = size.getWeight(stack).stackSize;
             //((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
         }
     }

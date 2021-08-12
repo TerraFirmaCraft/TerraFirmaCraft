@@ -132,8 +132,8 @@ public class FluidHelpers
 
             // Look for adjacent fluids that are the same, for purposes of flow into this fluid
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
-            // todo: mixin
-            if (offsetFluid.getType() instanceof FlowingFluid /* && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState) */)
+            // todo: mixin accessor
+            if (offsetFluid.getType() instanceof FlowingFluid && self.canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
             {
                 if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(worldIn, offsetPos, offsetState, canConvertToSource))
                 {
@@ -190,7 +190,7 @@ public class FluidHelpers
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
         // todo: mixin
-        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid /* && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState) */)
+        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && self.canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
         {
             return ((FlowingFluid) aboveFluid.getType()).getFlowing(8, true);
         }
@@ -206,39 +206,5 @@ public class FluidHelpers
             // Cause the maximum adjacent fluid to flow into this block
             return maxAdjacentFluid.getFlowing(selfFluidAmount, false);
         }
-    }
-
-    /**
-     * todo: where?
-     * Copy pasta from {@link net.minecraft.block.FlowingFluidBlock#s(World, BlockPos, BlockState)}
-     * Used for lava-like or lava-logged blocks that need to share the same behavior.
-     * This uses vanilla mechanics to determine the block as TFC will modify them via event later
-     *
-     * @return true if the block was modified
-     */
-    public static boolean reactLavaWithNeighbors(Level worldIn, BlockPos pos, FluidState fluidStateAt)
-    {
-        boolean soulSoilBelow = worldIn.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
-        for (Direction direction : Direction.values())
-        {
-            if (direction != Direction.DOWN)
-            {
-                BlockPos adjacentPos = pos.relative(direction);
-                if (worldIn.getFluidState(adjacentPos).is(FluidTags.WATER))
-                {
-                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.OBSIDIAN.defaultBlockState()));
-                    worldIn.levelEvent(1501, pos, 0);
-                    return true;
-                }
-
-                if (soulSoilBelow && worldIn.getBlockState(adjacentPos).is(Blocks.BLUE_ICE))
-                {
-                    worldIn.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.BASALT.defaultBlockState()));
-                    worldIn.levelEvent(1501, pos, 0);
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

@@ -294,8 +294,7 @@ public final class Helpers
     }
 
     /**
-     * todo: where?
-     * Copy pasta from {@link net.minecraft.world.entity.SpawnPlacements} except one that doesn't require the spawn block be equal to the surface builder config top block
+     * Copy pasta from {@link net.minecraft.server.level.PlayerRespawnLogic} except one that doesn't require the spawn block be equal to the surface builder config top block
      */
     @Nullable
     public static BlockPos findValidSpawnLocation(ServerLevel world, ChunkPos chunkPos)

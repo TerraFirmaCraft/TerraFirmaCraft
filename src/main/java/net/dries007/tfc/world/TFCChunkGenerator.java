@@ -295,8 +295,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Biome biome = this.biomeProvider.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
         for (Supplier<ConfiguredStructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
         {
-            // todo: mixin
-            // ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
+            // todo: mixin accessor
+            this.createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, biome);
         }
     }
 
@@ -338,7 +338,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         final Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
 
-        // todo: mixin
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeAccessor);
         final Object2DoubleMap<Biome> biomeWeight1 = new Object2DoubleOpenHashMap<>();
 

@@ -114,7 +114,7 @@ public final class ForgeEventHandler
     }
 
     /**
-     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link MinecraftServer#setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {

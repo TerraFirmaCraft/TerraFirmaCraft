@@ -70,6 +70,7 @@ public enum CacheInvalidationListener implements PreparableReloadListener
     private <C extends Container, R extends Recipe<C>> Collection<R> getRecipes(MinecraftServer server, RecipeType<R> recipeType)
     {
         // todo: mixin / accessor
-        return Collections.emptyList(); // (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
+        return (Collection<R>) server.getRecipeManager().byType(recipeType).values();
+        // (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
     }
 }

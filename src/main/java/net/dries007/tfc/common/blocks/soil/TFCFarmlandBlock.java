@@ -73,9 +73,8 @@ public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlo
         // todo: trigger TE updates for moisture?
     }
 
-    // todo: check this?
-    // @Override
-    public void fallOn(Level worldIn, BlockPos pos, Entity entityIn, float fallDistance)
+    @Override
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance)
     {
         // No-op
     }

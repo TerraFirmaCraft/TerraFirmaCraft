@@ -77,7 +77,6 @@ public class SoupPotRecipe extends PotRecipe
             return InteractionResult.PASS;
         }
 
-        @Nullable
         @Override
         public CompoundTag serializeNBT()
         {

@@ -39,16 +39,5 @@ public class Metaballs2D
         return false;
     }
 
-    // todo: record in j16
-    static final class Ball
-    {
-        final float x, z, weight;
-
-        Ball(float x, float z, float weight)
-        {
-            this.x = x;
-            this.z = z;
-            this.weight = weight;
-        }
-    }
+    record Ball(float x, float z, float weight) {}
 }

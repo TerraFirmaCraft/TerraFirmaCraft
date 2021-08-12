@@ -64,7 +64,6 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         dontSetBlock = false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void tick()
     {

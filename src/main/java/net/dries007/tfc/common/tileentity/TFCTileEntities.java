@@ -50,7 +50,7 @@ public class TFCTileEntities
     public static final RegistryObject<BlockEntityType<QuernTileEntity>> QUERN = register("quern", QuernTileEntity::new, TFCBlocks.QUERN);
     public static final RegistryObject<BlockEntityType<ScrapingTileEntity>> SCRAPING = register("scraping", ScrapingTileEntity::new, TFCBlocks.SCRAPING);
 
-    public static final RegistryObject<BlockEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).flatMap(Helpers::flatten));
+    public static final RegistryObject<BlockEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     public static final RegistryObject<BlockEntityType<FruitTreeLeavesTileEntity>> FRUIT_TREE = register("fruit_tree", FruitTreeLeavesTileEntity::new, TFCBlocks.FRUIT_TREE_LEAVES.values().stream());
 

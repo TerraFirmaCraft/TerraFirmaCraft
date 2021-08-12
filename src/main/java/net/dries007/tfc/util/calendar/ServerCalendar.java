@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.util.calendar;
 
+import java.util.function.BiConsumer;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
@@ -24,9 +26,12 @@ public class ServerCalendar extends Calendar
 
     private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendars.SERVER::setDoDaylightCycle);
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void setup()
     {
         // todo: mixins (accessors only)
+        GameRules.Type<?> type = GameRules.GAME_RULE_TYPES.get(GameRules.RULE_DAYLIGHT);
+        type.callback = (BiConsumer) type.callback.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
         // GameRulesRuleTypeAccessor type = (GameRulesRuleTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
         // type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
     }

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 
@@ -13,17 +14,17 @@ public class FruitTreeLeavesTileEntity extends BerryBushTileEntity
 {
     private boolean onYear;
 
-    public FruitTreeLeavesTileEntity()
+    public FruitTreeLeavesTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.FRUIT_TREE.get());
+        super(TFCTileEntities.FRUIT_TREE.get(), pos, state);
         onYear = false;
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         onYear = nbt.getBoolean("onYear");
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override

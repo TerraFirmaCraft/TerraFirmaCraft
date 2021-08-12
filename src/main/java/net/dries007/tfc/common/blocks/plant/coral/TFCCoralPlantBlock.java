@@ -118,8 +118,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     }
 
     /**
-     * todo: where?
-     * {@link net.minecraft.block.AbstractCoralPlantBlock#tryScheduleDieTick(BlockState, IWorld, BlockPos)}
+     * {@link net.minecraft.world.level.block.BaseCoralPlantTypeBlock#tryScheduleDieTick(BlockState, LevelAccessor, BlockPos)}
      */
     protected void tryScheduleDieTick(BlockState state, LevelAccessor worldIn, BlockPos pos)
     {
@@ -130,8 +129,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     }
 
     /**
-     * todo: where?
-     * {@link net.minecraft.block.AbstractCoralPlantBlock#scanForWater(BlockState, IBlockReader, BlockPos)}
+     * {@link net.minecraft.world.level.block.BaseCoralPlantTypeBlock#scanForWater(BlockState, BlockGetter, BlockPos)}
      */
     protected boolean scanForWater(BlockState state, BlockGetter worldIn, BlockPos pos)
     {
