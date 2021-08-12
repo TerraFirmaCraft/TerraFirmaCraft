@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.util.Helpers;
 
-public class ThatchBlock extends Block implements IForgeBlockProperties
+public class ThatchBlock extends Block implements IForgeBlockExtension
 {
     private final ForgeBlockProperties properties;
 

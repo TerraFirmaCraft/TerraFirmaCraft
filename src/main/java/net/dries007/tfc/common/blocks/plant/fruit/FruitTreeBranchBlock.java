@@ -23,10 +23,10 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
-public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockProperties
+public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtension
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
     private final ForgeBlockProperties properties;

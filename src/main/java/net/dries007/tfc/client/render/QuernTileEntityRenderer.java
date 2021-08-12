@@ -10,22 +10,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import com.mojang.math.Vector3f;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.tileentity.QuernTileEntity;
 
-public class QuernTileEntityRenderer extends BlockEntityRenderer<QuernTileEntity>
+public class QuernTileEntityRenderer implements BlockEntityRenderer<QuernTileEntity>
 {
-    public QuernTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
-
     @Override
     public void render(QuernTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
@@ -78,7 +71,7 @@ public class QuernTileEntityRenderer extends BlockEntityRenderer<QuernTileEntity
                     }
 
                     matrixStack.scale(0.125F, 0.125F, 0.125F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(output, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(output, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
 
                     matrixStack.popPose();
                 }
@@ -98,7 +91,7 @@ public class QuernTileEntityRenderer extends BlockEntityRenderer<QuernTileEntity
                 }
 
                 matrixStack.scale(1.25F, 1.25F, 1.25F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
                 matrixStack.popPose();
             }
 
@@ -113,7 +106,7 @@ public class QuernTileEntityRenderer extends BlockEntityRenderer<QuernTileEntity
                 matrixStack.mulPose(Vector3f.YP.rotationDegrees(45F));
                 matrixStack.scale(0.5F, 0.5F, 0.5F);
 
-                Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
 
                 matrixStack.popPose();
             }

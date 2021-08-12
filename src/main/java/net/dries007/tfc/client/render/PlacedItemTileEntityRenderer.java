@@ -19,13 +19,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
 
-public class PlacedItemTileEntityRenderer extends BlockEntityRenderer<PlacedItemTileEntity>
+public class PlacedItemTileEntityRenderer implements BlockEntityRenderer<PlacedItemTileEntity>
 {
-    public PlacedItemTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
-
     @Override
     public void render(PlacedItemTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
@@ -41,7 +36,7 @@ public class PlacedItemTileEntityRenderer extends BlockEntityRenderer<PlacedItem
                     matrixStack.pushPose();
                     matrixStack.translate(0.25D, 0, 0.25D);
                     matrixStack.mulPose(Vector3f.YP.rotationDegrees(90F));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
                     matrixStack.popPose();
                 }
             }
@@ -55,7 +50,7 @@ public class PlacedItemTileEntityRenderer extends BlockEntityRenderer<PlacedItem
                     matrixStack.pushPose();
                     matrixStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
                     matrixStack.mulPose(Vector3f.YP.rotationDegrees(timeD));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
                     matrixStack.popPose();
                 }
             }

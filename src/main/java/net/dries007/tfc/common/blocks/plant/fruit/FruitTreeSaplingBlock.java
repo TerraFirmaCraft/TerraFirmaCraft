@@ -33,14 +33,14 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockProperties
+public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExtension
 {
     private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     protected final Supplier<? extends Block> block;

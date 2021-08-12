@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -19,20 +19,28 @@ import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 
-public class BurningLogPileTileEntity extends TickCounterTileEntity implements TickableBlockEntity
+public class BurningLogPileTileEntity extends TickCounterTileEntity
 {
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BurningLogPileTileEntity entity)
+    {
+        if (entity.lastUpdateTick > 0 && entity.getTicksSinceUpdate() > TFCConfig.SERVER.charcoalTicks.get())
+        {
+            entity.createCharcoal();
+        }
+    }
+
     private int logs;
 
-    public BurningLogPileTileEntity()
+    public BurningLogPileTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.BURNING_LOG_PILE.get());
+        super(TFCTileEntities.BURNING_LOG_PILE.get(), pos, state);
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         logs = nbt.getInt("logs");
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -40,18 +48,6 @@ public class BurningLogPileTileEntity extends TickCounterTileEntity implements T
     {
         nbt.putInt("logs", logs);
         return super.save(nbt);
-    }
-
-    @Override
-    public void tick()
-    {
-        if (level != null && !level.isClientSide())
-        {
-            if (lastUpdateTick > 0 && getTicksSinceUpdate() > TFCConfig.SERVER.charcoalTicks.get())
-            {
-                createCharcoal();
-            }
-        }
     }
 
     public void light(int logs)
@@ -79,11 +75,11 @@ public class BurningLogPileTileEntity extends TickCounterTileEntity implements T
             block = level.getBlockState(mutablePos).getBlock();
             // This is here so that the charcoal pile will collapse Bottom > Top
             // Because the pile scans Top > Bottom this is necessary to avoid floating blocks
-            if (block.is(TFCBlocks.LOG_PILE.get()))
+            if (block == TFCBlocks.LOG_PILE.get())
             {
                 return;
             }
-        } while (level.isEmptyBlock(worldPosition) || block.is(TFCBlocks.CHARCOAL_PILE.get()) || block.is(TFCBlocks.BURNING_LOG_PILE.get()));
+        } while (level.isEmptyBlock(worldPosition) || block == TFCBlocks.CHARCOAL_PILE.get() || block == TFCBlocks.BURNING_LOG_PILE.get());
 
         double logs = this.logs * (0.25 + 0.25 * level.getRandom().nextFloat());
         int charcoal = (int) Mth.clamp(logs, 0, 8);

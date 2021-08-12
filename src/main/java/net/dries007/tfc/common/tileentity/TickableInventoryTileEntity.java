@@ -6,26 +6,27 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public abstract class TickableInventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends InventoryTileEntity<C> implements TickableBlockEntity
+public abstract class TickableInventoryTileEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends InventoryTileEntity<C>
 {
     protected boolean needsClientUpdate;
 
-    public TickableInventoryTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventory, Component defaultName)
+    public TickableInventoryTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
     {
-        super(type, inventory, defaultName);
+        super(type, pos, state, inventory, defaultName);
     }
 
-    @Override
-    public void tick()
+    public void checkForLastTickSync()
     {
-        if (level != null && !level.isClientSide() && needsClientUpdate)
+        if (needsClientUpdate)
         {
             // only sync further down when we actually request it to be synced
             needsClientUpdate = false;

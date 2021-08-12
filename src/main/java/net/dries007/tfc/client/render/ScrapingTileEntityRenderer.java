@@ -21,13 +21,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 
-public class ScrapingTileEntityRenderer extends BlockEntityRenderer<ScrapingTileEntity>
+public class ScrapingTileEntityRenderer implements BlockEntityRenderer<ScrapingTileEntity>
 {
-    public ScrapingTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
-
     @Override
     public void render(ScrapingTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {

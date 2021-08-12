@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,14 +17,14 @@ public class TickCounterTileEntity extends TFCTileEntity
 {
     protected long lastUpdateTick = Integer.MIN_VALUE;
 
-    public TickCounterTileEntity()
+    public TickCounterTileEntity(BlockPos pos, BlockState state)
     {
-        this(TFCTileEntities.TICK_COUNTER.get());
+        this(TFCTileEntities.TICK_COUNTER.get(), pos, state);
     }
 
-    protected TickCounterTileEntity(BlockEntityType<?> type)
+    protected TickCounterTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type);
+        super(type, pos, state);
     }
 
     public long getTicksSinceUpdate()
@@ -44,10 +45,10 @@ public class TickCounterTileEntity extends TFCTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         lastUpdateTick = nbt.getLong("tick");
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override

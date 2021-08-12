@@ -30,7 +30,7 @@ public class MultipleFeature extends Feature<MultipleConfig>
     public boolean place(FeaturePlaceContext<MultipleConfig> context)
     {
         boolean result = false;
-        for (Supplier<ConfiguredFeature<?, ?>> feature : context.config().features)
+        for (Supplier<ConfiguredFeature<?, ?>> feature : context.config().features())
         {
             result |= feature.get().place(context.level(), context.chunkGenerator(), context.random(), context.origin());
         }

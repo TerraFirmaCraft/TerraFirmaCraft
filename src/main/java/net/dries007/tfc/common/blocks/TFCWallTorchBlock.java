@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
-public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockProperties
+public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ForgeBlockProperties properties;
 

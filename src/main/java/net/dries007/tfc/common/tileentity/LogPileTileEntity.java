@@ -8,6 +8,7 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,6 +17,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -30,9 +32,9 @@ public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> imp
 
     private int playersUsing;
 
-    public LogPileTileEntity()
+    public LogPileTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.LOG_PILE.get(), defaultInventory(4), NAME);
+        super(TFCTileEntities.LOG_PILE.get(), pos, state, defaultInventory(4), NAME);
         this.playersUsing = 0;
     }
 
@@ -101,7 +103,7 @@ public class LogPileTileEntity extends InventoryTileEntity<ItemStackHandler> imp
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getItem().is(TFCTags.Items.LOG_PILE_LOGS);
+        return TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem());
     }
 
     @Nullable

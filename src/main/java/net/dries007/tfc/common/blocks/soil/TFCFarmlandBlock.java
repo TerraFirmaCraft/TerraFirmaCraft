@@ -21,10 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlockProperties
+public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlockExtension
 {
     public static final IntegerProperty MOISTURE = BlockStateProperties.MOISTURE;
 

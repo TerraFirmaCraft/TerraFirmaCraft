@@ -17,10 +17,10 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.container.TFCWorkbenchContainer;
 
-public class TFCCraftingTableBlock extends CraftingTableBlock implements IForgeBlockProperties
+public class TFCCraftingTableBlock extends CraftingTableBlock implements IForgeBlockExtension
 {
     private static final Component CONTAINER_TITLE = new TranslatableComponent("container.crafting");
     private final ForgeBlockProperties properties;

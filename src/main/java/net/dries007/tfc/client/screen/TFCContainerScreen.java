@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.resources.ResourceLocation;
@@ -21,19 +22,21 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
 {
     protected static final ResourceLocation SMALL_INV = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
     protected final ResourceLocation texture;
+    protected final Inventory playerInventory;
 
     public TFCContainerScreen(C container, Inventory playerInventory, Component name, ResourceLocation texture)
     {
         super(container, playerInventory, name);
         this.texture = texture;
+        this.playerInventory = playerInventory;
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        renderTooltip(matrixStack, mouseX, mouseY);
+        renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+        renderTooltip(poseStack, mouseX, mouseY);
     }
 
     @Override
@@ -42,11 +45,12 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         drawDefaultBackground(matrixStack);
     }
 
-    @SuppressWarnings({"ConstantConditions", "deprecation"})
-    protected void drawDefaultBackground(PoseStack matrixStack)
+    protected void drawDefaultBackground(PoseStack poseStack)
     {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bind(texture);
-        blit(matrixStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, this.texture);
+
+        blit(poseStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 }

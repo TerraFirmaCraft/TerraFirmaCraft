@@ -9,6 +9,7 @@ package net.dries007.tfc.common.tileentity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -27,9 +28,9 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
     private ItemStack cachedItem; // for visual purposes only
     private short positions; // essentially a boolean[16]
 
-    public ScrapingTileEntity()
+    public ScrapingTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.SCRAPING.get(), defaultInventory(1), NAME);
+        super(TFCTileEntities.SCRAPING.get(), pos, state, defaultInventory(1), NAME);
         positions = 0;
         setCachedItem(ItemStack.EMPTY);
     }
@@ -73,9 +74,9 @@ public class ScrapingTileEntity extends InventoryTileEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
-        super.load(state, nbt);
+        super.load(nbt);
         positions = nbt.getShort("positions");
         updateDisplayCache();
     }

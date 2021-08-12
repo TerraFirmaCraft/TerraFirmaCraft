@@ -24,9 +24,9 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
-public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockProperties
+public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockExtension
 {
     private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
 

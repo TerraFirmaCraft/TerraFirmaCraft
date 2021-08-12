@@ -76,7 +76,7 @@ public class SurfaceBuilderContext
         else
         {
             // Apply vanilla and hope for the best
-            surfaceBuilder.apply(random, chunk, biome, x, z, startHeight, noise, settings.getDefaultBlock(), settings.getDefaultFluid(), seaLevel, seed, config);
+            surfaceBuilder.apply(random, chunk, biome, x, z, startHeight, noise, settings.getDefaultBlock(), settings.getDefaultFluid(), seaLevel, settings.getMinSurfaceLevel(), seed, config);
         }
     }
 
@@ -94,7 +94,7 @@ public class SurfaceBuilderContext
     {
         // Skip unnecessary steps in ChunkPrimer#setBlockState
         final int x = pos.getX() & 15, y = pos.getY(), z = pos.getZ() & 15;
-        if (!Level.isOutsideBuildHeight(y))
+        if (y >= chunk.getMinBuildHeight() && y < chunk.getMaxBuildHeight())
         {
             if (chunk.getSections()[y >> 4] != LevelChunk.EMPTY_SECTION || !state.is(Blocks.AIR))
             {

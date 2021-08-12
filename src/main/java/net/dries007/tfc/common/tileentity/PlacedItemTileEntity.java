@@ -9,6 +9,7 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.player.Player;
@@ -34,14 +35,14 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.placed_item");
     public boolean isHoldingLargeItem;
 
-    public PlacedItemTileEntity()
+    public PlacedItemTileEntity(BlockPos pos, BlockState state)
     {
-        this(TFCTileEntities.PLACED_ITEM.get());
+        this(TFCTileEntities.PLACED_ITEM.get(), pos, state);
     }
 
-    protected PlacedItemTileEntity(BlockEntityType<?> type)
+    protected PlacedItemTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, self -> new ItemStackHandlerCallback(self, 4), NAME);
+        super(type, pos, state, self -> new ItemStackHandlerCallback(self, 4), NAME);
         this.isHoldingLargeItem = false;
     }
 
@@ -153,10 +154,10 @@ public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override

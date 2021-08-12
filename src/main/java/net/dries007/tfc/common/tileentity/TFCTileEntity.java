@@ -25,9 +25,9 @@ public abstract class TFCTileEntity extends BlockEntity
 {
     protected static final Logger LOGGER = LogManager.getLogger();
 
-    protected TFCTileEntity(BlockEntityType<?> type)
+    protected TFCTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type);
+        super(type, pos, state);
     }
 
     @Nullable
@@ -44,15 +44,15 @@ public abstract class TFCTileEntity extends BlockEntity
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
     {
-        load(getBlockState(), pkt.getTag());
+        load(packet.getTag());
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundTag nbt)
+    public void handleUpdateTag(CompoundTag tag)
     {
-        load(state, nbt);
+        load(tag);
     }
 
     /**
@@ -88,11 +88,8 @@ public abstract class TFCTileEntity extends BlockEntity
      */
     protected void markDirtyFast()
     {
-        if (level != null)
-        {
-            getBlockState();
-            level.blockEntityChanged(worldPosition, this);
-        }
+        assert level != null;
+        level.blockEntityChanged(worldPosition);
     }
 
     protected void sendVanillaUpdatePacket()

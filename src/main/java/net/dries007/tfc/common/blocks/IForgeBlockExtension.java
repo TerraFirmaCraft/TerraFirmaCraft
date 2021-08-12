@@ -17,23 +17,10 @@ import net.minecraftforge.common.extensions.IForgeBlock;
 
 /**
  * This implements some of the more annoying methods in {@link IForgeBlock} which would otherwise require implementing across all manner of vanilla subclasses.
- * Since forge has made the decision that blocks should have behavioral control rather than add entries to {@link net.minecraft.world.level.block.state.BlockBehaviour}, we mimic the same structure here.
  */
-public interface IForgeBlockProperties extends IForgeBlock
+public interface IForgeBlockExtension extends IForgeBlock
 {
     ForgeBlockProperties getForgeProperties();
-
-    // todo: this needs to be moved to the EntityBlock interface
-    default boolean hasTileEntity(BlockState state)
-    {
-        return getForgeProperties().hasTileEntity();
-    }
-
-    @Nullable
-    default BlockEntity createTileEntity(BlockState state, BlockGetter world)
-    {
-        return getForgeProperties().createTileEntity();
-    }
 
     @Override
     default int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face)

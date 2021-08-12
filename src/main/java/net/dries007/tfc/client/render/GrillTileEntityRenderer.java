@@ -21,13 +21,8 @@ import net.dries007.tfc.common.tileentity.GrillTileEntity;
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
 
-public class GrillTileEntityRenderer extends BlockEntityRenderer<GrillTileEntity>
+public class GrillTileEntityRenderer implements BlockEntityRenderer<GrillTileEntity>
 {
-    public GrillTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
-
     @Override
     public void render(GrillTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
@@ -59,7 +54,7 @@ public class GrillTileEntityRenderer extends BlockEntityRenderer<GrillTileEntity
                         matrixStack.translate(translateAmount / 2, translateAmount / 2, 0);
                     }
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
                     matrixStack.popPose();
                 }
             }

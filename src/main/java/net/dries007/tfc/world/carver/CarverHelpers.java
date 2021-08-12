@@ -25,7 +25,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
-import net.dries007.tfc.mixin.world.gen.carver.ConfiguredCarverAccessor;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public final class CarverHelpers
@@ -93,6 +92,8 @@ public final class CarverHelpers
         return (x & 15) | ((z & 15) << 4) | (y << 8);
     }
 
+    // todo: is this necessary?
+/*
     public static void runCarversWithContext(long worldSeed, ChunkAccess chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, WorldgenRandom random, GenerationStep.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask, int seaLevel)
     {
         final ChunkPos chunkPos = chunk.getPos();
@@ -129,4 +130,6 @@ public final class CarverHelpers
             }
         }
     }
+
+ */
 }

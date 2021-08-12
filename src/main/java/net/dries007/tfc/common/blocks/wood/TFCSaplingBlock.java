@@ -20,13 +20,13 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
-public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockProperties
+public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension
 {
     private final ForgeBlockProperties properties;
     private final int daysToGrow;

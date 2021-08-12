@@ -6,12 +6,13 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Clearable;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -43,11 +44,12 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
 
     protected final C inventory;
     protected final SidedHandler.Builder<IItemHandler> sidedInventory;
-    protected Component customName, defaultName;
+    @Nullable protected Component customName;
+    protected Component defaultName;
 
-    public InventoryTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventoryFactory, Component defaultName)
+    public InventoryTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
-        super(type);
+        super(type, pos, state);
 
         this.inventory = inventoryFactory.create(this);
         this.sidedInventory = new SidedHandler.Builder<>(InventoryTileEntity.this.inventory);
@@ -55,7 +57,7 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
     }
 
     /**
-     * Default implementation of {@link INamedContainerProvider#getDisplayName()} but without implementing the interface.
+     * Default implementation of {@link net.minecraft.world.MenuProvider#getDisplayName()} but without implementing the interface.
      */
     public Component getDisplayName()
     {
@@ -68,14 +70,14 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         if (nbt.contains("CustomName"))
         {
             customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
         }
         inventory.deserializeNBT(nbt.getCompound("inventory"));
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -89,6 +91,7 @@ public abstract class InventoryTileEntity<C extends IItemHandlerModifiable & INB
         return super.save(nbt);
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

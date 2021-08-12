@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.tags.BlockTags;
@@ -369,7 +370,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
             return state.getValue(LEVEL);
         }
 
-        protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)
+        protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder)
         {
             super.createFluidStateDefinition(builder.add(LEVEL));
         }

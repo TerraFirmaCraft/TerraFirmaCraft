@@ -8,6 +8,7 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
@@ -36,9 +38,9 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
 
     private final HeatingRecipe[] cachedRecipes;
 
-    public GrillTileEntity()
+    public GrillTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.GRILL.get(), defaultInventory(9), NAME);
+        super(TFCTileEntities.GRILL.get(), pos, state, defaultInventory(9), NAME);
 
         cachedRecipes = new HeatingRecipe[5];
         sidedInventory

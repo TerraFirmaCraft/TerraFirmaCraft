@@ -8,6 +8,7 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.Containers;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -34,11 +36,11 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
 
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.firepit");
 
-    protected HeatingRecipe cachedRecipe;
+    @Nullable protected HeatingRecipe cachedRecipe;
 
-    public FirepitTileEntity()
+    public FirepitTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.FIREPIT.get(), defaultInventory(7), NAME);
+        super(TFCTileEntities.FIREPIT.get(), pos, state, defaultInventory(7), NAME);
     }
 
     @Nullable

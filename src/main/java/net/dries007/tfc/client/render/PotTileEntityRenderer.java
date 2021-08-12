@@ -33,13 +33,8 @@ import net.dries007.tfc.common.tileentity.PotTileEntity;
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_START;
 
-public class PotTileEntityRenderer extends BlockEntityRenderer<PotTileEntity>
+public class PotTileEntityRenderer implements BlockEntityRenderer<PotTileEntity>
 {
-    public PotTileEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public void render(PotTileEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
@@ -97,7 +92,7 @@ public class PotTileEntityRenderer extends BlockEntityRenderer<PotTileEntity>
                     ordinal++;
                     matrixStack.translate(0, 0, -0.12F * ordinal);
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
                     matrixStack.popPose();
                 }
             }

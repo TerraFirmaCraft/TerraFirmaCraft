@@ -29,7 +29,7 @@ import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCTorchBlock extends TorchBlock implements IForgeBlockProperties
+public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void onRandomTick(ServerLevel world, BlockPos pos, BlockState placeState)
     {

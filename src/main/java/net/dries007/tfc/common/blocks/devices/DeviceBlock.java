@@ -11,15 +11,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.util.Helpers;
 
 /**
  * Helper class for blocks attached to InventoryTileEntity when they break
  */
-public class DeviceBlock extends Block implements IForgeBlockProperties
+public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ForgeBlockProperties properties;
 

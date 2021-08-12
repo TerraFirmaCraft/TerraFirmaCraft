@@ -6,11 +6,15 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
+import javax.annotation.Nullable;
 
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
@@ -21,7 +25,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 {
     private static final ResourceLocation KNAPPING_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
     private final ResourceLocation buttonLocation;
-    private final ResourceLocation buttonDisabledLocation;
+    @Nullable private final ResourceLocation buttonDisabledLocation;
 
     public KnappingScreen(KnappingContainer container, Inventory inv, Component name)
     {
@@ -45,7 +49,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
-                addButton(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound()));
+                addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound()));
             }
         }
     }
@@ -56,22 +60,22 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         // Check if the container has been updated
         if (menu.requiresReset())
         {
-            for (AbstractWidget button : buttons)
+            for (Widget widget : renderables)
             {
-                if (button instanceof KnappingButton)
+                if (widget instanceof KnappingButton button)
                 {
-                    button.visible = menu.getSlotState((((KnappingButton) button).id));
+                    button.visible = menu.getSlotState(button.id);
                 }
             }
             menu.setRequiresReset(false);
         }
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        if (menu.usesDisabledTexture() && minecraft != null)
+        if (menu.usesDisabledTexture() && minecraft != null && buttonDisabledLocation != null)
         {
-            minecraft.getTextureManager().bind(buttonDisabledLocation);
-            for (AbstractWidget button : buttons)
+            RenderSystem.setShaderTexture(0, buttonDisabledLocation);
+            for (Widget widget : renderables)
             {
-                if (!button.visible && button instanceof KnappingButton)
+                if (widget instanceof KnappingButton button && !button.visible)
                 {
                     matrixStack.pushPose();
                     blit(matrixStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
@@ -106,9 +110,9 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
      */
     private void undoAccidentalButtonPress(double x, double y)
     {
-        for (AbstractWidget widget : buttons)
+        for (Widget widget : renderables)
         {
-            if (widget instanceof KnappingButton && widget.isMouseOver(x, y))
+            if (widget instanceof KnappingButton button && button.isMouseOver(x, y))
             {
                 menu.setSlotState(((KnappingButton) widget).id, false);
             }

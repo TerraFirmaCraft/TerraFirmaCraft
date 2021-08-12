@@ -19,14 +19,14 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockProperties
+public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockExtension
 {
     protected final Supplier<? extends Block> companion;
     protected final int maxHeight;

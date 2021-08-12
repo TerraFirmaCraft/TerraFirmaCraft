@@ -28,7 +28,7 @@ public abstract class ContextSurfaceBuilder<C extends SurfaceBuilderConfiguratio
     public abstract void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, C config);
 
     @Override
-    public void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, C config)
+    public void apply(Random random, ChunkAccess chunk, Biome biome, int x, int z, int height, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minSurfaceLevel, long seed, C config)
     {
         throw new IllegalStateException("Surface Builder [" + getRegistryName() + "] of class [" + getClass().getSimpleName() + "] is a ContextSurfaceBuilder and cannot be invoked directly.");
     }

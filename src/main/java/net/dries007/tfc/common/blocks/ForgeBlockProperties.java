@@ -6,18 +6,29 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ForgeBlockProperties
 {
     private final BlockBehaviour.Properties properties;
 
-    @Nullable
-    private Supplier<? extends BlockEntity> tileEntityFactory;
+    // Handles block entity tickers without requiring overrides in every class
+    @Nullable private BiFunction<BlockPos, BlockState, ? extends BlockEntity> blockEntityFactory;
+    @Nullable private Supplier<? extends BlockEntityType<?>> blockEntityType;
+    @Nullable private BlockEntityTicker<?> serverTicker;
+    @Nullable private BlockEntityTicker<?> clientTicker;
+
+    // Forge methods
     private int flammability;
     private int fireSpreadSpeed;
 
@@ -25,14 +36,42 @@ public class ForgeBlockProperties
     {
         this.properties = properties;
 
-        tileEntityFactory = null;
+        blockEntityFactory = null;
+        blockEntityType = null;
+        serverTicker = null;
+        clientTicker = null;
+
         flammability = 0;
         fireSpreadSpeed = 0;
     }
 
-    public ForgeBlockProperties tileEntity(Supplier<? extends BlockEntity> tileEntityFactory)
+    public ForgeBlockProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
     {
-        this.tileEntityFactory = tileEntityFactory;
+        this.blockEntityType = blockEntityType;
+        this.blockEntityFactory = (pos, state) -> blockEntityType.get().create(pos, state);
+        return this;
+    }
+
+    public <T extends BlockEntity> ForgeBlockProperties ticks(BlockEntityTicker<T> ticker)
+    {
+        return ticks(ticker, ticker);
+    }
+
+    public <T extends BlockEntity> ForgeBlockProperties serverTicks(BlockEntityTicker<T> serverTicker)
+    {
+        return ticks(serverTicker, null);
+    }
+
+    public <T extends BlockEntity> ForgeBlockProperties clientTicks(BlockEntityTicker<T> clientTicker)
+    {
+        return ticks(null, clientTicker);
+    }
+
+    public <T extends BlockEntity> ForgeBlockProperties ticks(@Nullable BlockEntityTicker<T> serverTicker, @Nullable BlockEntityTicker<T> clientTicker)
+    {
+        assert this.blockEntityType != null : "Must call .blockEntity() before adding a ticker";
+        this.serverTicker = serverTicker;
+        this.clientTicker = clientTicker;
         return this;
     }
 
@@ -48,15 +87,24 @@ public class ForgeBlockProperties
         return properties;
     }
 
-    boolean hasTileEntity()
+    // Internal methods
+
+    @Nullable
+    BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return tileEntityFactory != null;
+        return blockEntityFactory == null ? null : blockEntityFactory.apply(pos, state);
     }
 
     @Nullable
-    BlockEntity createTileEntity()
+    @SuppressWarnings("unchecked")
+    <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
     {
-        return tileEntityFactory != null ? tileEntityFactory.get() : null;
+        assert blockEntityType != null;
+        if (givenType == blockEntityType.get())
+        {
+            return (BlockEntityTicker<T>) (level.isClientSide() ? clientTicker : serverTicker);
+        }
+        return null;
     }
 
     int getFlammability()

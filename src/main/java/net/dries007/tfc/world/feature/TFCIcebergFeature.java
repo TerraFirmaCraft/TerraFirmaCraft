@@ -46,7 +46,7 @@ public class TFCIcebergFeature extends IcebergFeature
                 {
                     BlockPos blockpos = pos.offset(k, yDiff, l);
                     Block block = worldIn.getBlockState(blockpos).getBlock();
-                    if (this.isIcebergBlock(block) || block == Blocks.SNOW_BLOCK)
+                    if (this.isIcebergState(block) || block == Blocks.SNOW_BLOCK)
                     {
                         if (placeWater)
                         {

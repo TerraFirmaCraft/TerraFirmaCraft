@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.common.blocks;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -25,7 +28,7 @@ import net.dries007.tfc.util.Helpers;
  * This block is a snow layer block that hides / covers a block underneath
  * When it melts, it will transform into the underlying block, with one level of snow active
  */
-public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockProperties
+public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     /**
      * Converts an existing block state to a snow pile consisting of that block state
@@ -73,5 +76,12 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockProperti
     public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Blocks.SNOW);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+    {
+        return new SnowPileTileEntity(pos, state);
     }
 }

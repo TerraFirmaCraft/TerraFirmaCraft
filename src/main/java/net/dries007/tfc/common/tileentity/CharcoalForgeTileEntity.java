@@ -11,6 +11,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -52,8 +54,101 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
     public static final int DATA_SLOT_TEMPERATURE = 0;
+
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.charcoal_forge");
     private static final int MAX_AIR_TICKS = 600;
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, CharcoalForgeTileEntity forge)
+    {
+        forge.checkForLastTickSync();
+        forge.checkForCalendarUpdate();
+
+        boolean isRaining = level.isRainingAt(pos);
+        if (state.getValue(CharcoalForgeBlock.HEAT) > 0)
+        {
+            if (isRaining && level.random.nextFloat() < 0.15F)
+            {
+                Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+            }
+            int heatLevel = Mth.clamp((int) (forge.temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
+            if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))
+            {
+                level.setBlockAndUpdate(pos, state.setValue(CharcoalForgeBlock.HEAT, heatLevel));
+                forge.markForSync();
+            }
+            // Update fuel
+            if (forge.burnTicks > 0)
+            {
+                // Double fuel consumption if using bellows
+                forge.burnTicks -= forge.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
+            }
+            if (forge.burnTicks <= 0)
+            {
+                // Consume fuel
+                ItemStack stack = forge.inventory.getStackInSlot(SLOT_FUEL_MIN);
+                if (stack.isEmpty())
+                {
+                    forge.extinguish(state);
+                }
+                else
+                {
+                    forge.inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
+                    forge.needsSlotUpdate = true;
+                    Fuel fuel = FuelManager.get(stack);
+                    if (fuel != null)
+                    {
+                        forge.burnTicks = fuel.getDuration();
+                        forge.burnTemperature = fuel.getTemperature();
+                    }
+                    forge.markForSync();
+                }
+            }
+        }
+        else if (forge.burnTemperature > 0)
+        {
+            forge.extinguish(state);
+        }
+        if (forge.airTicks > 0)
+        {
+            forge.airTicks--;
+        }
+
+        // Always update temperature / cooking, until the fire pit is not hot anymore
+        if (forge.temperature > 0 || forge.burnTemperature > 0)
+        {
+            forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, isRaining);
+                /*todo // Provide heat to blocks that are one block above
+                Block blockUp = world.getBlockState(pos.above()).getBlock();
+                if (blockUp instanceof IHeatConsumerBlock)
+                {
+                    ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.above(), temperature);
+                }*/
+
+            for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+            {
+                ItemStack stack = forge.inventory.getStackInSlot(i);
+                int slot = i;
+                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                    // Update temperature of item
+                    float itemTemp = cap.getTemperature();
+                    if (forge.temperature > itemTemp)
+                    {
+                        HeatCapability.addTemp(cap, forge.temperature);
+                    }
+
+                    // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
+                    forge.handleInputMelting(stack, slot);
+                });
+            }
+            forge.markForSync();
+        }
+
+        // This is here to avoid duplication glitches
+        if (forge.needsSlotUpdate)
+        {
+            forge.cascadeFuelSlots();
+        }
+    }
 
     protected final ContainerData syncableData;
     private final HeatingRecipe[] cachedRecipes = new HeatingRecipe[5];
@@ -64,9 +159,9 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     private int airTicks; // Ticks of air provided by bellows
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
 
-    public CharcoalForgeTileEntity()
+    public CharcoalForgeTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.CHARCOAL_FORGE.get(), defaultInventory(14), NAME);
+        super(TFCTileEntities.CHARCOAL_FORGE.get(), pos, state, defaultInventory(14), NAME);
 
         temperature = 0;
         burnTemperature = 0;
@@ -84,104 +179,6 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         if (airTicks > MAX_AIR_TICKS)
         {
             airTicks = MAX_AIR_TICKS;
-        }
-    }
-
-    @Override
-    public void tick()
-    {
-        super.tick();
-        checkForCalendarUpdate();
-
-        assert level != null;
-        if (!level.isClientSide)
-        {
-            boolean isRaining = level.isRainingAt(worldPosition);
-            BlockState state = level.getBlockState(worldPosition);
-            if (state.getValue(CharcoalForgeBlock.HEAT) > 0)
-            {
-                if (isRaining && level.random.nextFloat() < 0.15F)
-                {
-                    Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
-                }
-                int heatLevel = Mth.clamp((int) (temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
-                if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))
-                {
-                    level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, heatLevel));
-                    markForSync();
-                }
-                // Update fuel
-                if (burnTicks > 0)
-                {
-                    // Double fuel consumption if using bellows
-                    burnTicks -= airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
-                }
-                if (burnTicks <= 0)
-                {
-                    // Consume fuel
-                    ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_MIN);
-                    if (stack.isEmpty())
-                    {
-                        extinguish(state);
-                    }
-                    else
-                    {
-                        inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
-                        needsSlotUpdate = true;
-                        Fuel fuel = FuelManager.get(stack);
-                        if (fuel != null)
-                        {
-                            burnTicks = fuel.getDuration();
-                            burnTemperature = fuel.getTemperature();
-                        }
-                        markForSync();
-                    }
-                }
-            }
-            else if (burnTemperature > 0)
-            {
-                extinguish(state);
-            }
-            if (airTicks > 0)
-            {
-                airTicks--;
-            }
-
-            // Always update temperature / cooking, until the fire pit is not hot anymore
-            if (temperature > 0 || burnTemperature > 0)
-            {
-                temperature = HeatCapability.adjustDeviceTemp(temperature, burnTemperature, airTicks, isRaining);
-                /*todo // Provide heat to blocks that are one block above
-                Block blockUp = world.getBlockState(pos.above()).getBlock();
-                if (blockUp instanceof IHeatConsumerBlock)
-                {
-                    ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.above(), temperature);
-                }*/
-
-                for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
-                {
-                    ItemStack stack = inventory.getStackInSlot(i);
-                    int slot = i;
-                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                        // Update temperature of item
-                        float itemTemp = cap.getTemperature();
-                        if (temperature > itemTemp)
-                        {
-                            HeatCapability.addTemp(cap, temperature);
-                        }
-
-                        // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
-                        handleInputMelting(stack, slot);
-                    });
-                }
-                markForSync();
-            }
-
-            // This is here to avoid duplication glitches
-            if (needsSlotUpdate)
-            {
-                cascadeFuelSlots();
-            }
         }
     }
 
@@ -240,7 +237,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -249,7 +246,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
         lastPlayerTick = nbt.getLong("lastPlayerTick");
 
         updateCachedRecipes();
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -283,7 +280,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     {
         if (slot <= SLOT_FUEL_MAX)
         {
-            return stack.getItem().is(TFCTags.Items.FORGE_FUEL);
+            return TFCTags.Items.FORGE_FUEL.contains(stack.getItem());
         }
         else if (slot <= SLOT_INPUT_MAX)
         {

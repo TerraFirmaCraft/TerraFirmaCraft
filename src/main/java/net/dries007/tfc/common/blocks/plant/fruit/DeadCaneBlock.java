@@ -22,12 +22,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class DeadCaneBlock extends SpreadingCaneBlock
+public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExtension
 {
     public DeadCaneBlock(ForgeBlockProperties properties)
     {

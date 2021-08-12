@@ -16,7 +16,6 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -35,12 +34,59 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class PitKilnTileEntity extends PlacedItemTileEntity implements TickableBlockEntity
+public class PitKilnTileEntity extends PlacedItemTileEntity
 {
     public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
     private static final float MAX_TEMP = 1200f;
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PitKilnTileEntity pitKiln)
+    {
+        if (pitKiln.isLit)
+        {
+            if (level.getGameTime() % 10 == 0)
+            {
+                BlockPos above = pos.above();
+                if (level.isEmptyBlock(above))
+                {
+                    level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
+                }
+                else
+                {
+                    BlockState stateAbove = level.getBlockState(above);
+                    if (stateAbove.getMaterial() != Material.FIRE)
+                    {
+                        // consume contents, don't cook items, convert to placed item
+                        pitKiln.emptyFuelContents();
+                        convertPitKilnToPlacedItem(level, pos);
+                        return;
+                    }
+                }
+
+                if (!isValid(level, pos))
+                {
+                    // consume contents, don't cook items, convert to placed item
+                    pitKiln.emptyFuelContents();
+                    convertPitKilnToPlacedItem(level, pos);
+                    return;
+                }
+            }
+            pitKiln.cookContents(false); // we are always heating
+
+            long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - pitKiln.litTick);
+            if (remainingTicks <= 0) //thus the only thing to do at the end is to delete the pit kiln block
+            {
+                pitKiln.cookContents(true);
+                pitKiln.adjustTempsForTime(-1 * remainingTicks);
+                pitKiln.emptyFuelContents();
+                level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
+                pitKiln.markForBlockUpdate();
+
+                convertPitKilnToPlacedItem(level, pos);
+            }
+        }
+    }
 
     public static void convertPitKilnToPlacedItem(Level world, BlockPos pos)
     {
@@ -101,26 +147,26 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements TickableB
     private long litTick;
     private boolean isLit;
 
-    public PitKilnTileEntity()
+    public PitKilnTileEntity(BlockPos pos, BlockState state)
     {
-        this(TFCTileEntities.PIT_KILN.get());
+        this(TFCTileEntities.PIT_KILN.get(), pos, state);
     }
 
-    protected PitKilnTileEntity(BlockEntityType<?> type)
+    protected PitKilnTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type);
+        super(type, pos, state);
         cachedRecipes = new HeatingRecipe[4];
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         isLit = nbt.getBoolean("isLit");
         litTick = nbt.getLong("litTick");
         ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
         ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
         updateCache();
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -132,54 +178,6 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements TickableB
         nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems));
         nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems));
         return super.save(nbt);
-    }
-
-    @Override
-    public void tick()
-    {
-        if (isLit && level != null)
-        {
-            if (level.getGameTime() % 10 == 0)
-            {
-                BlockPos above = worldPosition.above();
-                if (level.isEmptyBlock(above))
-                {
-                    level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
-                }
-                else
-                {
-                    BlockState stateAbove = level.getBlockState(above);
-                    if (stateAbove.getMaterial() != Material.FIRE)
-                    {
-                        // consume contents, don't cook items, convert to placed item
-                        emptyFuelContents();
-                        convertPitKilnToPlacedItem(level, worldPosition);
-                        return;
-                    }
-                }
-
-                if (!isValid(level, worldPosition))
-                {
-                    // consume contents, don't cook items, convert to placed item
-                    emptyFuelContents();
-                    convertPitKilnToPlacedItem(level, worldPosition);
-                    return;
-                }
-            }
-            cookContents(false); // we are always heating
-
-            long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - litTick);
-            if (remainingTicks <= 0) //thus the only thing to do at the end is to delete the pit kiln block
-            {
-                cookContents(true);
-                adjustTempsForTime(-1 * remainingTicks);
-                emptyFuelContents();
-                level.setBlockAndUpdate(worldPosition.above(), Blocks.AIR.defaultBlockState());
-                markForBlockUpdate();
-
-                convertPitKilnToPlacedItem(level, worldPosition);
-            }
-        }
     }
 
     @Override

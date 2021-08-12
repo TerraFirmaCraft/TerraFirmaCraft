@@ -24,7 +24,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
 
 /**
- * Modified from {@link net.minecraft.world.gen.surfacebuilders.FrozenOceanSurfaceBuilder}
+ * Modified from {@link net.minecraft.world.level.levelgen.surfacebuilders.FrozenOceanSurfaceBuilder}
  */
 public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
@@ -36,7 +36,6 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         super(codec);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.tileentity;
 
 import org.apache.commons.lang3.tuple.Triple;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.MenuProvider;
@@ -57,6 +58,42 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         }
     }
 
+    public static void serverTick(Level level, BlockPos pos, BlockState state, AbstractFirepitTileEntity<?> firepit)
+    {
+        firepit.checkForLastTickSync();
+        firepit.checkForCalendarUpdate();
+
+        boolean isRaining = level.isRainingAt(pos);
+        if (state.getValue(FirepitBlock.LIT))
+        {
+            // Update fuel
+            if (firepit.burnTicks > 0)
+            {
+                firepit.burnTicks -= firepit.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
+            }
+            if (firepit.burnTicks <= 0)
+            {
+                if (!firepit.consumeFuel(state))
+                {
+                    firepit.extinguish(state);
+                }
+            }
+        }
+        if (firepit.airTicks > 0)
+        {
+            firepit.airTicks--;
+        }
+        if (firepit.temperature > 0 || firepit.burnTemperature > 0)
+        {
+            firepit.temperature = HeatCapability.adjustDeviceTemp(firepit.temperature, firepit.burnTemperature, firepit.airTicks, isRaining);
+        }
+        firepit.handleCooking();
+        if (firepit.needsSlotUpdate)
+        {
+            firepit.cascadeFuelSlots();
+        }
+    }
+
     protected final ContainerData syncableData;
     protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
     protected int burnTicks; // ticks remaining for the burning of the fuel item
@@ -65,9 +102,9 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     protected float temperature; // current actual temperature
     private long lastPlayerTick;
 
-    public AbstractFirepitTileEntity(BlockEntityType<?> type, InventoryFactory<C> inventoryFactory, Component defaultName)
+    public AbstractFirepitTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
-        super(type, inventoryFactory, defaultName);
+        super(type, pos, state, inventoryFactory, defaultName);
 
         burnTicks = 0;
         temperature = 0;
@@ -78,7 +115,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -88,7 +125,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
 
         updateCachedRecipe();
 
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -108,48 +145,6 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         super.setAndUpdateSlots(slot);
         needsSlotUpdate = true;
         updateCachedRecipe();
-    }
-
-    @Override
-    public void tick()
-    {
-        super.tick();
-        checkForCalendarUpdate();
-
-        assert level != null;
-        if (!level.isClientSide)
-        {
-            boolean isRaining = level.isRainingAt(worldPosition);
-            BlockState state = level.getBlockState(worldPosition);
-            if (state.getValue(FirepitBlock.LIT))
-            {
-                // Update fuel
-                if (burnTicks > 0)
-                {
-                    burnTicks -= airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
-                }
-                if (burnTicks <= 0)
-                {
-                    if (!consumeFuel(state))
-                    {
-                        extinguish(state);
-                    }
-                }
-            }
-            if (airTicks > 0)
-            {
-                airTicks--;
-            }
-            if (temperature > 0 || burnTemperature > 0)
-            {
-                temperature = HeatCapability.adjustDeviceTemp(temperature, burnTemperature, airTicks, isRaining);
-            }
-            handleCooking();
-            if (needsSlotUpdate)
-            {
-                cascadeFuelSlots();
-            }
-        }
     }
 
     @Override

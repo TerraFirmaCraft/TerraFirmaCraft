@@ -9,7 +9,7 @@ package net.dries007.tfc;
 import java.awt.*;
 
 /**
- * This exists as a reference for {@link net.minecraft.block.material.MaterialColor} colors
+ * This exists as a reference for {@link net.minecraft.world.level.material.MaterialColor} colors
  * Intellij will show the colors in the sidebar :D
  */
 @SuppressWarnings("unused")

@@ -6,8 +6,10 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,13 +51,13 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     public static final int SLOT_EXTRA_INPUT_END = 8;
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.pot");
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    private PotRecipe.Output output;
-    private PotRecipe cachedRecipe;
+    @Nullable private PotRecipe.Output output;
+    @Nullable private PotRecipe cachedRecipe;
     private int boilingTicks;
 
-    public PotTileEntity()
+    public PotTileEntity(BlockPos pos, BlockState state)
     {
-        super(TFCTileEntities.POT.get(), PotInventory::new, NAME);
+        super(TFCTileEntities.POT.get(), pos, state, PotInventory::new, NAME);
 
         output = null;
         cachedRecipe = null;
@@ -71,14 +73,15 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
-        if (nbt.contains("output"))
+        if (nbt.contains("output") && output != null)
         {
+            // todo: this deserialization will never work, why are we so dumb??
             output.deserializeNBT(nbt);
         }
         boilingTicks = nbt.getInt("boilingTicks");
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
@@ -113,6 +116,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     {
         if (isBoiling())
         {
+            assert cachedRecipe != null;
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
@@ -190,6 +194,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
         return output;
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

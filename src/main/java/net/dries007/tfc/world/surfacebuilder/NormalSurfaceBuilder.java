@@ -27,7 +27,6 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
         apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
     }
 
-    @SuppressWarnings("deprecation")
     public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -17,14 +18,14 @@ public class SnowPileTileEntity extends TFCTileEntity
 {
     private BlockState internalState;
 
-    public SnowPileTileEntity()
+    public SnowPileTileEntity(BlockPos pos, BlockState state)
     {
-        this(TFCTileEntities.SNOW_PILE.get());
+        this(TFCTileEntities.SNOW_PILE.get(), pos, state);
     }
 
-    protected SnowPileTileEntity(BlockEntityType<?> type)
+    protected SnowPileTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type);
+        super(type, pos, state);
 
         this.internalState = Blocks.AIR.defaultBlockState();
     }
@@ -46,10 +47,10 @@ public class SnowPileTileEntity extends TFCTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt)
+    public void load(CompoundTag nbt)
     {
         internalState = NbtUtils.readBlockState(nbt.getCompound("internalState"));
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override

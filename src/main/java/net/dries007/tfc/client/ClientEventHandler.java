@@ -18,6 +18,8 @@ import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -136,20 +138,18 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getFlowing(), translucent);
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), translucent);
 
-        // todo: rendering went where?
-        /*
         // Entity Rendering
-        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+        EntityRenderers.register(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
         // TE Rendering
 
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.POT.get(), PotTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.GRILL.get(), GrillTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PIT_KILN.get(), PitKilnTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.QUERN.get(), QuernTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.SCRAPING.get(), ScrapingTileEntityRenderer::new);
-*/
+        BlockEntityRenderers.register(TFCTileEntities.POT.get(), context -> new PotTileEntityRenderer());
+        BlockEntityRenderers.register(TFCTileEntities.GRILL.get(), context -> new GrillTileEntityRenderer());
+        BlockEntityRenderers.register(TFCTileEntities.PLACED_ITEM.get(), context -> new PlacedItemTileEntityRenderer());
+        BlockEntityRenderers.register(TFCTileEntities.PIT_KILN.get(), context -> new PitKilnTileEntityRenderer());
+        BlockEntityRenderers.register(TFCTileEntities.QUERN.get(), context -> new QuernTileEntityRenderer());
+        BlockEntityRenderers.register(TFCTileEntities.SCRAPING.get(), context -> new ScrapingTileEntityRenderer());
+
 
         // Misc
         // todo: mixin

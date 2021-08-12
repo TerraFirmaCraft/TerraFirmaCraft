@@ -54,7 +54,6 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
         cellNoise = VolcanoNoise.cellNoise(seed);
     }
 
-    @SuppressWarnings("deprecation")
     private void buildVolcanicSurface(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, float easing)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();

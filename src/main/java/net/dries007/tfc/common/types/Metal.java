@@ -18,13 +18,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -116,8 +114,8 @@ public class Metal
 
         private final String serializedName;
         private final boolean parts, armor, utility;
-        private final Tier tier;
-        private final ArmorMaterial armorTier;
+        @Nullable private final net.minecraft.world.item.Tier tier;
+        @Nullable private final ArmorMaterial armorTier;
         private final Rarity rarity;
         private final int color;
 
@@ -126,7 +124,7 @@ public class Metal
             this(color, rarity, null, null, parts, armor, utility);
         }
 
-        Default(int color, Rarity rarity, @Nullable Tier tier, @Nullable ArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
+        Default(int color, Rarity rarity, @Nullable net.minecraft.world.item.Tier tier, @Nullable ArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
         {
             this.serializedName = name().toLowerCase(Locale.ROOT);
             this.tier = tier;
@@ -175,7 +173,7 @@ public class Metal
             return utility;
         }
 
-        public Tier getTier()
+        public net.minecraft.world.item.Tier getTier()
         {
             return Objects.requireNonNull(tier, "Tried to get non-existent tier from " + name());
         }
@@ -249,8 +247,8 @@ public class Metal
 
     public enum BlockType
     {
-        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
-        LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)));
+        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10))),
+        LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10)));
 
         public static final Metal.BlockType[] VALUES = values();
 
@@ -261,7 +259,7 @@ public class Metal
 
         private final NonNullFunction<Metal.Default, Block> blockFactory;
         private final Type type;
-        private final String tag;
+        @Nullable private final String tag;
 
         BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory)
         {
@@ -307,18 +305,18 @@ public class Metal
         PICKAXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         PROPICK(Type.TOOL, metal -> new PropickItem(metal.getTier(), 0.5F, -2.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         PROPICK_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        AXE(Type.TOOL, metal -> new TFCAxeItem(metal.getTier(), 1.5F, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS).addToolType(ToolType.AXE, metal.getTier().getLevel()))),
+        AXE(Type.TOOL, metal -> new TFCAxeItem(metal.getTier(), 1.5F, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         AXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SHOVEL(Type.TOOL, metal -> new TFCShovelItem(metal.getTier(), 0.875F, -3.0F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS).addToolType(ToolType.SHOVEL, metal.getTier().getLevel()))),
+        SHOVEL(Type.TOOL, metal -> new TFCShovelItem(metal.getTier(), 0.875F, -3.0F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         SHOVEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        HOE(Type.TOOL, metal -> new HoeItem(metal.getTier(), -1, -2f, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS).addToolType(ToolType.HOE, metal.getTier().getLevel()))),
+        HOE(Type.TOOL, metal -> new HoeItem(metal.getTier(), -1, -2f, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         HOE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getTier(), 0.27F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS).addToolType(TFCItemTier.CHISEL, metal.getTier().getLevel()))),
+        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getTier(), 0.27F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         CHISEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         HAMMER(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 1.0F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
-        HAMMER_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL).addToolType(TFCItemTier.HAMMER, metal.getTier().getLevel()))),
+        HAMMER_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SAW(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 0.5F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
-        SAW_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL).addToolType(ToolType.AXE, 0))),
+        SAW_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.getTier(), 0.7F, -1.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
         JAVELIN_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SWORD(Type.TOOL, metal -> new TFCSwordItem(metal.getTier(), 1.0F, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
@@ -326,8 +324,8 @@ public class Metal
         MACE(Type.TOOL, metal -> new WeaponItem(metal.getTier(), 1.3F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
         MACE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         KNIFE(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 0.54F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
-        KNIFE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL).addToolType(TFCItemTier.KNIFE, metal.getTier().getLevel()))),
-        SCYTHE(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 2, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS).addToolType(TFCItemTier.KNIFE, 0))),
+        KNIFE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SCYTHE(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 2, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
         SCYTHE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHEARS(Type.TOOL, metal -> new TFCShearsItem(metal.getTier(), (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
 
@@ -352,7 +350,7 @@ public class Metal
 
         private final NonNullFunction<Metal.Default, Item> itemFactory;
         private final Type type;
-        private final String tag;
+        @Nullable private final String tag;
 
         ItemType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Item> itemFactory)
         {

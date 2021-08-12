@@ -66,7 +66,6 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
         heightVariationNoise = new OpenSimplex2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
     }
 
-    @SuppressWarnings("deprecation")
     private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, float rainfall, float temperature, boolean saltWater)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
