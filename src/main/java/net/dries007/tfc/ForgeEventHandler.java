@@ -71,11 +71,11 @@ import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
-import net.dries007.tfc.world.biome.ITFCBiomeSource;
+import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
-import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 
 import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
 
@@ -123,9 +123,9 @@ public final class ForgeEventHandler
         {
             final ServerLevelData settings = event.getSettings();
             final ChunkGenerator generator = world.getChunkSource().getGenerator();
-            if (generator instanceof ITFCChunkGenerator)
+            if (generator instanceof ChunkGeneratorExtension)
             {
-                final ITFCBiomeSource biomeProvider = ((ITFCChunkGenerator) generator).getBiomeSource();
+                final BiomeSourceExtension biomeProvider = ((ChunkGeneratorExtension) generator).getBiomeSource();
                 final Random random = new Random(world.getSeed());
                 final int spawnDistance = biomeProvider.getSpawnDistance();
 

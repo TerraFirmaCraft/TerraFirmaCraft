@@ -8,7 +8,7 @@ package net.dries007.tfc.world.chunkdata;
 
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
-import net.dries007.tfc.world.biome.ITFCBiomeSource;
+import net.dries007.tfc.world.biome.BiomeSourceExtension;
 
 /**
  * Identifier interface for the TFC enabled chunk generators
@@ -16,7 +16,7 @@ import net.dries007.tfc.world.biome.ITFCBiomeSource;
  * Any custom chunk generator wishing to use features from TFC MUST implement this and return a valid chunk data provider
  * This is also used in various places (such as spawn position placement) to identify TFC world generators
  */
-public interface ITFCChunkGenerator
+public interface ChunkGeneratorExtension
 {
     /**
      * @return The chunk data provider for this generator.
@@ -28,7 +28,7 @@ public interface ITFCChunkGenerator
      *
      * @return The biome provider / source for this generator
      */
-    ITFCBiomeSource getBiomeSource();
+    BiomeSourceExtension getBiomeSource();
 
     default ChunkGenerator chunkGenerator()
     {

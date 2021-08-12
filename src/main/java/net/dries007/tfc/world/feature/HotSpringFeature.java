@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
@@ -67,7 +66,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 final int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
                 // Disallow underwater locations
-                if (y <= TFCChunkGenerator.SEA_LEVEL || !noise.inside(x, z))
+                if (y <= TFCChunkGenerator.SEA_LEVEL_Y || !noise.inside(x, z))
                 {
                     continue;
                 }

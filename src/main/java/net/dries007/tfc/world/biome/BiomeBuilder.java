@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
-import net.dries007.tfc.world.IBiomeNoiseSampler;
+import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
 
@@ -33,7 +33,7 @@ public class BiomeBuilder
     private final List<BiomeDictionary.Type> dictionaryTypes;
 
     @Nullable private LongFunction<Noise2D> heightNoiseFactory;
-    @Nullable private LongFunction<IBiomeNoiseSampler> noiseFactory;
+    @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
 
     private BiomeVariants.Group group;
     private boolean salty;
@@ -54,11 +54,11 @@ public class BiomeBuilder
     public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
     {
         this.heightNoiseFactory = heightNoiseFactory;
-        this.noiseFactory = seed -> IBiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+        this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
         return this;
     }
 
-    public BiomeBuilder carving(BiFunction<Long, Noise2D, IBiomeNoiseSampler> carvingNoiseFactory)
+    public BiomeBuilder carving(BiFunction<Long, Noise2D, BiomeNoiseSampler> carvingNoiseFactory)
     {
         Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
@@ -66,7 +66,7 @@ public class BiomeBuilder
         return this;
     }
 
-    public BiomeBuilder noise(LongFunction<IBiomeNoiseSampler> noiseFactory)
+    public BiomeBuilder noise(LongFunction<BiomeNoiseSampler> noiseFactory)
     {
         this.noiseFactory = noiseFactory;
         return this;
@@ -94,12 +94,12 @@ public class BiomeBuilder
     {
         this.volcanic = true;
         this.volcanoFrequency = frequency;
-        this.volcanoBasaltHeight = TFCChunkGenerator.SEA_LEVEL + volcanoBasaltHeight;
+        this.volcanoBasaltHeight = TFCChunkGenerator.SEA_LEVEL_Y + volcanoBasaltHeight;
 
         Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
         this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
-        this.noiseFactory = seed -> IBiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+        this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
         return this;
     }
 

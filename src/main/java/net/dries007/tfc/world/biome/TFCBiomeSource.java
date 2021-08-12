@@ -33,7 +33,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 
-public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
+public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 {
     public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
@@ -44,6 +44,33 @@ public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
         ClimateSettings.CODEC.forGetter(c -> c.climateSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
+
+    public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
+    {
+        return new TFCBiomeSource(seed, 8_000, 0, 0, defaultLayerSettings(), defaultClimateSettings(), biomeRegistry);
+    }
+
+    public static ClimateSettings defaultClimateSettings()
+    {
+        return new ClimateSettings(-17.25f, -3.75f, 9.75f, 23.25f, 125, 200, 300, 375);
+    }
+
+    public static LayerSettings defaultLayerSettings()
+    {
+        final List<ResourceLocation> bottomRocks = defaultRockLayers(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.METAMORPHIC);
+        final List<ResourceLocation> middleRocks = defaultRockLayers(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.METAMORPHIC, RockCategory.SEDIMENTARY);
+        final List<ResourceLocation> topRocks = defaultRockLayers(RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.SEDIMENTARY, RockCategory.METAMORPHIC);
+        return new LayerSettings(30, 7, bottomRocks, middleRocks, topRocks);
+    }
+
+    private static List<ResourceLocation> defaultRockLayers(RockCategory first, RockCategory... others)
+    {
+        final Set<RockCategory> categorySet = EnumSet.of(first, others);
+        return Arrays.stream(Rock.Default.values())
+            .filter(rock -> categorySet.contains(rock.getCategory()))
+            .map(rock -> Helpers.identifier(rock.getSerializedName()))
+            .collect(Collectors.toList());
+    }
 
     // Set from codec
     private final long seed;
@@ -101,7 +128,7 @@ public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
     }
 
     /**
-     * A version of {@link BiomeProvider#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
+     * A version of {@link BiomeSource#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
      * - It does not query the climate layers - requiring less chunk data generation and is faster.
      * - It's slightly optimized for finding a random biome, and using mutable positions.
      */
@@ -133,11 +160,6 @@ public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
         return mutablePos.immutable();
     }
 
-    /**
-     * In {@link net.minecraft.world.biome.BiomeContainer}, we can see that the x, y, z positions are not absolute block coordinates.
-     * Rather, since MC now samples biomes once per 4x4x4 area basis, these are not accurate for our chunk data purposes
-     * So, we need to make them accurate.
-     */
     @Override
     public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
@@ -232,70 +254,18 @@ public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
         return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, layerSettings, climateSettings, biomeRegistry);
     }
 
-    public static final class LayerSettings
+    public record LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> bottomRocks, List<ResourceLocation> middleRocks, List<ResourceLocation> topRocks)
     {
-        private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(LayerSettings::getOceanPercent),
-            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale),
-            ResourceLocation.CODEC.listOf().fieldOf("bottom_rocks").forGetter(LayerSettings::getBottomRocks),
-            ResourceLocation.CODEC.listOf().fieldOf("middle_rocks").forGetter(LayerSettings::getMidRocks),
-            ResourceLocation.CODEC.listOf().fieldOf("top_rocks").forGetter(LayerSettings::getTopRocks)
+        public static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(c -> c.oceanPercent),
+            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(c -> c.rockLayerScale),
+            ResourceLocation.CODEC.listOf().fieldOf("bottom_rocks").forGetter(c -> c.bottomRocks),
+            ResourceLocation.CODEC.listOf().fieldOf("middle_rocks").forGetter(c -> c.middleRocks),
+            ResourceLocation.CODEC.listOf().fieldOf("top_rocks").forGetter(c -> c.topRocks)
         ).apply(instance, LayerSettings::new));
-
-        private static List<ResourceLocation> getDefaultLayerRocks(RockCategory first, RockCategory... others)
-        {
-            final Set<RockCategory> categorySet = EnumSet.of(first, others);
-            return Arrays.stream(Rock.Default.values())
-                .filter(rock -> categorySet.contains(rock.getCategory()))
-                .map(rock -> Helpers.identifier(rock.getSerializedName()))
-                .collect(Collectors.toList());
-        }
-
-        private final int oceanPercent;
-        private final int rockLayerScale;
-        private final List<ResourceLocation> bottomRocks, middleRocks, topRocks;
-
-        public LayerSettings()
-        {
-            this(30, 7, getDefaultLayerRocks(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.METAMORPHIC), getDefaultLayerRocks(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.METAMORPHIC, RockCategory.SEDIMENTARY), getDefaultLayerRocks(RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.SEDIMENTARY, RockCategory.METAMORPHIC));
-        }
-
-        public LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> bottomRocks, List<ResourceLocation> middleRocks, List<ResourceLocation> topRocks)
-        {
-            this.oceanPercent = oceanPercent;
-            this.rockLayerScale = rockLayerScale;
-            this.bottomRocks = bottomRocks;
-            this.middleRocks = middleRocks;
-            this.topRocks = topRocks;
-        }
-
-        public int getOceanPercent()
-        {
-            return oceanPercent;
-        }
-
-        public int getRockLayerScale()
-        {
-            return rockLayerScale;
-        }
-
-        public List<ResourceLocation> getBottomRocks()
-        {
-            return bottomRocks;
-        }
-
-        public List<ResourceLocation> getMidRocks()
-        {
-            return middleRocks;
-        }
-
-        public List<ResourceLocation> getTopRocks()
-        {
-            return topRocks;
-        }
     }
 
-    public static final class ClimateSettings
+    public record ClimateSettings(float frozenColdCutoff, float coldNormalCutoff, float normalLukewarmCutoff, float lukewarmWarmCutoff, float aridDryCutoff, float dryNormalCutoff, float normalDampCutoff, float dampWetCutoff)
     {
         public static final MapCodec<ClimateSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.FLOAT.optionalFieldOf("frozen_cold_cutoff", -17.25f).forGetter(c -> c.frozenColdCutoff),
@@ -307,31 +277,5 @@ public class TFCBiomeSource extends BiomeSource implements ITFCBiomeSource
             Codec.FLOAT.optionalFieldOf("normal_damp_cutoff", 300f).forGetter(c -> c.normalDampCutoff),
             Codec.FLOAT.optionalFieldOf("damp_wet_cutoff", 375f).forGetter(c -> c.dampWetCutoff)
         ).apply(instance, ClimateSettings::new));
-
-        private final float frozenColdCutoff;
-        private final float coldNormalCutoff;
-        private final float normalLukewarmCutoff;
-        private final float lukewarmWarmCutoff;
-        private final float aridDryCutoff;
-        private final float dryNormalCutoff;
-        private final float normalDampCutoff;
-        private final float dampWetCutoff;
-
-        public ClimateSettings()
-        {
-            this(-17.25f, -3.75f, 9.75f, 23.25f, 125, 200, 300, 375);
-        }
-
-        public ClimateSettings(float frozenColdCutoff, float coldNormalCutoff, float normalLukewarmCutoff, float lukewarmWarmCutoff, float aridDryCutoff, float dryNormalCutoff, float normalDampCutoff, float dampWetCutoff)
-        {
-            this.frozenColdCutoff = frozenColdCutoff;
-            this.coldNormalCutoff = coldNormalCutoff;
-            this.normalLukewarmCutoff = normalLukewarmCutoff;
-            this.lukewarmWarmCutoff = lukewarmWarmCutoff;
-            this.aridDryCutoff = aridDryCutoff;
-            this.dryNormalCutoff = dryNormalCutoff;
-            this.normalDampCutoff = normalDampCutoff;
-            this.dampWetCutoff = dampWetCutoff;
-        }
     }
 }

@@ -8,13 +8,13 @@ package net.dries007.tfc.world;
 
 import net.dries007.tfc.world.noise.Noise2D;
 
-public interface IBiomeNoiseSampler
+public interface BiomeNoiseSampler
 {
     double FULL = 0;
 
-    static IBiomeNoiseSampler fromHeightNoise(Noise2D heightNoise)
+    static BiomeNoiseSampler fromHeightNoise(Noise2D heightNoise)
     {
-        return new IBiomeNoiseSampler()
+        return new BiomeNoiseSampler()
         {
             private float height;
 
@@ -38,9 +38,9 @@ public interface IBiomeNoiseSampler
         };
     }
 
-    static IBiomeNoiseSampler fromHeightAndCarvingNoise(Noise2D heightNoise, Noise2D carvingCenterNoise, Noise2D carvingHeightNoise)
+    static BiomeNoiseSampler fromHeightAndCarvingNoise(Noise2D heightNoise, Noise2D carvingCenterNoise, Noise2D carvingHeightNoise)
     {
-        return new IBiomeNoiseSampler()
+        return new BiomeNoiseSampler()
         {
             private float height, carvingHeight, carvingCenter;
 

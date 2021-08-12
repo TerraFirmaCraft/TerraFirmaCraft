@@ -8,10 +8,10 @@ package net.dries007.tfc.world.biome;
 
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.world.IBiomeNoiseSampler;
+import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.noise.*;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL;
+import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
 
 /**
  * Collections of biome noise factories
@@ -25,7 +25,7 @@ public final class BiomeNoise
      */
     public static Noise2D badlands(long seed)
     {
-        final int seaLevel = SEA_LEVEL;
+        final int seaLevel = SEA_LEVEL_Y;
         return new OpenSimplex2D(seed)
             .octaves(4)
             .spread(0.025f)
@@ -53,7 +53,7 @@ public final class BiomeNoise
             .spread(0.06f)
             .warped(warp)
             .map(x -> x > 0.4 ? x - 0.8f : -x)
-            .scaled(-0.4f, 0.8f, SEA_LEVEL + minHeight, SEA_LEVEL + maxHeight);
+            .scaled(-0.4f, 0.8f, SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
     }
 
     /**
@@ -61,25 +61,25 @@ public final class BiomeNoise
      */
     public static Noise2D hills(long seed, int minHeight, int maxHeight)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(SEA_LEVEL + minHeight, SEA_LEVEL + maxHeight);
+        return new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
     }
 
     public static Noise2D lake(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL - 12, SEA_LEVEL - 2);
+        return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y - 2);
     }
 
     public static Noise2D river(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL - 8, SEA_LEVEL - 2);
+        return new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL_Y - 8, SEA_LEVEL_Y - 2);
     }
 
-    public static IBiomeNoiseSampler riverSampler(long seed)
+    public static BiomeNoiseSampler riverSampler(long seed)
     {
-        Noise2D riverHeight = new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL - 11, SEA_LEVEL - 5);
+        Noise2D riverHeight = new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL_Y - 11, SEA_LEVEL_Y - 5);
         Noise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 3);
 
-        return new IBiomeNoiseSampler()
+        return new BiomeNoiseSampler()
         {
             private double height;
             private int x, z;
@@ -101,22 +101,22 @@ public final class BiomeNoise
             @Override
             public double noise(int y)
             {
-                if (y > SEA_LEVEL + 20)
+                if (y > SEA_LEVEL_Y + 20)
                 {
                     return FULL;
                 }
-                else if (y > SEA_LEVEL + 10)
+                else if (y > SEA_LEVEL_Y + 10)
                 {
-                    double easing = 1 - (y - SEA_LEVEL - 10) / 10f;
+                    double easing = 1 - (y - SEA_LEVEL_Y - 10) / 10f;
                     return easing * cliffNoise.noise(x, y, z);
                 }
-                else if (y > SEA_LEVEL)
+                else if (y > SEA_LEVEL_Y)
                 {
                     return cliffNoise.noise(x, y, z);
                 }
-                else if (y > SEA_LEVEL - 8)
+                else if (y > SEA_LEVEL_Y - 8)
                 {
-                    double easing = (y - SEA_LEVEL + 8) / 8d;
+                    double easing = (y - SEA_LEVEL_Y + 8) / 8d;
                     return easing * cliffNoise.noise(x, y, z);
                 }
                 return FULL;
@@ -129,7 +129,7 @@ public final class BiomeNoise
      */
     public static Noise2D lowlands(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL - 6, SEA_LEVEL + 7).flattened(SEA_LEVEL - 4, SEA_LEVEL + 3);
+        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL_Y - 6, SEA_LEVEL_Y + 7).flattened(SEA_LEVEL_Y - 4, SEA_LEVEL_Y + 3);
     }
 
     public static Noise2D mountains(long seed, int baseHeight, int scaleHeight)
@@ -145,7 +145,7 @@ public final class BiomeNoise
             )
             .map(x -> {
                 final float x0 = 0.125f * (x + 1) * (x + 1) * (x + 1); // Power scaled, flattens most areas but maximizes peaks
-                return SEA_LEVEL + baseHeight + scaleHeight * x0; // Scale the entire thing to mountain ranges
+                return SEA_LEVEL_Y + baseHeight + scaleHeight * x0; // Scale the entire thing to mountain ranges
             });
 
         // Cliff noise consists of noise that's been artificially clamped over half the domain, which is then selectively added above a base height level
@@ -177,7 +177,7 @@ public final class BiomeNoise
         return new OpenSimplex2D(seed + 1)
             .octaves(4)
             .spread(0.11f)
-            .scaled(SEA_LEVEL + depthMin, SEA_LEVEL + depthMax)
+            .scaled(SEA_LEVEL_Y + depthMin, SEA_LEVEL_Y + depthMax)
             .warped(warp);
     }
 
@@ -197,12 +197,12 @@ public final class BiomeNoise
             }
             return 0; // No modifications outside of ridge area
         });
-        return new OpenSimplex2D(seed + 2).octaves(4).spread(0.11f).scaled(SEA_LEVEL + depthMin, SEA_LEVEL + depthMax).add(ridgeNoise).warped(warp);
+        return new OpenSimplex2D(seed + 2).octaves(4).spread(0.11f).scaled(SEA_LEVEL_Y + depthMin, SEA_LEVEL_Y + depthMax).add(ridgeNoise).warped(warp);
     }
 
     public static Noise2D shore(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.17f).scaled(SEA_LEVEL, SEA_LEVEL + 1.8f);
+        return new OpenSimplex2D(seed).octaves(4).spread(0.17f).scaled(SEA_LEVEL_Y, SEA_LEVEL_Y + 1.8f);
     }
 
     /**
@@ -222,28 +222,28 @@ public final class BiomeNoise
             if (value < volcanoChance && t > 0)
             {
                 final float th = VolcanoNoise.calculateHeight(distance + volcanoJitterNoise.noise(x, z));
-                final float height = SEA_LEVEL + baseVolcanoHeight + th * scaleVolcanoHeight;
+                final float height = SEA_LEVEL_Y + baseVolcanoHeight + th * scaleVolcanoHeight;
                 return NoiseUtil.lerp(baseHeight, 0.5f * (height + Math.max(height, baseHeight)), t);
             }
             return baseHeight;
         };
     }
 
-    public static IBiomeNoiseSampler undergroundRivers(long seed, Noise2D heightNoise)
+    public static BiomeNoiseSampler undergroundRivers(long seed, Noise2D heightNoise)
     {
-        final Noise2D carvingCenterNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL - 3, SEA_LEVEL + 3);
+        final Noise2D carvingCenterNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 3);
         final Noise2D carvingHeightNoise = new OpenSimplex2D(seed + 1).octaves(4).spread(0.15f).scaled(8, 14);
 
-        return IBiomeNoiseSampler.fromHeightAndCarvingNoise(heightNoise, carvingCenterNoise, carvingHeightNoise);
+        return BiomeNoiseSampler.fromHeightAndCarvingNoise(heightNoise, carvingCenterNoise, carvingHeightNoise);
     }
 
-    public static IBiomeNoiseSampler undergroundLakes(long seed, Noise2D heightNoise)
+    public static BiomeNoiseSampler undergroundLakes(long seed, Noise2D heightNoise)
     {
         final Noise2D blobsNoise = new OpenSimplex2D(seed + 1).spread(0.04f).abs();
         final Noise2D depthNoise = new OpenSimplex2D(seed + 2).octaves(4).scaled(2, 18).spread(0.2f);
-        final Noise2D centerNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.06f).scaled(SEA_LEVEL - 4, SEA_LEVEL + 4);
+        final Noise2D centerNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.06f).scaled(SEA_LEVEL_Y - 4, SEA_LEVEL_Y + 4);
 
-        return new IBiomeNoiseSampler()
+        return new BiomeNoiseSampler()
         {
             private float surfaceHeight, center, height;
 

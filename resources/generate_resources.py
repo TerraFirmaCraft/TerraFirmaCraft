@@ -12,6 +12,7 @@ import collapse_recipes
 import data
 import recipes
 import world_gen
+
 from constants import *
 
 
@@ -54,8 +55,6 @@ def generate_all(rm: ResourceManager):
     data.generate(rm)
     world_gen.generate(rm)
     recipes.generate(rm)
-
-    # more complex stuff n things
     collapse_recipes.generate(rm)
 
     rm.flush()

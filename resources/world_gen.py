@@ -45,6 +45,58 @@ class Decoration(IntEnum):
 
 
 def generate(rm: ResourceManager):
+
+    rm.data('minecraft:dimension_type/overworld', {
+        'logical_height': 384,
+        'infiniburn': 'minecraft:infiniburn_overworld',
+        'effects': 'minecraft:overworld',
+        'ambient_light': 0.0,
+        'respawn_anchor_works': False,
+        'has_raids': True,
+        'min_y': -64,
+        'height': 384,
+        'natural': True,
+        'coordinate_scale': 1.0,
+        'piglin_safe': False,
+        'bed_works': True,
+        'has_skylight': True,
+        'has_ceiling': False,
+        'ultrawarm': False
+    })
+
+    # Noise Settings
+    rm.data('minecraft:worldgen/noise_settings/overworld', {
+        'noise_caves_enabled': True,
+        'deepslate_enabled': False,
+        'ore_veins_enabled': False,
+        'noodle_caves_enabled': True,
+        'min_surface_level': 50,
+        'disable_mob_generation': False,
+        'aquifers_enabled': True,
+        'default_fluid': {'Properties': {'level': '0'}, 'Name': 'minecraft:water'},
+        'bedrock_roof_position': -2147483648,
+        'bedrock_floor_position': 0,
+        'sea_level': 63,
+        'structures': {
+            'stronghold': {'distance': 32, 'spread': 3, 'count': 128},
+            'structures': {}
+        },
+        'noise': {
+            'simplex_surface_noise': True,
+            'random_density_offset': True,
+            'size_vertical': 2,
+            'density_factor': 1.0,
+            'density_offset': -0.46875,
+            'top_slide': {'target': -10, 'size': 3, 'offset': 0},
+            'bottom_slide': {'target': 15, 'size': 3, 'offset': 0},
+            'size_horizontal': 1,
+            'min_y': -64,
+            'height': 384,
+            'sampling': {'xz_scale': 0.9999999814507745, 'y_scale': 0.9999999814507745, 'xz_factor': 80.0, 'y_factor': 160.0}
+        },
+        'default_block': {'Name': 'minecraft:stone'}
+    })
+
     # Surface Builders
     rm.surface_builder('badlands', wg.configure('tfc:badlands'))
     rm.surface_builder('volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
@@ -54,7 +106,47 @@ def generate(rm: ResourceManager):
     rm.surface_builder('volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
     rm.surface_builder('shore', wg.configure('tfc:shore'))
 
+    # Carvers
+    # todo
+
+    # Biomes
+    for temp in TEMPERATURES:
+        for rain in RAINFALLS:
+            biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands', lake_features=False)
+            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:volcanic', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
+            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:normal', boulders=True, lake_features=False, hot_spring_features='empty')
+            biome(rm, 'plains', temp, rain, 'plains', 'tfc:normal')
+            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True, hot_spring_features='empty')
+            biome(rm, 'hills', temp, rain, 'plains', 'tfc:normal')
+            biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:normal', boulders=True, hot_spring_features='empty')
+            biome(rm, 'lake', temp, rain, 'river', 'tfc:normal', spawnable=False)
+            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:normal', lake_features=False)
+            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True, hot_spring_features=True)
+            biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', hot_spring_features=True)
+            biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'ocean_reef', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True, reef_features=True)
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'deep_ocean_trench', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'river', temp, rain, 'river', 'tfc:normal', spawnable=False)
+            biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False, ocean_features=True)
+
+            biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'volcanic_mountain_river', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
+            biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'oceanic_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, ocean_carvers=True, volcano_features=True)
+            biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'volcanic_mountain_lake', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
+            biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
+            biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
+            biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
+
     # Configured Features
+
     rm.feature('erosion', wg.configure('tfc:erosion'))
     rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
     for block in ('packed', 'blue'):
@@ -596,50 +688,6 @@ def generate(rm: ResourceManager):
     # Underground decoration
     rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, 12, 90)))
     rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
-
-    # Carvers
-    #rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
-    #rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
-    #rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
-
-    #rm.carver('underwater_cave', wg.configure('tfc:underwater_cave', {'probability': 0.03}))
-    #rm.carver('underwater_canyon', wg.configure('tfc:underwater_canyon', {'probability': 0.02}))
-
-    # Biomes
-    for temp in TEMPERATURES:
-        for rain in RAINFALLS:
-            biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands', lake_features=False)
-            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:volcanic', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
-            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:normal', boulders=True, lake_features=False, hot_spring_features='empty')
-            biome(rm, 'plains', temp, rain, 'plains', 'tfc:normal')
-            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True, hot_spring_features='empty')
-            biome(rm, 'hills', temp, rain, 'plains', 'tfc:normal')
-            biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:normal', boulders=True, hot_spring_features='empty')
-            biome(rm, 'lake', temp, rain, 'river', 'tfc:normal', spawnable=False)
-            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:normal', lake_features=False)
-            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True, hot_spring_features=True)
-            biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', hot_spring_features=True)
-            biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
-            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
-            biome(rm, 'ocean_reef', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True, reef_features=True)
-            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
-            biome(rm, 'deep_ocean_trench', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
-            biome(rm, 'river', temp, rain, 'river', 'tfc:normal', spawnable=False)
-            biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False, ocean_features=True)
-
-            biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'volcanic_mountain_river', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
-            biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'oceanic_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, ocean_carvers=True, volcano_features=True)
-            biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'volcanic_mountain_lake', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
-            biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
-            biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):

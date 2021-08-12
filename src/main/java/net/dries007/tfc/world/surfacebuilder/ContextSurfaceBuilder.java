@@ -45,10 +45,10 @@ public abstract class ContextSurfaceBuilder<C extends SurfaceBuilderConfiguratio
      */
     protected int calculateAltitudeSlopeSurfaceDepth(int y, double slope, int maxDepth, double falloff, int minimumReturnValue)
     {
-        final int seaLevel = TFCChunkGenerator.SEA_LEVEL;
+        final int seaLevel = TFCChunkGenerator.SEA_LEVEL_Y;
         double slopeFactor = Mth.clamp(slope / 15d, 0, 1); // in [0, 1]
         double altitudeFactor = Mth.clamp((y - seaLevel) / 100d, 0, 1);
-        if (y < TFCChunkGenerator.SEA_LEVEL)
+        if (y < TFCChunkGenerator.SEA_LEVEL_Y)
         {
             // Below sea level, slope influence falls off, and levels off at 40% influence
             slopeFactor *= Mth.clamp(1 - (seaLevel - y) / 15d, 0.4, 1);

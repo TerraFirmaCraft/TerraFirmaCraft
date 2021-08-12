@@ -17,7 +17,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 /**
  * Marker for TFC biome providers
  */
-public interface ITFCBiomeSource
+public interface BiomeSourceExtension
 {
     int getSpawnDistance();
 

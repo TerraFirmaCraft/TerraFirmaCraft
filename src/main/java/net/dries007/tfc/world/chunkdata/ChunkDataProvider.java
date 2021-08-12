@@ -12,23 +12,23 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 /**
- * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link IChunkDataGenerator}.
- * In order to customize the chunk data generation, see {@link IChunkDataGenerator}
+ * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link ChunkDataGenerator}.
+ * In order to customize the chunk data generation, see {@link ChunkDataGenerator}
  */
 public final class ChunkDataProvider
 {
     public static ChunkDataProvider get(ChunkGenerator chunkGenerator)
     {
-        if (chunkGenerator instanceof ITFCChunkGenerator)
+        if (chunkGenerator instanceof ChunkGeneratorExtension)
         {
-            return ((ITFCChunkGenerator) chunkGenerator).getChunkDataProvider();
+            return ((ChunkGeneratorExtension) chunkGenerator).getChunkDataProvider();
         }
         throw new IllegalStateException("Tried to access ChunkDataProvider but none was present on " + chunkGenerator);
     }
 
-    private final IChunkDataGenerator generator;
+    private final ChunkDataGenerator generator;
 
-    public ChunkDataProvider(IChunkDataGenerator generator)
+    public ChunkDataProvider(ChunkDataGenerator generator)
     {
         this.generator = generator;
     }
@@ -64,7 +64,7 @@ public final class ChunkDataProvider
     }
 
     @VisibleForTesting
-    public IChunkDataGenerator getGenerator()
+    public ChunkDataGenerator getGenerator()
     {
         return generator;
     }

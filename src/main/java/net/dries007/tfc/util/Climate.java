@@ -54,7 +54,7 @@ public final class Climate
     public static final float MAX_ICICLE_TEMPERATURE = -2f;
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
 
-    public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL;
+    public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
     public static final float DEPTH_LEVEL = SEA_LEVEL * 2 / 3;
 
     private static final Random RANDOM = new Random(); // Used for daily temperature variations

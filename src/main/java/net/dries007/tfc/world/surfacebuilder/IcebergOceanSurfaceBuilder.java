@@ -49,7 +49,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         double icebergMinY = 0.0D;
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(x, startHeight, z);
-        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL, context.getChunkData().getAverageTemp(mutablePos), 1);
+        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, TFCChunkGenerator.SEA_LEVEL_Y, context.getChunkData().getAverageTemp(mutablePos), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
