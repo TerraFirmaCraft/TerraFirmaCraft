@@ -179,8 +179,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final NormalNoise aquiferWaterLevelNoise;
     private final NormalNoise aquiferLavaLevelNoise;
 
-    private final NoiseSampler noiseSampler;
-
     private final Cavifier cavifier;
     private final NoodleCavifier noodleCavifier;
 
@@ -229,14 +227,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.aquiferWaterLevelNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -3, 1.0D, 0.0D, 2.0D);
         this.aquiferLavaLevelNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -1, 1.0D, 0.0D);
 
-        // todo: I think only one of the two cavifiers is actually being used here... can we use both?
         this.cavifier = new Cavifier(random, noiseSettings.minY() / this.cellHeight);
         this.noodleCavifier = new NoodleCavifier(seed);
-
-        BlendedNoise blendedNoise = new BlendedNoise(random);
-        PerlinNoise depthNoise = new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
-
-        this.noiseSampler = new NoiseSampler(biomeSource, this.cellWidth, this.cellHeight, this.cellCountY, noiseSettings, blendedNoise, null, depthNoise, cavifier);
     }
 
     @Override
@@ -358,7 +350,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeAccessor);
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
-        final Aquifer aquifer = Aquifer.createDisabled(getSeaLevel(), noiseGeneratorSettings().getDefaultFluid()); // Aquifer.create(chunkPos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), noiseSampler, helper.minCellY * cellHeight, helper.noiseCellCountY * cellHeight);
+        @SuppressWarnings("ConstantConditions") // The aquifer never uses the sampler field, and we don't either.
+        final Aquifer aquifer = Aquifer.create(chunkPos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), null, helper.minCellY * cellHeight, helper.noiseCellCountY * cellHeight);
         final RockLayerStoneSource stoneSource = new RockLayerStoneSource(chunkPos, rockData);
 
         helper.fillFromNoise(aquifer, stoneSource);
@@ -659,19 +652,20 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         private final Heightmap oceanFloor, worldSurface;
 
         // Noise caves / interpolators, setup initially for the chunk
-        private final List<NoiseInterpolator> allInterpolators;
-        private final NoodleCaveNoiseModifier noodleCaveNoiseModifier;
-        private final int minCellY, noiseCellCountY;
+        private final List<NoiseInterpolator> interpolators;
+        private final CavifierSampler cavifierSampler;
+        private final NoodleCaveSampler noodleCaveSampler;
+        private final int minY, maxY, minCellY, noiseCellCountY;
+
+        // Externally sampled biome weight arrays, and a weight map for local sampling
+        private final Object2DoubleMap<Biome>[] sampledBiomeWeights;
+        private final Object2DoubleMap<Biome> biomeWeights1;
 
         // Current local position / context
         private int x, z; // Absolute x/z positions
         private int localX, localZ; // Chunk-local x/z
         private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
         private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
-
-        // Externally sampled biome weight arrays, and a weight map for local sampling
-        private final Object2DoubleMap<Biome>[] sampledBiomeWeights;
-        private final Object2DoubleMap<Biome> biomeWeights1;
 
         // Result arrays, set for each x/z in the chunk
         private final int[] surfaceHeight;
@@ -686,14 +680,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
 
             final NoiseSettings noiseSettings = noiseGeneratorSettings().noiseSettings();
-            final int minY = Math.max(noiseSettings.minY(), chunk.getMinBuildHeight());
-            final int maxY = Math.min(noiseSettings.minY() + noiseSettings.height(), chunk.getMaxBuildHeight());
+            this.minY = Math.max(noiseSettings.minY(), chunk.getMinBuildHeight());
+            this.maxY = Math.min(noiseSettings.minY() + noiseSettings.height(), chunk.getMaxBuildHeight());
 
-            minCellY = Mth.intFloorDiv(minY, cellHeight);
-            noiseCellCountY = Mth.intFloorDiv(maxY - minY, cellHeight);
+            this.minCellY = Mth.intFloorDiv(minY, cellHeight);
+            this.noiseCellCountY = Mth.intFloorDiv(maxY - minY, cellHeight);
 
-            this.allInterpolators = new ArrayList<>();
-            this.noodleCaveNoiseModifier = new NoodleCaveNoiseModifier(chunk.getPos(), minCellY);
+            this.interpolators = new ArrayList<>();
+
+            this.cavifierSampler = new CavifierSampler(cavifier, chunk.getPos(), cellWidth, cellHeight, cellCountX, cellCountY, cellCountZ, minCellY);
+            this.noodleCaveSampler = new NoodleCaveSampler(noodleCavifier, chunk.getPos(), cellCountX, cellCountY, cellCountZ, minCellY);
 
             this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
             this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
@@ -704,8 +700,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.surfaceHeight = surfaceHeight;
             this.localBiomes = localBiomes;
 
-            noodleCaveNoiseModifier.addInterpolators(allInterpolators);
-            allInterpolators.forEach(NoiseInterpolator::initializeForFirstCellX);
+            cavifierSampler.addInterpolators(interpolators);
+            noodleCaveSampler.addInterpolators(interpolators);
+            interpolators.forEach(NoiseInterpolator::initializeForFirstCellX);
         }
 
         /**
@@ -717,7 +714,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             for (int cellX = 0; cellX < cellCountX; cellX++)
             {
                 final int finalCellX = cellX;
-                allInterpolators.forEach(interpolator -> interpolator.advanceCellX(finalCellX));
+                interpolators.forEach(interpolator -> interpolator.advanceCellX(finalCellX));
 
                 for (int cellZ = 0; cellZ < cellCountZ; cellZ++)
                 {
@@ -741,14 +738,17 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                         }
                     }
                 }
+
+                interpolators.forEach(NoiseInterpolator::swapSlices);
             }
         }
 
-        /** todo: start at the top height value rather than iterating all the way
+        /**
          * Fills a single column
          */
         void fillColumn(Aquifer aquifer, RockLayerStoneSource stoneSource, BlockPos.MutableBlockPos mutablePos)
         {
+            // todo: optimization, start at the top height value rather than iterating all the way
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
             double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
 
@@ -757,7 +757,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             {
                 final int finalCellZ = lastCellZ;
                 final int finalCellY = cellY;
-                allInterpolators.forEach(interpolator -> interpolator.selectCellYZ(finalCellY, finalCellZ));
+                interpolators.forEach(interpolator -> interpolator.selectCellYZ(finalCellY, finalCellZ));
 
                 for (int localCellY = cellHeight - 1; localCellY >= 0; --localCellY)
                 {
@@ -770,15 +770,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     }
 
                     double cellDeltaY = (double) localCellY / cellHeight;
-                    allInterpolators.forEach(noiseInterpolator -> {
+                    interpolators.forEach(noiseInterpolator -> {
                         noiseInterpolator.updateForY(cellDeltaY);
                         noiseInterpolator.updateForX(cellDeltaX);
                     });
 
-                    noodleCaveNoiseModifier.prepare(cellDeltaZ);
-
                     double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                    BlockState state = getStateAt(aquifer, stoneSource, noodleCaveNoiseModifier, x, y, z, noise);
+                    BlockState state = getStateAt(aquifer, stoneSource, x, y, z, noise);
                     if (!state.isAir())
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
@@ -934,9 +932,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return Mth.clamp(noise, -1, 1);
         }
 
-        BlockState getStateAt(Aquifer aquifer, BaseStoneSource stoneSource, NoiseModifier caveNoiseModifier, int x, int y, int z, double noise)
+        BlockState getStateAt(Aquifer aquifer, BaseStoneSource stoneSource, int x, int y, int z, double noise)
         {
-            noise = caveNoiseModifier.modifyNoise(noise, x, y, z);
+            noise = noodleCaveSampler.sample(noise, x, y, z, minY, cellDeltaZ);
+            noise = Math.min(noise, cavifierSampler.sample(cellDeltaZ) * 2f);
             return aquifer.computeState(stoneSource, x, y, z, noise);
         }
 
@@ -949,134 +948,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.z = z;
             this.localX = x & 15;
             this.localZ = z & 15;
-        }
-
-        /**
-         * FOR REFERENCE ONLY
-         * Copied from {@link NoiseBasedChunkGenerator}
-         */
-        void alternateFill(Aquifer aquifer, RockLayerStoneSource stoneSource)
-        {
-            final Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
-            final Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-            final ChunkPos chunkPos = chunk.getPos();
-            final int chunkX = chunkPos.getMinBlockX();
-            final int chunkZ = chunkPos.getMinBlockZ();
-
-            // final NoiseInterpolator baseInterpolator = new NoiseInterpolator(cellCountX, cellCountY, cellCountZ, chunkPos, minCellY, this::fillNoiseColumn);
-            final List<NoiseInterpolator> allInterpolators = new ArrayList<>();
-
-            final NoodleCaveNoiseModifier noodleCaveNoiseModifier = new NoodleCaveNoiseModifier(chunkPos, minCellY);
-
-            // allInterpolators.add(baseInterpolator);
-            noodleCaveNoiseModifier.addInterpolators(allInterpolators);
-
-            allInterpolators.forEach(NoiseInterpolator::initializeForFirstCellX);
-            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-            for (int cellX = 0; cellX < cellCountX; ++cellX)
-            {
-                final int finalCellX = cellX;
-                allInterpolators.forEach(interpolator -> interpolator.advanceCellX(finalCellX));
-
-                for (int cellZ = 0; cellZ < cellCountZ; ++cellZ)
-                {
-                    LevelChunkSection section = chunk.getOrCreateSection(chunk.getSectionsCount() - 1);
-
-                    for (int cellY = cellCountY - 1; cellY >= 0; --cellY)
-                    {
-                        int finalCellZ = cellZ;
-                        int finalCellY = cellY;
-                        allInterpolators.forEach(interpolator -> interpolator.selectCellYZ(finalCellY, finalCellZ));
-
-                        for (int localCellY = cellHeight - 1; localCellY >= 0; --localCellY)
-                        {
-                            int actualY = (minCellY + cellY) * cellHeight + localCellY;
-                            int localSectionY = actualY & 15;
-                            int lastSectionIndex = chunk.getSectionIndex(actualY);
-                            if (chunk.getSectionIndex(section.bottomBlockY()) != lastSectionIndex)
-                            {
-                                section = chunk.getOrCreateSection(lastSectionIndex);
-                            }
-
-                            double cellDeltaY = (double) localCellY / cellHeight;
-                            allInterpolators.forEach(noiseInterpolator -> noiseInterpolator.updateForY(cellDeltaY));
-
-                            for (int localCellX = 0; localCellX < cellWidth; ++localCellX)
-                            {
-                                int actualX = chunkX + cellX * cellWidth + localCellX;
-                                int localSectionX = actualX & 15;
-                                double cellDeltaX = (double) localCellX / cellWidth;
-                                allInterpolators.forEach(noiseInterpolator -> noiseInterpolator.updateForX(cellDeltaX));
-
-                                for (int localCellZ = 0; localCellZ < cellWidth; ++localCellZ)
-                                {
-                                    int actualZ = chunkZ + cellZ * cellWidth + localCellZ;
-                                    int localSectionZ = actualZ & 15;
-                                    double cellDeltaZ = (double) localCellZ / cellWidth;
-                                    double noise = 0; // baseInterpolator.calculateValue(cellDeltaZ);
-                                    noodleCaveNoiseModifier.prepare(cellDeltaZ);
-                                    BlockState blockstate = getStateAt(aquifer, stoneSource, noodleCaveNoiseModifier, actualX, actualY, actualZ, noise);
-
-                                    if (!blockstate.isAir())
-                                    {
-                                        section.setBlockState(localSectionX, localSectionY, localSectionZ, blockstate, false);
-                                        oceanFloor.update(localSectionX, actualY, localSectionZ, blockstate);
-                                        worldSurface.update(localSectionX, actualY, localSectionZ, blockstate);
-                                        if (aquifer.shouldScheduleFluidUpdate() && !blockstate.getFluidState().isEmpty())
-                                        {
-                                            mutablePos.set(actualX, actualY, actualZ);
-                                            chunk.getLiquidTicks().scheduleTick(mutablePos, blockstate.getFluidState().getType(), 0);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                allInterpolators.forEach(NoiseInterpolator::swapSlices);
-            }
-        }
-    }
-
-    class NoodleCaveNoiseModifier implements NoiseModifier
-    {
-        private final NoiseInterpolator toggle;
-        private final NoiseInterpolator thickness;
-        private final NoiseInterpolator ridgeA;
-        private final NoiseInterpolator ridgeB;
-        private double factorZ;
-
-        NoodleCaveNoiseModifier(ChunkPos chunkPos, int minCellY)
-        {
-            this.toggle = new NoiseInterpolator(cellCountX, cellCountY, cellCountZ, chunkPos, minCellY, noodleCavifier::fillToggleNoiseColumn);
-            this.thickness = new NoiseInterpolator(cellCountX, cellCountY, cellCountZ, chunkPos, minCellY, noodleCavifier::fillThicknessNoiseColumn);
-            this.ridgeA = new NoiseInterpolator(cellCountX, cellCountY, cellCountZ, chunkPos, minCellY, noodleCavifier::fillRidgeANoiseColumn);
-            this.ridgeB = new NoiseInterpolator(cellCountX, cellCountY, cellCountZ, chunkPos, minCellY, noodleCavifier::fillRidgeBNoiseColumn);
-        }
-
-        void prepare(double deltaZ)
-        {
-            this.factorZ = deltaZ;
-        }
-
-        @Override
-        public double modifyNoise(double noise, int x, int y, int z)
-        {
-            double toggleValue = toggle.calculateValue(factorZ);
-            double thickness = this.thickness.calculateValue(factorZ);
-            double ridgeA = this.ridgeA.calculateValue(factorZ);
-            double ridgeB = this.ridgeB.calculateValue(factorZ);
-            return noodleCavifier.noodleCavify(noise, x, y, z, toggleValue, thickness, ridgeA, ridgeB, getMinY());
-        }
-
-        void addInterpolators(List<NoiseInterpolator> interpolators)
-        {
-            interpolators.add(toggle);
-            interpolators.add(thickness);
-            interpolators.add(ridgeA);
-            interpolators.add(ridgeB);
         }
     }
 }
