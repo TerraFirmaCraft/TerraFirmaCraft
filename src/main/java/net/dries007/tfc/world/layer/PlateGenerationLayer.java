@@ -8,11 +8,11 @@ package net.dries007.tfc.world.layer;
 
 import net.minecraft.util.math.MathHelper;
 
-import net.dries007.tfc.world.layer.traits.ITypedAreaTransformer0;
-import net.dries007.tfc.world.layer.traits.ITypedNoiseRandom;
+import net.dries007.tfc.world.layer.framework.AreaContext;
+import net.dries007.tfc.world.layer.framework.TypedSourceLayer;
 import net.dries007.tfc.world.noise.Cellular2D;
 
-public class PlateGenerationLayer implements ITypedAreaTransformer0<Plate>
+public class PlateGenerationLayer implements TypedSourceLayer<Plate>
 {
     private static final float PI = (float) Math.PI;
 
@@ -26,17 +26,17 @@ public class PlateGenerationLayer implements ITypedAreaTransformer0<Plate>
     }
 
     @Override
-    public Plate apply(ITypedNoiseRandom<Plate> context, int x, int z)
+    public Plate apply(AreaContext context, int x, int z)
     {
         plateNoise.noise(x, z);
-        float centerX = plateNoise.getCenterX();
-        float centerZ = plateNoise.getCenterY();
-        context.initRandom(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
-        for (int j = 0; j < 10; j++) context.nextRandom(1);
-        boolean oceanic = context.nextRandom(100) < oceanPercent;
-        float angle = 2 * PI * context.nextRandom(100) / 100f;
-        float velocity = context.nextRandom(100) / 100f;
-        float elevation = context.nextRandom(100) / 100f;
+        float centerX = plateNoise.centerX();
+        float centerZ = plateNoise.centerZ();
+        context.initSeed(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
+        for (int j = 0; j < 10; j++) context.nextInt(1);
+        boolean oceanic = context.nextInt(100) < oceanPercent;
+        float angle = 2 * PI * context.nextInt(100) / 100f;
+        float velocity = context.nextInt(100) / 100f;
+        float elevation = context.nextInt(100) / 100f;
         float driftX = MathHelper.cos(angle) * velocity;
         float driftZ = MathHelper.sin(angle) * velocity;
         return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);

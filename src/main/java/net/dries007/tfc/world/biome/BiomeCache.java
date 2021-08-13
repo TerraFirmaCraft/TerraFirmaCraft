@@ -21,6 +21,7 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.Arrays;
+
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;

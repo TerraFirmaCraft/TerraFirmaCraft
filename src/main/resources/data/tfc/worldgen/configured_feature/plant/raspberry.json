@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:berry_bushes",
                   "config": {
-                    "state": "tfc:berry_bush/raspberry_bush"
+                    "state": "tfc:plant/raspberry_bush"
                   }
                 },
                 "decorator": {

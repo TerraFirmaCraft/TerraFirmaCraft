@@ -38,11 +38,62 @@
       "tfc:rooster1"
     ]
   },
-  "quern.stonedrag": {
+  "quern_drag": {
     "category": "block",
     "sounds": [
       "tfc:stonedrag1",
       "tfc:stonedrag2"
+    ]
+  },
+  "knap_stone": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_stone",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "knap_clay": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_clay",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "knap_leather": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:knap_leather",
+        "pitch": 1.1
+      }
     ]
   },
   "bellows.blow.air": {
@@ -274,6 +325,249 @@
       {
         "name": "tfc:charcoalstep1",
         "pitch": 1.1
+      }
+    ]
+  },
+  "thatch_hit": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thatch_hit1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:thatch_hit1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_hit2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_hit2",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "thatch_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thatch_place1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_place1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:thatch_place1",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "thatch_step": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thatch_step1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_step2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_step3",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thatch_break": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thatch_break1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_break2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thatch_break1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:thatch_break2",
+        "pitch": 0.9
+      }
+    ]
+  },
+  "thatch_fall": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thatch_fall1",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "peat_break": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:peat_break1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:peat_break2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:peat_break1",
+        "pitch": 1.2
+      },
+      {
+        "name": "tfc:peat_break2",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "peat_fall": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:peat_fall",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:peat_fall",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "peat_hit": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:peat_hit1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:peat_hit2",
+        "pitch": 1.1
+      },
+      {
+        "name": "tfc:peat_hit2",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "peat_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:peat_place1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:peat_place2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:peat_place3",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "peat_step": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:peat_step1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:peat_step2",
+        "pitch": 1.1
+      },
+      {
+        "name": "tfc:peat_step3",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thin_hit": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thin_hit1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:thin_hit2",
+        "pitch": 1.1
+      },
+      {
+        "name": "tfc:thin_hit2",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thin_break": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thin_break1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thin_break2",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thin_fall": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thin_fall",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thin_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thin_place1",
+        "pitch": 0.9
+      },
+      {
+        "name": "tfc:thin_place1",
+        "pitch": 1.1
+      },
+      {
+        "name": "tfc:thin_place1",
+        "pitch": 1.0
+      }
+    ]
+  },
+  "thin_step": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "tfc:thin_step1",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thin_step2",
+        "pitch": 1.0
+      },
+      {
+        "name": "tfc:thin_step3",
+        "pitch": 1.0
       }
     ]
   },

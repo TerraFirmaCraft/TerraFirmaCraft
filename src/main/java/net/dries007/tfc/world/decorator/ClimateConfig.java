@@ -64,7 +64,7 @@ public class ClimateConfig implements IPlacementConfig
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 
-        if(minTemp <= temperature && temperature <= maxTemp && minRainfall <= rainfall && rainfall <= maxRainfall && minForest.ordinal() <= forestType.ordinal() && forestType.ordinal() <= maxForest.ordinal())
+        if (minTemp <= temperature && temperature <= maxTemp && minRainfall <= rainfall && rainfall <= maxRainfall && minForest.ordinal() <= forestType.ordinal() && forestType.ordinal() <= maxForest.ordinal())
         {
             if (fuzzy)
             {
@@ -99,10 +99,17 @@ public class ClimateConfig implements IPlacementConfig
 
         public static final Codec<TemperatureType> CODEC = IStringSerializable.fromEnum(TemperatureType::values, name -> TemperatureType.valueOf(name.toUpperCase()));
 
+        private final String serializedName;
+
+        TemperatureType()
+        {
+            serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
         @Override
         public String getSerializedName()
         {
-            return name().toLowerCase();
+            return serializedName;
         }
     }
 }

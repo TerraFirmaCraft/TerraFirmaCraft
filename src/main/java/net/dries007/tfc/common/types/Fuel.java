@@ -8,6 +8,7 @@ package net.dries007.tfc.common.types;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -28,7 +29,7 @@ public class Fuel
     public Fuel(ResourceLocation id, JsonObject obj)
     {
         this.id = id;
-        this.ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(obj, "ingredient"));
+        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
         this.duration = JSONUtils.getAsInt(obj, "duration");
         this.temperature = JSONUtils.getAsFloat(obj, "temperature");
     }

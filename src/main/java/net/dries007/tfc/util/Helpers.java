@@ -7,6 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -15,8 +16,10 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.AbstractIterator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,6 +34,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -45,13 +49,23 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.types.Fuel;
+import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -80,24 +94,6 @@ public final class Helpers
     public static <T> T notNull()
     {
         return null;
-    }
-
-    public static <T> byte[] createByteArray(T[] array, ToByteFunction<T> byteConverter)
-    {
-        byte[] bytes = new byte[array.length];
-        for (int i = 0; i < array.length; i++)
-        {
-            bytes[i] = byteConverter.get(array[i]);
-        }
-        return bytes;
-    }
-
-    public static <T> void createArrayFromBytes(byte[] byteArray, T[] array, FromByteFunction<T> byteConverter)
-    {
-        for (int i = 0; i < byteArray.length; i++)
-        {
-            array[i] = byteConverter.get(byteArray[i]);
-        }
     }
 
     public static BlockState readBlockState(String block) throws JsonParseException
@@ -142,6 +138,11 @@ public final class Helpers
         }
     }
 
+    public static BiPredicate<IWorld, BlockPos> createTagCheck(ITag<Block> tag)
+    {
+        return ((world, pos) -> world.getBlockState(pos).is(tag));
+    }
+
     /**
      * Applies two possible consumers of a given lazy optional
      */
@@ -154,6 +155,11 @@ public final class Helpers
             orElse.run();
             return Unit.INSTANCE;
         });
+    }
+
+    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
+    {
+        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
     }
 
     /**
@@ -182,6 +188,28 @@ public final class Helpers
         return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public static <E extends Enum<E>> E getEnumFromJson(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    {
+        final String enumName = JSONUtils.getAsString(obj, key, null);
+        if (enumName != null)
+        {
+            try
+            {
+                Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
+            }
+            catch (IllegalArgumentException e)
+            {
+                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
+            }
+        }
+        if (defaultValue != null)
+        {
+            return defaultValue;
+        }
+        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+    }
+
     /**
      * Gets the translation key name for an enum. For instance, Metal.UNKNOWN would map to "tfc.enum.metal.unknown"
      */
@@ -195,7 +223,7 @@ public final class Helpers
      */
     public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
     {
-        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
+        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -214,18 +242,6 @@ public final class Helpers
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
-    {
-        TileEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        return null;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntity(IBlockReader world, BlockPos pos, Class<T> tileEntityClass)
     {
         TileEntity te = world.getBlockEntity(pos);
@@ -236,15 +252,9 @@ public final class Helpers
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
     {
-        TileEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        throw new IllegalStateException("Expected a tile entity at " + pos + " of class " + tileEntityClass.getSimpleName());
+        return Objects.requireNonNull(getTileEntity(world, pos, tileEntityClass));
     }
 
     /**
@@ -371,6 +381,65 @@ public final class Helpers
         }
     }
 
+    public static Iterable<ItemStack> iterate(IItemHandler inventory)
+    {
+        final int slots = inventory.getSlots();
+        return () -> new AbstractIterator<ItemStack>()
+        {
+            private int slot = -1;
+
+            @Override
+            protected ItemStack computeNext()
+            {
+                slot++;
+                if (slot < slots)
+                {
+                    return inventory.getStackInSlot(slot);
+                }
+                return endOfData();
+            }
+        };
+    }
+
+    /**
+     * Attempts to insert a stack across all slots of an item handler
+     *
+     * @param stack The stack to be inserted
+     * @return The remainder after the stack is inserted, if any
+     */
+    public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
+    {
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            stack = inventory.insertItem(slot, stack, false);
+            if (stack.isEmpty())
+            {
+                return ItemStack.EMPTY;
+            }
+        }
+        return stack;
+    }
+
+    public static NonNullList<ItemStack> extractAllItems(IItemHandlerModifiable inventory)
+    {
+        NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            saved.set(slot, inventory.getStackInSlot(slot).copy());
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        return saved;
+    }
+
+    public static void insertAllItems(IItemHandlerModifiable inventory, NonNullList<ItemStack> from)
+    {
+        // We allow the list to have a different size than the new inventory
+        for (int slot = 0; slot < Math.min(inventory.getSlots(), from.size()); slot++)
+        {
+            inventory.setStackInSlot(slot, from.get(slot));
+        }
+    }
+
     /**
      * Copied from {@link World#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
@@ -417,7 +486,7 @@ public final class Helpers
     public static void playSound(World world, BlockPos pos, SoundEvent sound)
     {
         Random rand = world.getRandom();
-        world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+        world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
     public static boolean spawnItem(World world, BlockPos pos, ItemStack stack, double yOffset)
@@ -482,6 +551,70 @@ public final class Helpers
             }
         }
         return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Common logic for block entities to consume fuel during larger time skips.
+     *
+     * @param deltaPlayerTicks   Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
+     * @param inventory          Inventory to be modified (this should contain the fuel)
+     * @param burnTicks          Remaining burn ticks of the fuel being burned
+     * @param burnTemperature    Current burning temperature of the TE (this is the fuel's target temperature)
+     * @param slotStart          Index of the first fuel slot
+     * @param slotEnd            Index of the last fuel slot
+     *
+     * @return burnTicks, burnTemperature, deltaPlayerTicks. These are modified versions of the variables that got passed in.
+     * They should be directly assigned back to the TE's values, in order. Return 0 for deltaPlayerTicks to indicate that the TE need not be extinguished.
+     */
+    public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
+    {
+        if (burnTicks > deltaPlayerTicks)
+        {
+            burnTicks -= deltaPlayerTicks;
+            return Triple.of(burnTicks, burnTemperature, 0L); // the zero doesn't actually get saved, so this is fine. needed to prevent extinguishing
+        }
+        else
+        {
+            deltaPlayerTicks -= burnTicks;
+            burnTicks = 0;
+        }
+        // Need to consume fuel
+        for (int i = slotStart; i <= slotEnd; i++)
+        {
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = FuelManager.get(fuelStack);
+            if (fuel != null)
+            {
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
+                if (fuel.getDuration() > deltaPlayerTicks)
+                {
+                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
+                    burnTemperature = fuel.getTemperature();
+                    return Triple.of(burnTicks, burnTemperature, 0L); // see above
+                }
+                else
+                {
+                    deltaPlayerTicks -= fuel.getDuration();
+                    burnTicks = 0;
+                }
+            }
+        }
+        return Triple.of(burnTicks, burnTemperature, deltaPlayerTicks);
+    }
+
+    public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
+    {
+        final ItemStack mergeStack = inventory.getStackInSlot(slot);
+        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (filled > 0)
+            {
+                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+            }
+            FluidStack remainder = fluidStack.copy();
+            remainder.shrink(filled);
+            return remainder;
+        }).orElse(FluidStack.EMPTY);
     }
 
     /**

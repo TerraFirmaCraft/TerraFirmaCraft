@@ -14,6 +14,7 @@ import net.minecraftforge.fml.RegistryObject;
 /**
  * A triple of {@link net.minecraftforge.fml.RegistryObject}s for slabs, stairs, and walls
  */
+@SuppressWarnings("unchecked")
 public class DecorationBlockRegistryObject
 {
     private final RegistryObject<? extends SlabBlock> slab;

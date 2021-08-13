@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -32,10 +34,13 @@ public final class Debug
     public static final boolean SINGLE_BIOME = false;
     public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.OCEAN;
 
-    @FunctionalInterface
-    interface SlopeFunction
+    /* Generate biomes in stripes, showing all biomes */
+    public static final boolean STRIPE_BIOMES = false;
+
+    public static BiomeVariants stripeBiome(int x)
     {
-        double sampleSlope(double[] slopeMap, int x, int z);
+        List<BiomeVariants> variants = TFCBiomes.getVariants();
+        return variants.get(Math.abs(x >> 7) % variants.size());
     }
 
     public static void slopeVisualization(IChunk chunk, double[] slopeMap, int chunkX, int chunkZ, SlopeFunction slopeFunction)
@@ -69,5 +74,11 @@ public final class Debug
                 chunk.setBlockState(mutablePos, meter[slopeIndex].defaultBlockState(), false);
             }
         }
+    }
+
+    @FunctionalInterface
+    interface SlopeFunction
+    {
+        double sampleSlope(double[] slopeMap, int x, int z);
     }
 }

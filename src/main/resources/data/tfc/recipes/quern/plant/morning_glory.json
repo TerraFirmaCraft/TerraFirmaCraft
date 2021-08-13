@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:plant/morning_glory"
+  },
+  "result": {
+    "count": 2,
+    "item": "minecraft:magenta_dye"
+  }
+}

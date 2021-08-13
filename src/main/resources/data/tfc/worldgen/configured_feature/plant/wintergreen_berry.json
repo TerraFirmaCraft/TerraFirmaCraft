@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:berry_bushes",
                   "config": {
-                    "state": "tfc:berry_bush/wintergreen_berry_bush"
+                    "state": "tfc:plant/wintergreen_berry_bush"
                   }
                 },
                 "decorator": {

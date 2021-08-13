@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:fruit_trees",
                   "config": {
-                    "state": "tfc:fruit_tree/red_apple_growing_branch"
+                    "state": "tfc:plant/red_apple_growing_branch"
                   }
                 },
                 "decorator": {

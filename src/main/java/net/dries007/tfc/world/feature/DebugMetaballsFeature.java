@@ -41,7 +41,7 @@ public class DebugMetaballsFeature extends Feature<NoFeatureConfig>
                     for (int y = 0; y < 32; y++)
                     {
                         mutablePos.set(pos).move(x - 8, y + 200, z - 8);
-                        if (noise.noise(x - 16, y - 16, z - 16) > 0.5f)
+                        if (noise.inside(x - 16, y - 16, z - 16))
                         {
                             world.setBlock(mutablePos, Blocks.IRON_BLOCK.defaultBlockState(), 3);
                         }

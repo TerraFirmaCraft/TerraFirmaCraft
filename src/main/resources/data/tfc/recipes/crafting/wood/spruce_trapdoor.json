@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/spruce"
+    }
+  },
+  "result": {
+    "count": 3,
+    "item": "tfc:wood/planks/spruce_trapdoor"
+  }
+}

@@ -10,6 +10,8 @@ import java.util.Collections;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -17,6 +19,10 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import net.dries007.tfc.common.TFCTags;
 
 /**
  * Generic class for tools that shouldn't override vanilla's {@link ToolItem}
@@ -57,5 +63,16 @@ public class TFCToolItem extends ToolItem
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack)
     {
         return slot == EquipmentSlotType.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack stack, World level, BlockState state, BlockPos pos, LivingEntity entity)
+    {
+        // tfc: mining plants should consume durability
+        if (!level.isClientSide && (state.getBlock().is(TFCTags.Blocks.PLANT) || state.getDestroySpeed(level, pos) != 0.0F))
+        {
+            stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+        }
+        return true;
     }
 }

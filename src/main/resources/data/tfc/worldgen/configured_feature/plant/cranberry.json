@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:berry_bushes",
                   "config": {
-                    "state": "tfc:berry_bush/cranberry_bush"
+                    "state": "tfc:plant/cranberry_bush"
                   }
                 },
                 "decorator": {

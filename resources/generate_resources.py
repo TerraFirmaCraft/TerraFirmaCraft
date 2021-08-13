@@ -30,7 +30,7 @@ def main():
                 clean_generated_resources('/'.join(rm.resource_dir))
                 print('Clean Success')
                 return
-            except Exception:
+            except:
                 print('Failed, retrying (%d / 3)' % tries)
         print('Clean Aborted')
         return

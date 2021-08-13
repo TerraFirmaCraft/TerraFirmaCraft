@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:fruit_trees",
                   "config": {
-                    "state": "tfc:fruit_tree/olive_growing_branch"
+                    "state": "tfc:plant/olive_growing_branch"
                   }
                 },
                 "decorator": {

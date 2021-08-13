@@ -9,7 +9,7 @@ package net.dries007.tfc.world.biome;
 import java.util.function.LongFunction;
 
 import com.mojang.datafixers.util.Pair;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 
 /**
  * An extension of {@link BiomeVariants} for variants that carve sea level caverns
@@ -17,9 +17,9 @@ import net.dries007.tfc.world.noise.INoise2D;
 public class CarvingBiomeVariants extends BiomeVariants
 {
     private final BiomeVariants parent;
-    private final LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory;
+    private final LongFunction<Pair<Noise2D, Noise2D>> carvingNoiseFactory;
 
-    public CarvingBiomeVariants(BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory)
+    public CarvingBiomeVariants(BiomeVariants parent, LongFunction<Pair<Noise2D, Noise2D>> carvingNoiseFactory)
     {
         super(parent);
 
@@ -38,7 +38,7 @@ public class CarvingBiomeVariants extends BiomeVariants
      * @param seed A seed to use in noise generation
      * @return A pair of the center noise (first), and the height noise (second)
      */
-    public Pair<INoise2D, INoise2D> createCarvingNoiseLayer(long seed)
+    public Pair<Noise2D, Noise2D> createCarvingNoiseLayer(long seed)
     {
         return carvingNoiseFactory.apply(seed);
     }

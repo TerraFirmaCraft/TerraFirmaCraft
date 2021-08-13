@@ -19,9 +19,10 @@ public class IntArrayBuilder implements IIntArray
     /**
      * A single {@link IntReferenceHolder} for one tracked value
      */
-    public IntReferenceHolder of(IntSupplier getter, IntConsumer setter)
+    public static IntReferenceHolder of(IntSupplier getter, IntConsumer setter)
     {
-        return new IntReferenceHolder() {
+        return new IntReferenceHolder()
+        {
             @Override
             public int get()
             {

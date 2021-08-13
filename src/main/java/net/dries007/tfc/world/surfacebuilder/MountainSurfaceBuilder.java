@@ -11,12 +11,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
-    private INoise2D surfaceMaterialNoise;
+    private Noise2D surfaceMaterialNoise;
 
     public MountainSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {

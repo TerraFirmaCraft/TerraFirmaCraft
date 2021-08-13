@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
-public enum ForestEdgeLayer implements ICastleTransformer
+public enum ForestEdgeLayer implements AdjacentTransformLayer
 {
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
+    public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         if (isFullForest(center))
         {

@@ -46,13 +46,13 @@ class Decoration(IntEnum):
 
 def generate(rm: ResourceManager):
     # Surface Builders
-    surface_builder(rm, 'badlands', wg.configure('tfc:badlands'))
-    surface_builder(rm, 'volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
-    surface_builder(rm, 'normal', wg.configure('tfc:normal'))
-    surface_builder(rm, 'icebergs', wg.configure('tfc:icebergs'))
-    surface_builder(rm, 'mountains', wg.configure('tfc:mountains'))
-    surface_builder(rm, 'volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
-    surface_builder(rm, 'shore', wg.configure('tfc:shore'))
+    rm.surface_builder('badlands', wg.configure('tfc:badlands'))
+    rm.surface_builder('volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
+    rm.surface_builder('normal', wg.configure('tfc:normal'))
+    rm.surface_builder('icebergs', wg.configure('tfc:icebergs'))
+    rm.surface_builder('mountains', wg.configure('tfc:mountains'))
+    rm.surface_builder('volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
+    rm.surface_builder('shore', wg.configure('tfc:shore'))
 
     # Configured Features
     rm.feature('erosion', wg.configure('tfc:erosion'))
@@ -294,15 +294,12 @@ def generate(rm: ResourceManager):
         return ore_blocks
 
     def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
-        if biome_filter == 'lake':
-            return [{'category': 'lake'}]
+        if biome_filter == 'river':
+            return [{'category': 'river'}]
         elif biome_filter == 'volcanic':
-            return [
-                '%s_%s_%s' % (b, t.id, r.id)
-                for b in ('canyons', 'volcanic_mountains', 'volcanic_oceanic_mountains')
-                for t in TEMPERATURES
-                for r in RAINFALLS
-            ]
+            return [{'biome_dictionary': 'volcanic'}]
+        elif biome_filter is not None:
+            raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
         else:
             return None
 
@@ -549,7 +546,7 @@ def generate(rm: ResourceManager):
             'max_forest': info.max_forest,
             'fuzzy': False
         }
-        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:berry_bush/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
     for fruit, info in FRUITS.items():
         config = {
             'min_temperature': info.min_temp,
@@ -559,10 +556,10 @@ def generate(rm: ResourceManager):
             'max_forest': 'normal'
         }
         feature = 'tfc:fruit_trees'
-        state = 'tfc:fruit_tree/%s_growing_branch' % fruit
+        state = 'tfc:plant/%s_growing_branch' % fruit
         if fruit == 'banana':
             feature = 'tfc:bananas'
-            state = 'tfc:fruit_tree/banana_plant'
+            state = 'tfc:plant/banana_plant'
         rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), 'minecraft:heightmap_world_surface', 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
 
     # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
@@ -655,11 +652,6 @@ def generate(rm: ResourceManager):
             biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
             biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
             biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
-
-
-def surface_builder(rm: ResourceManager, name: str, surface_builder):
-    # Add a surface builder, and also one with glaciers for cold biomes
-    rm.surface_builder(name, surface_builder)
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):

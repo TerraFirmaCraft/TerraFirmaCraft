@@ -18,7 +18,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import net.dries007.tfc.world.IBiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 
 public class BiomeBuilder
 {
@@ -29,7 +29,7 @@ public class BiomeBuilder
 
     private final List<BiomeDictionary.Type> dictionaryTypes;
 
-    private LongFunction<INoise2D> heightNoiseFactory;
+    private LongFunction<Noise2D> heightNoiseFactory;
     private LongFunction<IBiomeNoiseSampler> noiseFactory;
 
     private BiomeVariants.Group group;
@@ -48,16 +48,16 @@ public class BiomeBuilder
         volcanoBasaltHeight = 0;
     }
 
-    public BiomeBuilder heightmap(LongFunction<INoise2D> heightNoiseFactory)
+    public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
     {
         this.heightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> IBiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
         return this;
     }
 
-    public BiomeBuilder carving(BiFunction<Long, INoise2D, IBiomeNoiseSampler> carvingNoiseFactory)
+    public BiomeBuilder carving(BiFunction<Long, Noise2D, IBiomeNoiseSampler> carvingNoiseFactory)
     {
-        final LongFunction<INoise2D> baseHeightNoiseFactory = heightNoiseFactory;
+        final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> carvingNoiseFactory.apply(seed, baseHeightNoiseFactory.apply(seed));
         return this;
     }
@@ -92,7 +92,7 @@ public class BiomeBuilder
         this.volcanoFrequency = frequency;
         this.volcanoBasaltHeight = TFCChunkGenerator.SEA_LEVEL + volcanoBasaltHeight;
 
-        final LongFunction<INoise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
+        final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
         this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
         this.noiseFactory = seed -> IBiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
         return this;

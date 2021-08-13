@@ -1,0 +1,24 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SRS",
+    "SWS",
+    "SRS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/steel"
+    },
+    "W": {
+      "item": "minecraft:redstone_torch"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "count": 8,
+    "item": "minecraft:activator_rail"
+  }
+}

@@ -46,7 +46,7 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
      */
     public float getValue(float tNS, float tEW)
     {
-        return NoiseUtil.lerpGrid(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
+        return NoiseUtil.lerp4(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
     }
 
     @Override

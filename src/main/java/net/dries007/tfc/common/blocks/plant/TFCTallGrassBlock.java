@@ -18,6 +18,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -95,6 +96,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(PART));
+    }
+
+    @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
@@ -125,6 +132,15 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         }
     }
 
+    /**
+     * See {@link net.minecraft.block.DoublePlantBlock}. We handle drops in playerWillDestroy so we must not drop things here.
+     */
+    @Override
+    public void playerDestroy(World level, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tile, ItemStack stack)
+    {
+        super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), tile, stack);
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
@@ -138,12 +154,6 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public OffsetType getOffsetType()
     {
         return OffsetType.XYZ;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(PART));
     }
 
     public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)

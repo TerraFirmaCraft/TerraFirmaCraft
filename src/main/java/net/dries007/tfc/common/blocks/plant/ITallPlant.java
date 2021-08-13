@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Locale;
+
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -26,16 +28,17 @@ public interface ITallPlant
         UPPER,
         LOWER;
 
-        @Override
-        public String toString()
+        private final String serializedName;
+
+        Part()
         {
-            return this.getSerializedName();
+            serializedName = name().toLowerCase(Locale.ROOT);
         }
 
         @Override
         public String getSerializedName()
         {
-            return name().toLowerCase();
+            return serializedName;
         }
     }
 }

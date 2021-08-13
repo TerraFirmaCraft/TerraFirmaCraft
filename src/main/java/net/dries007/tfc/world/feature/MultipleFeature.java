@@ -19,19 +19,19 @@ import com.mojang.serialization.Codec;
 
 public class MultipleFeature extends Feature<MultipleConfig>
 {
-	public MultipleFeature(Codec<MultipleConfig> codec)
-	{
-		super(codec);
-	}
+    public MultipleFeature(Codec<MultipleConfig> codec)
+    {
+        super(codec);
+    }
 
-	@Override
-	public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, MultipleConfig config)
-	{
-		boolean result = false;
-		for (Supplier<ConfiguredFeature<?, ?>> feature : config.features)
-		{
-			result |= feature.get().place(reader, generator, rand, pos);
-		}
-		return result;
-	}
+    @Override
+    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, MultipleConfig config)
+    {
+        boolean result = false;
+        for (Supplier<ConfiguredFeature<?, ?>> feature : config.features)
+        {
+            result |= feature.get().place(reader, generator, rand, pos);
+        }
+        return result;
+    }
 }

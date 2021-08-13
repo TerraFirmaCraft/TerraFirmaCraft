@@ -20,13 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
-
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_END;
@@ -34,7 +35,6 @@ import static net.dries007.tfc.common.tileentity.PotTileEntity.SLOT_EXTRA_INPUT_
 
 public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
 {
-
     public PotTileEntityRenderer(TileEntityRendererDispatcher dispatcher)
     {
         super(dispatcher);
@@ -45,12 +45,15 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
     public void render(PotTileEntity te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
     {
         if (te.getLevel() == null) return;
-        FluidStack fluidStack = te.getFluidContained();
-        boolean useDefault = te.hasOutput() && te.getCurrentOutputData().renderDefaultFluid();
-        if (!fluidStack.isEmpty() || useDefault)
-        {
-            Fluid fluid = useDefault ? Fluids.WATER : fluidStack.getFluid();
 
+        final PotRecipe.Output output = te.getOutput();
+        final boolean useDefaultFluid = output != null && output.renderDefaultFluid();
+        final FluidStack fluidStack = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            .map(cap -> cap.getFluidInTank(0))
+            .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
+        if (!fluidStack.isEmpty())
+        {
+            Fluid fluid = fluidStack.getFluid();
             FluidAttributes attributes = fluid.getAttributes();
             ResourceLocation texture = attributes.getStillTexture(fluidStack);
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(texture);
@@ -61,7 +64,7 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
             float b = (color & 0xFF) / 255F;
             float a = ((color >> 24) & 0xFF) / 255F;
 
-            if (useDefault)
+            if (useDefaultFluid)
             {
                 b = 0;
                 g /= 4;
@@ -79,9 +82,9 @@ public class PotTileEntityRenderer extends TileEntityRenderer<PotTileEntity>
 
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             int ordinal = 0;
-            for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+            for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
             {
-                ItemStack item = cap.getStackInSlot(i);
+                ItemStack item = cap.getStackInSlot(slot);
                 if (!item.isEmpty())
                 {
                     float yOffset = 0.46f;

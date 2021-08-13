@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.IBishopTransformer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
+import net.dries007.tfc.world.layer.framework.DiagonalTransformLayer;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
 
@@ -15,12 +15,12 @@ import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
  * Expands harsh river vertexes by filling in acute angles
  * This avoids sudden sections of very thin rivers which can lead to bottoming off / cut offs in noise generation later
  */
-public enum RiverAcuteVertexLayer implements IBishopTransformer
+public enum RiverAcuteVertexLayer implements DiagonalTransformLayer
 {
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int southWest, int southEast, int northWest, int northEast, int center)
+    public int apply(AreaContext context, int southWest, int southEast, int northWest, int northEast, int center)
     {
         if (center != RIVER_MARKER)
         {

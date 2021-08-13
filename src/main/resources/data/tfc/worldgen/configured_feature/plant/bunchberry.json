@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:berry_bushes",
                   "config": {
-                    "state": "tfc:berry_bush/bunchberry_bush"
+                    "state": "tfc:plant/bunchberry_bush"
                   }
                 },
                 "decorator": {

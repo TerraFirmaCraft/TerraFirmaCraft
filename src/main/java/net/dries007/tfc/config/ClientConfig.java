@@ -9,6 +9,7 @@ package net.dries007.tfc.config;
 import java.util.function.Function;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -27,6 +28,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
     public final ForgeConfigSpec.ConfigValue<HealthDisplayFormat> healthDisplayFormat;
 
+    public final ForgeConfigSpec.BooleanValue enableDebugNBTTooltip;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -55,6 +57,10 @@ public class ClientConfig
             "TFC_CURRENT - e.g. 750",
             "VANILLA_CURRENT - e.g. 15.0"
         ).defineEnum("healthDisplayFormat", HealthDisplayFormat.TFC);
+
+        innerBuilder.pop().push("debug");
+
+        enableDebugNBTTooltip = builder.apply("enableDebugNBTTooltip").comment("Enables a tooltip which shows the NBT of items.").define("enableDebugNBTTooltip", !FMLEnvironment.production);
 
         innerBuilder.pop();
     }

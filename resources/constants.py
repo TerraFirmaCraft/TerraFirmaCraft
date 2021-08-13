@@ -7,7 +7,7 @@ Rock = NamedTuple('Rock', category=str, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
-OreGrade = NamedTuple('OreGrade', weight=int)
+OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, duration=int)
@@ -18,7 +18,7 @@ Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
-ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
+ROCK_ITEMS: List[str] = ['axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel']
 
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'white'),
@@ -123,6 +123,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'shield': MetalItem('tool', 400, 'item/handheld', None)
 }
+METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True),
     'native_gold': Ore('gold', True),
@@ -159,9 +160,9 @@ ORES: Dict[str, Ore] = {
     'topaz': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(50),
-    'poor': OreGrade(30),
-    'rich': OreGrade(20)
+    'normal': OreGrade(50, 5),
+    'poor': OreGrade(30, 3),
+    'rich': OreGrade(20, 7)
 }
 
 
@@ -211,11 +212,11 @@ ORE_VEINS: Dict[str, Vein] = {
     'diamond': vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
     'emerald': vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
     'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 120, 150, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='volcanic', height=6),
-    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='lake', height=4),
-    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='lake', height=4)
+    'amethyst': vein('amethyst', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='river', height=4),
+    'opal': vein('opal', 'disc', 14, 8, 60, 75, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='river', height=4)
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
+ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose', 'pressure_plate', 'button')
 ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
@@ -343,6 +344,22 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry')
 }
 
+PLANT_COLORS: Dict[str, List[str]] = {
+    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white'],
+    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna'],
+    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla'],
+    'light_blue': ['labrador_tea', 'sapphire_tower'],
+    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow'],
+    'lime': ['moss'],
+    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink'],
+    'light_gray': ['yucca'],
+    'purple': ['allium', 'black_orchid', 'perovskia'],
+    'blue': ['blue_orchid', 'grape_hyacinth'],
+    'brown': ['field_horsetail', 'sargassum'],
+    'green': ['barrel_cactus', 'reindeer_lichen'],
+    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
+}
+
 SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
                 'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
@@ -382,6 +399,9 @@ FRUITS: Dict[str, Fruit] = {
     'red_apple': Fruit(9, 25, 100, 280)
 }
 
+GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
+GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
+
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()
@@ -403,6 +423,8 @@ DEFAULT_LANG = {
     'tfc.tile_entity.grill': 'Grill',
     'tfc.tile_entity.firepit': 'Firepit',
     'tfc.tile_entity.log_pile': 'Log Pile',
+    'tfc.tile_entity.charcoal_forge': 'Forge',
+    'item.tfc.handstone': 'Handstone',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -418,6 +440,10 @@ DEFAULT_LANG = {
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
     'tfc.screen.climate': 'Climate',
+    'tfc.screen.rock_knapping': 'Rock Knapping',
+    'tfc.screen.clay_knapping': 'Clay Knapping',
+    'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
+    'tfc.screen.leather_knapping': 'Leather Knapping',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',
@@ -441,6 +467,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
+    'tfc.tooltip.debug_tag': 'Tag: %s',
 
     # Commands
     'tfc.commands.time.query.daytime': 'The day time is %s',
@@ -486,8 +513,20 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.enum.size.tiny': 'Tiny',
+    'tfc.enum.size.very_small': 'Very Small',
+    'tfc.enum.size.small': 'Small',
+    'tfc.enum.size.normal': 'Normal',
+    'tfc.enum.size.large': 'Large',
+    'tfc.enum.size.very_large': 'Very Large',
+    'tfc.enum.size.huge': 'Huge',
+    'tfc.enum.weight.very_light': 'Very Light',
+    'tfc.enum.weight.light': 'Light',
+    'tfc.enum.weight.medium': 'Medium',
+    'tfc.enum.weight.heavy': 'Heavy',
+    'tfc.enum.weight.very_heavy': 'Very Heavy',
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
-    **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
+    **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys())
 }

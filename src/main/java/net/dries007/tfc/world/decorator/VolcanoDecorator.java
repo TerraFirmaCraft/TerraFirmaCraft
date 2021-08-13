@@ -20,7 +20,6 @@ import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.CellularNoiseType;
 
 public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
 {
@@ -46,13 +45,13 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
         if (variants.isVolcanic())
         {
             // Sample volcano noise
-            final float distance = cellNoise.noise(pos.getX(), pos.getZ());
-            final float value = cellNoise.noise(pos.getX(), pos.getZ(), CellularNoiseType.VALUE);
+            final float value = cellNoise.noise(pos.getX(), pos.getZ());
+            final float distance = cellNoise.f1();
             if (value < variants.getVolcanoChance())
             {
                 if (config.useCenter())
                 {
-                    final BlockPos centerPos = new BlockPos((int) cellNoise.getCenterX(), pos.getY(), (int) cellNoise.getCenterY());
+                    final BlockPos centerPos = new BlockPos((int) cellNoise.centerX(), pos.getY(), (int) cellNoise.centerZ());
                     if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
                     {
                         return Stream.of(centerPos);

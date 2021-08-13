@@ -14,26 +14,34 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Event handler for calendar related ticking
  *
  * @see ServerCalendar
  */
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CalendarEventHandler
 {
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    @SubscribeEvent
+    public static void init()
+    {
+        final IEventBus bus = MinecraftForge.EVENT_BUS;
+
+        bus.addListener(CalendarEventHandler::onServerStart);
+        bus.addListener(CalendarEventHandler::onServerTick);
+        bus.addListener(CalendarEventHandler::onOverworldTick);
+        bus.addListener(CalendarEventHandler::onPlayerWakeUp);
+        bus.addListener(CalendarEventHandler::onPlayerLoggedOut);
+        bus.addListener(CalendarEventHandler::onPlayerLoggedIn);
+    }
+
     public static void onServerStart(FMLServerStartingEvent event)
     {
         Calendars.SERVER.onServerStart(event.getServer());
@@ -46,7 +54,6 @@ public class CalendarEventHandler
      *
      * @param event {@link TickEvent.ServerTickEvent}
      */
-    @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
@@ -55,7 +62,6 @@ public class CalendarEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onOverworldTick(TickEvent.WorldTickEvent event)
     {
         World world = event.world;
@@ -71,7 +77,6 @@ public class CalendarEventHandler
      *
      * @param event {@link PlayerWakeUpEvent}
      */
-    @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
         if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateWorld())
@@ -94,7 +99,6 @@ public class CalendarEventHandler
      *
      * @param event {@link PlayerEvent.PlayerLoggedOutEvent}
      */
-    @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
         if (event.getPlayer() instanceof ServerPlayerEntity)
@@ -122,7 +126,6 @@ public class CalendarEventHandler
      *
      * @param event {@link PlayerEvent.PlayerLoggedInEvent}
      */
-    @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.getPlayer() instanceof ServerPlayerEntity)

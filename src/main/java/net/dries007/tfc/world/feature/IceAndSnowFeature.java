@@ -32,7 +32,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class IceAndSnowFeature extends Feature<NoFeatureConfig>
@@ -40,8 +40,8 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
     private long cachedSeed;
     private boolean initialized;
 
-    private INoise2D temperatureNoise;
-    private INoise2D seaIceNoise;
+    private Noise2D temperatureNoise;
+    private Noise2D seaIceNoise;
 
     public IceAndSnowFeature(Codec<NoFeatureConfig> codec)
     {

@@ -31,47 +31,11 @@ import net.minecraft.world.World;
 public class CharcoalPileBlock extends Block
 {
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
-    protected static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[] {VoxelShapes.empty(), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
+    public static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[] {VoxelShapes.empty(), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
     public CharcoalPileBlock(Properties properties)
     {
         super(properties);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
-        BlockState blockstate = worldIn.getBlockState(pos.below());
-        return Block.isFaceFull(blockstate.getCollisionShape(worldIn, pos.below()), Direction.UP) || (blockstate.getBlock() == this && blockstate.getValue(LAYERS) == 8);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (!worldIn.isClientSide() && facing == Direction.DOWN)
-        {
-            if (facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
-            {
-                int layersAt = stateIn.getValue(LAYERS);
-                int layersUnder = facingState.getValue(LAYERS);
-                if (layersUnder < 8)
-                {
-                    if (layersUnder + layersAt <= 8)
-                    {
-                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
-                        return Blocks.AIR.defaultBlockState();
-                    }
-                    else
-                    {
-                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
-                        return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
-                    }
-                }
-            }
-        }
-        return canSurvive(stateIn, worldIn, currentPos) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -107,16 +71,37 @@ public class CharcoalPileBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        return SHAPE_BY_LAYER[state.getValue(LAYERS)];
+        if (!worldIn.isClientSide() && facing == Direction.DOWN)
+        {
+            if (facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
+            {
+                int layersAt = stateIn.getValue(LAYERS);
+                int layersUnder = facingState.getValue(LAYERS);
+                if (layersUnder < 8)
+                {
+                    if (layersUnder + layersAt <= 8)
+                    {
+                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
+                        return Blocks.AIR.defaultBlockState();
+                    }
+                    else
+                    {
+                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
+                        return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
+                    }
+                }
+            }
+        }
+        return canSurvive(stateIn, worldIn, currentPos) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
-	@SuppressWarnings("deprecation")
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    @SuppressWarnings("deprecation")
+    public boolean useShapeForLightOcclusion(BlockState state)
     {
-        return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];
+        return true;
     }
 
     @Override
@@ -128,16 +113,31 @@ public class CharcoalPileBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getVisualShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
+        BlockState blockstate = worldIn.getBlockState(pos.below());
+        return Block.isFaceFull(blockstate.getCollisionShape(worldIn, pos.below()), Direction.UP) || (blockstate.getBlock() == this && blockstate.getValue(LAYERS) == 8);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean useShapeForLightOcclusion(BlockState state)
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return true;
+        return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getVisualShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)
+    {
+        return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
     @Override

@@ -22,21 +22,15 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
+import net.dries007.tfc.common.capabilities.FluidIngredient;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class HeatingRecipe extends SimpleItemRecipe
+public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 {
     public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
-    private final float temperature;
-
-    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result, float temperature)
-    {
-        super(id, ingredient, result);
-        this.temperature = temperature;
-    }
 
     @Nullable
     public static HeatingRecipe getRecipe(World world, ItemStackRecipeWrapper wrapper)
@@ -51,28 +45,37 @@ public class HeatingRecipe extends SimpleItemRecipe
         return null;
     }
 
+    private final ResourceLocation id;
+    private final Ingredient ingredient;
+    private final ItemStack outputItem;
+    private final FluidStack outputFluid;
+    private final float temperature;
+
+    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack outputItem, FluidStack outputFluid, float temperature)
+    {
+        this.id = id;
+        this.ingredient = ingredient;
+        this.outputItem = outputItem;
+        this.outputFluid = outputFluid;
+        this.temperature = temperature;
+    }
+
     @Override
-    public ItemStack assemble(ItemStackRecipeWrapper wrapper)
+    public boolean matches(ItemStackRecipeWrapper inv, World worldIn)
     {
-        ItemStack stack = wrapper.getStack();
-        IHeat cap = stack.getCapability(HeatCapability.CAPABILITY, null).resolve().orElse(null);
-        if (cap != null)
-        {
-            ItemStack output = result.copy();
-            output.getCapability(HeatCapability.CAPABILITY, null).ifPresent(newCap -> newCap.setTemperature(cap.getTemperature()));
-            return output;
-        }
-        return ItemStack.EMPTY;
+        return ingredient.test(inv.getStack());
     }
 
-    public float getTemperature()
+    @Override
+    public ItemStack getResultItem()
     {
-        return temperature;
+        return outputItem;
     }
 
-    public boolean isValidTemperature(float temperatureIn)
+    @Override
+    public ResourceLocation getId()
     {
-        return temperatureIn >= temperature;
+        return id;
     }
 
     @Override
@@ -87,6 +90,32 @@ public class HeatingRecipe extends SimpleItemRecipe
         return TFCRecipeTypes.HEATING;
     }
 
+    @Override
+    public ItemStack assemble(ItemStackRecipeWrapper inventory)
+    {
+        final ItemStack inputStack = inventory.getStack();
+        final ItemStack outputStack = outputItem.copy();
+        inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
+            outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
+                newCap.setTemperature(oldCap.getTemperature())));
+        return outputStack;
+    }
+
+    public FluidStack getOutputFluid(ItemStackRecipeWrapper inventory)
+    {
+        return outputFluid.copy();
+    }
+
+    public float getTemperature()
+    {
+        return temperature;
+    }
+
+    public boolean isValidTemperature(float temperatureIn)
+    {
+        return temperatureIn >= temperature;
+    }
+
     public Collection<Item> getValidItems()
     {
         return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
@@ -97,10 +126,11 @@ public class HeatingRecipe extends SimpleItemRecipe
         @Override
         public HeatingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
-            ItemStack stack = ShapedRecipe.itemFromJson(json.getAsJsonObject("result"));
-            float temp = JSONUtils.getAsFloat(json, "temperature");
-            return new HeatingRecipe(recipeId, ingredient, stack, temp);
+            final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
+            final ItemStack outputItem = json.has("result_item") ? ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item")) : ItemStack.EMPTY;
+            final FluidStack outputFluid = json.has("result_fluid") ? FluidIngredient.fluidStackFromJson(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
+            final float temperature = JSONUtils.getAsFloat(json, "temperature");
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
         }
 
         @Nullable
@@ -108,17 +138,19 @@ public class HeatingRecipe extends SimpleItemRecipe
         public HeatingRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack stack = buffer.readItem();
-            float temp = buffer.readFloat();
-            return new HeatingRecipe(recipeId, ingredient, stack, temp);
+            ItemStack outputItem = buffer.readItem();
+            FluidStack outputFluid = buffer.readFluidStack();
+            float temperature = buffer.readFloat();
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
         }
 
         @Override
         public void toNetwork(PacketBuffer buffer, HeatingRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
-            buffer.writeFloat(recipe.getTemperature());
+            buffer.writeItem(recipe.outputItem);
+            buffer.writeFluidStack(recipe.outputFluid);
+            buffer.writeFloat(recipe.temperature);
         }
     }
 }

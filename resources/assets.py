@@ -1,7 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Any
+import itertools
+from typing import Any, Tuple
 
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
@@ -13,18 +14,13 @@ from constants import *
 
 def generate(rm: ResourceManager):
     # Rock block variants
-    for rock in ROCKS.keys():
+    for rock, rock_data in ROCKS.items():
         for block_type in ROCK_BLOCK_TYPES:
             if block_type == 'spike':
                 # Spikes have special block states
                 block = rm.blockstate(('rock', block_type, rock), variants=dict(('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in ROCK_SPIKE_PARTS))
                 block.with_lang(lang('%s spike', rock))
-                block.with_block_loot({
-                    'entries': 'tfc:rock/loose/%s' % rock,
-                    'functions': [
-                        loot_tables.set_count(1, 2)
-                    ]
-                })
+                block.with_block_loot(counted_item('tfc:rock/loose/%s' % rock, 1, 2))
                 # Individual models
                 rm.item_model(('rock', block_type, rock), 'tfc:block/rock/raw/%s' % rock, parent='tfc:block/rock/spike/%s_base' % rock)
                 for part in ROCK_SPIKE_PARTS:
@@ -36,31 +32,14 @@ def generate(rm: ResourceManager):
             elif block_type == 'loose':
                 # One block state and multiple models for the block
                 block = rm.blockstate('rock/loose/%s' % rock, variants={
-                    'count=1': [
-                        {'model': 'tfc:block/rock/pebble/%s' % rock, 'y': 90},
-                        {'model': 'tfc:block/rock/pebble/%s' % rock},
-                        {'model': 'tfc:block/rock/pebble/%s' % rock, 'y': 180},
-                        {'model': 'tfc:block/rock/pebble/%s' % rock, 'y': 270}
-                    ],
-                    'count=2': [
-                        {'model': 'tfc:block/rock/rubble/%s' % rock, 'y': 90},
-                        {'model': 'tfc:block/rock/rubble/%s' % rock},
-                        {'model': 'tfc:block/rock/rubble/%s' % rock, 'y': 180},
-                        {'model': 'tfc:block/rock/rubble/%s' % rock, 'y': 270}
-                    ],
-                    'count=3': [
-                        {'model': 'tfc:block/rock/boulder/%s' % rock, 'y': 90},
-                        {'model': 'tfc:block/rock/boulder/%s' % rock},
-                        {'model': 'tfc:block/rock/boulder/%s' % rock, 'y': 180},
-                        {'model': 'tfc:block/rock/boulder/%s' % rock, 'y': 270}
-                    ]
+                    'count=1': four_ways('tfc:block/rock/pebble/%s' % rock),
+                    'count=2': four_ways('tfc:block/rock/rubble/%s' % rock),
+                    'count=3': four_ways('tfc:block/rock/boulder/%s' % rock),
                 }, use_default_model=False)
                 for loose_type in ('pebble', 'rubble', 'boulder'):
                     rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
 
-                block.with_lang(lang('%s %s', rock, block_type))
-                block.with_tag('can_be_snow_piled')
-                block.with_block_loot({
+                block.with_lang(lang('%s %s', rock, block_type)).with_tag('can_be_snow_piled').with_block_loot({
                     'entries': [{
                         'name': 'tfc:rock/loose/%s' % rock,
                         'functions': [
@@ -74,6 +53,10 @@ def generate(rm: ResourceManager):
                 # Model for the item
                 rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
 
+            elif block_type == 'pressure_plate':
+                rm.block(('rock', 'pressure_plate', rock)).make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
+            elif block_type == 'button':
+                rm.block(('rock', 'button', rock)).make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
             else:
                 block = rm.blockstate(('rock', block_type, rock))
                 if block_type == 'hardened':
@@ -106,7 +89,7 @@ def generate(rm: ResourceManager):
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall', lang('%s %s Wall', rock, block_type))
                     rm.block_tag('minecraft:walls', 'tfc:rock/' + block_type + '/' + rock + '_wall')
                 # Loot
-                if block_type == 'raw':
+                if block_type == 'raw' or block_type == 'hardened':
                     block.with_block_loot(alternatives([{
                         'name': 'tfc:rock/raw/%s' % rock,
                         'conditions': ['tfc:is_isolated'],
@@ -114,13 +97,6 @@ def generate(rm: ResourceManager):
                         'name': 'tfc:rock/loose/%s' % rock,
                         'functions': [loot_tables.set_count(1, 4)]
                     }]))
-                elif block_type == 'hardened':
-                    block.with_block_loot({
-                        'entries': 'tfc:rock/loose/%s' % rock,
-                        'functions': [
-                            loot_tables.set_count(1, 4)
-                        ]
-                    })
                 elif block_type == 'gravel':
                     block.with_block_loot({
                         'entries': [{
@@ -150,20 +126,15 @@ def generate(rm: ResourceManager):
                     block.with_lang(lang('%s %s', block_type, rock))
                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
-
+        if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
+            rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot(counted_item('tfc:rock/loose/%s' % rock, 1, 4)).with_item_model()
+            rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
         # Ores
         for ore, ore_data in ORES.items():
             if ore_data.graded:
                 # Small Ores / Groundcover Blocks
-                block = rm.blockstate('tfc:ore/small_%s' % ore, variants={"": [
-                    {'model': 'tfc:block/groundcover/%s' % ore, 'y': 90},
-                    {'model': 'tfc:block/groundcover/%s' % ore},
-                    {'model': 'tfc:block/groundcover/%s' % ore, 'y': 180},
-                    {'model': 'tfc:block/groundcover/%s' % ore, 'y': 270}
-                ]}, use_default_model=False)
-                block.with_lang(lang('small %s', ore))
-                block.with_block_loot('tfc:ore/small_%s' % ore)
-                block.with_tag('can_be_snow_piled')
+                block = rm.blockstate('tfc:ore/small_%s' % ore, variants={"": four_ways('tfc:block/groundcover/%s' % ore)}, use_default_model=False)
+                block.with_lang(lang('small %s', ore)).with_block_loot('tfc:ore/small_%s' % ore).with_tag('can_be_snow_piled')
 
                 rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
 
@@ -238,12 +209,7 @@ def generate(rm: ResourceManager):
 
     # Groundcover
     for misc in MISC_GROUNDCOVER:
-        block = rm.blockstate(('groundcover', misc), variants={"": [
-            {'model': 'tfc:block/groundcover/%s' % misc, 'y': 90},
-            {'model': 'tfc:block/groundcover/%s' % misc},
-            {'model': 'tfc:block/groundcover/%s' % misc, 'y': 180},
-            {'model': 'tfc:block/groundcover/%s' % misc, 'y': 270}
-        ]}, use_default_model=False)
+        block = rm.blockstate(('groundcover', misc), variants={"": four_ways('tfc:block/groundcover/%s' % misc)}, use_default_model=False)
         block.with_lang(lang(misc))
         block.with_tag('can_be_snow_piled')
 
@@ -265,81 +231,66 @@ def generate(rm: ResourceManager):
 
     for color in COLORS:
         rm.blockstate(('alabaster', 'stained', color + '_raw_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_raw_alabaster').with_lang(lang('%s Raw Alabaster', color))
-        rm.blockstate(('alabaster', 'stained', color + '_alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_alabaster_bricks').with_lang(lang('%s Alabaster Bricks', color))
-        rm.blockstate(('alabaster', 'stained', color + '_polished_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_polished_alabaster').with_lang(lang('%s Polished Alabaster', color))
+        bricks = rm.blockstate(('alabaster', 'stained', color + '_alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_alabaster_bricks').with_lang(lang('%s Alabaster Bricks', color))
+        polished = rm.blockstate(('alabaster', 'stained', color + '_polished_alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/stained/' + color + '_polished_alabaster').with_lang(lang('%s Polished Alabaster', color))
+        bricks.make_slab().make_stairs().make_wall()
+        polished.make_slab().make_stairs().make_wall()
+        for extra in ('slab', 'stairs', 'wall'):
+            rm.block(('alabaster', 'stained', color + '_alabaster_bricks_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra))
+            rm.block(('alabaster', 'stained', color + '_polished_alabaster_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
     rm.block_model('dead_torch', parent='minecraft:block/template_torch', textures={'torch': 'tfc:block/torch_off'})
     rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
-    rm.blockstate('wall_torch', variants={
-        'facing=east': {'model': 'minecraft:block/wall_torch'},
-        'facing=north': {'model': 'minecraft:block/wall_torch', 'y': 270},
-        'facing=south': {'model': 'minecraft:block/wall_torch', 'y': 90},
-        'facing=west': {'model': 'minecraft:block/wall_torch', 'y': 180}
-    }).with_lang(lang('Torch')).with_block_loot('minecraft:stick')
-    rm.blockstate('dead_wall_torch', variants={
-        'facing=east': {'model': 'tfc:block/dead_wall_torch'},
-        'facing=north': {'model': 'tfc:block/dead_wall_torch', 'y': 270},
-        'facing=south': {'model': 'tfc:block/dead_wall_torch', 'y': 90},
-        'facing=west': {'model': 'tfc:block/dead_wall_torch', 'y': 180}
-    }).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch')).with_block_loot('minecraft:stick')
+    rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
     rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
+    rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot(counted_item('minecraft:charcoal', 7, -1))
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
         .with_block_model(textures={'side': 'tfc:block/log_pile_side', 'end': 'tfc:block/log_pile_front'}, parent='minecraft:block/cube_column_horizontal').with_lang(lang('Log Pile'))
     rm.blockstate('burning_log_pile', model='tfc:block/burning_log_pile').with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/devices/charcoal_forge/lit'}).with_lang(lang('Burning Log Pile'))
+    for i in range(0, 7 + 1):
+        rm.block_model('charcoal_forge/heat_%d' % i, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % i})
 
-    block = rm.block_model('thatch_bed').with_item_model().with_lang(lang('Thatch Bed'))
+    block = rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
     block.with_block_loot({
-        'entries': [{
-            'type': 'minecraft:item',
-            'name': 'tfc:thatch_bed'
-        }],
+        'entries': 'tfc:thatch',
+        'functions': [loot_tables.set_count(2)],
         'conditions': [
             'minecraft:survives_explosion',
             block_state_property('tfc:thatch_bed', {'part': 'head'})
         ]
     })
+    # todo: should be a TE to drop the hide item used
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
         'lit=false': {'model': 'tfc:block/firepit_unlit'}
-    }).with_lang(lang('Firepit')).with_block_loot([{
-        'entries': 'tfc:powder/wood_ash',
-        'functions': [
-            loot_tables.set_count(1, 4)
-        ],
-    }])
+    }).with_lang(lang('Firepit')).with_block_loot(counted_item('tfc:powder/wood_ash', 1, 4))
     rm.item_model('firepit', parent='tfc:block/firepit_unlit')
 
     rm.blockstate_multipart('grill', [
         ({'model': 'tfc:block/firepit_grill'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
-    ]).with_lang(lang('Grill')).with_block_loot([{
-        'entries': 'tfc:powder/wood_ash',
-        'functions': [
-            loot_tables.set_count(1, 4)
-        ],
-    }, {'entries': 'tfc:wrought_iron_grill'}])
+    ]).with_lang(lang('Grill')).with_block_loot([counted_item('tfc:powder/wood_ash', 1, 4), {'entries': 'tfc:wrought_iron_grill'}])
     rm.item_model('grill', parent='tfc:block/firepit_grill')
 
     rm.blockstate_multipart('pot', [
         ({'model': 'tfc:block/firepit_pot'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
-    ]).with_lang(lang('Pot')).with_block_loot([{
-        'entries': 'tfc:powder/wood_ash',
-        'functions': [
-            loot_tables.set_count(1, 4)
-        ],
-    }, {'entries': 'tfc:ceramic/pot'}])
+    ]).with_lang(lang('Pot')).with_block_loot([counted_item('tfc:powder/wood_ash', 1, 4), {'entries': 'tfc:ceramic/pot'}])
     rm.item_model('pot', parent='tfc:block/firepit_pot')
 
+    rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern'))
+
     rm.blockstate('placed_item', 'tfc:block/empty')
+    rm.blockstate('scraping', 'tfc:block/empty')
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
     # Dirt
@@ -476,8 +427,10 @@ def generate(rm: ResourceManager):
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
-            item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
-            item.with_lang(lang('stone %s', rock_item))
+            for suffix in ('', '_head'):
+                rock_item = rock_item + suffix
+                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
     for rock in ROCKS.keys():
@@ -487,7 +440,8 @@ def generate(rm: ResourceManager):
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
-                item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), 'tfc:item/metal/%s/%s' % (metal_item, metal), parent=metal_item_data.parent_model)
+                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
+                item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
                 item.with_lang(lang('%s %s' % (metal, metal_item)))
 
         # Metal Blocks
@@ -525,11 +479,34 @@ def generate(rm: ResourceManager):
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+        p = 'tfc:plant/%s' % plant
+        lower_only = block_state_property(p, {'part': 'lower'})
+        if plant_data.type == 'short_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears')],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type == 'tall_grass':
+            rm.block_loot(p, alternatives([{
+                'name': p,
+                'conditions': [match_tag('forge:shears'), lower_only],
+            }, {
+                'name': 'tfc:straw',
+                'conditions': [match_tag('tfc:knives')]
+            }]))
+        elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives'), lower_only]}})
+        elif plant_data.type == 'cactus':
+            rm.block_loot(p, p)
+        else:
+            rm.block_loot(p, {'entries': {'name': p, 'conditions': [match_tag('tfc:knives')]}})
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-        # todo: knife harvesting of plants
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
@@ -537,131 +514,55 @@ def generate(rm: ResourceManager):
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
 
-    rm.blockstate('berry_bush/dead_bush', variants={
-        'stage=0': {'model': 'tfc:block/berry_bush/dead_bush_0'},
-        'stage=1': {'model': 'tfc:block/berry_bush/dead_bush_1'},
-        'stage=2': {'model': 'tfc:block/berry_bush/dead_bush_2'}
+    for grain in GRAINS:
+        for suffix in GRAIN_SUFFIXES:
+            rm.item_model('food/%s%s' % (grain, suffix)).with_lang(lang('%s%s', grain, suffix))
+
+    rm.blockstate('plant/dead_berry_bush', variants={
+        'stage=0': {'model': 'tfc:block/plant/dead_berry_bush_0'},
+        'stage=1': {'model': 'tfc:block/plant/dead_berry_bush_1'},
+        'stage=2': {'model': 'tfc:block/plant/dead_berry_bush_2'}
     }).with_lang(lang('Dead Bush')).with_tag('any_spreading_bush')
-    rm.blockstate('berry_bush/dead_cane', variants={
-        'facing=east,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 90},
-        'facing=north,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0'},
-        'facing=south,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 180},
-        'facing=west,stage=0': {'model': 'tfc:block/berry_bush/dead_bush_side_0', 'y': 270},
-        'facing=east,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 90},
-        'facing=north,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1'},
-        'facing=south,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 180},
-        'facing=west,stage=1': {'model': 'tfc:block/berry_bush/dead_bush_side_1', 'y': 270},
-        'facing=east,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 90},
-        'facing=north,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2'},
-        'facing=south,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 180},
-        'facing=west,stage=2': {'model': 'tfc:block/berry_bush/dead_bush_side_2', 'y': 270}
+    rm.blockstate('plant/dead_cane', variants={
+        **four_rotations('tfc:block/plant/dead_berry_bush_side_0', (90, None, 180, 270), suffix=',stage=0'),
+        **four_rotations('tfc:block/plant/dead_berry_bush_side_1', (90, None, 180, 270), suffix=',stage=1'),
+        **four_rotations('tfc:block/plant/dead_berry_bush_side_2', (90, None, 180, 270), suffix=',stage=2')
     }).with_lang(lang('Dead Cane')).with_tag('any_spreading_bush')
+    state_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
+    lifecycles = ['healthy', 'dormant', 'fruiting', 'flowering']
     for berry in ('blackberry', 'raspberry', 'blueberry', 'elderberry'):
-        rm.blockstate('berry_bush/%s_bush' % berry, variants={
-            'lifecycle=healthy,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_0' % berry},
-            'lifecycle=healthy,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_1' % berry},
-            'lifecycle=healthy,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_2' % berry},
-            'lifecycle=dormant,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_0' % berry},
-            'lifecycle=dormant,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_1' % berry},
-            'lifecycle=dormant,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_2' % berry},
-            'lifecycle=fruiting,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_0' % berry},
-            'lifecycle=fruiting,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_1' % berry},
-            'lifecycle=fruiting,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_2' % berry},
-            'lifecycle=flowering,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_0' % berry},
-            'lifecycle=flowering,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_1' % berry},
-            'lifecycle=flowering,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_2' % berry},
-        }).with_lang(lang('%s Bush', berry))
-        rm.blockstate('berry_bush/%s_bush_cane' % berry, variants={
-            'lifecycle=healthy,facing=east,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 90},
-            'lifecycle=healthy,facing=north,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry},
-            'lifecycle=healthy,facing=south,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 180},
-            'lifecycle=healthy,facing=west,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_side_0' % berry, 'y': 270},
-            'lifecycle=healthy,facing=east,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 90},
-            'lifecycle=healthy,facing=north,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry},
-            'lifecycle=healthy,facing=south,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 180},
-            'lifecycle=healthy,facing=west,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_side_1' % berry, 'y': 270},
-            'lifecycle=healthy,facing=east,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 90},
-            'lifecycle=healthy,facing=north,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry},
-            'lifecycle=healthy,facing=south,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 180},
-            'lifecycle=healthy,facing=west,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_side_2' % berry, 'y': 270},
-            'lifecycle=dormant,facing=east,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 90},
-            'lifecycle=dormant,facing=north,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry},
-            'lifecycle=dormant,facing=south,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 180},
-            'lifecycle=dormant,facing=west,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_0' % berry, 'y': 270},
-            'lifecycle=dormant,facing=east,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 90},
-            'lifecycle=dormant,facing=north,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry},
-            'lifecycle=dormant,facing=south,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 180},
-            'lifecycle=dormant,facing=west,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_1' % berry, 'y': 270},
-            'lifecycle=dormant,facing=east,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 90},
-            'lifecycle=dormant,facing=north,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry},
-            'lifecycle=dormant,facing=south,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 180},
-            'lifecycle=dormant,facing=west,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_side_2' % berry, 'y': 270},
-            'lifecycle=fruiting,facing=east,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 90},
-            'lifecycle=fruiting,facing=north,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry},
-            'lifecycle=fruiting,facing=south,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 180},
-            'lifecycle=fruiting,facing=west,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_0' % berry, 'y': 270},
-            'lifecycle=fruiting,facing=east,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 90},
-            'lifecycle=fruiting,facing=north,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry},
-            'lifecycle=fruiting,facing=south,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 180},
-            'lifecycle=fruiting,facing=west,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_1' % berry, 'y': 270},
-            'lifecycle=fruiting,facing=east,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 90},
-            'lifecycle=fruiting,facing=north,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry},
-            'lifecycle=fruiting,facing=south,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 180},
-            'lifecycle=fruiting,facing=west,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_side_2' % berry, 'y': 270},
-            'lifecycle=flowering,facing=east,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 90},
-            'lifecycle=flowering,facing=north,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry},
-            'lifecycle=flowering,facing=south,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 180},
-            'lifecycle=flowering,facing=west,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_0' % berry, 'y': 270},
-            'lifecycle=flowering,facing=east,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 90},
-            'lifecycle=flowering,facing=north,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry},
-            'lifecycle=flowering,facing=south,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 180},
-            'lifecycle=flowering,facing=west,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_1' % berry, 'y': 270},
-            'lifecycle=flowering,facing=east,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 90},
-            'lifecycle=flowering,facing=north,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry},
-            'lifecycle=flowering,facing=south,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 180},
-            'lifecycle=flowering,facing=west,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_side_2' % berry, 'y': 270},
-        }).with_lang(lang('%s Cane', berry))
-        rm.item_model('berry_bush/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
-        for state in ('', 'flowering_', 'dry_', 'fruiting_'):
+        rm.blockstate('plant/%s_bush' % berry, variants=dict(('lifecycle=%s,stage=%d' % (state, i), {'model': 'tfc:block/plant/%s%s_bush_%d' % (state_to_model[state], berry, i)}) for state, i in itertools.product(lifecycles, range(0, 3)))).with_lang(lang('%s Bush', berry))
+        cane_dict = {}
+        for state, i in itertools.product(lifecycles, range(3)):
+            cane_dict.update(four_rotations('tfc:block/plant/%s%s_bush_side_%d' % (state_to_model[state], berry, i), (90, None, 180, 270), suffix=',stage=%d' % i, prefix='lifecycle=%s,' % state))
+        rm.blockstate('plant/%s_bush_cane' % berry, variants=cane_dict).with_lang(lang('%s Cane', berry))
+        rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
+        for state in state_to_model.values():
             bush_textures = {'cane': 'tfc:block/berry_bush/' + state + '%s_cane' % berry, 'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry}
             for i in range(0, 3):
-                rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures=bush_textures)
-                rm.block_model('berry_bush/' + state + berry + '_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures=bush_textures)
-        rm.block_tag('spreading_bush', 'berry_bush/%s_bush' % berry, 'berry_bush/%s_bush_cane' % berry)
+                rm.block_model('plant/' + state + berry + '_bush_%d' % i, parent='tfc:block/plant/berry_bush_%d' % i, textures=bush_textures)
+                rm.block_model('plant/' + state + berry + '_bush_side_%d' % i, parent='tfc:block/plant/berry_bush_side_%d' % i, textures=bush_textures)
+        rm.block_tag('spreading_bush', 'plant/%s_bush' % berry, 'plant/%s_bush_cane' % berry)
     for i in range(0, 3):
-        rm.block_model('berry_bush/dead_bush_%d' % i, parent='tfc:block/berry_bush/berry_bush_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
-        rm.block_model('berry_bush/dead_bush_side_%d' % i, parent='tfc:block/berry_bush/berry_bush_side_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
+        rm.block_model('plant/dead_berry_bush_%d' % i, parent='tfc:block/plant/berry_bush_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
+        rm.block_model('plant/dead_berry_bush_side_%d' % i, parent='tfc:block/plant/berry_bush_side_%d' % i, textures={'cane': 'tfc:block/berry_bush/dead_cane', 'bush': 'tfc:block/berry_bush/dead_bush'})
     for berry in ('gooseberry', 'snowberry', 'bunchberry', 'cloudberry', 'wintergreen_berry', 'strawberry', 'cranberry'):
-        rm.blockstate('berry_bush/%s_bush' % berry, variants={
-            'lifecycle=healthy,stage=0': {'model': 'tfc:block/berry_bush/%s_bush_0' % berry},
-            'lifecycle=healthy,stage=1': {'model': 'tfc:block/berry_bush/%s_bush_1' % berry},
-            'lifecycle=healthy,stage=2': {'model': 'tfc:block/berry_bush/%s_bush_2' % berry},
-            'lifecycle=dormant,stage=0': {'model': 'tfc:block/berry_bush/dry_%s_bush_0' % berry},
-            'lifecycle=dormant,stage=1': {'model': 'tfc:block/berry_bush/dry_%s_bush_1' % berry},
-            'lifecycle=dormant,stage=2': {'model': 'tfc:block/berry_bush/dry_%s_bush_2' % berry},
-            'lifecycle=fruiting,stage=0': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_0' % berry},
-            'lifecycle=fruiting,stage=1': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_1' % berry},
-            'lifecycle=fruiting,stage=2': {'model': 'tfc:block/berry_bush/fruiting_%s_bush_2' % berry},
-            'lifecycle=flowering,stage=0': {'model': 'tfc:block/berry_bush/flowering_%s_bush_0' % berry},
-            'lifecycle=flowering,stage=1': {'model': 'tfc:block/berry_bush/flowering_%s_bush_1' % berry},
-            'lifecycle=flowering,stage=2': {'model': 'tfc:block/berry_bush/flowering_%s_bush_2' % berry},
-        }).with_lang(lang('%s Bush', berry))
-        rm.item_model('berry_bush/%s_bush' % berry, 'tfc:block/berry_bush/%s_bush' % berry)
-        for state in ('', 'flowering_', 'dry_', 'fruiting_'):
-            for i in range(0, 3):
-                rm.block_model('berry_bush/' + state + berry + '_bush_%d' % i, parent='tfc:block/berry_bush/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
+        rm.blockstate('plant/%s_bush' % berry, variants=dict(('lifecycle=%s,stage=%d' % (state, i), {'model': 'tfc:block/plant/%s%s_bush_%d' % (state_to_model[state], berry, i)}) for state, i in itertools.product(lifecycles, range(0, 3)))).with_lang(lang('%s Bush', berry))
+        rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_bush' % berry)
+        for state, i in itertools.product(state_to_model.values(), range(0, 3)):
+            rm.block_model('plant/' + state + berry + '_bush_%d' % i, parent='tfc:block/plant/stationary_bush_%d' % i, textures={'bush': 'tfc:block/berry_bush/' + state + '%s_bush' % berry})
 
     for fruit in FRUITS.keys():
         if fruit != 'banana':
             for prefix in ('', 'growing_'):
-                block = rm.blockstate_multipart('fruit_tree/' + fruit + '_' + prefix + 'branch', [
-                    ({'model': 'tfc:block/fruit_tree/%s_branch_core' % fruit}),
-                    ({'down': True}, {'model': 'tfc:block/fruit_tree/%s_branch_down' % fruit}),
-                    ({'up': True}, {'model': 'tfc:block/fruit_tree/%s_branch_up' % fruit}),
-                    ({'north': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 90}),
-                    ({'south': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 270}),
-                    ({'west': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit}),
-                    ({'east': True}, {'model': 'tfc:block/fruit_tree/%s_branch_side' % fruit, 'y': 180})
+                block = rm.blockstate_multipart('plant/' + fruit + '_' + prefix + 'branch', [
+                    ({'model': 'tfc:block/plant/%s_branch_core' % fruit}),
+                    ({'down': True}, {'model': 'tfc:block/plant/%s_branch_down' % fruit}),
+                    ({'up': True}, {'model': 'tfc:block/plant/%s_branch_up' % fruit}),
+                    ({'north': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 90}),
+                    ({'south': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 270}),
+                    ({'west': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit}),
+                    ({'east': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 180})
                 ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
                 if prefix == '':
                     block.with_block_loot({
@@ -670,68 +571,49 @@ def generate(rm: ResourceManager):
                             'conditions': [{
                                 'condition': 'alternative',
                                 'terms': [
-                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'west': 'true'}),
-                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'east': 'true'}),
-                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'north': 'true'}),
-                                    block_state_property('tfc:fruit_tree/%s_branch' % fruit, {'up': 'true', 'south': 'true'})
+                                    block_state_property('tfc:plant/%s_branch' % fruit, {'up': 'true', '%s' % direction: 'true'}) for direction in ['west', 'east', 'north', 'south']
                                 ]
                             }],
-                            'name': 'tfc:fruit_tree/%s_sapling' % fruit
+                            'name': 'tfc:plant/%s_sapling' % fruit
                         }]
                     })
             for part in ('down', 'side', 'up', 'core'):
-                rm.block_model('tfc:fruit_tree/%s_branch_%s' % (fruit, part), parent='tfc:block/fruit_tree/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
-            rm.blockstate('fruit_tree/%s_leaves' % fruit, variants={
-                'lifecycle=flowering': {'model': 'tfc:block/fruit_tree/%s_flowering_leaves' % fruit},
-                'lifecycle=fruiting': {'model': 'tfc:block/fruit_tree/%s_fruiting_leaves' % fruit},
-                'lifecycle=dormant': {'model': 'tfc:block/fruit_tree/%s_dry_leaves' % fruit},
-                'lifecycle=healthy': {'model': 'tfc:block/fruit_tree/%s_leaves' % fruit}
+                rm.block_model('tfc:plant/%s_branch_%s' % (fruit, part), parent='tfc:block/plant/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
+            rm.blockstate('plant/%s_leaves' % fruit, variants={
+                'lifecycle=flowering': {'model': 'tfc:block/plant/%s_flowering_leaves' % fruit},
+                'lifecycle=fruiting': {'model': 'tfc:block/plant/%s_fruiting_leaves' % fruit},
+                'lifecycle=dormant': {'model': 'tfc:block/plant/%s_dry_leaves' % fruit},
+                'lifecycle=healthy': {'model': 'tfc:block/plant/%s_leaves' % fruit}
             }).with_lang('%s Leaves', fruit).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit))
             for life in ('', '_fruiting', '_flowering', '_dry'):
-                rm.block_model('tfc:fruit_tree/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
+                rm.block_model('tfc:plant/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
 
-            rm.blockstate(('fruit_tree', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/fruit_tree/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
-            rm.block_loot(('fruit_tree', '%s_sapling' % fruit), {
+            rm.blockstate(('plant', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/plant/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
+            rm.block_loot(('plant', '%s_sapling' % fruit), {
                 'entries': [{
-                    'name': 'tfc:fruit_tree/%s_sapling' % fruit,
-                    'functions': [
-                        {**loot_tables.set_count(1), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '1'})]},
-                        {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '2'})]},
-                        {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '3'})]},
-                        {**loot_tables.set_count(4), 'conditions': [block_state_property('tfc:fruit_tree/%s_sapling' % fruit, {'saplings': '4'})]},
-                        explosion_decay()
-                    ]
+                    'name': 'tfc:plant/%s_sapling' % fruit,
+                    'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), explosion_decay()]
                 }]
             })
             for i in range(2, 4 + 1):
-                rm.block_model(('fruit_tree', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/fruit_tree/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
-            rm.block_model(('fruit_tree', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
+                rm.block_model(('plant', '%s_sapling_%d' % (fruit, i)), parent='tfc:block/plant/cross_%s' % i, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
+            rm.block_model(('plant', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
         else:
-            rm.blockstate('fruit_tree/banana_plant', variants={
-                'lifecycle=healthy,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
-                'lifecycle=healthy,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
-                'lifecycle=healthy,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2'},
-                'lifecycle=dormant,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
-                'lifecycle=dormant,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
-                'lifecycle=dormant,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2'},
-                'lifecycle=fruiting,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
-                'lifecycle=fruiting,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
-                'lifecycle=fruiting,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2_fruiting'},
-                'lifecycle=flowering,stage=0': {'model': 'tfc:block/fruit_tree/banana_trunk_0'},
-                'lifecycle=flowering,stage=1': {'model': 'tfc:block/fruit_tree/banana_trunk_1'},
-                'lifecycle=flowering,stage=2': {'model': 'tfc:block/fruit_tree/banana_trunk_2_flowering'},
-            }).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
+            def banana_suffix(state: str, i: int) -> str:
+                if i == 2 and (state == 'fruiting' or state == 'flowering'):
+                    return '%d_%s' % (i, state)
+                return str(i)
+            rm.blockstate('plant/banana_plant', variants=dict({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/plant/banana_trunk_%s' % banana_suffix(state, i)} for state, i in itertools.product(lifecycles, range(0, 3))})).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
                 'entries': [{
-                    'name': 'tfc:fruit_tree/banana_sapling',
+                    'name': 'tfc:plant/banana_sapling',
                     'functions': [{**loot_tables.set_count(1, 2)}],
-                    'conditions': [block_state_property('tfc:fruit_tree/banana_plant', {'stage': '2'})]
+                    'conditions': [block_state_property('tfc:plant/banana_plant', {'stage': '2'})]
                 }]
             })
+            rm.block_model(('plant', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
+            rm.blockstate(('plant', 'banana_sapling'), model='tfc:block/plant/banana_sapling').with_lang(lang('Banana Sapling')).with_tag('fruit_tree_sapling')
 
-            rm.block_model(('fruit_tree', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
-            rm.blockstate(('fruit_tree', 'banana_sapling'), model='tfc:block/fruit_tree/banana_sapling').with_lang(lang('Banana Sapling')).with_tag('fruit_tree_sapling')
-
-        rm.item_model(('fruit_tree', '%s_sapling' % fruit), 'tfc:block/fruit_tree/%s_sapling' % fruit)
+        rm.item_model(('plant', '%s_sapling' % fruit), 'tfc:block/fruit_tree/%s_sapling' % fruit)
         rm.item_model(('food', fruit), 'tfc:item/food/%s' % fruit).with_lang(lang(fruit))
 
     # Wood Blocks
@@ -743,6 +625,7 @@ def generate(rm: ResourceManager):
                 'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
+            block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
             if variant != 'log':
                 block.with_item_model()
             else:
@@ -760,12 +643,7 @@ def generate(rm: ResourceManager):
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
-            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": [
-                {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 90},
-                {'model': 'tfc:block/wood/%s/%s' % (variant, wood)},
-                {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 180},
-                {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'y': 270}
-            ]}, use_default_model=False)
+            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": four_ways('tfc:block/wood/%s/%s' % (variant, wood))}, use_default_model=False)
             block.with_lang(lang('%s %s', wood, variant))
 
             if variant == 'twig':
@@ -810,12 +688,7 @@ def generate(rm: ResourceManager):
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
-        rm.blockstate(rack_namespace, model='tfc:block/wood/planks/%s_tool_rack' % wood, variants={
-            'facing=east': {'model': 'tfc:block/wood/planks/%s_tool_rack' % wood, 'y': 270},
-            'facing=north': {'model': 'tfc:block/wood/planks/%s_tool_rack' % wood, 'y': 180},
-            'facing=south': {'model': 'tfc:block/wood/planks/%s_tool_rack' % wood},
-            'facing=west': {'model': 'tfc:block/wood/planks/%s_tool_rack' % wood, 'y': 90}
-        })
+        rm.blockstate(rack_namespace, model='tfc:block/wood/planks/%s_tool_rack' % wood, variants=four_rotations('tfc:block/wood/planks/%s_tool_rack' % wood, (270, 180, None, 90)))
         rm.block_model(rack_namespace, textures={'texture': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/tool_rack')
         rm.item_model(rack_namespace, parent='tfc:block/wood/planks/%s_tool_rack' % wood, no_textures=True)
         rm.lang('block.tfc.wood.planks.%s_tool_rack' % wood, lang('%s Tool Rack', wood))
@@ -972,6 +845,25 @@ def generate(rm: ResourceManager):
         corals(color, False)
         corals(color, True)
 
+
+def four_ways(model: str) -> List[Dict[str, Any]]:
+    return [
+        {'model': model, 'y': 90},
+        {'model': model},
+        {'model': model, 'y': 180},
+        {'model': model, 'y': 270}
+    ]
+
+
+def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = '', prefix: str = '') -> Dict[str, Dict[str, Any]]:
+    return {
+        '%sfacing=east%s' % (prefix, suffix): {'model': model, 'y': rots[0]},
+        '%sfacing=north%s' % (prefix, suffix): {'model': model, 'y': rots[1]},
+        '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
+        '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
+    }
+
+
 def alternatives(entries: utils.Json) -> Dict[str, Any]:
     return {
         'entries': [{
@@ -1006,9 +898,26 @@ def silk_touch() -> Dict[str, Any]:
         }
     }
 
+
+def match_tag(tag: str) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'tag': tag}
+    }
+
+
 def fortune_table(chances: List[float]) -> Dict[str, Any]:
     return {
         'condition': 'minecraft:table_bonus',
         'enchantment': 'minecraft:fortune',
         'chances': chances
+    }
+
+
+def counted_item(item: str, min_count: int, max_count: int) -> Dict[str, Any]:
+    return {
+        'entries': item,
+        'functions': [
+            loot_tables.set_count(min_count, max_count)
+        ]
     }

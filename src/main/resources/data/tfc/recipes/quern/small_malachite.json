@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/small_malachite"
+  },
+  "result": {
+    "count": 2,
+    "item": "tfc:powder/malachite"
+  }
+}

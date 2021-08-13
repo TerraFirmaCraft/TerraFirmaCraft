@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.util.calendar;
 
+import java.util.Locale;
+
 import net.minecraft.util.IStringSerializable;
 
 public enum Season implements IStringSerializable
@@ -21,7 +23,7 @@ public enum Season implements IStringSerializable
 
     Season()
     {
-        this.serializedName = name().toLowerCase();
+        this.serializedName = name().toLowerCase(Locale.ROOT);
     }
 
     public Season next()

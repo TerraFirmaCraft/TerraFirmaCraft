@@ -8,27 +8,19 @@ package net.dries007.tfc.common.recipes;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 
 /**
  * This is a version of {@link net.minecraftforge.items.wrapper.RecipeWrapper} that is intended to be used for {@link IBlockRecipe}.
  * It extends {@link ItemStackRecipeWrapper} for ease of use, and so the block can be visible (via the proxy stack)
  */
-public class BlockRecipeWrapper extends ItemStackRecipeWrapper
+public class BlockRecipeWrapper implements IInventoryNoop
 {
     protected final BlockPos pos;
     protected BlockState state;
 
-    public BlockRecipeWrapper(IBlockReader world, BlockPos pos)
-    {
-        this(pos, world.getBlockState(pos));
-    }
-
     public BlockRecipeWrapper(BlockPos pos, BlockState state)
     {
-        super(new ItemStack(state.getBlock()));
         this.pos = pos;
         this.state = state;
     }

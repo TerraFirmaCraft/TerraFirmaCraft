@@ -7,23 +7,37 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:rock/loose/gabbro"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "tfc:is_isolated"
+                }
+              ],
+              "name": "tfc:rock/raw/gabbro"
+            },
+            {
+              "type": "item",
+              "name": "tfc:rock/loose/gabbro",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "min": 1,
+                    "max": 4,
+                    "type": "minecraft:uniform"
+                  }
+                }
+              ]
+            }
+          ]
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "functions": [
-        {
-          "function": "minecraft:set_count",
-          "count": {
-            "min": 1,
-            "max": 4,
-            "type": "minecraft:uniform"
-          }
         }
       ]
     }

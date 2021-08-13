@@ -14,8 +14,6 @@ import java.util.function.IntFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.common.types.Rock;
@@ -23,20 +21,20 @@ import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
+import net.dries007.tfc.world.layer.framework.Area;
+import net.dries007.tfc.world.layer.framework.AreaFactory;
 
-/**
- * A wrapper around {@link IAreaFactory}
- */
+
 public class LayerFactory<T>
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static LayerFactory<BiomeVariants> biomes(IAreaFactory<? extends IArea> factory)
+    public static LayerFactory<BiomeVariants> biomes(AreaFactory factory)
     {
         return new LayerFactory<>(factory, TFCLayerUtil::getFromLayerId);
     }
 
-    public static LayerFactory<Rock> rocks(IAreaFactory<? extends IArea> factory, List<ResourceLocation> rockNames)
+    public static LayerFactory<Rock> rocks(AreaFactory factory, List<ResourceLocation> rockNames)
     {
         // On servers, this is called earlier than resources (rocks) are loaded, for the purposes of initial / spawn chunk generation
         // So, we lazy initialize this as we can't check that the rock names are valid before this
@@ -65,12 +63,12 @@ public class LayerFactory<T>
         return new LayerFactory<>(factory, i -> verifier.get().apply(i));
     }
 
-    public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<? extends IArea> factory)
+    public static LayerFactory<PlateTectonicsClassification> plateTectonics(AreaFactory factory)
     {
         return new LayerFactory<>(factory, PlateTectonicsClassification::valueOf);
     }
 
-    public static LayerFactory<ForestType> forest(IAreaFactory<? extends IArea> factory)
+    public static LayerFactory<ForestType> forest(AreaFactory factory)
     {
         return new LayerFactory<>(factory, ForestType::valueOf);
     }
@@ -79,12 +77,12 @@ public class LayerFactory<T>
      * Uses a thread local area, as the underlying area is not synchronized.
      * This is an optimization adapted from Lithium, implementing a much better cache for the LazyArea underneath
      */
-    private final ThreadLocal<? extends IArea> area;
+    private final ThreadLocal<Area> area;
     private final IntFunction<T> mappingFunction;
 
-    protected LayerFactory(IAreaFactory<? extends IArea> factory, IntFunction<T> mappingFunction)
+    protected LayerFactory(AreaFactory factory, IntFunction<T> mappingFunction)
     {
-        this.area = ThreadLocal.withInitial(factory::make);
+        this.area = ThreadLocal.withInitial(factory);
         this.mappingFunction = mappingFunction;
     }
 

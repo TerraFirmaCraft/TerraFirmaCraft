@@ -247,7 +247,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         final BitSet liquidCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
         final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
-        final RockData rockData = chunkDataProvider.get(chunk.getPos()).getRockData();
+        final RockData rockData = chunkDataProvider.get(chunk.getPos()).getRockDataOrThrow();
 
         if (stage == GenerationStage.Carving.AIR)
         {
@@ -381,7 +381,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         }
 
         // Surface height is built now, this is required for surface builders
-        chunkDataProvider.get(chunkPos).getRockData().setSurfaceHeight(surfaceHeightMap);
+        chunkDataProvider.get(chunkPos).getRockDataOrThrow().setSurfaceHeight(surfaceHeightMap);
 
         // Fill in additional derivative sampling points
         for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)

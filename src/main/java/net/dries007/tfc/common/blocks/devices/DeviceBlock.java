@@ -33,10 +33,10 @@ public class DeviceBlock extends Block implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        InventoryTileEntity te = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
-        if (te != null && !(state.is(newState.getBlock())))
+        InventoryTileEntity<?> entity = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        if (entity != null && !(state.is(newState.getBlock())))
         {
-            te.onRemove();
+            beforeRemovingTileEntity(entity);
         }
         super.onRemove(state, world, pos, newState, isMoving);
     }
@@ -45,5 +45,11 @@ public class DeviceBlock extends Block implements IForgeBlockProperties
     public ForgeBlockProperties getForgeProperties()
     {
         return properties;
+    }
+
+    protected void beforeRemovingTileEntity(InventoryTileEntity<?> entity)
+    {
+        entity.ejectInventory();
+        entity.invalidateCapabilities();
     }
 }

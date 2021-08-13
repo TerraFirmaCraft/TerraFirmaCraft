@@ -24,11 +24,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
@@ -38,6 +37,11 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickableTileEntity
 {
+    public static final Vector3i[] DIAGONALS = new Vector3i[] {new Vector3i(1, 0, 1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, -1)};
+    public static final int STRAW_NEEDED = 8;
+    public static final int WOOD_NEEDED = 8;
+    private static final float MAX_TEMP = 1200f;
+
     public static void convertPitKilnToPlacedItem(World world, BlockPos pos)
     {
         PitKilnTileEntity teOld = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
@@ -46,12 +50,13 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
             ItemStack[] inventory = new ItemStack[4];
-            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                 for (int i = 0; i < 4; i++)
                 {
                     inventory[i] = cap.extractItem(i, 64, false);
                 }
             });
+
             // Replace the block
             world.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
 
@@ -59,7 +64,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
             PlacedItemTileEntity teNew = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
             if (teNew != null)
             {
-                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                     for (int i = 0; i < 4; i++)
                     {
                         if (inventory[i] != null && !inventory[i].isEmpty())
@@ -68,23 +73,33 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
                         }
                     }
                 });
+
                 // Copy misc data
                 teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
             }
         }
     }
 
-    public static final Vector3i[] DIAGONALS = new Vector3i[] {new Vector3i(1, 0, 1), new Vector3i(-1, 0, 1), new Vector3i(1, 0, -1), new Vector3i(-1, 0, -1)};
-
-    public static final int STRAW_NEEDED = 8;
-    public static final int WOOD_NEEDED = 8;
-    private static final float MAX_TEMP = 1200f;
+    public static boolean isValid(World level, BlockPos worldPosition)
+    {
+        for (Direction face : Direction.Plane.HORIZONTAL)
+        {
+            BlockPos relativePos = worldPosition.relative(face);
+            BlockState relativeState = level.getBlockState(relativePos);
+            Direction opposite = face.getOpposite();
+            if (!relativeState.isFaceSturdy(level, relativePos, opposite) || relativeState.isFlammable(level, relativePos, opposite))
+            {
+                return false;
+            }
+        }
+        return level.getBlockState(worldPosition.below()).isFaceSturdy(level, worldPosition.below(), Direction.UP);
+    }
 
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
+    private final HeatingRecipe[] cachedRecipes;
     private long litTick;
     private boolean isLit;
-    private final HeatingRecipe[] cachedRecipes;
 
     public PitKilnTileEntity()
     {
@@ -168,15 +183,14 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
     }
 
     @Override
-    public void onRemove()
+    public void ejectInventory()
     {
-        if (level == null) return;
+        assert level != null;
         int x = worldPosition.getX();
         int y = worldPosition.getY();
         int z = worldPosition.getZ();
         strawItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
         logItems.forEach(i -> InventoryHelper.dropItemStack(level, x, y, z, i));
-        super.onRemove();
     }
 
     public void deleteStraw(int slot)
@@ -246,6 +260,26 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         logItems.clear();
     }
 
+    public void addStraw(ItemStack stack, int slot)
+    {
+        strawItems.set(slot, stack);
+    }
+
+    public void addLog(ItemStack stack, int slot)
+    {
+        logItems.set(slot, stack);
+    }
+
+    public NonNullList<ItemStack> getLogs()
+    {
+        return logItems;
+    }
+
+    public NonNullList<ItemStack> getStraws()
+    {
+        return strawItems;
+    }
+
     private void adjustTempsForTime(long remainingTicks)
     {
         for (int i = 0; i < inventory.getSlots(); i++)
@@ -254,7 +288,6 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> heat.setTemperature(MathHelper.clamp(heat.getTemperature() - remainingTicks / 10.0f, 0, MAX_TEMP)));
         }
     }
-
 
     private void cookContents(boolean isEnding)
     {
@@ -289,41 +322,5 @@ public class PitKilnTileEntity extends PlacedItemTileEntity implements ITickable
         {
             cachedRecipes[i] = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(i)));
         }
-    }
-
-
-    public void addStraw(ItemStack stack, int slot)
-    {
-        strawItems.set(slot, stack);
-    }
-
-    public void addLog(ItemStack stack, int slot)
-    {
-        logItems.set(slot, stack);
-    }
-
-    public NonNullList<ItemStack> getLogs()
-    {
-        return logItems;
-    }
-
-    public NonNullList<ItemStack> getStraws()
-    {
-        return strawItems;
-    }
-
-    public static boolean isValid(World level, BlockPos worldPosition)
-    {
-        for (Direction face : Direction.Plane.HORIZONTAL)
-        {
-            BlockPos relativePos = worldPosition.relative(face);
-            BlockState relativeState = level.getBlockState(relativePos);
-            Direction opposite = face.getOpposite();
-            if (!relativeState.isFaceSturdy(level, relativePos, opposite) || relativeState.isFlammable(level, relativePos, opposite))
-            {
-                return false;
-            }
-        }
-        return level.getBlockState(worldPosition.below()).isFaceSturdy(level, worldPosition.below(), Direction.UP);
     }
 }

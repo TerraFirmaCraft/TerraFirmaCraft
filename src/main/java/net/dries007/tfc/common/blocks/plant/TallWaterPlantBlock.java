@@ -29,6 +29,8 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
 {
+    public static final EnumProperty<ITallPlant.Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
+
     public static TallWaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
         return new TallWaterPlantBlock(properties)
@@ -46,8 +48,6 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
             }
         };
     }
-
-    public static final EnumProperty<ITallPlant.Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
 
     protected TallWaterPlantBlock(Properties properties)
     {

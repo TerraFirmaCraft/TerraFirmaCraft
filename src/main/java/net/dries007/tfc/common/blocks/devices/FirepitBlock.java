@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -41,18 +40,14 @@ import net.dries007.tfc.common.blocks.IForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.tileentity.FirepitTileEntity;
-import net.dries007.tfc.common.tileentity.GrillTileEntity;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
+import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.util.Helpers.fastGaussian;
-import static net.minecraft.util.ActionResultType.*;
 
 public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
-    protected static final VoxelShape BASE_SHAPE = VoxelShapes.or(
+
+    public static final VoxelShape BASE_SHAPE = VoxelShapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
         box(5, 0, 0.5, 9, 1, 3),
         box(11, 0, 0, 13, 1.5, 2),
@@ -84,61 +79,10 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
         return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
     }
 
-    protected static void tryExtinguish(World world, BlockPos pos, BlockState state)
-    {
-        FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (pit != null)
-        {
-            Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
-            pit.extinguish(state);
-        }
-    }
-
-    private static void convertFirepitToGrill(World world, BlockPos pos, ItemStack stack, boolean lit)
-    {
-        FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (pit != null)
-        {
-            List<ItemStack> logs = pit.getLogs();
-            float[] fields = pit.getFields();
-            pit.dump();
-            pit.clearContent();
-
-            world.setBlock(pos, TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lit), 3);
-            stack.shrink(1);
-            Helpers.playSound(world, pos, SoundEvents.CHAIN_PLACE);
-            GrillTileEntity grill = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
-            if (grill != null)
-            {
-                grill.acceptData(logs, fields);
-            }
-        }
-    }
-
-    private static void convertFirepitToPot(World world, BlockPos pos, ItemStack stack, boolean lit)
-    {
-        FirepitTileEntity pit = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (pit != null)
-        {
-            List<ItemStack> logs = pit.getLogs();
-            float[] fields = pit.getFields();
-            pit.dump();
-            pit.clearContent();
-
-            world.setBlock(pos, TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lit), 3);
-            stack.shrink(1);
-            Helpers.playSound(world, pos, SoundEvents.BEEHIVE_SHEAR);
-            PotTileEntity pot = Helpers.getTileEntity(world, pos, PotTileEntity.class);
-            if (pot != null)
-            {
-                pot.acceptData(logs, fields);
-            }
-        }
-    }
-
     public FirepitBlock(ForgeBlockProperties properties)
     {
         super(properties);
+
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
 
@@ -152,13 +96,21 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
         double z = pos.getZ() + 0.5;
 
         if (rand.nextInt(10) == 0)
+        {
             world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+        }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
-            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.07D, 0);
+        {
+            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.07D, 0);
+        }
         for (int i = 0; i < rand.nextInt(4); i++)
-            world.addParticle(ParticleTypes.SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
+        {
+            world.addParticle(ParticleTypes.SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+        }
         if (rand.nextInt(8) == 1)
-            world.addParticle(ParticleTypes.LARGE_SMOKE, x + fastGaussian(rand), y + rand.nextDouble(), z + fastGaussian(rand), 0, 0.005D, 0);
+        {
+            world.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+        }
     }
 
     @Override
@@ -169,14 +121,6 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
         super.stepOn(world, pos, entity);
-    }
-
-    @Override
-    public void handleRain(World world, BlockPos pos)
-    {
-        FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-        if (te != null && world.getBlockState(pos).getValue(LIT))
-            te.onRainDrop();
     }
 
     @Override
@@ -200,42 +144,41 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result)
     {
-        if (world.isClientSide() || hand.equals(Hand.OFF_HAND)) return SUCCESS;
-        ItemStack stack = player.getItemInHand(hand);
-        boolean lit = state.getValue(LIT);
-        if (stack.sameItem(new ItemStack(TFCItems.POT.get())))
+        final AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
+        if (firepit != null)
         {
-            convertFirepitToPot(world, pos, stack, lit);
-            return CONSUME;
-        }
-        else if (stack.sameItem(new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get())))
-        {
-            convertFirepitToGrill(world, pos, stack, lit);
-            return CONSUME;
-        }
-        else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
-        {
-            tryExtinguish(world, pos, state);
-            return SUCCESS;
-        }
-        else
-        {
-            FirepitTileEntity te = Helpers.getTileEntity(world, pos, FirepitTileEntity.class);
-            if (te != null && player instanceof ServerPlayerEntity)
+            final ItemStack stack = player.getItemInHand(hand);
+            if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
             {
-                NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
-                Helpers.playSound(world, pos, SoundEvents.SOUL_SAND_STEP);
-                return SUCCESS;
+                if (!world.isClientSide)
+                {
+                    AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
+                    stack.shrink(1);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            else if (stack.getItem().is(TFCTags.Items.EXTINGUISHER))
+            {
+                firepit.extinguish(state);
+                return ActionResultType.SUCCESS;
+            }
+            else
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, firepit, pos);
+                }
+                return ActionResultType.SUCCESS;
             }
         }
-        return FAIL;
+        return ActionResultType.PASS;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
     {
-        return canSurvive(world, pos);
+        return FirepitBlock.canSurvive(world, pos);
     }
 
     @Override

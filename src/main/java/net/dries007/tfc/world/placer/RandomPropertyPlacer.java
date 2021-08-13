@@ -28,13 +28,12 @@ import net.dries007.tfc.world.Codecs;
 
 public class RandomPropertyPlacer extends BlockPlacer
 {
+    private static final Logger LOGGER = LogManager.getLogger();
     @SuppressWarnings("deprecation")
     public static final Codec<RandomPropertyPlacer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.nonDefaultedRegistryCodec(Registry.BLOCK).fieldOf("block").forGetter(c -> c.block),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
     ).apply(instance, RandomPropertyPlacer::create));
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private static RandomPropertyPlacer create(Block block, String propertyName)
     {

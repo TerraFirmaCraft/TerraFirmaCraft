@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:food/oat_dough"
+  },
+  "result_item": {
+    "item": "tfc:food/oat_bread"
+  },
+  "temperature": 200
+}

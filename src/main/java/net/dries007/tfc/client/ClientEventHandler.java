@@ -20,22 +20,18 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.GrillTileEntityRenderer;
-import net.dries007.tfc.client.render.PitKilnTileEntityRenderer;
-import net.dries007.tfc.client.render.PlacedItemTileEntityRenderer;
-import net.dries007.tfc.client.render.PotTileEntityRenderer;
+import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -47,13 +43,20 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.types.Wood.BlockType.*;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientEventHandler
 {
-    @SubscribeEvent
+    public static void init()
+    {
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        bus.addListener(ClientEventHandler::clientSetup);
+        bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
+        bus.addListener(ClientEventHandler::registerColorHandlerItems);
+        bus.addListener(ClientEventHandler::registerParticleFactoriesAndOtherStuff);
+    }
+
     public static void clientSetup(FMLClientSetupEvent event)
     {
         // Screens
@@ -65,6 +68,11 @@ public final class ClientEventHandler
         ScreenManager.register(TFCContainerTypes.POT.get(), PotScreen::new);
         ScreenManager.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
         ScreenManager.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+        ScreenManager.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
+        ScreenManager.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
+        ScreenManager.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
+        ScreenManager.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
+        ScreenManager.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
@@ -138,12 +146,13 @@ public final class ClientEventHandler
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.GRILL.get(), GrillTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PLACED_ITEM.get(), PlacedItemTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(TFCTileEntities.PIT_KILN.get(), PitKilnTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.QUERN.get(), QuernTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TFCTileEntities.SCRAPING.get(), ScrapingTileEntityRenderer::new);
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
     }
 
-    @SubscribeEvent
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
@@ -156,24 +165,22 @@ public final class ClientEventHandler
         registry.register(grassColor, TFCBlocks.PEAT_GRASS.get());
 
         TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get()));
-		TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+        TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
 
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get());
         registry.register((state, worldIn, pos, tintIndex) -> 0x5FB5B8, TFCBlocks.SPRING_WATER.get());
     }
 
-    @SubscribeEvent
     public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();
         final IItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
         final IItemColor seasonalFoliageColor = (stack, tintIndex) -> TFCColors.getFoliageColor(null, tintIndex);
 
-		TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
-		TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
+        TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
     }
 
-    @SubscribeEvent
     public static void registerParticleFactoriesAndOtherStuff(ParticleFactoryRegisterEvent event)
     {
         // Add client reload listeners here, as it's closest to the location where they are added in vanilla

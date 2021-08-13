@@ -3,5 +3,5 @@
   "ingredient": {
     "tag": "forge:sand"
   },
-  "heat_capacity": 1.0
+  "heat_capacity": 0.8
 }

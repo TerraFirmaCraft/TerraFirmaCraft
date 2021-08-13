@@ -43,7 +43,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final ChunkDataProvider provider = ChunkDataProvider.get(generator);
         final ChunkData data = provider.get(pos);
-        final Rock rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
+        final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
         final BlockState rockState = rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
         final BlockState gravelState = rock.getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
         final Fluid fluid = config.fluidState.getFluidState().getType();
@@ -61,7 +61,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 final int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
                 // Disallow underwater locations
-                if (y <= TFCChunkGenerator.SEA_LEVEL || noise.noise(x, z) == 0)
+                if (y <= TFCChunkGenerator.SEA_LEVEL || !noise.inside(x, z))
                 {
                     continue;
                 }

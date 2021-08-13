@@ -48,6 +48,7 @@ public final class ChunkDataProvider
 
     /**
      * Gets the chunk data for a chunk, during world generation, fully generated.
+     *
      * @param pos The chunk position
      * @return A chunk data for the provided chunk pos
      */

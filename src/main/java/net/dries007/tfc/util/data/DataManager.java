@@ -117,8 +117,7 @@ public abstract class DataManager<T> extends JsonReloadListener
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
-                LOGGER.warn("{} '{}' failed to parse. Cause: {}", typeName, name, e.getMessage());
-                LOGGER.debug("Error: ", e);
+                LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
             }
         }
 

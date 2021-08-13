@@ -6,12 +6,14 @@
 
 package net.dries007.tfc.common.types;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
@@ -25,7 +27,7 @@ import net.dries007.tfc.world.feature.tree.TFCTree;
 /**
  * Default wood types used for block registration calls
  */
-public enum Wood
+public enum Wood implements IStringSerializable
 {
     ACACIA(false, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 11),
     ASH(false, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_ORANGE, 8, 7),
@@ -47,6 +49,7 @@ public enum Wood
     WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 7),
     WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 7, 11);
 
+    private final String serializedName;
     private final boolean conifer;
     private final MaterialColor mainColor;
     private final MaterialColor topColor;
@@ -57,13 +60,20 @@ public enum Wood
 
     Wood(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int maxDecayDistance, int daysToGrow)
     {
+        this.serializedName = name().toLowerCase(Locale.ROOT);
         this.conifer = conifer;
         this.mainColor = mainColor;
         this.topColor = topColor;
         this.barkColor = barkColor;
-        this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
+        this.tree = new TFCTree(Helpers.identifier("tree/" + serializedName), Helpers.identifier("tree/" + serializedName + "_large"));
         this.maxDecayDistance = maxDecayDistance;
         this.daysToGrow = daysToGrow;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return serializedName;
     }
 
     public boolean isConifer()

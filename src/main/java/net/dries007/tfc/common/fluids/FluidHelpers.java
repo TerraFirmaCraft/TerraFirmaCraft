@@ -32,6 +32,7 @@ public class FluidHelpers
 {
     /**
      * Checks if a block state is empty other than a provided fluid
+     *
      * @return true if the provided state is a source block of it's current fluid
      */
     @SuppressWarnings("deprecation")
@@ -43,6 +44,7 @@ public class FluidHelpers
     /**
      * Given a block state and a fluid, attempts to fill the block state with the fluid
      * Returns null if the provided combination cannot be filled
+     *
      * @param state The state to fill
      * @param fluid The fluid to fill with
      * @return The fluid-logged state, or null if impossible

@@ -42,6 +42,12 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(COUNT));
+    }
+
+    @Override
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         ItemStack stack = player.getMainHandItem();
@@ -60,12 +66,6 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
             return ActionResultType.PASS;
         }
         return super.use(state, worldIn, pos, player, handIn, hit);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(COUNT));
     }
 
     @Override

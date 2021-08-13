@@ -9,12 +9,14 @@ package net.dries007.tfc.client;
 import java.awt.*;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.color.ColorCache;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
@@ -23,24 +25,27 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.level.ColorResolver;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -49,6 +54,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.HealthDisplayFormat;
@@ -64,15 +70,26 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventHandler
 {
     private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/icons/overlay.png");
 
-    @SubscribeEvent
+    public static void init()
+    {
+        final IEventBus bus = MinecraftForge.EVENT_BUS;
+
+        bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
+        bus.addListener(ClientForgeEventHandler::onItemTooltip);
+        bus.addListener(ClientForgeEventHandler::onInitGuiPost);
+        bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
+        bus.addListener(ClientForgeEventHandler::onClientTick);
+        bus.addListener(ClientForgeEventHandler::onKeyEvent);
+        bus.addListener(ClientForgeEventHandler::onRenderOverlay);
+        bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
+    }
+
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
         Minecraft mc = Minecraft.getInstance();
@@ -109,24 +126,31 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event)
     {
-        ItemStack stack = event.getItemStack();
-        PlayerEntity player = event.getPlayer();
-        List<ITextComponent> text = event.getToolTip();
-        if (!stack.isEmpty() && player != null)
+        final ItemStack stack = event.getItemStack();
+        final List<ITextComponent> text = event.getToolTip();
+        if (!stack.isEmpty())
         {
+            ItemSizeManager.addTooltipInfo(stack, text);
             MetalItemManager.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
             if (event.getFlags().isAdvanced())
             {
                 FuelManager.addTooltipInfo(stack, text);
             }
+
+            if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
+            {
+                CompoundNBT stackTag = stack.getTag();
+                if (stackTag != null)
+                {
+                    text.add(new TranslationTextComponent("tfc.tooltip.debug_tag", stackTag));
+                }
+            }
         }
     }
 
-    @SubscribeEvent
     public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
         PlayerEntity player = Minecraft.getInstance().player;
@@ -143,7 +167,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onClientWorldLoad(WorldEvent.Load event)
     {
         if (event.getWorld() instanceof ClientWorld)
@@ -162,7 +185,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event)
     {
         World world = Minecraft.getInstance().level;
@@ -173,7 +195,6 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SubscribeEvent
     public static void onKeyEvent(InputEvent.KeyInputEvent event)
     {
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
@@ -183,8 +204,7 @@ public class ClientForgeEventHandler
     }
 
     @SuppressWarnings("deprecation")
-    @SubscribeEvent
-    public static void render(RenderGameOverlayEvent.Pre event)
+    public static void onRenderOverlay(RenderGameOverlayEvent.Pre event)
     {
         final Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
@@ -354,6 +374,38 @@ public class ClientForgeEventHandler
 
                 RenderSystem.enableBlend();
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+        }
+    }
+
+    /**
+     * Handles custom bounding boxes drawing
+     * eg: Chisel, Quern handle
+     */
+    public static void onHighlightBlockEvent(DrawHighlightEvent.HighlightBlock event)
+    {
+        final ActiveRenderInfo info = event.getInfo();
+        final MatrixStack mStack = event.getMatrix();
+        final Entity entity = info.getEntity();
+        final World world = entity.level;
+        final BlockRayTraceResult traceResult = event.getTarget();
+        final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
+
+        //noinspection ConstantConditions
+        if (lookingAt != null && entity instanceof PlayerEntity)
+        {
+            PlayerEntity player = (PlayerEntity) entity;
+            Block blockAt = world.getBlockState(lookingAt).getBlock();
+            //todo: chisel
+            if (blockAt instanceof IHighlightHandler) //todo: java 16
+            {
+                // Pass on to custom implementations
+                IHighlightHandler handler = (IHighlightHandler) blockAt;
+                if (handler.drawHighlight(world, lookingAt, player, traceResult, mStack, event.getBuffers(), info.getPosition()))
+                {
+                    // Cancel drawing this block's bounding box
+                    event.setCanceled(true);
+                }
             }
         }
     }

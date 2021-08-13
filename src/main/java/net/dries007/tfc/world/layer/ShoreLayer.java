@@ -9,15 +9,15 @@ package net.dries007.tfc.world.layer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
+import net.dries007.tfc.world.layer.framework.AreaContext;
 
-public enum ShoreLayer implements ICastleTransformer
+public enum ShoreLayer implements AdjacentTransformLayer
 {
     INSTANCE;
 
     @Override
-    public int apply(INoiseRandom context, int north, int east, int south, int west, int center)
+    public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
         if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.hasShore(center))

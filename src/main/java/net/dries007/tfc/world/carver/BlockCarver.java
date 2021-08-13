@@ -28,8 +28,8 @@ import net.dries007.tfc.world.chunkdata.RockData;
  */
 public abstract class BlockCarver implements IContextCarver
 {
-	protected final Set<Block> carvableBlocks;
-	protected final Map<Block, Block> exposedBlockReplacements;
+    protected final Set<Block> carvableBlocks;
+    protected final Map<Block, Block> exposedBlockReplacements;
 
     protected BitSet airCarvingMask;
     protected BitSet liquidCarvingMask;
@@ -75,10 +75,10 @@ public abstract class BlockCarver implements IContextCarver
             exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
         }
         for (SandBlockType sand : SandBlockType.values())
-		{
-			carvableBlocks.add(TFCBlocks.SAND.get(sand).get());
-			carvableBlocks.add(TFCBlocks.SANDSTONE.get(sand).get(SandstoneBlockType.RAW).get());
-		}
+        {
+            carvableBlocks.add(TFCBlocks.SAND.get(sand).get());
+            carvableBlocks.add(TFCBlocks.SANDSTONE.get(sand).get(SandstoneBlockType.RAW).get());
+        }
     }
 
     /**

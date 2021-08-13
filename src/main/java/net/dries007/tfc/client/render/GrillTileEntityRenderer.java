@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.client.render;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;

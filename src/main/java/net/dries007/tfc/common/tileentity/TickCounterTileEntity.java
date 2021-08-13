@@ -14,7 +14,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 public class TickCounterTileEntity extends TFCTileEntity
 {
-    private long lastUpdateTick = Integer.MIN_VALUE;
+    protected long lastUpdateTick = Integer.MIN_VALUE;
 
     public TickCounterTileEntity()
     {

@@ -20,15 +20,18 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.items.ItemStackHandler;
+
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.container.ItemStackHandlerCallback;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-//todo: convert to respect item sizes
-public class PlacedItemTileEntity extends InventoryTileEntity
+public class PlacedItemTileEntity extends InventoryTileEntity<ItemStackHandler>
 {
-    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
-
     public static final int SLOT_LARGE_ITEM = 0;
+    private static final ITextComponent NAME = new TranslationTextComponent(MOD_ID + ".tile_entity.placed_item");
     public boolean isHoldingLargeItem;
 
     public PlacedItemTileEntity()
@@ -38,7 +41,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity
 
     protected PlacedItemTileEntity(TileEntityType<?> type)
     {
-        super(type, 4, NAME);
+        super(type, self -> new ItemStackHandlerCallback(self, 4), NAME);
         this.isHoldingLargeItem = false;
     }
 
@@ -99,14 +102,8 @@ public class PlacedItemTileEntity extends InventoryTileEntity
     {
         // Try and insert an item
         // Check the size of item to determine if insertion is possible, or if it requires the large slot
-        /*IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
-        Size size = Size.NORMAL;
-        if (sizeCap != null)
-        {
-            size = sizeCap.getSize(stack);
-        }*/
-
-        if (/*size.isSmallerThan(Size.VERY_LARGE) && */!isHoldingLargeItem)
+        Size size = ItemSizeManager.get(stack).getSize(stack);
+        if (size.isSmallerThan(Size.VERY_LARGE) && !isHoldingLargeItem)
         {
             // Normal and smaller can be placed normally
             if (inventory.getStackInSlot(slot).isEmpty())
@@ -126,7 +123,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity
                 return true;
             }
         }
-        else if (/*!size.isSmallerThan(Size.VERY_LARGE)*/true) // Very Large or Huge
+        else if (!size.isSmallerThan(Size.VERY_LARGE)) // Very Large or Huge
         {
             // Large items are placed in the single center slot
             if (isEmpty())
@@ -158,7 +155,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity
     @Override
     public void load(BlockState state, CompoundNBT nbt)
     {
-        isHoldingLargeItem = nbt.getBoolean("itemSize");
+        isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
         super.load(state, nbt);
     }
 
@@ -166,7 +163,7 @@ public class PlacedItemTileEntity extends InventoryTileEntity
     @Nonnull
     public CompoundNBT save(CompoundNBT nbt)
     {
-        nbt.putBoolean("itemSize", isHoldingLargeItem);
+        nbt.putBoolean("isHoldingLargeItem", isHoldingLargeItem);
         return super.save(nbt);
     }
 

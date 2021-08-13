@@ -6,12 +6,16 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.Locale;
+
+import net.minecraft.util.IStringSerializable;
+
 /**
  * Values for plate tectonics
  *
  * These must match the compile time constants in {@link net.dries007.tfc.world.layer.TFCLayerUtil}
  */
-public enum PlateTectonicsClassification
+public enum PlateTectonicsClassification implements IStringSerializable
 {
     OCEANIC,
     CONTINENTAL_LOW,
@@ -31,15 +35,16 @@ public enum PlateTectonicsClassification
         return i >= 0 && i < VALUES.length ? VALUES[i] : OCEANIC;
     }
 
-    private final String translationKey;
+    private final String serializedName;
 
     PlateTectonicsClassification()
     {
-        this.translationKey = name().toLowerCase();
+        this.serializedName = name().toLowerCase(Locale.ROOT);
     }
 
-    public String getTranslationKey()
+    @Override
+    public String getSerializedName()
     {
-        return translationKey;
+        return serializedName;
     }
 }

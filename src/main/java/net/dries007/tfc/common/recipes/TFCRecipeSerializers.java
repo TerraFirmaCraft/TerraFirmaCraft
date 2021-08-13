@@ -9,7 +9,9 @@ package net.dries007.tfc.common.recipes;
 import java.util.function.Supplier;
 
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,14 +30,23 @@ public class TFCRecipeSerializers
     // Item Recipes
 
     public static final RegistryObject<HeatingRecipe.Serializer> HEATING = register("heating", HeatingRecipe.Serializer::new);
+    public static final RegistryObject<SimpleItemRecipe.Serializer<QuernRecipe>> QUERN = register("quern", () -> new SimpleItemRecipe.Serializer<>(QuernRecipe::new));
+    public static final RegistryObject<SimpleItemRecipe.Serializer<ScrapingRecipe>> SCRAPING = register("scraping", () -> new SimpleItemRecipe.Serializer<>(ScrapingRecipe::new));
 
     // Complex Recipes
 
-    public static final RegistryObject<SimplePotRecipe.Serializer> SIMPLE_POT = register("simple_pot", () -> new SimplePotRecipe.Serializer(SimplePotRecipe::new));
+    public static final RegistryObject<FluidPotRecipe.Serializer> POT_FLUID = register("pot_fluid", FluidPotRecipe.Serializer::new);
+    public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
+    public static final RegistryObject<KnappingRecipe.Serializer> CLAY_KNAPPING = register("clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.CLAY_KNAPPING));
+    public static final RegistryObject<KnappingRecipe.Serializer> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.FIRE_CLAY_KNAPPING));
+    public static final RegistryObject<KnappingRecipe.Serializer> LEATHER_KNAPPING = register("leather_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.LEATHER_KNAPPING));
+    public static final RegistryObject<RockKnappingRecipe.RockSerializer> ROCK_KNAPPING = register("rock_knapping", RockKnappingRecipe.RockSerializer::new);
+
 
     // Delegate Recipe Types
 
-    public static final RegistryObject<DelegatingRecipe.Serializer<CraftingInventory, DamageInputsCraftingRecipe>> DAMAGE_INPUTS_CRAFTING = register("damage_inputs_crafting", () -> new DelegatingRecipe.Serializer<>(DamageInputsCraftingRecipe::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingInventory>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
 
     private static <S extends IRecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

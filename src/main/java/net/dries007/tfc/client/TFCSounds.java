@@ -24,6 +24,24 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("rock_slide_short");
     public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("dirt_slide_short");
 
+    public static final RegistryObject<SoundEvent> THATCH_HIT = create("thatch_hit");
+    public static final RegistryObject<SoundEvent> THATCH_PLACE = create("thatch_place");
+    public static final RegistryObject<SoundEvent> THATCH_STEP = create("thatch_step");
+    public static final RegistryObject<SoundEvent> THATCH_FALL = create("thatch_fall");
+    public static final RegistryObject<SoundEvent> THATCH_BREAK = create("thatch_break");
+
+    public static final RegistryObject<SoundEvent> PEAT_HIT = create("peat_hit");
+    public static final RegistryObject<SoundEvent> PEAT_PLACE = create("peat_place");
+    public static final RegistryObject<SoundEvent> PEAT_STEP = create("peat_step");
+    public static final RegistryObject<SoundEvent> PEAT_FALL = create("peat_fall");
+    public static final RegistryObject<SoundEvent> PEAT_BREAK = create("peat_break");
+
+    public static final RegistryObject<SoundEvent> THIN_HIT = create("thin_hit");
+    public static final RegistryObject<SoundEvent> THIN_PLACE = create("thin_place");
+    public static final RegistryObject<SoundEvent> THIN_STEP = create("thin_step");
+    public static final RegistryObject<SoundEvent> THIN_FALL = create("thin_fall");
+    public static final RegistryObject<SoundEvent> THIN_BREAK = create("thin_break");
+
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_BREAK = create("charcoal_break");
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_FALL = create("charcoal_fall");
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_HIT = create("charcoal_hit");
@@ -32,7 +50,16 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter");
 
-    public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_STEP, CHARCOAL_PILE_FALL);
+    public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
+
+    public static final RegistryObject<SoundEvent> KNAP_STONE = create("knap_stone");
+    public static final RegistryObject<SoundEvent> KNAP_CLAY = create("knap_clay");
+    public static final RegistryObject<SoundEvent> KNAP_LEATHER = create("knap_leather");
+
+    public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
+    public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);
+    public static final ForgeSoundType PEAT = new ForgeSoundType(1.0f, 1.0f, PEAT_BREAK, PEAT_STEP, PEAT_PLACE, PEAT_HIT, PEAT_FALL);
+    public static final ForgeSoundType THIN = new ForgeSoundType(1.0f, 1.0f, THIN_BREAK, THIN_STEP, THIN_PLACE, THIN_HIT, THIN_FALL);
 
     private static RegistryObject<SoundEvent> create(String name)
     {

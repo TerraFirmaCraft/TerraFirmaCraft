@@ -36,9 +36,9 @@ public class CaveVegetationConfig implements IFeatureConfig
     private final Map<Block, IWeighted<BlockState>> states;
 
     public CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states)
-	{
-		this.states = states;
-	}
+    {
+        this.states = states;
+    }
 
     @Nullable
     public BlockState getStateToGenerate(BlockState stoneState, Random random)

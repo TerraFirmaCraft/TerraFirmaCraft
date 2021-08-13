@@ -9,18 +9,21 @@ package net.dries007.tfc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.client.ClientEventHandler;
+import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -32,10 +35,10 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
-import net.dries007.tfc.world.placer.TFCBlockPlacers;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
@@ -44,6 +47,7 @@ import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placer.TFCBlockPlacers;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 @Mod(TerraFirmaCraft.MOD_ID)
@@ -59,9 +63,9 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Constructor");
         LOGGER.debug("Debug Logging Enabled");
 
-        // Event bus subscribers
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.register(this);
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        modEventBus.addListener(this::setup);
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
@@ -81,12 +85,15 @@ public final class TerraFirmaCraft
         TFCBlockPlacers.BLOCK_PLACERS.register(modEventBus);
         TFCWorldType.WORLD_TYPES.register(modEventBus);
 
-        // Init methods
         TFCConfig.init();
         PacketHandler.init();
+        CalendarEventHandler.init();
+        ForgeEventHandler.init();
+
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientEventHandler::init);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientForgeEventHandler::init);
     }
 
-    @SubscribeEvent
     public void setup(FMLCommonSetupEvent event)
     {
         LOGGER.info("TFC Common Setup");
@@ -100,6 +107,7 @@ public final class TerraFirmaCraft
         InteractionManager.setup();
         TFCWorldType.setup();
         TFCLoot.setup();
+        ItemSizeManager.setup();
 
         event.enqueueWork(DispenserBehaviors::syncSetup);
 

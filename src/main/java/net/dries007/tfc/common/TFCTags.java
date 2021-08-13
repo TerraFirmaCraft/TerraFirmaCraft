@@ -16,6 +16,7 @@ import net.minecraft.tags.ItemTags;
 
 import net.dries007.tfc.util.Helpers;
 
+@SuppressWarnings("unused")
 public class TFCTags
 {
     public static class Blocks
@@ -53,6 +54,9 @@ public class TFCTags
         public static final ITag.INamedTag<Block> SMALL_SPIKE = create("small_spike");
         public static final ITag.INamedTag<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final ITag.INamedTag<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
+        public static final ITag.INamedTag<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
+        public static final ITag.INamedTag<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
+        public static final ITag.INamedTag<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
 
         private static ITag.INamedTag<Block> create(String id)
         {
@@ -63,6 +67,8 @@ public class TFCTags
     public static class Fluids
     {
         public static final ITag.INamedTag<Fluid> MIXABLE = create("mixable");
+
+        public static final ITag.INamedTag<Fluid> USABLE_IN_POT = create("usable_in_pot");
 
         private static ITag.INamedTag<Fluid> create(String id)
         {
@@ -86,6 +92,24 @@ public class TFCTags
         public static final ITag.INamedTag<Item> FIREPIT_FUEL = create("firepit_fuel");
         public static final ITag.INamedTag<Item> BLOOMERY_FUEL = create("bloomery_fuel");
         public static final ITag.INamedTag<Item> FORGE_FUEL = create("forge_fuel");
+        public static final ITag.INamedTag<Item> HANDSTONE = create("handstone");
+        public static final ITag.INamedTag<Item> FLUXSTONE = create("fluxstone");
+        public static final ITag.INamedTag<Item> SCRAPABLE = create("scrapable");
+        public static final ITag.INamedTag<Item> KNIVES = create("knives");
+        public static final ITag.INamedTag<Item> SAWS = create("saws");
+        public static final ITag.INamedTag<Item> CHISELS = create("chisels");
+        public static final ITag.INamedTag<Item> HAMMERS = create("hammers");
+        public static final ITag.INamedTag<Item> ROCK_KNAPPING = create("rock_knapping");
+        public static final ITag.INamedTag<Item> CLAY_KNAPPING = create("clay_knapping");
+        public static final ITag.INamedTag<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
+        public static final ITag.INamedTag<Item> LEATHER_KNAPPING = create("leather_knapping");
+        public static final ITag.INamedTag<Item> KNAPPING_ANY = create("knapping_any");
+        public static final ITag.INamedTag<Item> SEDIMENTARY_ROCK = create("sedimentary_rock");
+        public static final ITag.INamedTag<Item> METAMORPHIC_ROCK = create("metamorphic_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_INTRUSIVE_ROCK = create("igneous_intrusive_rock");
+        public static final ITag.INamedTag<Item> IGNEOUS_EXTRUSIVE_ROCK = create("igneous_extrusive_rock");
+        public static final ITag.INamedTag<Item> HIGH_QUALITY_CLOTH = create("high_quality_cloth");
+        public static final ITag.INamedTag<Item> LUMBER = create("lumber");
 
         private static ITag.INamedTag<Item> create(String id)
         {

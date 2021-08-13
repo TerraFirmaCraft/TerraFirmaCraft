@@ -26,12 +26,17 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
-import net.dries007.tfc.common.blocks.devices.LogPileBlock;
+import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
+import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -48,6 +53,7 @@ public final class InteractionManager
     private static final List<Entry> ACTIONS = new ArrayList<>();
     private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
+    @SuppressWarnings("deprecation")
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
@@ -79,18 +85,18 @@ public final class InteractionManager
         });
 
         register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
-            final PlayerEntity playerEntity = context.getPlayer();
-            if (playerEntity instanceof ServerPlayerEntity)
+            final PlayerEntity player = context.getPlayer();
+            final World world = context.getLevel();
+            final BlockPos pos = context.getClickedPos();
+            if (player != null && StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
             {
-                final World world = context.getLevel();
-                final BlockPos pos = context.getClickedPos();
-                final ServerPlayerEntity player = (ServerPlayerEntity) playerEntity;
                 if (!player.isCreative())
-                    stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(context.getHand()));
-                if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
-                    return ActionResultType.SUCCESS;
+                {
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                }
+                return ActionResultType.SUCCESS;
             }
-            return ActionResultType.FAIL;
+            return ActionResultType.PASS;
         });
 
         register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
@@ -179,70 +185,90 @@ public final class InteractionManager
             }
         });
 
-        // Log pile creation and insertion. Don't touch unless broken
+        // Log pile creation and insertion.
+        // Note: sneaking will always bypass the log pile block onUse method - that is why we have to handle some insertion here.
+        // - holding log, targeting block, shift click = place log pile
+        // - holding log, targeting log pile, shift click = insert all
+        // - holding log, targeting log pile, click normally = insert one
+        final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
         register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
             final PlayerEntity player = context.getPlayer();
-            if (player != null)
+            if (player != null && player.isShiftKeyDown())
             {
                 final World world = context.getLevel();
                 final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
+                final BlockState stateClicked = world.getBlockState(posClicked);
                 final BlockPos relativePos = posClicked.relative(direction);
 
-                if (!player.isShiftKeyDown()) return ActionResultType.PASS; // for some reason this cancels placement?
-
-                // First we allow bulk insertion via shift click.
-                if (world.getBlockState(posClicked).is(TFCBlocks.LOG_PILE.get()))
+                // If we're targeting a log pile, we can do one of two insertion operations
+                if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
                 {
-                    LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
-                    if (te != null && !te.isFull())
-                    {
-                        int inserted = te.insertLogs(stack.copy());
-                        if (inserted > 0)
+                    final LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
+                    return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                        ItemStack insertStack = stack.copy();
+                        insertStack = Helpers.insertAllSlots(cap, insertStack);
+                        if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                         {
                             if (!world.isClientSide())
                             {
                                 Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
-                                stack.shrink(inserted);
-                                return ActionResultType.CONSUME;
+                                stack.setCount(insertStack.getCount());
                             }
                             return ActionResultType.SUCCESS;
                         }
-                        return ActionResultType.PASS;
-                    }
-                }
 
-                // Trying to place a log pile.
-                if (world.isEmptyBlock(relativePos) && !player.blockPosition().equals(relativePos))
+                        final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                        if (result.consumesAction())
+                        {
+                            insertStack.setCount(1);
+                            cap.insertItem(0, insertStack, false);
+                        }
+                        return result;
+                    }).orElse(ActionResultType.PASS);
+                }
+                else
                 {
-                    if (world.isClientSide()) return ActionResultType.SUCCESS;
-                    final BlockPos belowPos = relativePos.below();
-                    final BlockState belowState = world.getBlockState(belowPos);
-                    if (belowState.isFaceSturdy(world, belowPos, Direction.UP))
+                    // Trying to place a log pile.
+                    final ItemStack insertStack = stack.copy();
+                    final ActionResultType result = logPilePlacement.onItemUse(stack, context);
+                    if (result.consumesAction())
                     {
-                        if (belowState.is(TFCBlocks.LOG_PILE.get()))
-                        {
-                            LogPileTileEntity te = Helpers.getTileEntity(world, belowPos, LogPileTileEntity.class);
-                            if (te == null || !te.isFull())
+                        final LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
+                        Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                            insertStack.setCount(1);
+                            cap.insertItem(0, insertStack, false);
+                        });
+                    }
+                    return result;
+                }
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.SCRAPABLE, (stack, context) -> {
+            World level = context.getLevel();
+            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
+            if (recipe != null)
+            {
+                final BlockPos pos = context.getClickedPos();
+                final BlockPos abovePos = pos.above();
+                PlayerEntity player = context.getPlayer();
+                if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
+                {
+                    level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
+                    final ScrapingTileEntity te = Helpers.getTileEntity(level, abovePos, ScrapingTileEntity.class);
+                    if (te != null)
+                    {
+                        return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                            if (!level.isClientSide)
                             {
-                                return ActionResultType.FAIL; // can't place on a full log pile
+                                ItemStack insertStack = stack.split(1);
+                                stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                                te.setCachedItem(recipe.getResultItem().copy());
                             }
-                        }
-                        world.setBlockAndUpdate(relativePos, TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(LogPileBlock.AXIS, context.getHorizontalDirection().getAxis()));
-                        Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
-                        LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
-                        if (te != null)
-                        {
-                            if (te.insertLog(stack.copy()))
-                            {
-                                if (!world.isClientSide())
-                                {
-                                    stack.shrink(1); // insert one log so that the log pile doesn't disappear
-                                    return ActionResultType.CONSUME;
-                                }
-                                return ActionResultType.SUCCESS;
-                            }
-                        }
+                            return ActionResultType.SUCCESS;
+                        }).orElse(ActionResultType.PASS);
                     }
                 }
             }
@@ -258,8 +284,57 @@ public final class InteractionManager
             }
         }
 
-        // todo: hide tag right click -> generic scraping recipe
-        // todo: knapping tags
+        register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 4)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 4)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.FIRE_CLAY_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (player != null && player.inventory.contains(TFCTags.Items.KNIVES))
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.LEATHER_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
+
+        register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
+            PlayerEntity player = context.getPlayer();
+            if (stack.getCount() > 1)
+            {
+                if (player instanceof ServerPlayerEntity)
+                {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, TFCContainerProviders.ROCK_KNAPPING);
+                }
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        });
     }
 
     public static void register(BlockItemPlacement wrapper)
@@ -295,7 +370,7 @@ public final class InteractionManager
                     {
                         ACTIVE.set(false);
                     }
-                    return Optional.of(result);
+                    return result == ActionResultType.PASS ? Optional.empty() : Optional.of(result);
                 }
             }
         }
@@ -307,6 +382,9 @@ public final class InteractionManager
         CACHE.reload(ACTIONS);
     }
 
+    /**
+     * Return {@link ActionResultType#PASS} to allow normal right click handling
+     */
     @FunctionalInterface
     public interface OnItemUseAction
     {

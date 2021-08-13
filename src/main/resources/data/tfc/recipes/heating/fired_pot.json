@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_pot"
+  },
+  "result_item": {
+    "item": "tfc:ceramic/pot"
+  },
+  "temperature": 1500
+}

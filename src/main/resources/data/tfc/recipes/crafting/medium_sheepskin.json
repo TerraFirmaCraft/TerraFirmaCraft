@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:damage_inputs_shapeless_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "tfc:medium_sheepskin_hide"
+      },
+      {
+        "tag": "tfc:knives"
+      }
+    ],
+    "result": {
+      "count": 2,
+      "item": "tfc:wool"
+    }
+  }
+}

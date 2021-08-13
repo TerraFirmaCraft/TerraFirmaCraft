@@ -94,8 +94,8 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     /**
-     *  In 1.16 canPlaceBlockOnSide is no longer a thing, instead we use this to trick ItemBlock into not placing in invalid conditions.
-     *  This eliminates cases of placing and then immediately breaking.
+     * In 1.16 canPlaceBlockOnSide is no longer a thing, instead we use this to trick ItemBlock into not placing in invalid conditions.
+     * This eliminates cases of placing and then immediately breaking.
      */
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)

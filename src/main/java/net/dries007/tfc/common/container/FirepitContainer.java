@@ -12,11 +12,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.tileentity.FirepitTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.tileentity.FirepitTileEntity.*;
+import static net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity.SLOT_FUEL_INPUT;
 
 public class FirepitContainer extends TileEntityContainer<FirepitTileEntity>
 {
@@ -36,18 +35,18 @@ public class FirepitContainer extends TileEntityContainer<FirepitTileEntity>
             // fuel slots
             for (int i = 0; i < 4; i++)
             {
-                addSlot(new SlotCallback(tile, handler, i, 8, 70 - 18 * i));
+                addSlot(new CallbackSlot(tile, handler, i, 8, 70 - 18 * i));
             }
-            addSlot(new SlotCallback(tile, handler, SLOT_ITEM_INPUT, 80, 28));
-            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_1, 71, 56));
-            addSlot(new SlotCallback(tile, handler, SLOT_OUTPUT_2, 89, 56));
+            addSlot(new CallbackSlot(tile, handler, FirepitTileEntity.SLOT_ITEM_INPUT, 80, 29));
+            addSlot(new CallbackSlot(tile, handler, FirepitTileEntity.SLOT_OUTPUT_1, 71, 57));
+            addSlot(new CallbackSlot(tile, handler, FirepitTileEntity.SLOT_OUTPUT_2, 89, 57));
         }, () -> LOGGER.warn("Missing capability on firepit at {}?", tile.getBlockPos()));
     }
 
     @Override
     protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
     {
-        return !moveItemStackTo(stack, SLOT_FUEL_INPUT, SLOT_ITEM_INPUT + 1, false);
+        return !moveItemStackTo(stack, SLOT_FUEL_INPUT, FirepitTileEntity.SLOT_ITEM_INPUT + 1, false);
     }
 
     @Override
