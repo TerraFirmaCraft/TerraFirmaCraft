@@ -8,10 +8,10 @@ package net.dries007.tfc.world;
 
 import java.util.List;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 
@@ -31,8 +31,8 @@ public final class Debug
     public static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
     /* Only generate a single biome in the world */
-    public static final boolean SINGLE_BIOME = false;
-    public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.OCEAN;
+    public static final boolean SINGLE_BIOME = true;
+    public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.MOUNTAINS;
 
     /* Generate biomes in stripes, showing all biomes */
     public static final boolean STRIPE_BIOMES = false;

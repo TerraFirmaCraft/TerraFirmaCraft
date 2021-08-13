@@ -7,7 +7,7 @@
       "config": {}
     },
     "decorator": {
-      "type": "minecraft:carving_mask",
+      "type": "tfc:carving_mask",
       "config": {
         "step": "air",
         "probability": 0.09

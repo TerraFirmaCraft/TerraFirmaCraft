@@ -8,7 +8,9 @@ package net.dries007.tfc.world.carver;
 
 import java.util.function.Function;
 
+import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,6 +24,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class TFCCarvers
 {
     public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, MOD_ID);
+
+    public static final RegistryObject<TFCCaveCarver> CAVE = register("cave", TFCCaveCarver::new, CaveCarverConfiguration.CODEC);
+    public static final RegistryObject<TFCCanyonCarver> CANYON = register("canyon", TFCCanyonCarver::new, CanyonCarverConfiguration.CODEC);
 
     private static <C extends CarverConfiguration, WC extends WorldCarver<C>> RegistryObject<WC> register(String name, Function<Codec<C>, WC> factory, Codec<C> codec)
     {

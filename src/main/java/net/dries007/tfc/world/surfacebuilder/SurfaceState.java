@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.world.chunkdata.RockData;
 
@@ -16,7 +16,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
  * For example, 'grass', which may be at time of placement, any variant of grass or sand depending on climate
  */
 @FunctionalInterface
-public interface ISurfaceState
+public interface SurfaceState
 {
     BlockState state(RockData rockData, int x, int y, int z, float temperature, float rainfall, boolean salty);
 

@@ -7,129 +7,127 @@
 package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
-import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.BaseStoneSource;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
-import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.SingleBaseStoneSource;
+import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
-import net.dries007.tfc.world.chunkdata.RockData;
+import net.dries007.tfc.common.TFCTags;
 
 public final class CarverHelpers
 {
-    public static BitSet createWaterAdjacencyMask(ProtoChunk chunk, int seaLevel)
-    {
-        final BitSet waterAdjacencyMask = new BitSet(16 * 16 * (1 + seaLevel));
+    public static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    public static final FluidState WATER = Fluids.WATER.defaultFluidState();
+    public static final FluidState LAVA = Fluids.LAVA.defaultFluidState();
 
-        // Sections
-        for (int sectionY = 0; sectionY < 16; sectionY++)
-        {
-            final LevelChunkSection section = chunk.getOrCreateSection(sectionY);
-            for (int localY = 0; localY < 16; localY++)
-            {
-                final int y = (sectionY << 4) | localY;
-                if (y > seaLevel)
-                {
-                    // Exit condition
-                    return waterAdjacencyMask;
-                }
-
-                // Positions within the section
-                for (int x = 0; x < 16; x++)
-                {
-                    for (int z = 0; z < 16; z++)
-                    {
-                        final BlockState state = section.getBlockState(x, localY, z);
-                        if (state.getFluidState().is(FluidTags.WATER))
-                        {
-                            // Update a region around the water block in the mask
-                            for (int xi = -2; xi <= 2; xi++)
-                            {
-                                for (int yi = -2; yi <= 0; yi++)
-                                {
-                                    for (int zi = -2; zi <= 2; zi++)
-                                    {
-                                        final int posX = x + xi;
-                                        final int posY = y + yi;
-                                        final int posZ = z + zi;
-                                        if (posX >> 4 == 0 && posZ >> 4 == 0 && posY >= 0 && posY <= seaLevel)
-                                        {
-                                            waterAdjacencyMask.set(posX | (posZ << 4) | (posY << 8));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        throw new IllegalStateException("We should have exited earlier!");
-    }
+    public static final BaseStoneSource FALLBACK = new SingleBaseStoneSource(Blocks.STONE.defaultBlockState());
 
     /**
-     * Computes an index into a carving mask bit set, used during world gen
+     * Gets and correctly initializes the chunk carving mask for the current world height
      */
-    public static int maskIndex(BlockPos pos)
+    public static BitSet getCarvingMask(ProtoChunk chunk, int height)
     {
-        return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
-    }
-
-    public static int maskIndex(int x, int y, int z)
-    {
-        return (x & 15) | ((z & 15) << 4) | (y << 8);
-    }
-
-    // todo: is this necessary?
-/*
-    public static void runCarversWithContext(long worldSeed, ChunkAccess chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, WorldgenRandom random, GenerationStep.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask, int seaLevel)
-    {
-        final ChunkPos chunkPos = chunk.getPos();
-        final List<Supplier<ConfiguredWorldCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
-
-        // Setup IContextCarvers
-        for (Supplier<ConfiguredWorldCarver<?>> lazyCarver : carvers)
+        GenerationStep.Carving step = GenerationStep.Carving.AIR;
+        BitSet carvingMask = chunk.getCarvingMask(step);
+        if (carvingMask == null)
         {
-            // todo: mixin / accessor
-            final WorldCarver<?> carver = lazyCarver.get().worldCarver;
-            if (carver instanceof IContextCarver)
-            {
-                ((IContextCarver) carver).setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
-            }
+            carvingMask = new BitSet(16 * 16 * height);
+            chunk.setCarvingMask(step, carvingMask);
         }
+        return carvingMask;
+    }
 
-        // Vanilla carving
-        for (int x = chunkPos.x - 8; x <= chunkPos.x + 8; ++x)
+    public static int maskIndex(int x, int y, int z, int minY)
+    {
+        return (x & 15) | ((z & 15) << 4) | ((y - minY) << 8);
+    }
+
+    public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, Function<BlockPos, Biome> biomeAccessor, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
+    {
+        final BlockState stateAt = chunk.getBlockState(pos);
+        if (canReplaceBlock(stateAt) || isDebugEnabled(config))
         {
-            for (int z = chunkPos.z - 8; z <= chunkPos.z + 8; ++z)
+            final BlockState carvingState = getCarveState(context, config, pos, aquifer, context instanceof ExtendedCarvingContext ex ? ex.getBaseStoneSource() : FALLBACK);
+            if (carvingState != null)
             {
-                int index = 0;
-                for (Supplier<ConfiguredWorldCarver<?>> lazyCarver : carvers)
+                chunk.setBlockState(pos, carvingState, false);
+                if (reachedSurface.isTrue())
                 {
-                    final ConfiguredWorldCarver<?> carver = lazyCarver.get();
-
-                    random.setLargeFeatureSeed(worldSeed + index, x, z);
-                    if (carver.isStartChunk(random))
+                    checkPos.setWithOffset(pos, Direction.DOWN);
+                    if (chunk.getBlockState(checkPos).is(Blocks.DIRT)) // todo: fix this to apply to tfc stuff as well
                     {
-                        carver.carve(context, chunk, delegateBiomeManager::getBiome, random, aquifer, chunkPos, stage == GenerationStep.Carving.AIR ? airCarvingMask : liquidCarvingMask);
+                        chunk.setBlockState(checkPos, biomeAccessor.apply(pos).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial(), false);
                     }
-                    index++;
                 }
+                return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean canReplaceBlock(BlockState state)
+    {
+        return TFCTags.Blocks.CAN_CARVE.contains(state.getBlock());
+    }
+
+    @Nullable
+    public static <C extends CarverConfiguration> BlockState getCarveState(CarvingContext context, C config, BlockPos pos, Aquifer aquifer, BaseStoneSource stoneSource)
+    {
+        if (pos.getY() <= config.lavaLevel.resolveY(context))
+        {
+            return LAVA.createLegacyBlock();
+        }
+        else if (!config.aquifersEnabled)
+        {
+            return isDebugEnabled(config) ? getDebugState(config, AIR) : AIR;
+        }
+        else
+        {
+            final BlockState carveState = aquifer.computeState(stoneSource, pos.getX(), pos.getY(), pos.getZ(), 0.0D);
+            final boolean isSolid = !carveState.isAir() && carveState.getFluidState().isEmpty();
+            if (isDebugEnabled(config))
+            {
+                return isSolid ? getDebugState(config, carveState) : config.debugSettings.getBarrierState();
+            }
+            return isSolid ? null : carveState;
         }
     }
 
- */
+    public static BlockState getDebugState(CarverConfiguration config, BlockState state)
+    {
+        if (state.is(Blocks.AIR))
+        {
+            return config.debugSettings.getAirState();
+        }
+        else if (state.is(Blocks.WATER))
+        {
+            final BlockState debugState = config.debugSettings.getWaterState();
+            return debugState.hasProperty(BlockStateProperties.WATERLOGGED) ? debugState.setValue(BlockStateProperties.WATERLOGGED, true) : debugState;
+        }
+        else
+        {
+            return state.is(Blocks.LAVA) ? config.debugSettings.getLavaState() : state;
+        }
+    }
+
+    public static boolean isDebugEnabled(CarverConfiguration config)
+    {
+        return config.debugSettings.isDebugMode();
+    }
 }

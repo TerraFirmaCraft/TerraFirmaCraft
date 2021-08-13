@@ -10,14 +10,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.material.Material;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Climate;
@@ -84,7 +84,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         final int localX = x & 15;
         final int localZ = z & 15;
 
-        ISurfaceState underState = SurfaceStates.LOW_UNDERWATER;
+        SurfaceState underState = SurfaceStates.LOW_UNDERWATER;
         int surfaceDepth = -1;
         int currentSnowLayers = 0;
         int maximumSnowLayers = 2 + random.nextInt(4);
@@ -92,7 +92,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
 
         int surfaceY = 0;
         boolean firstLayer = false;
-        ISurfaceState surfaceState = SurfaceStates.RAW;
+        SurfaceState surfaceState = SurfaceStates.RAW;
 
         for (int y = Math.max(startHeight, (int) icebergMaxY + 1); y >= 0; --y)
         {

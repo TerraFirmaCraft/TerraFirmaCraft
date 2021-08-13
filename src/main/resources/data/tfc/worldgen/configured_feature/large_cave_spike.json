@@ -7,11 +7,11 @@
       "config": {}
     },
     "decorator": {
-      "type": "tfc:bounded_carving_mask",
+      "type": "tfc:carving_mask",
       "config": {
         "step": "air",
         "probability": 0.006,
-        "max_y": 45
+        "min_y": 25
       }
     }
   }

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -15,7 +15,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class SoilSurfaceState implements ISurfaceState
+public class SoilSurfaceState implements SurfaceState
 {
     public static final float RAINFALL_SAND = 75;
     public static final float RAINFALL_SAND_SANDY_MIX = 125;
@@ -89,7 +89,7 @@ public class SoilSurfaceState implements ISurfaceState
     @Override
     public void place(SurfaceBuilderContext context, BlockPos pos, int x, int z, RockData rockData, float temperature, float rainfall, boolean salty)
     {
-        ISurfaceState.super.place(context, pos, x, z, rockData, temperature, rainfall, salty);
+        SurfaceState.super.place(context, pos, x, z, rockData, temperature, rainfall, salty);
         if (soil == SoilBlockType.GRASS)
         {
             context.getChunk().markPosForPostprocessing(pos);

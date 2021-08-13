@@ -8,21 +8,17 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
 
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -85,25 +81,14 @@ public class SurfaceBuilderContext
         return chunk.getBlockState(pos);
     }
 
-    public void setBlockState(BlockPos pos, ISurfaceState state, float temperature, float rainfall, boolean salty)
+    public void setBlockState(BlockPos pos, SurfaceState state, float temperature, float rainfall, boolean salty)
     {
         state.place(this, pos, chunkX | pos.getX(), chunkZ | pos.getZ(), rockData, temperature, rainfall, salty);
     }
 
     public void setBlockState(BlockPos pos, BlockState state)
     {
-        // Skip unnecessary steps in ChunkPrimer#setBlockState
-        final int x = pos.getX() & 15, y = pos.getY(), z = pos.getZ() & 15;
-        if (y >= chunk.getMinBuildHeight() && y < chunk.getMaxBuildHeight())
-        {
-            if (chunk.getSections()[y >> 4] != LevelChunk.EMPTY_SECTION || !state.is(Blocks.AIR))
-            {
-                final LevelChunkSection section = chunk.getOrCreateSection(y >> 4);
-                section.setBlockState(x, y & 15, z, state, false);
-                worldSurfaceHeightmap.update(x, y, z, state);
-                oceanFloorHeightmap.update(x, y, z, state);
-            }
-        }
+        chunk.setBlockState(pos, state, false);
     }
 
     public LevelAccessor getWorld()

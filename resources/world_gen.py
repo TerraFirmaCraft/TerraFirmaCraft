@@ -107,7 +107,50 @@ def generate(rm: ResourceManager):
     rm.surface_builder('shore', wg.configure('tfc:shore'))
 
     # Carvers
-    # todo
+    rm.carver('cave', wg.configure('tfc:cave', {
+        'probability': 0.3,
+        'y': height_provider(-56, 126, anchor_type='absolute'),
+        'yScale': uniform_float(0.1, 0.9),
+        'lava_level': vertical_anchor(8, 'above_bottom'),
+        'aquifers_enabled': False,
+        'horizontal_radius_multiplier': uniform_float(0.7, 1.4),
+        'vertical_radius_multiplier': uniform_float(0.8, 1.3),
+        'floor_level': uniform_float(-1, -0.4)
+    }))
+
+    rm.carver('canyon', wg.configure('tfc:canyon', {
+        'probability': 0.03,
+        'y': height_provider(10, 67, anchor_type='absolute'),
+        'yScale': 3,
+        'lava_level': vertical_anchor(8, 'above_bottom'),
+        'aquifers_enabled': False,
+        'vertical_rotation': uniform_float(-0.125, 0.125),
+        'shape': {
+            'distance_factor': uniform_float(0.75, 1.0),
+            'thickness': trapezoid_float(0.0, 6.0, 2.0),
+            'width_smoothness': 3,
+            'horizontal_radius_factor': uniform_float(0.75, 1.0),
+            'vertical_radius_default_factor': 1.0,
+            'vertical_radius_center_factor': 0.0
+        }
+    }))
+
+    rm.carver('crevice', wg.configure('tfc:canyon', {
+        'probability': 0.00125,
+        'y': height_provider(40, 80, anchor_type='absolute'),
+        'yScale': uniform_float(6.0, 8.0),
+        'lava_level': vertical_anchor(8, 'above_bottom'),
+        'aquifers_enabled': False,
+        'vertical_rotation': uniform_float(-0.125, 0.125),
+        'shape': {
+            'distance_factor': uniform_float(0.5, 1.0),
+            'thickness': uniform_float(0.0, 1.0),
+            'width_smoothness': 6,
+            'horizontal_radius_factor': uniform_float(0.25, 1.0),
+            'vertical_radius_default_factor': 0.0,
+            'vertical_radius_center_factor': 5.0
+        }
+    }))
 
     # Biomes
     for temp in TEMPERATURES:
@@ -124,26 +167,26 @@ def generate(rm: ResourceManager):
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', volcano_features=True, hot_spring_features=True)
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', hot_spring_features=True)
-            biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
-            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
-            biome(rm, 'ocean_reef', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True, reef_features=True)
-            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
-            biome(rm, 'deep_ocean_trench', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_features=True)
+            biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, volcano_features=True)
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_features=True)
+            biome(rm, 'ocean_reef', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_features=True, reef_features=True)
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_features=True)
+            biome(rm, 'deep_ocean_trench', temp, rain, 'ocean', 'tfc:normal', spawnable=False, ocean_features=True)
             biome(rm, 'river', temp, rain, 'river', 'tfc:normal', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False, ocean_features=True)
 
             biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'volcanic_mountain_river', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
             biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'oceanic_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, ocean_carvers=True, volcano_features=True)
+            biome(rm, 'oceanic_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True)
+            biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, volcano_features=True)
             biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'volcanic_mountain_lake', temp, rain, 'extreme_hills', 'tfc:volcanic_mountains', spawnable=False, volcano_features=True)
             biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True, ocean_carvers=True)
-            biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_carvers=True, ocean_features=True, volcano_features=True)
-            biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
+            biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_features=True)
+            biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', 'tfc:volcanic_mountains', spawnable=False, ocean_features=True, volcano_features=True)
+            biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True, spawnable=False)
 
     # Configured Features
 
@@ -163,7 +206,7 @@ def generate(rm: ResourceManager):
         'replace_fluids': [],
     }), decorate_count(3), 'minecraft:square', decorate_range(16, 80)))
 
-    for spring_cfg in (('water', 80), ('lava', 35)):
+    for spring_cfg in (('water', 110), ('lava', 50)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
             'state': wg.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
@@ -202,9 +245,8 @@ def generate(rm: ResourceManager):
                   [{'replace': 'tfc:clay_grass/%s' % soil, 'with': 'tfc:clay_grass/loam'} for soil in SOIL_BLOCK_VARIANTS]
     }), decorate_chance(120), 'minecraft:square', decorate_heightmap('world_surface_wg'), ('tfc:climate', {'min_rainfall': 400})))
 
-    for step, prefix in (('air', ''), ('liquid', 'underwater_')):
-        rm.feature('%scave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': step, 'probability': 0.09})))
-        rm.feature('%slarge_cave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': step, 'probability': 0.006, 'max_y': 45})))
+    rm.feature('cave_spike', wg.configure_decorated(wg.configure('tfc:cave_spike'), decorate_carving_mask(0.09)))
+    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), decorate_carving_mask(0.006, 25)))
 
     rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
@@ -484,16 +526,13 @@ def generate(rm: ResourceManager):
                 'maxSlant': 5
             }))
 
-    # todo: change to use cave biomes in 1.17
     rm.feature('cave_vegetation', wg.configure_decorated(wg.configure('tfc:cave_vegetation', {
         'blocks': [{
             'stone': ['tfc:rock/raw/%s' % rock],
             'ore': [{'block': 'tfc:rock/mossy_cobble/%s' % rock, 'weight': 8},
                     {'block': 'tfc:rock/cobble/%s' % rock, 'weight': 2}]
         } for rock in ROCKS.keys()]
-    }), decorate_climate(16, 32, 150, 470, fuzzy=True), decorate_carving_mask(0.01, 0, 130), decorate_range(64, 130)))
-
-    rm.feature('ice_cave', wg.configure_decorated(wg.configure('tfc:ice_cave'), decorate_climate(-50, 0, 0, 500), decorate_carving_mask(0.05, 0, 130), decorate_range(20, 130)))
+    }), decorate_climate(16, 32, 150, 470, fuzzy=True), decorate_carving_mask(0.01, 15, 100)))
 
     # Plants
     rm.feature(('plant', 'allium'), wg.configure_decorated(plant_feature('tfc:plant/allium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), 'minecraft:square', decorate_climate(10, 18, 150, 400)))
@@ -562,8 +601,8 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
     rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), 'minecraft:square', decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
-    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(0.003, 0, 190), decorate_range(64, 130), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
-    rm.feature(('plant', 'liana'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(0.003, 0, 110), decorate_range(64, 110), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
+    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(0.003, 30, 80), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
+    rm.feature(('plant', 'liana'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(0.003, 30, 80), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
     rm.feature(('plant', 'ivy'), wg.configure_decorated(vine_feature('tfc:plant/ivy', 15, 7, 96, 150), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_chance(5)))
     rm.feature(('plant', 'jungle_vines'), wg.configure_decorated(vine_feature('tfc:plant/jungle_vines', 33, 7, 64, 160), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_chance(5)))
     rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
@@ -686,7 +725,7 @@ def generate(rm: ResourceManager):
     rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', decorate_heightmap('ocean_floor_wg')))
 
     # Underground decoration
-    rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, 12, 90)))
+    rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, -48, 90)))
     rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
 
 
@@ -882,7 +921,7 @@ Decorator = Tuple[str, Dict[str, Any]]
 
 
 def decorate_carving_mask(probability: float, min_y: Optional[int] = None, max_y: Optional[int] = None) -> Decorator:
-    return ('tfc:bounded_carving_mask', utils.del_none({
+    return ('tfc:carving_mask', utils.del_none({
         'step': 'air',
         'probability': probability,
         'min_y': min_y,
@@ -919,17 +958,46 @@ def decorate_range_biased(min_y: int, max_y: int) -> Decorator:
     return decorate_range(min_y, max_y, height_type='biased_to_bottom')
 
 
-def decorate_range(min_y: int, max_y: int, height_type: str = 'uniform') -> Tuple[str, Dict[str, Any]]:
+def decorate_range(min_y: int, max_y: int, height_type: str = 'uniform') -> Decorator:
     return 'minecraft:range', {
-        'height': {
-            'type': height_type,
-            'min_inclusive': {'above_bottom': min_y},
-            'max_inclusive': {'above_bottom': max_y}
+        'height': height_provider(min_y, max_y, height_type, 'above_bottom')
+    }
+
+
+def uniform_float(min_inclusive: float, max_exclusive: float) -> Dict[str, Any]:
+    return {
+        'type': 'uniform',
+        'value': {
+            'min_inclusive': min_inclusive,
+            'max_exclusive': max_exclusive
         }
     }
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[str, Any]:
+    return {
+        'type': 'trapezoid',
+        'value': {
+            'min': min_value,
+            'max': max_value,
+            'plateau': plateau
+        }
+    }
+
+
+def height_provider(min_y: int, max_y: int, height_type: str = 'uniform', anchor_type: Literal['absolute', 'above_bottom', 'below_top'] = 'above_bottom') -> Dict[str, Any]:
+    return {
+        'type': height_type,
+        'min_inclusive': vertical_anchor(min_y, anchor_type),
+        'max_inclusive': vertical_anchor(max_y, anchor_type)
+    }
+
+
+def vertical_anchor(y: int, variant: Literal['absolute', 'above_bottom', 'below_top'] = 'above_bottom') -> Dict[str, Any]:
+    return {variant: y}
+
+
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
@@ -965,11 +1033,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [
             'tfc:cave_spike',
             'tfc:large_cave_spike',
-            'tfc:underwater_cave_spike',
-            'tfc:underwater_large_cave_spike',
             'tfc:water_spring',
             'tfc:lava_spring',
-            'tfc:ice_cave',
             'tfc:calcite',
             'tfc:mega_calcite',
             'tfc:icicle',
@@ -1031,10 +1096,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     features[Decoration.TOP_LAYER_MODIFICATION].append('tfc:ice_and_snow')  # This must go last
 
     # Carvers
-    air_carvers = []
+    air_carvers = ['tfc:cave', 'tfc:canyon', 'tfc:crevice']
     water_carvers = []
-    if ocean_carvers:
-        water_carvers += []
 
     # Generate based on properties
     rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))

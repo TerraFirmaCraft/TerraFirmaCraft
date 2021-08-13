@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -27,7 +27,7 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
         apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
     }
 
-    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, ISurfaceState topState, ISurfaceState midState, ISurfaceState underState)
+    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, SurfaceState topState, SurfaceState midState, SurfaceState underState)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int surfaceDepth = -1;
@@ -36,7 +36,7 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
 
         int surfaceY = 0;
         boolean underwaterLayer = false, firstLayer = false;
-        ISurfaceState surfaceState = SurfaceStates.RAW;
+        SurfaceState surfaceState = SurfaceStates.RAW;
 
         for (int y = startHeight; y >= 0; --y)
         {

@@ -2,6 +2,7 @@ package net.dries007.tfc.world;
 
 import java.util.List;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Cavifier;
 import net.minecraft.world.level.levelgen.NoiseInterpolator;
@@ -22,23 +23,29 @@ public class CavifierSampler
 
     public double sample(double deltaZ)
     {
-        return interpolator.calculateValue(deltaZ) / 128d;
+        return interpolator.calculateValue(deltaZ);
     }
 
-    private void fillNoiseColumn(double[] noiseValues, int cellX, int cellZ, int minY, int cellCountY)
-    {
-        for (int cellIndexY = 0; cellIndexY <= cellCountY; ++cellIndexY)
-        {
-            int cellY = cellIndexY + minY;
-            double noise = 180; // figure out what to pass in to be 'modified' by the cavifier
-            noise = this.cavifier.modifyNoise(noise, cellY * cellHeight, cellZ * cellWidth, cellX * cellWidth);
-            // noise = this.applySlide(noise, cellY); // biases the noise to the bottom
-            noiseValues[cellIndexY] = noise;
-        }
-    }
-
-    void addInterpolators(List<NoiseInterpolator> interpolators)
+    public void addInterpolators(List<NoiseInterpolator> interpolators)
     {
         interpolators.add(interpolator);
+    }
+
+    private void fillNoiseColumn(double[] noiseValues, int cellX, int cellZ, int minCellY, int cellCountY)
+    {
+        final int cellCutoffY = Mth.intFloorDiv(50, cellCountY) - minCellY;
+        for (int cellIndexY = 0; cellIndexY <= cellCountY; ++cellIndexY)
+        {
+            int cellY = cellIndexY + minCellY;
+            double noise = 180; // figure out what to pass in to be 'modified' by the cavifier
+            noise = this.cavifier.modifyNoise(noise, cellY * cellHeight, cellZ * cellWidth, cellX * cellWidth);
+            noise *= (1 / 128d); // range of [-1, 1], >0 = solid
+            if (cellY >= cellCutoffY)
+            {
+                double slideFactor = Mth.inverseLerp(cellY, cellCutoffY, cellCountY); // [0, 1], 1 = top of world
+                noise = Mth.lerp(slideFactor, noise, 4);
+            }
+            noiseValues[cellIndexY] = noise;
+        }
     }
 }

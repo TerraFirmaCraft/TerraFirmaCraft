@@ -14,7 +14,11 @@
     "water_fog_color": 329011
   },
   "carvers": {
-    "air": [],
+    "air": [
+      "tfc:cave",
+      "tfc:canyon",
+      "tfc:crevice"
+    ],
     "liquid": []
   },
   "surface_builder": "tfc:normal",
@@ -88,11 +92,8 @@
     [
       "tfc:cave_spike",
       "tfc:large_cave_spike",
-      "tfc:underwater_cave_spike",
-      "tfc:underwater_large_cave_spike",
       "tfc:water_spring",
       "tfc:lava_spring",
-      "tfc:ice_cave",
       "tfc:calcite",
       "tfc:mega_calcite",
       "tfc:icicle",

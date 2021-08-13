@@ -1,0 +1,60 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:canyon",
+  "config": {
+    "probability": 0.00125,
+    "y": {
+      "type": "uniform",
+      "min_inclusive": {
+        "absolute": 40
+      },
+      "max_inclusive": {
+        "absolute": 80
+      }
+    },
+    "yScale": {
+      "type": "uniform",
+      "value": {
+        "min_inclusive": 6.0,
+        "max_exclusive": 8.0
+      }
+    },
+    "lava_level": {
+      "above_bottom": 8
+    },
+    "aquifers_enabled": false,
+    "vertical_rotation": {
+      "type": "uniform",
+      "value": {
+        "min_inclusive": -0.125,
+        "max_exclusive": 0.125
+      }
+    },
+    "shape": {
+      "distance_factor": {
+        "type": "uniform",
+        "value": {
+          "min_inclusive": 0.5,
+          "max_exclusive": 1.0
+        }
+      },
+      "thickness": {
+        "type": "uniform",
+        "value": {
+          "min_inclusive": 0.0,
+          "max_exclusive": 1.0
+        }
+      },
+      "width_smoothness": 6,
+      "horizontal_radius_factor": {
+        "type": "uniform",
+        "value": {
+          "min_inclusive": 0.25,
+          "max_exclusive": 1.0
+        }
+      },
+      "vertical_radius_default_factor": 0.0,
+      "vertical_radius_center_factor": 5.0
+    }
+  }
+}

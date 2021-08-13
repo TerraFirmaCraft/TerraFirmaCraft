@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -44,12 +44,9 @@ public class TFCTags
         public static final Tag.Named<Block> FRUIT_TREE_SAPLING = create("fruit_tree_sapling");
         public static final Tag.Named<Block> SUPPORT_BEAM = create("support_beam");
         public static final Tag.Named<Block> WORKBENCH = create("workbench");
-
         public static final Tag.Named<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
-
         public static final Tag.Named<Block> SNOW = create("snow"); // Blocks that cover grass with snow.
         public static final Tag.Named<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
-
         public static final Tag.Named<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
         public static final Tag.Named<Block> SMALL_SPIKE = create("small_spike");
         public static final Tag.Named<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
@@ -57,6 +54,7 @@ public class TFCTags
         public static final Tag.Named<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final Tag.Named<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
         public static final Tag.Named<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
+        public static final Tag.Named<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
 
         private static Tag.Named<Block> create(String id)
         {

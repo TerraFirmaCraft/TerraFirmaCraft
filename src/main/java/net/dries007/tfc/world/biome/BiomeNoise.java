@@ -161,7 +161,7 @@ public final class BiomeNoise
                 if (height > 140 + cliffHeight)
                 {
                     float cliff = cliffNoise.noise(x, z);
-                    return height + cliff;
+                    return (height + cliff);
                 }
             }
             return height;

@@ -223,6 +223,16 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
     rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
 
+    for rock in ROCKS.keys():
+        for variant in ('raw', 'hardened', 'gravel', 'cobble'):
+            rm.block(('rock', variant, rock)).with_tag('tfc:can_carve')
+    for sand in SAND_BLOCK_TYPES:
+        rm.block(('sand', sand)).with_tag('tfc:can_carve')
+        rm.block(('raw_sandstone', sand)).with_tag('tfc:can_carve')
+    for soil in SOIL_BLOCK_VARIANTS:
+        rm.block(('dirt', soil)).with_tag('tfc:can_carve')
+        rm.block(('grass', soil)).with_tag('tfc:can_carve')
+
     # todo: specific item size definitions for a whole bunch of items that aren't naturally assigned
     item_size(rm, 'logs', 'tag!minecraft:logs', Size.very_large, Weight.medium)
 

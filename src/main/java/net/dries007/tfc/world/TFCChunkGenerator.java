@@ -9,40 +9,48 @@ package net.dries007.tfc.world;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.*;
+import java.util.function.Supplier;
+import java.util.function.ToDoubleBiFunction;
+import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
-
 import javax.annotation.Nullable;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
-import net.minecraft.Util;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import net.dries007.tfc.world.biome.*;
+import net.dries007.tfc.world.biome.BiomeCache;
+import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
+import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.carver.CarverHelpers;
+import net.dries007.tfc.world.carver.ExtendedCarvingContext;
 import net.dries007.tfc.world.chunkdata.*;
 import net.dries007.tfc.world.surfacebuilder.SurfaceBuilderContext;
-
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.level.levelgen.synth.*;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
@@ -167,13 +175,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final SurfaceNoise surfaceDepthNoise;
     private final ChunkDataProvider chunkDataProvider;
 
-    private final ThreadLocal<BiomeCache> biomeCache;
-
-    private final int cellWidth; // The width of a noise cell
-    private final int cellHeight; // The height of a noise cell
-    private final int cellCountX;
+    private final int cellWidth; // The width and height of a noise cell
+    private final int cellHeight;
+    private final int cellCountX; // The number of cells per chunk in the x/y/z direction
     private final int cellCountY;
     private final int cellCountZ;
+    private final int minY; // The lowest y value
+    private final int minCellY; // The lowest cell y value of the bottom cell, based on the world height
 
     private final NormalNoise aquiferBarrierNoise;
     private final NormalNoise aquiferWaterLevelNoise;
@@ -181,6 +189,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private final Cavifier cavifier;
     private final NoodleCavifier noodleCavifier;
+
+    private final ThreadLocal<BiomeCache> biomeCache;
+    private final AquiferCache aquiferCache;
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
 
@@ -214,14 +225,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Generators / Providers
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, random, this.specialBiomeSource.getLayerSettings())); // Chunk data
         this.specialBiomeSource.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
-        this.biomeCache = ThreadLocal.withInitial(() -> new BiomeCache(8192, biomeSource));
 
         this.cellHeight = QuartPos.toBlock(noiseSettings.noiseSizeVertical());
         this.cellWidth = QuartPos.toBlock(noiseSettings.noiseSizeHorizontal());
 
         this.cellCountX = 16 / this.cellWidth;
-        this.cellCountY = noiseSettings.height() / this.cellHeight;
+        this.cellCountY = Mth.intFloorDiv(noiseSettings.height(), this.cellHeight);
         this.cellCountZ = 16 / this.cellWidth;
+
+        this.minY = noiseSettings.minY();
+        this.minCellY = Mth.intFloorDiv(noiseSettings.minY(), this.cellHeight);
 
         this.aquiferBarrierNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -3, 1.0D);
         this.aquiferWaterLevelNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -3, 1.0D, 0.0D, 2.0D);
@@ -229,12 +242,84 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         this.cavifier = new Cavifier(random, noiseSettings.minY() / this.cellHeight);
         this.noodleCavifier = new NoodleCavifier(seed);
+
+        this.biomeCache = ThreadLocal.withInitial(() -> new BiomeCache(8192, biomeSource));
+        this.aquiferCache = new AquiferCache(256);
     }
 
     @Override
     public ChunkDataProvider getChunkDataProvider()
     {
         return chunkDataProvider;
+    }
+
+    public NoiseGeneratorSettings noiseGeneratorSettings()
+    {
+        if (cachedSettings == null)
+        {
+            cachedSettings = settings.get();
+        }
+        return cachedSettings;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public Aquifer getAquifer(ChunkPos pos, int minCellY, int noiseCellCountY)
+    {
+        // todo: cache seems to be breaking things? how?
+        Aquifer aquifer = null; // aquiferCache.getIfPresent(pos.x, pos.z);
+        if (aquifer == null)
+        {
+            // The aquifer never uses the sampler field, and we don't either.
+            aquifer = Aquifer.create(pos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), null, minCellY * cellHeight, noiseCellCountY * cellHeight);
+            // aquiferCache.set(pos.x, pos.z, aquifer);
+        }
+        return aquifer;
+    }
+
+    public BaseStoneSource getBaseStoneSource(ChunkPos pos)
+    {
+        return new RockLayerStoneSource(pos, chunkDataProvider.get(pos).getRockDataOrThrow());
+    }
+
+    /**
+     * Minor edits to vanilla behavior
+     * - Use an extended carving context, to give access to the base stone source directly to the carvers
+     * - Do some sanity checks on the carving mask size, don't use an incorrectly initialized one.
+     * - Skip liquid carving (aquifers are always used instead)
+     */
+    @Override
+    public void applyCarvers(long seed, BiomeManager biomeManagerIn, ChunkAccess chunkIn, GenerationStep.Carving step)
+    {
+        // Skip liquids
+        if (step == GenerationStep.Carving.LIQUID) return;
+
+        final BiomeManager biomeManager = biomeManagerIn.withDifferentSource(biomeSource);
+        final WorldgenRandom random = new WorldgenRandom();
+        final ProtoChunk chunk = (ProtoChunk) chunkIn;
+        final ChunkPos chunkPos = chunk.getPos();
+        final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, getBaseStoneSource(chunkPos));
+        final Aquifer aquifer = createAquifer(chunk);
+        final BitSet carvingMask = CarverHelpers.getCarvingMask(chunk, noiseGeneratorSettings().noiseSettings().height());
+
+        for (int dx = -8; dx <= 8; ++dx)
+        {
+            for (int dz = -8; dz <= 8; ++dz)
+            {
+                final ChunkPos fromChunkPos = new ChunkPos(chunkPos.x + dx, chunkPos.z + dz);
+                final List<Supplier<ConfiguredWorldCarver<?>>> carvers = biomeSource.getPrimaryBiome(fromChunkPos).getGenerationSettings().getCarvers(step);
+                final ListIterator<Supplier<ConfiguredWorldCarver<?>>> iterator = carvers.listIterator();
+                while (iterator.hasNext())
+                {
+                    final int index = iterator.nextIndex();
+                    ConfiguredWorldCarver<?> carver = iterator.next().get();
+                    random.setLargeFeatureSeed(seed + index, fromChunkPos.x, fromChunkPos.z);
+                    if (carver.isStartChunk(random))
+                    {
+                        carver.carve(context, chunk, biomeManager::getBiome, random, aquifer, fromChunkPos, carvingMask);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -249,15 +334,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return new TFCChunkGenerator(specialBiomeSource, settings, flatBedrock, seedIn);
     }
 
-    public NoiseGeneratorSettings noiseGeneratorSettings()
-    {
-        if (cachedSettings == null)
-        {
-            cachedSettings = settings.get();
-        }
-        return cachedSettings;
-    }
-
     @Override
     public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
     {
@@ -265,13 +341,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         ((ProtoChunk) chunk).setBiomes(new ChunkBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), specialBiomeSource));
     }
 
-    /**
-     * Noop - carvers are done at the beginning of feature stage, so the carver is free to check adjacent chunks for information
-     */
     @Override
-    public void applyCarvers(long worldSeed, BiomeManager biomeManagerIn, ChunkAccess chunkIn, GenerationStep.Carving step)
+    protected Aquifer createAquifer(ChunkAccess chunk)
     {
-
+        return super.createAquifer(chunk);
     }
 
     /**
@@ -350,9 +423,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeAccessor);
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
-        @SuppressWarnings("ConstantConditions") // The aquifer never uses the sampler field, and we don't either.
-        final Aquifer aquifer = Aquifer.create(chunkPos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), null, helper.minCellY * cellHeight, helper.noiseCellCountY * cellHeight);
-        final RockLayerStoneSource stoneSource = new RockLayerStoneSource(chunkPos, rockData);
+        final Aquifer aquifer = getAquifer(chunkPos, minCellY, cellCountY);
+        final BaseStoneSource stoneSource = getBaseStoneSource(chunkPos);
 
         helper.fillFromNoise(aquifer, stoneSource);
 
@@ -650,26 +722,26 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         private final int chunkX, chunkZ;
         private final Object2DoubleMap<BiomeNoiseSampler> biomeSamplers;
         private final Heightmap oceanFloor, worldSurface;
+        private final BitSet carvingMask; // We mark the air carving mask for everything
 
         // Noise caves / interpolators, setup initially for the chunk
         private final List<NoiseInterpolator> interpolators;
         private final CavifierSampler cavifierSampler;
         private final NoodleCaveSampler noodleCaveSampler;
-        private final int minY, maxY, minCellY, noiseCellCountY;
 
         // Externally sampled biome weight arrays, and a weight map for local sampling
         private final Object2DoubleMap<Biome>[] sampledBiomeWeights;
         private final Object2DoubleMap<Biome> biomeWeights1;
+
+        // Result arrays, set for each x/z in the chunk
+        private final int[] surfaceHeight;
+        private final Biome[] localBiomes;
 
         // Current local position / context
         private int x, z; // Absolute x/z positions
         private int localX, localZ; // Chunk-local x/z
         private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
         private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
-
-        // Result arrays, set for each x/z in the chunk
-        private final int[] surfaceHeight;
-        private final Biome[] localBiomes;
 
         FillFromNoiseHelper(LevelAccessor world, ProtoChunk chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, int[] surfaceHeight, Biome[] localBiomes)
         {
@@ -679,13 +751,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.chunkZ = chunk.getPos().getMinBlockZ();
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
 
-            final NoiseSettings noiseSettings = noiseGeneratorSettings().noiseSettings();
-            this.minY = Math.max(noiseSettings.minY(), chunk.getMinBuildHeight());
-            this.maxY = Math.min(noiseSettings.minY() + noiseSettings.height(), chunk.getMaxBuildHeight());
-
-            this.minCellY = Mth.intFloorDiv(minY, cellHeight);
-            this.noiseCellCountY = Mth.intFloorDiv(maxY - minY, cellHeight);
-
             this.interpolators = new ArrayList<>();
 
             this.cavifierSampler = new CavifierSampler(cavifier, chunk.getPos(), cellWidth, cellHeight, cellCountX, cellCountY, cellCountZ, minCellY);
@@ -693,6 +758,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
             this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
+
+            this.carvingMask = CarverHelpers.getCarvingMask(chunk, noiseGeneratorSettings().noiseSettings().height());
 
             this.sampledBiomeWeights = sampledBiomeWeights;
             this.biomeWeights1 = new Object2DoubleOpenHashMap<>();
@@ -708,7 +775,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         /**
          * Fills the entire chunk
          */
-        void fillFromNoise(Aquifer aquifer, RockLayerStoneSource stoneSource)
+        void fillFromNoise(Aquifer aquifer, BaseStoneSource stoneSource)
         {
             final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
             for (int cellX = 0; cellX < cellCountX; cellX++)
@@ -746,14 +813,23 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         /**
          * Fills a single column
          */
-        void fillColumn(Aquifer aquifer, RockLayerStoneSource stoneSource, BlockPos.MutableBlockPos mutablePos)
+        void fillColumn(Aquifer aquifer, BaseStoneSource stoneSource, BlockPos.MutableBlockPos mutablePos)
         {
-            // todo: optimization, start at the top height value rather than iterating all the way
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
-            double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
 
-            LevelChunkSection section = chunk.getOrCreateSection(chunk.getSectionsCount() - 1);
-            for (int cellY = cellCountY - 1; cellY >= 0; --cellY)
+            final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
+            final int maxFilledY = 1 + (int) heightNoiseValue;
+            final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Mth.intFloorDiv(maxFilledY, cellHeight) - minCellY);
+            final int maxFilledSectionY = Math.min(chunk.getSectionsCount() - 1, 1 + chunk.getSectionIndex(maxFilledY));
+
+            // Top down iteration
+            // 1. We need to mark exposed air below the first solid ground as carving mask applicable.
+            // 2. We need to record the highest height (be it water or solid) for height map creation
+            boolean topBlockPlaced = false;
+            boolean topSolidBlockPlaced = false;
+
+            LevelChunkSection section = chunk.getOrCreateSection(maxFilledSectionY);
+            for (int cellY = maxFilledCellY; cellY >= 0; --cellY)
             {
                 final int finalCellZ = lastCellZ;
                 final int finalCellY = cellY;
@@ -775,23 +851,65 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                         noiseInterpolator.updateForX(cellDeltaX);
                     });
 
-                    double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                    BlockState state = getStateAt(aquifer, stoneSource, x, y, z, noise);
+                    final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
+                    final BlockState state = modifyNoiseAndGetState(aquifer, stoneSource, x, y, z, noise);
+                    final int carvingMaskIndex = CarverHelpers.maskIndex(localX, y, localZ, minY);
+
+                    // Set block
                     if (!state.isAir())
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
-                        oceanFloor.update(localX, y, localZ, state);
-                        worldSurface.update(localX, y, localZ, state);
                         if (aquifer.shouldScheduleFluidUpdate() && !state.getFluidState().isEmpty())
                         {
                             mutablePos.set(x, y, z);
                             chunk.getLiquidTicks().scheduleTick(mutablePos, state.getFluidState().getType(), 0);
                         }
                     }
+
+                    // Update heightmaps and carving masks
+                    if (state.isAir()) // Air
+                    {
+                        if (topSolidBlockPlaced)
+                        {
+                            // Air under solid blocks, so mark as carved
+                            carvingMask.set(carvingMaskIndex);
+                        }
+                    }
+                    else if (!state.getFluidState().isEmpty()) // Fluids
+                    {
+                        if (!topBlockPlaced)
+                        {
+                            // Check carving mask
+                            topBlockPlaced = true;
+                            worldSurface.update(localX, y, localZ, state);
+                        }
+                        if (topSolidBlockPlaced)
+                        {
+                            // Fluids under solid blocks, so mark as carved
+                            carvingMask.set(carvingMaskIndex);
+                        }
+                    }
+                    else // Solid rock
+                    {
+                        // Update both heightmaps
+                        if (!topBlockPlaced)
+                        {
+                            topBlockPlaced = true;
+                            worldSurface.update(localX, y, localZ, state);
+                        }
+                        if (!topSolidBlockPlaced)
+                        {
+                            topSolidBlockPlaced = true;
+                            oceanFloor.update(localX, y, localZ, state);
+                        }
+                    }
                 }
             }
         }
 
+        /**
+         * Initializes {@link #biomeWeights1} from the sampled biome weights
+         */
         void prepareColumnBiomeWeights()
         {
             final int index4X = (localX >> 2) + 1;
@@ -807,6 +925,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             sampleBiomesCornerContribution(biomeWeights1, sampledBiomeWeights[(index4X + 1) + (index4Z + 1) * 7], lerpX * lerpZ);
         }
 
+        /**
+         * For a given (x, z) position, samples the provided biome weight map to calculate the height at that location, and the biome
+         *
+         * @param updateArrays If the local biome and height arrays should be updated, if we are sampling within the chunk
+         * @return The maximum height at this location
+         */
         double sampleColumnHeightAndBiome(Object2DoubleMap<Biome> biomeWeights, boolean updateArrays)
         {
             biomeSamplers.clear();
@@ -932,10 +1056,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return Mth.clamp(noise, -1, 1);
         }
 
-        BlockState getStateAt(Aquifer aquifer, BaseStoneSource stoneSource, int x, int y, int z, double noise)
+        BlockState modifyNoiseAndGetState(Aquifer aquifer, BaseStoneSource stoneSource, int x, int y, int z, double noise)
         {
             noise = noodleCaveSampler.sample(noise, x, y, z, minY, cellDeltaZ);
-            noise = Math.min(noise, cavifierSampler.sample(cellDeltaZ) * 2f);
+            noise = Math.min(noise, cavifierSampler.sample(cellDeltaZ));
             return aquifer.computeState(stoneSource, x, y, z, noise);
         }
 

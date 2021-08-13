@@ -8,24 +8,22 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -100,10 +98,8 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 
     protected void replaceBlock(WorldGenLevel world, BlockPos pos, BlockState state)
     {
-        // We check explicitly for cave air here, because spikes shouldn't generate not in caves
-        // Otherwise, try and fill in all possible fluids this allows
         Block block = world.getBlockState(pos).getBlock();
-        if (block == Blocks.CAVE_AIR)
+        if (block == Blocks.AIR)
         {
             setBlock(world, pos, state);
         }
@@ -120,7 +116,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     protected void replaceBlockWithoutFluid(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         Block block = world.getBlockState(pos).getBlock();
-        if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)
+        if (block == Blocks.AIR || block == Blocks.WATER || block == Blocks.LAVA)
         {
             setBlock(world, pos, state);
         }

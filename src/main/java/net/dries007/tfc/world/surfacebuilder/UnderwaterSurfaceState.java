@@ -13,7 +13,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-public class UnderwaterSurfaceState implements ISurfaceState
+public class UnderwaterSurfaceState implements SurfaceState
 {
     private static final long VARIANT_NOISE_SEED = 9128639581632L;
 

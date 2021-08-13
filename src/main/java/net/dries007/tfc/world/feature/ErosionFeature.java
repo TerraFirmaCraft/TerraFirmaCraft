@@ -6,12 +6,13 @@
 
 package net.dries007.tfc.world.feature;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -22,8 +23,6 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -55,7 +54,8 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 
                 mutablePos.set(chunkX + x, baseHeight, chunkZ + z);
 
-                // Iterate down to sea level - at that point we're pretty likely not to come upon any significant collapse areas due to the water adjacency mask used in carving
+                // Iterate down to sea level
+                // todo: iterate all the way down to min Y?
                 for (int y = baseHeight; y >= TFCChunkGenerator.SEA_LEVEL_Y; y--)
                 {
                     mutablePos.setY(y);
