@@ -36,5 +36,10 @@ public final class Calendars
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
 
+    public static ICalendar get(boolean isClientSide)
+    {
+        return isClientSide ? CLIENT : SERVER;
+    }
+
     private Calendars() {}
 }

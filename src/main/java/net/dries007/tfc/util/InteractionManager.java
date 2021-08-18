@@ -32,9 +32,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
-import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -53,7 +53,6 @@ public final class InteractionManager
     private static final List<Entry> ACTIONS = new ArrayList<>();
     private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
-    @SuppressWarnings("deprecation")
     public static void setup()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {

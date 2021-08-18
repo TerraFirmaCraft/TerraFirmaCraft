@@ -22,6 +22,8 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+
 /**
  * Handling for simple Ingredient -> ItemStack recipes
  */

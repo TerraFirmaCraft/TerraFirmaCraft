@@ -49,11 +49,11 @@ public class CharcoalForgeBlock extends DeviceBlock
     static
     {
         BiPredicate<IWorld, BlockPos> skyMatcher = IWorld::canSeeSky;
-        BiPredicate<IWorld, BlockPos> isValidSide = Helpers.createTagCheck(TFCTags.Blocks.FORGE_INSULATION);
+        BiPredicate<IWorld, BlockPos> isValidSide = (world, pos) -> world.getBlockState(pos).is(TFCTags.Blocks.FORGE_INSULATION);
         BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(origin.above(), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))//todo: crucible is also acceptable
+            .match(origin.above(), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
             // Chimney
             .matchOneOf(origin.above(), new MultiBlock()
                 .match(origin, skyMatcher)

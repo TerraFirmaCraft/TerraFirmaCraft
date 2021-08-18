@@ -15,6 +15,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+
 /**
  * A simple {@link IRecipe} extension for {@link BlockRecipeWrapper}
  */

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/soybean"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 2,
+  "decay": 2.5,
+  "vegetables": 0.5,
+  "protein": 1
+}

@@ -6,43 +6,30 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
+
+import net.dries007.tfc.common.ItemDefinition;
 
 /**
- * This is a definition (reloaded via {@link HeatManager}) of a heat that is applied to an item stack.
+ * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.
  */
-public class HeatDefinition
+public class HeatDefinition extends ItemDefinition
 {
-    private final ResourceLocation id;
     private final Supplier<IHeat> capability;
-    private final Ingredient ingredient;
 
-    public HeatDefinition(ResourceLocation id, JsonObject obj)
+    public HeatDefinition(ResourceLocation id, JsonObject json)
     {
-        float heatCapacity = JSONUtils.getAsFloat(obj, "heat_capacity");
-        float forgingTemp = JSONUtils.getAsFloat(obj, "forging_temperature", 0);
-        float weldingTemp = JSONUtils.getAsFloat(obj, "welding_temperature", 0);
+        super(id, json);
 
-        this.id = id;
-        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
+        float heatCapacity = JSONUtils.getAsFloat(json, "heat_capacity");
+        float forgingTemp = JSONUtils.getAsFloat(json, "forging_temperature", 0);
+        float weldingTemp = JSONUtils.getAsFloat(json, "welding_temperature", 0);
+
         this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     /**
@@ -51,15 +38,5 @@ public class HeatDefinition
     public IHeat create()
     {
         return capability.get();
-    }
-
-    public boolean isValid(ItemStack stack)
-    {
-        return ingredient.test(stack);
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 }

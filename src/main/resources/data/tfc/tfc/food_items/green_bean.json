@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/green_bean"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 0.5,
+  "decay": 3.5,
+  "vegetables": 1
+}

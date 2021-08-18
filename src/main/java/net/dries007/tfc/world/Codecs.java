@@ -117,7 +117,7 @@ public final class Codecs
     }
 
     /**
-     * Like {@link Helpers#mapKeyListCodec(Codec)} but for a injective map k -> v
+     * Like {@link Codecs#mapKeyListCodec(Codec)} but for a injective map k -> v
      *
      * @param codec A codec for each key, value element.
      */

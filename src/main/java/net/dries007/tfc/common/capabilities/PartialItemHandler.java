@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -52,14 +50,12 @@ public class PartialItemHandler implements DelegateItemHandler
         return internal;
     }
 
-    @Nonnull
     @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
     {
         return insertSlots[slot] ? internal.insertItem(slot, stack, simulate) : stack;
     }
 
-    @Nonnull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {

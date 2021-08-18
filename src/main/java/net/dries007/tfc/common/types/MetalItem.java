@@ -31,7 +31,7 @@ public class MetalItem
         this.id = id;
         ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(json, "ingredient"));
         ResourceLocation metalId = new ResourceLocation(JSONUtils.getAsString(json, "metal"));
-        metal = MetalManager.INSTANCE.get(metalId);
+        metal = Metal.MANAGER.get(metalId);
         if (metal == null)
         {
             throw new JsonSyntaxException("Invalid metal specified: " + metalId);

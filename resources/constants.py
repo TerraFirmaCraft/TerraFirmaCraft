@@ -389,6 +389,9 @@ FRUITS: Dict[str, Fruit] = {
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
+MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae')
+VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg')
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -403,10 +406,12 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 DEFAULT_LANG = {
     # Misc
     'generator.tfc.tng': 'TerraFirmaCraft',
-    'death.attack.grill': '%1$s grilled themself to death',
-    'death.attack.grill.player': '%1$s grilled themselves while trying to escape %2$s',
-    'death.attack.pot': '%1$s boiled themselves into soup',
-    'death.attack.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'death.attack.tfc.grill': '%1$s grilled themself to death',
+    'death.attack.tfc.grill.player': '%1$s grilled themselves while trying to escape %2$s',
+    'death.attack.tfc.pot': '%1$s boiled themselves into soup',
+    'death.attack.tfc.pot.player': '%1$s boiled themself while trying to escape %2$s',
+    'death.attack.tfc.dehydration': '%1$s dehydrated to death',
+    'death.attack.tfc.dehydration.player': '%1$s dehydrated to death while trying to escape %2$s',
     'tfc.tile_entity.pot': 'Pot',
     'tfc.tile_entity.grill': 'Grill',
     'tfc.tile_entity.firepit': 'Firepit',
@@ -448,16 +453,28 @@ DEFAULT_LANG = {
     'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s\u00b0C',
     'tfc.tooltip.climate_annual_rainfall': 'Annual Rainfall: %smm',
     'tfc.tooltip.climate_current_temp': 'Current Temp: %s\u00b0C',
-    'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
     'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
     'tfc.tooltip.f3_temperature': 'Actual. Temp: %s\u00b0C',
     'tfc.tooltip.f3_forest_type': 'Forest Type: ',
     'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
-    'tfc.tooltip.debug_tag': 'Tag: %s',
+    'tfc.tooltip.food_expiry_date': 'Expires on: ',
+    'tfc.tooltip.food_expiry_less_than_one_day_left': 'Expires today!',
+    'tfc.tooltip.food_expiry_days_left': 'Expires in about %s days',
+    'tfc.tooltip.food_expiry_and_less_than_one_day_left': ' (Today!)',
+    'tfc.tooltip.food_expiry_and_days_left': ' (about %s days)',
+    'tfc.tooltip.food_infinite_expiry': 'Never expires',
+    'tfc.tooltip.food_rotten': 'Rotten!',
+    'tfc.tooltip.food_rotten_special': 'Ewwww, are you really thinking of eating that? It looks disgusting',
+    'tfc.tooltip.nutrition': 'Nutrition:',
+    'tfc.tooltip.nutrition_saturation': ' - Saturation: %s%%',
+    'tfc.tooltip.nutrition_water': ' - Water: %s%%',
+    'tfc.tooltip.nutrition_none': '- None!',
+    'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
 
     # Commands
+
     'tfc.commands.time.query.daytime': 'The day time is %s',
     'tfc.commands.time.query.game_time': 'The game time is %s',
     'tfc.commands.time.query.day': 'The day is %s',
@@ -466,12 +483,15 @@ DEFAULT_LANG = {
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
-    'tfc.commands.player.query_hunger': 'Hunger is %s',
-    'tfc.commands.player.query_saturation': 'Saturation is %s',
+    'tfc.commands.player.query_hunger': 'Hunger is %s / 20',
+    'tfc.commands.player.query_saturation': 'Saturation is %s / 20',
+    'tfc.commands.player.query_water': 'Water is %s / 100',
+    'tfc.commands.player.query_nutrition': 'Player nutrition:',
+    'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data.',
     'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
     'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
 
-    # ENUMS
+    # Enums
 
     **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier)) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
@@ -513,6 +533,12 @@ DEFAULT_LANG = {
     'tfc.enum.weight.medium': 'Medium',
     'tfc.enum.weight.heavy': 'Heavy',
     'tfc.enum.weight.very_heavy': 'Very Heavy',
+    'tfc.enum.nutrient.grain': 'Grain',
+    'tfc.enum.nutrient.fruit': 'Fruit',
+    'tfc.enum.nutrient.vegetables': 'Vegetables',
+    'tfc.enum.nutrient.protein': 'Protein',
+    'tfc.enum.nutrient.dairy': 'Dairy',
+
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 

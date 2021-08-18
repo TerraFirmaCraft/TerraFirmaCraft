@@ -68,13 +68,12 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
 
     /**
      * Adds the heat info tooltip when hovering over.
-     * When overriding this to show additional information, fall back to IItemHeat.super.addHeatInfo()
      *
      * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
     @OnlyIn(Dist.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<ITextComponent> text)
+    default void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
     {
         float temperature = getTemperature();
         IFormattableTextComponent tooltip = Heat.getTooltip(temperature);

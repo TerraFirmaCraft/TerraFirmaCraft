@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/green_bell_pepper"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 0.5,
+  "decay": 2.7,
+  "vegetables": 1
+}

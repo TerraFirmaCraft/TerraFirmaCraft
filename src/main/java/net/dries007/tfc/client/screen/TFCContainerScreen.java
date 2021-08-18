@@ -7,6 +7,8 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
@@ -14,6 +16,11 @@ import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.food.NutritionStats;
+import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -37,9 +44,9 @@ public class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack stack, float partialTicks, int mouseX, int mouseY)
     {
-        drawDefaultBackground(matrixStack);
+        drawDefaultBackground(stack);
     }
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})

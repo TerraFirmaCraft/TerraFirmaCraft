@@ -13,6 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
+ * todo: 1.17 remove
  * A no-op implementation of {@link net.minecraftforge.common.capabilities.Capability.IStorage} for capabilities that require custom serialize / deserialization logic
  *
  * @param <T> The capability class

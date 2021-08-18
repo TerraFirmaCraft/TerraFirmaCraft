@@ -10,14 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.util.data.DataManager;
 
-public class RockManager extends DataManager<Rock>
+public class RockManager extends DataManager.Instance<Rock>
 {
     public static final RockManager INSTANCE = new RockManager();
 
@@ -25,7 +22,7 @@ public class RockManager extends DataManager<Rock>
 
     private RockManager()
     {
-        super(new GsonBuilder().create(), "rocks", "rock", false);
+        super(Rock::new, "rocks", "rock", false);
 
         rockBlocks = new HashMap<>();
     }
@@ -37,12 +34,6 @@ public class RockManager extends DataManager<Rock>
     public Rock getRock(Block block)
     {
         return rockBlocks.get(block);
-    }
-
-    @Override
-    protected Rock read(ResourceLocation id, JsonObject obj)
-    {
-        return new Rock(id, obj);
     }
 
     @Override
@@ -62,9 +53,5 @@ public class RockManager extends DataManager<Rock>
         }
 
         super.postProcess();
-        if (getValues().isEmpty())
-        {
-            throw new IllegalStateException("Something went badly wrong... There are no rocks. This cannot be.");
-        }
     }
 }

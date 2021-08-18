@@ -58,6 +58,6 @@ public enum Day
             return new TranslationTextComponent("tfc.tooltip.calendar_birthday", birthday);
         }
         Day day = Day.valueOf((int) totalDays % 7);
-        return new TranslationTextComponent(Helpers.getEnumTranslationKey(day));
+        return Helpers.translateEnum(day);
     }
 }

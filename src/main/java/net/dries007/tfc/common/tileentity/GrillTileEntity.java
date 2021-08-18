@@ -21,7 +21,7 @@ import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.util.Helpers;
 

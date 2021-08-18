@@ -38,5 +38,7 @@ public class PacketHandler
         CHANNEL.registerMessage(id++, SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
         CHANNEL.registerMessage(id++, PlaceBlockSpecialPacket.class, (packet, buf) -> {}, buffer -> new PlaceBlockSpecialPacket(), PlaceBlockSpecialPacket::handle);
         CHANNEL.registerMessage(id++, ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
+        CHANNEL.registerMessage(id++, FoodStatsReplacePacket.class, (packet, buf) -> {}, buffer -> new FoodStatsReplacePacket(), FoodStatsReplacePacket::handle);
+        CHANNEL.registerMessage(id++, FoodStatsUpdatePacket.class, FoodStatsUpdatePacket::encode, FoodStatsUpdatePacket::new, FoodStatsUpdatePacket::handle);
     }
 }

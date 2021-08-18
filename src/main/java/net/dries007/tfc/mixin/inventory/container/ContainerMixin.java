@@ -16,9 +16,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 /**
  * Change the default container sync behavior to sync *all* changes, including those in capabilities.
  * This is the most performant and simple way this can be done without a forge PR, although there have been many.
+ *
+ * todo: is there a forge PR at long last?
+ * todo: only sync heat cap changes w/ a dirty flag? or specific caps? because forcing everything to sync is not the best solution
  */
 @Mixin(Container.class)
-public class ContainerMixin
+public abstract class ContainerMixin
 {
     @Redirect(method = "broadcastChanges", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;equals(Lnet/minecraft/item/ItemStack;Z)Z", remap = false))
     private boolean redirect$broadcastChanges$equals(ItemStack itemStack, ItemStack other, boolean limitTags)

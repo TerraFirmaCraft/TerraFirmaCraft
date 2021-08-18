@@ -16,6 +16,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class QuernRecipe extends SimpleItemRecipe
