@@ -23,7 +23,6 @@ import javax.imageio.ImageIO;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * Artist for drawing images of specific types.
@@ -53,6 +52,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static <V> Artist.Colored<V> forColor(Function<V, Pixel<Color>> transformer)
     {
         return new Artist.Colored<>(transformer); // An artist that handler pixel -> color objects with predefined colors
+    }
+
+    public static int clamp(int value, int min, int max)
+    {
+        return value < min ? min : Math.min(value, max);
     }
 
     protected int size = 1000;
@@ -223,15 +227,15 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static final class Colors
     {
         public static final DoubleFunction<Color> LINEAR_GRAY = value -> {
-            int x = MathHelper.clamp((int) (255 * value), 0, 255);
+            int x = clamp((int) (255 * value), 0, 255);
             return new Color(x, x, x);
         };
         public static final DoubleFunction<Color> LINEAR_BLUE_RED = value -> {
-            int x = MathHelper.clamp((int) (255 * value), 0, 255);
+            int x = clamp((int) (255 * value), 0, 255);
             return new Color(x, 0, 255 - x);
         };
         public static final DoubleFunction<Color> LINEAR_GREEN_YELLOW = value -> {
-            int x = MathHelper.clamp((int) (255 * value), 0, 255);
+            int x = clamp((int) (255 * value), 0, 255);
             return new Color(x, 255, 0);
         };
 
@@ -336,7 +340,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
                     if (histogram)
                     {
                         final double scaled = Scales.DYNAMIC_RANGE.apply(loc.value, sourceMinMax[0], sourceMinMax[1]);
-                        distribution[MathHelper.clamp((int) (scaled * histogramBins), 0, histogramBins - 1)]++;
+                        distribution[clamp((int) (scaled * histogramBins), 0, histogramBins - 1)]++;
                     }
                 })
                 .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))

@@ -10,12 +10,10 @@ import java.awt.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.Mth;
-import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -23,12 +21,10 @@ import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
-@Disabled
 public class TFCLayerUtilTests
 {
     // These inner lambdas could be shortened to factory.get()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.
@@ -47,7 +43,6 @@ public class TFCLayerUtilTests
     public void testCreateOverworldBiomeLayer()
     {
         final long seed = System.currentTimeMillis();
-        final TFCBiomeSource.LayerSettings settings = new TFCBiomeSource.LayerSettings();
 
         // Drawing is done via callbacks in TFCLayerUtil
         IArtist<TypedAreaFactory<Plate>> plateArtist = (name, index, instance) -> {
@@ -102,7 +97,7 @@ public class TFCLayerUtilTests
             }
         };
 
-        AreaFactory layer = TFCLayerUtil.createOverworldBiomeLayer(seed, settings, plateArtist, layerArtist);
+        AreaFactory layer = TFCLayerUtil.createOverworldBiomeLayer(seed, plateArtist, layerArtist);
         AREA.color(this::biomeColor).center(2500).size(1000); // 20km image (biomes are 1/4 scale)
         AREA.draw("biomes_20km", layer);
     }
@@ -111,7 +106,6 @@ public class TFCLayerUtilTests
     public void testOverworldForestLayer()
     {
         final long seed = System.currentTimeMillis();
-        final TFCBiomeSource.LayerSettings settings = new TFCBiomeSource.LayerSettings();
 
         IArtist<AreaFactory> artist = (name, index, instance) -> {
             int zoom;
@@ -126,7 +120,7 @@ public class TFCLayerUtilTests
             AREA.draw(name + '_' + index, instance);
         };
 
-        AreaFactory layer = TFCLayerUtil.createOverworldForestLayer(seed, settings, artist);
+        AreaFactory layer = TFCLayerUtil.createOverworldForestLayer(seed, artist);
         AREA.color(this::forestColor).center(1250).size(1250); // 10km image (biomes are 1/4 scale), at 1 pixel = 4 blocks
         AREA.draw("forest_10km", layer);
     }
@@ -139,7 +133,7 @@ public class TFCLayerUtilTests
         Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
         Noise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
 
-        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()).get();
 
         Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
             int value = biomeArea.get(x >> 2, z >> 2);
@@ -151,7 +145,7 @@ public class TFCLayerUtilTests
                 float volcano = VolcanoNoise.calculateEasing(distance);
                 if (volcano > 0 && chance < biome.getVolcanoChance())
                 {
-                    return new Color(MathHelper.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano
+                    return new Color(Artist.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano
                 }
             }
             return biomeColor(value);
@@ -166,8 +160,8 @@ public class TFCLayerUtilTests
     {
         long seed = System.currentTimeMillis();
 
-        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope(), IArtist.nope()).get();
-        Area forestArea = TFCLayerUtil.createOverworldForestLayer(seed, new TFCBiomeSource.LayerSettings(), IArtist.nope()).get();
+        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()).get();
+        Area forestArea = TFCLayerUtil.createOverworldForestLayer(seed, IArtist.nope()).get();
 
         Artist.Pixel<Color> forestBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
             int value = biomeArea.get(x, z);

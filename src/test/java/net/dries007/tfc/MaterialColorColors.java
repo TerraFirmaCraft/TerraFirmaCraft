@@ -74,4 +74,7 @@ class MaterialColorColors
     static final Color WARPED_STEM = new Color(3837580);
     static final Color WARPED_HYPHAE = new Color(5647422);
     static final Color WARPED_WART_BLOCK = new Color(1356933);
+    static final Color DEEPSLATE = new Color(6579300);
+    static final Color RAW_IRON = new Color(14200723);
+    static final Color GLOW_LICHEN = new Color(8365974);
 }
