@@ -36,7 +36,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
@@ -93,27 +93,31 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         boolean firstLayer = false;
         SurfaceState surfaceState = SurfaceStates.RAW;
 
+        mutablePos.set(localX, startHeight, localZ);
         for (int y = Math.max(startHeight, (int) icebergMaxY + 1); y >= 0; --y)
         {
-            mutablePos.set(localX, y, localZ);
+            mutablePos.setY(y);
+
+            BlockState stateAt = context.getBlockState(mutablePos);
 
             // Place packed ice, both above and below water
-            if (context.getBlockState(mutablePos).isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
+            if (stateAt.isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
             {
                 context.setBlockState(mutablePos, packedIce);
+                stateAt = packedIce;
             }
-            else if (context.getBlockState(mutablePos).getMaterial() == Material.WATER && y > (int) icebergMinY && y < seaLevel && icebergMinY != 0.0D && random.nextDouble() > 0.15D)
+            else if (stateAt.getMaterial() == Material.WATER && y > (int) icebergMinY && y < seaLevel && icebergMinY != 0.0D && random.nextDouble() > 0.15D)
             {
                 context.setBlockState(mutablePos, packedIce);
+                stateAt = packedIce;
             }
 
             // After iceberg placement, continue with standard surface builder replacements
-            BlockState stateAt = context.getBlockState(mutablePos);
             if (stateAt.isAir())
             {
                 surfaceDepth = -1;
             }
-            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
+            else if (context.isDefaultBlock(stateAt))
             {
                 if (surfaceDepth == -1)
                 {
@@ -140,15 +144,6 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
                         surfaceState = underState;
                     }
                 }
-                else if (surfaceDepth == 0)
-                {
-                    // Underground layers
-                    context.setBlockState(mutablePos, SurfaceStates.RAW, temperature, rainfall, saltWater);
-                }
-            }
-            else if (stateAt.getBlock() == context.getDefaultFluid().getBlock())
-            {
-                context.setBlockState(mutablePos, SurfaceStates.WATER, temperature, rainfall, saltWater);
             }
             else if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
             {

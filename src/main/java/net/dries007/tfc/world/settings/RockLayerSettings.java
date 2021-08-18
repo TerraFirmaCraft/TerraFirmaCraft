@@ -1,7 +1,6 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
@@ -56,7 +55,7 @@ public class RockLayerSettings
             rocks.put(id, instance);
         }
         MinecraftForge.EVENT_BUS.post(new RockLoadingEvent(rocks)); // Allow addons to mutate rocks
-        return new RockLayerSettings(ImmutableMap.copyOf(rocks), 1 << 7); // copy the map so no sneaky references get held
+        return new RockLayerSettings(ImmutableMap.copyOf(rocks), 7); // copy the map so no sneaky references get held
     }
 
     private static DataResult<Map<ResourceLocation, RockSettings>> collect(List<RockSettings> rocks)
@@ -101,7 +100,7 @@ public class RockLayerSettings
     private final Map<ResourceLocation, RockSettings> rocksById;
     private final List<RockSettings> rocks;
     private final Map<Block, RockSettings> rockBlocks;
-    private final int rockLayerScale;
+    private final int rockLayerScale; // In [0, 32]
 
     public RockLayerSettings(Map<ResourceLocation, RockSettings> rocksById, int rockLayerScale)
     {
@@ -110,7 +109,7 @@ public class RockLayerSettings
             .stream()
             .sorted(Map.Entry.comparingByKey())
             .map(Map.Entry::getValue)
-            .collect(Collectors.toList());
+            .toList();
         this.rockBlocks = new IdentityHashMap<>();
         this.rockLayerScale = rockLayerScale;
 
@@ -144,6 +143,11 @@ public class RockLayerSettings
         return rockLayerScale;
     }
 
+    public List<RockSettings> getRocks()
+    {
+        return rocks;
+    }
+
     public List<RockSettings> getRocksForLayer(RockLayer layer)
     {
         return this.rocks
@@ -154,6 +158,6 @@ public class RockLayerSettings
                     case MIDDLE -> rock.middleLayer();
                     case BOTTOM -> rock.bottomLayer();
                 })
-            .collect(Collectors.toList());
+            .toList();
     }
 }

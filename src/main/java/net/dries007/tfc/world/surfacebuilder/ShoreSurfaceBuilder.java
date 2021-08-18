@@ -23,16 +23,17 @@ public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBase
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
+        final NormalSurfaceBuilder surfaceBuilder = TFCSurfaceBuilders.NORMAL.get();
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
+            surfaceBuilder.apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
         }
         else
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
+            surfaceBuilder.apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
         }
     }
 

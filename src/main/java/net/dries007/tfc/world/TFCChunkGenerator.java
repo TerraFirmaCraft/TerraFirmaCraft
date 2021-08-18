@@ -448,7 +448,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final double[] slopeMap = buildSlopeMap(sampledHeightMap);
 
-        // buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
+        buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
         if (Debug.ENABLE_SLOPE_VISUALIZATION)
         {
             Debug.slopeVisualization(chunk, slopeMap, chunkX, chunkZ, this::sampleSlope);
@@ -614,7 +614,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     {
         final ChunkPos chunkPos = chunk.getPos();
         final ChunkData chunkData = chunkDataProvider.get(chunkPos);
-        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, noiseGeneratorSettings(), getSeaLevel());
+        final NoiseGeneratorSettings settings = noiseGeneratorSettings();
+        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, settings, getRockLayerSettings(), getSeaLevel(), minY);
         for (int x = 0; x < 16; ++x)
         {
             for (int z = 0; z < 16; ++z)

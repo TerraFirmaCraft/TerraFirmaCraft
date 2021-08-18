@@ -6,11 +6,14 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ProtoChunk;
@@ -22,6 +25,8 @@ import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfigur
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class SurfaceBuilderContext
 {
@@ -33,9 +38,13 @@ public class SurfaceBuilderContext
     private final long seed;
     private final NoiseGeneratorSettings settings;
     private final int seaLevel;
+    private final int minY;
     private final int chunkX, chunkZ;
 
-    public SurfaceBuilderContext(LevelAccessor world, ProtoChunk chunk, ChunkData chunkData, Random random, long seed, NoiseGeneratorSettings settings, int seaLevel)
+    private final Set<BlockState> defaultBlockStates;
+    private final Set<BlockState> defaultFluidStates;
+
+    public SurfaceBuilderContext(LevelAccessor world, ProtoChunk chunk, ChunkData chunkData, Random random, long seed, NoiseGeneratorSettings settings, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
     {
         this.world = world;
         this.chunk = chunk;
@@ -45,8 +54,18 @@ public class SurfaceBuilderContext
         this.seed = seed;
         this.settings = settings;
         this.seaLevel = seaLevel;
+        this.minY = minY;
         this.chunkX = chunk.getPos().getMinBlockX();
         this.chunkZ = chunk.getPos().getMinBlockZ();
+
+        this.defaultBlockStates = new HashSet<>();
+        this.defaultFluidStates = new HashSet<>();
+
+        for (RockSettings rock : rockLayerSettings.getRocks())
+        {
+            defaultBlockStates.add(rock.raw().defaultBlockState());
+        }
+        defaultFluidStates.add(Blocks.WATER.defaultBlockState());
     }
 
     public <C extends SurfaceBuilderConfiguration> void apply(ConfiguredSurfaceBuilder<C> surfaceBuilder, Biome biome, int x, int z, int startHeight, double noise, double slope)
@@ -63,7 +82,9 @@ public class SurfaceBuilderContext
             final float rainfall = chunkData.getRainfall(x, z);
             final boolean saltWater = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().isSalty();
 
-            ((ContextSurfaceBuilder<C>) surfaceBuilder).apply(this, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config);
+            // We iterate down based on the actual surface height (since our capability for overhangs is much more limited than vanilla)
+            final int actualMinSurfaceHeight = Math.max(minY, startHeight - 30);
+            ((ContextSurfaceBuilder<C>) surfaceBuilder).apply(this, biome, x, z, startHeight, actualMinSurfaceHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
         else
         {
@@ -117,13 +138,13 @@ public class SurfaceBuilderContext
         return seaLevel;
     }
 
-    public BlockState getDefaultBlock()
+    public boolean isDefaultBlock(BlockState state)
     {
-        return settings.getDefaultBlock();
+        return defaultBlockStates.contains(state);
     }
 
-    public BlockState getDefaultFluid()
+    public boolean isDefaultFluid(BlockState state)
     {
-        return settings.getDefaultFluid();
+        return defaultFluidStates.contains(state);
     }
 }

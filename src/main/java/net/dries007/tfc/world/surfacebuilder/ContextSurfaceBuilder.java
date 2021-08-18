@@ -8,12 +8,12 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -25,7 +25,7 @@ public abstract class ContextSurfaceBuilder<C extends SurfaceBuilderConfiguratio
         super(codec);
     }
 
-    public abstract void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, C config);
+    public abstract void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, C config);
 
     @Override
     public void apply(Random random, ChunkAccess chunk, Biome biome, int x, int z, int height, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minSurfaceLevel, long seed, C config)

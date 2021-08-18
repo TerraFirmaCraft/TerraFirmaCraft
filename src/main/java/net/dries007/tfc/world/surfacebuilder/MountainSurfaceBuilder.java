@@ -24,7 +24,7 @@ public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         final NormalSurfaceBuilder surfaceBuilder = TFCSurfaceBuilders.NORMAL.get();
         final double heightNoise = noise * 3f + startHeight;
@@ -33,20 +33,20 @@ public class MountainSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
             float surfaceMaterialValue = surfaceMaterialNoise.noise(x, z) + 0.1f * context.getRandom().nextFloat() - 0.05f;
             if (surfaceMaterialValue > 0.3f)
             {
-                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);
             }
             else if (surfaceMaterialValue < -0.3f)
             {
-                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.RAW);
             }
             else
             {
-                surfaceBuilder.apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
+                surfaceBuilder.apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
             }
         }
         else
         {
-            surfaceBuilder.apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config);
+            surfaceBuilder.apply(context, biome, x, z, startHeight, minSurfaceHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
     }
 

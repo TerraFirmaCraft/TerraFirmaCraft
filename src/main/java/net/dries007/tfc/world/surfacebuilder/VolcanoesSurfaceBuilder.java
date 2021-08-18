@@ -29,7 +29,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, ParentedSurfaceBuilderConfig config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, ParentedSurfaceBuilderConfig config)
     {
         final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.getWorld(), biome).getVariants();
         if (variants.isVolcanic())
@@ -41,7 +41,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
             final double heightNoise = noise * 2f + startHeight;
             if (value < variants.getVolcanoChance() && easing > 0.6f && heightNoise > variants.getVolcanoBasaltHeight())
             {
-                buildVolcanicSurface(context, x, z, startHeight, slope, temperature, rainfall, saltWater, easing);
+                buildVolcanicSurface(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, easing);
                 return;
             }
         }
@@ -54,25 +54,27 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
         cellNoise = VolcanoNoise.cellNoise(seed);
     }
 
-    private void buildVolcanicSurface(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, float easing)
+    private void buildVolcanicSurface(SurfaceBuilderContext context, int x, int z, int startHeight, int minSurfaceHeight, double slope, float temperature, float rainfall, boolean saltWater, float easing)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
+        final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
 
         int surfaceDepth = -1;
         int localX = x & 15;
         int localZ = z & 15;
 
-        for (int y = startHeight; y >= 0; --y)
+        pos.set(localX, startHeight, localZ);
+        for (int y = startHeight; y >= minSurfaceHeight; --y)
         {
-            pos.set(localX, y, localZ);
+            pos.setY(y);
+
             BlockState stateAt = context.getBlockState(pos);
             if (stateAt.isAir())
             {
                 // Reached air, reset surface depth
                 surfaceDepth = -1;
             }
-            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
+            else if (context.isDefaultBlock(stateAt))
             {
                 if (surfaceDepth == -1)
                 {
@@ -87,15 +89,6 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
                     surfaceDepth--;
                     context.setBlockState(pos, basalt);
                 }
-                else if (surfaceDepth == 0)
-                {
-                    // Underground layers
-                    context.setBlockState(pos, SurfaceStates.RAW, temperature, rainfall, saltWater);
-                }
-            }
-            else // Default fluid
-            {
-                context.setBlockState(pos, SurfaceStates.WATER, temperature, rainfall, saltWater);
             }
         }
     }

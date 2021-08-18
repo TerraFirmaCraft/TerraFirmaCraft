@@ -8,9 +8,9 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -30,16 +30,16 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
         float heightVariation = heightVariationNoise.noise(x, z);
         if (startHeight > heightVariation)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, noise, slope, temperature, rainfall, saltWater, config);
+            TFCSurfaceBuilders.NORMAL.get().apply(context, biome, x, z, startHeight, minSurfaceHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
         else
         {
-            buildSandySurface(context, x, z, startHeight, temperature, rainfall, saltWater);
+            buildSandySurface(context, x, z, startHeight, minSurfaceHeight, temperature, rainfall, saltWater);
         }
     }
 
@@ -66,28 +66,27 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
         heightVariationNoise = new OpenSimplex2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
     }
 
-    private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, float rainfall, float temperature, boolean saltWater)
+    private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, int minSurfaceHeight, float rainfall, float temperature, boolean saltWater)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int surfaceDepth = -1;
         int localX = x & 15;
         int localZ = z & 15;
 
-        for (int y = startHeight; y >= 0; --y)
+        pos.set(localX, startHeight, localZ);
+        for (int y = startHeight; y >= minSurfaceHeight; --y)
         {
-            pos.set(localX, y, localZ);
+            pos.setY(y);
             BlockState stateAt = context.getBlockState(pos);
             if (stateAt.isAir())
             {
-                // Reached air, reset surface depth
-                surfaceDepth = -1;
+                surfaceDepth = -1; // Reached air, reset surface depth
             }
-            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
+            else if (context.isDefaultBlock(stateAt))
             {
                 if (surfaceDepth == -1)
                 {
-                    // Reached surface. Place top state and switch to subsurface layers
-                    surfaceDepth = 0;
+                    surfaceDepth = 0; // Reached surface. Place top state and switch to subsurface layers
                     if (y < context.getSeaLevel() - 1)
                     {
                         context.setBlockState(pos, SurfaceStates.TOP_UNDERWATER, rainfall, temperature, saltWater);
@@ -97,15 +96,6 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
                         context.setBlockState(pos, sandLayers[y % sandLayers.length]);
                     }
                 }
-                else
-                {
-                    // Underground layers
-                    context.setBlockState(pos, SurfaceStates.RAW, rainfall, temperature, saltWater);
-                }
-            }
-            else // Default fluid
-            {
-                context.setBlockState(pos, SurfaceStates.WATER, rainfall, temperature, saltWater);
             }
         }
     }

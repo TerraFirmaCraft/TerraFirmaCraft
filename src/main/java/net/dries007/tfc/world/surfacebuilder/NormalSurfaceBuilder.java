@@ -22,12 +22,12 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
     {
-        apply(context, x, z, startHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
+        apply(context, x, z, startHeight, minSurfaceHeight, slope, temperature, rainfall, saltWater, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
     }
 
-    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, SurfaceState topState, SurfaceState midState, SurfaceState underState)
+    public void apply(SurfaceBuilderContext context, int x, int z, int startHeight, int minSurfaceHeight, double slope, float temperature, float rainfall, boolean saltWater, SurfaceState topState, SurfaceState midState, SurfaceState underState)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int surfaceDepth = -1;
@@ -38,21 +38,21 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
         boolean underwaterLayer = false, firstLayer = false;
         SurfaceState surfaceState = SurfaceStates.RAW;
 
-        for (int y = startHeight; y >= 0; --y)
+        pos.set(localX, startHeight, localZ);
+        for (int y = startHeight; y >= minSurfaceHeight; --y)
         {
-            pos.set(localX, y, localZ);
-            BlockState stateAt = context.getBlockState(pos);
+            pos.setY(y);
+
+            final BlockState stateAt = context.getBlockState(pos);
             if (stateAt.isAir())
             {
-                // Reached air, reset surface depth
-                surfaceDepth = -1;
+                surfaceDepth = -1; // Reached air, reset surface depth
             }
-            else if (stateAt.getBlock() == context.getDefaultBlock().getBlock())
+            else if (context.isDefaultBlock(stateAt))
             {
                 if (surfaceDepth == -1)
                 {
-                    // Reached surface. Place top state and switch to subsurface layers
-                    surfaceY = y;
+                    surfaceY = y; // Reached surface. Place top state and switch to subsurface layers
                     firstLayer = true;
                     if (y < context.getSeaLevel() - 1)
                     {
@@ -109,15 +109,6 @@ public class NormalSurfaceBuilder extends ContextSurfaceBuilder<SurfaceBuilderBa
                         }
                     }
                 }
-                else if (surfaceDepth == 0)
-                {
-                    // Underground layers
-                    context.setBlockState(pos, SurfaceStates.RAW, temperature, rainfall, saltWater);
-                }
-            }
-            else // Default fluid
-            {
-                context.setBlockState(pos, SurfaceStates.WATER, temperature, rainfall, saltWater);
             }
         }
     }
