@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/tomato"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 0.5,
+  "water": 5,
+  "decay": 3.5,
+  "vegetables": 1.5
+}

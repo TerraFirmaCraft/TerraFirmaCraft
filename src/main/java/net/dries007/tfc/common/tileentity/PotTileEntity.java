@@ -38,9 +38,9 @@ import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
 import net.dries007.tfc.common.container.ItemStackHandlerCallback;
 import net.dries007.tfc.common.container.PotContainer;
-import net.dries007.tfc.common.recipes.IInventoryNoop;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
 import net.dries007.tfc.common.types.FuelManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

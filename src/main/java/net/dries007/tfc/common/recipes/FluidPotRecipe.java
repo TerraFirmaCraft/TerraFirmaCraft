@@ -17,7 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import net.dries007.tfc.common.capabilities.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.IngredientHelpers;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 public class FluidPotRecipe extends PotRecipe
@@ -71,7 +72,7 @@ public class FluidPotRecipe extends PotRecipe
         protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             JsonObject output = GsonHelper.getAsJsonObject(json, "fluid_output");
-            return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, FluidIngredient.fluidStackFromJson(output));
+            return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, IngredientHelpers.fluidStackFromJson(output));
         }
 
         @Override

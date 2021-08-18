@@ -32,6 +32,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
@@ -51,7 +52,8 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -92,6 +94,7 @@ public final class ForgeEventHandler
         bus.addGenericListener(LevelChunk.class, ForgeEventHandler::attachChunkCapabilities);
         bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
+        bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);
@@ -112,6 +115,9 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
+        bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
+        bus.addListener(ForgeEventHandler::onPlayerRespawn);
+        bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
     }
 
     /**
@@ -224,11 +230,25 @@ public final class ForgeEventHandler
             event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
             // Optional capabilities
-            HeatDefinition def = HeatManager.get(stack);
+            HeatDefinition def = HeatCapability.get(stack);
             if (def != null)
             {
                 event.addCapability(HeatCapability.KEY, def.create());
             }
+
+            FoodDefinition food = FoodCapability.get(stack);
+            if (food != null)
+            {
+                event.addCapability(FoodCapability.KEY, new FoodHandler(food.getData()));
+            }
+        }
+    }
+
+    public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event)
+    {
+        if (event.getObject() instanceof PlayerEntity)
+        {
+            event.addCapability(PlayerDataCapability.KEY, new PlayerData((PlayerEntity) event.getObject()));
         }
     }
 
@@ -312,13 +332,15 @@ public final class ForgeEventHandler
     {
         // Resource reload listeners
         ReloadableResourceManager resourceManager = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
-        resourceManager.registerReloadListener(MetalManager.INSTANCE);
-        resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.registerReloadListener(FuelManager.INSTANCE);
+        resourceManager.registerReloadListener(Metal.MANAGER);
+        resourceManager.registerReloadListener(MetalItemManager.MANAGER);
+        resourceManager.registerReloadListener(FuelManager.MANAGER);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatManager.INSTANCE);
-        resourceManager.registerReloadListener(ItemSizeManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatCapability.MANAGER);
+        resourceManager.registerReloadListener(ItemSizeManager.MANAGER);
+        resourceManager.registerReloadListener(FoodCapability.MANAGER);
 
+        // Last
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
@@ -411,7 +433,7 @@ public final class ForgeEventHandler
 
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof final ServerLevel world && world.dimension() == Level.OVERWORLD)
+        if (event.getWorld() instanceof final ServerLevel world)
         {
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
@@ -543,5 +565,29 @@ public final class ForgeEventHandler
             StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
          */
+    }
+
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
+        }
+    }
+
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
+        }
+    }
+
+    public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (event.getPlayer() instanceof ServerPlayerEntity)
+        {
+            TFCFoodStats.replaceFoodStats(event.getPlayer());
+        }
     }
 }

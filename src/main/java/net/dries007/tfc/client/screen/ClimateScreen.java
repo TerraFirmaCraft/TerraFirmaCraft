@@ -49,9 +49,9 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY)
+    protected void renderLabels(PoseStack stack, int mouseX, int mouseY)
     {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+        super.renderLabels(stack, mouseX, mouseY);
 
         // Climate at the current player
         float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
@@ -64,10 +64,16 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
 
-        font.draw(matrixStack, climateType, (imageWidth - font.width(climateType)) / 2f, 25, 0x404040);
-        font.draw(matrixStack, plateTectonics, (imageWidth - font.width(plateTectonics)) / 2f, 34, 0x404040);
-        font.draw(matrixStack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 43, 0x404040);
-        font.draw(matrixStack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 52, 0x404040);
-        font.draw(matrixStack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 61, 0x404040);
+        drawLine(stack, climateType, 17);
+        drawLine(stack, plateTectonics, 28);
+        drawLine(stack, averageTempTooltip, 39);
+        drawLine(stack, rainfallTooltip, 50);
+        drawLine(stack, currentTempTooltip, 61);
+    }
+
+    private void drawLine(PoseStack stack, String text, int y)
+    {
+        final int x = (imageWidth - font.width(text)) / 2;
+        font.draw(stack, text, x, y, 0x404040);
     }
 }

@@ -17,16 +17,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
-public class FuelManager extends DataManager<Fuel>
+public class FuelManager
 {
-    public static final FuelManager INSTANCE = new FuelManager();
-
-    private static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
-    private static final String TOOLTIP_KEY = TerraFirmaCraft.MOD_ID + ".tooltip.fuel";
+    public static final DataManager<Fuel> MANAGER = new DataManager.Instance<>(Fuel::new, "fuels", "fuel", true);
+    public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
     @Nullable
     public static Fuel get(ItemStack stack)
@@ -41,29 +38,13 @@ public class FuelManager extends DataManager<Fuel>
         return null;
     }
 
-    public static void reload()
-    {
-        CACHE.reload(INSTANCE.getValues());
-    }
-
     public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         final Fuel fuel = get(stack);
         if (fuel != null)
         {
-            // todo: color and convert temperature to words
-            text.add(new TranslatableComponent(TOOLTIP_KEY, fuel.getDuration(), fuel.getTemperature()));
+            // todo: color and convert temperature and duration to words
+            text.add(new TranslatableComponent("tfc.tooltip.fuel", fuel.getDuration(), fuel.getTemperature()));
         }
-    }
-
-    private FuelManager()
-    {
-        super(new GsonBuilder().create(), "fuels", "fuel", true);
-    }
-
-    @Override
-    protected Fuel read(ResourceLocation id, JsonObject obj)
-    {
-        return new Fuel(id, obj);
     }
 }

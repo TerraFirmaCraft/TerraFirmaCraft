@@ -19,7 +19,8 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 
-import net.dries007.tfc.common.capabilities.heat.HeatManager;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.*;
@@ -54,11 +55,13 @@ public enum CacheInvalidationListener implements PreparableReloadListener
             QuernRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.QUERN));
             ScrapingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.SCRAPING));
 
-            HeatManager.reload();
-            ItemSizeManager.reload();
-            MetalItemManager.reload();
-            FuelManager.reload();
+            HeatCapability.CACHE.reload(HeatCapability.MANAGER.getValues());
+            MetalItemManager.CACHE.reload(MetalItemManager.MANAGER.getValues());
+            FuelManager.CACHE.reload(FuelManager.MANAGER.getValues());
+            FoodCapability.CACHE.reload(FoodCapability.MANAGER.getValues());
+            ItemSizeManager.CACHE.reload(ItemSizeManager.MANAGER.getValues());
 
+            ItemSizeManager.resetItemSizes();
             InteractionManager.reload();
         }
 

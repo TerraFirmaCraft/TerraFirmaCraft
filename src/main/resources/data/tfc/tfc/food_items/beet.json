@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/beet"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 2,
+  "decay": 0.7,
+  "vegetables": 1
+}

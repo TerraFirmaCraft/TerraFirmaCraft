@@ -68,13 +68,12 @@ public interface IHeat extends ICapabilitySerializable<CompoundTag>
 
     /**
      * Adds the heat info tooltip when hovering over.
-     * When overriding this to show additional information, fall back to IItemHeat.super.addHeatInfo()
      *
      * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
     @OnlyIn(Dist.CLIENT)
-    default void addHeatInfo(ItemStack stack, List<Component> text)
+    default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         float temperature = getTemperature();
         MutableComponent tooltip = Heat.getTooltip(temperature);

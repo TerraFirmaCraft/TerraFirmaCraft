@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -26,7 +24,6 @@ public interface DelegateFluidHandler extends IFluidHandler
         return getFluidHandler().getTanks();
     }
 
-    @Nonnull
     @Override
     default FluidStack getFluidInTank(int tank)
     {
@@ -40,7 +37,7 @@ public interface DelegateFluidHandler extends IFluidHandler
     }
 
     @Override
-    default boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    default boolean isFluidValid(int tank, FluidStack stack)
     {
         return getFluidHandler().isFluidValid(tank, stack);
     }
@@ -51,14 +48,12 @@ public interface DelegateFluidHandler extends IFluidHandler
         return getFluidHandler().fill(resource, action);
     }
 
-    @Nonnull
     @Override
     default FluidStack drain(FluidStack resource, FluidAction action)
     {
         return getFluidHandler().drain(resource, action);
     }
 
-    @Nonnull
     @Override
     default FluidStack drain(int maxDrain, FluidAction action)
     {

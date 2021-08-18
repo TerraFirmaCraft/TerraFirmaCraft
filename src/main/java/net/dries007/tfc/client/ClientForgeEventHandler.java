@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -60,6 +61,7 @@ import static net.minecraft.ChatFormatting.*;
 public class ClientForgeEventHandler
 {
     private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/icons/overlay.png");
+    private static final Field CAP_NBT_FIELD = Helpers.findUnobfField(ItemStack.class, "capNBT");
 
     public static void init()
     {
@@ -79,7 +81,7 @@ public class ClientForgeEventHandler
     {
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
-        if (mc.level != null && mc.options.renderDebug) // todo: config
+        if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableTFCF3Overlays.get())
         {
             //noinspection ConstantConditions
             BlockPos pos = new BlockPos(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
@@ -90,7 +92,11 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString());
-                list.add(I18n.get("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+
+                if (TFCConfig.CLIENT.enableDebug.get())
+                {
+                    list.add(String.format("Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+                }
 
                 ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus() == ChunkData.Status.CLIENT)
@@ -118,19 +124,27 @@ public class ClientForgeEventHandler
         if (!stack.isEmpty())
         {
             ItemSizeManager.addTooltipInfo(stack, text);
-            MetalItemManager.addTooltipInfo(stack, text);
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+
             if (event.getFlags().isAdvanced())
             {
+                MetalItemManager.addTooltipInfo(stack, text);
                 FuelManager.addTooltipInfo(stack, text);
             }
 
-            if (TFCConfig.CLIENT.enableDebugNBTTooltip.get())
+            if (TFCConfig.CLIENT.enableDebug.get())
             {
-                CompoundTag stackTag = stack.getTag();
+                final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.debug_tag", stackTag));
+                    text.add(new StringTextComponent("[Debug] NBT: " + stackTag));
+                }
+
+                final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
+                if (capTag != null)
+                {
+                    text.add(new StringTextComponent("[Debug] Capability NBT: " + capTag));
                 }
             }
         }
@@ -204,7 +218,7 @@ public class ClientForgeEventHandler
         ForgeIngameGui.renderFood = !TFCConfig.CLIENT.enableHungerBar.get();
         ForgeIngameGui.renderHealth = !TFCConfig.CLIENT.enableHealthBar.get();
         ForgeIngameGui.renderExperiance = !TFCConfig.CLIENT.enableHealthBar.get() && !TFCConfig.CLIENT.enableThirstBar.get(); // only allow vanilla exp in this case
-        HealthDisplayFormat healthDisplayFormat = TFCConfig.CLIENT.healthDisplayFormat.get();
+        HealthDisplayStyle healthDisplayStyle = TFCConfig.CLIENT.healthDisplayStyle.get();
 
         if (event.getType() != RenderGameOverlayEvent.ElementType.CROSSHAIRS)
         {
@@ -218,9 +232,9 @@ public class ClientForgeEventHandler
 
         MatrixStack matrixStack = event.getMatrixStack();
 
-        float displayModifier = (healthDisplayFormat == HealthDisplayFormat.TFC || healthDisplayFormat == HealthDisplayFormat.TFC_CURRENT) ? 50f : 1f;
+        float displayModifier = (healthDisplayStyle == HealthDisplayStyle.TFC || healthDisplayStyle == HealthDisplayStyle.TFC_CURRENT) ? 50f : 1f;
         float maxHealth = player.getMaxHealth() * displayModifier; // 20 * 50 = 1000
-        float currentThirst = 100f; // todo: update to fetch from thirst once implemented
+        float currentThirst = player.getFoodData() instanceof TFCFoodStats ? ((TFCFoodStats) player.getFoodData()).getThirst() : 100f;
 
         MainWindow window = event.getWindow();
         int guiScaledHeight = window.getGuiScaledHeight();
@@ -288,7 +302,7 @@ public class ClientForgeEventHandler
                 }
                 matrixStack.popPose();
 
-                String healthString = healthDisplayFormat.format(currentHealth, maxHealth);
+                String healthString = healthDisplayStyle.format(currentHealth, maxHealth);
                 matrixStack.pushPose();
                 matrixStack.translate(mid - 45, healthRowHeight + 2.5, 0);
                 matrixStack.scale(0.8f, 0.8f, 1.0f);
@@ -352,7 +366,7 @@ public class ClientForgeEventHandler
                 }
                 matrixStack.popPose();
 
-                String mountHealthString = healthDisplayFormat.format(mountCurrentHealth, mountMaxHealth);
+                String mountHealthString = healthDisplayStyle.format(mountCurrentHealth, mountMaxHealth);
                 matrixStack.pushPose();
                 matrixStack.translate(mid + 47, armorRowHeight + 2.5, 0);
                 matrixStack.scale(0.8f, 0.8f, 1.0f);

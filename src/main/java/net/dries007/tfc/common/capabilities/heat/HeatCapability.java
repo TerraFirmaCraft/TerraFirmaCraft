@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -13,6 +17,8 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.DataManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -21,11 +27,8 @@ public final class HeatCapability
     @CapabilityInject(IHeat.class)
     public static final Capability<IHeat> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
-
-    public static void setup()
-    {
-        CapabilityManager.INSTANCE.register((Class<?>) IHeat.class);
-    }
+    public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat", true);
 
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
@@ -111,5 +114,18 @@ public final class HeatCapability
             temp = target;
         }
         instance.setTemperature(temp);
+    }
+
+    @Nullable
+    public static HeatDefinition get(ItemStack stack)
+    {
+        for (HeatDefinition def : CACHE.getAll(stack.getItem()))
+        {
+            if (def.matches(stack))
+            {
+                return def;
+            }
+        }
+        return null;
     }
 }

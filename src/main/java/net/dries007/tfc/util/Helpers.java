@@ -6,8 +6,9 @@
 
 package net.dries007.tfc.util;
 
+import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.BiPredicate;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -17,8 +18,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
@@ -210,6 +213,29 @@ public final class Helpers
             return defaultValue;
         }
         throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+    }
+
+    public static JsonElement getJsonAsAny(JsonObject json, String key)
+    {
+        if (!json.has(key))
+        {
+            throw new JsonParseException("Missing required key: " + key);
+        }
+        return json.get(key);
+    }
+
+    public static <T> T nonNullOrJsonError(@Nullable T obj, String error)
+    {
+        if (obj == null)
+        {
+            throw new JsonSyntaxException(error);
+        }
+        return obj;
+    }
+
+    public static TranslationTextComponent translateEnum(Enum<?> anEnum)
+    {
+        return new TranslationTextComponent(getEnumTranslationKey(anEnum));
     }
 
     /**
@@ -509,11 +535,35 @@ public final class Helpers
         return list.subList(length - n, length);
     }
 
-    public static NonNullList<ItemStack> copyItemList(NonNullList<ItemStack> stacksIn)
+    public static Field findUnobfField(Class<?> clazz, String fieldName)
     {
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        stacksIn.forEach(stack -> stacks.add(stack.copy()));
-        return stacks;
+        try
+        {
+            final Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field;
+        }
+        catch (NoSuchFieldException e)
+        {
+            throw new RuntimeException("Missing field: " + clazz.getSimpleName() + "." + fieldName, e);
+        }
+    }
+
+    /**
+     * For when you want to ignore every possible safety measure in front of you
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T> T uncheck(Callable<Object> action)
+    {
+        try
+        {
+            return (T) action.call();
+        }
+        catch (Exception e)
+        {
+            return throwAsUnchecked(e);
+        }
     }
 
     /**
@@ -656,5 +706,11 @@ public final class Helpers
                 sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <E extends Throwable, T> T throwAsUnchecked(Exception exception) throws E
+    {
+        throw (E) exception;
     }
 }

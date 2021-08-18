@@ -9,16 +9,29 @@ package net.dries007.tfc.client;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.level.Level;
 
 /**
  * Client side methods for proxy use
  */
-public class ClientHelpers
+public final class ClientHelpers
 {
     @Nullable
     public static Level getWorld()
     {
         return Minecraft.getInstance().level;
+    }
+
+    @Nullable
+    public static PlayerEntity getPlayer()
+    {
+        return Minecraft.getInstance().player;
+    }
+
+    public static boolean hasShiftDown()
+    {
+        return Screen.hasShiftDown();
     }
 }

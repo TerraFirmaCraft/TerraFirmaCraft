@@ -24,8 +24,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
-import net.dries007.tfc.common.capabilities.FluidIngredient;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.recipes.ingredients.IngredientHelpers;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
@@ -128,7 +129,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         {
             final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
             final ItemStack outputItem = json.has("result_item") ? new ItemStack(ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item"))) : ItemStack.EMPTY;
-            final FluidStack outputFluid = json.has("result_fluid") ? FluidIngredient.fluidStackFromJson(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
+            final FluidStack outputFluid = json.has("result_fluid") ? IngredientHelpers.fluidStackFromJson(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
             final float temperature = GsonHelper.getAsFloat(json, "temperature");
             return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
         }

@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class ScrapingRecipe extends SimpleItemRecipe

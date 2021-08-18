@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+
 /**
  * A simple {@link net.minecraft.world.item.crafting.Recipe} extension for {@link BlockRecipeWrapper}
  */

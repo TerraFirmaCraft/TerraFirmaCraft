@@ -21,7 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.capabilities.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 public class SoupPotRecipe extends PotRecipe

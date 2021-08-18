@@ -21,9 +21,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.recipes.IInventoryNoop;
-import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.KnappingPattern;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
 
 public class KnappingContainer extends ItemStackContainer implements IButtonHandler, IInventoryNoop, ISlotCallback
 {

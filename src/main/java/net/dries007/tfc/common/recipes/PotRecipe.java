@@ -25,7 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.common.capabilities.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -196,7 +196,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
             {
                 ingredient.toNetwork(buffer);
             }
-            FluidIngredient.toNetwork(recipe.fluidIngredient, buffer);
+            FluidIngredient.toNetwork(buffer, recipe.fluidIngredient);
             buffer.writeVarInt(recipe.duration);
             buffer.writeFloat(recipe.minTemp);
         }

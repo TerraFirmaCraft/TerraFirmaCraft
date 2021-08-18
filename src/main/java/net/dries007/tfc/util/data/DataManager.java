@@ -7,14 +7,12 @@
 package net.dries007.tfc.util.data;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.resources.ResourceLocation;
@@ -141,6 +139,23 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
         for (Runnable callback : callbacks)
         {
             callback.run();
+        }
+    }
+
+    public static class Instance<T> extends DataManager<T>
+    {
+        private final BiFunction<ResourceLocation, JsonObject, T> factory;
+
+        public Instance(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName, boolean allowNone)
+        {
+            super(new GsonBuilder().create(), domain, typeName, allowNone);
+            this.factory = factory;
+        }
+
+        @Override
+        protected T read(ResourceLocation id, JsonObject json)
+        {
+            return factory.apply(id, json);
         }
     }
 }

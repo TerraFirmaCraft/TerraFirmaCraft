@@ -25,10 +25,10 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 
-public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
+public final class ItemSizeManager
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
-    public static final ItemSizeManager INSTANCE = new ItemSizeManager();
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager.Instance<>(ItemSizeDefinition::new, "item_sizes", "item size", true);
 
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 
@@ -48,11 +48,9 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         }
     }
 
-    public static void reload()
+    public static void resetItemSizes()
     {
-        CACHE.reload(INSTANCE.getValues());
-
-        // Additionally, compute for every item in the game, the modified stack size
+        // Edit item stack sizes for all editable items in the game (that we can find)
         // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
         for (Item item : MODIFIABLE_ITEMS)
         {
@@ -68,9 +66,9 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
     {
         IItemSize size = ItemSizeManager.get(stack);
         text.add(new TextComponent("\u2696 ")
-            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(size.getWeight(stack))))
+            .append(Helpers.translateEnum(size.getWeight(stack)))
             .append(" \u21F2 ")
-            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(size.getSize(stack))))
+            .append(Helpers.translateEnum(size.getSize(stack)))
             .withStyle(ChatFormatting.GRAY));
     }
 
@@ -113,16 +111,5 @@ public final class ItemSizeManager extends DataManager<ItemSizeDefinition>
         {
             return ItemSize.of(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
         }
-    }
-
-    private ItemSizeManager()
-    {
-        super(new GsonBuilder().create(), "item_sizes", "item size", true);
-    }
-
-    @Override
-    protected ItemSizeDefinition read(ResourceLocation id, JsonObject obj)
-    {
-        return new ItemSizeDefinition(id, obj);
     }
 }

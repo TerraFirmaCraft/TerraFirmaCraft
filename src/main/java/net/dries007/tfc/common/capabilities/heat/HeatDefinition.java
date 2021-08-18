@@ -6,11 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.item.Item;
@@ -21,28 +17,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 /**
- * This is a definition (reloaded via {@link HeatManager}) of a heat that is applied to an item stack.
+ * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.
  */
-public class HeatDefinition
+public class HeatDefinition extends ItemDefinition
 {
-    private final ResourceLocation id;
     private final Supplier<IHeat> capability;
-    private final Ingredient ingredient;
 
-    public HeatDefinition(ResourceLocation id, JsonObject obj)
+    public HeatDefinition(ResourceLocation id, JsonObject json)
     {
-        float heatCapacity = GsonHelper.getAsFloat(obj, "heat_capacity");
-        float forgingTemp = GsonHelper.getAsFloat(obj, "forging_temperature", 0);
-        float weldingTemp = GsonHelper.getAsFloat(obj, "welding_temperature", 0);
+        super(id, json);
 
-        this.id = id;
-        this.ingredient = CraftingHelper.getIngredient(Objects.requireNonNull(obj.get("ingredient")));
+        float heatCapacity = GsonHelper.getAsFloat(json, "heat_capacity");
+        float forgingTemp = GsonHelper.getAsFloat(json, "forging_temperature", 0);
+        float weldingTemp = GsonHelper.getAsFloat(json, "welding_temperature", 0);
+
         this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     /**
@@ -51,15 +40,5 @@ public class HeatDefinition
     public IHeat create()
     {
         return capability.get();
-    }
-
-    public boolean isValid(ItemStack stack)
-    {
-        return ingredient.test(stack);
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 }

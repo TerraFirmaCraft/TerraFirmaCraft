@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -19,7 +17,7 @@ public interface DelegateItemHandler extends IItemHandlerModifiable
     IItemHandlerModifiable getItemHandler();
 
     @Override
-    default void setStackInSlot(int slot, @Nonnull ItemStack stack)
+    default void setStackInSlot(int slot, ItemStack stack)
     {
         getItemHandler().setStackInSlot(slot, stack);
     }
@@ -30,21 +28,18 @@ public interface DelegateItemHandler extends IItemHandlerModifiable
         return getItemHandler().getSlots();
     }
 
-    @Nonnull
     @Override
     default ItemStack getStackInSlot(int slot)
     {
         return getItemHandler().getStackInSlot(slot);
     }
 
-    @Nonnull
     @Override
-    default ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+    default ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
     {
         return getItemHandler().insertItem(slot, stack, simulate);
     }
 
-    @Nonnull
     @Override
     default ItemStack extractItem(int slot, int amount, boolean simulate)
     {
@@ -58,7 +53,7 @@ public interface DelegateItemHandler extends IItemHandlerModifiable
     }
 
     @Override
-    default boolean isItemValid(int slot, @Nonnull ItemStack stack)
+    default boolean isItemValid(int slot, ItemStack stack)
     {
         return getItemHandler().isItemValid(slot, stack);
     }

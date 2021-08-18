@@ -13,19 +13,20 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 
-import net.dries007.tfc.common.recipes.IBlockIngredient;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class Support
 {
     private final ResourceLocation id;
     private final int supportUp, supportDown, supportHorizontal;
-    private final IBlockIngredient ingredient;
+    private final BlockIngredient ingredient;
 
     public Support(ResourceLocation id, JsonObject json)
     {
         this.id = id;
 
-        this.ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
+        this.ingredient = BlockIngredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
         this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
         this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
         this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);

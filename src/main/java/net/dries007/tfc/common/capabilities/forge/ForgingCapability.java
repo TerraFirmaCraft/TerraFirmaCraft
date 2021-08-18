@@ -20,9 +20,4 @@ public class ForgingCapability
     @CapabilityInject(IForging.class)
     public static final Capability<IForging> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_forge");
-
-    public static void setup()
-    {
-        CapabilityManager.INSTANCE.register((Class<?>) IForging.class);
-    }
 }

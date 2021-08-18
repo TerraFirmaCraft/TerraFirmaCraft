@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -41,5 +42,34 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR));
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, 176 - 3, 50, 20 + 3, 22, 128 + 20, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION));
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE));
+    }
+
+    @Override
+    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY)
+    {
+        super.renderBg(stack, partialTicks, mouseX, mouseY);
+
+        final PlayerEntity player = ClientHelpers.getPlayer();
+        if (player != null && player.getFoodData() instanceof TFCFoodStats)
+        {
+            final NutritionStats nutrition = ((TFCFoodStats) player.getFoodData()).getNutrition();
+            for (Nutrient nutrient : Nutrient.VALUES)
+            {
+                final int width = (int) (nutrition.getNutrient(nutrient) * 50);
+                blit(stack, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
+            }
+        }
+    }
+
+    @Override
+    protected void renderLabels(PoseStack stack, int mouseX, int mouseY)
+    {
+        super.renderLabels(stack, mouseX, mouseY);
+
+        for (Nutrient nutrient : Nutrient.VALUES)
+        {
+            final ITextComponent text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
+            font.draw(stack, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
+        }
     }
 }

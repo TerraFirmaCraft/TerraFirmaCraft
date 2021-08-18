@@ -18,9 +18,4 @@ public class WorldTrackerCapability
     @CapabilityInject(IWorldTracker.class)
     public static final Capability<IWorldTracker> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = Helpers.identifier("world_tracker");
-
-    public static void setup()
-    {
-        CapabilityManager.INSTANCE.register((Class<?>) IWorldTracker.class);
-    }
 }

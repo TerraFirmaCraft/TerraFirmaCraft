@@ -22,6 +22,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+
 /**
  * Handling for simple Ingredient -> ItemStack recipes
  */
