@@ -13,16 +13,17 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -31,15 +32,6 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCItemTier;
 import net.dries007.tfc.common.items.tools.*;
 import net.dries007.tfc.util.Helpers;
-
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
 
 public class Metal
 {
@@ -52,7 +44,7 @@ public class Metal
     {
         this.id = id;
         this.tier = Tier.valueOf(GsonHelper.getAsInt(json, "tier"));
-        this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "fluid")));
+        this.fluid = Helpers.getRegistryFromJson(json, "fluid", ForgeRegistries.FLUIDS);
     }
 
     public ResourceLocation getId()

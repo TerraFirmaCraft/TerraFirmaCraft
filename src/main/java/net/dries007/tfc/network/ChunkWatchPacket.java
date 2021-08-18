@@ -12,12 +12,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.world.chunkdata.*;
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
@@ -74,7 +73,7 @@ public class ChunkWatchPacket
         context.get().enqueueWork(() -> {
             ChunkPos pos = new ChunkPos(chunkX, chunkZ);
             // Update client-side chunk data capability
-            Level world = DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientHelpers::getWorld);
+            Level world = ClientHelpers.getWorld();
             if (world != null)
             {
                 // First, synchronize the chunk data in the capability and cache.
@@ -84,7 +83,7 @@ public class ChunkWatchPacket
                     .map(dataIn -> {
                         ChunkDataCache.CLIENT.update(pos, dataIn);
                         return dataIn;
-                    }).orElseGet(() -> ChunkDataCache.CLIENT.getOrCreate(pos));
+                    }).orElseGet(() -> ChunkDataCache.CLIENT.getOrCreate(pos, RockLayerSettings.EMPTY));
                 data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
             }
         });

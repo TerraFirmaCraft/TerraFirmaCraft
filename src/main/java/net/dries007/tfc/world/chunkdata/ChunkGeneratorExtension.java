@@ -9,6 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Identifier interface for the TFC enabled chunk generators
@@ -19,18 +20,23 @@ import net.dries007.tfc.world.biome.BiomeSourceExtension;
 public interface ChunkGeneratorExtension
 {
     /**
-     * @return The chunk data provider for this generator.
-     */
-    ChunkDataProvider getChunkDataProvider();
-
-    /**
      * Override in {@link ChunkGenerator} to return a narrower type
      *
      * @return The biome provider / source for this generator
      */
     BiomeSourceExtension getBiomeSource();
 
-    default ChunkGenerator chunkGenerator()
+    default ChunkDataProvider getChunkDataProvider()
+    {
+        return getBiomeSource().getChunkDataProvider();
+    }
+
+    default RockLayerSettings getRockLayerSettings()
+    {
+        return getBiomeSource().getRockLayerSettings();
+    }
+
+    default ChunkGenerator self()
     {
         return (ChunkGenerator) this;
     }

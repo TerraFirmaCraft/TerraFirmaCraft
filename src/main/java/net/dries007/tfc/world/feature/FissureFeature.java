@@ -9,20 +9,18 @@ package net.dries007.tfc.world.feature;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class FissureFeature extends Feature<FissureConfig>
 {
@@ -138,8 +136,8 @@ public class FissureFeature extends Feature<FissureConfig>
         final BlockState insideState = config.wallState().orElseGet(() -> {
             final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
             final ChunkData data = provider.get(pos);
-            final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
-            return rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
+            final RockSettings rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
+            return rock.raw().defaultBlockState();
         });
 
         for (int i = 0; i < placeCount; i++)

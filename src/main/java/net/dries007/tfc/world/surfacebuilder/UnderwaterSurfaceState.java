@@ -8,7 +8,6 @@ package net.dries007.tfc.world.surfacebuilder;
 
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -33,10 +32,10 @@ public class UnderwaterSurfaceState implements SurfaceState
         {
             if (deep)
             {
-                return rockData.getTopRock(x, z).getSandstone().defaultBlockState(); // Sandstone
+                return rockData.getTopRock(x, z).sandstone().defaultBlockState(); // Sandstone
             }
-            return rockData.getTopRock(x, z).getSand().defaultBlockState(); // Sand
+            return rockData.getTopRock(x, z).sand().defaultBlockState(); // Sand
         }
-        return rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState(); // Gravel
+        return rockData.getTopRock(x, z).gravel().defaultBlockState(); // Gravel
     }
 }

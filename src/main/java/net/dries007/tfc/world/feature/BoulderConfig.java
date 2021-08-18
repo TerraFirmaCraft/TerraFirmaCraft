@@ -9,31 +9,20 @@ package net.dries007.tfc.world.feature;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.Codecs;
 
-public record BoulderConfig(Map<Rock, List<BlockState>> states) implements FeatureConfiguration
+public record BoulderConfig(Map<Block, List<BlockState>> states) implements FeatureConfiguration
 {
     public static final Codec<BoulderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
-            ResourceLocation.CODEC.comapFlatMap(r -> {
-                Rock rock = RockManager.INSTANCE.get(r);
-                return rock == null ? DataResult.error("No rock: " + r) : DataResult.success(rock);
-            }, Rock::getId), "rock",
+            Codecs.BLOCK, "rock",
             Codecs.LENIENT_BLOCKSTATE.listOf(), "blocks"
         )).fieldOf("states").forGetter(c -> c.states)
     ).apply(instance, BoulderConfig::new));
-
-    public List<BlockState> getStates(Rock rock)
-    {
-        return states.get(rock);
-    }
 }

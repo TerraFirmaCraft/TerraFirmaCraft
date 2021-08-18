@@ -23,6 +23,7 @@ buildscript {
 
 plugins {
     // id 'net.minecrell.licenser' version '0.4.1'
+    id 'idea'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -131,6 +132,12 @@ processResources {
                 file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
             }
         }
+    }
+}
+
+idea {
+    module {
+        excludeDirs.add(file("run"))
     }
 }
 

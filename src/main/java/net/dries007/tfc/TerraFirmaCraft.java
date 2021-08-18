@@ -12,10 +12,10 @@ import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
@@ -91,8 +91,11 @@ public final class TerraFirmaCraft
         CalendarEventHandler.init();
         ForgeEventHandler.init();
 
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientEventHandler::init);
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientForgeEventHandler::init);
+        if (FMLEnvironment.dist == Dist.CLIENT)
+        {
+            ClientEventHandler.init();
+            ClientForgeEventHandler.init();
+        }
     }
 
     public void setup(FMLCommonSetupEvent event)

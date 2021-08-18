@@ -19,7 +19,6 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
@@ -79,7 +78,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                 {
                                     // More than one block to collapse, so we can support instead
                                     mutablePos.setY(y + 1);
-                                    worldIn.setBlock(mutablePos, rockData.getRock(x, y + 1, z).getBlock(Rock.BlockType.RAW).defaultBlockState(), 2);
+                                    worldIn.setBlock(mutablePos, rockData.getRock(x, y + 1, z).raw().defaultBlockState(), 2);
                                 }
                                 else
                                 {

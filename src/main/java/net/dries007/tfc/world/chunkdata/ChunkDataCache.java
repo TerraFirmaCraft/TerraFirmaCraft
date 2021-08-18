@@ -13,14 +13,15 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Cache of chunk data
@@ -60,17 +61,6 @@ public final class ChunkDataCache
     public static ChunkDataCache get(LevelReader world)
     {
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
-    }
-
-    /**
-     * Gets the normal (not world en) cache of chunk data based on a heuristic - pick the one that is not empty
-     * On dedicated servers / clients only one will be non-empty
-     * On logical server / clients, this will default to using the server cache
-     * DO NOT call this unless absolutely necessary, e.g. returning from a vanilla method which is called from both logical sides
-     */
-    public static ChunkDataCache getUnsided()
-    {
-        return SERVER.cache.isEmpty() ? CLIENT : SERVER;
     }
 
     public static void clearAll()
@@ -126,9 +116,9 @@ public final class ChunkDataCache
         cache.put(pos, data);
     }
 
-    public ChunkData getOrCreate(ChunkPos pos)
+    public ChunkData getOrCreate(ChunkPos pos, RockLayerSettings settings)
     {
-        return cache.computeIfAbsent(pos, ChunkData::new);
+        return cache.computeIfAbsent(pos, key -> new ChunkData(pos, settings));
     }
 
     @Override

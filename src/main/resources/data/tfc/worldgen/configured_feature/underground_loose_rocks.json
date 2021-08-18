@@ -10,9 +10,7 @@
       "type": "tfc:carving_mask",
       "config": {
         "step": "air",
-        "probability": 0.05,
-        "min_y": -48,
-        "max_y": 90
+        "probability": 0.05
       }
     }
   }

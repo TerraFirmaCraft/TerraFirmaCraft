@@ -12,17 +12,17 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -32,8 +32,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
 
@@ -97,12 +97,12 @@ public final class ClearWorldCommand
     {
         ALL(server -> state -> true),
         RAW_ROCK(server -> {
-            final Set<Block> blocks = TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()).collect(Collectors.toSet());
+            final Set<Block> blocks = TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.RAW).get()).collect(Collectors.toSet());
             return state -> blocks.contains(state.getBlock());
         }),
         EARTH(server -> {
             final Set<Block> blocks = Stream.of(
-                TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()),
+                TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.RAW).get()),
                 TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.GRAVEL).get()),
                 TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(RegistryObject::get),
                 TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get),

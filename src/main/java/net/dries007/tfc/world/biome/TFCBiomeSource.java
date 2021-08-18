@@ -6,84 +6,59 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.*;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockCategory;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.Debug;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.settings.ClimateSettings;
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 {
     public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
-        Codec.INT.optionalFieldOf("spawn_distance", 8_000).forGetter(TFCBiomeSource::getSpawnDistance),
-        Codec.INT.optionalFieldOf("spawn_center_x", 0).forGetter(c -> c.spawnCenterX),
-        Codec.INT.optionalFieldOf("spawn_center_z", 0).forGetter(c -> c.spawnCenterZ),
-        LayerSettings.CODEC.forGetter(TFCBiomeSource::getLayerSettings),
-        ClimateSettings.CODEC.forGetter(c -> c.climateSettings),
+        Codec.INT.fieldOf("spawn_distance").forGetter(TFCBiomeSource::getSpawnDistance),
+        Codec.INT.fieldOf("spawn_center_x").forGetter(c -> c.spawnCenterX),
+        Codec.INT.fieldOf("spawn_center_z").forGetter(c -> c.spawnCenterZ),
+        RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
+        ClimateSettings.CODEC.fieldOf("climate_settings").forGetter(c -> c.climateSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
 
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {
-        return new TFCBiomeSource(seed, 8_000, 0, 0, defaultLayerSettings(), defaultClimateSettings(), biomeRegistry);
-    }
-
-    public static ClimateSettings defaultClimateSettings()
-    {
-        return new ClimateSettings(-17.25f, -3.75f, 9.75f, 23.25f, 125, 200, 300, 375);
-    }
-
-    public static LayerSettings defaultLayerSettings()
-    {
-        final List<ResourceLocation> bottomRocks = defaultRockLayers(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.METAMORPHIC);
-        final List<ResourceLocation> middleRocks = defaultRockLayers(RockCategory.IGNEOUS_INTRUSIVE, RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.METAMORPHIC, RockCategory.SEDIMENTARY);
-        final List<ResourceLocation> topRocks = defaultRockLayers(RockCategory.IGNEOUS_EXTRUSIVE, RockCategory.SEDIMENTARY, RockCategory.METAMORPHIC);
-        return new LayerSettings(30, 7, bottomRocks, middleRocks, topRocks);
-    }
-
-    private static List<ResourceLocation> defaultRockLayers(RockCategory first, RockCategory... others)
-    {
-        final Set<RockCategory> categorySet = EnumSet.of(first, others);
-        return Arrays.stream(Rock.Default.values())
-            .filter(rock -> categorySet.contains(rock.getCategory()))
-            .map(rock -> Helpers.identifier(rock.getSerializedName()))
-            .collect(Collectors.toList());
+        return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.getDefault(), biomeRegistry);
     }
 
     // Set from codec
     private final long seed;
     private final int spawnDistance;
     private final int spawnCenterX, spawnCenterZ;
-    private final LayerSettings layerSettings;
+    private final RockLayerSettings rockLayerSettings;
     private final ClimateSettings climateSettings;
     private final Registry<Biome> biomeRegistry;
 
     private final LayerFactory<BiomeVariants> biomeLayer;
-    private ChunkDataProvider chunkDataProvider;
+    private final ChunkDataProvider chunkDataProvider;
 
-    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
+    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
@@ -91,22 +66,24 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.spawnDistance = spawnDistance;
         this.spawnCenterX = spawnCenterX;
         this.spawnCenterZ = spawnCenterZ;
-        this.layerSettings = layerSettings;
+        this.rockLayerSettings = rockLayerSettings;
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
-        this.chunkDataProvider = new ChunkDataProvider(data -> {}); // no-op
+        this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
 
-        this.biomeLayer = LayerFactory.biomes(TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings, IArtist.nope(), IArtist.nope()));
+        this.biomeLayer = new LayerFactory<>(TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
     }
 
-    public LayerSettings getLayerSettings()
+    @Override
+    public ChunkDataProvider getChunkDataProvider()
     {
-        return layerSettings;
+        return chunkDataProvider;
     }
 
-    public void setChunkDataProvider(ChunkDataProvider chunkDataProvider)
+    @Override
+    public RockLayerSettings getRockLayerSettings()
     {
-        this.chunkDataProvider = chunkDataProvider;
+        return rockLayerSettings;
     }
 
     @Override
@@ -196,19 +173,19 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 
     public BiomeTemperature calculateTemperature(float averageTemperature)
     {
-        if (averageTemperature < climateSettings.frozenColdCutoff)
+        if (averageTemperature < climateSettings.frozenColdCutoff())
         {
             return BiomeTemperature.FROZEN;
         }
-        else if (averageTemperature < climateSettings.coldNormalCutoff)
+        else if (averageTemperature < climateSettings.coldNormalCutoff())
         {
             return BiomeTemperature.COLD;
         }
-        else if (averageTemperature < climateSettings.normalLukewarmCutoff)
+        else if (averageTemperature < climateSettings.normalLukewarmCutoff())
         {
             return BiomeTemperature.NORMAL;
         }
-        else if (averageTemperature < climateSettings.lukewarmWarmCutoff)
+        else if (averageTemperature < climateSettings.lukewarmWarmCutoff())
         {
             return BiomeTemperature.LUKEWARM;
         }
@@ -220,19 +197,19 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 
     public BiomeRainfall calculateRainfall(float rainfall)
     {
-        if (rainfall < climateSettings.aridDryCutoff)
+        if (rainfall < climateSettings.aridDryCutoff())
         {
             return BiomeRainfall.ARID;
         }
-        else if (rainfall < climateSettings.dryNormalCutoff)
+        else if (rainfall < climateSettings.dryNormalCutoff())
         {
             return BiomeRainfall.DRY;
         }
-        else if (rainfall < climateSettings.normalDampCutoff)
+        else if (rainfall < climateSettings.normalDampCutoff())
         {
             return BiomeRainfall.NORMAL;
         }
-        else if (rainfall < climateSettings.dampWetCutoff)
+        else if (rainfall < climateSettings.dampWetCutoff())
         {
             return BiomeRainfall.DAMP;
         }
@@ -251,31 +228,6 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     @Override
     public TFCBiomeSource withSeed(long seedIn)
     {
-        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, layerSettings, climateSettings, biomeRegistry);
-    }
-
-    public record LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> bottomRocks, List<ResourceLocation> middleRocks, List<ResourceLocation> topRocks)
-    {
-        public static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 30).forGetter(c -> c.oceanPercent),
-            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(c -> c.rockLayerScale),
-            ResourceLocation.CODEC.listOf().fieldOf("bottom_rocks").forGetter(c -> c.bottomRocks),
-            ResourceLocation.CODEC.listOf().fieldOf("middle_rocks").forGetter(c -> c.middleRocks),
-            ResourceLocation.CODEC.listOf().fieldOf("top_rocks").forGetter(c -> c.topRocks)
-        ).apply(instance, LayerSettings::new));
-    }
-
-    public record ClimateSettings(float frozenColdCutoff, float coldNormalCutoff, float normalLukewarmCutoff, float lukewarmWarmCutoff, float aridDryCutoff, float dryNormalCutoff, float normalDampCutoff, float dampWetCutoff)
-    {
-        public static final MapCodec<ClimateSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.FLOAT.optionalFieldOf("frozen_cold_cutoff", -17.25f).forGetter(c -> c.frozenColdCutoff),
-            Codec.FLOAT.optionalFieldOf("cold_normal_cutoff", -3.75f).forGetter(c -> c.coldNormalCutoff),
-            Codec.FLOAT.optionalFieldOf("normal_lukewarm_cutoff", 9.75f).forGetter(c -> c.normalLukewarmCutoff),
-            Codec.FLOAT.optionalFieldOf("lukewarm_warm_cutoff", 23.25f).forGetter(c -> c.lukewarmWarmCutoff),
-            Codec.FLOAT.optionalFieldOf("arid_dry_cutoff", 125f).forGetter(c -> c.aridDryCutoff),
-            Codec.FLOAT.optionalFieldOf("dry_normal_cutoff", 200f).forGetter(c -> c.dryNormalCutoff),
-            Codec.FLOAT.optionalFieldOf("normal_damp_cutoff", 300f).forGetter(c -> c.normalDampCutoff),
-            Codec.FLOAT.optionalFieldOf("damp_wet_cutoff", 375f).forGetter(c -> c.dampWetCutoff)
-        ).apply(instance, ClimateSettings::new));
+        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, climateSettings, biomeRegistry);
     }
 }

@@ -317,8 +317,12 @@
           "config": {
             "step": "air",
             "probability": 0.01,
-            "min_y": 15,
-            "max_y": 100
+            "min_y": {
+              "absolute": 15
+            },
+            "max_y": {
+              "absolute": 100
+            }
           }
         }
       }

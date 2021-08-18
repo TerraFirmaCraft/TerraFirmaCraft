@@ -4,15 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.types;
+package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
 
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tier;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.TFCItemTier;

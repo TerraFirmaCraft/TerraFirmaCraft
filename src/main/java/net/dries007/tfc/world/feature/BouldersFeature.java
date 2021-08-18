@@ -10,19 +10,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class BouldersFeature extends Feature<BoulderConfig>
 {
@@ -41,8 +39,8 @@ public class BouldersFeature extends Feature<BoulderConfig>
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
-        final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), pos.getY(), pos.getZ());
-        final List<BlockState> states = config.getStates(rock);
+        final RockSettings rock = data.getRockDataOrThrow().getRock(pos);
+        final List<BlockState> states = config.states().get(rock.raw());
         place(worldIn, pos, states, rand);
         return true;
     }
@@ -57,7 +55,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         Supplier<BlockState> state;
         if (states.size() == 1)
         {
-            BlockState onlyState = states.get(0);
+            final BlockState onlyState = states.get(0);
             state = () -> onlyState;
         }
         else
@@ -74,14 +72,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
                     if (x * x + y * y + z * z <= radiusSquared)
                     {
                         mutablePos.set(pos).move(x, y, z);
-                        if (rand.nextFloat() < 0.4f)
-                        {
-                            setBlock(worldIn, mutablePos, state.get());
-                        }
-                        else
-                        {
-                            setBlock(worldIn, mutablePos, state.get());
-                        }
+                        setBlock(worldIn, mutablePos, state.get());
                     }
                 }
             }

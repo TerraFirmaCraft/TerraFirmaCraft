@@ -13,18 +13,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 
-public class RockData implements INBTSerializable<CompoundTag>
+public class RockData
 {
     private static final int SIZE = 16 * 16;
 
@@ -33,13 +32,14 @@ public class RockData implements INBTSerializable<CompoundTag>
         return (x & 15) | ((z & 15) << 4);
     }
 
-    private final Rock[] bottomLayer;
-    private final Rock[] middleLayer;
-    private final Rock[] topLayer;
-    private int[] rockLayerHeight;
+    private final RockSettings[] bottomLayer;
+    private final RockSettings[] middleLayer;
+    private final RockSettings[] topLayer;
+    private final int[] rockLayerHeight;
+
     @Nullable private int[] surfaceHeight;
 
-    public RockData(Rock[] bottomLayer, Rock[] middleLayer, Rock[] topLayer, int[] rockLayerHeight)
+    public RockData(RockSettings[] bottomLayer, RockSettings[] middleLayer, RockSettings[] topLayer, int[] rockLayerHeight)
     {
         this.bottomLayer = bottomLayer;
         this.middleLayer = middleLayer;
@@ -48,20 +48,34 @@ public class RockData implements INBTSerializable<CompoundTag>
         this.surfaceHeight = null;
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public RockData(CompoundTag nbt)
+    public RockData(CompoundTag nbt, RockLayerSettings settings)
     {
-        // The null rock layer height is replaced immediately after in deserializeNBT(), as opposed to the final fields which require them to be pre-initialized to the correct length
-        this(new Rock[SIZE], new Rock[SIZE], new Rock[SIZE], null);
-        deserializeNBT(nbt);
+        this.bottomLayer = new RockSettings[SIZE];
+        this.middleLayer = new RockSettings[SIZE];
+        this.topLayer = new RockSettings[SIZE];
+
+        // Build pallet
+        final ListTag pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
+        final List<RockSettings> uniqueRocks = new ArrayList<>(pallet.size());
+        for (int i = 0; i < pallet.size(); i++)
+        {
+            uniqueRocks.add(settings.getRock(new ResourceLocation(pallet.getString(i))));
+        }
+
+        fromByteArray(bottomLayer, nbt.getByteArray("bottomLayer"), uniqueRocks);
+        fromByteArray(middleLayer, nbt.getByteArray("middleLayer"), uniqueRocks);
+        fromByteArray(topLayer, nbt.getByteArray("topLayer"), uniqueRocks);
+
+        rockLayerHeight = nbt.getIntArray("height");
+        surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
     }
 
-    public Rock getRock(BlockPos pos)
+    public RockSettings getRock(BlockPos pos)
     {
         return getRock(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public Rock getRock(int x, int y, int z)
+    public RockSettings getRock(int x, int y, int z)
     {
         assert surfaceHeight != null;
 
@@ -82,17 +96,17 @@ public class RockData implements INBTSerializable<CompoundTag>
         }
     }
 
-    public Rock getTopRock(int x, int z)
+    public RockSettings getTopRock(int x, int z)
     {
         return topLayer[index(x, z)];
     }
 
-    public Rock getMidRock(int x, int z)
+    public RockSettings getMidRock(int x, int z)
     {
         return middleLayer[index(x, z)];
     }
 
-    public Rock getBottomRock(int x, int z)
+    public RockSettings getBottomRock(int x, int z)
     {
         return bottomLayer[index(x, z)];
     }
@@ -102,8 +116,7 @@ public class RockData implements INBTSerializable<CompoundTag>
         this.surfaceHeight = surfaceHeightMap;
     }
 
-    @Override
-    public CompoundTag serializeNBT()
+    public CompoundTag write()
     {
         CompoundTag nbt = new CompoundTag();
 
@@ -111,11 +124,11 @@ public class RockData implements INBTSerializable<CompoundTag>
         // This should really be shorts (but NBT does not have a short array, only ints), since three rock layers *technically* can use up to 3 * 256 unique rocks. However I think it's probably safe to assume there will never be (in chunk data), more than 256 rocks per chunk.
         // However, at that point it's not actually more efficient to store a pallet, as the int ID of the rock is probably shorter.
         // But, it does safeguard this chunk against changing rocks in the future, which is important.
-        final List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
+        final List<RockSettings> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
         final ListTag pallet = new ListTag();
-        for (Rock rock : uniqueRocks)
+        for (RockSettings rock : uniqueRocks)
         {
-            pallet.add(StringTag.valueOf(rock.getId().toString()));
+            pallet.add(StringTag.valueOf(rock.id().toString()));
         }
         nbt.put("pallet", pallet);
 
@@ -132,26 +145,7 @@ public class RockData implements INBTSerializable<CompoundTag>
         return nbt;
     }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        // Build pallet
-        final ListTag pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
-        final List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
-        for (int i = 0; i < pallet.size(); i++)
-        {
-            uniqueRocks.add(RockManager.INSTANCE.getOrDefault(new ResourceLocation(pallet.getString(i))));
-        }
-
-        fromByteArray(bottomLayer, nbt.getByteArray("bottomLayer"), uniqueRocks);
-        fromByteArray(middleLayer, nbt.getByteArray("middleLayer"), uniqueRocks);
-        fromByteArray(topLayer, nbt.getByteArray("topLayer"), uniqueRocks);
-
-        rockLayerHeight = nbt.getIntArray("height");
-        surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
-    }
-
-    private byte[] toByteArray(Rock[] layer, List<Rock> palette)
+    private byte[] toByteArray(RockSettings[] layer, List<RockSettings> palette)
     {
         byte[] array = new byte[SIZE];
         for (int i = 0; i < array.length; i++)
@@ -161,7 +155,7 @@ public class RockData implements INBTSerializable<CompoundTag>
         return array;
     }
 
-    private void fromByteArray(Rock[] layer, byte[] data, List<Rock> palette)
+    private void fromByteArray(RockSettings[] layer, byte[] data, List<RockSettings> palette)
     {
         assert data.length == SIZE;
         for (int i = 0; i < data.length; i++)

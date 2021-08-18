@@ -9,6 +9,7 @@ package net.dries007.tfc.world;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleBiFunction;
 import java.util.function.ToIntFunction;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
@@ -49,14 +51,17 @@ import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.CarverHelpers;
 import net.dries007.tfc.world.carver.ExtendedCarvingContext;
-import net.dries007.tfc.world.chunkdata.*;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.surfacebuilder.SurfaceBuilderContext;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        BiomeSource.CODEC.fieldOf("biome_source").forGetter(c -> c.biomeSource),
-        NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(c -> c.settings),
+        BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, Function.identity()).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
+        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
@@ -84,6 +89,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             }
         }
     });
+
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
 
     public static double[] makeKernel(ToDoubleBiFunction<Integer, Integer> func, int radius)
@@ -165,8 +171,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return new TFCChunkGenerator(TFCBiomeSource.defaultBiomeSource(seed, biomeRegistry), noiseGeneratorSettings, false, seed);
     }
 
+    private static DataResult<TFCBiomeSource> guardBiomeSource(BiomeSource source)
+    {
+        return source instanceof TFCBiomeSource s ? DataResult.success(s) : DataResult.error("Must be a " + TFCBiomeSource.class.getSimpleName());
+    }
+
     // Properties set from codec
-    private final TFCBiomeSource specialBiomeSource; // narrowed to TFCBiomeSource
+    private final TFCBiomeSource customBiomeSource; // narrowed type from superclass
     private final Supplier<NoiseGeneratorSettings> settings;
     private final boolean flatBedrock;
     private final long seed;
@@ -195,19 +206,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
 
-    public TFCChunkGenerator(BiomeSource biomeSource, Supplier<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
+    public TFCChunkGenerator(TFCBiomeSource biomeSource, Supplier<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
     {
         super(biomeSource, settings.get().structureSettings());
-
-        if (!(biomeSource instanceof TFCBiomeSource))
-        {
-            throw new IllegalArgumentException("biome provider must extend " + TFCBiomeSource.class.getSimpleName());
-        }
 
         this.settings = settings;
         this.cachedSettings = null;
 
-        this.specialBiomeSource = (TFCBiomeSource) biomeSource;
+        this.customBiomeSource = biomeSource;
         this.flatBedrock = flatBedrock;
         this.seed = seed;
         this.biomeNoiseSamplers = new HashMap<>();
@@ -223,8 +229,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.surfaceDepthNoise = new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
 
         // Generators / Providers
-        this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, random, this.specialBiomeSource.getLayerSettings())); // Chunk data
-        this.specialBiomeSource.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+        this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
 
         this.cellHeight = QuartPos.toBlock(noiseSettings.noiseSizeVertical());
         this.cellWidth = QuartPos.toBlock(noiseSettings.noiseSizeHorizontal());
@@ -331,14 +336,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public ChunkGenerator withSeed(long seedIn)
     {
-        return new TFCChunkGenerator(specialBiomeSource, settings, flatBedrock, seedIn);
+        return new TFCChunkGenerator(customBiomeSource, settings, flatBedrock, seedIn);
     }
 
     @Override
     public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
     {
         // todo: the column one seems to be a bit broken?
-        ((ProtoChunk) chunk).setBiomes(new ChunkBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), specialBiomeSource));
+        ((ProtoChunk) chunk).setBiomes(new ChunkBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
     }
 
     @Override
@@ -364,7 +369,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public TFCBiomeSource getBiomeSource()
     {
-        return specialBiomeSource;
+        return customBiomeSource;
     }
 
     /**
@@ -374,7 +379,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public void createStructures(RegistryAccess dynamicRegistry, StructureFeatureManager structureManager, ChunkAccess chunk, StructureManager templateManager, long seed)
     {
         final ChunkPos chunkPos = chunk.getPos();
-        final Biome biome = this.specialBiomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
+        final Biome biome = this.customBiomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
         for (Supplier<ConfiguredStructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
         {
             // todo: mixin accessor

@@ -32,16 +32,14 @@ public class TFCCarvingMaskDecorator extends FeatureDecorator<TFCCarvingMaskConf
     }
 
     @Override
-    public Stream<BlockPos> getPositions(DecorationContext helper, Random rand, TFCCarvingMaskConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(DecorationContext context, Random rand, TFCCarvingMaskConfig config, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BitSet carvingMask = helper.getCarvingMask(chunkPos, config.step());
+        final BitSet carvingMask = context.getCarvingMask(chunkPos, config.step());
+        final int minY = context.getLevel().dimensionType().minY();
 
-        final int minY = helper.getLevel().dimensionType().minY();
-        final int maxY = minY + helper.getLevel().dimensionType().height() - 1;
-
-        int configMinY = config.minY() == Integer.MIN_VALUE ? minY : config.minY();
-        final int configMaxY = config.maxY() == Integer.MAX_VALUE ? maxY : config.maxY();
+        final int configMinY = config.minY().resolveY(context);
+        final int configMaxY = config.maxY().resolveY(context);
 
         final int minIndex = CarverHelpers.maskIndex(0, configMinY, 0, minY);
         final int maxIndex = CarverHelpers.maskIndex(0, 1 + configMaxY, 0, minY);

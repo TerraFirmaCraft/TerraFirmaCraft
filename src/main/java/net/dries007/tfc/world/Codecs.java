@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
@@ -36,6 +36,7 @@ public final class Codecs
     public static final Codec<Integer> POSITIVE_INT = Codec.intRange(1, Integer.MAX_VALUE);
     public static final Codec<Integer> NONNEGATIVE_INT = Codec.intRange(0, Integer.MAX_VALUE);
     public static final Codec<Float> NONNEGATIVE_FLOAT = Codec.floatRange(0, Float.MAX_VALUE);
+    public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
     public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.xmap(BiomeDictionary.Type::getType, BiomeDictionary.Type::getName);
 

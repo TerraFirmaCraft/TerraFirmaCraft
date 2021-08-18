@@ -9,20 +9,19 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 
-import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.settings.RockLayer;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 
 /**
  * This is TFC's default chunk data generator.
@@ -30,12 +29,12 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
  */
 public class TFCChunkDataGenerator implements ChunkDataGenerator
 {
-    private static LayerFactory<Rock> createRockLayer(Random seedGenerator, TFCBiomeSource.LayerSettings settings, List<ResourceLocation> rocks)
+    private static LayerFactory<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
     {
-        return LayerFactory.rocks(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.rockLayerScale(), rocks.size()), rocks);
+        return new LayerFactory<>(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
     }
 
-    private final LayerFactory<Rock> bottomRockLayer, middleRockLayer, topRockLayer;
+    private final LayerFactory<RockSettings> bottomRockLayer, middleRockLayer, topRockLayer;
     private final LayerFactory<ForestType> forestTypeLayer;
 
     private final Noise2D temperatureNoise;
@@ -46,11 +45,14 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
 
     private final LayerFactory<PlateTectonicsClassification> plateTectonicsInfo;
 
-    public TFCChunkDataGenerator(long worldSeed, Random random, TFCBiomeSource.LayerSettings layerSettings)
+    public TFCChunkDataGenerator(long worldSeed, RockLayerSettings settings)
     {
-        this.bottomRockLayer = createRockLayer(random, layerSettings, layerSettings.bottomRocks());
-        this.middleRockLayer = createRockLayer(random, layerSettings, layerSettings.middleRocks());
-        this.topRockLayer = createRockLayer(random, layerSettings, layerSettings.topRocks());
+        final Random random = new Random(worldSeed);
+        random.setSeed(worldSeed ^ random.nextLong());
+
+        this.bottomRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
+        this.middleRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
+        this.topRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
 
         this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-10, 10).spread(0.03f);
 
@@ -70,12 +72,12 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
-        forestTypeLayer = LayerFactory.forest(TFCLayerUtil.createOverworldForestLayer(random.nextLong(), layerSettings, IArtist.nope()));
+        forestTypeLayer = new LayerFactory<>(TFCLayerUtil.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
         forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
         forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
         // Plate Tectonics
-        plateTectonicsInfo = LayerFactory.plateTectonics(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed, layerSettings));
+        plateTectonicsInfo = new LayerFactory<>(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed), PlateTectonicsClassification::valueOf);
     }
 
     @Override
@@ -100,10 +102,10 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
         final float forestDensity = forestDensityNoise.noise(chunkX + 8, chunkZ + 8);
 
         // Rocks
-        Rock[] bottomLayer = new Rock[256];
-        Rock[] middleLayer = new Rock[256];
-        Rock[] topLayer = new Rock[256];
-        int[] rockLayerHeight = new int[256];
+        final RockSettings[] bottomLayer = new RockSettings[256];
+        final RockSettings[] middleLayer = new RockSettings[256];
+        final RockSettings[] topLayer = new RockSettings[256];
+        final int[] rockLayerHeight = new int[256];
 
         for (int x = 0; x < 16; x++)
         {

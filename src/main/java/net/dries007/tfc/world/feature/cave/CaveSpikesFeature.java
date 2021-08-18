@@ -22,8 +22,9 @@ import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -37,25 +38,26 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     {
         final WorldGenLevel worldIn = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final Random random = context.random();
+        final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
 
         // The direction that the spike is pointed
-        Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
+        Direction direction = random.nextBoolean() ? Direction.UP : Direction.DOWN;
         BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));
-        Rock wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
-        if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
+        RockSettings wallRock = rockSettings.getRock(wallState.getBlock());
+        if (wallRock != null && wallRock.raw() == wallState.getBlock())
         {
-            place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
+            placeIfPresent(worldIn, pos, direction, random, wallRock);
         }
         else
         {
             // Switch directions and try again
             direction = direction.getOpposite();
             wallState = worldIn.getBlockState(pos.relative(direction));
-            wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
-            if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
+            wallRock = rockSettings.getRock(wallState.getBlock());
+            if (wallRock != null && wallRock.raw() == wallState.getBlock())
             {
-                place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
+                placeIfPresent(worldIn, pos, direction, random, wallRock);
             }
         }
         return true;
@@ -120,5 +122,12 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         {
             setBlock(world, pos, state);
         }
+    }
+
+    private void placeIfPresent(WorldGenLevel worldIn, BlockPos pos, Direction direction, Random random, RockSettings wallRock)
+    {
+        wallRock.spike().ifPresent(spike -> {
+            place(worldIn, pos, spike.defaultBlockState(), wallRock.raw().defaultBlockState(), direction, random);
+        });
     }
 }

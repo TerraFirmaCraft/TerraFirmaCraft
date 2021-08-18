@@ -4,7 +4,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.BaseStoneSource;
 
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class RockLayerStoneSource implements BaseStoneSource
@@ -22,6 +21,8 @@ public class RockLayerStoneSource implements BaseStoneSource
     @Override
     public BlockState getBaseBlock(int x, int y, int z)
     {
-        return rockData.getRock(chunkX | x, y, chunkZ | z).getBlock(Rock.BlockType.RAW).defaultBlockState();
+        // todo: need to debug this further, what is causing this?
+        assert chunkX == ((x >> 4) << 4) && chunkZ == ((z >> 4) << 4) : "Trying to get rock layer from outside this chunk: " + x + ", " + y + ", " + z + " from " + chunkX + ", " + chunkZ;
+        return rockData.getRock(chunkX | (x & 15), y, chunkZ | (z & 15)).raw().defaultBlockState();
     }
 }

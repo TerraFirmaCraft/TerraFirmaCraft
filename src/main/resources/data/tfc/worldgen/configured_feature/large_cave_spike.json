@@ -11,7 +11,9 @@
       "config": {
         "step": "air",
         "probability": 0.006,
-        "min_y": 25
+        "min_y": {
+          "above_bottom": 25
+        }
       }
     }
   }

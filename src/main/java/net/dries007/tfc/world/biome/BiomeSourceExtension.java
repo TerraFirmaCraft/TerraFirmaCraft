@@ -14,9 +14,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
-/**
- * Marker for TFC biome providers
- */
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+
 public interface BiomeSourceExtension
 {
     int getSpawnDistance();
@@ -25,19 +25,23 @@ public interface BiomeSourceExtension
 
     int getSpawnCenterZ();
 
+    ChunkDataProvider getChunkDataProvider();
+
+    RockLayerSettings getRockLayerSettings();
+
     /**
      * An optional implementation, see {@link TFCBiomeSource}
      */
     @Nullable
     default BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> predicate, Random rand)
     {
-        return biomeSource().findBiomeHorizontal(x, y, z, radius, increment, predicate, rand, false);
+        return self().findBiomeHorizontal(x, y, z, radius, increment, predicate, rand, false);
     }
 
     /**
      * @return itself, or the underlying biome provider / source
      */
-    default BiomeSource biomeSource()
+    default BiomeSource self()
     {
         return (BiomeSource) this;
     }

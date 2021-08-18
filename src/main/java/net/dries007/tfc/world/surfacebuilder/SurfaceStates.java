@@ -17,14 +17,13 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class SurfaceStates
 {
-    public static final SurfaceState RAW = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.RAW).defaultBlockState();
-    public static final SurfaceState COBBLE = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.COBBLE).defaultBlockState();
-    public static final SurfaceState GRAVEL = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
+    public static final SurfaceState RAW = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).raw().defaultBlockState();
+    public static final SurfaceState COBBLE = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).cobble().defaultBlockState();
+    public static final SurfaceState GRAVEL = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getRock(x, y, z).gravel().defaultBlockState();
 
     /**
      * Grass / Dirt / Gravel, or Sand / Sand / Sandstone
@@ -36,8 +35,8 @@ public class SurfaceStates
     public static final SurfaceState TOP_UNDERWATER = new UnderwaterSurfaceState(false);
     public static final SurfaceState LOW_UNDERWATER = new UnderwaterSurfaceState(true);
 
-    public static final SurfaceState SHORE_SAND = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getBottomRock(x, z).getSand().defaultBlockState();
-    public static final SurfaceState SHORE_SANDSTONE = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getBottomRock(x, z).getSandstone().defaultBlockState();
+    public static final SurfaceState SHORE_SAND = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getBottomRock(x, z).sand().defaultBlockState();
+    public static final SurfaceState SHORE_SANDSTONE = (rockData, x, y, z, temperature, rainfall, salty) -> rockData.getBottomRock(x, z).sandstone().defaultBlockState();
 
     public static final SurfaceState RARE_SHORE_SAND = new SurfaceState()
     {
@@ -57,7 +56,7 @@ public class SurfaceStates
             }
             else
             {
-                return rockData.getBottomRock(x, z).getSand().defaultBlockState();
+                return rockData.getBottomRock(x, z).sand().defaultBlockState();
             }
         }
     };
@@ -80,7 +79,7 @@ public class SurfaceStates
             }
             else
             {
-                return rockData.getBottomRock(x, z).getSandstone().defaultBlockState();
+                return rockData.getBottomRock(x, z).sandstone().defaultBlockState();
             }
         }
     };

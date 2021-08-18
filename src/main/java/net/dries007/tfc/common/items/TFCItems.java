@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.*;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,19 +19,16 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
+import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.types.*;
+import net.dries007.tfc.common.types.Metal;
+import net.dries007.tfc.common.types.Ore;
+import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;
-
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 
 /**
  * Collection of all TFC items.
@@ -72,7 +70,7 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Rock.Default, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.Default.class, type ->
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.class, type ->
         register("brick/" + type.name(), MISC)
     );
 

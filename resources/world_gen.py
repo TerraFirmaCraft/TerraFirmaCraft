@@ -109,7 +109,7 @@ def generate(rm: ResourceManager):
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {
         'probability': 0.3,
-        'y': height_provider(-56, 126, anchor_type='absolute'),
+        'y': height_provider(-56, 126),
         'yScale': uniform_float(0.1, 0.9),
         'lava_level': vertical_anchor(8, 'above_bottom'),
         'aquifers_enabled': False,
@@ -120,7 +120,7 @@ def generate(rm: ResourceManager):
 
     rm.carver('canyon', wg.configure('tfc:canyon', {
         'probability': 0.03,
-        'y': height_provider(10, 67, anchor_type='absolute'),
+        'y': height_provider(10, 67),
         'yScale': 3,
         'lava_level': vertical_anchor(8, 'above_bottom'),
         'aquifers_enabled': False,
@@ -137,7 +137,7 @@ def generate(rm: ResourceManager):
 
     rm.carver('crevice', wg.configure('tfc:canyon', {
         'probability': 0.00125,
-        'y': height_provider(40, 80, anchor_type='absolute'),
+        'y': height_provider(40, 80),
         'yScale': uniform_float(6.0, 8.0),
         'lava_level': vertical_anchor(8, 'above_bottom'),
         'aquifers_enabled': False,
@@ -204,13 +204,13 @@ def generate(rm: ResourceManager):
     rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
         'state': 'minecraft:water',
         'replace_fluids': [],
-    }), decorate_count(3), 'minecraft:square', decorate_range(16, 80)))
+    }), decorate_count(3), 'minecraft:square', decorate_range(-56, 63)))
 
     for spring_cfg in (('water', 110), ('lava', 50)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
             'state': wg.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
-        }), decorate_count(spring_cfg[1]), 'minecraft:square', decorate_range_biased(8, 180)))
+        }), decorate_count(spring_cfg[1]), 'minecraft:square', decorate_range_biased(-64, 180)))
 
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
@@ -246,7 +246,7 @@ def generate(rm: ResourceManager):
     }), decorate_chance(120), 'minecraft:square', decorate_heightmap('world_surface_wg'), ('tfc:climate', {'min_rainfall': 400})))
 
     rm.feature('cave_spike', wg.configure_decorated(wg.configure('tfc:cave_spike'), decorate_carving_mask(0.09)))
-    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), decorate_carving_mask(0.006, 25)))
+    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), decorate_carving_mask(0.006, vertical_anchor(25, 'above_bottom'))))
 
     rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
@@ -254,14 +254,14 @@ def generate(rm: ResourceManager):
         'tries': 20,
         'min_height': 2,
         'max_height': 5
-    }), decorate_count(4), 'minecraft:square', decorate_range_biased(8, 100)))
+    }), decorate_count(4), 'minecraft:square', decorate_range_biased(-56, 60)))
     rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:calcite',
         'radius': 12,
         'tries': 70,
         'min_height': 3,
         'max_height': 9
-    }), decorate_chance(20), 'minecraft:square', decorate_range_biased(8, 60)))
+    }), decorate_chance(20), 'minecraft:square', decorate_range_biased(-56, 30)))
 
     rm.feature('icicle', wg.configure_decorated(wg.configure('tfc:thin_spike', {
         'state': 'tfc:icicle',
@@ -269,12 +269,12 @@ def generate(rm: ResourceManager):
         'tries': 50,
         'min_height': 2,
         'max_height': 5
-    }), decorate_count(3), 'minecraft:square', decorate_range_biased(8, 128), decorate_climate(max_temp=-4)))
+    }), decorate_count(3), 'minecraft:square', decorate_range_biased(-32, 100), decorate_climate(max_temp=-4)))
 
     for boulder_cfg in (('raw_boulder', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
             'states': [{
-                'rock': 'tfc:' + rock,
+                'rock': 'tfc:rock/raw/%s' % rock,
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
         }), decorate_chance(12), 'minecraft:square', decorate_heightmap('world_surface_wg'), 'tfc:flat_enough'))
@@ -601,8 +601,8 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'yucca'), wg.configure_decorated(plant_feature('tfc:plant/yucca[age=1,stage=1]', 1, 15, 10), decorate_chance(5), 'minecraft:square', decorate_climate(-34, 36, 0, 75)))
 
     rm.feature(('plant', 'hanging_vines'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), 'minecraft:square', decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
-    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(0.003, 30, 80), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
-    rm.feature(('plant', 'liana'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(0.003, 30, 80), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
+    rm.feature(('plant', 'hanging_vines_cave'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(0.003, 30, 100), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
+    rm.feature(('plant', 'liana'), wg.configure_decorated(tall_feature('tfc:weeping_vines', 'tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(0.003, 30, 100), decorate_climate(16, 32, 150, 470, True, fuzzy=True)))
     rm.feature(('plant', 'ivy'), wg.configure_decorated(vine_feature('tfc:plant/ivy', 15, 7, 96, 150), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_chance(5)))
     rm.feature(('plant', 'jungle_vines'), wg.configure_decorated(vine_feature('tfc:plant/jungle_vines', 33, 7, 64, 160), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_chance(5)))
     rm.feature(('plant', 'tree_fern'), wg.configure_decorated(tall_feature('tfc:twisting_vines', 'tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), 'minecraft:square', decorate_climate(19, 50, 300, 500)))
@@ -725,8 +725,8 @@ def generate(rm: ResourceManager):
     rm.feature('surface_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_count(6), 'minecraft:square', decorate_heightmap('ocean_floor_wg')))
 
     # Underground decoration
-    rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05, -48, 90)))
-    rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(80, 130)))
+    rm.feature('underground_loose_rocks', wg.configure_decorated(wg.configure('tfc:loose_rock'), decorate_carving_mask(0.05)))
+    rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(40, 100)))
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
@@ -918,14 +918,16 @@ def vine_feature(state: str, tries: int, radius: int, min_height: int, max_heigh
 
 
 Decorator = Tuple[str, Dict[str, Any]]
+Heightmap = Literal['motion_blocking', 'motion_blocking_no_leaves', 'ocean_floor', 'ocean_floor_wg', 'world_surface', 'world_surface_wg']
+VerticalAnchor = Union[int, Tuple[int, str], Dict[str, int]]
 
 
-def decorate_carving_mask(probability: float, min_y: Optional[int] = None, max_y: Optional[int] = None) -> Decorator:
+def decorate_carving_mask(probability: float, min_y: Optional[VerticalAnchor] = None, max_y: Optional[VerticalAnchor] = None) -> Decorator:
     return ('tfc:carving_mask', utils.del_none({
         'step': 'air',
         'probability': probability,
-        'min_y': min_y,
-        'max_y': max_y
+        'min_y': as_vertical_anchor(min_y) if min_y is not None else None,
+        'max_y': as_vertical_anchor(max_y) if max_y is not None else None
     }))
 
 
@@ -949,18 +951,17 @@ def decorate_count(count: int) -> Decorator:
 
 
 def decorate_heightmap(heightmap: str) -> Decorator:
-    heightmap = heightmap.upper()
-    assert heightmap in {'MOTION_BLOCKING', 'MOTION_BLOCKING_NO_LEAVES', 'OCEAN_FLOOR', 'OCEAN_FLOOR_WG', 'WORLD_SURFACE', 'WORLD_SURFACE_WG'}
-    return 'minecraft:heightmap', {'heightmap': heightmap}
+    assert heightmap in {'motion_blocking', 'motion_blocking_no_leaves', 'ocean_floor', 'ocean_floor_wg', 'world_surface', 'world_surface_wg'}
+    return 'minecraft:heightmap', {'heightmap': heightmap.upper()}
 
 
-def decorate_range_biased(min_y: int, max_y: int) -> Decorator:
-    return decorate_range(min_y, max_y, height_type='biased_to_bottom')
+def decorate_range_biased(min_y: VerticalAnchor, max_y: VerticalAnchor) -> Decorator:
+    return decorate_range(min_y, max_y, bias='biased_to_bottom')
 
 
-def decorate_range(min_y: int, max_y: int, height_type: str = 'uniform') -> Decorator:
+def decorate_range(min_y: VerticalAnchor, max_y: VerticalAnchor, bias: str = 'uniform') -> Decorator:
     return 'minecraft:range', {
-        'height': height_provider(min_y, max_y, height_type, 'above_bottom')
+        'height': height_provider(min_y, max_y, bias)
     }
 
 
@@ -985,16 +986,29 @@ def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[
     }
 
 
-def height_provider(min_y: int, max_y: int, height_type: str = 'uniform', anchor_type: Literal['absolute', 'above_bottom', 'below_top'] = 'above_bottom') -> Dict[str, Any]:
+def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: str = 'uniform') -> Dict[str, Any]:
     return {
         'type': height_type,
-        'min_inclusive': vertical_anchor(min_y, anchor_type),
-        'max_inclusive': vertical_anchor(max_y, anchor_type)
+        'min_inclusive': as_vertical_anchor(min_y),
+        'max_inclusive': as_vertical_anchor(max_y)
     }
 
 
-def vertical_anchor(y: int, variant: Literal['absolute', 'above_bottom', 'below_top'] = 'above_bottom') -> Dict[str, Any]:
-    return {variant: y}
+def vertical_anchor(y: int, anchor: Literal['absolute', 'above_bottom', 'below_top'] = 'absolute') -> VerticalAnchor:
+    return as_vertical_anchor((y, anchor))
+
+
+def as_vertical_anchor(va: VerticalAnchor) -> VerticalAnchor:
+    types = ('absolute', 'above_bottom', 'below_top')
+    if isinstance(va, int):
+        return {'absolute': va}
+    elif isinstance(va, tuple):
+        assert len(va) == 2 and isinstance(va[0], int) and va[1] in types
+        return {va[1]: va[0]}
+    elif isinstance(va, dict):
+        assert any(k in va and isinstance(va[k], int) for k in types)
+        return va
+    raise ValueError('Unknown VerticalAnchor: %s' % str(va))
 
 
 def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):

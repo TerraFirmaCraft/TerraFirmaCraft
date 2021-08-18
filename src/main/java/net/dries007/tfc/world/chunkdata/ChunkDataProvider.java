@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link ChunkDataGenerator}.
@@ -19,18 +20,20 @@ public final class ChunkDataProvider
 {
     public static ChunkDataProvider get(ChunkGenerator chunkGenerator)
     {
-        if (chunkGenerator instanceof ChunkGeneratorExtension)
+        if (chunkGenerator instanceof ChunkGeneratorExtension extension)
         {
-            return ((ChunkGeneratorExtension) chunkGenerator).getChunkDataProvider();
+            return extension.getChunkDataProvider();
         }
         throw new IllegalStateException("Tried to access ChunkDataProvider but none was present on " + chunkGenerator);
     }
 
     private final ChunkDataGenerator generator;
+    private final RockLayerSettings rockLayerSettings;
 
-    public ChunkDataProvider(ChunkDataGenerator generator)
+    public ChunkDataProvider(ChunkDataGenerator generator, RockLayerSettings rockLayerSettings)
     {
         this.generator = generator;
+        this.rockLayerSettings = rockLayerSettings;
     }
 
     /**
@@ -54,19 +57,13 @@ public final class ChunkDataProvider
      */
     public final ChunkData get(ChunkPos pos)
     {
-        final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
+        final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos, rockLayerSettings);
         if (data.getStatus() == ChunkData.Status.EMPTY)
         {
             generator.generate(data);
             data.setStatus(ChunkData.Status.FULL);
         }
         return data;
-    }
-
-    @VisibleForTesting
-    public ChunkDataGenerator getGenerator()
-    {
-        return generator;
     }
 
     @Override

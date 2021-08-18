@@ -98,7 +98,7 @@ public class SoilSurfaceState implements SurfaceState
 
     private BlockState sand(RockData rockData, int x, int z)
     {
-        return rockData.getTopRock(x, z).getSand().defaultBlockState();
+        return rockData.getTopRock(x, z).sand().defaultBlockState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)

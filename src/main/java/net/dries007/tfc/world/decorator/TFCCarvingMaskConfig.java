@@ -7,18 +7,19 @@
 package net.dries007.tfc.world.decorator;
 
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 
-public record TFCCarvingMaskConfig(int minY, int maxY, float probability, GenerationStep.Carving step) implements DecoratorConfiguration
+public record TFCCarvingMaskConfig(VerticalAnchor minY, VerticalAnchor maxY, float probability, GenerationStep.Carving step) implements DecoratorConfiguration
 {
-    // todo: change to use vertical anchors
     public static final Codec<TFCCarvingMaskConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.INT.optionalFieldOf("min_y", Integer.MIN_VALUE).forGetter(c -> c.minY),
-        Codec.INT.optionalFieldOf("max_y", Integer.MAX_VALUE).forGetter(c -> c.maxY),
-        Codec.floatRange(0, 1).fieldOf("probability").forGetter(c -> c.probability),
+        VerticalAnchor.CODEC.optionalFieldOf("min_y", VerticalAnchor.bottom()).forGetter(c -> c.minY),
+        VerticalAnchor.CODEC.optionalFieldOf("max_y", VerticalAnchor.top()).forGetter(c -> c.maxY),
+        Codecs.UNIT_FLOAT.fieldOf("probability").forGetter(c -> c.probability),
         GenerationStep.Carving.CODEC.fieldOf("step").forGetter(c -> c.step)
     ).apply(instance, TFCCarvingMaskConfig::new));
 }

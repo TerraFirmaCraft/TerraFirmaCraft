@@ -12,17 +12,20 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -36,31 +39,22 @@ import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadCaneBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.*;
-import net.dries007.tfc.common.types.*;
+import net.dries007.tfc.common.types.Metal;
+import net.dries007.tfc.common.types.Ore;
+import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;
-
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GravelBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SeaPickleBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Collection of all TFC blocks.
@@ -113,12 +107,12 @@ public final class TFCBlocks
 
     // Ores
 
-    public static final Map<Rock.Default, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), ore ->
             register(("ore/" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10)), TFCItemGroup.ORES)
         )
     );
-    public static final Map<Rock.Default, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
             Helpers.mapOfKeys(Ore.Grade.class, grade ->
                 register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10)), TFCItemGroup.ORES)
@@ -131,22 +125,22 @@ public final class TFCBlocks
 
     // Rock Stuff
 
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, type ->
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<net.dries007.tfc.common.blocks.rock.Rock.BlockType, RegistryObject<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
+        Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.BlockType.class, type ->
             register(("rock/" + type.name() + "/" + rock.name()), () -> type.create(rock), ROCK_STUFFS)
         )
     );
 
-    public static final Map<Rock.Default, Map<Rock.BlockType, DecorationBlockRegistryObject>> ROCK_DECORATIONS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockRegistryObject(
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<net.dries007.tfc.common.blocks.rock.Rock.BlockType, DecorationBlockRegistryObject>> ROCK_DECORATIONS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, net.dries007.tfc.common.blocks.rock.Rock.BlockType::hasVariants, type -> new DecorationBlockRegistryObject(
             register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock), ROCK_STUFFS),
             register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock), ROCK_STUFFS),
             register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock), ROCK_STUFFS)
         ))
     );
 
-    public static final Map<Rock.Default, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.Default.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)), ROCK_STUFFS)
+    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10), TFCBlocks.ROCK_BLOCKS.get(rock).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.RAW)), ROCK_STUFFS)
     );
 
     // Metals

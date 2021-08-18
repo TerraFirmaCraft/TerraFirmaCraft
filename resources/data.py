@@ -84,12 +84,6 @@ def generate(rm: ResourceManager):
 
     # Rocks
     for rock, rock_data in ROCKS.items():
-        rm.data(('tfc', 'rocks', rock), {
-            **dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCKS_IN_JSON),
-            'sand': 'tfc:sand/%s' % rock_data.sand,
-            'sandstone': 'tfc:raw_sandstone/%s' % rock_data.sand
-        })
-
         def block(block_type: str):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 

@@ -8,26 +8,25 @@ package net.dries007.tfc.world.feature;
 
 import java.util.*;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs2D;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class HotSpringFeature extends Feature<HotSpringConfig>
 {
@@ -48,9 +47,9 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
-        final Rock rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
-        final BlockState rockState = rock.getBlock(Rock.BlockType.RAW).defaultBlockState();
-        final BlockState gravelState = rock.getBlock(Rock.BlockType.GRAVEL).defaultBlockState();
+        final RockSettings rock = data.getRockDataOrThrow().getRock(pos.getX(), 0, pos.getZ());
+        final BlockState rockState = rock.raw().defaultBlockState();
+        final BlockState gravelState = rock.gravel().defaultBlockState();
         final Fluid fluid = config.fluidState().getFluidState().getType();
 
         final boolean useFilledEmptyCheck = config.fluidState().isAir();

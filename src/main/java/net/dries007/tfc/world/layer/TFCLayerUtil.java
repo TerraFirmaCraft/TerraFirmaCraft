@@ -17,7 +17,6 @@ import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
 
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
@@ -156,7 +155,7 @@ public class TFCLayerUtil
         return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
     }
 
-    public static AreaFactory createOverworldBiomeLayer(long seed, TFCBiomeSource.LayerSettings layerSettings, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
+    public static AreaFactory createOverworldBiomeLayer(long seed, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
@@ -174,7 +173,7 @@ public class TFCLayerUtil
         AreaFactory mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), layerSettings.oceanPercent()).apply(context.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 30).apply(context.get());
         plateArtist.draw("plate_generation", 1, plateLayer);
         plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(context.get(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
@@ -273,7 +272,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static AreaFactory createOverworldForestLayer(long seed, TFCBiomeSource.LayerSettings settings, IArtist<AreaFactory> artist)
+    public static AreaFactory createOverworldForestLayer(long seed, IArtist<AreaFactory> artist)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
@@ -305,7 +304,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static AreaFactory createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeSource.LayerSettings layerSettings)
+    public static AreaFactory createOverworldPlateTectonicInfoLayer(long seed)
     {
         final Random random = new Random(seed);
         final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
@@ -314,7 +313,7 @@ public class TFCLayerUtil
         AreaFactory mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), layerSettings.oceanPercent()).apply(context.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 30).apply(context.get());
         plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(context.get(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.run(context.get(), plateLayer);
 

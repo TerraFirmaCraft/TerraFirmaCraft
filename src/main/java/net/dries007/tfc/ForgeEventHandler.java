@@ -10,23 +10,20 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.EmptyLevelChunk;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
@@ -49,6 +46,7 @@ import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -61,7 +59,9 @@ import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.common.tileentity.CharcoalForgeTileEntity;
 import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
 import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
-import net.dries007.tfc.common.types.*;
+import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.common.types.MetalManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -76,6 +76,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.settings.RockLayerSettings;
 
 import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
 
@@ -118,94 +119,92 @@ public final class ForgeEventHandler
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
-        // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerLevel world)
+        if (event.getWorld() instanceof ServerLevel world && world.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
         {
+            final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
-            final ChunkGenerator generator = world.getChunkSource().getGenerator();
-            if (generator instanceof ChunkGeneratorExtension)
+            final BiomeSourceExtension biomeProvider = extension.getBiomeSource();
+            final Random random = new Random(world.getSeed());
+            final int spawnDistance = biomeProvider.getSpawnDistance();
+
+            BlockPos pos = biomeProvider.findBiomeIgnoreClimate(biomeProvider.getSpawnCenterX(), generator.getSeaLevel(), biomeProvider.getSpawnCenterZ(), spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
+            ChunkPos chunkPos;
+            if (pos == null)
             {
-                final BiomeSourceExtension biomeProvider = ((ChunkGeneratorExtension) generator).getBiomeSource();
-                final Random random = new Random(world.getSeed());
-                final int spawnDistance = biomeProvider.getSpawnDistance();
-
-                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(biomeProvider.getSpawnCenterX(), generator.getSeaLevel(), biomeProvider.getSpawnCenterZ(), spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
-                ChunkPos chunkPos;
-                if (pos == null)
-                {
-                    LOGGER.warn("Unable to find spawn biome!");
-                    pos = new BlockPos(0, generator.getSeaLevel(), 0);
-                }
-                chunkPos = new ChunkPos(pos);
-
-                settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(world), 8), 0.0F);
-                boolean foundExactSpawn = false;
-                int x = 0, z = 0;
-                int xStep = 0;
-                int zStep = -1;
-
-                for (int tries = 0; tries < 1024; ++tries)
-                {
-                    if (x > -16 && x <= 16 && z > -16 && z <= 16)
-                    {
-                        BlockPos spawnPos = Helpers.findValidSpawnLocation(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
-                        if (spawnPos != null)
-                        {
-                            settings.setSpawn(spawnPos, 0);
-                            foundExactSpawn = true;
-                            break;
-                        }
-                    }
-
-                    if ((x == z) || (x < 0 && x == -z) || (x > 0 && x == 1 - z))
-                    {
-                        int temp = xStep;
-                        xStep = -zStep;
-                        zStep = temp;
-                    }
-
-                    x += xStep;
-                    z += zStep;
-                }
-
-                if (!foundExactSpawn)
-                {
-                    LOGGER.warn("Unable to find a suitable spawn location!");
-                }
-
-                if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
-                {
-                    LOGGER.warn("No bonus chest for you, you cheaty cheater!");
-                }
-
-                event.setCanceled(true);
+                LOGGER.warn("Unable to find spawn biome!");
+                pos = new BlockPos(0, generator.getSeaLevel(), 0);
             }
+            chunkPos = new ChunkPos(pos);
+
+            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(world), 8), 0.0F);
+            boolean foundExactSpawn = false;
+            int x = 0, z = 0;
+            int xStep = 0;
+            int zStep = -1;
+
+            for (int tries = 0; tries < 1024; ++tries)
+            {
+                if (x > -16 && x <= 16 && z > -16 && z <= 16)
+                {
+                    BlockPos spawnPos = Helpers.findValidSpawnLocation(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
+                    if (spawnPos != null)
+                    {
+                        settings.setSpawn(spawnPos, 0);
+                        foundExactSpawn = true;
+                        break;
+                    }
+                }
+
+                if ((x == z) || (x < 0 && x == -z) || (x > 0 && x == 1 - z))
+                {
+                    int temp = xStep;
+                    xStep = -zStep;
+                    zStep = temp;
+                }
+
+                x += xStep;
+                z += zStep;
+            }
+
+            if (!foundExactSpawn)
+            {
+                LOGGER.warn("Unable to find a suitable spawn location!");
+            }
+
+            if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
+            {
+                LOGGER.warn("No bonus chest for you, you cheaty cheater!");
+            }
+
+            event.setCanceled(true);
         }
     }
 
     public static void attachChunkCapabilities(AttachCapabilitiesEvent<LevelChunk> event)
     {
-        if (!event.getObject().isEmpty())
+        final LevelChunk chunk = event.getObject();
+        if (!chunk.isEmpty())
         {
-            Level world = event.getObject().getLevel();
-            ChunkPos chunkPos = event.getObject().getPos();
+            final Level world = event.getObject().getLevel();
+            final ChunkPos chunkPos = event.getObject().getPos();
+
             ChunkData data;
-            if (!Helpers.isClientSide(world))
+            if (Helpers.isClientSide(world))
+            {
+                // This may happen before or after the chunk is watched and synced to client
+                // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
+                data = ChunkDataCache.CLIENT.getOrCreate(chunkPos, RockLayerSettings.EMPTY);
+            }
+            else
             {
                 // Chunk was created on server thread.
                 // 1. If this was due to world gen, it won't have any cap data. This is where we clear the world gen cache and attach it to the chunk
                 // 2. If this was due to chunk loading, the caps will be deserialized from NBT after this event is posted. Attach empty data here
                 data = ChunkDataCache.WORLD_GEN.remove(chunkPos);
-                if (data == null)
+                if (data == null && world instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
                 {
-                    data = new ChunkData(chunkPos);
+                    data = new ChunkData(chunkPos, generator.getRockLayerSettings());
                 }
-            }
-            else
-            {
-                // This may happen before or after the chunk is watched and synced to client
-                // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
-                data = ChunkDataCache.CLIENT.getOrCreate(chunkPos);
             }
             event.addCapability(ChunkDataCapability.KEY, data);
         }
@@ -301,10 +300,10 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND))
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && chunk.levelHeightAccessor instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
             final ChunkPos pos = event.getChunk().getPos();
-            final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
+            final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos, generator.getRockLayerSettings());
             data.deserializeNBT(event.getData().getCompound("tfc_protochunk_data"));
         }
     }
@@ -313,7 +312,6 @@ public final class ForgeEventHandler
     {
         // Resource reload listeners
         ReloadableResourceManager resourceManager = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
-        resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(FuelManager.INSTANCE);
@@ -355,9 +353,8 @@ public final class ForgeEventHandler
 
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
-        if (event.getWorld() instanceof ServerLevel)
+        if (event.getWorld() instanceof final ServerLevel world)
         {
-            final ServerLevel world = (ServerLevel) event.getWorld();
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
 
@@ -375,9 +372,8 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        if (event.getWorld() instanceof ServerLevel)
+        if (event.getWorld() instanceof final ServerLevel world)
         {
-            final ServerLevel world = (ServerLevel) event.getWorld();
             for (Direction direction : event.getNotifiedSides())
             {
                 // Check each notified block for a potential gravity block
@@ -415,9 +411,8 @@ public final class ForgeEventHandler
 
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).dimension() == Level.OVERWORLD)
+        if (event.getWorld() instanceof final ServerLevel world && world.dimension() == Level.OVERWORLD)
         {
-            final ServerLevel world = (ServerLevel) event.getWorld();
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
                 final GameRules rules = world.getGameRules();
@@ -446,15 +441,15 @@ public final class ForgeEventHandler
         Block originalBlock = event.getOriginalState().getBlock();
         if (originalBlock == Blocks.STONE)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.GABBRO).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.GABBRO).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
         else if (originalBlock == Blocks.COBBLESTONE)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.RHYOLITE).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.RHYOLITE).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
         else if (originalBlock == Blocks.BASALT)
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
     }
 

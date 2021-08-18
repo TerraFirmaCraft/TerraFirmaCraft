@@ -14,7 +14,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
@@ -28,7 +27,6 @@ public class SurfaceBuilderContext
 {
     private final LevelAccessor world;
     private final ProtoChunk chunk;
-    private final Heightmap worldSurfaceHeightmap, oceanFloorHeightmap;
     private final ChunkData chunkData;
     private final RockData rockData;
     private final Random random;
@@ -41,8 +39,6 @@ public class SurfaceBuilderContext
     {
         this.world = world;
         this.chunk = chunk;
-        this.worldSurfaceHeightmap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-        this.oceanFloorHeightmap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         this.chunkData = chunkData;
         this.rockData = chunkData.getRockDataOrThrow();
         this.random = random;

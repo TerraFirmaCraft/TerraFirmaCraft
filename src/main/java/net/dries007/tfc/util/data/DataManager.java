@@ -17,11 +17,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -37,7 +37,7 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     protected final String typeName;
 
     protected final boolean allowNone;
-    protected T defaultValue;
+    @Nullable protected T defaultValue;
     protected boolean loaded;
 
     protected DataManager(Gson gson, String domain, String typeName, boolean allowNone)

@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
@@ -57,7 +57,7 @@ public class VolcanoesSurfaceBuilder extends SeededSurfaceBuilder<ParentedSurfac
     private void buildVolcanicSurface(SurfaceBuilderContext context, int x, int z, int startHeight, double slope, float temperature, float rainfall, boolean saltWater, float easing)
     {
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
+        final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
 
         int surfaceDepth = -1;
         int localX = x & 15;
