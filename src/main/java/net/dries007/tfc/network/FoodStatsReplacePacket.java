@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.network;
 
+
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
@@ -24,7 +25,7 @@ public class FoodStatsReplacePacket
         final NetworkEvent.Context context = contextSupplier.get();
         context.setPacketHandled(true);
         context.enqueueWork(() -> {
-            final PlayerEntity player = ClientHelpers.getPlayer();
+            final Player player = ClientHelpers.getPlayer();
             if (player != null)
             {
                 TFCFoodStats.replaceFoodStats(player);

@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 
 public class FoodTrait
 {
@@ -77,11 +77,11 @@ public class FoodTrait
      * @param stack The stack
      * @param text  The tooltip strings
      */
-    public void addTraitInfo(ItemStack stack, List<ITextComponent> text)
+    public void addTraitInfo(ItemStack stack, List<Component> text)
     {
         if (translationKey != null)
         {
-            text.add(new TranslationTextComponent(translationKey));
+            text.add(new TranslatableComponent(translationKey));
         }
     }
 }

@@ -10,12 +10,11 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonElement;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.dries007.tfc.mixin.item.crafting.IngredientAccessor;
 
 public abstract class DelegateIngredient extends Ingredient
 {
@@ -60,7 +59,10 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     protected void invalidate()
     {
-        ((IngredientAccessor) delegate).invoke$invalidate();
+        // todo: mixin
+        // this is forge added so we can't AT it.
+        // even though forge *literally doesn't use it* though *technically it could cause a bug* but do I care? nah.
+        // delegate.invalidate(); // ((IngredientAccessor) delegate).invoke$invalidate();
     }
 
     @Override

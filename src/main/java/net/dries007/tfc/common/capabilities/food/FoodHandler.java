@@ -12,10 +12,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
@@ -25,7 +25,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
+public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
 {
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
@@ -49,11 +49,11 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
 
     protected final List<FoodTrait> foodTraits;
     private final LazyOptional<IFood> capability;
-    protected FoodData data;
+    protected FoodRecord data;
     protected long creationDate;
     protected boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
 
-    public FoodHandler(FoodData data)
+    public FoodHandler(FoodRecord data)
     {
         this.foodTraits = new ArrayList<>(2);
         this.data = data;
@@ -102,7 +102,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
     }
 
     @Override
-    public FoodData getData()
+    public FoodRecord getData()
     {
         return data;
     }
@@ -140,33 +140,33 @@ public class FoodHandler implements ICapabilitySerializable<CompoundNBT>, IFood
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putLong("creationDate", getCreationDate());
         if (isDynamic())
         {
             nbt.put("foodData", data.serializeNBT());
         }
         // Traits are sorted so they match when trying to stack them
-        ListNBT traitList = new ListNBT();
+        ListTag traitList = new ListTag();
         for (FoodTrait trait : foodTraits)
         {
-            traitList.add(StringNBT.valueOf(trait.getName()));
+            traitList.add(StringTag.valueOf(trait.getName()));
         }
         nbt.put("traits", traitList);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         foodTraits.clear();
         if (isDynamic())
         {
-            data = new FoodData(nbt.getCompound("foodData"));
+            data = new FoodRecord(nbt.getCompound("foodData"));
         }
-        ListNBT traitList = nbt.getList("traits", Constants.NBT.TAG_STRING);
+        ListTag traitList = nbt.getList("traits", Constants.NBT.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
         {
             foodTraits.add(FoodTrait.TRAITS.get(traitList.getString(i)));

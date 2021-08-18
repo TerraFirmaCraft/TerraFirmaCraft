@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.config.HealthDisplayFormat;
 
 public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius) implements FeatureConfiguration
 {

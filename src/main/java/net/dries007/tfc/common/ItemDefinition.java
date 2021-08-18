@@ -11,17 +11,18 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.DataManager;
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * Top level class for item-based 'definition' objects that are defined in JSON
  *
- * @see net.dries007.tfc.util.data.DataManager
+ * @see DataManager
  */
 public class ItemDefinition
 {
@@ -30,7 +31,7 @@ public class ItemDefinition
 
     protected ItemDefinition(ResourceLocation id, JsonObject json)
     {
-        this(id, Ingredient.fromJson(Helpers.getJsonAsAny(json, "ingredient")));
+        this(id, Ingredient.fromJson(JsonHelpers.get(json, "ingredient")));
     }
 
     protected ItemDefinition(ResourceLocation id, Ingredient ingredient)

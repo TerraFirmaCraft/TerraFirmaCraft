@@ -8,16 +8,22 @@ package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.food.NutritionStats;
+import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -49,7 +55,7 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
     {
         super.renderBg(stack, partialTicks, mouseX, mouseY);
 
-        final PlayerEntity player = ClientHelpers.getPlayer();
+        final Player player = ClientHelpers.getPlayer();
         if (player != null && player.getFoodData() instanceof TFCFoodStats)
         {
             final NutritionStats nutrition = ((TFCFoodStats) player.getFoodData()).getNutrition();
@@ -68,7 +74,7 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
 
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            final ITextComponent text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
+            final Component text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
             font.draw(stack, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
         }
     }

@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
@@ -17,5 +17,4 @@ public final class PlayerDataCapability
     @CapabilityInject(PlayerData.class)
     public static final Capability<PlayerData> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = Helpers.identifier("player_data");
-
 }

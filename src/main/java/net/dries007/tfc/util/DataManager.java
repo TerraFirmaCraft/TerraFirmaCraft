@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.data;
+package net.dries007.tfc.util;
 
 import java.util.*;
 import java.util.function.BiFunction;

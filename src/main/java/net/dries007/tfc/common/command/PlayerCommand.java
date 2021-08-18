@@ -9,8 +9,9 @@ package net.dries007.tfc.common.command;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -114,10 +115,10 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodStats)
         {
             float water = ((TFCFoodStats) player.getFoodData()).getThirst();
-            context.getSource().sendSuccess(new TranslationTextComponent(QUERY_WATER, water), true);
+            context.getSource().sendSuccess(new TranslatableComponent(QUERY_WATER, water), true);
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(new TranslationTextComponent(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(new TranslatableComponent(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 
@@ -126,18 +127,18 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodStats)
         {
             float[] nutrition = ((TFCFoodStats) player.getFoodData()).getNutrition().getNutrients();
-            context.getSource().sendSuccess(new TranslationTextComponent(QUERY_NUTRITION), true);
+            context.getSource().sendSuccess(new TranslatableComponent(QUERY_NUTRITION), true);
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 int percent = (int) (100 * nutrition[nutrient.ordinal()]);
                 context.getSource().sendSuccess(
-                    new StringTextComponent(" - ")
+                    new TextComponent(" - ")
                         .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
                         .append(": " + percent + "%"), true);
             }
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(new TranslationTextComponent(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(new TranslatableComponent(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 
@@ -163,9 +164,8 @@ public final class PlayerCommand
 
     private static int setWater(Player player, int water, boolean add)
     {
-        if (player.getFoodData() instanceof TFCFoodStats)
+        if (player.getFoodData() instanceof final TFCFoodStats stats)
         {
-            final TFCFoodStats stats = (TFCFoodStats) player.getFoodData();
             if (add)
             {
                 water += stats.getThirst();

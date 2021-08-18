@@ -9,16 +9,13 @@ package net.dries007.tfc.common.types;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.data.DataManager;
 
 public class FuelManager
 {

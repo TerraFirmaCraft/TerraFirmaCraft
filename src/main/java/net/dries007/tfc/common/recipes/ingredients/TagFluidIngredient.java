@@ -10,21 +10,21 @@ import java.util.Objects;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TagFluidIngredient implements FluidIngredient
 {
-    private final ITag<Fluid> tag;
+    private final Tag<Fluid> tag;
     private final int amount;
 
-    private TagFluidIngredient(ITag<Fluid> tag, int amount)
+    private TagFluidIngredient(Tag<Fluid> tag, int amount)
     {
         this.tag = tag;
         this.amount = amount;
@@ -53,9 +53,9 @@ public class TagFluidIngredient implements FluidIngredient
         @Override
         public TagFluidIngredient fromJson(JsonObject json)
         {
-            final int amount = JSONUtils.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
-            final String tagName = JSONUtils.getAsString(json, "tag");
-            final ITag<Fluid> tag = FluidTags.getAllTags().getTag(new ResourceLocation(tagName));
+            final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
+            final String tagName = GsonHelper.getAsString(json, "tag");
+            final Tag<Fluid> tag = FluidTags.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag == null)
             {
                 throw new JsonParseException("Not a fluid tag: " + tagName);
@@ -64,15 +64,15 @@ public class TagFluidIngredient implements FluidIngredient
         }
 
         @Override
-        public TagFluidIngredient fromNetwork(PacketBuffer buffer)
+        public TagFluidIngredient fromNetwork(FriendlyByteBuf buffer)
         {
             final int amount = buffer.readVarInt();
-            ITag<Fluid> tag = FluidTags.getAllTags().getTag(buffer.readResourceLocation());
+            Tag<Fluid> tag = FluidTags.getAllTags().getTag(buffer.readResourceLocation());
             return new TagFluidIngredient(Objects.requireNonNull(tag), amount);
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, TagFluidIngredient ingredient)
+        public void toNetwork(FriendlyByteBuf buffer, TagFluidIngredient ingredient)
         {
             buffer.writeVarInt(ingredient.amount);
             buffer.writeResourceLocation(Objects.requireNonNull(FluidTags.getAllTags().getId(ingredient.tag)));

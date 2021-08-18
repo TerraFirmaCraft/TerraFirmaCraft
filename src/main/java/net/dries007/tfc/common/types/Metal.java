@@ -31,8 +31,9 @@ import net.dries007.tfc.common.TFCArmorMaterial;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCItemTier;
 import net.dries007.tfc.common.items.tools.*;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class Metal
 {
@@ -47,7 +48,7 @@ public class Metal
     {
         this.id = id;
         this.tier = Tier.valueOf(GsonHelper.getAsInt(json, "tier"));
-        this.fluid = Helpers.getRegistryFromJson(json, "fluid", ForgeRegistries.FLUIDS);
+        this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
     }
 
     public ResourceLocation getId()

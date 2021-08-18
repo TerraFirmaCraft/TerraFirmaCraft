@@ -12,10 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SimpleBlockIngredient implements BlockIngredient
@@ -55,11 +55,11 @@ public class SimpleBlockIngredient implements BlockIngredient
         @Override
         public SimpleBlockIngredient fromJson(JsonObject json)
         {
-            return BlockIngredient.fromJsonString(JSONUtils.getAsString(json, "block"));
+            return BlockIngredient.fromJsonString(GsonHelper.getAsString(json, "block"));
         }
 
         @Override
-        public SimpleBlockIngredient fromNetwork(PacketBuffer buffer)
+        public SimpleBlockIngredient fromNetwork(FriendlyByteBuf buffer)
         {
             final int size = buffer.readVarInt();
             if (size == 1)
@@ -75,7 +75,7 @@ public class SimpleBlockIngredient implements BlockIngredient
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, SimpleBlockIngredient ingredient)
+        public void toNetwork(FriendlyByteBuf buffer, SimpleBlockIngredient ingredient)
         {
             buffer.writeVarInt(ingredient.blocks.size());
             for (Block block : ingredient.blocks)

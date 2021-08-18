@@ -8,10 +8,10 @@ package net.dries007.tfc.common.recipes.ingredients;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -50,8 +50,8 @@ public class SimpleFluidIngredient implements FluidIngredient
         @Override
         public SimpleFluidIngredient fromJson(JsonObject json)
         {
-            final int amount = JSONUtils.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
-            final String fluidName = JSONUtils.getAsString(json, "fluid");
+            final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
+            final String fluidName = GsonHelper.getAsString(json, "fluid");
             final Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidName));
             if (fluid == null)
             {
@@ -61,7 +61,7 @@ public class SimpleFluidIngredient implements FluidIngredient
         }
 
         @Override
-        public SimpleFluidIngredient fromNetwork(PacketBuffer buffer)
+        public SimpleFluidIngredient fromNetwork(FriendlyByteBuf buffer)
         {
             final int amount = buffer.readVarInt();
             final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
@@ -69,7 +69,7 @@ public class SimpleFluidIngredient implements FluidIngredient
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, SimpleFluidIngredient ingredient)
+        public void toNetwork(FriendlyByteBuf buffer, SimpleFluidIngredient ingredient)
         {
             buffer.writeVarInt(ingredient.amount);
             buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, ingredient.fluid);

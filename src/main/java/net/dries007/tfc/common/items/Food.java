@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.world.food.FoodProperties;
+
 public enum Food
 {
     // Berries
@@ -123,9 +125,9 @@ public enum Food
         this.fast = fast;
     }
 
-    public net.minecraft.item.Food getFoodProperties()
+    public FoodProperties getFoodProperties()
     {
-        net.minecraft.item.Food.Builder builder = new net.minecraft.item.Food.Builder();
+        FoodProperties.Builder builder = new FoodProperties.Builder();
         if (meat) builder.meat();
         if (fast) builder.fast();
         return builder.nutrition(4).saturationMod(0.3f).build();

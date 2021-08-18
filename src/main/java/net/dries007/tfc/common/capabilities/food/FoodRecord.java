@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class FoodData implements INBTSerializable<CompoundNBT>
+public class FoodRecord implements INBTSerializable<CompoundTag>
 {
     private final float[] nutrients; // Nutritional values
     private int hunger; // Hunger. In TFC (for now) this is almost always 4
@@ -18,12 +18,12 @@ public class FoodData implements INBTSerializable<CompoundNBT>
     private float decayModifier; // Decay modifier - higher = shorter decay
     private boolean buffed; // if this data instance has been buffed externally.
 
-    public FoodData(int hunger, float water, float saturation, float grain, float fruit, float veg, float protein, float dairy, float decayModifier)
+    public FoodRecord(int hunger, float water, float saturation, float grain, float fruit, float veg, float protein, float dairy, float decayModifier)
     {
         this(hunger, water, saturation, new float[] {grain, fruit, veg, protein, dairy}, decayModifier);
     }
 
-    public FoodData(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
+    public FoodRecord(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
     {
         this.hunger = hunger;
         this.water = water;
@@ -32,7 +32,7 @@ public class FoodData implements INBTSerializable<CompoundNBT>
         this.decayModifier = decayModifier;
     }
 
-    public FoodData(CompoundNBT nbt)
+    public FoodRecord(CompoundTag nbt)
     {
         this.nutrients = new float[5];
         deserializeNBT(nbt);
@@ -64,9 +64,9 @@ public class FoodData implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putInt("food", hunger);
         nbt.putFloat("sat", saturation);
         nbt.putFloat("water", water);
@@ -81,7 +81,7 @@ public class FoodData implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         hunger = nbt.getInt("food");
         saturation = nbt.getFloat("sat");
@@ -95,12 +95,12 @@ public class FoodData implements INBTSerializable<CompoundNBT>
         buffed = nbt.getBoolean("buffed");
     }
 
-    public FoodData copy()
+    public FoodRecord copy()
     {
-        return new FoodData(hunger, water, saturation, nutrients, decayModifier);
+        return new FoodRecord(hunger, water, saturation, nutrients, decayModifier);
     }
 
-    public void applyBuff(FoodData buff)
+    public void applyBuff(FoodRecord buff)
     {
         if (!buffed)
         {

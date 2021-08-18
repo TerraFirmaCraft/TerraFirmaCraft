@@ -8,9 +8,9 @@ package net.dries007.tfc.network;
 
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
@@ -27,7 +27,7 @@ public class FoodStatsUpdatePacket
         this.thirst = thirst;
     }
 
-    public FoodStatsUpdatePacket(PacketBuffer buffer)
+    public FoodStatsUpdatePacket(FriendlyByteBuf buffer)
     {
         this.nutrients = new float[Nutrient.TOTAL];
         for (int i = 0; i < nutrients.length; i++)
@@ -37,7 +37,7 @@ public class FoodStatsUpdatePacket
         this.thirst = buffer.readFloat();
     }
 
-    void encode(PacketBuffer buffer)
+    void encode(FriendlyByteBuf buffer)
     {
         for (float nutrient : nutrients)
         {
@@ -50,10 +50,10 @@ public class FoodStatsUpdatePacket
     {
         context.get().setPacketHandled(true);
         context.get().enqueueWork(() -> {
-            final PlayerEntity player = ClientHelpers.getPlayer();
-            if (player != null && player.getFoodData() instanceof TFCFoodStats)
+            final Player player = ClientHelpers.getPlayer();
+            if (player != null && player.getFoodData() instanceof TFCFoodStats stats)
             {
-                ((TFCFoodStats) player.getFoodData()).onClientUpdate(nutrients, thirst);
+                stats.onClientUpdate(nutrients, thirst);
             }
         });
     }

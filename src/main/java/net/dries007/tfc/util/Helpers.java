@@ -18,23 +18,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.tuple.Triple;
-import net.minecraft.ResourceLocationException;
-import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +35,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -64,11 +60,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.IForgeRegistry;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.types.Fuel;
@@ -99,53 +91,6 @@ public final class Helpers
     public static <T> T notNull()
     {
         return null;
-    }
-
-    public static BlockState readBlockState(String block) throws JsonParseException
-    {
-        BlockStateParser parser = parseBlockState(block, false);
-        if (parser.getState() != null)
-        {
-            return parser.getState();
-        }
-        throw new JsonParseException("Weird result, valid parse but not a block state: " + block);
-    }
-
-    public static BlockStateParser parseBlockState(String block, boolean allowTags) throws JsonParseException
-    {
-        StringReader reader = new StringReader(block);
-        try
-        {
-            return new BlockStateParser(reader, allowTags).parse(false);
-        }
-        catch (CommandSyntaxException e)
-        {
-            throw new JsonParseException(e.getMessage());
-        }
-    }
-
-    public static <T extends ForgeRegistryEntry<T>> T getRegistryFromJson(JsonObject json, String key, IForgeRegistry<T> registry)
-    {
-        try
-        {
-            final String id = GsonHelper.getAsString(json, key);
-            final ResourceLocation res = new ResourceLocation(id);
-            final T obj = registry.getValue(res);
-            if (obj == null)
-            {
-                throw new JsonParseException("Unknown entry from " + registry.getRegistryName().getPath() + ": " + id);
-            }
-            return obj;
-        }
-        catch (ResourceLocationException e)
-        {
-            throw new JsonParseException(e);
-        }
-    }
-
-    public static BiPredicate<LevelAccessor, BlockPos> createTagCheck(Tag<Block> tag)
-    {
-        return ((world, pos) -> world.getBlockState(pos).is(tag));
     }
 
     /**
@@ -193,49 +138,9 @@ public final class Helpers
         return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public static <E extends Enum<E>> E getEnumFromJson(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    public static TranslatableComponent translateEnum(Enum<?> anEnum)
     {
-        final String enumName = GsonHelper.getAsString(obj, key, null);
-        if (enumName != null)
-        {
-            try
-            {
-                Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
-            }
-            catch (IllegalArgumentException e)
-            {
-                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
-            }
-        }
-        if (defaultValue != null)
-        {
-            return defaultValue;
-        }
-        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
-    }
-
-    public static JsonElement getJsonAsAny(JsonObject json, String key)
-    {
-        if (!json.has(key))
-        {
-            throw new JsonParseException("Missing required key: " + key);
-        }
-        return json.get(key);
-    }
-
-    public static <T> T nonNullOrJsonError(@Nullable T obj, String error)
-    {
-        if (obj == null)
-        {
-            throw new JsonSyntaxException(error);
-        }
-        return obj;
-    }
-
-    public static TranslationTextComponent translateEnum(Enum<?> anEnum)
-    {
-        return new TranslationTextComponent(getEnumTranslationKey(anEnum));
+        return new TranslatableComponent(getEnumTranslationKey(anEnum));
     }
 
     /**
@@ -401,7 +306,7 @@ public final class Helpers
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
         final int slots = inventory.getSlots();
-        return () -> new AbstractIterator<ItemStack>()
+        return () -> new AbstractIterator<>()
         {
             private int slot = -1;
 
@@ -461,7 +366,6 @@ public final class Helpers
      * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
-    @SuppressWarnings("deprecation")
     public static void destroyBlockAndDropBlocksManually(Level worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
         BlockState state = worldIn.getBlockState(pos);

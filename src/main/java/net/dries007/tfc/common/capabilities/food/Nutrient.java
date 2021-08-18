@@ -8,16 +8,16 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.util.StringRepresentable;
 
-public enum Nutrient implements IStringSerializable
+public enum Nutrient implements StringRepresentable
 {
-    GRAIN(TextFormatting.GOLD),
-    FRUIT(TextFormatting.GREEN),
-    VEGETABLES(TextFormatting.DARK_GREEN),
-    PROTEIN(TextFormatting.RED),
-    DAIRY(TextFormatting.DARK_PURPLE);
+    GRAIN(ChatFormatting.GOLD),
+    FRUIT(ChatFormatting.GREEN),
+    VEGETABLES(ChatFormatting.DARK_GREEN),
+    PROTEIN(ChatFormatting.RED),
+    DAIRY(ChatFormatting.DARK_PURPLE);
 
     public static final int TOTAL = values().length;
     public static final Nutrient[] VALUES = values();
@@ -28,9 +28,9 @@ public enum Nutrient implements IStringSerializable
     }
 
     private final String serializedName;
-    private final TextFormatting color;
+    private final ChatFormatting color;
 
-    Nutrient(TextFormatting color)
+    Nutrient(ChatFormatting color)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.color = color;
@@ -42,7 +42,7 @@ public enum Nutrient implements IStringSerializable
         return serializedName;
     }
 
-    public TextFormatting getColor()
+    public ChatFormatting getColor()
     {
         return color;
     }

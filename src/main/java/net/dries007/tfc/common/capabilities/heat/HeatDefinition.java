@@ -9,12 +9,10 @@ package net.dries007.tfc.common.capabilities.heat;
 import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraft.util.GsonHelper;
+
+import net.dries007.tfc.common.ItemDefinition;
 
 /**
  * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.

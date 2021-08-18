@@ -7,24 +7,21 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class TagBlockIngredient implements BlockIngredient
 {
-    private final ITag<Block> tag;
+    private final Tag<Block> tag;
 
-    private TagBlockIngredient(ITag<Block> tag)
+    private TagBlockIngredient(Tag<Block> tag)
     {
         this.tag = tag;
     }
@@ -52,22 +49,21 @@ public class TagBlockIngredient implements BlockIngredient
         @Override
         public TagBlockIngredient fromJson(JsonObject json)
         {
-            final ResourceLocation tagName = new ResourceLocation(JSONUtils.getAsString(json, "tag"));
-            final ITag<Block> tag = Helpers.nonNullOrJsonError(BlockTags.getAllTags().getTag(tagName), "No block tag: " + tagName);
+            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", BlockTags.getAllTags()));
+        }
+
+        @Override
+        public TagBlockIngredient fromNetwork(FriendlyByteBuf buffer)
+        {
+            final Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(buffer.readResourceLocation());
             return new TagBlockIngredient(tag);
         }
 
         @Override
-        public TagBlockIngredient fromNetwork(PacketBuffer buffer)
+        @SuppressWarnings("ConstantConditions")
+        public void toNetwork(FriendlyByteBuf buffer, TagBlockIngredient ingredient)
         {
-            final ITag<Block> tag = Objects.requireNonNull(BlockTags.getAllTags().getTag(buffer.readResourceLocation()));
-            return new TagBlockIngredient(tag);
-        }
-
-        @Override
-        public void toNetwork(PacketBuffer buffer, TagBlockIngredient ingredient)
-        {
-            buffer.writeResourceLocation(Objects.requireNonNull(BlockTags.getAllTags().getId(ingredient.tag)));
+            buffer.writeResourceLocation(BlockTags.getAllTags().getId(ingredient.tag));
         }
     }
 }

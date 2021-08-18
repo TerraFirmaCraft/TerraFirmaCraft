@@ -9,9 +9,9 @@ package net.dries007.tfc.common.capabilities.player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
@@ -19,13 +19,13 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
 
-public class PlayerData implements ICapabilitySerializable<CompoundNBT>
+public class PlayerData implements ICapabilitySerializable<CompoundTag>
 {
-    private final PlayerEntity player;
+    private final Player player;
     private final LazyOptional<PlayerData> capability;
-    @Nullable private CompoundNBT delayedFoodNbt;
+    @Nullable private CompoundTag delayedFoodNbt;
 
-    public PlayerData(PlayerEntity player)
+    public PlayerData(Player player)
     {
         this.player = player;
         this.capability = LazyOptional.of(() -> this);
@@ -33,15 +33,15 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return cap == PlayerDataCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        final CompoundNBT nbt = new CompoundNBT();
+        final CompoundTag nbt = new CompoundTag();
         if (player.getFoodData() instanceof TFCFoodStats)
         {
             nbt.put("food", ((TFCFoodStats) player.getFoodData()).serializeToPlayerData());
@@ -50,7 +50,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         delayedFoodNbt = nbt.contains("food", Constants.NBT.TAG_COMPOUND) ? nbt.getCompound("food") : null;
         if (player.getFoodData() instanceof TFCFoodStats)

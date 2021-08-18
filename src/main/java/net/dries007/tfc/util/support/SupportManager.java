@@ -12,12 +12,12 @@ import java.util.Set;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.DataManager;
 
 public class SupportManager extends DataManager<Support>
 {

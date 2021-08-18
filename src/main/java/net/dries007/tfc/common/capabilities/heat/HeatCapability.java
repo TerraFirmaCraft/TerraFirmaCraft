@@ -8,17 +8,16 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.data.DataManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

@@ -9,21 +9,16 @@ package net.dries007.tfc.common.capabilities.size;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.data.DataManager;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import net.dries007.tfc.util.DataManager;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public final class ItemSizeManager
 {

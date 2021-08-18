@@ -17,14 +17,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * This is a simple predicate wrapper for block states.
@@ -66,7 +67,7 @@ public interface BlockIngredient extends Predicate<BlockState>
         BlockIngredient.Serializer<?> serializer;
         if (obj.has("type"))
         {
-            final String type = JSONUtils.getAsString(obj, "type");
+            final String type = GsonHelper.getAsString(obj, "type");
             serializer = REGISTRY.get(new ResourceLocation(type));
             if (serializer == null)
             {
@@ -93,28 +94,24 @@ public interface BlockIngredient extends Predicate<BlockState>
         final Set<Block> blocks = new HashSet<>();
         for (JsonElement e : array)
         {
-            final ResourceLocation blockName = new ResourceLocation(e.getAsString());
-            final Block block = Helpers.nonNullOrJsonError(ForgeRegistries.BLOCKS.getValue(blockName), "Not a block: " + blockName);
-            blocks.add(block);
+            blocks.add(JsonHelpers.getRegistryEntry(e, ForgeRegistries.BLOCKS));
         }
         return new SimpleBlockIngredient(blocks);
     }
 
     static SimpleBlockIngredient fromJsonString(String string)
     {
-        final ResourceLocation blockName = new ResourceLocation(string);
-        final Block block = Helpers.nonNullOrJsonError(ForgeRegistries.BLOCKS.getValue(blockName), "Not a block: " + blockName);
-        return new SimpleBlockIngredient(block);
+        return new SimpleBlockIngredient(JsonHelpers.getRegistryEntry(string, ForgeRegistries.BLOCKS));
     }
 
-    static BlockIngredient fromNetwork(PacketBuffer buffer)
+    static BlockIngredient fromNetwork(FriendlyByteBuf buffer)
     {
         final BlockIngredient.Serializer<?> serializer = REGISTRY.get(buffer.readResourceLocation());
         return serializer.fromNetwork(buffer);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    static void toNetwork(PacketBuffer buffer, BlockIngredient ingredient)
+    static void toNetwork(FriendlyByteBuf buffer, BlockIngredient ingredient)
     {
         buffer.writeResourceLocation(REGISTRY.inverse().get(ingredient.getSerializer()));
         ((BlockIngredient.Serializer) ingredient.getSerializer()).toNetwork(buffer, ingredient);
@@ -138,8 +135,8 @@ public interface BlockIngredient extends Predicate<BlockState>
     {
         T fromJson(JsonObject json);
 
-        T fromNetwork(PacketBuffer buffer);
+        T fromNetwork(FriendlyByteBuf buffer);
 
-        void toNetwork(PacketBuffer buffer, T ingredient);
+        void toNetwork(FriendlyByteBuf buffer, T ingredient);
     }
 }

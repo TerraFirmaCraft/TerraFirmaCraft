@@ -7,14 +7,11 @@
 package net.dries007.tfc.common.capabilities.size;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.ItemDefinition;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class ItemSizeDefinition extends ItemDefinition implements IItemSize
 {
@@ -24,8 +21,8 @@ public class ItemSizeDefinition extends ItemDefinition implements IItemSize
     public ItemSizeDefinition(ResourceLocation id, JsonObject json)
     {
         super(id, json);
-        this.size = Helpers.getEnumFromJson(json, "size", Size.class, Size.NORMAL);
-        this.weight = Helpers.getEnumFromJson(json, "weight", Weight.class, Weight.MEDIUM);
+        this.size = JsonHelpers.getEnum(json, "size", Size.class, Size.NORMAL);
+        this.weight = JsonHelpers.getEnum(json, "weight", Weight.class, Weight.MEDIUM);
     }
 
     @Override

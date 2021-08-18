@@ -12,10 +12,10 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.util.Helpers;
@@ -46,7 +46,7 @@ public interface FluidIngredient extends Predicate<FluidStack>
         FluidIngredient.Serializer<?> serializer;
         if (json.has("type"))
         {
-            final String type = JSONUtils.getAsString(json, "type");
+            final String type = GsonHelper.getAsString(json, "type");
             serializer = REGISTRY.get(new ResourceLocation(type));
             if (serializer == null)
             {
@@ -68,14 +68,14 @@ public interface FluidIngredient extends Predicate<FluidStack>
         return serializer.fromJson(json);
     }
 
-    static FluidIngredient fromNetwork(PacketBuffer buffer)
+    static FluidIngredient fromNetwork(FriendlyByteBuf buffer)
     {
         final FluidIngredient.Serializer<?> serializer = REGISTRY.get(buffer.readResourceLocation());
         return serializer.fromNetwork(buffer);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    static void toNetwork(PacketBuffer buffer, FluidIngredient ingredient)
+    static void toNetwork(FriendlyByteBuf buffer, FluidIngredient ingredient)
     {
         buffer.writeResourceLocation(REGISTRY.inverse().get(ingredient.getSerializer()));
         ((Serializer) ingredient.getSerializer()).toNetwork(buffer, ingredient);
@@ -98,8 +98,8 @@ public interface FluidIngredient extends Predicate<FluidStack>
     {
         T fromJson(JsonObject json);
 
-        T fromNetwork(PacketBuffer buffer);
+        T fromNetwork(FriendlyByteBuf buffer);
 
-        void toNetwork(PacketBuffer buffer, T ingredient);
+        void toNetwork(FriendlyByteBuf buffer, T ingredient);
     }
 }

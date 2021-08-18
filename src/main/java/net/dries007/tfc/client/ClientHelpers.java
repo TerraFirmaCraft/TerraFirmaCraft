@@ -9,8 +9,8 @@ package net.dries007.tfc.client;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
@@ -25,7 +25,7 @@ public final class ClientHelpers
     }
 
     @Nullable
-    public static PlayerEntity getPlayer()
+    public static Player getPlayer()
     {
         return Minecraft.getInstance().player;
     }

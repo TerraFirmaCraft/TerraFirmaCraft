@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -98,7 +98,7 @@ public interface ICalendar
     static Component getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         return new TextComponent(String.format("%d:%02d ", hour, minute))
-            .append(new TranslatableComponent(Helpers.getEnumTranslationKey(month)))
+            .append(Helpers.translateEnum(month))
             .append(" ")
             .append(new TranslatableComponent("tfc.tooltip.calendar_days_years", day, years));
     }

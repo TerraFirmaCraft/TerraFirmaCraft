@@ -9,14 +9,14 @@ package net.dries007.tfc.common.recipes.ingredients;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * An ingredient which respects non-rotten foods
@@ -43,7 +43,7 @@ public class NotRottenIngredient extends DelegateIngredient
     public static class Serializer implements IIngredientSerializer<NotRottenIngredient>
     {
         @Override
-        public NotRottenIngredient parse(PacketBuffer buffer)
+        public NotRottenIngredient parse(FriendlyByteBuf buffer)
         {
             return new NotRottenIngredient(Ingredient.fromNetwork(buffer));
         }
@@ -51,12 +51,12 @@ public class NotRottenIngredient extends DelegateIngredient
         @Override
         public NotRottenIngredient parse(JsonObject json)
         {
-            final Ingredient internal = Ingredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
+            final Ingredient internal = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
             return new NotRottenIngredient(internal);
         }
 
         @Override
-        public void write(PacketBuffer buffer, NotRottenIngredient ingredient)
+        public void write(FriendlyByteBuf buffer, NotRottenIngredient ingredient)
         {
             CraftingHelper.write(buffer, ingredient.delegate);
         }

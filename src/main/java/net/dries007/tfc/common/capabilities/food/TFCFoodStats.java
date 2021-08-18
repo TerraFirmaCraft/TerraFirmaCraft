@@ -7,26 +7,22 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Random;
-import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.entity.player.PlayerEntityAccessor;
-import net.dries007.tfc.mixin.util.FoodStatsAccessor;
 import net.dries007.tfc.network.FoodStatsReplacePacket;
 import net.dries007.tfc.network.FoodStatsUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -46,39 +42,40 @@ import net.dries007.tfc.util.calendar.ICalendar;
  * Now, at this point, we can actually read directly from our capability, as it has been deserialized much earlier in Entity#load.
  * Reading is a bit different: we read from the capability data early, store the NBT, and then copy it to the food stats on the instantiation of the custom food stats.
  */
-public class TFCFoodStats extends FoodStats
+public class TFCFoodStats extends net.minecraft.world.food.FoodData
 {
     public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
     public static final float PASSIVE_EXHAUSTION = 20f * 4f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
     public static final float MAX_THIRST = 100f;
 
-    public static void replaceFoodStats(PlayerEntity player)
+    public static void replaceFoodStats(Player player)
     {
         // Only replace the server player's stats if they aren't already
-        final FoodStats foodStats = player.getFoodData();
+        final net.minecraft.world.food.FoodData foodStats = player.getFoodData();
         if (!(foodStats instanceof TFCFoodStats))
         {
             // Replace, and then read from the cached data on the player capability
             final TFCFoodStats newStats = new TFCFoodStats(player, foodStats);
-            ((PlayerEntityAccessor) player).accessor$setFoodData(newStats);
+            // todo: mixin
+            player.foodData = newStats;
             player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
         }
         // Send the update regardless so the client can perform the same logic
-        if (player instanceof ServerPlayerEntity)
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new FoodStatsReplacePacket());
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodStatsReplacePacket());
         }
     }
 
-    private final PlayerEntity sourcePlayer;
-    private final FoodStats delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
+    private final Player sourcePlayer;
+    private final net.minecraft.world.food.FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
     private final NutritionStats nutritionStats; // Separate handler for nutrition, because it's a bit complex
     private long lastDrinkTick;
     private float thirst;
     private int healTimer;
 
-    public TFCFoodStats(PlayerEntity sourcePlayer, FoodStats delegate)
+    public TFCFoodStats(Player sourcePlayer, net.minecraft.world.food.FoodData delegate)
     {
         this.sourcePlayer = sourcePlayer;
         this.delegate = delegate;
@@ -101,12 +98,12 @@ public class TFCFoodStats extends FoodStats
     }
 
     /**
-     * Called from {@link PlayerEntity#tick()} on server side only
+     * Called from {@link Player#tick()} on server side only
      *
      * @param player the player who's food stats this is
      */
     @Override
-    public void tick(PlayerEntity player)
+    public void tick(Player player)
     {
         final Difficulty difficulty = player.level.getDifficulty();
         if (difficulty == Difficulty.PEACEFUL && TFCConfig.SERVER.peacefulDifficultyPassiveRegeneration.get())
@@ -135,7 +132,7 @@ public class TFCFoodStats extends FoodStats
             player.causeFoodExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue());
 
             // Same check as the original food stats, so hunger and thirst loss are synced
-            if (((FoodStatsAccessor) delegate).accessor$getExhaustionLevel() >= 4.0F)
+            if (delegate.getExhaustionLevel() >= 4.0F)
             {
                 addThirst(-TFCConfig.SERVER.thirstModifier.get().floatValue());
 
@@ -150,7 +147,7 @@ public class TFCFoodStats extends FoodStats
             if (difficulty == Difficulty.PEACEFUL)
             {
                 // Copied from vanilla's food stats, so we consume food in peaceful mode (would normally be part of the super.onUpdate call
-                if (((FoodStatsAccessor) delegate).accessor$getExhaustionLevel() > 4.0F)
+                if (delegate.getExhaustionLevel() > 4.0F)
                 {
                     setFoodLevel(Math.max(getFoodLevel() - 1, 0));
                 }
@@ -178,12 +175,12 @@ public class TFCFoodStats extends FoodStats
         }
 
         // Last, apply negative effects due to thirst
-        if (player.tickCount % 100 == 0 && difficulty != Difficulty.PEACEFUL && !player.abilities.invulnerable)
+        if (player.tickCount % 100 == 0 && difficulty != Difficulty.PEACEFUL && !player.getAbilities().invulnerable)
         {
             if (thirst < 10f)
             {
-                player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 160, 1, false, false));
-                player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 160, 1, false, false));
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 160, 1, false, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 160, 1, false, false));
                 if (thirst <= 0f)
                 {
                     // Hurt the player, same as starvation
@@ -192,26 +189,26 @@ public class TFCFoodStats extends FoodStats
             }
             else if (thirst < 20f)
             {
-                player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 160, 0, false, false));
-                player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 160, 0, false, false));
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 160, 0, false, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 160, 0, false, false));
             }
         }
 
         // Since this is only called server side, and vanilla has a custom packet for this stuff, we need our own
-        if (player instanceof ServerPlayerEntity)
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new FoodStatsUpdatePacket(nutritionStats.getNutrients(), thirst));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodStatsUpdatePacket(nutritionStats.getNutrients(), thirst));
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT vanillaNbt)
+    public void readAdditionalSaveData(CompoundTag vanillaNbt)
     {
         delegate.readAdditionalSaveData(vanillaNbt);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT vanillaNbt)
+    public void addAdditionalSaveData(CompoundTag vanillaNbt)
     {
         delegate.addAdditionalSaveData(vanillaNbt);
     }
@@ -256,27 +253,27 @@ public class TFCFoodStats extends FoodStats
     public void eat(IFood food)
     {
         // Eating items has nutritional benefits
-        final FoodData data = food.getData();
+        final FoodRecord data = food.getData();
         if (!food.isRotten())
         {
             eat(data);
         }
-        else if (this.sourcePlayer instanceof ServerPlayerEntity) // Check for server side first
+        else if (this.sourcePlayer instanceof ServerPlayer) // Check for server side first
         {
             // Minor effects from eating rotten food
             final Random random = sourcePlayer.getRandom();
             if (random.nextFloat() < 0.6)
             {
-                sourcePlayer.addEffect(new EffectInstance(Effects.HUNGER, 1800, 1));
+                sourcePlayer.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1800, 1));
                 if (random.nextFloat() < 0.15)
                 {
-                    sourcePlayer.addEffect(new EffectInstance(Effects.POISON, 1800, 0));
+                    sourcePlayer.addEffect(new MobEffectInstance(MobEffects.POISON, 1800, 0));
                 }
             }
         }
     }
 
-    public void eat(FoodData data)
+    public void eat(FoodRecord data)
     {
         addThirst(data.getWater());
         nutritionStats.addNutrients(data);
@@ -285,9 +282,9 @@ public class TFCFoodStats extends FoodStats
         delegate.eat(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
     }
 
-    public CompoundNBT serializeToPlayerData()
+    public CompoundTag serializeToPlayerData()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
 
         nbt.putFloat("thirst", thirst);
         nbt.putFloat("lastDrinkTick", lastDrinkTick);
@@ -296,19 +293,11 @@ public class TFCFoodStats extends FoodStats
         return nbt;
     }
 
-    public void deserializeFromPlayerData(CompoundNBT nbt)
+    public void deserializeFromPlayerData(CompoundTag nbt)
     {
         thirst = nbt.getFloat("thirst");
         lastDrinkTick = nbt.getLong("lastDrinkTick");
         nutritionStats.deserializeNBT(nbt.getCompound("nutrients"));
-    }
-
-    /**
-     * Use instead of {@link #setSaturation(float)} as it's client-only
-     */
-    public void setSaturationSafe(float saturation)
-    {
-        ((FoodStatsAccessor) delegate).accessor$setSaturationLevel(saturation);
     }
 
     /**
@@ -332,7 +321,7 @@ public class TFCFoodStats extends FoodStats
 
     public void setThirst(float thirst)
     {
-        this.thirst = MathHelper.clamp(thirst, 0, MAX_THIRST);
+        this.thirst = Mth.clamp(thirst, 0, MAX_THIRST);
     }
 
     public void addThirst(float toAdd)

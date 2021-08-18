@@ -9,19 +9,19 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * Generic class for single block -> block based in-world crafting recipes.
@@ -82,12 +82,12 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            BlockIngredient ingredient = BlockIngredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
+            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
             boolean copyInputState = GsonHelper.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
             {
-                state = Helpers.readBlockState(GsonHelper.getAsString(json, "result"));
+                state = JsonHelpers.getBlockState(GsonHelper.getAsString(json, "result"));
             }
             else
             {

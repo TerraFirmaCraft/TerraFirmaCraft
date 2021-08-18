@@ -9,17 +9,17 @@ package net.dries007.tfc.common.recipes;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.recipes.ingredients.IngredientHelpers;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class FluidPotRecipe extends PotRecipe
 {
@@ -72,7 +72,7 @@ public class FluidPotRecipe extends PotRecipe
         protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
         {
             JsonObject output = GsonHelper.getAsJsonObject(json, "fluid_output");
-            return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, IngredientHelpers.fluidStackFromJson(output));
+            return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, JsonHelpers.getFluidStack(output));
         }
 
         @Override

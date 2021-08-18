@@ -108,21 +108,17 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Common Setup");
 
         // Setup methods
-        HeatCapability.setup();
-        ForgingCapability.setup();
+        CapabilityManager.INSTANCE.register(IHeat.class);
+        CapabilityManager.INSTANCE.register(IForging.class);
         CapabilityManager.INSTANCE.register(ChunkData.class);
-        WorldTrackerCapability.setup();
-        ServerCalendar.setup();
-        Helpers.registerSimpleCapability(IHeat.class);
-        Helpers.registerSimpleCapability(IForging.class);
-        Helpers.registerSimpleCapability(ChunkData.class);
-        Helpers.registerSimpleCapability(IWorldTracker.class);
-        Helpers.registerSimpleCapability(IFood.class);
-        Helpers.registerSimpleCapability(PlayerData.class);
+        CapabilityManager.INSTANCE.register(IWorldTracker.class);
+        CapabilityManager.INSTANCE.register(IFood.class);
+        CapabilityManager.INSTANCE.register(PlayerData.class);
+
         TFCLoot.LOOT_CONDITIONS.registerAll();
+
         InteractionManager.setup();
         TFCWorldType.setup();
-
         ItemSizeManager.setup();
         ServerCalendar.setup();
 

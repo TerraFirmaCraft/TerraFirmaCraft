@@ -8,13 +8,13 @@ package net.dries007.tfc.util.support;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class Support
 {
@@ -26,7 +26,7 @@ public class Support
     {
         this.id = id;
 
-        this.ingredient = BlockIngredient.fromJson(Helpers.getJsonAsAny(json, "ingredient"));
+        this.ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
         this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
         this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
         this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);

@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -25,9 +25,9 @@ import net.dries007.tfc.util.function.IntToFloatFunction;
  *
  * This only executes logic on server side, on client side it simply sets the lastAverageNutrients
  */
-public class NutritionStats implements INBTSerializable<CompoundNBT>
+public class NutritionStats implements INBTSerializable<CompoundTag>
 {
-    private final LinkedList<FoodData> records;
+    private final LinkedList<FoodRecord> records;
     private final float defaultNutritionValue, defaultDairyNutritionValue;
     private final float[] nutrients;
     private float averageNutrients;
@@ -51,7 +51,7 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
     }
 
     @Nullable
-    public FoodData getMostRecentRecord()
+    public FoodRecord getMostRecentRecord()
     {
         return records.peekFirst(); // The "most recent" is actually the first in the queue
     }
@@ -84,7 +84,7 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
         updateAverageNutrients();
     }
 
-    public void addNutrients(FoodData data)
+    public void addNutrients(FoodRecord data)
     {
         records.addFirst(data.copy());
         calculateNutrition();
@@ -95,9 +95,9 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
      * It marks said food data as "buffed", and each food data can only be buffed once.
      * This is used for non-food related nutrition bonuses, for instance drinking milk (which is not a food as it dosen't expire, which is unbalanced)
      */
-    public void addBuff(FoodData data)
+    public void addBuff(FoodRecord data)
     {
-        FoodData recentFood = getMostRecentRecord();
+        FoodRecord recentFood = getMostRecentRecord();
         if (recentFood != null)
         {
             recentFood.applyBuff(data);
@@ -106,11 +106,11 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
-        ListNBT recordsNbt = new ListNBT();
-        for (FoodData data : records)
+        CompoundTag nbt = new CompoundTag();
+        ListTag recordsNbt = new ListTag();
+        for (FoodRecord data : records)
         {
             recordsNbt.add(data.serializeNBT());
         }
@@ -119,13 +119,13 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
         records.clear();
-        ListNBT recordsNbt = nbt.getList("records", Constants.NBT.TAG_COMPOUND);
+        ListTag recordsNbt = nbt.getList("records", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < recordsNbt.size(); i++)
         {
-            records.add(new FoodData(recordsNbt.getCompound(i)));
+            records.add(new FoodRecord(recordsNbt.getCompound(i)));
         }
         calculateNutrition();
     }
@@ -140,7 +140,7 @@ public class NutritionStats implements INBTSerializable<CompoundNBT>
         hungerWindow = TFCConfig.SERVER.nutritionRotationHungerWindow.get();
         for (int i = 0; i < records.size(); i++)
         {
-            FoodData record = records.get(i);
+            FoodRecord record = records.get(i);
             int nextHunger = record.getHunger() + runningHungerTotal;
             if (nextHunger < this.hungerWindow)
             {

@@ -17,7 +17,7 @@ public interface IWeighted<E> extends Iterable<E>
     /**
      * Empty instance, do not use directly. See {@link IWeighted#empty()}
      */
-    IWeighted<?> EMPTY = new IWeighted<Object>()
+    IWeighted<?> EMPTY = new IWeighted<>()
     {
         @Override
         public void add(double weight, Object element)
