@@ -8,24 +8,22 @@ package net.dries007.tfc.common.fluids;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.Level;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 
 public class FluidHelpers
 {
@@ -132,8 +130,7 @@ public class FluidHelpers
 
             // Look for adjacent fluids that are the same, for purposes of flow into this fluid
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
-            // todo: mixin accessor
-            if (offsetFluid.getType() instanceof FlowingFluid && self.canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
+            if (offsetFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
             {
                 if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(worldIn, offsetPos, offsetState, canConvertToSource))
                 {
@@ -189,8 +186,7 @@ public class FluidHelpers
         BlockPos abovePos = pos.above();
         BlockState aboveState = worldIn.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
-        // todo: mixin
-        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && self.canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
+        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
         {
             return ((FlowingFluid) aboveFluid.getType()).getFlowing(8, true);
         }

@@ -9,17 +9,17 @@ package net.dries007.tfc.util;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -39,8 +39,9 @@ public final class EnvironmentHelpers
      * - Convert possible blocks to snow piles
      * - Freeze sea water into sea ice
      */
-    public static void onEnvironmentTick(ServerLevel world, LevelChunk chunkIn, Random random)
+    public static void onEnvironmentTick(ServerLevel world, LevelChunk chunkIn)
     {
+        Random random = world.getRandom();
         ChunkPos chunkPos = chunkIn.getPos();
         if (random.nextInt(16) == 0)
         {

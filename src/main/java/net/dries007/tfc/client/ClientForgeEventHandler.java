@@ -42,6 +42,7 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
@@ -165,16 +166,10 @@ public class ClientForgeEventHandler
         if (event.getWorld() instanceof final ClientLevel world)
         {
             // Add our custom tints to the color resolver caches
-            // todo: mixin accessor
-            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = world.tintCaches;
+            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) world).accessor$getTintCaches();
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache());
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache());
-
-            // Update cloud height
-            final float cloudHeight = TFCConfig.CLIENT.assumeTFCWorld.get() ? 210 : 160;
-            // todo: if we switch the world height to default I don't think this accessor/mixin is needed anymore
-            //((DimensionRenderInfoAccessor) DimensionRenderInfoAccessor.accessor$Effects().get(DimensionType.OVERWORLD_EFFECTS)).accessor$setCloudLevel(cloudHeight);
 
         }
     }

@@ -54,7 +54,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
-import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -72,6 +72,7 @@ import net.dries007.tfc.common.types.FuelManager;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CacheInvalidationListener;
@@ -327,7 +328,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && chunk.levelHeightAccessor instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
             final ChunkPos pos = event.getChunk().getPos();
             final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos, generator.getRockLayerSettings());
@@ -578,7 +579,7 @@ public final class ForgeEventHandler
     {
         if (event.getPlayer() instanceof ServerPlayer)
         {
-            TFCFoodStats.replaceFoodStats(event.getPlayer());
+            TFCFoodData.replaceFoodStats(event.getPlayer());
         }
     }
 
@@ -586,7 +587,7 @@ public final class ForgeEventHandler
     {
         if (event.getPlayer() instanceof ServerPlayer)
         {
-            TFCFoodStats.replaceFoodStats(event.getPlayer());
+            TFCFoodData.replaceFoodStats(event.getPlayer());
         }
     }
 
@@ -594,7 +595,7 @@ public final class ForgeEventHandler
     {
         if (event.getPlayer() instanceof ServerPlayer)
         {
-            TFCFoodStats.replaceFoodStats(event.getPlayer());
+            TFCFoodData.replaceFoodStats(event.getPlayer());
         }
     }
 }

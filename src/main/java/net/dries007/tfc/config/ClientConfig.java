@@ -22,7 +22,6 @@ public class ClientConfig
 {
     // General
     public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
-    public final ForgeConfigSpec.BooleanValue assumeTFCWorld;
     public final ForgeConfigSpec.BooleanValue enableDebug;
     // Display
     public final ForgeConfigSpec.BooleanValue enableHungerBar;
@@ -39,13 +38,10 @@ public class ClientConfig
 
         innerBuilder.push("general");
 
-        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").comment("Should TFC forcefully skip the 'Experimental World Generation' warning screen when creating or loading a world?").define("ignoreExperimentalWorldGenWarning", true);
-
-        assumeTFCWorld = builder.apply("assumeTFCWorld").comment(
-            "This will assume in several places, that the world is a TFC world, and modify rendering appropriately. This affects the following changes:",
-            "1. (Requires a world restart) Cloud height is moved from 160 -> 210",
-            "2. The 'horizon height' (where the fog changes from sky to black) is moved from 63 -> 96"
-        ).define("assumeTFCWorld", true);
+        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").comment(
+            "Should TFC forcefully skip the 'Experimental World Generation' warning screen when creating or loading a world?",
+            "Note: this also speeds up loading a world by about 2x."
+        ).define("ignoreExperimentalWorldGenWarning", true);
 
         enableDebug = builder.apply("enableDebug").comment("Enables a series of additional debugging tooltips, displayed information, and logging.").define("enableDebug", () -> !FMLEnvironment.production);
 

@@ -80,8 +80,7 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
     public void onClientUpdate(float[] nutrients)
     {
         System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
-        // Only need to update the average
-        updateAverageNutrients();
+        updateAverageNutrients(); // Only need to update the average
     }
 
     public void addNutrients(FoodRecord data)
@@ -201,5 +200,4 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
             array[i] = operator.apply(i);
         }
     }
-
 }

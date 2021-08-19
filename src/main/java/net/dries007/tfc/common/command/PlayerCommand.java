@@ -18,7 +18,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.food.TFCFoodStats;
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.util.Helpers;
 
 public final class PlayerCommand
@@ -112,9 +112,9 @@ public final class PlayerCommand
 
     private static int queryWater(CommandContext<CommandSourceStack> context, Player player)
     {
-        if (player.getFoodData() instanceof TFCFoodStats)
+        if (player.getFoodData() instanceof TFCFoodData)
         {
-            float water = ((TFCFoodStats) player.getFoodData()).getThirst();
+            float water = ((TFCFoodData) player.getFoodData()).getThirst();
             context.getSource().sendSuccess(new TranslatableComponent(QUERY_WATER, water), true);
             return Command.SINGLE_SUCCESS;
         }
@@ -124,9 +124,9 @@ public final class PlayerCommand
 
     private static int queryNutrition(CommandContext<CommandSourceStack> context, Player player)
     {
-        if (player.getFoodData() instanceof TFCFoodStats)
+        if (player.getFoodData() instanceof TFCFoodData)
         {
-            float[] nutrition = ((TFCFoodStats) player.getFoodData()).getNutrition().getNutrients();
+            float[] nutrition = ((TFCFoodData) player.getFoodData()).getNutrition().getNutrients();
             context.getSource().sendSuccess(new TranslatableComponent(QUERY_NUTRITION), true);
             for (Nutrient nutrient : Nutrient.VALUES)
             {
@@ -164,7 +164,7 @@ public final class PlayerCommand
 
     private static int setWater(Player player, int water, boolean add)
     {
-        if (player.getFoodData() instanceof final TFCFoodStats stats)
+        if (player.getFoodData() instanceof final TFCFoodData stats)
         {
             if (add)
             {

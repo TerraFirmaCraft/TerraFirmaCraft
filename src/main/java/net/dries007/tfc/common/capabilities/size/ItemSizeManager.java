@@ -16,6 +16,7 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -51,9 +52,7 @@ public final class ItemSizeManager
         {
             final ItemStack stack = new ItemStack(item);
             final IItemSize size = get(stack);
-            // todo: mixin accessor
-            item.maxStackSize = size.getWeight(stack).stackSize;
-            //((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
+            ((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
         }
     }
 

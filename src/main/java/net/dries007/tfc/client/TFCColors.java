@@ -9,10 +9,12 @@ package net.dries007.tfc.client;
 import java.util.function.ToIntFunction;
 import javax.annotation.Nullable;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ColorResolver;
+import net.minecraft.world.level.CommonLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
@@ -20,6 +22,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -97,14 +100,14 @@ public final class TFCColors
         GRASS_COLORS_CACHE = grassColorsCache;
     }
 
-    public static int getSkyColor(BlockPos pos)
+    public static int getSkyColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return getClimateColor(SKY_COLORS_CACHE, pos);
+        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(SKY_COLORS_CACHE, pos) : biome.getSkyColor();
     }
 
-    public static int getFogColor(BlockPos pos)
+    public static int getFogColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return getClimateColor(FOG_COLORS_CACHE, pos);
+        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(FOG_COLORS_CACHE, pos) : biome.getFogColor();
     }
 
     public static int getWaterColor(@Nullable BlockPos pos)
@@ -112,9 +115,9 @@ public final class TFCColors
         return pos != null ? getClimateColor(WATER_COLORS_CACHE, pos) : -1;
     }
 
-    public static int getWaterFogColor(BlockPos pos)
+    public static int getWaterFogColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return getClimateColor(WATER_FOG_COLORS_CACHE, pos);
+        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
     public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex)
@@ -173,19 +176,11 @@ public final class TFCColors
         float monthDelta = Calendars.CLIENT.getCalendarFractionOfMonth();
         switch (currentMonth)
         {
-            case FEBRUARY:
-            case MAY:
-            case AUGUST:
-            case NOVEMBER:
-                seasonDelta = 0.5f * monthDelta;
-                break;
-            case MARCH:
-            case JUNE:
-            case SEPTEMBER:
-            case DECEMBER:
+            case FEBRUARY, MAY, AUGUST, NOVEMBER -> seasonDelta = 0.5f * monthDelta;
+            case MARCH, JUNE, SEPTEMBER, DECEMBER -> {
                 season = season.previous();
                 seasonDelta = 0.5f + 0.5f * monthDelta;
-                break;
+            }
         }
 
         // Smoothly transition - based on when the chunk updates - from one season to the next

@@ -6,15 +6,14 @@
 
 package net.dries007.tfc.util.calendar;
 
-import java.util.function.BiConsumer;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
-
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
+import net.dries007.tfc.mixin.accessor.GameRulesAccessor;
+import net.dries007.tfc.mixin.accessor.GameRulesTypeAccessor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantRunnable;
@@ -26,14 +25,10 @@ public class ServerCalendar extends Calendar
 
     private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendars.SERVER::setDoDaylightCycle);
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void setup()
     {
-        // todo: mixins (accessors only)
-        GameRules.Type<?> type = GameRules.GAME_RULE_TYPES.get(GameRules.RULE_DAYLIGHT);
-        type.callback = (BiConsumer) type.callback.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
-        // GameRulesRuleTypeAccessor type = (GameRulesRuleTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
-        // type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
+        final GameRulesTypeAccessor type = (GameRulesTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
+        type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
     }
 
     private int syncCounter;

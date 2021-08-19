@@ -9,18 +9,23 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+
+import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 
 /**
  * Helpers class for working with tree generation
@@ -37,8 +42,7 @@ public final class TreeHelpers
      */
     public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor worldIn, BlockPos pos)
     {
-        // todo: mixin / accessor
-        List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(template.palettes, pos).blocks();
+        final List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((StructureTemplateAccessor) template).accessor$getPalettes(), pos).blocks();
         BoundingBox boundingBox = placementIn.getBoundingBox();
         for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {

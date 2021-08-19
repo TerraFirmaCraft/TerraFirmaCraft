@@ -8,32 +8,20 @@ package net.dries007.tfc.common.fluids;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.shorts.Short2BooleanMap;
-import it.unimi.dsi.fastutil.shorts.Short2BooleanOpenHashMap;
-import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
-import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 
 public abstract class MixingFluid extends ForgeFlowingFluid
 {
@@ -141,7 +129,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                     spreadToSides(worldIn, pos, stateIn, blockStateAt);
                 }
             }
-            else if (stateIn.isSource() || !this.isWaterHole(worldIn, fluidstate.getType(), pos, blockStateAt, posBelow, blockStateBelow))
+            else if (stateIn.isSource() || !((FlowingFluidAccessor) this).invoke$isWaterHole(worldIn, fluidstate.getType(), pos, blockStateAt, posBelow, blockStateBelow))
             {
                 // Source blocks, if they can't spread downwards, will always spread sideways (this happens one tick after they spread downwards)
                 // Flowing blocks will only spread sideways if they can't fall downwards, either to a water hole, or directly falling down (the above if chain)

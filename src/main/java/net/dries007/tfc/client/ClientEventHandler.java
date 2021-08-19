@@ -42,6 +42,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 
 import static net.dries007.tfc.common.types.Wood.BlockType.*;
 
@@ -150,8 +151,7 @@ public final class ClientEventHandler
         BlockEntityRenderers.register(TFCTileEntities.SCRAPING.get(), context -> new ScrapingTileEntityRenderer());
 
         // Misc
-        // todo: mixin accessor
-        // BiomeColors.WATER_COLOR_RESOLVER = TFCColors.FRESH_WATER;
+        BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)

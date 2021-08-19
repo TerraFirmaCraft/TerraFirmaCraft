@@ -45,6 +45,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
+import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.world.biome.BiomeCache;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
@@ -382,8 +384,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Biome biome = this.customBiomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
         for (Supplier<ConfiguredStructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
         {
-            // todo: mixin accessor
-            this.createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, biome);
+            ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, biome);
         }
     }
 
@@ -396,7 +397,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Initialization
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
         // todo: mixin accessor
-        final LevelAccessor level = (LevelAccessor) chunk.levelHeightAccessor;
+        final LevelAccessor level = (LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
         final WorldgenRandom random = new WorldgenRandom();
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();

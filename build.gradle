@@ -1,6 +1,3 @@
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
 buildscript {
     repositories {
         maven {
@@ -22,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    // id 'net.minecrell.licenser' version '0.4.1'
+    id 'org.cadixdev.licenser' version '0.6.1'
     id 'idea'
 }
 
@@ -52,6 +49,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url "https://repo.spongepowered.org/repository/maven-public/"
+        content { includeGroup "org.spongepowered" }
+    }
     /*maven {
         name 'Jitpack' // Used by mcjunitlib
         url 'https://jitpack.io'
@@ -79,7 +80,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            // args '-mixin.config=' + mod_id + '.mixins.json'
+            args '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
             // property 'mixin.env.remapRefMap', 'true'
             // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -94,7 +95,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            // args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
+            args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
             property 'forge.logging.console.level', 'debug'
             // property 'mixin.env.remapRefMap', 'true'
             // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -106,6 +107,17 @@ minecraft {
                 }
             }
         }
+    }
+}
+
+// Hack to fix a FG bug involving loading non-MC libraries
+configurations {
+    library
+    implementation.extendsFrom library
+}
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
     }
 }
 
@@ -123,6 +135,8 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     } */
 
+    library 'org.spongepowered:mixin:0.8.4-SNAPSHOT'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
@@ -135,8 +149,9 @@ processResources {
     if (minifyResources) {
         doLast {
             fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
-                file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-                file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
+                file.text = file.text
+                    .replaceAll('[\n\r\t ]+', '')
+                    .replace('"__comment__":"This file was automatically created by mcresources",', '')
             }
         }
     }
@@ -148,7 +163,7 @@ idea {
     }
 }
 
-/*
+
 // Automatically apply a license header when running checkLicense / updateLicense
 license {
     header = project.file('HEADER.txt')
@@ -158,13 +173,13 @@ license {
     exclude 'net/dries007/tfc/world/noise/FastNoiseLite.java' // Fast Noise
     exclude 'net/dries007/tfc/world/biome/BiomeCache.java' // From Overworld Two
 }
-*/
+
 
 // Puts the mod version into the jar for mods.toml to read from
 jar {
     manifest {
         attributes ([
-                "Implementation-Version": "${version}"
+                "Implementation-Version": "${project.version}"
                 // "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }

@@ -563,6 +563,14 @@ public final class Helpers
     }
 
     /**
+     * @see net.minecraft.core.QuartPos#toBlock(int)
+     */
+    public static BlockPos quartToBlock(int x, int y, int z)
+    {
+        return new BlockPos(x << 2, y << 2, z << 2);
+    }
+
+    /**
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant
      */
