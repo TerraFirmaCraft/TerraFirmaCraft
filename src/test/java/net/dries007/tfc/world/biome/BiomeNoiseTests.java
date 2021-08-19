@@ -8,8 +8,10 @@ package net.dries007.tfc.world.biome;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.world.noise.Noise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class BiomeNoiseTests
 {
     static final Artist.Noise<Noise2D> ARTIST = Artist.<Noise2D>forNoise(noise -> Artist.NoisePixel.coerceFloat(noise::noise)).centerSized(200);

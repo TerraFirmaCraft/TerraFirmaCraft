@@ -40,7 +40,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public static final long UNKNOWN_CREATION_DATE = -1;
 
     // Stacks created at certain times during loading, we infer to be non-decaying ones.
-    private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(false);
+    private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(true);
 
     public static void setNonDecaying(boolean value)
     {

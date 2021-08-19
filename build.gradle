@@ -1,19 +1,16 @@
 buildscript {
     repositories {
-        maven {
-            url = 'https://maven.minecraftforge.net'
-        }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.parchmentmc.org' }
         /*maven {
             url "https://repo.spongepowered.org/repository/maven-public/"
             content { includeGroup "org.spongepowered" }
         }*/
-        maven {
-            url = 'https://sizableshrimp.me/maven'
-        }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
         //classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
@@ -24,6 +21,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // apply plugin: 'org.spongepowered.mixin'
 
 def localProperties = new File('./dev.gradle')

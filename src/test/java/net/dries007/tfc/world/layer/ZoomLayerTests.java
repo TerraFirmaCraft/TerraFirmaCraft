@@ -11,10 +11,12 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.world.layer.framework.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class ZoomLayerTests
 {
     @Test
