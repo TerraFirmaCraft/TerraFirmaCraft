@@ -112,7 +112,7 @@ def generate(rm: ResourceManager):
         'y': height_provider(-56, 126),
         'yScale': uniform_float(0.1, 0.9),
         'lava_level': vertical_anchor(8, 'above_bottom'),
-        'aquifers_enabled': False,
+        'aquifers_enabled': True,
         'horizontal_radius_multiplier': uniform_float(0.7, 1.4),
         'vertical_radius_multiplier': uniform_float(0.8, 1.3),
         'floor_level': uniform_float(-1, -0.4)
@@ -123,7 +123,7 @@ def generate(rm: ResourceManager):
         'y': height_provider(10, 67),
         'yScale': 3,
         'lava_level': vertical_anchor(8, 'above_bottom'),
-        'aquifers_enabled': False,
+        'aquifers_enabled': True,
         'vertical_rotation': uniform_float(-0.125, 0.125),
         'shape': {
             'distance_factor': uniform_float(0.75, 1.0),
@@ -140,7 +140,7 @@ def generate(rm: ResourceManager):
         'y': height_provider(40, 80),
         'yScale': uniform_float(6.0, 8.0),
         'lava_level': vertical_anchor(8, 'above_bottom'),
-        'aquifers_enabled': False,
+        'aquifers_enabled': True,
         'vertical_rotation': uniform_float(-0.125, 0.125),
         'shape': {
             'distance_factor': uniform_float(0.5, 1.0),
@@ -612,13 +612,13 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'giant_kelp'), wg.configure_decorated(random_patch('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', {'type': 'tfc:kelp_tree'}, 2, 10, 20, target='water'), decorate_heightmap('ocean_floor_wg'), 'minecraft:square', decorate_climate(-18, 18, 0, 500, fuzzy=True)))
 
     # Grass-Type / Basic Plants
-    rm.feature(('plant', 'fountain_grass'), wg.configure_decorated(plant_feature('tfc:plant/fountain_grass[age=1,stage=1]', 1, 20, 128), decorate_count(2), 'minecraft:square', decorate_climate(-12, 40, 75, 150)))
+    rm.feature(('plant', 'fountain_grass'), wg.configure_decorated(plant_feature('tfc:plant/fountain_grass[age=1,stage=1]', 1, 15, 128), decorate_count(2), 'minecraft:square', decorate_climate(-12, 40, 75, 150)))
     rm.feature(('plant', 'manatee_grass'), wg.configure_decorated(plant_feature('tfc:plant/manatee_grass[age=1,stage=1,fluid=empty]', 1, 15, 128, water_plant=True), decorate_count(2), 'minecraft:square', decorate_climate(25, 50, 250, 500)))
-    rm.feature(('plant', 'orchard_grass'), wg.configure_decorated(plant_feature('tfc:plant/orchard_grass[age=1,stage=1]', 1, 20), decorate_count(2), 'minecraft:square', decorate_climate(-29, 27, 75, 300)))
-    rm.feature(('plant', 'ryegrass'), wg.configure_decorated(plant_feature('tfc:plant/ryegrass[age=1,stage=1]', 1, 20, 128), decorate_count(2), 'minecraft:square', decorate_climate(-10, 35, 150, 320)))
-    rm.feature(('plant', 'scutch_grass'), wg.configure_decorated(plant_feature('tfc:plant/scutch_grass[age=1,stage=1]', 1, 20, 128), decorate_count(2), 'minecraft:square', decorate_climate(0, 50, 150, 500)))
+    rm.feature(('plant', 'orchard_grass'), wg.configure_decorated(plant_feature('tfc:plant/orchard_grass[age=1,stage=1]', 1, 15), decorate_count(2), 'minecraft:square', decorate_climate(-29, 27, 75, 300)))
+    rm.feature(('plant', 'ryegrass'), wg.configure_decorated(plant_feature('tfc:plant/ryegrass[age=1,stage=1]', 1, 15, 128), decorate_count(2), 'minecraft:square', decorate_climate(-10, 35, 150, 320)))
+    rm.feature(('plant', 'scutch_grass'), wg.configure_decorated(plant_feature('tfc:plant/scutch_grass[age=1,stage=1]', 1, 15, 128), decorate_count(2), 'minecraft:square', decorate_climate(0, 50, 150, 500)))
     rm.feature(('plant', 'star_grass'), wg.configure_decorated(plant_feature('tfc:plant/star_grass[age=1,stage=1,fluid=empty]', 1, 15, 128, water_plant=True), decorate_count(2), 'minecraft:square', decorate_climate(-50, 50, 50, 260)))
-    rm.feature(('plant', 'timothy_grass'), wg.configure_decorated(plant_feature('tfc:plant/timothy_grass[age=1,stage=1]', 1, 20, 128), decorate_count(2), 'minecraft:square', decorate_climate(15, 29, 289, 500)))
+    rm.feature(('plant', 'timothy_grass'), wg.configure_decorated(plant_feature('tfc:plant/timothy_grass[age=1,stage=1]', 1, 15, 128), decorate_count(2), 'minecraft:square', decorate_climate(15, 29, 289, 500)))
 
     # Covers
     rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(15, 35, 300, 500, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
@@ -813,6 +813,8 @@ def vein_salt(vein_name: str) -> int:
 
 
 def plant_feature(block: str, vertical_spread: int, horizontal_spread: int, count: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False):
+    if horizontal_spread > 15:
+        print('fail!', horizontal_spread, block)
     placer = random_property_placer(block, 'age')
     target = 'air'
     if water_plant:

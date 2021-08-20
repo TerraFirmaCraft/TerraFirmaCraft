@@ -21,8 +21,6 @@ public class RockLayerStoneSource implements BaseStoneSource
     @Override
     public BlockState getBaseBlock(int x, int y, int z)
     {
-        // todo: need to debug this further, what is causing this?
-        assert chunkX == ((x >> 4) << 4) && chunkZ == ((z >> 4) << 4) : "Trying to get rock layer from outside this chunk: " + x + ", " + y + ", " + z + " from " + chunkX + ", " + chunkZ;
         return rockData.getRock(chunkX | (x & 15), y, chunkZ | (z & 15)).raw().defaultBlockState();
     }
 }
