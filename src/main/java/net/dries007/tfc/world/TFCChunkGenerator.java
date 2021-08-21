@@ -820,7 +820,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
 
             final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
-            final int maxFilledY = 1 + (int) heightNoiseValue;
+            final int maxFilledY = 1 + Math.max((int) heightNoiseValue, getSeaLevel());
             final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Mth.intFloorDiv(maxFilledY, cellHeight) - minCellY);
             final int maxFilledSectionY = Math.min(chunk.getSectionsCount() - 1, 1 + chunk.getSectionIndex(maxFilledY));
 
