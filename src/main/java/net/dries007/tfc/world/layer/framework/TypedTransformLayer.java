@@ -11,14 +11,15 @@ package net.dries007.tfc.world.layer.framework;
  */
 public interface TypedTransformLayer<A>
 {
-    default TypedAreaFactory<A> apply(AreaContext context, TypedAreaFactory<A> prev)
+    default TypedAreaFactory<A> apply(long seed, TypedAreaFactory<A> prev)
     {
         return () -> {
+            final AreaContext context = new AreaContext(seed);
             final TypedArea<A> prevArea = prev.get();
-            return context.createTypedArea((x, z) -> {
-                context.initSeed(x, z);
+            return new TypedArea<>((x, z) -> {
+                context.setSeed(x, z);
                 return apply(context, prevArea, x, z);
-            });
+            }, 1024);
         };
     }
 

@@ -12,12 +12,15 @@ package net.dries007.tfc.world.layer.framework;
  */
 public interface SourceLayer
 {
-    default AreaFactory apply(AreaContext context)
+    default AreaFactory apply(long seed)
     {
-        return () -> context.createArea((x, z) -> {
-            context.initSeed(x, z);
-            return apply(context, x, z);
-        });
+        return () -> {
+            final AreaContext context = new AreaContext(seed);
+            return new Area((x, z) -> {
+                context.setSeed(x, z);
+                return apply(context, x, z);
+            }, 1024);
+        };
     }
 
     int apply(AreaContext context, int x, int z);

@@ -35,15 +35,15 @@ public class TypedZoomLayerTests
         final SourceLayer source = (sourceContext, x, z) -> sourceContext.nextInt(5);
         final TypedSourceLayer<Integer> typedSource = (sourceContext, x, z) -> sourceContext.nextInt(5);
 
-        AreaContext context = new AreaContext(random.nextLong());
-        AreaFactory layer = source.apply(context);
-        TypedAreaFactory<Integer> typedLayer = typedSource.apply(context);
+        long contextSeed = random.nextLong();
+        AreaFactory layer = source.apply(contextSeed);
+        TypedAreaFactory<Integer> typedLayer = typedSource.apply(contextSeed);
 
         for (int i = 1; i <= 5; i++)
         {
-            context = new AreaContext(random.nextLong());
-            layer = zoom.apply(context, layer);
-            typedLayer = typedZoom.apply(context, typedLayer);
+            contextSeed = random.nextLong();
+            layer = zoom.apply(contextSeed, layer);
+            typedLayer = typedZoom.apply(contextSeed, typedLayer);
         }
 
         Area area = layer.get();

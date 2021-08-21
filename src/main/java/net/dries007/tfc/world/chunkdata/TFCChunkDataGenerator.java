@@ -14,8 +14,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -29,13 +29,13 @@ import net.dries007.tfc.world.settings.RockSettings;
  */
 public class TFCChunkDataGenerator implements ChunkDataGenerator
 {
-    private static LayerFactory<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
+    private static ConcurrentArea<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
     {
-        return new LayerFactory<>(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
+        return new ConcurrentArea<>(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
     }
 
-    private final LayerFactory<RockSettings> bottomRockLayer, middleRockLayer, topRockLayer;
-    private final LayerFactory<ForestType> forestTypeLayer;
+    private final ConcurrentArea<RockSettings> bottomRockLayer, middleRockLayer, topRockLayer;
+    private final ConcurrentArea<ForestType> forestTypeLayer;
 
     private final Noise2D temperatureNoise;
     private final Noise2D rainfallNoise;
@@ -43,7 +43,7 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
     private final Noise2D forestWeirdnessNoise;
     private final Noise2D forestDensityNoise;
 
-    private final LayerFactory<PlateTectonicsClassification> plateTectonicsInfo;
+    private final ConcurrentArea<PlateTectonicsClassification> plateTectonicsInfo;
 
     public TFCChunkDataGenerator(long worldSeed, RockLayerSettings settings)
     {
@@ -72,12 +72,12 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
-        forestTypeLayer = new LayerFactory<>(TFCLayerUtil.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
+        forestTypeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
         forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
         forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
         // Plate Tectonics
-        plateTectonicsInfo = new LayerFactory<>(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed), PlateTectonicsClassification::valueOf);
+        plateTectonicsInfo = new ConcurrentArea<>(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed), PlateTectonicsClassification::valueOf);
     }
 
     @Override

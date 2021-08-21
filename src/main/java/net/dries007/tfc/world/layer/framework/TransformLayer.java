@@ -12,14 +12,15 @@ package net.dries007.tfc.world.layer.framework;
  */
 public interface TransformLayer
 {
-    default AreaFactory apply(AreaContext context, AreaFactory prev)
+    default AreaFactory apply(long seed, AreaFactory prev)
     {
         return () -> {
+            final AreaContext context = new AreaContext(seed);
             final Area prevArea = prev.get();
-            return context.createArea((x, z) -> {
-                context.initSeed(x, z);
+            return new Area((x, z) -> {
+                context.setSeed(x, z);
                 return apply(context, prevArea, x, z);
-            });
+            }, 1024);
         };
     }
 

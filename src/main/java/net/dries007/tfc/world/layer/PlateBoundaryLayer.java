@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.world.layer;
 
-import net.dries007.tfc.world.layer.framework.AreaContext;
-import net.dries007.tfc.world.layer.framework.AreaFactory;
-import net.dries007.tfc.world.layer.framework.TypedArea;
-import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.layer.framework.*;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
@@ -22,14 +19,15 @@ public enum PlateBoundaryLayer
     public static final float HIGH_ELEVATION = 0.66f;
     public static final float MID_ELEVATION = 0.33f;
 
-    public AreaFactory run(AreaContext context, TypedAreaFactory<Plate> plateLayer)
+    public AreaFactory apply(long seed, TypedAreaFactory<Plate> plateLayer)
     {
         return () -> {
+            final AreaContext context = new AreaContext(seed);
             final TypedArea<Plate> area = plateLayer.get();
-            return context.createArea((x, z) -> {
-                context.initSeed(x, z);
+            return new Area((x, z) -> {
+                context.setSeed(x, z);
                 return apply(context, area, x, z);
-            });
+            }, 1024);
         };
     }
 

@@ -8,13 +8,17 @@ package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
 
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
  * A caching wrapper around a {@link AreaSource}. Created from the result of a stack of layers.
+ * Note that this wrapper is not synchronized, meaning that access from multiple threads might result in cache corruption
+ * Additionally - and more importantly - is that most {@link AreaSource}s which use a {@link AreaContext} will throw on concurrent modification to the underlying random instance.
+ *
+ * @see ConcurrentArea
  */
 public class Area
 {

@@ -4,24 +4,20 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.layer;
+package net.dries007.tfc.world.layer.framework;
 
 import java.util.function.IntFunction;
 
-import net.dries007.tfc.world.layer.framework.Area;
-import net.dries007.tfc.world.layer.framework.AreaFactory;
-
-
-public class LayerFactory<T>
+/**
+ * A concurrent wrapper around {@link Area} via the underlying {@link AreaFactory}.
+ * Also supports simple mapping of the output to another type.
+ */
+public class ConcurrentArea<T>
 {
-    /**
-     * Uses a thread local area, as the underlying area is not synchronized.
-     * This is an optimization adapted from Lithium, implementing a much better cache for the LazyArea underneath
-     */
     private final ThreadLocal<Area> area;
     private final IntFunction<T> mappingFunction;
 
-    public LayerFactory(AreaFactory factory, IntFunction<T> mappingFunction)
+    public ConcurrentArea(AreaFactory factory, IntFunction<T> mappingFunction)
     {
         this.area = ThreadLocal.withInitial(factory);
         this.mappingFunction = mappingFunction;

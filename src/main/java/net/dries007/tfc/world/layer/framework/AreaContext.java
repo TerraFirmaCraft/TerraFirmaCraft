@@ -6,39 +6,23 @@
 
 package net.dries007.tfc.world.layer.framework;
 
-/**
- * A context object used in layer creation.
- * Provides randomness seeded at each position for use in layers.
- *
- * Parts of this class are modified from {@link java.util.Random}
- */
-public class AreaContext
-{
-    private static final long multiplier = 0x5DEECE66DL;
-    private static final long addend = 0xBL;
-    private static final long mask = (1L << 48) - 1;
+import net.minecraft.world.level.levelgen.SimpleRandomSource;
 
+import it.unimi.dsi.fastutil.HashCommon;
+
+public class AreaContext extends SimpleRandomSource
+{
     private final long seed;
-    private long value;
 
     public AreaContext(long seed)
     {
-        this.seed = seed;
+        super(seed);
+        this.seed = HashCommon.murmurHash3(seed);
     }
 
-    public Area createArea(AreaSource source)
+    public void setSeed(long x, long z)
     {
-        return new Area(source, 1024);
-    }
-
-    public <T> TypedArea<T> createTypedArea(TypedAreaSource<T> source)
-    {
-        return new TypedArea<>(source, 1024);
-    }
-
-    public void initSeed(long x, long z)
-    {
-        this.value = (x * 26394813L) ^ (z * 8236491231L) ^ seed;
+        setSeed((x * 26394813L) ^ (z * 8236491231L) ^ seed);
     }
 
     public int choose(int first, int second)
@@ -71,28 +55,5 @@ public class AreaContext
                 case 2 -> third;
                 default -> fourth;
             };
-    }
-
-    public int nextInt()
-    {
-        return next(32);
-    }
-
-    public int nextInt(int bound)
-    {
-        int r = next(31);
-        int m = bound - 1;
-        if ((bound & m) == 0)  // i.e., bound is a power of 2
-        {
-            return (int) ((bound * (long) r) >> 31);
-        }
-        for (int u = r; u - (r = u % bound) + m < 0; u = next(31)) ;
-        return r;
-    }
-
-    private int next(int bits)
-    {
-        value = (value * multiplier + addend) & mask;
-        return (int) (value >>> (48 - bits));
     }
 }

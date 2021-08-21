@@ -19,7 +19,7 @@ public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
         final int offsetX = x & 1, offsetZ = z & 1;
         final A northWest = area.get(parentX, parentZ);
 
-        context.initSeed(parentX, parentZ);
+        context.setSeed(parentX, parentZ);
         if (offsetX == 0 && offsetZ == 0)
         {
             return northWest;

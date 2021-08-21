@@ -25,8 +25,8 @@ import net.dries007.tfc.world.Debug;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
-import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -55,7 +55,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     private final ClimateSettings climateSettings;
     private final Registry<Biome> biomeRegistry;
 
-    private final LayerFactory<BiomeVariants> biomeLayer;
+    private final ConcurrentArea<BiomeVariants> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
 
     public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
@@ -71,7 +71,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.biomeRegistry = biomeRegistry;
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
 
-        this.biomeLayer = new LayerFactory<>(TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
     }
 
     @Override

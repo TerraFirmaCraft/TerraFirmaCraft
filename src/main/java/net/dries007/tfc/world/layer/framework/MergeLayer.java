@@ -11,15 +11,16 @@ package net.dries007.tfc.world.layer.framework;
  */
 public interface MergeLayer
 {
-    default AreaFactory apply(AreaContext context, AreaFactory first, AreaFactory second)
+    default AreaFactory apply(long seed, AreaFactory first, AreaFactory second)
     {
         return () -> {
+            final AreaContext context = new AreaContext(seed);
             final Area firstArea = first.get();
             final Area secondArea = second.get();
-            return context.createArea((x, z) -> {
-                context.initSeed(x, z);
+            return new Area((x, z) -> {
+                context.setSeed(x, z);
                 return apply(context, firstArea, secondArea, x, z);
-            });
+            }, 1024);
         };
     }
 

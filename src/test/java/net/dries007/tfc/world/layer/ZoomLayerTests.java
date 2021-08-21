@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.layer;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.world.layer.framework.*;
@@ -57,19 +56,18 @@ public class ZoomLayerTests
     {
         final long seed = System.currentTimeMillis();
         final Random random = new Random(seed);
-        final Supplier<AreaContext> context = () -> new AreaContext(random.nextLong());
         final SourceLayer source = (sourceContext, x, z) -> sourceContext.nextInt(5);
         final Artist.Typed<AreaFactory, Integer> artist = Artist.<AreaFactory, Integer>forMap(layer -> {
             final Area area = layer.get();
             return Artist.Pixel.coerceInt(area::get);
         }).centerSized(64).color(i -> Artist.Colors.COLORS[i]);
 
-        AreaFactory layer = source.apply(context.get());
+        AreaFactory layer = source.apply(random.nextLong());
         artist.draw(name + "_0", layer);
 
         for (int i = 1; i <= 5; i++)
         {
-            layer = zoom.apply(context.get(), layer);
+            layer = zoom.apply(random.nextLong(), layer);
             artist.draw(name + "_" + i, layer);
         }
     }

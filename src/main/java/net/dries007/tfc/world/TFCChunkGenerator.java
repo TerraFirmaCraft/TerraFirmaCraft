@@ -204,7 +204,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final NoodleCavifier noodleCavifier;
 
     private final ThreadLocal<BiomeCache> biomeCache;
-    private final AquiferCache aquiferCache;
+    private final ConcurrentChunkPosBasedCache<AquiferExtension> aquiferCache;
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
 
@@ -251,7 +251,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.noodleCavifier = new NoodleCavifier(seed);
 
         this.biomeCache = ThreadLocal.withInitial(() -> new BiomeCache(8192, biomeSource));
-        this.aquiferCache = new AquiferCache(256);
+        this.aquiferCache = new ConcurrentChunkPosBasedCache<>(256);
     }
 
     @Override
@@ -267,20 +267,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             cachedSettings = settings.get();
         }
         return cachedSettings;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    public Aquifer getAquifer(ChunkPos pos, int minCellY, int noiseCellCountY)
-    {
-        // todo: cache seems to be breaking things? how?
-        Aquifer aquifer = null; // aquiferCache.getIfPresent(pos.x, pos.z);
-        if (aquifer == null)
-        {
-            // The aquifer never uses the sampler field, and we don't either.
-            aquifer = Aquifer.create(pos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), null, minCellY * cellHeight, noiseCellCountY * cellHeight);
-            // aquiferCache.set(pos.x, pos.z, aquifer);
-        }
-        return aquifer;
     }
 
     public BaseStoneSource getBaseStoneSource(ChunkPos pos)
@@ -351,7 +337,18 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     protected Aquifer createAquifer(ChunkAccess chunk)
     {
-        return super.createAquifer(chunk);
+        ChunkPos pos = chunk.getPos();
+        AquiferExtension aquifer = null; // aquiferCache.getIfPresent(pos.x, pos.z);
+        if (aquifer == null)
+        {
+            aquifer = new TFCAquifer(pos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), minCellY * cellHeight, cellCountY * cellHeight);
+            // aquiferCache.set(pos.x, pos.z, aquifer);
+        }
+        else
+        {
+            assert aquifer.getPos().x == pos.x && aquifer.getPos().z == pos.z : "Aquifer cache borked, expected " + pos + " but got " + aquifer.getPos();
+        }
+        return aquifer;
     }
 
     /**
@@ -396,7 +393,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     {
         // Initialization
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
-        // todo: mixin accessor
         final LevelAccessor level = (LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
         final WorldgenRandom random = new WorldgenRandom();
@@ -429,7 +425,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeAccessor);
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
-        final Aquifer aquifer = getAquifer(chunkPos, minCellY, cellCountY);
+        final Aquifer aquifer = createAquifer(chunk);
         final BaseStoneSource stoneSource = getBaseStoneSource(chunkPos);
 
         helper.fillFromNoise(aquifer, stoneSource);
@@ -455,7 +451,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             Debug.slopeVisualization(chunk, slopeMap, chunkX, chunkZ, this::sampleSlope);
         }
 
-        // todo: multithreading?
         return CompletableFuture.completedFuture(chunk);
     }
 

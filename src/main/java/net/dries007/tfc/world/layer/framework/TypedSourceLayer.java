@@ -11,12 +11,15 @@ package net.dries007.tfc.world.layer.framework;
  */
 public interface TypedSourceLayer<A>
 {
-    default TypedAreaFactory<A> apply(AreaContext context)
+    default TypedAreaFactory<A> apply(long seed)
     {
-        return () -> context.createTypedArea((x, z) -> {
-            context.initSeed(x, z);
-            return apply(context, x, z);
-        });
+        return () -> {
+            final AreaContext context = new AreaContext(seed);
+            return new TypedArea<>((x, z) -> {
+                context.setSeed(x, z);
+                return apply(context, x, z);
+            }, 1024);
+        };
     }
 
     A apply(AreaContext context, int x, int z);

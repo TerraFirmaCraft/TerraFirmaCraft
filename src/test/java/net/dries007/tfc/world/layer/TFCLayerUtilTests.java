@@ -21,10 +21,12 @@ import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
+@Disabled
 public class TFCLayerUtilTests
 {
     // These inner lambdas could be shortened to factory.get()::get, but javac gets confused with the type parameters and fails to compile, even though IDEA thinks it's valid.

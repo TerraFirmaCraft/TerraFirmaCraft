@@ -31,11 +31,14 @@ public final class Debug
     public static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
     /* Only generate a single biome in the world */
-    public static final boolean SINGLE_BIOME = true;
+    public static final boolean SINGLE_BIOME = false;
     public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.MOUNTAINS;
 
     /* Generate biomes in stripes, showing all biomes */
     public static final boolean STRIPE_BIOMES = false;
+
+    /* Disable DataFixers from loading, saves time in dev */
+    public static final boolean DISABLE_DFU = false;
 
     public static BiomeVariants stripeBiome(int x)
     {

@@ -413,21 +413,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
     }
 
-    private static final class Local<T>
+    private record Local<T>(int x, int y, T value)
     {
         public static <A, B> Function<Local<A>, Local<B>> map(Function<A, B> transformer)
         {
             return loc -> new Local<>(loc.x, loc.y, transformer.apply(loc.value));
-        }
-
-        final int x, y;
-        final T value;
-
-        private Local(int x, int y, T value)
-        {
-            this.x = x;
-            this.y = y;
-            this.value = value;
         }
     }
 }
