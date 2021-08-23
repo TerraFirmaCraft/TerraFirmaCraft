@@ -19,6 +19,8 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
+import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
+
 public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
 {
     private BlockState[] sandLayers;
@@ -63,7 +65,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderB
             sandLayers[i] = state ? redSand : brownSand;
         }
 
-        heightVariationNoise = new OpenSimplex2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
+        heightVariationNoise = new OpenSimplex2D(seed).octaves(2).scaled(SEA_LEVEL_Y + 14, SEA_LEVEL_Y + 18).spread(0.5f);
     }
 
     private void buildSandySurface(SurfaceBuilderContext context, int x, int z, int startHeight, int minSurfaceHeight, float rainfall, float temperature, boolean saltWater)

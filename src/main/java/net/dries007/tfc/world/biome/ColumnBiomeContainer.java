@@ -7,14 +7,13 @@
 package net.dries007.tfc.world.biome;
 
 import net.minecraft.core.IdMap;
-import net.minecraft.Util;
 import net.minecraft.core.QuartPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 
 /**
  * An optimized {@link ChunkBiomeContainer} for world generation where biomes are not actually 3D
@@ -23,34 +22,35 @@ import net.minecraft.world.level.dimension.DimensionType;
 public class ColumnBiomeContainer extends ChunkBiomeContainer
 {
     // Copied from ChunkBiomeContainer
-    public static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2; // 2
+    public static final int WIDTH_BITS = Mth.ceillog2(16) - 2; // 2
     public static final int HORIZONTAL_BITS = WIDTH_BITS + WIDTH_BITS; // 4
+    public static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1; // 0b11
 
-    public static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
-    public static final int MAX_SIZE = 1 << WIDTH_BITS + WIDTH_BITS + DimensionType.BITS_FOR_Y - 2;
-
-    public ColumnBiomeContainer(IdMap<Biome> biomeIdRegistry, LevelHeightAccessor level, ChunkPos chunkPos, BiomeSource biomeSource)
+    private static Biome[] sampleBiomes(LevelHeightAccessor level, ChunkPos chunkPos, BiomeSource source)
     {
-        // Use Util.make to pass the already initialized biomes array into the correct constructor
-        // This copies the initialization except it only queries the biome provider once per column, saving 98% of the biome generation calls
-        super(biomeIdRegistry, level, Util.make(() -> {
-            Biome[] biomes = new Biome[MAX_SIZE];
-            int biomeCoordX = chunkPos.getMinBlockX() >> 2;
-            int biomeCoordZ = chunkPos.getMinBlockZ() >> 2;
-            int quartMinY = QuartPos.fromBlock(level.getMinBuildHeight());
-            int quartHeight = QuartPos.fromBlock(level.getHeight()) - 1;
+        final int quartX = QuartPos.fromBlock(chunkPos.getMinBlockX());
+        final int quartY = QuartPos.fromBlock(level.getMinBuildHeight());
+        final int quartZ = QuartPos.fromBlock(chunkPos.getMinBlockZ());
 
-            for (int index = 0; index < (1 << HORIZONTAL_BITS); ++index)
+        final int height = (level.getHeight() + 4 - 1) / 4;
+        final Biome[] biomes = new Biome[(1 << HORIZONTAL_BITS) * height];
+
+        for (int i = 0; i < (1 << HORIZONTAL_BITS); ++i)
+        {
+            final int x = quartX + (i & HORIZONTAL_MASK);
+            final int z = quartZ + ((i >> WIDTH_BITS) & HORIZONTAL_MASK);
+            final Biome biome = source.getNoiseBiome(x, quartY, z);
+            for (int dy = 0; dy < height; dy++)
             {
-                int x = index & HORIZONTAL_MASK;
-                int z = (index >> WIDTH_BITS) & HORIZONTAL_MASK;
-                Biome columnBiome = biomeSource.getNoiseBiome(biomeCoordX + x, 0, biomeCoordZ + z);
-                for (int y = 0; y <= quartHeight; y++)
-                {
-                    biomes[index | (QuartPos.toBlock(y) - quartMinY)] = columnBiome;
-                }
+                biomes[i | (dy << HORIZONTAL_BITS)] = biome;
             }
-            return biomes;
-        }));
+        }
+
+        return biomes;
+    }
+
+    public ColumnBiomeContainer(IdMap<Biome> biomeIdRegistry, LevelHeightAccessor level, ChunkPos chunkPos, BiomeSource source)
+    {
+        super(biomeIdRegistry, level, sampleBiomes(level, chunkPos, source));
     }
 }

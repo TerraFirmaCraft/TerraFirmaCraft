@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world;
+package net.dries007.tfc.util;
 
 import java.util.List;
 
@@ -14,16 +14,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 
 /**
- * A collection of debug world generation things
+ * A collection of debug-related features and conditions
  */
 @SuppressWarnings("unused")
 public final class Debug
 {
+    /**
+     * Enable various debug features.
+     * By default, this is only enabled when running in IDE.
+     */
+    public static final boolean DEBUG = !FMLEnvironment.production;
+
     /* Toggle to only generate biomes with normal/normal climates. This can assist when debugging specific biomes, as /locatebiome works much more readily. */
     public static final boolean ONLY_NORMAL_NORMAL_CLIMATES = false;
 
@@ -31,14 +38,14 @@ public final class Debug
     public static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
     /* Only generate a single biome in the world */
-    public static final boolean SINGLE_BIOME = false;
-    public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.MOUNTAINS;
+    public static final boolean SINGLE_BIOME = true;
+    public static final BiomeVariants SINGLE_BIOME_BIOME = TFCBiomes.PLAINS;
 
     /* Generate biomes in stripes, showing all biomes */
     public static final boolean STRIPE_BIOMES = false;
 
     /* Disable DataFixers from loading, saves time in dev */
-    public static final boolean DISABLE_DFU = false;
+    public static final boolean DISABLE_DFU = DEBUG;
 
     public static BiomeVariants stripeBiome(int x)
     {
@@ -80,7 +87,7 @@ public final class Debug
     }
 
     @FunctionalInterface
-    interface SlopeFunction
+    public interface SlopeFunction
     {
         double sampleSlope(double[] slopeMap, int x, int z);
     }

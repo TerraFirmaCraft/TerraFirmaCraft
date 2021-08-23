@@ -280,7 +280,7 @@ public class TFCLayerUtil
         layer = ForestRandomizeSmallLayer.INSTANCE.apply(random.nextLong(), layer);
         artist.draw("forest", 8, layer);
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
             layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
             artist.draw("forest", 9 + i, layer);

@@ -127,6 +127,8 @@ public final class TerraFirmaCraft
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
+
+        TFCTileEntities.validateBlockEntities();
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

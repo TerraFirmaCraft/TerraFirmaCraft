@@ -6,25 +6,30 @@
 
 package net.dries007.tfc.common.tileentity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.BiFunction;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.core.BlockPos;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -53,6 +58,55 @@ public class TFCTileEntities
     public static final RegistryObject<BlockEntityType<BerryBushTileEntity>> BERRY_BUSH = register("berry_bush", BerryBushTileEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     public static final RegistryObject<BlockEntityType<FruitTreeLeavesTileEntity>> FRUIT_TREE = register("fruit_tree", FruitTreeLeavesTileEntity::new, TFCBlocks.FRUIT_TREE_LEAVES.values().stream());
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    public static void validateBlockEntities()
+    {
+        if (!Debug.DEBUG) return;
+
+        final List<Block> fbeButNoEbe = new ArrayList<>(),
+            ebeButNoFbe = new ArrayList<>(),
+            ebButNoEbe = new ArrayList<>();
+        ForgeRegistries.BLOCKS.getValues()
+            .stream()
+            .filter(r -> {
+                assert r.getRegistryName() != null;
+                return r.getRegistryName().getNamespace().equals("tfc");
+            })
+            .forEach(b -> {
+                if (b instanceof IForgeBlockExtension ex && ex.getForgeProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
+                {
+                    fbeButNoEbe.add(b);
+                }
+                if (b instanceof EntityBlockExtension && (!(b instanceof IForgeBlockExtension ex) || !ex.getForgeProperties().hasBlockEntity()))
+                {
+                    ebeButNoFbe.add(b);
+                }
+                if (b instanceof EntityBlock && !(b instanceof EntityBlockExtension))
+                {
+                    ebButNoEbe.add(b);
+                }
+            });
+
+        if (logValidationErrors("Blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe)
+            | logValidationErrors("Blocks found that implement EntityBlockExtension but do not declare a block entity in IForgeBlockExtension", ebeButNoFbe)
+            | logValidationErrors("Blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe))
+        {
+            throw new AssertionError("Errors in declared block entities, fix them!");
+        }
+    }
+
+    private static boolean logValidationErrors(String error, List<Block> blocks)
+    {
+        if (!blocks.isEmpty())
+        {
+            LOGGER.error(error);
+            blocks.forEach(b -> LOGGER.error("{} of {}", b.getRegistryName(), b.getClass().getSimpleName()));
+            return true;
+        }
+        return false;
+    }
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)

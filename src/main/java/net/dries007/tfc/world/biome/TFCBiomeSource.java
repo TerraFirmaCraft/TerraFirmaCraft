@@ -20,8 +20,8 @@ import net.minecraft.world.level.biome.BiomeSource;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.Debug;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;

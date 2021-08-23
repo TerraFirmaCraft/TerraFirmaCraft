@@ -56,12 +56,11 @@ public class TFCLayerUtilTests
         IArtist<AreaFactory> layerArtist = (name, index, instance) -> {
             switch (name)
             {
-                case "plate_boundary":
+                case "plate_boundary" -> {
                     AREA.centerSized(20).color(this::plateBoundaryColor).draw(name + '_' + index, instance);
                     AREA.centerSized(200).draw(name + '_' + index + "_wide", instance);
-                    break;
-                case "river":
-                {
+                }
+                case "river" -> {
                     int zoom;
                     if (index <= 5) zoom = index - 1;
                     else if (index <= 7) zoom = 4;
@@ -70,10 +69,8 @@ public class TFCLayerUtilTests
                     if (index <= 5)
                         FLOAT_AREA.centerSized((1 << zoom) * 40).color(Artist.Colors.LINEAR_BLUE_RED).draw(name + '_' + index, instance);
                     else AREA.centerSized((1 << zoom) * 10).color(this::riverColor).draw(name + '_' + index, instance);
-                    break;
                 }
-                case "lake":
-                {
+                case "lake" -> {
                     int zoom;
                     if (index <= 1) zoom = 0;
                     else if (index <= 3) zoom = 1;
@@ -81,10 +78,8 @@ public class TFCLayerUtilTests
                     else zoom = 3;
 
                     AREA.centerSized((1 << zoom) * 40).color(this::lakeColor).draw(name + '_' + index, instance);
-                    break;
                 }
-                case "biomes":
-                {
+                case "biomes" -> {
                     int zoom;
                     if (index <= 2) zoom = 0;
                     else if (index <= 5) zoom = 1;
@@ -94,7 +89,6 @@ public class TFCLayerUtilTests
                     else zoom = 8;
 
                     AREA.color(this::biomeColor).center((1 << zoom) * 16).size(Math.min(1024, (1 << zoom) * 16)).draw(name + '_' + index, instance);
-                    break;
                 }
             }
         };

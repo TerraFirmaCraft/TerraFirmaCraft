@@ -47,8 +47,9 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
-import net.dries007.tfc.world.biome.BiomeCache;
+import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.ColumnBiomeContainer;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.CarverHelpers;
@@ -203,7 +204,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final Cavifier cavifier;
     private final NoodleCavifier noodleCavifier;
 
-    private final ThreadLocal<BiomeCache> biomeCache;
     private final ConcurrentChunkPosBasedCache<AquiferExtension> aquiferCache;
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
@@ -250,7 +250,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.cavifier = new Cavifier(random, noiseSettings.minY() / this.cellHeight);
         this.noodleCavifier = new NoodleCavifier(seed);
 
-        this.biomeCache = ThreadLocal.withInitial(() -> new BiomeCache(8192, biomeSource));
         this.aquiferCache = new ConcurrentChunkPosBasedCache<>(256);
     }
 
@@ -330,19 +329,18 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
     {
-        // todo: the column one seems to be a bit broken?
-        ((ProtoChunk) chunk).setBiomes(new ChunkBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
+        ((ProtoChunk) chunk).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
     }
 
     @Override
     protected Aquifer createAquifer(ChunkAccess chunk)
     {
         ChunkPos pos = chunk.getPos();
-        AquiferExtension aquifer = null; // aquiferCache.getIfPresent(pos.x, pos.z);
+        AquiferExtension aquifer = aquiferCache.getIfPresent(pos.x, pos.z);
         if (aquifer == null)
         {
             aquifer = new TFCAquifer(pos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), minCellY * cellHeight, cellCountY * cellHeight);
-            // aquiferCache.set(pos.x, pos.z, aquifer);
+            aquiferCache.set(pos.x, pos.z, aquifer);
         }
         else
         {
@@ -404,16 +402,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final double[] sampledHeightMap = new double[7 * 7];
         final int[] surfaceHeightMap = new int[16 * 16];
 
-        final BiomeCache localBiomeCache = biomeCache.get();
         final ChunkBiomeContainer biomeContainer = chunk.getBiomes();
         assert biomeContainer != null;
         final Sampler<Biome> biomeAccessor = (x, z) -> {
-            // First check the local chunk, if not then fallback to the cache
+            // Use biomes from the local chunk if possible
             if ((x >> 4) == chunkPos.x && (z >> 4) == chunkPos.z)
             {
                 return biomeContainer.getNoiseBiome(x >> 2, 0, z >> 2);
             }
-            return localBiomeCache.get(x >> 2, z >> 2);
+            return biomeSource.getNoiseBiome(x >> 2, 0, z >> 2);
         };
 
         final RockData rockData = chunkDataProvider.get(chunkPos).getRockDataOrThrow();

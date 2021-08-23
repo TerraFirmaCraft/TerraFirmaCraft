@@ -27,7 +27,7 @@ public class AreaContext extends SimpleRandomSource
 
     public int choose(int first, int second)
     {
-        return nextInt(2) == 0 ? first : second;
+        return nextBoolean() ? first : second;
     }
 
     public int choose(int first, int second, int third, int fourth)
@@ -43,7 +43,7 @@ public class AreaContext extends SimpleRandomSource
 
     public <A> A choose(A first, A second)
     {
-        return nextInt(2) == 0 ? first : second;
+        return nextBoolean() ? first : second;
     }
 
     public <A> A choose(A first, A second, A third, A fourth)

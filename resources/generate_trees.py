@@ -5,7 +5,7 @@ import os
 from typing import Optional
 
 from nbtlib import nbt
-from nbtlib.tag import String
+from nbtlib.tag import String, Int
 
 TREES = {
     'acacia': 'acacia',
@@ -136,6 +136,9 @@ def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wo
         else:
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
+    # Hack the data version, to avoid needing to run DFU on anything
+    f.root['DataVersion'] = Int(2730)
+
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
@@ -153,7 +156,7 @@ def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wo
         else:
             Count.NEW += 1
         f.save(result_dir + dest + '.nbt')
-    except Exception:
+    except:
         Count.ERRORS += 1
 
 
