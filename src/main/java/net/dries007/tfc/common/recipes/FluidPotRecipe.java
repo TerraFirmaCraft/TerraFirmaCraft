@@ -43,6 +43,9 @@ public class FluidPotRecipe extends PotRecipe
         return TFCRecipeSerializers.POT_FLUID.get();
     }
 
+    /**
+     * Has no persistent output, thus uses the {@link PotRecipe#EMPTY} output type.
+     */
     static class FluidOutput implements Output
     {
         private final FluidStack stack;

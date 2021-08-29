@@ -24,8 +24,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.*;
-import net.dries007.tfc.common.types.FuelManager;
-import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
@@ -54,10 +52,13 @@ public enum CacheInvalidationListener implements PreparableReloadListener
             ScrapingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.SCRAPING));
 
             HeatCapability.CACHE.reload(HeatCapability.MANAGER.getValues());
-            MetalItemManager.CACHE.reload(MetalItemManager.MANAGER.getValues());
-            FuelManager.CACHE.reload(FuelManager.MANAGER.getValues());
             FoodCapability.CACHE.reload(FoodCapability.MANAGER.getValues());
+
             ItemSizeManager.CACHE.reload(ItemSizeManager.MANAGER.getValues());
+
+            MetalItem.CACHE.reload(MetalItem.MANAGER.getValues());
+            Fuel.CACHE.reload(Fuel.MANAGER.getValues());
+            Drinkable.CACHE.reload(Drinkable.MANAGER.getValues());
 
             ItemSizeManager.resetItemSizes();
             InteractionManager.reload();

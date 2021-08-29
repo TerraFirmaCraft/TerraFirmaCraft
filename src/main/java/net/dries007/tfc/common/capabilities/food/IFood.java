@@ -202,10 +202,9 @@ public interface IFood extends INBTSerializable<CompoundTag>
                     any = true;
                 }
 
-                final float[] nutrients = data.getNutrients();
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    float value = nutrients[nutrient.ordinal()];
+                    float value = data.getNutrient(nutrient);
                     if (value > 0)
                     {
                         text.add(new TextComponent(" - ")

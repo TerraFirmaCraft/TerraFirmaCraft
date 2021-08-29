@@ -7,6 +7,13 @@
 package net.dries007.tfc.network;
 
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.mutable.MutableInt;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
@@ -17,6 +24,7 @@ public class PacketHandler
 {
     private static final String VERSION = Integer.toString(1);
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
+    private static final MutableInt ID = new MutableInt(0);
 
     public static void send(PacketDistributor.PacketTarget target, Object message)
     {
@@ -28,18 +36,36 @@ public class PacketHandler
         return CHANNEL;
     }
 
-    @SuppressWarnings("UnusedAssignment")
     public static void init()
     {
-        int id = 0;
+        // Server -> Client
+        register(ChunkWatchPacket.class, ChunkWatchPacket::encode, ChunkWatchPacket::new, ChunkWatchPacket::handle);
+        register(ChunkUnwatchPacket.class, ChunkUnwatchPacket::encode, ChunkUnwatchPacket::new, ChunkUnwatchPacket::handle);
+        register(CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
+        register(FoodDataReplacePacket.class, FoodDataReplacePacket::new, FoodDataReplacePacket::handle);
+        register(FoodDataUpdatePacket.class, FoodDataUpdatePacket::encode, FoodDataUpdatePacket::new, FoodDataUpdatePacket::handle);
+        register(PlayerDataUpdatePacket.class, PlayerDataUpdatePacket::encode, PlayerDataUpdatePacket::new, PlayerDataUpdatePacket::handle);
 
-        CHANNEL.registerMessage(id++, ChunkWatchPacket.class, ChunkWatchPacket::encode, ChunkWatchPacket::new, ChunkWatchPacket::handle);
-        CHANNEL.registerMessage(id++, ChunkUnwatchPacket.class, ChunkUnwatchPacket::encode, ChunkUnwatchPacket::new, ChunkUnwatchPacket::handle);
-        CHANNEL.registerMessage(id++, CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
-        CHANNEL.registerMessage(id++, SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
-        CHANNEL.registerMessage(id++, PlaceBlockSpecialPacket.class, (packet, buf) -> {}, buffer -> new PlaceBlockSpecialPacket(), PlaceBlockSpecialPacket::handle);
-        CHANNEL.registerMessage(id++, ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
-        CHANNEL.registerMessage(id++, FoodDataReplacePacket.class, (packet, buf) -> {}, buffer -> new FoodDataReplacePacket(), FoodDataReplacePacket::handle);
-        CHANNEL.registerMessage(id++, FoodDataUpdatePacket.class, FoodDataUpdatePacket::encode, FoodDataUpdatePacket::new, FoodDataUpdatePacket::handle);
+        // Client -> Server
+        register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
+        register(PlaceBlockSpecialPacket.class, PlaceBlockSpecialPacket::new, PlaceBlockSpecialPacket::handle);
+        register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
+        register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
+    }
+
+    private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, NetworkEvent.Context> handler)
+    {
+        CHANNEL.registerMessage(ID.getAndIncrement(), cls, encoder, decoder, (packet, context) -> {
+            context.get().setPacketHandled(true);
+            handler.accept(packet, context.get());
+        });
+    }
+
+    private static <T> void register(Class<T> cls, Supplier<T> factory, BiConsumer<T, NetworkEvent.Context> handler)
+    {
+        CHANNEL.registerMessage(ID.getAndIncrement(), cls, (packet, buffer) -> {}, buffer -> factory.get(), (packet, context) -> {
+            context.get().setPacketHandled(true);
+            handler.accept(packet, context.get());
+        });
     }
 }

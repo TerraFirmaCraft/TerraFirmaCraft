@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.network;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -27,7 +25,7 @@ public class FoodDataUpdatePacket
         this.thirst = thirst;
     }
 
-    public FoodDataUpdatePacket(FriendlyByteBuf buffer)
+    FoodDataUpdatePacket(FriendlyByteBuf buffer)
     {
         this.nutrients = new float[Nutrient.TOTAL];
         for (int i = 0; i < nutrients.length; i++)
@@ -46,10 +44,9 @@ public class FoodDataUpdatePacket
         buffer.writeFloat(thirst);
     }
 
-    void handle(Supplier<NetworkEvent.Context> context)
+    void handle(NetworkEvent.Context context)
     {
-        context.get().setPacketHandled(true);
-        context.get().enqueueWork(() -> {
+        context.enqueueWork(() -> {
             final Player player = ClientHelpers.getPlayer();
             if (player != null && player.getFoodData() instanceof TFCFoodData data)
             {

@@ -6,11 +6,8 @@
 
 package net.dries007.tfc.network;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
-
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
@@ -41,9 +38,8 @@ public class ChunkUnwatchPacket
         buffer.writeVarInt(chunkZ);
     }
 
-    void handle(Supplier<NetworkEvent.Context> context)
+    void handle(NetworkEvent.Context context)
     {
-        context.get().enqueueWork(() -> ChunkDataCache.CLIENT.remove(new ChunkPos(chunkX, chunkZ)));
-        context.get().setPacketHandled(true);
+        context.enqueueWork(() -> ChunkDataCache.CLIENT.remove(new ChunkPos(chunkX, chunkZ)));
     }
 }

@@ -237,11 +237,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.cellWidth = QuartPos.toBlock(noiseSettings.noiseSizeHorizontal());
 
         this.cellCountX = 16 / this.cellWidth;
-        this.cellCountY = Mth.intFloorDiv(noiseSettings.height(), this.cellHeight);
+        this.cellCountY = Math.floorDiv(noiseSettings.height(), this.cellHeight);
         this.cellCountZ = 16 / this.cellWidth;
 
         this.minY = noiseSettings.minY();
-        this.minCellY = Mth.intFloorDiv(noiseSettings.minY(), this.cellHeight);
+        this.minCellY = Math.floorDiv(noiseSettings.minY(), this.cellHeight);
 
         this.aquiferBarrierNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -3, 1.0D);
         this.aquiferWaterLevelNoise = NormalNoise.create(new SimpleRandomSource(random.nextLong()), -3, 1.0D, 0.0D, 2.0D);
@@ -461,6 +461,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public int getMinY()
     {
         return noiseGeneratorSettings().noiseSettings().minY();
+    }
+
+    @Override
+    public boolean hasStronghold(ChunkPos pos)
+    {
+        return false;
     }
 
     @Override
@@ -818,7 +824,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
             final int maxFilledY = 1 + Math.max((int) heightNoiseValue, getSeaLevel());
-            final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Mth.intFloorDiv(maxFilledY, cellHeight) - minCellY);
+            final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Math.floorDiv(maxFilledY, cellHeight) - minCellY);
             final int maxFilledSectionY = Math.min(chunk.getSectionsCount() - 1, 1 + chunk.getSectionIndex(maxFilledY));
 
             // Top down iteration

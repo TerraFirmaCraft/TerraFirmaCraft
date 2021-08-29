@@ -146,7 +146,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         nbt.putLong("creationDate", getCreationDate());
         if (isDynamic())
         {
-            nbt.put("foodData", data.serializeNBT());
+            nbt.put("foodData", data.write());
         }
         // Traits are sorted so they match when trying to stack them
         ListTag traitList = new ListTag();

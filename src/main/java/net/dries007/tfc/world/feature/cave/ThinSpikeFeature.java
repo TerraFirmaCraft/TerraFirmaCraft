@@ -8,15 +8,15 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
 {
@@ -44,7 +44,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
             for (int i = 0; i < 7; i++)
             {
                 mutablePos.move(0, 1, 0);
-                if (!world.isEmptyBlock(mutablePos))
+                if (!FluidHelpers.isAirOrEmptyFluid(world.getBlockState(mutablePos)))
                 {
                     mutablePos.move(0, -1, 0);
                     break;
@@ -66,7 +66,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
         {
             setBlock(world, mutablePos, spike);
             mutablePos.move(0, -1, 0);
-            if (!world.isEmptyBlock(mutablePos))
+            if (!FluidHelpers.isAirOrEmptyFluid(world.getBlockState(mutablePos)))
             {
                 // Make the previous state the tip, and exit
                 setBlock(world, mutablePos.move(0, 1, 0), spike.setValue(ThinSpikeBlock.TIP, true));

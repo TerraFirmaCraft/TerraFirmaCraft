@@ -7,27 +7,26 @@
 package net.dries007.tfc.common.tileentity;
 
 import org.apache.commons.lang3.tuple.Triple;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.core.NonNullList;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.types.Fuel;
-import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -235,7 +234,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     {
         return switch (slot)
             {
-                case SLOT_FUEL_INPUT -> FuelManager.get(stack) != null && TFCTags.Items.FIREPIT_FUEL == stack.getItem();
+                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL == stack.getItem();
                 case FirepitTileEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
                 case FirepitTileEntity.SLOT_OUTPUT_1, FirepitTileEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;
@@ -260,7 +259,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
             // Try and consume a piece of fuel
             inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
             needsSlotUpdate = true;
-            Fuel fuel = FuelManager.get(fuelStack);
+            Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
                 burnTicks += fuel.getDuration();

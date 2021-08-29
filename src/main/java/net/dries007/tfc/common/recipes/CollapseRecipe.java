@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -27,8 +27,8 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.SupportManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.Collapse;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 

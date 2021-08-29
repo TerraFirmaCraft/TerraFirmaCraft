@@ -27,11 +27,11 @@ public class NoodleCaveSampler
 
     public double sample(double noise, int x, int y, int z, int minY, double deltaZ)
     {
-        double toggleValue = toggle.calculateValue(deltaZ);
+        double toggle = this.toggle.calculateValue(deltaZ);
         double thickness = this.thickness.calculateValue(deltaZ);
         double ridgeA = this.ridgeA.calculateValue(deltaZ);
         double ridgeB = this.ridgeB.calculateValue(deltaZ);
-        return noodleCavifier.noodleCavify(noise, x, y, z, toggleValue, thickness, ridgeA, ridgeB, minY);
+        return noodleCavifier.noodleCavify(noise, x, y, z, toggle, thickness, ridgeA, ridgeB, minY);
     }
 
     void addInterpolators(List<NoiseInterpolator> interpolators)

@@ -6,9 +6,14 @@
 
 package net.dries007.tfc.world.feature;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,12 +24,17 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
-import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 
 public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
+    @SuppressWarnings("ConstantConditions")
+    private static final LandslideRecipe CACHE_MISS = new LandslideRecipe(null, null, null, false);
+
     public ErosionFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
@@ -39,8 +49,14 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final ChunkPos chunkPos = new ChunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
+        final BlockRecipeWrapper.Mutable wrapper = new BlockRecipeWrapper.Mutable();
         final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockDataOrThrow();
+        final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
+
+        // Avoid repeated recipe queries for blocks
+        // This does make some simplifying assumptions about landslide recipes, and the types present in world gen, that we are ignoring here.
+        final Map<BlockState, LandslideRecipe> cachedRecipes = new HashMap<>();
+        final Map<Block, Block> hardeningBlocks = rockSettings.getRocks().stream().collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
 
         for (int x = 0; x < 16; x++)
         {
@@ -49,19 +65,31 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                 // Top down iteration, attempt to either fix unstable locations, or remove the offending blocks.
                 final int baseHeight = worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
                 boolean prevBlockCanLandslide = false;
+                boolean prevBlockCanCollapse = false;
                 int lastSafeY = baseHeight;
+                Block prevBlockHardened = null;
 
                 mutablePos.set(chunkX + x, baseHeight, chunkZ + z);
 
                 // Iterate down to sea level
-                // todo: iterate all the way down to min Y?
-                for (int y = baseHeight; y >= TFCChunkGenerator.SEA_LEVEL_Y; y--)
+                for (int y = baseHeight; y >= context.chunkGenerator().getMinY(); y--)
                 {
                     mutablePos.setY(y);
-                    BlockState stateAt = worldIn.getBlockState(mutablePos);
 
-                    mutableWrapper.update(chunkX + x, y, chunkZ + z, stateAt);
-                    LandslideRecipe recipe = stateAt.isAir() ? null : LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
+                    BlockState stateAt = worldIn.getBlockState(mutablePos);
+                    LandslideRecipe recipe = cachedRecipes.get(stateAt);
+                    if (recipe == CACHE_MISS)
+                    {
+                        recipe = null;
+                    }
+                    else if (recipe == null)
+                    {
+                        wrapper.update(chunkX + x, y, chunkZ + z, stateAt);
+                        recipe = LandslideRecipe.getRecipe(worldIn.getLevel(), wrapper);
+                        cachedRecipes.put(stateAt, recipe != null ? recipe : CACHE_MISS);
+                    }
+
+                    boolean stateAtIsFragile = stateAt.isAir() || TFCFallingBlockEntity.canFallThrough(worldIn, mutablePos, stateAt);
                     if (prevBlockCanLandslide)
                     {
                         // Continuing a collapsible downwards
@@ -70,7 +98,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                         {
                             // This block is sturdy, preventing the column from collapsing
                             // However, we need to make sure we can't collapse *through* this block
-                            if (stateAt.isAir() || TFCFallingBlockEntity.canFallThrough(worldIn, mutablePos, stateAt))
+                            if (stateAtIsFragile)
                             {
                                 // We can collapse through the current block. aka, from [y + 1, lastSafeY) need to collapse
                                 // If we would only collapse one block, we remove it. Otherwise, we replace the lowest block with hardened stone
@@ -78,7 +106,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                 {
                                     // More than one block to collapse, so we can support instead
                                     mutablePos.setY(y + 1);
-                                    worldIn.setBlock(mutablePos, rockData.getRock(x, y + 1, z).raw().defaultBlockState(), 2);
+                                    worldIn.setBlock(mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState(), 2);
                                 }
                                 else
                                 {
@@ -86,6 +114,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                     mutablePos.setY(y + 1);
                                     worldIn.removeBlock(mutablePos, false);
                                 }
+                                continue;
                             }
                             prevBlockCanLandslide = false;
                             lastSafeY = y;
@@ -104,6 +133,21 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                             // This block can collapse. lastSafeY will already be y + 1, so all we need to mark is the prev flag for next iteration
                             prevBlockCanLandslide = true;
                         }
+                    }
+                    // if (true) continue;
+                    // Update stone from raw -> hardened
+                    if (stateAtIsFragile)
+                    {
+                        if (prevBlockHardened != null)
+                        {
+                            mutablePos.setY(y + 1);
+                            worldIn.setBlock(mutablePos, prevBlockHardened.defaultBlockState(), 2);
+                        }
+                        prevBlockHardened = null;
+                    }
+                    else
+                    {
+                        prevBlockHardened = hardeningBlocks.get(stateAt.getBlock());
                     }
                 }
             }

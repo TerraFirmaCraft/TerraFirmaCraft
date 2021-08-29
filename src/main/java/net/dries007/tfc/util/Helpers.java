@@ -34,11 +34,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -50,6 +48,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
@@ -63,8 +62,6 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.types.Fuel;
-import net.dries007.tfc.common.types.FuelManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -72,6 +69,11 @@ public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
     private static final Random RANDOM = new Random();
+
+    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
+    {
+        return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+    }
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
@@ -135,7 +137,7 @@ public final class Helpers
     @SuppressWarnings("unchecked")
     public static <R> Stream<? extends R> flatten(Object t)
     {
-        return t instanceof Collection ? (Stream<? extends R>) ((Collection<?>) t).stream() : Stream.of((R) t);
+        return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : Stream.of((R) t);
     }
 
     public static TranslatableComponent translateEnum(Enum<?> anEnum)
@@ -527,7 +529,7 @@ public final class Helpers
         for (int i = slotStart; i <= slotEnd; i++)
         {
             ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = FuelManager.get(fuelStack);
+            Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
                 inventory.setStackInSlot(i, ItemStack.EMPTY);
@@ -624,5 +626,15 @@ public final class Helpers
     private static <E extends Throwable, T> T throwAsUnchecked(Exception exception) throws E
     {
         throw (E) exception;
+    }
+
+    static class ItemProtectedAccessor extends Item
+    {
+        public static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
+        {
+            return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
+        }
+
+        private ItemProtectedAccessor(Properties properties) { super(properties); }
     }
 }

@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.support;
+package net.dries007.tfc.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -14,7 +14,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.util.JsonHelpers;
 
 public class Support
 {

@@ -12,32 +12,41 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
@@ -63,22 +72,18 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.command.TFCCommands;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
-import net.dries007.tfc.common.tileentity.CharcoalForgeTileEntity;
-import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
-import net.dries007.tfc.common.types.FuelManager;
-import net.dries007.tfc.common.types.Metal;
-import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.common.tileentity.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.CacheInvalidationListener;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.StartFireEvent;
-import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
@@ -93,6 +98,7 @@ import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
 public final class ForgeEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     public static void init()
     {
@@ -126,6 +132,9 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
+        bus.addListener(ForgeEventHandler::onServerChat);
+        bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
+        bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
     }
 
     /**
@@ -339,17 +348,20 @@ public final class ForgeEventHandler
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
         // Resource reload listeners
-        ReloadableResourceManager resourceManager = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
-        resourceManager.registerReloadListener(Metal.MANAGER);
-        resourceManager.registerReloadListener(MetalItemManager.MANAGER);
-        resourceManager.registerReloadListener(FuelManager.MANAGER);
-        resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatCapability.MANAGER);
-        resourceManager.registerReloadListener(ItemSizeManager.MANAGER);
-        resourceManager.registerReloadListener(FoodCapability.MANAGER);
+        ReloadableResourceManager registry = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
+        registry.registerReloadListener(Metal.MANAGER);
+        registry.registerReloadListener(MetalItem.MANAGER);
+        registry.registerReloadListener(Fuel.MANAGER);
+        registry.registerReloadListener(Drinkable.MANAGER);
+
+        registry.registerReloadListener(SupportManager.INSTANCE);
+        registry.registerReloadListener(ItemSizeManager.MANAGER);
+
+        registry.registerReloadListener(HeatCapability.MANAGER);
+        registry.registerReloadListener(FoodCapability.MANAGER);
 
         // Last
-        resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
+        registry.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
     public static void beforeServerStart(FMLServerAboutToStartEvent event)
@@ -492,8 +504,8 @@ public final class ForgeEventHandler
 
         if (block == (TFCBlocks.FIREPIT.get()) || block == (TFCBlocks.POT.get()) || block == (TFCBlocks.GRILL.get()))
         {
-            AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
-            if (firepit != null)
+            final BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof AbstractFirepitTileEntity<?> firepit)
             {
                 firepit.light(state);
             }
@@ -501,11 +513,7 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
-            TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
-            if (te != null)
-            {
-                te.resetCounter();
-            }
+            world.getBlockEntity(pos, TFCTileEntities.TICK_COUNTER.get()).ifPresent(TickCounterTileEntity::resetCounter);
             event.setCanceled(true);
         }
         else if (block == (TFCBlocks.DEAD_TORCH.get()))
@@ -526,20 +534,12 @@ public final class ForgeEventHandler
         }
         else if (block == (TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            PitKilnTileEntity kiln = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
-            if (kiln != null)
-            {
-                kiln.tryLight();
-            }
+            world.getBlockEntity(pos, TFCTileEntities.PIT_KILN.get()).ifPresent(PitKilnTileEntity::tryLight);
         }
         else if (block == (TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(HEAT, 2));
-            CharcoalForgeTileEntity forge = Helpers.getTileEntity(world, pos, CharcoalForgeTileEntity.class);
-            if (forge != null)
-            {
-                forge.onCreate();
-            }
+            world.getBlockEntity(pos, TFCTileEntities.CHARCOAL_FORGE.get()).ifPresent(CharcoalForgeTileEntity::onCreate);
         }
         else if (block == (TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
         {
@@ -596,6 +596,146 @@ public final class ForgeEventHandler
         if (event.getPlayer() instanceof ServerPlayer)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
+        }
+    }
+
+    public static void onServerChat(ServerChatEvent event)
+    {
+        // Apply intoxication after six hours
+        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        if (intoxicatedTicks > 0)
+        {
+            final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);
+            final Random random = event.getPlayer().getRandom();
+            final String originalMessage = event.getMessage();
+            final String[] words = originalMessage.split(" ");
+            for (int i = 0; i < words.length; i++)
+            {
+                String word = words[i];
+                if (word.length() == 0)
+                {
+                    continue;
+                }
+
+                // Swap two letters
+                if (random.nextFloat() < intoxicationChance && word.length() >= 2)
+                {
+                    int pos = random.nextInt(word.length() - 1);
+                    word = word.substring(0, pos) + word.charAt(pos + 1) + word.charAt(pos) + word.substring(pos + 2);
+                }
+
+                // Repeat / slur letters
+                if (random.nextFloat() < intoxicationChance)
+                {
+                    int pos = random.nextInt(word.length());
+                    char repeat = word.charAt(pos);
+                    int amount = 1 + random.nextInt(3);
+                    word = word.substring(0, pos) + new String(new char[amount]).replace('\0', repeat) + (pos + 1 < word.length() ? word.substring(pos + 1) : "");
+                }
+
+                // Add additional letters
+                if (random.nextFloat() < intoxicationChance)
+                {
+                    int pos = random.nextInt(word.length());
+                    char replacement = ALPHABET.charAt(random.nextInt(ALPHABET.length()));
+                    if (Character.isUpperCase(word.charAt(random.nextInt(word.length()))))
+                    {
+                        replacement = Character.toUpperCase(replacement);
+                    }
+                    word = word.substring(0, pos) + replacement + (pos + 1 < word.length() ? word.substring(pos + 1) : "");
+                }
+
+                words[i] = word;
+            }
+            event.setComponent(new TranslatableComponent("<" + event.getUsername() + "> " + String.join(" ", words)));
+        }
+    }
+
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    {
+        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
+        {
+            final InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), true);
+            if (result != InteractionResult.PASS)
+            {
+                event.setCanceled(true);
+                event.setCancellationResult(result);
+            }
+        }
+    }
+
+    public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event)
+    {
+        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
+        {
+            // Cannot be cancelled, only fired on client.
+            InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), false);
+            if (result == InteractionResult.SUCCESS)
+            {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
+            }
+        }
+    }
+
+    public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)
+    {
+        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (hit.getType() == HitResult.Type.BLOCK)
+        {
+            final BlockPos pos = hit.getBlockPos();
+            final BlockState state = level.getBlockState(pos);
+            final FluidStack fluid = new FluidStack(state.getFluidState().getType(), FluidAttributes.BUCKET_VOLUME);
+            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : 0;
+            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
+            if (!fluid.isEmpty() && playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
+            {
+                final Drinkable drinkable = Drinkable.get(fluid);
+                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
+                {
+                    if (!level.isClientSide && doDrink)
+                    {
+                        doDrink(level, player, state, pos, playerData, drinkable);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
+    {
+        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
+        level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
+
+        // Drink fluid, applying all stated effects
+        final Random random = player.getRandom();
+        if (drinkable.getThirst() > 0 && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            foodData.addThirst(drinkable.getThirst());
+        }
+        if (drinkable.getIntoxication() > 0)
+        {
+            playerData.ifPresent(p -> p.addIntoxicatedTicks(drinkable.getIntoxication()));
+        }
+        if (drinkable.hasEffects())
+        {
+            for (Drinkable.Effect effect : drinkable.getEffects())
+            {
+                if (effect.chance() > random.nextFloat())
+                {
+                    player.addEffect(new MobEffectInstance(effect.type(), effect.duration(), effect.amplifier(), false, false, true));
+                }
+            }
+        }
+
+        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > random.nextFloat())
+        {
+            final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
+            if (emptyState != null)
+            {
+                level.setBlock(pos, emptyState, 3);
+            }
         }
     }
 }

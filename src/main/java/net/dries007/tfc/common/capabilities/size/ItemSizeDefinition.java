@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.ItemDefinition;
+import net.dries007.tfc.util.ItemDefinition;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class ItemSizeDefinition extends ItemDefinition implements IItemSize

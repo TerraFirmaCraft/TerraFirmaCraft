@@ -19,13 +19,13 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.types.Metal;
-import net.dries007.tfc.common.types.Ore;
-import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.common.TFCItemGroup.*;

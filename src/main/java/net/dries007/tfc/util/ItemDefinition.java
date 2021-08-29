@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common;
+package net.dries007.tfc.util;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,14 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.JsonHelpers;
-
-/**
- * Top level class for item-based 'definition' objects that are defined in JSON
- *
- * @see DataManager
- */
 public class ItemDefinition
 {
     protected final ResourceLocation id;

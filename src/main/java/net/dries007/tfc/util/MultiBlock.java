@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
 {
@@ -56,16 +57,9 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
         return this;
     }
 
-    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, Class<T> teClass)
+    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, BlockEntityType<T> type)
     {
-        conditions.add((world, pos) -> {
-            T tile = Helpers.getTileEntity(world, pos.offset(posOffset), teClass);
-            if (tile != null)
-            {
-                return tileEntityPredicate.test(tile);
-            }
-            return false;
-        });
+        conditions.add((world, pos) -> world.getBlockEntity(pos.offset(posOffset), type).map(tileEntityPredicate::test).orElse(false));
         return this;
     }
 

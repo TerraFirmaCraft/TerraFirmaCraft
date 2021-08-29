@@ -10,16 +10,16 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class TFCTileEntity extends BlockEntity
 {
@@ -58,7 +58,6 @@ public abstract class TFCTileEntity extends BlockEntity
     /**
      * Syncs the TE data to client via means of a block update
      * Use for stuff that is updated infrequently, for data that is analogous to changing the state.
-     * DO NOT call every tick
      */
     public void markForBlockUpdate()
     {
@@ -73,8 +72,6 @@ public abstract class TFCTileEntity extends BlockEntity
     /**
      * Marks a tile entity for syncing without sending a block update.
      * Use preferentially over {@link InventoryTileEntity#markForBlockUpdate()} if there's no reason to have a block update.
-     * For container based integer synchronization, see ITileFields
-     * DO NOT call every tick
      */
     public void markForSync()
     {

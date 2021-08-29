@@ -6,15 +6,18 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import net.dries007.tfc.util.JsonHelpers;
 
 public class SimpleFluidIngredient implements FluidIngredient
 {
@@ -40,6 +43,12 @@ public class SimpleFluidIngredient implements FluidIngredient
     }
 
     @Override
+    public Collection<Fluid> getMatchingFluids()
+    {
+        return Collections.singleton(fluid);
+    }
+
+    @Override
     public FluidIngredient.Serializer<?> getSerializer()
     {
         return FluidIngredient.FLUID;
@@ -51,12 +60,7 @@ public class SimpleFluidIngredient implements FluidIngredient
         public SimpleFluidIngredient fromJson(JsonObject json)
         {
             final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
-            final String fluidName = GsonHelper.getAsString(json, "fluid");
-            final Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidName));
-            if (fluid == null)
-            {
-                throw new JsonParseException("Not a fluid: " + fluidName);
-            }
+            final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
             return new SimpleFluidIngredient(fluid, amount);
         }
 

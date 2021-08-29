@@ -8,13 +8,13 @@ package net.dries007.tfc.util.events;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
@@ -25,7 +25,7 @@ import net.dries007.tfc.util.InteractionManager;
  * This event is used for lighting fires or optionally light-able blocks. If it's not cancelled, TFC will try to place a fire block.
  *
  * For things like flint and steel that don't require special mechanics, this event logic is handled for you in
- * {@link InteractionManager#setup()}. Adding items to the tag #starts_fires_with_items or #starts_fires_with_durability
+ * {@link InteractionManager#registerDefaultInteractions()}. Adding items to the tag #starts_fires_with_items or #starts_fires_with_durability
  * will emulate this behavior (and allow TFC devices to be lit by your item)
  *
  * Note that the parameters of this event are the same as those expected by an item use, ie that the position, state, and direction

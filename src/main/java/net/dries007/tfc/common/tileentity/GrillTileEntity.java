@@ -9,13 +9,13 @@ package net.dries007.tfc.common.tileentity;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -24,7 +24,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
-import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -66,7 +66,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     {
         if (slot == SLOT_FUEL_INPUT)
         {
-            return FuelManager.get(stack) != null;
+            return Fuel.get(stack) != null;
         }
         return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }

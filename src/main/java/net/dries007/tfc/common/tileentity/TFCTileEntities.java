@@ -28,7 +28,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.util.Helpers;
 

@@ -8,8 +8,6 @@ package net.dries007.tfc.world.noise;
 
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.util.function.FloatUnaryFunction;
-
 /**
  * Wrapper for a 2D noise layer
  */
@@ -143,8 +141,14 @@ public interface Noise2D
         return (x, y) -> Noise2D.this.noise(x, y) + other.noise(x, y);
     }
 
-    default Noise2D map(FloatUnaryFunction mappingFunction)
+    default Noise2D map(FloatOperator mappingFunction)
     {
         return (x, y) -> mappingFunction.applyAsFloat(Noise2D.this.noise(x, y));
+    }
+
+    @FunctionalInterface
+    interface FloatOperator
+    {
+        float applyAsFloat(float f);
     }
 }

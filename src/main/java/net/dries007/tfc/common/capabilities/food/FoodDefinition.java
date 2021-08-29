@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
-import net.dries007.tfc.common.ItemDefinition;
+import net.dries007.tfc.util.ItemDefinition;
 
 public class FoodDefinition extends ItemDefinition
 {

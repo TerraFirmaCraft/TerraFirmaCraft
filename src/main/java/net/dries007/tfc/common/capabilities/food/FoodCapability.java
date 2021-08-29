@@ -28,7 +28,7 @@ public final class FoodCapability
     public static final Capability<IFood> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = new IndirectHashCollection<>(FoodDefinition::getValidItems);
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager.Instance<>(FoodDefinition::new, "food_items", "foods", true);
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager.Instance<>(FoodDefinition::new, "food_items", "foods");
 
     @Nullable
     public static FoodDefinition get(ItemStack stack)

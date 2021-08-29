@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -16,7 +15,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.function.IntToFloatFunction;
 
 /**
  * A wrapper class for nutrition stats for a player
@@ -25,7 +23,7 @@ import net.dries007.tfc.util.function.IntToFloatFunction;
  *
  * This only executes logic on server side, on client side it simply sets the lastAverageNutrients
  */
-public class NutritionStats implements INBTSerializable<CompoundTag>
+public class NutritionData implements INBTSerializable<CompoundTag>
 {
     private final LinkedList<FoodRecord> records;
     private final float defaultNutritionValue, defaultDairyNutritionValue;
@@ -33,7 +31,7 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
     private float averageNutrients;
     private int hungerWindow;
 
-    public NutritionStats(float defaultNutritionValue, float defaultDairyNutritionValue)
+    public NutritionData(float defaultNutritionValue, float defaultDairyNutritionValue)
     {
         this.records = new LinkedList<>();
         this.defaultNutritionValue = defaultNutritionValue;
@@ -48,12 +46,6 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
     {
         this.records.clear();
         calculateNutrition();
-    }
-
-    @Nullable
-    public FoodRecord getMostRecentRecord()
-    {
-        return records.peekFirst(); // The "most recent" is actually the first in the queue
     }
 
     public float getAverageNutrition()
@@ -85,22 +77,7 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
 
     public void addNutrients(FoodRecord data)
     {
-        records.addFirst(data.copy());
-        calculateNutrition();
-    }
-
-    /**
-     * This adds a small amount of nutrition directly to the last food data consumed.
-     * It marks said food data as "buffed", and each food data can only be buffed once.
-     * This is used for non-food related nutrition bonuses, for instance drinking milk (which is not a food as it dosen't expire, which is unbalanced)
-     */
-    public void addBuff(FoodRecord data)
-    {
-        FoodRecord recentFood = getMostRecentRecord();
-        if (recentFood != null)
-        {
-            recentFood.applyBuff(data);
-        }
+        records.addFirst(data);
         calculateNutrition();
     }
 
@@ -111,7 +88,7 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
         ListTag recordsNbt = new ListTag();
         for (FoodRecord data : records)
         {
-            recordsNbt.add(data.serializeNBT());
+            recordsNbt.add(data.write());
         }
         nbt.put("records", recordsNbt);
         return nbt;
@@ -144,14 +121,14 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
             if (nextHunger < this.hungerWindow)
             {
                 // Add weighted nutrition, keep moving
-                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrients()[j] * record.getHunger());
+                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrient(j) * record.getHunger());
                 runningHungerTotal = nextHunger;
             }
             else
             {
                 // Calculate overshoot, weight appropriately, and exit
                 float actualHunger = hungerWindow - runningHungerTotal;
-                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrients()[j] * actualHunger);
+                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrient(j) * actualHunger);
 
                 // Remove any excess elements, this has the side effect of exiting the loop
                 while (records.size() > i + 1)
@@ -199,5 +176,11 @@ public class NutritionStats implements INBTSerializable<CompoundTag>
         {
             array[i] = operator.apply(i);
         }
+    }
+
+    @FunctionalInterface
+    interface IntToFloatFunction
+    {
+        float apply(int i);
     }
 }

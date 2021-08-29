@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -186,5 +187,11 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
     public boolean isBed(BlockState state, BlockGetter world, BlockPos pos, @Nullable Entity player)
     {
         return true;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(PART));
     }
 }

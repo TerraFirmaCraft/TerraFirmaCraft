@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.network;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.FriendlyByteBuf;
-
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.util.calendar.Calendar;
@@ -35,9 +32,8 @@ public class CalendarUpdatePacket
         instance.write(buffer);
     }
 
-    void handle(Supplier<NetworkEvent.Context> context)
+    void handle(NetworkEvent.Context context)
     {
-        context.get().enqueueWork(() -> Calendars.CLIENT.reset(instance));
-        context.get().setPacketHandled(true);
+        context.enqueueWork(() -> Calendars.CLIENT.reset(instance));
     }
 }

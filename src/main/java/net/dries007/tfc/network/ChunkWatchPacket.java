@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.network;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -68,9 +66,9 @@ public class ChunkWatchPacket
         buffer.writeByte(plateTectonicsInfo.ordinal());
     }
 
-    void handle(Supplier<NetworkEvent.Context> context)
+    void handle(NetworkEvent.Context context)
     {
-        context.get().enqueueWork(() -> {
+        context.enqueueWork(() -> {
             ChunkPos pos = new ChunkPos(chunkX, chunkZ);
             // Update client-side chunk data capability
             Level world = ClientHelpers.getWorld();
@@ -87,6 +85,5 @@ public class ChunkWatchPacket
                 data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
             }
         });
-        context.get().setPacketHandled(true);
     }
 }

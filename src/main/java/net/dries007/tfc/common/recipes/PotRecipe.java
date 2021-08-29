@@ -10,20 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
@@ -34,6 +35,26 @@ import net.dries007.tfc.util.Helpers;
  */
 public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInventory>
 {
+    private static final BiMap<ResourceLocation, OutputType> OUTPUT_TYPES = HashBiMap.create();
+
+    private static final ResourceLocation EMPTY_ID = Helpers.identifier("empty");
+    private static final Output EMPTY_INSTANCE = new Output() {};
+    private static final OutputType EMPTY = register(EMPTY_ID, nbt -> EMPTY_INSTANCE);
+
+    /**
+     * Register a pot output type.
+     * If a pot recipe uses a custom output, that must persist (and thus be serialized), it needs to be registered here.
+     */
+    public static synchronized OutputType register(ResourceLocation id, OutputType outputType)
+    {
+        if (OUTPUT_TYPES.containsKey(id))
+        {
+            throw new IllegalArgumentException("Duplicate key: " + id);
+        }
+        OUTPUT_TYPES.put(id, outputType);
+        return outputType;
+    }
+
     protected final ResourceLocation id;
     protected final List<Ingredient> itemIngredients;
     protected final FluidIngredient fluidIngredient;
@@ -113,10 +134,32 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
      * 1. The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotTileEntity.PotInventory)}
      * 2. {@link Output#onFinish(PotTileEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary
      * 3. THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...
-     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotTileEntity, PlayerEntity, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
+     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotTileEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
+     *
+     * @see PotTileEntity#handleCooking()
      */
-    public interface Output extends INBTSerializable<CompoundTag>
+    public interface Output
     {
+        /**
+         * Read an output from an nbt tag.
+         */
+        static Output read(CompoundTag nbt)
+        {
+            final OutputType type = OUTPUT_TYPES.getOrDefault(new ResourceLocation(nbt.getString("type")), EMPTY);
+            return type.read(nbt);
+        }
+
+        /**
+         * Write an output to a nbt tag.
+         */
+        static CompoundTag write(Output output)
+        {
+            final CompoundTag nbt = new CompoundTag();
+            nbt.putString("type", OUTPUT_TYPES.inverse().getOrDefault(output.getType(), EMPTY_ID).toString());
+            output.write(nbt);
+            return nbt;
+        }
+
         /**
          * If there is still something to be extracted from this output. If this returns false at any time the output must be serializable
          */
@@ -146,12 +189,30 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
             return InteractionResult.PASS;
         }
 
-        default CompoundTag serializeNBT()
+        /**
+         * Gets the output type of this output, used for serializing the output.
+         * If the output always returns true to {@link #isEmpty()}, then this can be left as {@link PotRecipe#EMPTY}.
+         */
+        default OutputType getType()
         {
-            throw new UnsupportedOperationException();
+            return EMPTY;
         }
 
-        default void deserializeNBT(CompoundTag nbt) {}
+        /**
+         * Writes implementation specific output data to disk.
+         */
+        default void write(CompoundTag nbt) {}
+    }
+
+    /**
+     * The output type of a pot recipe, handles reading the output back from disk.
+     */
+    public interface OutputType
+    {
+        /**
+         * Read the output from the given tag. The tag should contain the key "type", which will equal the registered ID of this output type.
+         */
+        Output read(CompoundTag nbt);
     }
 
     public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializerImpl<R>

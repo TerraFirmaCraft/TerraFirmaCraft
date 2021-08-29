@@ -6,17 +6,18 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.util.INBTSerializable;
+import javax.annotation.concurrent.Immutable;
 
-public class FoodRecord implements INBTSerializable<CompoundTag>
+import net.minecraft.nbt.CompoundTag;
+
+@Immutable
+public class FoodRecord
 {
     private final float[] nutrients; // Nutritional values
-    private int hunger; // Hunger. In TFC (for now) this is almost always 4
-    private float saturation; // Saturation, only provided by some basic foods and meal bonuses
-    private float water; // Water, provided by some foods
-    private float decayModifier; // Decay modifier - higher = shorter decay
-    private boolean buffed; // if this data instance has been buffed externally.
+    private final int hunger; // Hunger. In TFC (for now) this is almost always 4
+    private final float saturation; // Saturation, only provided by some basic foods and meal bonuses
+    private final float water; // Water, provided by some foods
+    private final float decayModifier; // Decay modifier - higher = shorter decay
 
     public FoodRecord(int hunger, float water, float saturation, float grain, float fruit, float veg, float protein, float dairy, float decayModifier)
     {
@@ -34,13 +35,36 @@ public class FoodRecord implements INBTSerializable<CompoundTag>
 
     public FoodRecord(CompoundTag nbt)
     {
-        this.nutrients = new float[5];
-        deserializeNBT(nbt);
+        hunger = nbt.getInt("food");
+        saturation = nbt.getFloat("sat");
+        water = nbt.getFloat("water");
+        decayModifier = nbt.getFloat("decay");
+        nutrients = new float[5];
+        nutrients[Nutrient.GRAIN.ordinal()] = nbt.getFloat("grain");
+        nutrients[Nutrient.VEGETABLES.ordinal()] = nbt.getFloat("veg");
+        nutrients[Nutrient.FRUIT.ordinal()] = nbt.getFloat("fruit");
+        nutrients[Nutrient.PROTEIN.ordinal()] = nbt.getFloat("meat");
+        nutrients[Nutrient.DAIRY.ordinal()] = nbt.getFloat("dairy");
     }
 
-    public float[] getNutrients()
+    public float getNutrient(Nutrient nutrient)
     {
-        return nutrients;
+        return nutrients[nutrient.ordinal()];
+    }
+
+    public CompoundTag write()
+    {
+        final CompoundTag nbt = new CompoundTag();
+        nbt.putInt("food", hunger);
+        nbt.putFloat("sat", saturation);
+        nbt.putFloat("water", water);
+        nbt.putFloat("decay", decayModifier);
+        nbt.putFloat("grain", nutrients[Nutrient.GRAIN.ordinal()]);
+        nbt.putFloat("veg", nutrients[Nutrient.VEGETABLES.ordinal()]);
+        nbt.putFloat("fruit", nutrients[Nutrient.FRUIT.ordinal()]);
+        nbt.putFloat("meat", nutrients[Nutrient.PROTEIN.ordinal()]);
+        nbt.putFloat("dairy", nutrients[Nutrient.DAIRY.ordinal()]);
+        return nbt;
     }
 
     public int getHunger()
@@ -63,52 +87,8 @@ public class FoodRecord implements INBTSerializable<CompoundTag>
         return decayModifier;
     }
 
-    @Override
-    public CompoundTag serializeNBT()
+    float getNutrient(int i)
     {
-        CompoundTag nbt = new CompoundTag();
-        nbt.putInt("food", hunger);
-        nbt.putFloat("sat", saturation);
-        nbt.putFloat("water", water);
-        nbt.putFloat("decay", decayModifier);
-        nbt.putFloat("grain", nutrients[Nutrient.GRAIN.ordinal()]);
-        nbt.putFloat("veg", nutrients[Nutrient.VEGETABLES.ordinal()]);
-        nbt.putFloat("fruit", nutrients[Nutrient.FRUIT.ordinal()]);
-        nbt.putFloat("meat", nutrients[Nutrient.PROTEIN.ordinal()]);
-        nbt.putFloat("dairy", nutrients[Nutrient.DAIRY.ordinal()]);
-        nbt.putBoolean("buffed", buffed);
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        hunger = nbt.getInt("food");
-        saturation = nbt.getFloat("sat");
-        water = nbt.getFloat("water");
-        decayModifier = nbt.getFloat("decay");
-        nutrients[Nutrient.GRAIN.ordinal()] = nbt.getFloat("grain");
-        nutrients[Nutrient.VEGETABLES.ordinal()] = nbt.getFloat("veg");
-        nutrients[Nutrient.FRUIT.ordinal()] = nbt.getFloat("fruit");
-        nutrients[Nutrient.PROTEIN.ordinal()] = nbt.getFloat("meat");
-        nutrients[Nutrient.DAIRY.ordinal()] = nbt.getFloat("dairy");
-        buffed = nbt.getBoolean("buffed");
-    }
-
-    public FoodRecord copy()
-    {
-        return new FoodRecord(hunger, water, saturation, nutrients, decayModifier);
-    }
-
-    public void applyBuff(FoodRecord buff)
-    {
-        if (!buffed)
-        {
-            buffed = true;
-            for (Nutrient nutrient : Nutrient.VALUES)
-            {
-                nutrients[nutrient.ordinal()] += buff.nutrients[nutrient.ordinal()];
-            }
-        }
+        return nutrients[i];
     }
 }

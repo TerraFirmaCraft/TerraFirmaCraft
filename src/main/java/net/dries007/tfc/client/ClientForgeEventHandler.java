@@ -18,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -39,15 +38,15 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.types.FuelManager;
-import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.MetalItem;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -56,7 +55,6 @@ import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
 {
-    private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/icons/overlay.png");
     private static final Field CAP_NBT_FIELD = Helpers.findUnobfField(ItemStack.class, "capNBT");
 
     public static void init()
@@ -69,7 +67,6 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
-        bus.addListener(ClientForgeEventHandler::onRenderOverlay);
         // bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
     }
 
@@ -125,8 +122,8 @@ public class ClientForgeEventHandler
 
             if (event.getFlags().isAdvanced())
             {
-                MetalItemManager.addTooltipInfo(stack, text);
-                FuelManager.addTooltipInfo(stack, text);
+                MetalItem.addTooltipInfo(stack, text);
+                Fuel.addTooltipInfo(stack, text);
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())
@@ -190,185 +187,6 @@ public class ClientForgeEventHandler
         {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void onRenderOverlay(RenderGameOverlayEvent.Pre event)
-    {
-        final Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null)
-        {
-            return;
-        }
-        // todo: this all needs to be rewritten with the new forge thing
-        /*
-        final IngameGui gui = mc.gui;
-        final PlayerEntity player = mc.player;
-
-        ForgeIngameGui.renderFood = !TFCConfig.CLIENT.enableHungerBar.get();
-        ForgeIngameGui.renderHealth = !TFCConfig.CLIENT.enableHealthBar.get();
-        ForgeIngameGui.renderExperiance = !TFCConfig.CLIENT.enableHealthBar.get() && !TFCConfig.CLIENT.enableThirstBar.get(); // only allow vanilla exp in this case
-        HealthDisplayStyle healthDisplayStyle = TFCConfig.CLIENT.healthDisplayStyle.get();
-
-        if (event.getType() != RenderGameOverlayEvent.ElementType.CROSSHAIRS)
-        {
-            return;
-        }
-
-        if (TFCConfig.CLIENT.enableThirstBar.get() || TFCConfig.CLIENT.enableHungerBar.get())
-        {
-            ForgeIngameGui.right_height += TFCConfig.CLIENT.enableHungerBar.get() ? 10 : 6;
-        }
-
-        MatrixStack matrixStack = event.getMatrixStack();
-
-        float displayModifier = (healthDisplayStyle == HealthDisplayStyle.TFC || healthDisplayStyle == HealthDisplayStyle.TFC_CURRENT) ? 50f : 1f;
-        float maxHealth = player.getMaxHealth() * displayModifier; // 20 * 50 = 1000
-        float currentThirst = player.getFoodData() instanceof TFCFoodStats ? ((TFCFoodStats) player.getFoodData()).getThirst() : 100f;
-
-        MainWindow window = event.getWindow();
-        int guiScaledHeight = window.getGuiScaledHeight();
-        int guiScaledWidth = window.getGuiScaledWidth();
-
-        int healthRowHeight = guiScaledHeight - 40;
-        int armorRowHeight = healthRowHeight - 10;
-        int mid = guiScaledWidth / 2;
-
-        FontRenderer fontRenderer = mc.font;
-        RenderSystem.enableBlend();
-        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-        TextureManager textureManager = mc.getTextureManager();
-        textureManager.bind(ICONS);
-
-        if (!player.abilities.instabuild && !player.isSpectator())
-        {
-            float foodLevel = player.getFoodData().getFoodLevel();
-            float percentFood = foodLevel / 20f;
-            float percentThirst = currentThirst / 100f;
-
-            if (TFCConfig.CLIENT.enableHungerBar.get())
-            {
-                matrixStack.pushPose();
-                matrixStack.translate(mid + 1, healthRowHeight, 0);
-                gui.blit(matrixStack, 0, 0, 0, 20, 90, 5);
-                gui.blit(matrixStack, 0, 0, 0, 25, (int) (90 * percentFood), 5);
-                matrixStack.popPose();
-            }
-
-            if (TFCConfig.CLIENT.enableThirstBar.get())
-            {
-                matrixStack.pushPose();
-                matrixStack.translate(mid + 1, healthRowHeight + 5, 0);
-                gui.blit(matrixStack, 0, 0, 90, 20, 90, 5);
-                gui.blit(matrixStack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
-                matrixStack.popPose();
-            }
-
-            if (TFCConfig.CLIENT.enableHealthBar.get())
-            {
-                ForgeIngameGui.left_height += 10;
-                matrixStack.pushPose();
-                matrixStack.translate(mid - 91, healthRowHeight, 0);
-                gui.blit(matrixStack, 0, 0, 0, 0, 90, 10);
-
-                float absorption = player.getAbsorptionAmount();
-                float percentHealth = (player.getHealth() + absorption) / 20f;
-                float currentHealth = percentHealth * maxHealth;
-                int uSurplus = 90;
-                if (percentHealth > 1) percentHealth = 1;
-
-                gui.blit(matrixStack, 0, 0, 0, 10, (int) (90 * percentHealth), 10);
-
-                if ((player.getFoodData().getSaturationLevel() > 0.0f && player.isHurt()) || player.hurtTime > 0 || player.hasEffect(Effects.REGENERATION))
-                {
-                    gui.blit(matrixStack, 0, 1, 0, 30, 90, 8);
-                }
-                float surplusPercent = MathHelper.clamp(percentHealth + (absorption / 20f) - 1, 0, 1);
-                if (surplusPercent > 0)
-                {
-                    // fill up the yellow bar until you get a second full bar, then just fill it up
-                    float percent = Math.min(surplusPercent, 1);
-                    gui.blit(matrixStack, 0, 0, uSurplus, 10, (int) (90 * percent), 10);
-                }
-                matrixStack.popPose();
-
-                String healthString = healthDisplayStyle.format(currentHealth, maxHealth);
-                matrixStack.pushPose();
-                matrixStack.translate(mid - 45, healthRowHeight + 2.5, 0);
-                matrixStack.scale(0.8f, 0.8f, 1.0f);
-                fontRenderer.draw(matrixStack, healthString, -1 * fontRenderer.width(healthString) / 2f, 0, surplusPercent < 0.6 ? Color.white.getRGB() : Color.black.getRGB());
-                matrixStack.popPose();
-
-                RenderSystem.enableBlend();
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-            }
-
-            textureManager.bind(AbstractGui.GUI_ICONS_LOCATION);
-            Entity mount = player.getVehicle();
-            if (!(mount instanceof LivingEntity) && mc.gameMode != null && mc.gameMode.hasExperience() && !ForgeIngameGui.renderExperiance)
-            {
-                int left = mid - 91;
-                int xpNeeded = player.getXpNeededForNextLevel();
-                if (xpNeeded > 0)
-                {
-                    int filled = (int) (player.experienceProgress * 183.0F);
-                    int top = guiScaledHeight - 29;
-                    matrixStack.pushPose();
-                    matrixStack.translate(left, top, 0);
-                    gui.blit(matrixStack, 0, 0, 0, 64, 182, 5);
-                    if (filled > 0)
-                    {
-                        gui.blit(matrixStack, 0, 0, 0, 69, filled, 5);
-                    }
-                    matrixStack.popPose();
-                }
-
-                if (player.experienceLevel > 0)
-                {
-                    String level = "" + player.experienceLevel;
-                    int x = (guiScaledWidth - fontRenderer.width(level)) / 2;
-                    int y = guiScaledHeight - 35;
-                    fontRenderer.draw(matrixStack, level, x + 1, y, 0);
-                    fontRenderer.draw(matrixStack, level, x - 1, y, 0);
-                    fontRenderer.draw(matrixStack, level, x, y + 1, 0);
-                    fontRenderer.draw(matrixStack, level, x, y - 1, 0);
-                    fontRenderer.draw(matrixStack, level, x, y, 8453920);
-                }
-                RenderSystem.enableBlend();
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-            }
-            if (mount instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get())
-            {
-                textureManager.bind(ICONS);
-                ForgeIngameGui.renderHealthMount = false;
-                LivingEntity mountEntity = (LivingEntity) mount;
-                matrixStack.pushPose();
-                matrixStack.translate(mid + 1, armorRowHeight, 0);
-
-                float mountMaxHealth = mountEntity.getMaxHealth() * displayModifier;
-                float mountCurrentHealth = mountEntity.getHealth() * displayModifier;
-                float mountPercentHealth = Math.min(mountCurrentHealth / mountMaxHealth, 1.0f);
-                gui.blit(matrixStack, 0, 0, 90, 0, 90, 10);
-                gui.blit(matrixStack, 0, 0, 90, 10, (int) (90 * mountPercentHealth), 10);
-                if (mountEntity.hurtTime > 0)
-                {
-                    gui.blit(matrixStack, 0, 1, 0, 30, 90, 8);
-                }
-                matrixStack.popPose();
-
-                String mountHealthString = healthDisplayStyle.format(mountCurrentHealth, mountMaxHealth);
-                matrixStack.pushPose();
-                matrixStack.translate(mid + 47, armorRowHeight + 2.5, 0);
-                matrixStack.scale(0.8f, 0.8f, 1.0f);
-                fontRenderer.draw(matrixStack, mountHealthString, -1 * (fontRenderer.width(mountHealthString) / 2f), 0, mountPercentHealth < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB());
-                matrixStack.popPose();
-
-                RenderSystem.enableBlend();
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-            }
-        }
-
-         */
     }
 
     /**

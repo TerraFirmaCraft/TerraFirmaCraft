@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.types;
+package net.dries007.tfc.common.blocks.rock;
 
 /**
  * Default ores used for block registration calls

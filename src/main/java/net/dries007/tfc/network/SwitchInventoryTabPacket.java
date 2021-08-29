@@ -6,11 +6,8 @@
 
 package net.dries007.tfc.network;
 
-import java.util.function.Supplier;
-
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
-
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
@@ -35,11 +32,10 @@ public class SwitchInventoryTabPacket
         buffer.writeByte(type.ordinal());
     }
 
-    void handle(Supplier<NetworkEvent.Context> context)
+    void handle(NetworkEvent.Context context)
     {
-        context.get().setPacketHandled(true);
-        context.get().enqueueWork(() -> {
-            ServerPlayer player = context.get().getSender();
+        context.enqueueWork(() -> {
+            final ServerPlayer player = context.getSender();
             if (player != null)
             {
                 player.doCloseContainer();

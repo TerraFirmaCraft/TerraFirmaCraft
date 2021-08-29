@@ -47,9 +47,8 @@ public final class Codecs
      * In the former case, the default state will be used.
      * When serializing, this will always use the right side, which serializes to the state based codec.
      */
-    @SuppressWarnings("deprecation")
     public static final Codec<BlockState> LENIENT_BLOCKSTATE = Codec.either(
-        nonDefaultedRegistryCodec(Registry.BLOCK).xmap(Block::defaultBlockState, BlockState::getBlock),
+        BLOCK.xmap(Block::defaultBlockState, BlockState::getBlock),
         BlockState.CODEC
     ).xmap(Helpers::resolveEither, Either::right);
 

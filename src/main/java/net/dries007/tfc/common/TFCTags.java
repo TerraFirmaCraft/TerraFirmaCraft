@@ -52,7 +52,7 @@ public class TFCTags
         public static final Tag.Named<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final Tag.Named<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final Tag.Named<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
-        public static final Tag.Named<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // ie, crucibles. stuff that can be in a forge's chimney
+        public static final Tag.Named<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
         public static final Tag.Named<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final Tag.Named<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
 
@@ -65,7 +65,6 @@ public class TFCTags
     public static class Fluids
     {
         public static final Tag.Named<Fluid> MIXABLE = create("mixable");
-
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
 
         private static Tag.Named<Fluid> create(String id)

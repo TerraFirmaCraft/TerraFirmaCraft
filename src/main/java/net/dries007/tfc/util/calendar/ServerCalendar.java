@@ -25,7 +25,7 @@ public class ServerCalendar extends Calendar
 
     private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendars.SERVER::setDoDaylightCycle);
 
-    public static void setup()
+    public static void overrideDoDaylightCycleCallback()
     {
         final GameRulesTypeAccessor type = (GameRulesTypeAccessor) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
         type.accessor$setCallback(type.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));

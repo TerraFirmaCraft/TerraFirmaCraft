@@ -20,6 +20,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
+import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
 
@@ -82,11 +83,11 @@ public class RockData
         final int i = index(x, z);
         final int sh = surfaceHeight[i];
         final int rh = rockLayerHeight[i];
-        if (y > (int) (142 - 0.2 * sh + rh))
+        if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, maybe by keeping a LevelHeightAccessor reference around somewhere?
         {
             return topLayer[i];
         }
-        else if (y > (int) (82 - 0.2 * sh + rh))
+        else if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y - 14 - 0.2 * sh + rh))
         {
             return middleLayer[i];
         }

@@ -349,6 +349,9 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
 
+    drinkable(rm, 'fresh_water', 'minecraft:water', thirst=10)
+    drinkable(rm, 'salt_water', 'tfc:fluid/salt_water', thirst=-1)
+
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
     rm.data(('tfc', 'food_items', name_parts), {
@@ -363,6 +366,16 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'protein': protein,
         'grain': grain,
         'dairy': dairy
+    })
+
+
+def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: str, thirst: Optional[int] = None, intoxication: Optional[int] = None):
+    rm.data(('tfc', 'drinkables', name_parts), {
+        'ingredient': {'fluid': fluid},
+        'thirst': thirst,
+        'intoxication': intoxication
+        # todo: effects
+        # todo: milk effects
     })
 
 

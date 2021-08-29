@@ -6,13 +6,17 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.resources.ResourceLocation;
@@ -30,41 +34,26 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
 
     protected final Gson gson;
     protected final BiMap<ResourceLocation, T> types;
-
-    protected final List<Runnable> callbacks;
     protected final String typeName;
 
-    protected final boolean allowNone;
-    @Nullable protected T defaultValue;
-    protected boolean loaded;
+    protected DataManager(String domain, String typeName)
+    {
+        this(new Gson(), domain, typeName);
+    }
 
-    protected DataManager(Gson gson, String domain, String typeName, boolean allowNone)
+    protected DataManager(Gson gson, String domain, String typeName)
     {
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
         this.gson = gson;
         this.types = HashBiMap.create();
-        this.callbacks = new ArrayList<>();
         this.typeName = typeName;
-        this.allowNone = allowNone;
-        this.defaultValue = null;
-        this.loaded = false;
     }
 
     @Nullable
     public T get(ResourceLocation id)
     {
         return types.get(id);
-    }
-
-    public T getOrDefault(ResourceLocation id)
-    {
-        return types.getOrDefault(id, getDefault());
-    }
-
-    public T getDefault()
-    {
-        return Objects.requireNonNull(defaultValue, "Tried to get the default " + typeName + " but none existed! This DataManager has allowNone = " + allowNone);
     }
 
     @Nullable
@@ -76,21 +65,6 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     public Set<T> getValues()
     {
         return types.values();
-    }
-
-    public Set<ResourceLocation> getKeys()
-    {
-        return types.keySet();
-    }
-
-    public void addCallback(Runnable callback)
-    {
-        callbacks.add(callback);
-    }
-
-    public boolean isLoaded()
-    {
-        return loaded;
     }
 
     @Override
@@ -120,12 +94,6 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
         }
 
         LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
-        loaded = true;
-        defaultValue = types.values().stream().findFirst().orElse(null);
-        if (defaultValue == null && !allowNone)
-        {
-            throw new IllegalStateException("There must be at least one loaded " + typeName + '!');
-        }
         postProcess();
     }
 
@@ -134,21 +102,15 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     /**
      * Here for subclasses to override
      */
-    protected void postProcess()
-    {
-        for (Runnable callback : callbacks)
-        {
-            callback.run();
-        }
-    }
+    protected void postProcess() {}
 
     public static class Instance<T> extends DataManager<T>
     {
         private final BiFunction<ResourceLocation, JsonObject, T> factory;
 
-        public Instance(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName, boolean allowNone)
+        public Instance(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName)
         {
-            super(new GsonBuilder().create(), domain, typeName, allowNone);
+            super(domain, typeName);
             this.factory = factory;
         }
 

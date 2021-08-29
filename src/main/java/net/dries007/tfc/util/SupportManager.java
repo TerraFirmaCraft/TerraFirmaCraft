@@ -4,20 +4,17 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.support;
+package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.dries007.tfc.util.DataManager;
 
 public class SupportManager extends DataManager<Support>
 {
@@ -74,7 +71,7 @@ public class SupportManager extends DataManager<Support>
 
     private SupportManager()
     {
-        super(new GsonBuilder().create(), "supports", "support", true);
+        super("supports", "support");
     }
 
     public Optional<Support> get(BlockState state)

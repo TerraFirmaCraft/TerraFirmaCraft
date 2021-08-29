@@ -10,16 +10,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -41,7 +41,7 @@ import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
-import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Fuel;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -75,10 +75,9 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     @Override
     public void load(CompoundTag nbt)
     {
-        if (nbt.contains("output") && output != null)
+        if (nbt.contains("output"))
         {
-            // todo: this deserialization will never work, why are we so dumb??
-            output.deserializeNBT(nbt);
+            output = PotRecipe.Output.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
         super.load(nbt);
@@ -89,7 +88,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     {
         if (output != null)
         {
-            nbt.put("output", output.serializeNBT());
+            nbt.put("output", PotRecipe.Output.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
         return super.save(nbt);
@@ -106,7 +105,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     {
         if (slot == SLOT_FUEL_INPUT)
         {
-            return FuelManager.get(stack) != null;
+            return Fuel.get(stack) != null;
         }
         return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
     }

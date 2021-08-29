@@ -12,19 +12,19 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -36,8 +36,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
-import net.dries007.tfc.common.types.Fuel;
-import net.dries007.tfc.common.types.FuelManager;
+import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -94,7 +93,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                 {
                     forge.inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
                     forge.needsSlotUpdate = true;
-                    Fuel fuel = FuelManager.get(stack);
+                    Fuel fuel = Fuel.get(stack);
                     if (fuel != null)
                     {
                         forge.burnTicks = fuel.getDuration();

@@ -10,16 +10,20 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.config.TFCConfig;
 
 /**
  * Event handler for calendar related ticking
@@ -64,11 +68,9 @@ public class CalendarEventHandler
 
     public static void onOverworldTick(TickEvent.WorldTickEvent event)
     {
-        Level level = event.world;
-        // todo: verify this is the correct overworld dimension check
-        if (event.phase == TickEvent.Phase.END && level instanceof ServerLevel && event.world.dimension() == Level.OVERWORLD)
+        if (event.phase == TickEvent.Phase.END && event.world instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
         {
-            Calendars.SERVER.onOverworldTick((ServerLevel) level);
+            Calendars.SERVER.onOverworldTick(level);
         }
     }
 
@@ -84,12 +86,13 @@ public class CalendarEventHandler
             long currentDayTime = event.getEntity().getCommandSenderWorld().getDayTime();
             if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
             {
-                long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
-                /* todo: requires food overrides
-                // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
-                event.getEntity().getEntityWorld().getPlayers()
-                    .forEach(player -> player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * jump / FoodStatsTFC.EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier));
-                */
+                // Consume food/water on all online players accordingly
+                final long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
+                final float exhaustion = jump * TFCFoodData.PASSIVE_EXHAUSTION_PER_TICK * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue();
+                for (Player player : event.getEntity().level.players())
+                {
+                    player.causeFoodExhaustion(exhaustion);
+                }
             }
         }
     }

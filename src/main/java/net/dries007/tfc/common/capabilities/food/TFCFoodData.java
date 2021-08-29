@@ -32,24 +32,33 @@ import net.dries007.tfc.util.TFCDamageSources;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
- * A note on the reason why TFCFoodStats serializes to an external capability (player data):
+ * A note on the reason why {@link TFCFoodData} serializes to an external capability (player data):
  *
  * We don't use the vanilla read/add save data methods.
- * Why? Because we replace the FoodStats instance way after it has been already deserialized in vanilla.
- * - EntityConstructingEvent is too early as PlayerEntity's constructor would overwrite our food data
- * - AttachCapabilitiesEvent fires just after, and is where we attach the player data capability
- * - PlayerEvent.LoadFromFile fires later, and has access to the save data, but is too early as the player's connection is not yet set, so we can't properly sync that change to client.
- * - PlayerLoggedInEvent is where we can reliably update the FoodStats instance on server, and then sync that change to client.
+ * Why? Because we replace the {@link FoodData} instance way after it has been already deserialized in vanilla.
+ * - {@link net.minecraftforge.event.entity.EntityEvent.EntityConstructing} is too early as {@link Player} constructor would overwrite our food data
+ * - {@link net.minecraftforge.event.AttachCapabilitiesEvent} fires just after, and is where we attach the player data capability
+ * - {@link net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile} fires later, and has access to the save data, but is too early as the player's connection is not yet set, so we can't properly sync that change to client.
+ * - {@link net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent} is where we can reliably update the {@link FoodData} instance on server, and then sync that change to client.
  *
+ * Saving is then just written to the capability NBT at point of writing
+ * The capability is deserialized in  {@link net.minecraft.world.entity.Entity#load(CompoundTag)}, but the food stats doesn't exist yet, so the saved data is cached on the capability and copied over in the food data constructor
  * Now, at this point, we can actually read directly from our capability, as it has been deserialized much earlier in Entity#load.
  * Reading is a bit different: we read from the capability data early, store the NBT, and then copy it to the food stats on the instantiation of the custom food stats.
  */
 public class TFCFoodData extends FoodData
 {
-    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
-    public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
-    public static final float PASSIVE_EXHAUSTION = 20f * 4f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
+    // Vanilla constants
+    public static final int MAX_HUNGER = 20;
+    public static final float MAX_SATURATION = 20;
+    public static final float MAX_EXHAUSTION = 40;
+    public static final float EXHAUSTION_PER_HUNGER = 4;
+
     public static final float MAX_THIRST = 100f;
+
+    public static final float PASSIVE_HEALING_PER_TEN_TICKS = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
+    public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for all sources of exhaustion. Vanilla sources get reduced, while passive exhaustion factors in this multiplier.
+    public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.TICKS_IN_DAY * EXHAUSTION_MULTIPLIER); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
 
     public static void replaceFoodStats(Player player)
     {
@@ -71,16 +80,15 @@ public class TFCFoodData extends FoodData
 
     private final Player sourcePlayer;
     private final FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
-    private final NutritionStats nutritionStats; // Separate handler for nutrition, because it's a bit complex
+    private final NutritionData nutritionData; // Separate handler for nutrition, because it's a bit complex
     private long lastDrinkTick;
     private float thirst;
-    private int healTimer;
 
     public TFCFoodData(Player sourcePlayer, FoodData delegate)
     {
         this.sourcePlayer = sourcePlayer;
         this.delegate = delegate;
-        this.nutritionStats = new NutritionStats(0.5f, 0.0f);
+        this.nutritionData = new NutritionData(0.5f, 0.0f);
         this.thirst = MAX_THIRST;
     }
 
@@ -89,7 +97,6 @@ public class TFCFoodData extends FoodData
     {
         // This should never be called directly - when it is we assume it's direct stat modifications (saturation potion, eating cake)
         // We make modifications to vanilla logic, as saturation needs to be unaffected by hunger
-        // todo: mixin and replace cake with a proper eat function
     }
 
     @Override
@@ -130,7 +137,7 @@ public class TFCFoodData extends FoodData
         else
         {
             // Passive exhaustion - call the source player instead of the local method
-            player.causeFoodExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue());
+            player.causeFoodExhaustion(PASSIVE_EXHAUSTION_PER_TICK * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue());
 
             // Same check as the original food stats, so hunger and thirst loss are synced
             if (delegate.getExhaustionLevel() >= 4.0F)
@@ -159,19 +166,15 @@ public class TFCFoodData extends FoodData
         delegate.tick(player);
 
         // Apply custom TFC regeneration
-        if (player.isHurt() && getFoodLevel() >= 4.0f && getThirst() > 20f)
+        if (player.tickCount % 10 == 0)
         {
-            healTimer++;
-            float multiplier = 1;
-            if (getFoodLevel() > 16.0f && getThirst() > 80f) // Triple healing at >80% hunger and thirst
+            if (player.isHurt() && getFoodLevel() >= 4.0f && getThirst() > 20f)
             {
-                multiplier = 3;
-            }
+                final float foodBonus = (float) Mth.inverseLerp(getFoodLevel(), 4, MAX_HUNGER);
+                final float thirstBonus = (float) Mth.inverseLerp(getThirst(), 20, MAX_THIRST);
+                final float multiplier = 1 + foodBonus + thirstBonus; // Range: [1, 4] depending on total thirst and hunger
 
-            if (healTimer > 10)
-            {
-                player.heal(multiplier * PASSIVE_HEAL_AMOUNT * TFCConfig.SERVER.naturalRegenerationModifier.get().floatValue());
-                healTimer = 0;
+                player.heal(multiplier * PASSIVE_HEALING_PER_TEN_TICKS * TFCConfig.SERVER.naturalRegenerationModifier.get().floatValue());
             }
         }
 
@@ -198,7 +201,7 @@ public class TFCFoodData extends FoodData
         // Since this is only called server side, and vanilla has a custom packet for this stuff, we need our own
         if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodDataUpdatePacket(nutritionStats.getNutrients(), thirst));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodDataUpdatePacket(nutritionData.getNutrients(), thirst));
         }
     }
 
@@ -229,6 +232,7 @@ public class TFCFoodData extends FoodData
     @Override
     public void addExhaustion(float exhaustion)
     {
+        // Exhaustion from all vanilla sources is reduced
         delegate.addExhaustion(EXHAUSTION_MULTIPLIER * exhaustion);
     }
 
@@ -277,7 +281,7 @@ public class TFCFoodData extends FoodData
     public void eat(FoodRecord data)
     {
         addThirst(data.getWater());
-        nutritionStats.addNutrients(data);
+        nutritionData.addNutrients(data);
 
         // In order to get the exact saturation we want, apply this scaling factor here
         delegate.eat(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
@@ -289,7 +293,7 @@ public class TFCFoodData extends FoodData
 
         nbt.putFloat("thirst", thirst);
         nbt.putFloat("lastDrinkTick", lastDrinkTick);
-        nbt.put("nutrients", nutritionStats.serializeNBT());
+        nbt.put("nutrients", nutritionData.serializeNBT());
 
         return nbt;
     }
@@ -298,7 +302,7 @@ public class TFCFoodData extends FoodData
     {
         thirst = nbt.getFloat("thirst");
         lastDrinkTick = nbt.getLong("lastDrinkTick");
-        nutritionStats.deserializeNBT(nbt.getCompound("nutrients"));
+        nutritionData.deserializeNBT(nbt.getCompound("nutrients"));
     }
 
     /**
@@ -306,13 +310,13 @@ public class TFCFoodData extends FoodData
      */
     public void onClientUpdate(float[] nutrients, float thirst)
     {
-        this.nutritionStats.onClientUpdate(nutrients);
+        this.nutritionData.onClientUpdate(nutrients);
         this.thirst = thirst;
     }
 
     public float getHealthModifier()
     {
-        return 0.25f + 1.5f * nutritionStats.getAverageNutrition();
+        return 0.25f + 1.5f * nutritionData.getAverageNutrition();
     }
 
     public float getThirst()
@@ -330,9 +334,9 @@ public class TFCFoodData extends FoodData
         setThirst(thirst + toAdd);
     }
 
-    public NutritionStats getNutrition()
+    public NutritionData getNutrition()
     {
-        return nutritionStats;
+        return nutritionData;
     }
 
     public boolean attemptDrink(float value, boolean simulate)

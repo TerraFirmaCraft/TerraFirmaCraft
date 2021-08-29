@@ -7,18 +7,17 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.List;
-import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
@@ -26,6 +25,11 @@ import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 public class SoupPotRecipe extends PotRecipe
 {
+    public static final OutputType OUTPUT_TYPE = nbt -> {
+        final int servings = nbt.getInt("servings");
+        return new SoupOutput(servings);
+    };
+
     protected SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidIngredient fluidIngredient, int duration, float minTemp)
     {
         super(id, itemIngredients, fluidIngredient, duration, minTemp);
@@ -78,20 +82,9 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        public CompoundTag serializeNBT()
+        public void write(CompoundTag nbt)
         {
-            CompoundTag nbt = new CompoundTag();
             nbt.putInt("servings", servings);
-            return nbt;
-        }
-
-        @Override
-        public void deserializeNBT(@Nullable CompoundTag nbt)
-        {
-            if (nbt != null)
-            {
-                servings = nbt.getInt("servings");
-            }
         }
     }
 

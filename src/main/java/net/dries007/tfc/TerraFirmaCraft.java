@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -34,6 +35,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
@@ -101,6 +103,8 @@ public final class TerraFirmaCraft
             ClientEventHandler.init();
             ClientForgeEventHandler.init();
         }
+
+        ForgeMod.enableMilkFluid();
     }
 
     public void setup(FMLCommonSetupEvent event)
@@ -117,17 +121,18 @@ public final class TerraFirmaCraft
 
         TFCLoot.LOOT_CONDITIONS.registerAll();
 
-        InteractionManager.setup();
-        TFCWorldType.setup();
-        ItemSizeManager.setup();
-        ServerCalendar.setup();
+        InteractionManager.registerDefaultInteractions();
+        TFCWorldType.overrideDefaultWorldType();
+        ItemSizeManager.overrideItemStackSizes();
+        ServerCalendar.overrideDoDaylightCycleCallback();
+        TFCRecipeTypes.registerPotRecipeOutputTypes();
 
-        event.enqueueWork(DispenserBehaviors::syncSetup);
+        event.enqueueWork(DispenserBehaviors::registerAll);
 
-        // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
 
+        // Validations
         TFCTileEntities.validateBlockEntities();
     }
 

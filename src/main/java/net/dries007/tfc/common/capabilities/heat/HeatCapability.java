@@ -27,7 +27,7 @@ public final class HeatCapability
     public static final Capability<IHeat> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat", true);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat");
 
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {

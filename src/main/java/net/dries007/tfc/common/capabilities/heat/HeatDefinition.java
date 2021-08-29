@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
-import net.dries007.tfc.common.ItemDefinition;
+import net.dries007.tfc.util.ItemDefinition;
 
 /**
  * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.

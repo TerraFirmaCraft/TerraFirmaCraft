@@ -6,16 +6,16 @@
 
 package net.dries007.tfc.util;
 
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 
 import net.dries007.tfc.common.items.TFCItems;
 
@@ -46,7 +46,7 @@ public class DispenserBehaviors
     /**
      * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
-    public static void syncSetup()
+    public static void registerAll()
     {
         // Bucket emptying
         DispenserBlock.registerBehavior(TFCItems.SALT_WATER_BUCKET.get(), BUCKET_BEHAVIOR);

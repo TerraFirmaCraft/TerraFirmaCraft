@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.types;
+package net.dries007.tfc.util;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -31,13 +31,10 @@ import net.dries007.tfc.common.TFCArmorMaterial;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCItemTier;
 import net.dries007.tfc.common.items.tools.*;
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
 public class Metal
 {
-    public static final DataManager<Metal> MANAGER = new DataManager.Instance<>(Metal::new, "metals", "metal", false);
+    public static final DataManager<Metal> MANAGER = new DataManager.Instance<>(Metal::new, "metals", "metal");
 
     private final Tier tier;
     private final Fluid fluid;

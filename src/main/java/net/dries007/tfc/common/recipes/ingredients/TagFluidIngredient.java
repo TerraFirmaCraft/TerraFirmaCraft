@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import com.google.gson.JsonObject;
@@ -40,6 +41,12 @@ public class TagFluidIngredient implements FluidIngredient
     public boolean testIgnoreAmount(Fluid fluid)
     {
         return tag.contains(fluid);
+    }
+
+    @Override
+    public Collection<Fluid> getMatchingFluids()
+    {
+        return tag.getValues();
     }
 
     @Override

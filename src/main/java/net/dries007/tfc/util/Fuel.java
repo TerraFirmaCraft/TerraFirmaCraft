@@ -4,23 +4,53 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.types;
+package net.dries007.tfc.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Fuel
 {
+    public static final DataManager<Fuel> MANAGER = new DataManager.Instance<>(Fuel::new, "fuels", "fuel");
+    public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
+
+    @Nullable
+    public static Fuel get(ItemStack stack)
+    {
+        for (Fuel def : CACHE.getAll(stack.getItem()))
+        {
+            if (def.isValid(stack))
+            {
+                return def;
+            }
+        }
+        return null;
+    }
+
+    public static void addTooltipInfo(ItemStack stack, List<Component> text)
+    {
+        final Fuel fuel = get(stack);
+        if (fuel != null)
+        {
+            // todo: color and convert temperature and duration to words
+            text.add(new TranslatableComponent("tfc.tooltip.fuel", fuel.getDuration(), fuel.getTemperature()));
+        }
+    }
+
     private final ResourceLocation id;
     private final Ingredient ingredient;
     private final int duration;

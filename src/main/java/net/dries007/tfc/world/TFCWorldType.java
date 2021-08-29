@@ -29,7 +29,7 @@ public class TFCWorldType
      * Thank you gigahertz!
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void setup()
+    public static void overrideDefaultWorldType()
     {
         if (TFCConfig.COMMON.setTFCWorldTypeAsDefault.get() && ForgeConfig.COMMON.defaultWorldType.get().equals("default"))
         {

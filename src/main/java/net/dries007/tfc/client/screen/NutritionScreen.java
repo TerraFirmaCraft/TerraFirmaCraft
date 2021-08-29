@@ -18,7 +18,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.food.NutritionStats;
+import net.dries007.tfc.common.capabilities.food.NutritionData;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -56,9 +56,9 @@ public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
         super.renderBg(stack, partialTicks, mouseX, mouseY);
 
         final Player player = ClientHelpers.getPlayer();
-        if (player != null && player.getFoodData() instanceof TFCFoodData)
+        if (player != null && player.getFoodData() instanceof TFCFoodData data)
         {
-            final NutritionStats nutrition = ((TFCFoodData) player.getFoodData()).getNutrition();
+            final NutritionData nutrition = data.getNutrition();
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 final int width = (int) (nutrition.getNutrient(nutrient) * 50);

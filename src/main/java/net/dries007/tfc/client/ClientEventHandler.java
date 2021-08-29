@@ -25,6 +25,7 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
@@ -37,14 +38,14 @@ import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
-import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 
-import static net.dries007.tfc.common.types.Wood.BlockType.*;
+import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
 public final class ClientEventHandler
 {
@@ -53,6 +54,7 @@ public final class ClientEventHandler
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(ClientEventHandler::clientSetup);
+        bus.addListener(ClientEventHandler::onConfigReload);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
         bus.addListener(ClientEventHandler::registerColorHandlerItems);
         bus.addListener(ClientEventHandler::registerParticleFactoriesAndOtherStuff);
@@ -152,6 +154,13 @@ public final class ClientEventHandler
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
+
+        IngameOverlays.reloadOverlays();
+    }
+
+    public static void onConfigReload(ModConfigEvent.Reloading event)
+    {
+        IngameOverlays.reloadOverlays();
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)

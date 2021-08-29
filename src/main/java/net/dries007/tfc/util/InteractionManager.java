@@ -14,16 +14,27 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.Tag;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -38,18 +49,6 @@ import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.phys.BlockHitResult;
-
 /**
  * This exists due to problems in handling right click events
  * Forge provides a right click block event. This works for intercepting would-be calls to {@link BlockState#use(Level, Player, InteractionHand, BlockHitResult)}
@@ -63,7 +62,7 @@ public final class InteractionManager
     private static final List<Entry> ACTIONS = new ArrayList<>();
     private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
-    public static void setup()
+    public static void registerDefaultInteractions()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
             final Level world = context.getLevel();
@@ -366,13 +365,13 @@ public final class InteractionManager
         {
             for (Entry entry : CACHE.getAll(stack.getItem()))
             {
-                if (entry.test.test(stack))
+                if (entry.test().test(stack))
                 {
                     InteractionResult result;
                     ACTIVE.set(true);
                     try
                     {
-                        result = entry.action.onItemUse(stack, context);
+                        result = entry.action().onItemUse(stack, context);
                     }
                     finally
                     {
@@ -399,17 +398,5 @@ public final class InteractionManager
         InteractionResult onItemUse(ItemStack stack, UseOnContext context);
     }
 
-    private static class Entry
-    {
-        private final OnItemUseAction action;
-        private final Predicate<ItemStack> test;
-        private final Supplier<Iterable<Item>> keyExtractor;
-
-        private Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor)
-        {
-            this.action = action;
-            this.test = test;
-            this.keyExtractor = keyExtractor;
-        }
-    }
+    private record Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor) {}
 }

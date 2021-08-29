@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -29,8 +29,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

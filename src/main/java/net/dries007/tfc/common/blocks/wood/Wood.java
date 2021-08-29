@@ -4,38 +4,25 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.types;
+package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 /**
  * Default wood types used for block registration calls

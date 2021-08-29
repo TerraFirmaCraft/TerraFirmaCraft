@@ -24,12 +24,12 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public final class ItemSizeManager
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager.Instance<>(ItemSizeDefinition::new, "item_sizes", "item size", true);
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager.Instance<>(ItemSizeDefinition::new, "item_sizes", "item size");
 
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
-    public static void setup()
+    public static void overrideItemStackSizes()
     {
         // Initialize the list of editable items here, as we can't rely on checking their stack size later as it may have been modified
         MODIFIABLE_ITEMS.clear();

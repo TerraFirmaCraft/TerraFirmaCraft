@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 
 import com.google.common.collect.BiMap;
@@ -53,17 +54,24 @@ public interface FluidIngredient extends Predicate<FluidStack>
                 throw new JsonParseException("Unknown fluid ingredient type: " + type);
             }
         }
-        else if (json.has("fluid"))
-        {
-            serializer = FLUID;
-        }
-        else if (json.has("tag"))
-        {
-            serializer = TAG;
-        }
         else
         {
-            throw new JsonParseException("Fluid ingredient must have one of 'type', 'fluid', or 'tag' entries");
+            if (json.has("fluid") && json.has("tag"))
+            {
+                throw new JsonParseException("Fluid ingredient cannot have both 'fluid' and 'tag' entries");
+            }
+            if (json.has("fluid"))
+            {
+                serializer = FLUID;
+            }
+            else if (json.has("tag"))
+            {
+                serializer = TAG;
+            }
+            else
+            {
+                throw new JsonParseException("Fluid ingredient must have one of 'type', 'fluid', or 'tag' entries");
+            }
         }
         return serializer.fromJson(json);
     }
@@ -91,6 +99,11 @@ public interface FluidIngredient extends Predicate<FluidStack>
      * Test the ingredient against the provided fluid stack, ignoring amounts.
      */
     boolean testIgnoreAmount(Fluid fluid);
+
+    /**
+     * Get all possible fluids that can matching this ingredient
+     */
+    Collection<Fluid> getMatchingFluids();
 
     FluidIngredient.Serializer<?> getSerializer();
 

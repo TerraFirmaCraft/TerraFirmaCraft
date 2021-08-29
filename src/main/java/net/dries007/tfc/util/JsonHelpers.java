@@ -21,7 +21,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-public final class JsonHelpers
+public final class JsonHelpers extends GsonHelper
 {
     public static <T extends ForgeRegistryEntry<T>> T getRegistryEntry(JsonObject json, String key, IForgeRegistry<T> registry)
     {
