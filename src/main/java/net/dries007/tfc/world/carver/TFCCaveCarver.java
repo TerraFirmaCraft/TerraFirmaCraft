@@ -26,7 +26,7 @@ public class TFCCaveCarver extends CaveWorldCarver
     @Override
     protected boolean carveBlock(CarvingContext context, CaveCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Biome> biomeAccessor, BitSet carvingMask, Random random, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
     {
-        return CarverHelpers.carveBlock(context, config, chunk, biomeAccessor, pos, checkPos, aquifer, reachedSurface);
+        return CarverHelpers.carveBlock(context, config, chunk, pos, checkPos, aquifer, reachedSurface);
     }
 
     @Override

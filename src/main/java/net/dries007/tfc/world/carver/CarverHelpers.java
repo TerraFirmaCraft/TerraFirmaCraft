@@ -7,13 +7,11 @@
 package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
-import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,6 +27,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 
 public final class CarverHelpers
 {
@@ -58,7 +57,7 @@ public final class CarverHelpers
         return (x & 15) | ((z & 15) << 4) | ((y - minY) << 8);
     }
 
-    public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, Function<BlockPos, Biome> biomeAccessor, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
+    public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
     {
         final BlockState stateAt = chunk.getBlockState(pos);
         if (canReplaceBlock(stateAt) || isDebugEnabled(config))
@@ -70,9 +69,9 @@ public final class CarverHelpers
                 if (reachedSurface.isTrue())
                 {
                     checkPos.setWithOffset(pos, Direction.DOWN);
-                    if (chunk.getBlockState(checkPos).is(Blocks.DIRT)) // todo: fix this to apply to tfc stuff as well
+                    if (chunk.getBlockState(checkPos).getBlock() instanceof IDirtBlock dirt)
                     {
-                        chunk.setBlockState(checkPos, biomeAccessor.apply(pos).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial(), false);
+                        chunk.setBlockState(checkPos, dirt.getGrass(), false);
                     }
                 }
                 return true;

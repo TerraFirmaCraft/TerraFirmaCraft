@@ -8,18 +8,17 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.material.Material;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
@@ -142,9 +141,9 @@ public class LakeFeature extends Feature<NoneFeatureConfiguration>
                             {
                                 BlockPos dirtPos = pos.offset(x, y - 1, z);
                                 BlockState dirtState = worldIn.getBlockState(dirtPos);
-                                if (dirtState.getBlock() instanceof IDirtBlock && worldIn.getBrightness(LightLayer.SKY, pos.offset(x, y, z)) > 0)
+                                if (dirtState.getBlock() instanceof IDirtBlock dirt && worldIn.getBrightness(LightLayer.SKY, pos.offset(x, y, z)) > 0)
                                 {
-                                    BlockState grassState = ((IDirtBlock) dirtState.getBlock()).getGrass();
+                                    BlockState grassState = dirt.getGrass();
                                     worldIn.setBlock(dirtPos, grassState, 2);
                                     worldIn.getBlockTicks().scheduleTick(dirtPos, grassState.getBlock(), 0);
                                 }
