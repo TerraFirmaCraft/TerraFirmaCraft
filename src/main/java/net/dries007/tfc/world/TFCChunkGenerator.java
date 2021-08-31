@@ -323,7 +323,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public ChunkGenerator withSeed(long seedIn)
     {
-        return new TFCChunkGenerator(customBiomeSource, settings, flatBedrock, seedIn);
+        return new TFCChunkGenerator(customBiomeSource.withSeed(seed), settings, flatBedrock, seedIn);
     }
 
     @Override
