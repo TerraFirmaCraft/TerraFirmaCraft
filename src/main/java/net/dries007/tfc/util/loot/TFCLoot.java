@@ -16,7 +16,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.collections.LazyRegistry;
 
 public class TFCLoot
 {
@@ -24,12 +23,16 @@ public class TFCLoot
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
 
     // Loot Conditions
-    public static final LazyRegistry<LootItemConditionType> LOOT_CONDITIONS = new LazyRegistry<>();
     public static final Lazy<LootItemConditionType> IS_ISOLATED = register("is_isolated", IsIsolatedCondition.Serializer::new);
+
+    public static void registerLootConditions()
+    {
+        IS_ISOLATED.get();
+    }
 
     private static Lazy<LootItemConditionType> register(String id, Supplier<Serializer<? extends LootItemCondition>> serializer)
     {
-        return LOOT_CONDITIONS.register(() -> {
+        return Lazy.of(() -> {
             final LootItemConditionType type = new LootItemConditionType(serializer.get());
             Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), type);
             return type;

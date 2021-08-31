@@ -29,7 +29,7 @@ public final class ItemSizeManager
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
-    public static void overrideItemStackSizes()
+    public static void setupItemStackSizeOverrides()
     {
         // Initialize the list of editable items here, as we can't rely on checking their stack size later as it may have been modified
         MODIFIABLE_ITEMS.clear();

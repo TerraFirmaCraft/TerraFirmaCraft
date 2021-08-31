@@ -8,7 +8,6 @@ package net.dries007.tfc.util.collections;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -21,6 +20,7 @@ public class Weighted<E> implements IWeighted<E>
 {
     private final NavigableMap<Double, E> backingMap = new TreeMap<>();
     private double totalWeight = 0;
+    private List<Pair<E, Double>> weightedValues;
 
     public Weighted() {}
 
@@ -60,7 +60,11 @@ public class Weighted<E> implements IWeighted<E>
     @Override
     public List<Pair<E, Double>> weightedValues()
     {
-        return backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
+        if (weightedValues == null)
+        {
+            weightedValues = backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
+        }
+        return weightedValues;
     }
 
     @Override
@@ -69,7 +73,6 @@ public class Weighted<E> implements IWeighted<E>
         return backingMap.isEmpty();
     }
 
-    @Nonnull
     @Override
     public Iterator<E> iterator()
     {

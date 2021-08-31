@@ -44,6 +44,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
     /**
      * Register a pot output type.
      * If a pot recipe uses a custom output, that must persist (and thus be serialized), it needs to be registered here.
+     * This method is safe to call during parallel mod loading.
      */
     public static synchronized OutputType register(ResourceLocation id, OutputType outputType)
     {

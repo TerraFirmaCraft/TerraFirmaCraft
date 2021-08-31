@@ -119,21 +119,22 @@ public final class TerraFirmaCraft
         CapabilityManager.INSTANCE.register(IFood.class);
         CapabilityManager.INSTANCE.register(PlayerData.class);
 
-        TFCLoot.LOOT_CONDITIONS.registerAll();
-
+        TFCLoot.registerLootConditions();
         InteractionManager.registerDefaultInteractions();
-        TFCWorldType.overrideDefaultWorldType();
-        ItemSizeManager.overrideItemStackSizes();
-        ServerCalendar.overrideDoDaylightCycleCallback();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
+        TFCWorldType.overrideDefaultWorldType();
+        ServerCalendar.overrideDoDaylightCycleCallback();
 
-        event.enqueueWork(DispenserBehaviors::registerAll);
+        event.enqueueWork(() -> {
+            ItemSizeManager.setupItemStackSizeOverrides();
+            DispenserBehaviors.registerAll();
 
-        Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
+            Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
 
-        // Validations
-        TFCTileEntities.validateBlockEntities();
+            // Validations
+            TFCTileEntities.validateBlockEntities();
+        });
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

@@ -7,10 +7,8 @@
 package net.dries007.tfc.util.collections;
 
 import java.util.*;
-import javax.annotation.Nonnull;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 
 public interface IWeighted<E> extends Iterable<E>
 {
@@ -49,7 +47,6 @@ public interface IWeighted<E> extends Iterable<E>
             return true;
         }
 
-        @Nonnull
         @Override
         public Iterator<Object> iterator()
         {
@@ -63,27 +60,6 @@ public interface IWeighted<E> extends Iterable<E>
         }
     };
 
-    /**
-     * Creates a codec for an {@link IWeighted} from a simpler representation
-     */
-    static <E> Codec<IWeighted<E>> codec(Codec<List<Pair<E, Double>>> codec)
-    {
-        return codec.xmap((list -> {
-            if (list.isEmpty())
-            {
-                return IWeighted.empty();
-            }
-            else if (list.size() == 1)
-            {
-                return IWeighted.singleton(list.get(0).getFirst());
-            }
-            else
-            {
-                return new Weighted<E>(list);
-            }
-        }), IWeighted::weightedValues);
-    }
-
     @SuppressWarnings("unchecked")
     static <E> IWeighted<E> empty()
     {
@@ -92,7 +68,7 @@ public interface IWeighted<E> extends Iterable<E>
 
     static <E> IWeighted<E> singleton(E element)
     {
-        return new IWeighted<E>()
+        return new IWeighted<>()
         {
             private final Collection<E> elementSet = Collections.singleton(element);
 
@@ -126,7 +102,6 @@ public interface IWeighted<E> extends Iterable<E>
                 return false;
             }
 
-            @Nonnull
             @Override
             public Iterator<E> iterator()
             {

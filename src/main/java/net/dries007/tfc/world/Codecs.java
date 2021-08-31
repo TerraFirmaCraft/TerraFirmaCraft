@@ -27,6 +27,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IWeighted;
+import net.dries007.tfc.util.collections.Weighted;
 
 /**
  * A collection of common codecs that reference vanilla code
@@ -55,7 +56,6 @@ public final class Codecs
     /**
      * Additional codecs for existing configs.
      */
-
     public static final Codec<SurfaceBuilderBaseConfiguration> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
 
     public static final Codec<BlockStateConfiguration> LENIENT_BLOCK_STATE_FEATURE_CONFIG = LENIENT_BLOCKSTATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
@@ -85,10 +85,23 @@ public final class Codecs
      */
     public static <E> Codec<IWeighted<E>> weightedCodec(Codec<E> elementCodec, String elementKey)
     {
-        return IWeighted.codec(Codec.mapPair(
+        return Codec.mapPair(
             elementCodec.fieldOf(elementKey),
             Codec.DOUBLE.optionalFieldOf("weight", 1d)
-        ).codec().listOf());
+        ).codec().listOf().xmap((list -> {
+            if (list.isEmpty())
+            {
+                return IWeighted.empty();
+            }
+            else if (list.size() == 1)
+            {
+                return IWeighted.singleton(list.get(0).getFirst());
+            }
+            else
+            {
+                return new Weighted<E>(list);
+            }
+        }), IWeighted::weightedValues);
     }
 
     /**

@@ -344,17 +344,26 @@ public final class InteractionManager
         });
     }
 
-    public static void register(BlockItemPlacement wrapper)
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static synchronized void register(BlockItemPlacement wrapper)
     {
         ACTIONS.add(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
     }
 
-    public static void register(Item item, OnItemUseAction action)
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static synchronized void register(Item item, OnItemUseAction action)
     {
         ACTIONS.add(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
     }
 
-    public static void register(Tag<Item> tag, OnItemUseAction action)
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static synchronized void register(Tag<Item> tag, OnItemUseAction action)
     {
         ACTIONS.add(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues));
     }
