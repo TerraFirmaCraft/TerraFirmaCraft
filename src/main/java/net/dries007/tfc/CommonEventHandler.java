@@ -94,7 +94,6 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
-import net.dries007.tfc.api.events.SurfaceSpawnEvent;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.api.util.FallingBlockManager;
 import net.dries007.tfc.api.util.IGrowingPlant;
@@ -789,13 +788,7 @@ public final class CommonEventHandler
                     int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
                     if (pos.getY() >= maximumY || world.canSeeSky(pos))
                     {
-                        SurfaceSpawnEvent surfaceEvent = new SurfaceSpawnEvent(event.getEntityLiving(), event.getWorld(), pos);
-                        MinecraftForge.EVENT_BUS.post(surfaceEvent);
-                        Event.Result eventResult = surfaceEvent.getResult();
-                        if (eventResult.equals(Event.Result.DEFAULT) || eventResult.equals(Event.Result.DENY))
-                        {
-                            event.setResult(Event.Result.DENY);
-                        }
+                        event.setResult(Event.Result.DENY);
                     }
                 }
             }
