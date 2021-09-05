@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -70,28 +70,29 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Constructor");
         LOGGER.debug("Debug Logging Enabled");
 
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addListener(this::setup);
-        modEventBus.addListener(this::loadComplete);
+        bus.addListener(this::setup);
+        bus.addListener(this::registerCapabilities);
+        bus.addListener(this::loadComplete);
 
-        TFCBlocks.BLOCKS.register(modEventBus);
-        TFCItems.ITEMS.register(modEventBus);
-        TFCContainerTypes.CONTAINERS.register(modEventBus);
-        TFCEntities.ENTITIES.register(modEventBus);
-        TFCFluids.FLUIDS.register(modEventBus);
-        TFCRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        TFCSounds.SOUNDS.register(modEventBus);
-        TFCParticles.PARTICLE_TYPES.register(modEventBus);
-        TFCTileEntities.TILE_ENTITIES.register(modEventBus);
+        TFCBlocks.BLOCKS.register(bus);
+        TFCItems.ITEMS.register(bus);
+        TFCContainerTypes.CONTAINERS.register(bus);
+        TFCEntities.ENTITIES.register(bus);
+        TFCFluids.FLUIDS.register(bus);
+        TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
+        TFCSounds.SOUNDS.register(bus);
+        TFCParticles.PARTICLE_TYPES.register(bus);
+        TFCTileEntities.TILE_ENTITIES.register(bus);
 
-        TFCBiomes.BIOMES.register(modEventBus);
-        TFCFeatures.FEATURES.register(modEventBus);
-        TFCDecorators.DECORATORS.register(modEventBus);
-        TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
-        TFCCarvers.CARVERS.register(modEventBus);
-        TFCBlockPlacers.BLOCK_PLACERS.register(modEventBus);
-        TFCWorldType.WORLD_TYPES.register(modEventBus);
+        TFCBiomes.BIOMES.register(bus);
+        TFCFeatures.FEATURES.register(bus);
+        TFCDecorators.DECORATORS.register(bus);
+        TFCSurfaceBuilders.SURFACE_BUILDERS.register(bus);
+        TFCCarvers.CARVERS.register(bus);
+        TFCBlockPlacers.BLOCK_PLACERS.register(bus);
+        TFCWorldType.WORLD_TYPES.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();
@@ -111,14 +112,6 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
-        // Setup methods
-        CapabilityManager.INSTANCE.register(IHeat.class);
-        CapabilityManager.INSTANCE.register(IForging.class);
-        CapabilityManager.INSTANCE.register(ChunkData.class);
-        CapabilityManager.INSTANCE.register(IWorldTracker.class);
-        CapabilityManager.INSTANCE.register(IFood.class);
-        CapabilityManager.INSTANCE.register(PlayerData.class);
-
         TFCLoot.registerLootConditions();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
@@ -135,6 +128,16 @@ public final class TerraFirmaCraft
             // Validations
             TFCTileEntities.validateBlockEntities();
         });
+    }
+
+    public void registerCapabilities(RegisterCapabilitiesEvent event)
+    {
+        event.register(IHeat.class);
+        event.register(IForging.class);
+        event.register(ChunkData.class);
+        event.register(IWorldTracker.class);
+        event.register(IFood.class);
+        event.register(PlayerData.class);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

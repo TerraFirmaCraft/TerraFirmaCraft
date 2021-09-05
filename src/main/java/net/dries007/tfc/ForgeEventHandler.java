@@ -366,12 +366,12 @@ public final class ForgeEventHandler
 
     public static void beforeServerStart(FMLServerAboutToStartEvent event)
     {
-        CacheInvalidationListener.INSTANCE.invalidateAll();
+        CacheInvalidationListener.INSTANCE.reloadSync();
     }
 
     public static void onServerStopped(FMLServerStoppedEvent event)
     {
-        CacheInvalidationListener.INSTANCE.invalidateAll();
+        CacheInvalidationListener.INSTANCE.reloadSync();
     }
 
     public static void registerCommands(RegisterCommandsEvent event)

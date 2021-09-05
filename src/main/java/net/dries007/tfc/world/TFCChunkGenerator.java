@@ -27,6 +27,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -445,7 +446,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
         if (Debug.ENABLE_SLOPE_VISUALIZATION)
         {
-            Debug.slopeVisualization(chunk, slopeMap, chunkX, chunkZ, this::sampleSlope);
+            slopeVisualization(chunk, slopeMap, chunkX, chunkZ);
         }
 
         return CompletableFuture.completedFuture(chunk);
@@ -712,6 +713,37 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private <T> Object2DoubleMap<T>[] newWeightArray(int size)
     {
         return (Object2DoubleMap<T>[]) new Object2DoubleMap[size]; // Avoid generic array warnings / errors
+    }
+
+    private void slopeVisualization(ChunkAccess chunk, double[] slopeMap, int chunkX, int chunkZ)
+    {
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        final Block[] meter = new Block[] {
+            Blocks.WHITE_STAINED_GLASS,
+            Blocks.LIGHT_GRAY_STAINED_GLASS,
+            Blocks.LIGHT_BLUE_STAINED_GLASS,
+            Blocks.BLUE_STAINED_GLASS,
+            Blocks.CYAN_STAINED_GLASS,
+            Blocks.GREEN_STAINED_GLASS,
+            Blocks.LIME_STAINED_GLASS,
+            Blocks.YELLOW_STAINED_GLASS,
+            Blocks.ORANGE_STAINED_GLASS,
+            Blocks.RED_STAINED_GLASS,
+            Blocks.MAGENTA_STAINED_GLASS,
+            Blocks.PINK_STAINED_GLASS
+        };
+
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                int y = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
+                mutablePos.set(chunkX + x, y, chunkZ + z);
+                double slope = sampleSlope(slopeMap, x, z);
+                int slopeIndex = Mth.clamp((int) slope, 0, meter.length - 1);
+                chunk.setBlockState(mutablePos, meter[slopeIndex].defaultBlockState(), false);
+            }
+        }
     }
 
     interface Sampler<T>

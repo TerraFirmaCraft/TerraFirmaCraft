@@ -192,6 +192,6 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(PART));
+        super.createBlockStateDefinition(builder.add(PART, FACING));
     }
 }

@@ -7,13 +7,8 @@
 package net.dries007.tfc.util;
 
 import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -30,17 +25,12 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 /**
  * This is a manager for various cache invalidations, either on resource reload or server start/stop
  */
-public enum CacheInvalidationListener implements PreparableReloadListener
+public enum CacheInvalidationListener implements SyncReloadListener
 {
     INSTANCE;
 
     @Override
-    public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
-    {
-        return CompletableFuture.runAsync(() -> {}, backgroundExecutor).thenCompose(stage::wait).thenRunAsync(this::invalidateAll, gameExecutor);
-    }
-
-    public void invalidateAll()
+    public void reloadSync()
     {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null)

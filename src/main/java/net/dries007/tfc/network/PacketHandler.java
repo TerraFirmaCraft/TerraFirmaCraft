@@ -31,11 +31,6 @@ public class PacketHandler
         CHANNEL.send(target, message);
     }
 
-    public static SimpleChannel get()
-    {
-        return CHANNEL;
-    }
-
     public static void init()
     {
         // Server -> Client

@@ -455,12 +455,20 @@ public final class Helpers
         }
     }
 
+    public static void uncheck(Runnable action)
+    {
+        uncheck(() -> {
+            action.run();
+            return null;
+        });
+    }
+
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T> T uncheck(Callable<Object> action)
+    public static <T> T uncheck(Callable<?> action)
     {
         try
         {

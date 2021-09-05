@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -147,11 +148,11 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         BiomeVariants variants;
         if (Debug.SINGLE_BIOME)
         {
-            variants = Debug.SINGLE_BIOME_BIOME;
+            variants = TFCBiomes.PLAINS;
         }
         else if (Debug.STRIPE_BIOMES)
         {
-            variants = Debug.stripeBiome(biomeCoordX);
+            variants = stripeBiome(biomeCoordX);
         }
         else
         {
@@ -229,5 +230,11 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     public TFCBiomeSource withSeed(long seedIn)
     {
         return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, climateSettings, biomeRegistry);
+    }
+
+    private BiomeVariants stripeBiome(int x)
+    {
+        final List<BiomeVariants> variants = TFCBiomes.getVariants();
+        return variants.get(Math.floorMod(x >> 6, variants.size()));
     }
 }
