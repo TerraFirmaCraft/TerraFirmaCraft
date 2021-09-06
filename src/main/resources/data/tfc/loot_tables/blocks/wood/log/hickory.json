@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/log/hickory"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/log/hickory",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/log/hickory"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/hickory"
+            }
+          ]
         }
       ],
       "conditions": [

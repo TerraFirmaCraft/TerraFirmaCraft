@@ -224,10 +224,12 @@ public final class ForgeEventHandler
                 // 1. If this was due to world gen, it won't have any cap data. This is where we clear the world gen cache and attach it to the chunk
                 // 2. If this was due to chunk loading, the caps will be deserialized from NBT after this event is posted. Attach empty data here
                 data = ChunkDataCache.WORLD_GEN.remove(chunkPos);
-                if (data == null && world instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
+                if (data == null)
                 {
-                    data = new ChunkData(chunkPos, generator.getRockLayerSettings());
+                    final RockLayerSettings layerSettings = world instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator ? generator.getRockLayerSettings() : RockLayerSettings.EMPTY;
+                    data = new ChunkData(chunkPos, layerSettings);
                 }
+
             }
             event.addCapability(ChunkDataCapability.KEY, data);
         }
@@ -382,14 +384,23 @@ public final class ForgeEventHandler
 
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
-        // Check for possible collapse
-        LevelAccessor world = event.getWorld();
-        BlockPos pos = event.getPos();
-        BlockState state = world.getBlockState(pos);
+        // Trigger a collapse
+        final LevelAccessor world = event.getWorld();
+        final BlockPos pos = event.getPos();
+        final BlockState state = world.getBlockState(pos);
 
-        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof Level)
+        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof Level level)
         {
-            CollapseRecipe.tryTriggerCollapse((Level) world, pos);
+            CollapseRecipe.tryTriggerCollapse(level, pos);
+            return;
+        }
+
+        // Chop down a tree
+        final ItemStack stack = event.getPlayer().getMainHandItem();
+        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state))
+        {
+            event.setCanceled(true); // Cancel regardless of outcome of logging
+            AxeLoggingHelper.doLogging(world, pos, event.getPlayer(), stack);
         }
     }
 

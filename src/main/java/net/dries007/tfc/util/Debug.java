@@ -11,7 +11,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 /**
  * A collection of debug-related features and conditions
  */
-@SuppressWarnings("unused")
 public final class Debug
 {
     /**
@@ -31,7 +30,4 @@ public final class Debug
 
     /* Generate biomes in stripes, showing all biomes */
     public static final boolean STRIPE_BIOMES = false;
-
-    /* Disable DataFixers from loading, saves time in dev. todo: port this to databreaker or other dev-time lib */
-    public static final boolean DISABLE_DFU = false;
 }

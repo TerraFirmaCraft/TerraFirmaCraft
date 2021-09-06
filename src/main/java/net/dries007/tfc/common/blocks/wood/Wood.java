@@ -114,10 +114,10 @@ public enum Wood implements StringRepresentable
     public enum BlockType
     {
         // These two constructors were lifted from Blocks#log
-        LOG(wood -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
-        STRIPPED_LOG(wood -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
-        WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
-        STRIPPED_WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        LOG(wood -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        STRIPPED_LOG(wood -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        STRIPPED_WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
         LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), wood.getMaxDecayDistance()), false),
         PLANKS(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCTileEntities.TICK_COUNTER), wood.getDaysToGrow()), false),

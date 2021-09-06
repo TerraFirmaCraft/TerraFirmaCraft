@@ -7,23 +7,28 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
+          "type": "item",
+          "conditions": [
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "enchantments": [
+                  {
+                    "enchantment": "minecraft:silk_touch",
+                    "levels": {
+                      "min": 1
+                    }
+                  }
+                ]
+              }
+            }
+          ],
           "name": "minecraft:ice"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "enchantments": [
-              {
-                "enchantment": "minecraft:silk_touch",
-                "levels": {
-                  "min": 1
-                }
-              }
-            ]
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

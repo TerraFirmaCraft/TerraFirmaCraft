@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/tool_rack",
   "textures": {
-    "texture": "tfc:block/wood/planks/kapok"
+    "texture": "tfc:block/wood/planks/kapok",
+    "particle": "tfc:block/wood/planks/kapok"
   }
 }

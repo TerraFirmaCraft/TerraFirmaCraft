@@ -21,8 +21,8 @@
     "tfc:wood/log/sycamore",
     "tfc:wood/log/white_cedar",
     "tfc:wood/log/willow",
-    "#minecraft:logs",
     "tfc:peat",
-    "tfc:stick_bundle"
+    "tfc:stick_bundle",
+    "#minecraft:logs"
   ]
 }

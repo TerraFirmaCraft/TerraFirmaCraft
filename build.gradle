@@ -2,16 +2,16 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
-        /*maven {
+        maven {
             url "https://repo.spongepowered.org/repository/maven-public/"
             content { includeGroup "org.spongepowered" }
-        }*/
+        }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'org.parchmentmc:librarian:1.+'
-        //classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
@@ -22,7 +22,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-// apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.spongepowered.mixin'
 
 def localProperties = new File('./dev.gradle')
 localProperties.createNewFile()
@@ -51,11 +51,11 @@ repositories {
         url "https://repo.spongepowered.org/repository/maven-public/"
         content { includeGroup "org.spongepowered" }
     }
-    /*maven {
-        name 'Jitpack' // Used by mcjunitlib
+    maven {
+        name 'Jitpack'
         url 'https://jitpack.io'
     }
-    maven {
+    /*maven {
         name 'Blame'
         url "https://nexus.resourcefulbees.com/repository/maven-public/"
     }
@@ -80,8 +80,10 @@ minecraft {
             workingDirectory project.file('run')
             args '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
-            // property 'mixin.env.remapRefMap', 'true'
-            // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'cyanide.client_self_test', 'net.dries007.tfc.client.ClientEventHandler#selfTest'
+            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {
@@ -95,8 +97,9 @@ minecraft {
             workingDirectory project.file('run')
             args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
             property 'forge.logging.console.level', 'debug'
-            // property 'mixin.env.remapRefMap', 'true'
-            // property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {
@@ -122,18 +125,16 @@ minecraft.runs.all {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Add Blame, useful for running certain diagnostics
-    // runtimeOnly fg.deobf("com.telepathicgrunt:Blame:${blame_version}")
+    runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}") { transitive = false }
 
     // JEI
     // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     // runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    /* if (System.getProperty("idea.sync.active") != "true") {
+    library "org.spongepowered:mixin:${mixin_version}"
+    if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    } */
-
-    library 'org.spongepowered:mixin:0.8.4-SNAPSHOT'
+    }
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
@@ -176,14 +177,12 @@ license {
 jar {
     manifest {
         attributes ([
-                "Implementation-Version": "${project.version}"
-                // "MixinConfigs": "${mod_id}.mixins.json"
+                "Implementation-Version": "${project.version}",
+                "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }
 }
 
-/*
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
 }
- */

@@ -271,7 +271,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     public BaseStoneSource getBaseStoneSource(ChunkPos pos)
     {
-        return new RockLayerStoneSource(pos, chunkDataProvider.get(pos).getRockDataOrThrow());
+        return new RockLayerStoneSource(pos, chunkDataProvider.get(pos).getRockData());
     }
 
     /**
@@ -414,7 +414,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return biomeSource.getNoiseBiome(x >> 2, 0, z >> 2);
         };
 
-        final RockData rockData = chunkDataProvider.get(chunkPos).getRockDataOrThrow();
+        final RockData rockData = chunkDataProvider.get(chunkPos).getRockData();
 
         // Set a reference to the surface height map, which the helper will modify later
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper

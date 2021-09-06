@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/stripped_wood/willow"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/stripped_wood/willow",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/stripped_wood/willow"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_log/willow"
+            }
+          ]
         }
       ],
       "conditions": [

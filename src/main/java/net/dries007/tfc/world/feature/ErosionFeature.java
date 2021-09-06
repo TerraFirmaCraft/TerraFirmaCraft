@@ -50,7 +50,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockRecipeWrapper.Mutable wrapper = new BlockRecipeWrapper.Mutable();
-        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockDataOrThrow();
+        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockData();
         final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
 
         // Avoid repeated recipe queries for blocks

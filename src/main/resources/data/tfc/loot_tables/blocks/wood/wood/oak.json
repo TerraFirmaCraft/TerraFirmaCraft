@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/wood/oak"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/oak",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/wood/oak"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/oak"
+            }
+          ]
         }
       ],
       "conditions": [

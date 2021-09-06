@@ -5,7 +5,7 @@ import os
 from typing import Optional
 
 from nbtlib import nbt
-from nbtlib.tag import String, Int
+from nbtlib.tag import String as StringTag, Int as IntTag
 
 TREES = {
     'acacia': 'acacia',
@@ -127,17 +127,19 @@ def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wo
     f = nbt.load('./structure_templates/%s.nbt' % template)
     for block in f.root['palette']:
         if block['Name'] == 'minecraft:oak_log':
-            block['Name'] = String('tfc:wood/log/%s' % wood)
+            block['Name'] = StringTag('tfc:wood/log/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_wood':
-            block['Name'] = String('tfc:wood/wood/%s' % wood)
+            block['Name'] = StringTag('tfc:wood/wood/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_leaves':
-            block['Name'] = String('tfc:wood/leaves/%s' % wood)
-            block['Properties']['persistent'] = String('false')
+            block['Name'] = StringTag('tfc:wood/leaves/%s' % wood)
+            block['Properties']['persistent'] = StringTag('false')
         else:
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
     # Hack the data version, to avoid needing to run DFU on anything
-    f.root['DataVersion'] = Int(2730)
+    f.root['DataVersion'] = IntTag(2730)
 
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     if not os.path.exists(result_dir):

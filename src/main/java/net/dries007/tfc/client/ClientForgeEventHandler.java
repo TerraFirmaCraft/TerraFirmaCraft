@@ -8,6 +8,8 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
@@ -18,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -131,13 +134,19 @@ public class ClientForgeEventHandler
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TextComponent("[Debug] NBT: " + stackTag));
+                    text.add(new TextComponent(GRAY + "[Debug] NBT: " + DARK_GRAY + stackTag));
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
                 if (capTag != null)
                 {
-                    text.add(new TextComponent("[Debug] Capability NBT: " + capTag));
+                    text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
+                }
+
+                final Set<ResourceLocation> tags = stack.getItem().getTags();
+                if (!tags.isEmpty())
+                {
+                    text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + tags.stream().map(t -> "#" + t).collect(Collectors.joining(", "))));
                 }
             }
         }

@@ -2,6 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:stone/knife/sedimentary",
+    "tfc:stone/knife/metamorphic",
+    "tfc:stone/knife/igneous_extrusive",
+    "tfc:stone/knife/igneous_intrusive",
     "tfc:metal/knife/bismuth_bronze",
     "tfc:metal/knife/black_bronze",
     "tfc:metal/knife/bronze",
@@ -10,10 +14,6 @@
     "tfc:metal/knife/steel",
     "tfc:metal/knife/black_steel",
     "tfc:metal/knife/blue_steel",
-    "tfc:metal/knife/red_steel",
-    "tfc:stone/knife/sedimentary",
-    "tfc:stone/knife/metamorphic",
-    "tfc:stone/knife/igneous_extrusive",
-    "tfc:stone/knife/igneous_intrusive"
+    "tfc:metal/knife/red_steel"
   ]
 }

@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/wood/spruce"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/spruce",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/wood/spruce"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/spruce"
+            }
+          ]
         }
       ],
       "conditions": [

@@ -16,7 +16,6 @@ import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.util.Helpers;
 
-@SuppressWarnings("unused")
 public class TFCTags
 {
     public static class Blocks
@@ -33,7 +32,6 @@ public class TFCTags
         public static final Tag.Named<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
         public static final Tag.Named<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
         public static final Tag.Named<Block> KELP_TREE = create("kelp_tree");
-        public static final Tag.Named<Block> KELP_FLOWER = create("kelp_flower");
         public static final Tag.Named<Block> KELP_BRANCH = create("kelp_branch");
         public static final Tag.Named<Block> WALL_CORALS = create("wall_corals");
         public static final Tag.Named<Block> CORALS = create("corals");
@@ -55,6 +53,7 @@ public class TFCTags
         public static final Tag.Named<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
         public static final Tag.Named<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final Tag.Named<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
+        public static final Tag.Named<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
 
         private static Tag.Named<Block> create(String id)
         {
@@ -87,26 +86,16 @@ public class TFCTags
         public static final Tag.Named<Item> PIT_KILN_LOGS = create("pit_kiln_logs");
         public static final Tag.Named<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
         public static final Tag.Named<Item> FIREPIT_FUEL = create("firepit_fuel");
-        public static final Tag.Named<Item> BLOOMERY_FUEL = create("bloomery_fuel");
         public static final Tag.Named<Item> FORGE_FUEL = create("forge_fuel");
         public static final Tag.Named<Item> HANDSTONE = create("handstone");
-        public static final Tag.Named<Item> FLUXSTONE = create("fluxstone");
         public static final Tag.Named<Item> SCRAPABLE = create("scrapable");
         public static final Tag.Named<Item> KNIVES = create("knives");
-        public static final Tag.Named<Item> SAWS = create("saws");
-        public static final Tag.Named<Item> CHISELS = create("chisels");
-        public static final Tag.Named<Item> HAMMERS = create("hammers");
         public static final Tag.Named<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final Tag.Named<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final Tag.Named<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
         public static final Tag.Named<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final Tag.Named<Item> KNAPPING_ANY = create("knapping_any");
-        public static final Tag.Named<Item> SEDIMENTARY_ROCK = create("sedimentary_rock");
-        public static final Tag.Named<Item> METAMORPHIC_ROCK = create("metamorphic_rock");
-        public static final Tag.Named<Item> IGNEOUS_INTRUSIVE_ROCK = create("igneous_intrusive_rock");
-        public static final Tag.Named<Item> IGNEOUS_EXTRUSIVE_ROCK = create("igneous_extrusive_rock");
-        public static final Tag.Named<Item> HIGH_QUALITY_CLOTH = create("high_quality_cloth");
-        public static final Tag.Named<Item> LUMBER = create("lumber");
+        public static final Tag.Named<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
 
         private static Tag.Named<Item> create(String id)
         {

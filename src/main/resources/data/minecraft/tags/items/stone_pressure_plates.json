@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "minecraft:stone_pressure_plate",
+    "minecraft:polished_blackstone_pressure_plate",
     "tfc:rock/pressure_plate/chalk",
     "tfc:rock/pressure_plate/chert",
     "tfc:rock/pressure_plate/claystone",
@@ -21,8 +23,6 @@
     "tfc:rock/pressure_plate/andesite",
     "tfc:rock/pressure_plate/basalt",
     "tfc:rock/pressure_plate/dacite",
-    "tfc:rock/pressure_plate/rhyolite",
-    "minecraft:stone_pressure_plate",
-    "minecraft:polished_blackstone_pressure_plate"
+    "tfc:rock/pressure_plate/rhyolite"
   ]
 }

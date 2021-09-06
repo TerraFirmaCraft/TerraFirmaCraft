@@ -8,7 +8,8 @@
       "state": {
         "Name": "tfc:wood/log/rosewood",
         "Properties": {
-          "axis": "y"
+          "axis": "y",
+          "natural": "true"
         }
       },
       "min_height": 1,

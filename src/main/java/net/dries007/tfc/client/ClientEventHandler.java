@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.client;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,9 +24,20 @@ import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -31,6 +46,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
@@ -218,5 +234,63 @@ public final class ClientEventHandler
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
         particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
         particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
+    }
+
+    /**
+     * Invoked reflectively via Cyanide's self test injection mechanism
+     */
+    @SuppressWarnings({"unused", "deprecation"})
+    public static void selfTest()
+    {
+        final BlockModelShaper shaper = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
+        final BakedModel missingModel = shaper.getModelManager().getMissingModel();
+        final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
+
+        final List<Block> missingModelErrors = blocksWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
+        final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
+        final List<Item> missingTranslationErrors = itemsWithStackMatching(s -> new TranslatableComponent(s.getDescriptionId()).getString().equals(s.getDescriptionId()));
+
+        if (logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId())))
+        {
+            throw new AssertionError("Fix the above errors!");
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)
+    {
+        return ForgeRegistries.BLOCKS.getValues()
+            .stream()
+            .filter(b -> b.getRegistryName().getNamespace().equals("tfc"))
+            .filter(b -> b.getStateDefinition().getPossibleStates().stream().anyMatch(condition))
+            .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static List<Item> itemsWithStackMatching(Predicate<ItemStack> condition)
+    {
+        final NonNullList<ItemStack> stacks = NonNullList.create();
+        return ForgeRegistries.ITEMS.getValues()
+            .stream()
+            .filter(i -> i.getRegistryName().getNamespace().equals("tfc"))
+            .filter(i -> {
+                stacks.clear();
+                i.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
+                return stacks.stream().anyMatch(condition);
+            })
+            .collect(Collectors.toList());
+    }
+
+    private static <T> boolean logValidationErrors(String error, List<T> errors, Consumer<T> logger)
+    {
+        if (!errors.isEmpty())
+        {
+            LOGGER.error(error);
+            errors.forEach(logger);
+            return true;
+        }
+        return false;
     }
 }

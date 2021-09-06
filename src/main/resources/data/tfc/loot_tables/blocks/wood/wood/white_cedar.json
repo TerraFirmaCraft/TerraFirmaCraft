@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/wood/white_cedar"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/white_cedar",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/wood/white_cedar"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/white_cedar"
+            }
+          ]
         }
       ],
       "conditions": [

@@ -760,7 +760,7 @@ def plant_config(min_rain: float, max_rain: float, min_temp: float, max_temp: fl
 
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
-    block = 'tfc:wood/log/%s[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
         tree += '_large'
     return {
@@ -772,7 +772,7 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
 
 
 def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None):
-    block = 'tfc:wood/log/%s[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
         tree += '_large'
     cfg = {
@@ -786,7 +786,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, large: bool 
 
 def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False):
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
-    block = 'tfc:wood/log/%s[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
         tree += '_large'
     return {

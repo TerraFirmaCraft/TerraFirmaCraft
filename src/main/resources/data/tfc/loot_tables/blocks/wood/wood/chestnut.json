@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/wood/chestnut"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/chestnut",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/wood/chestnut"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/chestnut"
+            }
+          ]
         }
       ],
       "conditions": [

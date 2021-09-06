@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/tool_rack",
   "textures": {
-    "texture": "tfc:block/wood/planks/douglas_fir"
+    "texture": "tfc:block/wood/planks/douglas_fir",
+    "particle": "tfc:block/wood/planks/douglas_fir"
   }
 }

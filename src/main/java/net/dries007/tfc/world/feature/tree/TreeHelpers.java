@@ -12,10 +12,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -87,7 +84,7 @@ public final class TreeHelpers
         return height;
     }
 
-    public static StructureManager getTemplateManager(WorldGenLevel worldIn)
+    public static StructureManager getStructureManager(WorldGenLevel worldIn)
     {
         return worldIn.getLevel().getServer().getStructureManager();
     }
@@ -97,10 +94,10 @@ public final class TreeHelpers
      * Applies a random rotation and mirror
      * Has a bounding box constrained by the given chunk and surrounding chunks to not cause cascading chunk loading
      */
-    public static StructurePlaceSettings getPlacementSettings(ChunkPos chunkPos, Random random)
+    public static StructurePlaceSettings getPlacementSettings(LevelHeightAccessor level, ChunkPos chunkPos, Random random)
     {
         return new StructurePlaceSettings()
-            .setBoundingBox(new BoundingBox(chunkPos.getMinBlockX() - 16, 0, chunkPos.getMinBlockZ() - 16, chunkPos.getMaxBlockX() + 16, 256, chunkPos.getMaxBlockZ() + 16))
+            .setBoundingBox(new BoundingBox(chunkPos.getMinBlockX() - 16, level.getMinBuildHeight(), chunkPos.getMinBlockZ() - 16, chunkPos.getMaxBlockX() + 16, level.getMaxBuildHeight(), chunkPos.getMaxBlockZ() + 16))
             .setRandom(random)
             .addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR)
             .setRotation(randomRotation(random))

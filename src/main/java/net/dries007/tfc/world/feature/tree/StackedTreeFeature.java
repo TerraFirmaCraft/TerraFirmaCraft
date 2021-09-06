@@ -8,18 +8,16 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.Random;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 import com.mojang.serialization.Codec;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
 {
@@ -38,8 +36,8 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
 
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
-        final StructureManager manager = TreeHelpers.getTemplateManager(worldIn);
-        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
+        final StructureManager manager = TreeHelpers.getStructureManager(worldIn);
+        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(worldIn, chunkPos, random);
 
         if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius(), 2))
         {

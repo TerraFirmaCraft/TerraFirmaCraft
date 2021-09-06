@@ -7,8 +7,26 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:wood/wood/blackwood"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/blackwood",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ],
+              "name": "tfc:wood/wood/blackwood"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/blackwood"
+            }
+          ]
         }
       ],
       "conditions": [

@@ -93,17 +93,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     }
 
     /**
-     * Can be null when the chunk data's underlying status is EMPTY or CLIENT
+     * Note: this method will throw if invoked when {@link #getStatus()} is {@code EMPTY} or {@code CLIENT}
      */
-    @Nullable
     public RockData getRockData()
     {
-        return rockData;
-    }
-
-    public RockData getRockDataOrThrow()
-    {
-        return Objects.requireNonNull(rockData, () -> "Expected rock data to be present on " + this);
+        return Objects.requireNonNull(rockData);
     }
 
     public void setRockData(RockData rockData)

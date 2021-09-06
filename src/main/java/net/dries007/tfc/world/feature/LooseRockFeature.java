@@ -41,7 +41,7 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);
-        final RockSettings rock = data.getRockDataOrThrow().getRock(pos);
+        final RockSettings rock = data.getRockData().getRock(pos);
 
         return rock.loose().map(loose -> {
             final BlockState stateAt = level.getBlockState(pos);

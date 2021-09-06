@@ -7,26 +7,31 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:thatch"
+          "type": "item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:thatch_bed",
+              "properties": {
+                "part": "head"
+              }
+            }
+          ],
+          "name": "tfc:thatch",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 2
+            }
+          ]
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
-        },
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "tfc:thatch_bed",
-          "properties": {
-            "part": "head"
-          }
-        }
-      ],
-      "functions": [
-        {
-          "function": "minecraft:set_count",
-          "count": 2
         }
       ]
     }

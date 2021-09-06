@@ -25,7 +25,8 @@
       "state": {
         "Name": "tfc:wood/log/aspen",
         "Properties": {
-          "axis": "y"
+          "axis": "y",
+          "natural": "true"
         }
       },
       "min_height": 3,

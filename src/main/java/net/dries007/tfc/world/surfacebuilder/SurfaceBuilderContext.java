@@ -49,7 +49,7 @@ public class SurfaceBuilderContext
         this.world = world;
         this.chunk = chunk;
         this.chunkData = chunkData;
-        this.rockData = chunkData.getRockDataOrThrow();
+        this.rockData = chunkData.getRockData();
         this.random = random;
         this.seed = seed;
         this.settings = settings;
