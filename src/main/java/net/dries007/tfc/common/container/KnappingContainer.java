@@ -8,38 +8,42 @@ package net.dries007.tfc.common.container;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.recipes.KnappingPattern;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
+import net.dries007.tfc.util.KnappingPattern;
 
-public class KnappingContainer extends ItemStackContainer implements IButtonHandler, IInventoryNoop, ISlotCallback
+public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, IInventoryNoop, ISlotCallback
 {
+    public static final int SLOT_OUTPUT = 0;
+
     private static ItemStack getItemForKnapping(Inventory inv)
     {
         final ItemStack main = inv.player.getMainHandItem();
         return TFCTags.Items.KNAPPING_ANY.contains(main.getItem()) ? main : inv.player.getOffhandItem();
     }
 
-    private final KnappingPattern matrix;
-    private final boolean usesDisabledTex;
-    private final SoundEvent sound;
-    private final ItemStack stackCopy;
     private final int amountToConsume;
+    private final boolean usesDisabledTex;
     private final boolean consumeAfterComplete;
     private final RecipeType<? extends KnappingRecipe> recipeType;
+    private final SoundEvent sound;
+
+    private final KnappingPattern pattern;
+    private final ItemStack originalStack;
+
     private boolean requiresReset;
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
@@ -47,26 +51,28 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
         super(containerType, windowId, playerInv, getItemForKnapping(playerInv), 20);
-        this.itemIndex += 1;
+
         this.amountToConsume = amountToConsume;
         this.usesDisabledTex = usesDisabledTex;
         this.consumeAfterComplete = consumeAfterComplete;
         this.recipeType = recipeType;
         this.sound = sound;
 
-        matrix = new KnappingPattern();
+        pattern = new KnappingPattern();
         hasBeenModified = false;
-        setRequiresReset(false);
         hasConsumedIngredient = false;
-        stackCopy = this.stack.copy();
-    }
+        originalStack = stack.copy();
 
+        setRequiresReset(false);
+    }
 
     @Override
     public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
     {
-        getMatrix().set(buttonID, false);
+        // Set the matching patterns slot to clicked
+        pattern.set(buttonID, false);
 
+        // Maybe consume one of the input items, if we should
         if (!hasBeenModified)
         {
             if (!player.isCreative() && !consumeAfterComplete)
@@ -76,30 +82,24 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
             hasBeenModified = true;
         }
 
-        // check the pattern
-        Slot slot = slots.get(0);
-        if (slot != null && player.level instanceof ServerLevel)
+        // Update the output slot based on the recipe
+        final Slot slot = slots.get(SLOT_OUTPUT);
+        if (player.level instanceof ServerLevel level)
         {
-            KnappingRecipe recipe = getMatchingRecipe((ServerLevel) player.level);
-            if (recipe != null)
-            {
-                slot.set(recipe.assemble(this));
-            }
-            else
-            {
-                slot.set(ItemStack.EMPTY);
-            }
+            slot.set(level.getRecipeManager().getRecipeFor(recipeType, this, level)
+                .map(recipe -> recipe.assemble(this))
+                .orElse(ItemStack.EMPTY));
         }
     }
 
     @Override
     public void removed(Player player)
     {
-        Slot slot = slots.get(0);
-        ItemStack stack = slot.getItem();
+        final Slot slot = slots.get(SLOT_OUTPUT);
+        final ItemStack stack = slot.getItem();
         if (!stack.isEmpty())
         {
-            if (!player.level.isClientSide)
+            if (!player.level.isClientSide())
             {
                 ItemHandlerHelper.giveItemToPlayer(player, stack);
                 consumeIngredientStackAfterComplete();
@@ -108,31 +108,14 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         super.removed(player);
     }
 
-    /**
-     * Used in client to check a slot state in the matrix
-     *
-     * @param index the slot index
-     * @return the boolean state for the checked slot
-     */
-    public boolean getSlotState(int index)
+    public KnappingPattern getPattern()
     {
-        return getMatrix().get(index);
+        return pattern;
     }
 
-    /**
-     * Used in client to set a slot state in the matrix
-     *
-     * @param index the slot index
-     * @param value the value you wish to set the state to
-     */
-    public void setSlotState(int index, boolean value)
+    public ItemStack getOriginalStack()
     {
-        getMatrix().set(index, value);
-    }
-
-    public KnappingPattern getMatrix()
-    {
-        return matrix;
+        return originalStack;
     }
 
     public boolean usesDisabledTexture()
@@ -145,9 +128,10 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         return sound;
     }
 
-    public ItemStack getStackCopy()
+    @Override
+    public void onSlotTake(Player player, int slot, ItemStack stack)
     {
-        return stackCopy;
+        resetPattern();
     }
 
     public boolean requiresReset()
@@ -167,9 +151,14 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
     }
 
     @Override
-    public void onSlotTake(Player player, int slot, ItemStack stack)
+    protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        resetMatrix();
+        return switch (typeOf(slotIndex))
+            {
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, containerSlots + 36, true); // Hotbar first
+                case HOTBAR -> !moveItemStackTo(stack, containerSlots, containerSlots + 27, false);
+                case MAIN_INVENTORY -> !moveItemStackTo(stack, containerSlots + 27, containerSlots + 36, false);
+            };
     }
 
     @Override
@@ -178,17 +167,11 @@ public class KnappingContainer extends ItemStackContainer implements IButtonHand
         addSlot(new CallbackSlot(this, new ItemStackHandler(1), 0, 128, 46));
     }
 
-    private void resetMatrix()
+    private void resetPattern()
     {
-        getMatrix().setAll(false);
+        pattern.setAll(false);
         setRequiresReset(true);
         consumeIngredientStackAfterComplete();
-    }
-
-    @Nullable
-    private KnappingRecipe getMatchingRecipe(ServerLevel level)
-    {
-        return level.getRecipeManager().getRecipeFor(recipeType, this, level).orElse(null);
     }
 
     protected void consumeIngredientStackAfterComplete()

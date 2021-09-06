@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.CraftingMenu;
 
 import net.dries007.tfc.common.TFCTags;
 
@@ -31,7 +31,7 @@ public class TFCWorkbenchContainer extends CraftingMenu
 
     /**
      * Determines whether supplied player can use this container
-     * TFC: use a tag instead of hardcoding
+     * TFC: use a tag instead of hard coding
      */
     @Override
     public boolean stillValid(Player playerIn)

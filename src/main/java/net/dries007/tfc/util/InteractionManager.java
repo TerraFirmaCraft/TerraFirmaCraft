@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -23,6 +24,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -44,8 +46,7 @@ import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
-import net.dries007.tfc.common.tileentity.LogPileTileEntity;
-import net.dries007.tfc.common.tileentity.ScrapingTileEntity;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -211,28 +212,29 @@ public final class InteractionManager
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
                 {
-                    final LogPileTileEntity te = Helpers.getTileEntity(world, posClicked, LogPileTileEntity.class);
-                    return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
-                        ItemStack insertStack = stack.copy();
-                        insertStack = Helpers.insertAllSlots(cap, insertStack);
-                        if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
-                        {
-                            if (!world.isClientSide())
+                    return world.getBlockEntity(posClicked, TFCTileEntities.LOG_PILE.get())
+                        .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
+                        .map(cap -> {
+                            ItemStack insertStack = stack.copy();
+                            insertStack = Helpers.insertAllSlots(cap, insertStack);
+                            if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
-                                Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
-                                stack.setCount(insertStack.getCount());
+                                if (!world.isClientSide())
+                                {
+                                    Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                    stack.setCount(insertStack.getCount());
+                                }
+                                return InteractionResult.SUCCESS;
                             }
-                            return InteractionResult.SUCCESS;
-                        }
 
-                        final InteractionResult result = logPilePlacement.onItemUse(stack, context);
-                        if (result.consumesAction())
-                        {
-                            insertStack.setCount(1);
-                            cap.insertItem(0, insertStack, false);
-                        }
-                        return result;
-                    }).orElse(InteractionResult.PASS);
+                            final InteractionResult result = logPilePlacement.onItemUse(stack, context);
+                            if (result.consumesAction())
+                            {
+                                insertStack.setCount(1);
+                                cap.insertItem(0, insertStack, false);
+                            }
+                            return result;
+                        }).orElse(InteractionResult.PASS);
                 }
                 else
                 {
@@ -241,11 +243,12 @@ public final class InteractionManager
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        final LogPileTileEntity te = Helpers.getTileEntity(world, relativePos, LogPileTileEntity.class);
-                        Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                            insertStack.setCount(1);
-                            cap.insertItem(0, insertStack, false);
-                        });
+                        world.getBlockEntity(relativePos, TFCTileEntities.LOG_PILE.get())
+                            .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+                            .ifPresent(cap -> {
+                                insertStack.setCount(1);
+                                cap.insertItem(0, insertStack, false);
+                            });
                     }
                     return result;
                 }
@@ -264,19 +267,16 @@ public final class InteractionManager
                 if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
-                    final ScrapingTileEntity te = Helpers.getTileEntity(level, abovePos, ScrapingTileEntity.class);
-                    if (te != null)
-                    {
-                        return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                    level.getBlockEntity(abovePos, TFCTileEntities.SCRAPING.get())
+                        .map(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
                             if (!level.isClientSide)
                             {
                                 ItemStack insertStack = stack.split(1);
                                 stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
-                                te.setCachedItem(recipe.getResultItem().copy());
+                                entity.setCachedItem(recipe.getResultItem().copy());
                             }
                             return InteractionResult.SUCCESS;
-                        }).orElse(InteractionResult.PASS);
-                    }
+                        }).orElse(InteractionResult.PASS));
                 }
             }
             return InteractionResult.PASS;
@@ -291,81 +291,51 @@ public final class InteractionManager
             }
         }
 
-        register(TFCTags.Items.CLAY_KNAPPING, (stack, context) -> {
-            Player player = context.getPlayer();
-            if (stack.getCount() > 4)
+        // Knapping
+        register(TFCTags.Items.CLAY_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
+        register(TFCTags.Items.LEATHER_KNAPPING, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
+        register(TFCTags.Items.ROCK_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING));
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(BlockItemPlacement wrapper)
+    {
+        register(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(Item item, OnItemUseAction action)
+    {
+        register(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(Tag<Item> tag, OnItemUseAction action)
+    {
+        register(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues));
+    }
+
+    public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, MenuProvider container)
+    {
+        return (stack, context) -> {
+            final Player player = context.getPlayer();
+            if (player != null && condition.test(stack, player))
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, TFCContainerProviders.CLAY_KNAPPING);
+                    NetworkHooks.openGui(serverPlayer, container);
                 }
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;
-        });
-
-        register(TFCTags.Items.FIRE_CLAY_KNAPPING, (stack, context) -> {
-            Player player = context.getPlayer();
-            if (stack.getCount() > 4)
-            {
-                if (player instanceof ServerPlayer serverPlayer)
-                {
-                    NetworkHooks.openGui(serverPlayer, TFCContainerProviders.FIRE_CLAY_KNAPPING);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
-
-        register(TFCTags.Items.LEATHER_KNAPPING, (stack, context) -> {
-            Player player = context.getPlayer();
-            if (player != null && player.getInventory().contains(TFCTags.Items.KNIVES))
-            {
-                if (player instanceof ServerPlayer)
-                {
-                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.LEATHER_KNAPPING);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
-
-        register(TFCTags.Items.ROCK_KNAPPING, (stack, context) -> {
-            Player player = context.getPlayer();
-            if (stack.getCount() > 1)
-            {
-                if (player instanceof ServerPlayer)
-                {
-                    NetworkHooks.openGui((ServerPlayer) player, TFCContainerProviders.ROCK_KNAPPING);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     */
-    public static synchronized void register(BlockItemPlacement wrapper)
-    {
-        ACTIONS.add(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     */
-    public static synchronized void register(Item item, OnItemUseAction action)
-    {
-        ACTIONS.add(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     */
-    public static synchronized void register(Tag<Item> tag, OnItemUseAction action)
-    {
-        ACTIONS.add(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues));
+        };
     }
 
     public static Optional<InteractionResult> onItemUse(ItemStack stack, UseOnContext context)
@@ -396,6 +366,14 @@ public final class InteractionManager
     public static void reload()
     {
         CACHE.reload(ACTIONS);
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    private static synchronized void register(Entry entry)
+    {
+        ACTIONS.add(entry);
     }
 
     /**

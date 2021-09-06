@@ -72,7 +72,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
             }
             if (firepit.burnTicks <= 0)
             {
-                if (!firepit.consumeFuel(state))
+                if (!firepit.consumeFuel())
                 {
                     firepit.extinguish(state);
                 }
@@ -197,7 +197,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     public void light(BlockState state)
     {
         assert level != null;
-        if (consumeFuel(state))
+        if (consumeFuel())
         {
             level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.LIT, true));
         }
@@ -234,7 +234,7 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
     {
         return switch (slot)
             {
-                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL == stack.getItem();
+                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL.contains(stack.getItem());
                 case FirepitTileEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
                 case FirepitTileEntity.SLOT_OUTPUT_1, FirepitTileEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;
@@ -248,10 +248,8 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
 
     /**
      * Attempts to consume one piece of fuel. Returns if the fire pit consumed any fuel (and so, ended up lit)
-     *
-     * @param state The current firepit block state
      */
-    protected boolean consumeFuel(BlockState state)
+    protected boolean consumeFuel()
     {
         final ItemStack fuelStack = inventory.getStackInSlot(SLOT_FUEL_CONSUME);
         if (!fuelStack.isEmpty())

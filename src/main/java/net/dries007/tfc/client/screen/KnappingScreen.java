@@ -8,7 +8,6 @@ package net.dries007.tfc.client.screen;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +17,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.KnappingPattern;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -33,19 +33,19 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         imageHeight = 186;
         inventoryLabelY += 22;
         titleLabelY -= 2;
-        ResourceLocation regName = container.getStackCopy().getItem().getRegistryName();
-        assert regName != null;
-        buttonLocation = new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + ".png");
-        buttonDisabledLocation = container.usesDisabledTexture() ? new ResourceLocation(MOD_ID, "textures/gui/knapping/" + regName.getPath() + "_disabled.png") : null;
+        ResourceLocation buttonAssetPath = container.getOriginalStack().getItem().getRegistryName();
+        assert buttonAssetPath != null;
+        buttonLocation = new ResourceLocation(MOD_ID, "textures/gui/knapping/" + buttonAssetPath.getPath() + ".png");
+        buttonDisabledLocation = container.usesDisabledTexture() ? new ResourceLocation(MOD_ID, "textures/gui/knapping/" + buttonAssetPath.getPath() + "_disabled.png") : null;
     }
 
     @Override
     protected void init()
     {
         super.init();
-        for (int x = 0; x < 5; x++)
+        for (int x = 0; x < KnappingPattern.MAX_WIDTH; x++)
         {
-            for (int y = 0; y < 5; y++)
+            for (int y = 0; y < KnappingPattern.MAX_HEIGHT; y++)
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
@@ -64,22 +64,27 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 if (widget instanceof KnappingButton button)
                 {
-                    button.visible = menu.getSlotState(button.id);
+                    button.visible = menu.getPattern().get(button.id);
                 }
             }
             menu.setRequiresReset(false);
         }
+
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        if (menu.usesDisabledTexture() && minecraft != null && buttonDisabledLocation != null)
+
+        for (Widget widget : renderables)
         {
-            RenderSystem.setShaderTexture(0, buttonDisabledLocation);
-            for (Widget widget : renderables)
+            if (widget instanceof KnappingButton button)
             {
-                if (widget instanceof KnappingButton button && !button.visible)
+                if (button.visible) // Active button
                 {
-                    matrixStack.pushPose();
+                    RenderSystem.setShaderTexture(0, buttonLocation);
                     blit(matrixStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
-                    matrixStack.popPose();
+                }
+                else if (buttonDisabledLocation != null) // Disabled / background texture
+                {
+                    RenderSystem.setShaderTexture(0, buttonDisabledLocation);
+                    blit(matrixStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
                 }
             }
         }
@@ -105,16 +110,13 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         return super.mouseClicked(x, y, clickType);
     }
 
-    /**
-     * See docs for {@link KnappingContainer#setSlotState(int, boolean)}
-     */
     private void undoAccidentalButtonPress(double x, double y)
     {
         for (Widget widget : renderables)
         {
             if (widget instanceof KnappingButton button && button.isMouseOver(x, y))
             {
-                menu.setSlotState(((KnappingButton) widget).id, false);
+                menu.getPattern().set(button.id, false);
             }
         }
     }

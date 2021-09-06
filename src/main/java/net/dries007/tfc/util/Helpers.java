@@ -41,6 +41,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -175,6 +176,9 @@ public final class Helpers
         return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
     }
 
+    /**
+     * @deprecated Use {@link BlockGetter#getBlockEntity(BlockPos, BlockEntityType)} instead as it's safer
+     */
     @Nullable
     @SuppressWarnings("unchecked")
     @Deprecated

@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 
-public interface IButtonHandler
+public interface ButtonHandlerContainer
 {
     /**
      * An interface for containers that need to receive button presses from a client-side GUI

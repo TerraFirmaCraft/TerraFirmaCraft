@@ -8,9 +8,9 @@ package net.dries007.tfc.common.container;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -21,8 +21,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.tileentity.*;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -46,7 +46,7 @@ public final class TFCContainerTypes
 
 
     @SuppressWarnings("SameParameterValue")
-    private static <T extends InventoryTileEntity<?>, C extends TileEntityContainer<T>> RegistryObject<MenuType<C>> register(String name, Supplier<? extends BlockEntityType<T>> type, TileEntityContainer.IFactory<T, C> factory)
+    private static <T extends InventoryTileEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> register(String name, Supplier<? extends BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
         return register(name, (windowId, playerInventory, packetBuffer) -> {
             Level world = playerInventory.player.level;

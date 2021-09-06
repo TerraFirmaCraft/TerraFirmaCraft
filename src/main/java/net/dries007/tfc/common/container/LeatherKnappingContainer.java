@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundEvent;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
@@ -27,6 +27,7 @@ public class LeatherKnappingContainer extends KnappingContainer
     protected void consumeIngredientStackAfterComplete()
     {
         super.consumeIngredientStackAfterComplete();
+
         // offhand is not included in 'items'
         if (TFCTags.Items.KNIVES.contains(player.getOffhandItem().getItem()))
         {

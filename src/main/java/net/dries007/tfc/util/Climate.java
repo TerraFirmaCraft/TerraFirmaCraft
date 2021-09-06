@@ -55,9 +55,7 @@ public final class Climate
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
 
     public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
-    public static final float DEPTH_LEVEL = SEA_LEVEL * 2 / 3;
-
-    private static final Random RANDOM = new Random(); // Used for daily temperature variations
+    public static final float DEPTH_LEVEL = 0;
 
     /**
      * Gets the equivalent to {@link Biome#getTemperature(BlockPos)} for TFC biomes.
@@ -217,8 +215,8 @@ public final class Climate
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
         long day = ICalendar.getTotalDays(calendarTime);
-        RANDOM.setSeed(day);
-        return ((RANDOM.nextFloat() - RANDOM.nextFloat()) + 0.3f * hourModifier) * 3f;
+        final Random random = new Random(day); // avoid thread corruption by using a random local to the method rather than a static instance
+        return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
     }
 
     private Climate() {}

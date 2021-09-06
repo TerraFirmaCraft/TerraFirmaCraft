@@ -32,11 +32,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
-import net.dries007.tfc.common.capabilities.DelegateItemHandler;
-import net.dries007.tfc.common.capabilities.PartialItemHandler;
-import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.container.ItemStackHandlerCallback;
+import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;

@@ -9,28 +9,29 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.KnappingPattern;
 
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
-    protected final KnappingPattern matrix;
+    protected final KnappingPattern pattern;
     protected final ItemStack result;
     protected final TypedRecipeSerializer<?> serializer;
 
-    public KnappingRecipe(ResourceLocation id, KnappingPattern matrix, ItemStack result, TypedRecipeSerializer<?> serializer)
+    public KnappingRecipe(ResourceLocation id, KnappingPattern pattern, ItemStack result, TypedRecipeSerializer<?> serializer)
     {
         this.id = id;
-        this.matrix = matrix;
+        this.pattern = pattern;
         this.result = result;
         this.serializer = serializer;
     }
@@ -38,7 +39,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public boolean matches(KnappingContainer container, Level level)
     {
-        return container.getMatrix().matches(this.matrix);
+        return container.getPattern().matches(pattern);
     }
 
     @Override
@@ -85,17 +86,15 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public KnappingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
         {
-            final boolean outsideSlotRequired = buffer.readBoolean();
-            final KnappingPattern matrix = KnappingPattern.fromNetwork(buffer, outsideSlotRequired);
+            final KnappingPattern pattern = KnappingPattern.fromNetwork(buffer);
             final ItemStack stack = buffer.readItem();
-            return new KnappingRecipe(id, matrix, stack, this);
+            return new KnappingRecipe(id, pattern, stack, this);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
         {
-            buffer.writeBoolean(recipe.matrix.outsideSlot);
-            recipe.matrix.toNetwork(buffer, recipe.matrix.getWidth(), recipe.matrix.getHeight());
+            recipe.pattern.toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
         }
 

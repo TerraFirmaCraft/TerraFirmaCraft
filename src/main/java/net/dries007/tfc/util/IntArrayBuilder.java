@@ -12,31 +12,9 @@ import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.DataSlot;
 
 public class IntArrayBuilder implements ContainerData
 {
-    /**
-     * A single {@link DataSlot} for one tracked value
-     */
-    public static DataSlot of(IntSupplier getter, IntConsumer setter)
-    {
-        return new DataSlot()
-        {
-            @Override
-            public int get()
-            {
-                return getter.getAsInt();
-            }
-
-            @Override
-            public void set(int value)
-            {
-                setter.accept(value);
-            }
-        };
-    }
-
     private final List<IntSupplier> getters;
     private final List<IntConsumer> setters;
     private int size;

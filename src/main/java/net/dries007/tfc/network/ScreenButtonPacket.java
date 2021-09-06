@@ -13,7 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import net.dries007.tfc.common.container.IButtonHandler;
+import net.dries007.tfc.common.container.ButtonHandlerContainer;
 
 public class ScreenButtonPacket
 {
@@ -53,7 +53,7 @@ public class ScreenButtonPacket
     {
         context.enqueueWork(() -> {
             ServerPlayer sender = context.getSender();
-            if (sender != null && sender.containerMenu instanceof IButtonHandler handler)
+            if (sender != null && sender.containerMenu instanceof ButtonHandlerContainer handler)
             {
                 handler.onButtonPress(buttonID, extraNBT);
             }
