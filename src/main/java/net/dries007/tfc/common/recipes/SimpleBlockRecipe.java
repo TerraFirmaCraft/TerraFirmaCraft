@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -82,7 +83,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
+            BlockIngredient ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
             boolean copyInputState = GsonHelper.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
@@ -100,24 +101,18 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
-            boolean copyInputState = buffer.readBoolean();
-            BlockState state;
-            if (!copyInputState)
-            {
-                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
-            }
-            else
-            {
-                state = Blocks.AIR.defaultBlockState();
-            }
+            final BlockIngredient ingredient = BlockIngredients.fromNetwork(buffer);
+            final boolean copyInputState = buffer.readBoolean();
+            final BlockState state = copyInputState ?
+                Blocks.AIR.defaultBlockState() :
+                buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
             return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
-            BlockIngredient.toNetwork(buffer, recipe.ingredient);
+            BlockIngredients.toNetwork(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);
             if (!recipe.copyInputState)
             {

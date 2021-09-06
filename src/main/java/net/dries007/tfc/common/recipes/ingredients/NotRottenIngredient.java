@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -43,12 +42,6 @@ public class NotRottenIngredient extends DelegateIngredient
     public static class Serializer implements IIngredientSerializer<NotRottenIngredient>
     {
         @Override
-        public NotRottenIngredient parse(FriendlyByteBuf buffer)
-        {
-            return new NotRottenIngredient(Ingredient.fromNetwork(buffer));
-        }
-
-        @Override
         public NotRottenIngredient parse(JsonObject json)
         {
             final Ingredient internal = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
@@ -56,9 +49,15 @@ public class NotRottenIngredient extends DelegateIngredient
         }
 
         @Override
+        public NotRottenIngredient parse(FriendlyByteBuf buffer)
+        {
+            return new NotRottenIngredient(Ingredient.fromNetwork(buffer));
+        }
+
+        @Override
         public void write(FriendlyByteBuf buffer, NotRottenIngredient ingredient)
         {
-            CraftingHelper.write(buffer, ingredient.delegate);
+            ingredient.delegate.toNetwork(buffer);
         }
     }
 }

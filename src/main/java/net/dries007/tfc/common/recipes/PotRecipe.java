@@ -27,6 +27,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
 import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
@@ -228,7 +229,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
                 ingredients.add(Ingredient.fromJson(element));
             }
 
-            final FluidIngredient fluidIngredient = FluidIngredient.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
+            final FluidIngredient fluidIngredient = FluidIngredients.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
             final int duration = GsonHelper.getAsInt(json, "duration");
             final float minTemp = GsonHelper.getAsFloat(json, "temperature");
             return fromJson(recipeId, json, ingredients, fluidIngredient, duration, minTemp);
@@ -244,7 +245,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
             {
                 ingredients.add(Ingredient.fromNetwork(buffer));
             }
-            final FluidIngredient fluidIngredient = FluidIngredient.fromNetwork(buffer);
+            final FluidIngredient fluidIngredient = FluidIngredients.fromNetwork(buffer);
             final int duration = buffer.readVarInt();
             final float minTemp = buffer.readFloat();
             return fromNetwork(recipeId, buffer, ingredients, fluidIngredient, duration, minTemp);
@@ -258,7 +259,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
             {
                 ingredient.toNetwork(buffer);
             }
-            FluidIngredient.toNetwork(buffer, recipe.fluidIngredient);
+            FluidIngredients.toNetwork(buffer, recipe.fluidIngredient);
             buffer.writeVarInt(recipe.duration);
             buffer.writeFloat(recipe.minTemp);
         }

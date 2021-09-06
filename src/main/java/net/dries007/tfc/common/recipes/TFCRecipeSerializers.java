@@ -16,6 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("unused")
 public class TFCRecipeSerializers
 {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);

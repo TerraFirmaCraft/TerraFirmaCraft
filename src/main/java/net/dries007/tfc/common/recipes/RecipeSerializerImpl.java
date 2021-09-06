@@ -13,6 +13,6 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 /**
  * This is simply a convenience class because that extends clause is rather bothersome
  */
-public abstract class RecipeSerializerImpl<R extends Recipe<?>> extends ForgeRegistryEntry<net.minecraft.world.item.crafting.RecipeSerializer<?>> implements net.minecraft.world.item.crafting.RecipeSerializer<R>
+public abstract class RecipeSerializerImpl<R extends Recipe<?>> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<R>
 {
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
 
 public class FluidDefinition
 {
@@ -17,7 +18,7 @@ public class FluidDefinition
 
     protected FluidDefinition(ResourceLocation id, JsonObject json)
     {
-        this(id, FluidIngredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient")));
+        this(id, FluidIngredients.fromJson(GsonHelper.getAsJsonObject(json, "ingredient")));
     }
 
     protected FluidDefinition(ResourceLocation id, FluidIngredient ingredient)

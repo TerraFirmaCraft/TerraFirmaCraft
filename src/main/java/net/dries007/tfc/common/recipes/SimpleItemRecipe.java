@@ -8,21 +8,21 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * Handling for simple Ingredient -> ItemStack recipes
@@ -81,7 +81,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
+            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
             final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             return factory.create(recipeId, ingredient, stack);
         }

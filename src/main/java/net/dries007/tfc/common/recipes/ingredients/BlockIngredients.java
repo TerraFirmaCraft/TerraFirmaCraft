@@ -1,0 +1,102 @@
+package net.dries007.tfc.common.recipes.ingredients;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import net.dries007.tfc.util.JsonHelpers;
+
+public class BlockIngredients
+{
+    private static final BiMap<ResourceLocation, BlockIngredient.Serializer<?>> REGISTRY = HashBiMap.create();
+
+    /**
+     * Registers a block ingredient serializer
+     * This method is safe to call during parallel mod loading
+     */
+    public static synchronized <V extends BlockIngredient, T extends BlockIngredient.Serializer<V>> T register(ResourceLocation key, T serializer)
+    {
+        if (REGISTRY.containsKey(key))
+        {
+            throw new IllegalArgumentException("Duplicate key: " + key);
+        }
+        REGISTRY.put(key, serializer);
+        return serializer;
+    }
+
+    public static BlockIngredient fromJson(JsonElement json)
+    {
+        if (json.isJsonArray())
+        {
+            return fromJsonArray(json.getAsJsonArray());
+        }
+        if (json.isJsonPrimitive())
+        {
+            return fromJsonString(json.getAsString());
+        }
+
+        final JsonObject obj = json.getAsJsonObject();
+        BlockIngredient.Serializer<?> serializer;
+        if (obj.has("type"))
+        {
+            final String type = GsonHelper.getAsString(obj, "type");
+            serializer = REGISTRY.get(new ResourceLocation(type));
+            if (serializer == null)
+            {
+                throw new JsonParseException("Unknown block ingredient type: " + type);
+            }
+        }
+        else if (obj.has("block"))
+        {
+            serializer = BlockIngredient.BLOCK;
+        }
+        else if (obj.has("tag"))
+        {
+            serializer = BlockIngredient.TAG;
+        }
+        else
+        {
+            throw new JsonParseException("Block ingredient must be either array, string, or object with either 'type', 'block', or 'tag' property");
+        }
+        return serializer.fromJson(obj);
+    }
+
+    public static SimpleBlockIngredient fromJsonArray(JsonArray array)
+    {
+        final Set<Block> blocks = new HashSet<>();
+        for (JsonElement e : array)
+        {
+            blocks.add(JsonHelpers.getRegistryEntry(e, ForgeRegistries.BLOCKS));
+        }
+        return new SimpleBlockIngredient(blocks);
+    }
+
+    public static SimpleBlockIngredient fromJsonString(String string)
+    {
+        return new SimpleBlockIngredient(JsonHelpers.getRegistryEntry(string, ForgeRegistries.BLOCKS));
+    }
+
+    public static BlockIngredient fromNetwork(FriendlyByteBuf buffer)
+    {
+        final BlockIngredient.Serializer<?> serializer = REGISTRY.get(buffer.readResourceLocation());
+        return serializer.fromNetwork(buffer);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void toNetwork(FriendlyByteBuf buffer, BlockIngredient ingredient)
+    {
+        buffer.writeResourceLocation(REGISTRY.inverse().get(ingredient.getSerializer()));
+        ((BlockIngredient.Serializer) ingredient.getSerializer()).toNetwork(buffer, ingredient);
+    }
+}

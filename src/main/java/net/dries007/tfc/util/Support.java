@@ -14,6 +14,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 
 public class Support
 {
@@ -25,7 +26,7 @@ public class Support
     {
         this.id = id;
 
-        this.ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
+        this.ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
         this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
         this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
         this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);

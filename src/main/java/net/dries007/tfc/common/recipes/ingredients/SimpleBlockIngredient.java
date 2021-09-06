@@ -55,7 +55,7 @@ public class SimpleBlockIngredient implements BlockIngredient
         @Override
         public SimpleBlockIngredient fromJson(JsonObject json)
         {
-            return BlockIngredient.fromJsonString(GsonHelper.getAsString(json, "block"));
+            return BlockIngredients.fromJsonString(GsonHelper.getAsString(json, "block"));
         }
 
         @Override
