@@ -60,6 +60,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -82,6 +84,18 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
+    }
+
+    /**
+     * Filter method for TFC namespaced resources
+     */
+    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry)
+    {
+        return registry.getValues().stream()
+            .filter(e -> {
+                assert e.getRegistryName() != null;
+                return e.getRegistryName().getNamespace().equals(MOD_ID);
+            });
     }
 
     /**

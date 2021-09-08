@@ -62,6 +62,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -239,8 +240,18 @@ public final class ClientEventHandler
     /**
      * Invoked reflectively via Cyanide's self test injection mechanism
      */
-    @SuppressWarnings({"unused", "deprecation"})
+    @SuppressWarnings("unused")
     public static void selfTest()
+    {
+        if (ClientEventHandler.validateModelsAndTranslations()
+            | TFCTileEntities.validateBlockEntities())
+        {
+            throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private static boolean validateModelsAndTranslations()
     {
         final BlockModelShaper shaper = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
@@ -250,31 +261,22 @@ public final class ClientEventHandler
         final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
         final List<Item> missingTranslationErrors = itemsWithStackMatching(s -> new TranslatableComponent(s.getDescriptionId()).getString().equals(s.getDescriptionId()));
 
-        if (logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
+        return logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
             | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e))
-            | logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId())))
-        {
-            throw new AssertionError("Fix the above errors!");
-        }
+            | logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId()));
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)
     {
-        return ForgeRegistries.BLOCKS.getValues()
-            .stream()
-            .filter(b -> b.getRegistryName().getNamespace().equals("tfc"))
+        return Helpers.streamOurs(ForgeRegistries.BLOCKS)
             .filter(b -> b.getStateDefinition().getPossibleStates().stream().anyMatch(condition))
             .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static List<Item> itemsWithStackMatching(Predicate<ItemStack> condition)
     {
         final NonNullList<ItemStack> stacks = NonNullList.create();
-        return ForgeRegistries.ITEMS.getValues()
-            .stream()
-            .filter(i -> i.getRegistryName().getNamespace().equals("tfc"))
+        return Helpers.streamOurs(ForgeRegistries.ITEMS)
             .filter(i -> {
                 stacks.clear();
                 i.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);

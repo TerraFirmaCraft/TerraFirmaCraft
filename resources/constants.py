@@ -14,11 +14,29 @@ Wood = NamedTuple('Wood', temp=float, duration=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
 
-
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
-ROCK_ITEMS: List[str] = ['axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel']
+ROCK_CATEGORY_ITEMS: List[str] = ['axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel']
+
+TOOL_TAGS: Dict[str, str] = {
+    # Rock
+    'axe': 'axes',
+    'hammer': 'hammers',
+    'hoe': 'hoes',
+    'javelin': 'javelins',
+    'knife': 'knives',
+    'shovel': 'shovels',
+    # Metal Only
+    'pickaxe': 'pickaxes',
+    'chisel': 'chisels',
+    'mace': 'maces',
+    'sword': 'swords',
+    'saw': 'saws',
+    'propick': 'propicks',
+    'scythe': 'scythes',
+    'shears': 'shears'
+}
 
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'white'),

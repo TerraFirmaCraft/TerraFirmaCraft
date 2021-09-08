@@ -24,7 +24,7 @@ public abstract class ServerPlayerGameModeMixin
     {
         final int startCount = stack.getCount();
         final UseOnContext itemContext = new UseOnContext(player, hand, hitResult);
-        InteractionManager.onItemUse(stack, itemContext).ifPresent(result -> {
+        InteractionManager.onItemUse(stack, itemContext, false).ifPresent(result -> {
             if (player.isCreative())
             {
                 stack.setCount(startCount);

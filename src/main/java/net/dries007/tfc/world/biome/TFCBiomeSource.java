@@ -21,7 +21,6 @@ import net.minecraft.world.level.biome.BiomeSource;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -42,6 +41,8 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         ClimateSettings.CODEC.fieldOf("climate_settings").forGetter(c -> c.climateSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
+
+    private static final boolean ONLY_NORMAL_NORMAL_CLIMATES = false;
 
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {
@@ -139,28 +140,16 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     }
 
     @Override
-    public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
+    public Biome getNoiseBiome(int quartX, int quartY, int quartZ)
     {
-        final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
+        final ChunkPos chunkPos = new ChunkPos(quartX >> 2, quartZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos);
 
-        BiomeVariants variants;
-        if (Debug.SINGLE_BIOME)
-        {
-            variants = TFCBiomes.PLAINS;
-        }
-        else if (Debug.STRIPE_BIOMES)
-        {
-            variants = stripeBiome(biomeCoordX);
-        }
-        else
-        {
-            variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
-        }
+        BiomeVariants variants = biomeLayer.get(quartX, quartZ);
 
-        final BiomeTemperature temperature = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = Debug.ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
+        final BiomeTemperature temperature = ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
+        final BiomeRainfall rainfall = ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }

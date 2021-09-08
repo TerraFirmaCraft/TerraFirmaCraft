@@ -26,6 +26,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
@@ -99,6 +101,7 @@ public final class ForgeEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+    private static final BlockHitResult FAKE_MISS = BlockHitResult.miss(Vec3.ZERO, Direction.UP, BlockPos.ZERO);
 
     public static void init()
     {
@@ -134,6 +137,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
+        bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
     }
 
@@ -476,7 +480,7 @@ public final class ForgeEventHandler
                 rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
                 rules.getRule(GameRules.RULE_DO_TRADER_SPAWNING).set(false, server);
 
-                LOGGER.info("Updating TFC Relevant Game Rules.");
+                LOGGER.info("Updating TFC Relevant Game Rules for level {}.", world.dimension());
             }
         }
     }
@@ -675,6 +679,15 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
+    {
+        final UseOnContext context = new UseOnContext(event.getPlayer(), event.getHand(), FAKE_MISS);
+        InteractionManager.onItemUse(event.getItemStack(), context, true).ifPresent(result -> {
+            event.setCanceled(true);
+            event.setCancellationResult(result);
+        });
+    }
+
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event)
     {
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
@@ -696,7 +709,7 @@ public final class ForgeEventHandler
             final BlockPos pos = hit.getBlockPos();
             final BlockState state = level.getBlockState(pos);
             final FluidStack fluid = new FluidStack(state.getFluidState().getType(), FluidAttributes.BUCKET_VOLUME);
-            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : 0;
+            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
             final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
             if (!fluid.isEmpty() && playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
             {

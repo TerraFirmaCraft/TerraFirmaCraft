@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +16,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -24,6 +27,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+import net.dries007.tfc.world.RockLayerStoneSource;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
@@ -51,7 +55,20 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockRecipeWrapper.Mutable wrapper = new BlockRecipeWrapper.Mutable();
         final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockData();
+
+        final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
+
         final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
+        Aquifer aquifer;
+        try
+        {
+            Method m = context.chunkGenerator().getClass().getDeclaredMethod("createAquifer", ChunkAccess.class);
+            m.setAccessible(true);
+            aquifer = (Aquifer) m.invoke(context.chunkGenerator(), worldIn.getChunk(pos));
+        }
+        catch (Exception e) { aquifer = null; }
+        RockLayerStoneSource stoneSource = new RockLayerStoneSource(chunkPos, rockData);
+
 
         // Avoid repeated recipe queries for blocks
         // This does make some simplifying assumptions about landslide recipes, and the types present in world gen, that we are ignoring here.
@@ -65,7 +82,6 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                 // Top down iteration, attempt to either fix unstable locations, or remove the offending blocks.
                 final int baseHeight = worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
                 boolean prevBlockCanLandslide = false;
-                boolean prevBlockCanCollapse = false;
                 int lastSafeY = baseHeight;
                 Block prevBlockHardened = null;
 
@@ -112,9 +128,13 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                 {
                                     // Delete the block above
                                     mutablePos.setY(y + 1);
-                                    worldIn.removeBlock(mutablePos, false);
+                                    if (aquifer != null)
+                                    {
+                                        BlockState state = aquifer.computeState(stoneSource, chunkX + x, y, chunkZ + z, -1);
+                                        worldIn.setBlock(mutablePos, state, 2);
+                                    }
+                                    // worldIn.removeBlock(mutablePos, false);
                                 }
-                                continue;
                             }
                             prevBlockCanLandslide = false;
                             lastSafeY = y;
@@ -134,7 +154,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                             prevBlockCanLandslide = true;
                         }
                     }
-                    // if (true) continue;
+
                     // Update stone from raw -> hardened
                     if (stateAtIsFragile)
                     {

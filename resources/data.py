@@ -144,26 +144,14 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:rods/wooden', 'tfc:wood/twig/%s' % wood)
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
 
-    for category in ROCK_CATEGORIES:
-        rm.item_tag('knives', 'tfc:stone/knife/%s' % category)
+    for category in ROCK_CATEGORIES:  # Rock (Category) Tools
+        for tool in ROCK_CATEGORY_ITEMS:
+            rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
 
-    for metal, metal_data in METALS.items():  # Metal tool tags
-        tool_tag_types = {
-            'shovel': 'shovels',
-            'knife': 'knives',
-            'saw': 'saws',
-            'chisel': 'chisels',
-            'axe': 'axes',
-            'hammer': 'hammers',
-            'pickaxe': 'pickaxes',
-            'shears': 'shears'
-        }
+    for metal, metal_data in METALS.items():  # Metal Tools
         if 'tool' in metal_data.types:
-            for tool_type, tool_tag in tool_tag_types.items():
+            for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
-
-    for mat in VANILLA_TOOL_MATERIALS:
-        rm.item_tag('extinguisher', 'minecraft:' + mat + '_shovel')
 
     # ==========
     # BLOCK TAGS

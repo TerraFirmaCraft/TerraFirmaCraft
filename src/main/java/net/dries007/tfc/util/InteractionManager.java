@@ -65,7 +65,7 @@ public final class InteractionManager
 
     public static void registerDefaultInteractions()
     {
-        register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
+        register(TFCTags.Items.THATCH_BED_HIDES, false, (stack, context) -> {
             final Level world = context.getLevel();
             final Player player = context.getPlayer();
             if (!world.isClientSide() && player != null)
@@ -93,7 +93,7 @@ public final class InteractionManager
             return InteractionResult.FAIL;
         });
 
-        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, (stack, context) -> {
+        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, false, (stack, context) -> {
             final Player player = context.getPlayer();
             final Level world = context.getLevel();
             final BlockPos pos = context.getClickedPos();
@@ -108,7 +108,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, (stack, context) -> {
+        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, false, (stack, context) -> {
             final Player playerEntity = context.getPlayer();
             if (playerEntity instanceof final ServerPlayer player)
             {
@@ -122,7 +122,7 @@ public final class InteractionManager
             return InteractionResult.FAIL;
         });
 
-        register(Items.SNOW, (stack, context) -> {
+        register(Items.SNOW, false, (stack, context) -> {
             Player player = context.getPlayer();
             if (player != null && !player.getAbilities().mayBuild)
             {
@@ -162,7 +162,7 @@ public final class InteractionManager
             }
         });
 
-        register(Items.CHARCOAL, (stack, context) -> {
+        register(Items.CHARCOAL, false, (stack, context) -> {
             Player player = context.getPlayer();
             if (player != null && !player.getAbilities().mayBuild)
             {
@@ -199,7 +199,7 @@ public final class InteractionManager
         // - holding log, targeting log pile, shift click = insert all
         // - holding log, targeting log pile, click normally = insert one
         final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
-        register(TFCTags.Items.LOG_PILE_LOGS, (stack, context) -> {
+        register(TFCTags.Items.LOG_PILE_LOGS, false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
@@ -256,7 +256,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(TFCTags.Items.SCRAPABLE, (stack, context) -> {
+        register(TFCTags.Items.SCRAPABLE, false, (stack, context) -> {
             Level level = context.getLevel();
             ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
             if (recipe != null)
@@ -292,10 +292,10 @@ public final class InteractionManager
         }
 
         // Knapping
-        register(TFCTags.Items.CLAY_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
-        register(TFCTags.Items.FIRE_CLAY_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(TFCTags.Items.LEATHER_KNAPPING, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
-        register(TFCTags.Items.ROCK_KNAPPING, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING));
+        register(TFCTags.Items.CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
+        register(TFCTags.Items.LEATHER_KNAPPING, true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
+        register(TFCTags.Items.ROCK_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING));
     }
 
     /**
@@ -303,23 +303,23 @@ public final class InteractionManager
      */
     public static void register(BlockItemPlacement wrapper)
     {
-        register(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
+        register(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem()), false));
     }
 
     /**
      * Register an interaction. This method is safe to call during parallel mod loading.
      */
-    public static void register(Item item, OnItemUseAction action)
+    public static void register(Item item, boolean targetAir, OnItemUseAction action)
     {
-        register(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item)));
+        register(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item), targetAir));
     }
 
     /**
      * Register an interaction. This method is safe to call during parallel mod loading.
      */
-    public static void register(Tag<Item> tag, OnItemUseAction action)
+    public static void register(Tag<Item> tag, boolean targetAir, OnItemUseAction action)
     {
-        register(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues));
+        register(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues, targetAir));
     }
 
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, MenuProvider container)
@@ -338,13 +338,13 @@ public final class InteractionManager
         };
     }
 
-    public static Optional<InteractionResult> onItemUse(ItemStack stack, UseOnContext context)
+    public static Optional<InteractionResult> onItemUse(ItemStack stack, UseOnContext context, boolean isTargetingAir)
     {
         if (!ACTIVE.get())
         {
             for (Entry entry : CACHE.getAll(stack.getItem()))
             {
-                if (entry.test().test(stack))
+                if ((entry.targetAir() || !isTargetingAir) && entry.test().test(stack))
                 {
                     InteractionResult result;
                     ACTIVE.set(true);
@@ -385,5 +385,5 @@ public final class InteractionManager
         InteractionResult onItemUse(ItemStack stack, UseOnContext context);
     }
 
-    private record Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor) {}
+    private record Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor, boolean targetAir) {}
 }

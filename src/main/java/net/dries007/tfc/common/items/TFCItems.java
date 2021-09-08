@@ -48,17 +48,17 @@ public final class TFCItems
     );
     public static final Map<Ore, Map<Ore.Grade, RegistryObject<Item>>> GRADED_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
         Helpers.mapOfKeys(Ore.Grade.class, grade ->
-            register(("ore/" + grade.name() + '_' + ore.name()), TFCItemGroup.ORES)
+            register("ore/" + grade.name() + '_' + ore.name(), TFCItemGroup.ORES)
         )
     );
 
     public static final Map<Gem, RegistryObject<Item>> GEMS = Helpers.mapOfKeys(Gem.class, gem ->
-        register(("gem/" + gem.name()), TFCItemGroup.ORES)
+        register("gem/" + gem.name(), TFCItemGroup.ORES)
     );
 
     public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
-            register(("metal/" + type.name() + "/" + metal.name()), () -> type.create(metal))
+            register("metal/" + type.name() + "/" + metal.name(), () -> type.create(metal))
         )
     );
 
@@ -66,17 +66,17 @@ public final class TFCItems
 
     public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
         Helpers.mapOfKeys(RockCategory.ItemType.class, type ->
-            register(("stone/" + type.name() + "/" + category.name()), () -> type.create(category))
+            register("stone/" + type.name() + "/" + category.name(), () -> type.create(category))
         )
     );
 
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.class, type ->
-        register("brick/" + type.name(), MISC)
+    public static final Map<Rock, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.class, type ->
+        register("brick/" + type.name(), ROCK_STUFFS)
     );
 
     // Wood
 
-    public static final Map<Wood, RegistryObject<Item>> LUMBER = Helpers.mapOfKeys(Wood.class, wood -> register(("wood/lumber/" + wood.name()), MISC));
+    public static final Map<Wood, RegistryObject<Item>> LUMBER = Helpers.mapOfKeys(Wood.class, wood -> register("wood/lumber/" + wood.name(), MISC));
 
     public static final Map<Wood, RegistryObject<Item>> SUPPORTS = Helpers.mapOfKeys(Wood.class, wood ->
         register("wood/support/" + wood.name(), () -> new StandingAndWallBlockItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.VERTICAL_SUPPORT).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HORIZONTAL_SUPPORT).get(), new Item.Properties().tab(WOOD)))
@@ -89,11 +89,11 @@ public final class TFCItems
     // Flora
 
     public static final Map<Coral, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.class, color ->
-        register("coral/" + color.toString() + "_coral_fan", () -> new StandingAndWallBlockItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+        register("coral/" + color.toString() + "_coral_fan", () -> new StandingAndWallBlockItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.CORAL_WALL_FAN).get(), new Item.Properties().tab(FLORA)))
     );
 
     public static final Map<Coral, RegistryObject<Item>> DEAD_CORAL_FANS = Helpers.mapOfKeys(Coral.class, color ->
-        register("coral/" + color.toString() + "_dead_coral_fan", () -> new StandingAndWallBlockItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), (new Item.Properties()).tab(FLORA)))
+        register("coral/" + color.toString() + "_dead_coral_fan", () -> new StandingAndWallBlockItem(TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_FAN).get(), TFCBlocks.CORAL.get(color).get(Coral.BlockType.DEAD_CORAL_WALL_FAN).get(), new Item.Properties().tab(FLORA)))
     );
 
     // Decorations
@@ -104,16 +104,16 @@ public final class TFCItems
 
     public static final Map<HideItemType, Map<HideItemType.Size, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItemType.class, type ->
         Helpers.mapOfKeys(HideItemType.Size.class, size ->
-            register((size.name() + '_' + type.name() + "_hide"), () -> new Item(new Item.Properties().tab(MISC)))
+            register(size.name() + '_' + type.name() + "_hide", () -> new Item(new Item.Properties().tab(MISC)))
         )
     );
 
     public static final Map<Gem, RegistryObject<Item>> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem ->
-        register(("powder/" + gem.name()), MISC)
+        register("powder/" + gem.name(), MISC)
     );
 
     public static final Map<Powder, RegistryObject<Item>> POWDERS = Helpers.mapOfKeys(Powder.class, powder ->
-        register(("powder/" + powder.name()), MISC)
+        register("powder/" + powder.name(), MISC)
     );
 
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);

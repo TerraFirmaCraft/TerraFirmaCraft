@@ -415,7 +415,7 @@ def generate(rm: ResourceManager):
 
     # Rock Tools
     for rock in ROCK_CATEGORIES:
-        for rock_item in ROCK_ITEMS:
+        for rock_item in ROCK_CATEGORY_ITEMS:
             for suffix in ('', '_head'):
                 rock_item = rock_item + suffix
                 item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')

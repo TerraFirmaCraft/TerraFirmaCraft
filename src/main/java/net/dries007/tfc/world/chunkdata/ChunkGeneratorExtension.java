@@ -6,7 +6,11 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.BaseStoneSource;
 
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -19,13 +23,6 @@ import net.dries007.tfc.world.settings.RockLayerSettings;
  */
 public interface ChunkGeneratorExtension
 {
-    /**
-     * Override in {@link ChunkGenerator} to return a narrower type
-     *
-     * @return The biome provider / source for this generator
-     */
-    BiomeSourceExtension getBiomeSource();
-
     default ChunkDataProvider getChunkDataProvider()
     {
         return getBiomeSource().getChunkDataProvider();
@@ -35,6 +32,17 @@ public interface ChunkGeneratorExtension
     {
         return getBiomeSource().getRockLayerSettings();
     }
+
+    Aquifer createAquifer(ChunkAccess chunk);
+
+    BaseStoneSource createBaseStoneSource(ChunkPos pos);
+
+    /**
+     * Override in {@link ChunkGenerator} to return a narrower type
+     *
+     * @return The biome provider / source for this generator
+     */
+    BiomeSourceExtension getBiomeSource();
 
     default ChunkGenerator self()
     {

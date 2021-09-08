@@ -48,7 +48,6 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
-import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.ColumnBiomeContainer;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
@@ -58,7 +57,6 @@ import net.dries007.tfc.world.carver.ExtendedCarvingContext;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
-import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.surfacebuilder.SurfaceBuilderContext;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
@@ -95,6 +93,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     });
 
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
+
+    private static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
     public static double[] makeKernel(ToDoubleBiFunction<Integer, Integer> func, int radius)
     {
@@ -269,7 +269,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return cachedSettings;
     }
 
-    public BaseStoneSource getBaseStoneSource(ChunkPos pos)
+    @Override
+    public BaseStoneSource createBaseStoneSource(ChunkPos pos)
     {
         return new RockLayerStoneSource(pos, chunkDataProvider.get(pos).getRockData());
     }
@@ -290,7 +291,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final WorldgenRandom random = new WorldgenRandom();
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
         final ChunkPos chunkPos = chunk.getPos();
-        final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, getBaseStoneSource(chunkPos));
+        final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, createBaseStoneSource(chunkPos));
         final Aquifer aquifer = createAquifer(chunk);
         final BitSet carvingMask = CarverHelpers.getCarvingMask(chunk, noiseGeneratorSettings().noiseSettings().height());
 
@@ -334,7 +335,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    protected Aquifer createAquifer(ChunkAccess chunk)
+    public Aquifer createAquifer(ChunkAccess chunk)
     {
         ChunkPos pos = chunk.getPos();
         AquiferExtension aquifer = aquiferCache.getIfPresent(pos.x, pos.z);
@@ -397,15 +398,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final WorldgenRandom random = new WorldgenRandom();
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
 
-        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-
         final Biome[] localBiomes = new Biome[16 * 16];
         final double[] sampledHeightMap = new double[7 * 7];
         final int[] surfaceHeightMap = new int[16 * 16];
 
         final ChunkBiomeContainer biomeContainer = chunk.getBiomes();
         assert biomeContainer != null;
-        final Sampler<Biome> biomeAccessor = (x, z) -> {
+        final Sampler<Biome> biomeSampler = (x, z) -> {
             // Use biomes from the local chunk if possible
             if ((x >> 4) == chunkPos.x && (z >> 4) == chunkPos.z)
             {
@@ -414,19 +413,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return biomeSource.getNoiseBiome(x >> 2, 0, z >> 2);
         };
 
-        final RockData rockData = chunkDataProvider.get(chunkPos).getRockData();
+        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
         // Set a reference to the surface height map, which the helper will modify later
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
-        rockData.setSurfaceHeight(surfaceHeightMap);
+        chunkDataProvider.get(chunkPos).getRockData().setSurfaceHeight(surfaceHeightMap);
 
-        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeAccessor);
+        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeSampler);
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
-        final Aquifer aquifer = createAquifer(chunk);
-        final BaseStoneSource stoneSource = getBaseStoneSource(chunkPos);
-
-        helper.fillFromNoise(aquifer, stoneSource);
+        helper.fillFromNoise();
 
         // Fill in additional derivative sampling points
         for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)
@@ -444,7 +440,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final double[] slopeMap = buildSlopeMap(sampledHeightMap);
 
         buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
-        if (Debug.ENABLE_SLOPE_VISUALIZATION)
+        if (ENABLE_SLOPE_VISUALIZATION)
         {
             slopeVisualization(chunk, slopeMap, chunkX, chunkZ);
         }
@@ -760,6 +756,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         private final Object2DoubleMap<BiomeNoiseSampler> biomeSamplers;
         private final Heightmap oceanFloor, worldSurface;
         private final BitSet carvingMask; // We mark the air carving mask for everything
+        private final Aquifer aquifer;
+        private final BaseStoneSource stoneSource;
 
         // Noise caves / interpolators, setup initially for the chunk
         private final List<NoiseInterpolator> interpolators;
@@ -787,6 +785,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.chunkX = chunk.getPos().getMinBlockX();
             this.chunkZ = chunk.getPos().getMinBlockZ();
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
+            this.aquifer = createAquifer(chunk);
+            this.stoneSource = createBaseStoneSource(chunk.getPos());
 
             this.interpolators = new ArrayList<>();
 
@@ -806,14 +806,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             cavifierSampler.addInterpolators(interpolators);
             noodleCaveSampler.addInterpolators(interpolators);
-            interpolators.forEach(NoiseInterpolator::initializeForFirstCellX);
         }
 
         /**
          * Fills the entire chunk
          */
-        void fillFromNoise(Aquifer aquifer, BaseStoneSource stoneSource)
+        void fillFromNoise()
         {
+            interpolators.forEach(NoiseInterpolator::initializeForFirstCellX);
+
             final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
             for (int cellX = 0; cellX < cellCountX; cellX++)
             {
@@ -838,7 +839,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                             localZ = z & 15;
                             cellDeltaZ = (double) localCellZ / cellWidth;
 
-                            fillColumn(aquifer, stoneSource, mutablePos);
+                            fillColumn(mutablePos);
                         }
                     }
                 }
@@ -850,7 +851,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         /**
          * Fills a single column
          */
-        void fillColumn(Aquifer aquifer, BaseStoneSource stoneSource, BlockPos.MutableBlockPos mutablePos)
+        void fillColumn(BlockPos.MutableBlockPos mutablePos)
         {
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
 

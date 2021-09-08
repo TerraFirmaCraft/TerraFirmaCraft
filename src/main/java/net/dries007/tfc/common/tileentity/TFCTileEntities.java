@@ -29,7 +29,6 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.util.Debug;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -61,19 +60,10 @@ public class TFCTileEntities
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static void validateBlockEntities()
+    public static boolean validateBlockEntities()
     {
-        if (!Debug.DEBUG) return;
-
-        final List<Block> fbeButNoEbe = new ArrayList<>(),
-            ebeButNoFbe = new ArrayList<>(),
-            ebButNoEbe = new ArrayList<>();
-        ForgeRegistries.BLOCKS.getValues()
-            .stream()
-            .filter(r -> {
-                assert r.getRegistryName() != null;
-                return r.getRegistryName().getNamespace().equals("tfc");
-            })
+        final List<Block> fbeButNoEbe = new ArrayList<>(), ebeButNoFbe = new ArrayList<>(), ebButNoEbe = new ArrayList<>();
+        Helpers.streamOurs(ForgeRegistries.BLOCKS)
             .forEach(b -> {
                 if (b instanceof IForgeBlockExtension ex && ex.getForgeProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
                 {
@@ -89,12 +79,9 @@ public class TFCTileEntities
                 }
             });
 
-        if (logValidationErrors("Blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe)
+        return logValidationErrors("Blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe)
             | logValidationErrors("Blocks found that implement EntityBlockExtension but do not declare a block entity in IForgeBlockExtension", ebeButNoFbe)
-            | logValidationErrors("Blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe))
-        {
-            throw new AssertionError("Errors in declared block entities, fix them!");
-        }
+            | logValidationErrors("Blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe);
     }
 
     private static boolean logValidationErrors(String error, List<Block> blocks)

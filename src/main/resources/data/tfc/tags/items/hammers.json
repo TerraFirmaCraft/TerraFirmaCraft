@@ -2,6 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:stone/hammer/sedimentary",
+    "tfc:stone/hammer/metamorphic",
+    "tfc:stone/hammer/igneous_extrusive",
+    "tfc:stone/hammer/igneous_intrusive",
     "tfc:metal/hammer/bismuth_bronze",
     "tfc:metal/hammer/black_bronze",
     "tfc:metal/hammer/bronze",

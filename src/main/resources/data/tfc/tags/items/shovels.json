@@ -2,6 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:stone/shovel/sedimentary",
+    "tfc:stone/shovel/metamorphic",
+    "tfc:stone/shovel/igneous_extrusive",
+    "tfc:stone/shovel/igneous_intrusive",
     "tfc:metal/shovel/bismuth_bronze",
     "tfc:metal/shovel/black_bronze",
     "tfc:metal/shovel/bronze",
