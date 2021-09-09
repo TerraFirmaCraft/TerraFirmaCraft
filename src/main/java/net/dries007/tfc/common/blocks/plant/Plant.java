@@ -11,18 +11,18 @@ import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.WaterLilyBlockItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.core.Direction;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -110,7 +110,7 @@ public enum Plant implements IPlant
     WATER_LILY(BlockType.FLOATING_FRESH, 0.8F, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}),
     YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}),
 
-    //not data driven
+    // Unique
     HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F, null),
     HANGING_VINES(BlockType.WEEPING_TOP, 1.0F, null),
     LIANA_PLANT(BlockType.WEEPING, 1.0F, null),
@@ -130,8 +130,8 @@ public enum Plant implements IPlant
 
 
     private final float speedFactor;
-    private final IntegerProperty property;
-    private final int[] stagesByMonth;
+    @Nullable private final IntegerProperty property;
+    @Nullable private final int[] stagesByMonth;
     private final BlockType type;
 
     Plant(BlockType type, float speedFactor, @Nullable int[] stagesByMonth)
@@ -168,12 +168,14 @@ public enum Plant implements IPlant
     @Override
     public int stageFor(Month month)
     {
+        assert stagesByMonth != null;
         return stagesByMonth.length < month.ordinal() ? 0 : stagesByMonth[month.ordinal()];
     }
 
     @Override
     public IntegerProperty getStageProperty()
     {
+        assert property != null;
         return property;
     }
 
@@ -200,36 +202,23 @@ public enum Plant implements IPlant
      */
     private Plant transform()
     {
-        switch (this)
-        {
-            case HANGING_VINES:
-                return HANGING_VINES_PLANT;
-            case HANGING_VINES_PLANT:
-                return HANGING_VINES;
-            case TREE_FERN:
-                return TREE_FERN_PLANT;
-            case TREE_FERN_PLANT:
-                return TREE_FERN;
-            case WINGED_KELP_PLANT:
-                return WINGED_KELP;
-            case WINGED_KELP:
-                return WINGED_KELP_PLANT;
-            case GIANT_KELP_FLOWER:
-                return GIANT_KELP_PLANT;
-            case LEAFY_KELP:
-                return LEAFY_KELP_PLANT;
-            case LEAFY_KELP_PLANT:
-                return LEAFY_KELP;
-            case ARUNDO:
-                return ARUNDO_PLANT;
-            case ARUNDO_PLANT:
-                return ARUNDO;
-            case LIANA:
-                return LIANA_PLANT;
-            case LIANA_PLANT:
-                return LIANA;
-        }
-        throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
+        return switch (this)
+            {
+                case HANGING_VINES -> HANGING_VINES_PLANT;
+                case HANGING_VINES_PLANT -> HANGING_VINES;
+                case TREE_FERN -> TREE_FERN_PLANT;
+                case TREE_FERN_PLANT -> TREE_FERN;
+                case WINGED_KELP_PLANT -> WINGED_KELP;
+                case WINGED_KELP -> WINGED_KELP_PLANT;
+                case GIANT_KELP_FLOWER -> GIANT_KELP_PLANT;
+                case LEAFY_KELP -> LEAFY_KELP_PLANT;
+                case LEAFY_KELP_PLANT -> LEAFY_KELP;
+                case ARUNDO -> ARUNDO_PLANT;
+                case ARUNDO_PLANT -> ARUNDO;
+                case LIANA -> LIANA_PLANT;
+                case LIANA_PLANT -> LIANA;
+                default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
+            };
     }
 
     public enum BlockType

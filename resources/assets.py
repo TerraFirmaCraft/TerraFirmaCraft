@@ -39,7 +39,7 @@ def generate(rm: ResourceManager):
                 for loose_type in ('pebble', 'rubble', 'boulder'):
                     rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
 
-                block.with_lang(lang('%s %s', rock, block_type)).with_tag('can_be_snow_piled').with_block_loot(one_pool({
+                block.with_lang(lang('loose %s', rock)).with_tag('can_be_snow_piled').with_block_loot(one_pool({
                     'name': 'tfc:rock/loose/%s' % rock,
                     'functions': [
                         {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '2'})]},

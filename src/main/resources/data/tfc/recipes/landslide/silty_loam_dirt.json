@@ -4,7 +4,8 @@
   "ingredient": [
     "tfc:dirt/silty_loam",
     "tfc:grass/silty_loam",
-    "tfc:grass_path/silty_loam"
+    "tfc:grass_path/silty_loam",
+    "tfc:farmland/silty_loam"
   ],
   "result": "tfc:dirt/silty_loam"
 }

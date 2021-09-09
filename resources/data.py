@@ -228,6 +228,86 @@ def generate(rm: ResourceManager):
     for soil in SOIL_BLOCK_VARIANTS:
         rm.block_tag('can_carve', 'tfc:dirt/%s' % soil, 'tfc:grass/%s' % soil)
 
+    # Harvest Tool + Level Tags
+
+    rm.block_tag('needs_stone_tool', '#forge:needs_wood_tool')
+    rm.block_tag('needs_copper_tool', '#minecraft:needs_stone_tool')
+    rm.block_tag('needs_wrought_iron_tool', '#minecraft:needs_iron_tool')
+    rm.block_tag('needs_steel_tool', '#minecraft:needs_diamond_tool')
+    rm.block_tag('needs_colored_steel_tool', '#forge:needs_netherite_tool')
+
+    rm.block_tag('minecraft:mineable/hoe', '#tfc:mineable_with_sharp_tool')
+    rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
+    rm.block_tag('tfc:mineable_with_scythe', '#tfc:mineable_with_sharp_tool')
+
+    rm.block_tag('forge:needs_wood_tool')
+    rm.block_tag('forge:needs_netherite_tool')
+
+    for ore, data in ORES.items():
+        for rock in ROCKS.keys():
+            if data.graded:
+                rm.block_tag('needs_%s_tool' % data.required_tool, 'tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/rich_%s/%s' % (ore, rock))
+            else:
+                rm.block_tag('needs_%s_tool' % data.required_tool, 'tfc:ore/%s/%s' % (ore, rock))
+
+    rm.block_tag('minecraft:mineable/shovel', *[
+        *['tfc:%s/%s' % (soil, variant) for soil in SOIL_BLOCK_TYPES for variant in SOIL_BLOCK_VARIANTS],
+        'tfc:peat',
+        'tfc:peat_grass',
+        *['tfc:sand/%s' % sand for sand in SAND_BLOCK_TYPES],
+        'tfc:snow_pile',
+        *['tfc:rock/gravel/%s' % rock for rock in ROCKS.keys()],
+        'tfc:aggregate',
+        'tfc:fire_clay_block',
+        'tfc:charcoal_pile',
+        'tfc:charcoal_forge'
+    ])
+    rm.block_tag('minecraft:mineable/pickaxe', *[
+        *['tfc:%s_sandstone/%s' % (variant, sand) for variant in SANDSTONE_BLOCK_TYPES for sand in SAND_BLOCK_TYPES],
+        *['tfc:%s_sandstone/%s_%s' % (variant, sand, suffix) for variant in SANDSTONE_BLOCK_TYPES for sand in SAND_BLOCK_TYPES for suffix in ('slab', 'stairs', 'wall')],
+        'tfc:icicle',
+        'tfc:calcite',
+        *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() for rock in ROCKS.keys() if not ore_data.graded],
+        *['tfc:ore/%s_%s/%s' % (grade, ore, rock) for ore, ore_data in ORES.items() for rock in ROCKS.keys() for grade in ORE_GRADES.keys() if ore_data.graded],
+        *['tfc:ore/small_%s' % ore for ore, ore_data in ORES.items() if ore_data.graded],
+        *['tfc:rock/%s/%s' % (variant, rock) for variant in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'pressure_plate', 'button') for rock in ROCKS.keys()],
+        *['tfc:rock/%s/%s_%s' % (variant, rock, suffix) for variant in ('raw', 'smooth', 'cobble', 'bricks', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble') for rock in ROCKS.keys() for suffix in ('slab', 'stairs', 'wall')],
+        *['tfc:rock/anvil/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],
+        *['tfc:metal/%s/%s' % (variant, metal) for variant, variant_data in METAL_BLOCKS.items() for metal, metal_data in METALS.items() if variant_data.type in metal_data.types],
+        *['tfc:coral/%s_%s' % (color, variant) for color in CORALS for variant in CORAL_BLOCKS],
+        'tfc:alabaster/raw/alabaster',
+        'tfc:alabaster/raw/alabaster_bricks',
+        'tfc:alabaster/raw/polished_alabaster',
+        *['tfc:alabaster/stained/%s%s' % (color, variant) for color in COLORS for variant in ('_raw_alabaster', '_alabaster_bricks', '_polished_alabaster', '_alabaster_bricks_slab', '_alabaster_bricks_stairs', '_alabaster_bricks_wall', '_polished_alabaster_slab', '_polished_alabaster_stairs', '_polished_alabaster_wall')],
+        'tfc:fire_bricks',
+        'tfc:quern'
+    ])
+    rm.block_tag('minecraft:mineable/axe', *[
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support') for wood in WOODS.keys()],
+        *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench') for wood in WOODS.keys()],
+        *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],
+        *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
+        'tfc:plant/banana_plant',
+        'tfc:log_pile',
+        'tfc:burning_log_pile'
+    ])
+    rm.block_tag('tfc:mineable_with_sharp_tool', *[
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
+        *['tfc:plant/%s' % plant for plant in PLANTS.keys()],
+        *['tfc:plant/%s' % plant for plant in UNIQUE_PLANTS],
+        'tfc:sea_pickle',
+        *['tfc:plant/%s_bush' % bush for bush in ('snowberry', 'bunchberry', 'gooseberry', 'cloudberry', 'strawberry', 'wintergreen_berry')],
+        *['tfc:plant/%s_bush%s' % (bush, suffix) for bush in ('blackberry', 'raspberry', 'blueberry', 'elderberry') for suffix in ('', '_cane')],
+        'tfc:plant/cranberry_bush',
+        'tfc:plant/dead_berry_bush',
+        'tfc:plant/dead_cane',
+        *['tfc:plant/%s_leaves' % tree for tree in NORMAL_FRUIT_TREES],
+        *['tfc:plant/%s_sapling' % tree for tree in NORMAL_FRUIT_TREES],
+        'tfc:plant/banana_sapling',
+        'tfc:thatch',
+        'tfc:thatch_bed'
+    ])
+
     # ==========
     # FLUID TAGS
     # ==========

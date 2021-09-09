@@ -107,15 +107,15 @@ public final class TFCBlocks
 
     // Ores
 
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
+    public static final Map<Rock, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), ore ->
-            register(("ore/" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10)), TFCItemGroup.ORES)
+            register(("ore/" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10).requiresCorrectToolForDrops()), TFCItemGroup.ORES)
         )
     );
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
+    public static final Map<Rock, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
             Helpers.mapOfKeys(Ore.Grade.class, grade ->
-                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10)), TFCItemGroup.ORES)
+                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10).requiresCorrectToolForDrops()), TFCItemGroup.ORES)
             )
         )
     );
@@ -125,22 +125,22 @@ public final class TFCBlocks
 
     // Rock Stuff
 
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<net.dries007.tfc.common.blocks.rock.Rock.BlockType, RegistryObject<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
-        Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.BlockType.class, type ->
+    public static final Map<Rock, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(Rock.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, type ->
             register(("rock/" + type.name() + "/" + rock.name()), () -> type.create(rock), ROCK_STUFFS)
         )
     );
 
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, Map<net.dries007.tfc.common.blocks.rock.Rock.BlockType, DecorationBlockRegistryObject>> ROCK_DECORATIONS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, net.dries007.tfc.common.blocks.rock.Rock.BlockType::hasVariants, type -> new DecorationBlockRegistryObject(
+    public static final Map<Rock, Map<Rock.BlockType, DecorationBlockRegistryObject>> ROCK_DECORATIONS = Helpers.mapOfKeys(Rock.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockRegistryObject(
             register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock), ROCK_STUFFS),
             register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock), ROCK_STUFFS),
             register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock), ROCK_STUFFS)
         ))
     );
 
-    public static final Map<net.dries007.tfc.common.blocks.rock.Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(net.dries007.tfc.common.blocks.rock.Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10), TFCBlocks.ROCK_BLOCKS.get(rock).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.RAW)), ROCK_STUFFS)
+    public static final Map<Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops(), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)), ROCK_STUFFS)
     );
 
     // Metals

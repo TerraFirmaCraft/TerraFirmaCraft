@@ -54,10 +54,22 @@ public class TFCTags
         public static final Tag.Named<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final Tag.Named<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
         public static final Tag.Named<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
+        public static final Tag.Named<Block> NEEDS_STONE_TOOL = create("needs_stone_tool"); // Equivalent to vanilla wood
+        public static final Tag.Named<Block> NEEDS_COPPER_TOOL = create("needs_copper_tool"); // Equivalent to vanilla stone
+        public static final Tag.Named<Block> NEEDS_BRONZE_TOOL = create("needs_bronze_tool"); // Equivalent to vanilla iron
+        public static final Tag.Named<Block> NEEDS_WROUGHT_IRON_TOOL = create("needs_wrought_iron_tool");
+        public static final Tag.Named<Block> NEEDS_STEEL_TOOL = create("needs_steel_tool"); // Equivalent to vanilla diamond
+        public static final Tag.Named<Block> NEEDS_BLACK_STEEL_TOOL = create("needs_black_steel_tool");
+        public static final Tag.Named<Block> NEEDS_COLORED_STEEL_TOOL = create("needs_colored_steel_tool"); // Equivalent to vanilla netherite
+        public static final Tag.Named<Block> MINEABLE_WITH_PROPICK = create("mineable_with_propick");
+        public static final Tag.Named<Block> MINEABLE_WITH_CHISEL = create("mineable_with_chisel");
+        public static final Tag.Named<Block> MINEABLE_WITH_HAMMER = create("mineable_with_hammer");
+        public static final Tag.Named<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
+        public static final Tag.Named<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
 
         private static Tag.Named<Block> create(String id)
         {
-            return BlockTags.bind(Helpers.identifier(id).toString());
+            return BlockTags.createOptional(Helpers.identifier(id));
         }
     }
 
@@ -68,7 +80,7 @@ public class TFCTags
 
         private static Tag.Named<Fluid> create(String id)
         {
-            return FluidTags.bind(Helpers.identifier(id).toString());
+            return FluidTags.createOptional(Helpers.identifier(id));
         }
     }
 
@@ -99,7 +111,7 @@ public class TFCTags
 
         private static Tag.Named<Item> create(String id)
         {
-            return ItemTags.bind(Helpers.identifier(id).toString());
+            return ItemTags.createOptional(Helpers.identifier(id));
         }
     }
 }

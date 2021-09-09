@@ -1,12 +1,14 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, NamedTuple, Sequence, Optional
+from typing import Dict, List, NamedTuple, Sequence, Optional, Literal
 
-Rock = NamedTuple('Rock', category=str, sand=str)
+Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
+RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
+Rock = NamedTuple('Rock', category=RockCategory, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
-Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
+Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier)
 OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
@@ -143,39 +145,39 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 }
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
 ORES: Dict[str, Ore] = {
-    'native_copper': Ore('copper', True),
-    'native_gold': Ore('gold', True),
-    'hematite': Ore('cast_iron', True),
-    'native_silver': Ore('silver', True),
-    'cassiterite': Ore('tin', True),
-    'bismuthinite': Ore('bismuth', True),
-    'garnierite': Ore('nickel', True),
-    'malachite': Ore('copper', True),
-    'magnetite': Ore('cast_iron', True),
-    'limonite': Ore('cast_iron', True),
-    'sphalerite': Ore('zinc', True),
-    'tetrahedrite': Ore('copper', True),
-    'bituminous_coal': Ore(None, False),
-    'lignite': Ore(None, False),
-    'kaolinite': Ore(None, False),
-    'gypsum': Ore(None, False),
-    'graphite': Ore(None, False),
-    'sulfur': Ore(None, False),
-    'cinnabar': Ore(None, False),
-    'cryolite': Ore(None, False),
-    'saltpeter': Ore(None, False),
-    'sylvite': Ore(None, False),
-    'borax': Ore(None, False),
-    'halite': Ore(None, False),
-    'amethyst': Ore(None, False),
-    'diamond': Ore(None, False),
-    'emerald': Ore(None, False),
-    'lapis_lazuli': Ore(None, False),
-    'opal': Ore(None, False),
-    'pyrite': Ore(None, False),
-    'ruby': Ore(None, False),
-    'sapphire': Ore(None, False),
-    'topaz': Ore(None, False)
+    'native_copper': Ore('copper', True, 'copper'),
+    'native_gold': Ore('gold', True, 'copper'),
+    'hematite': Ore('cast_iron', True, 'bronze'),
+    'native_silver': Ore('silver', True, 'copper'),
+    'cassiterite': Ore('tin', True, 'copper'),
+    'bismuthinite': Ore('bismuth', True, 'copper'),
+    'garnierite': Ore('nickel', True, 'wrought_iron'),
+    'malachite': Ore('copper', True, 'copper'),
+    'magnetite': Ore('cast_iron', True, 'bronze'),
+    'limonite': Ore('cast_iron', True, 'bronze'),
+    'sphalerite': Ore('zinc', True, 'copper'),
+    'tetrahedrite': Ore('copper', True, 'copper'),
+    'bituminous_coal': Ore(None, False, 'copper'),
+    'lignite': Ore(None, False, 'copper'),
+    'kaolinite': Ore(None, False, 'copper'),
+    'gypsum': Ore(None, False, 'copper'),
+    'graphite': Ore(None, False, 'copper'),
+    'sulfur': Ore(None, False, 'copper'),
+    'cinnabar': Ore(None, False, 'bronze'),
+    'cryolite': Ore(None, False, 'bronze'),
+    'saltpeter': Ore(None, False, 'copper'),
+    'sylvite': Ore(None, False, 'copper'),
+    'borax': Ore(None, False, 'copper'),
+    'halite': Ore(None, False, 'bronze'),
+    'amethyst': Ore(None, False, 'steel'),  # Mohs: 7
+    'diamond': Ore(None, False, 'black_steel'),  # Mohs: 10
+    'emerald': Ore(None, False, 'steel'),  # Mohs: 7.5-8
+    'lapis_lazuli': Ore(None, False, 'wrought_iron'),  # Mohs: 5-6
+    'opal': Ore(None, False, 'wrought_iron'),  # Mohs: 5.5-6.5
+    'pyrite': Ore(None, False, 'copper'),
+    'ruby': Ore(None, False, 'black_steel'),  # Mohs: 9
+    'sapphire': Ore(None, False, 'black_steel'),  # Mohs: 9
+    'topaz': Ore(None, False, 'steel')  # Mohs: 8
 }
 ORE_GRADES: Dict[str, OreGrade] = {
     'normal': OreGrade(50, 5),
@@ -239,7 +241,8 @@ ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
-SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass')
+SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
+SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
@@ -349,6 +352,9 @@ PLANTS: Dict[str, Plant] = {
     'water_lily': Plant(False, -5, 38, 0, 500, 'floating_fresh'),
     'yucca': Plant(False, -34, 36, 0, 75, 'dry')
 }
+UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
+CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
+CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
 
 PLANT_COLORS: Dict[str, List[str]] = {
     'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white'],
@@ -404,6 +410,7 @@ FRUITS: Dict[str, Fruit] = {
     'plum': Fruit(18, 31, 250, 400),
     'red_apple': Fruit(9, 25, 100, 280)
 }
+NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')

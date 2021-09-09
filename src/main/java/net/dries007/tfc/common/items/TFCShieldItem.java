@@ -4,13 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.items.tools;
+package net.dries007.tfc.common.items;
 
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
-
-import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.Tier;
 
 public class TFCShieldItem extends ShieldItem
 {
@@ -22,20 +20,15 @@ public class TFCShieldItem extends ShieldItem
         this.tier = tier;
     }
 
-    public Tier getTier()
-    {
-        return this.tier;
-    }
-
     @Override
     public int getEnchantmentValue()
     {
-        return this.tier.getEnchantmentValue();
+        return tier.getEnchantmentValue();
     }
 
     @Override
     public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
     {
-        return false;
+        return tier.getRepairIngredient().test(repair);
     }
 }

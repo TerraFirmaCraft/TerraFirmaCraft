@@ -29,8 +29,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCArmorMaterial;
 import net.dries007.tfc.common.TFCItemGroup;
-import net.dries007.tfc.common.TFCItemTier;
-import net.dries007.tfc.common.items.tools.*;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.TFCTiers;
+import net.dries007.tfc.common.items.*;
 
 public class Metal
 {
@@ -77,11 +78,11 @@ public class Metal
     public enum Default implements StringRepresentable
     {
         BISMUTH(0xFF486B72, Rarity.COMMON, true, false, false),
-        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, TFCItemTier.BISMUTH_BRONZE, TFCArmorMaterial.BISMUTH_BRONZE, true, true, true),
-        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, TFCItemTier.BLACK_BRONZE, TFCArmorMaterial.BLACK_BRONZE, true, true, true),
-        BRONZE(0xFF96892E, Rarity.COMMON, TFCItemTier.BRONZE, TFCArmorMaterial.BRONZE, true, true, true),
+        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterial.BISMUTH_BRONZE, true, true, true),
+        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, TFCTiers.BLACK_BRONZE, TFCArmorMaterial.BLACK_BRONZE, true, true, true),
+        BRONZE(0xFF96892E, Rarity.COMMON, TFCTiers.BRONZE, TFCArmorMaterial.BRONZE, true, true, true),
         BRASS(0xFF7C5E33, Rarity.COMMON, true, false, false),
-        COPPER(0xFFB64027, Rarity.COMMON, TFCItemTier.COPPER, TFCArmorMaterial.COPPER, true, true, true),
+        COPPER(0xFFB64027, Rarity.COMMON, TFCTiers.COPPER, TFCArmorMaterial.COPPER, true, true, true),
         GOLD(0xFFDCBF1B, Rarity.COMMON, true, false, false),
         NICKEL(0xFF4E4E3C, Rarity.COMMON, true, false, false),
         ROSE_GOLD(0xFFEB7137, Rarity.COMMON, true, false, false),
@@ -89,13 +90,13 @@ public class Metal
         TIN(0xFF90A4BB, Rarity.COMMON, true, false, false),
         ZINC(0xFFBBB9C4, Rarity.COMMON, true, false, false),
         STERLING_SILVER(0xFFAC927B, Rarity.COMMON, true, false, false),
-        WROUGHT_IRON(0xFF989897, Rarity.COMMON, TFCItemTier.WROUGHT_IRON, TFCArmorMaterial.WROUGHT_IRON, true, true, true),
+        WROUGHT_IRON(0xFF989897, Rarity.COMMON, TFCTiers.WROUGHT_IRON, TFCArmorMaterial.WROUGHT_IRON, true, true, true),
         CAST_IRON(0xFF989897, Rarity.COMMON, true, false, false),
         PIG_IRON(0xFF6A595C, Rarity.COMMON, false, false, false),
-        STEEL(0xFF5F5F5F, Rarity.UNCOMMON, TFCItemTier.STEEL, TFCArmorMaterial.STEEL, true, true, true),
-        BLACK_STEEL(0xFF111111, Rarity.RARE, TFCItemTier.BLACK_STEEL, TFCArmorMaterial.BLACK_STEEL, true, true, true),
-        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, TFCItemTier.BLUE_STEEL, TFCArmorMaterial.BLUE_STEEL, true, true, true),
-        RED_STEEL(0xFF700503, Rarity.EPIC, TFCItemTier.RED_STEEL, TFCArmorMaterial.RED_STEEL, true, true, true),
+        STEEL(0xFF5F5F5F, Rarity.UNCOMMON, TFCTiers.STEEL, TFCArmorMaterial.STEEL, true, true, true),
+        BLACK_STEEL(0xFF111111, Rarity.RARE, TFCTiers.BLACK_STEEL, TFCArmorMaterial.BLACK_STEEL, true, true, true),
+        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, TFCTiers.BLUE_STEEL, TFCArmorMaterial.BLUE_STEEL, true, true, true),
+        RED_STEEL(0xFF700503, Rarity.EPIC, TFCTiers.RED_STEEL, TFCArmorMaterial.RED_STEEL, true, true, true),
         WEAK_STEEL(0xFF111111, Rarity.COMMON, false, false, false),
         WEAK_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, false, false, false),
         WEAK_RED_STEEL(0xFF700503, Rarity.COMMON, false, false, false),
@@ -240,7 +241,7 @@ public class Metal
 
     public enum BlockType
     {
-        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10))),
+        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10).requiresCorrectToolForDrops())),
         LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10)));
 
         public static final Metal.BlockType[] VALUES = values();
@@ -294,33 +295,33 @@ public class Metal
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
 
         // Tools and Tool Heads
-        PICKAXE(Type.TOOL, metal -> new TFCPickaxeItem(metal.getTier(), 0.75F, -2.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75F, metal.getTier()), -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
         PICKAXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        PROPICK(Type.TOOL, metal -> new PropickItem(metal.getTier(), 0.5F, -2.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        PROPICK(Type.TOOL, metal -> new PropickItem(metal.getTier(), 0.5F, -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
         PROPICK_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        AXE(Type.TOOL, metal -> new TFCAxeItem(metal.getTier(), 1.5F, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        AXE(Type.TOOL, metal -> new AxeItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, metal.getTier()), -3.2F, new Item.Properties().tab(TFCItemGroup.METAL))),
         AXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SHOVEL(Type.TOOL, metal -> new TFCShovelItem(metal.getTier(), 0.875F, -3.0F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.getTier()), -3.0F, new Item.Properties().tab(TFCItemGroup.METAL))),
         SHOVEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        HOE(Type.TOOL, metal -> new HoeItem(metal.getTier(), -1, -2f, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        HOE(Type.TOOL, metal -> new HoeItem(metal.getTier(), -1, -2f, new Item.Properties().tab(TFCItemGroup.METAL))),
         HOE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getTier(), 0.27F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getTier(), 0.27F, -1.5F, new Item.Properties().tab(TFCItemGroup.METAL))),
         CHISEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        HAMMER(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 1.0F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        HAMMER(Type.TOOL, metal -> new ToolItem(metal.getTier(), 1.0F, -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(TFCItemGroup.METAL))),
         HAMMER_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SAW(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 0.5F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        SAW(Type.TOOL, metal -> new AxeItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(0.5F, metal.getTier()), -3, new Item.Properties().tab(TFCItemGroup.METAL))),
         SAW_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.getTier(), 0.7F, -1.8F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.getTier(), 0.7F, -1.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
         JAVELIN_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SWORD(Type.TOOL, metal -> new TFCSwordItem(metal.getTier(), 1.0F, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
+        SWORD(Type.TOOL, metal -> new SwordItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(1.0F, metal.getTier()), -2.4F, new Item.Properties().tab(TFCItemGroup.METAL))),
         SWORD_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        MACE(Type.TOOL, metal -> new WeaponItem(metal.getTier(), 1.3F, -3, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT))),
+        MACE(Type.TOOL, metal -> new SwordItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3F, metal.getTier()), -3, new Item.Properties().tab(TFCItemGroup.METAL))),
         MACE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        KNIFE(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 0.54F, -1.5F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        KNIFE(Type.TOOL, metal -> new ToolItem(metal.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.METAL))),
         KNIFE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SCYTHE(Type.TOOL, metal -> new TFCToolItem(metal.getTier(), 2, -3.2F, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        SCYTHE(Type.TOOL, metal -> new ToolItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(2, metal.getTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, new Item.Properties().tab(TFCItemGroup.METAL))),
         SCYTHE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SHEARS(Type.TOOL, metal -> new TFCShearsItem(metal.getTier(), (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS))),
+        SHEARS(Type.TOOL, metal -> new ShearsItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getTier().getUses()))),
 
         // Armor
         UNFINISHED_HELMET(Type.ARMOR, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),

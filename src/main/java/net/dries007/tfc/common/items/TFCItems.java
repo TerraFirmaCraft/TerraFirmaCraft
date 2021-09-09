@@ -56,12 +56,6 @@ public final class TFCItems
         register("gem/" + gem.name(), TFCItemGroup.ORES)
     );
 
-    public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
-            register("metal/" + type.name() + "/" + metal.name(), () -> type.create(metal))
-        )
-    );
-
     // Rock Stuff
 
     public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
@@ -72,6 +66,14 @@ public final class TFCItems
 
     public static final Map<Rock, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.class, type ->
         register("brick/" + type.name(), ROCK_STUFFS)
+    );
+
+    // Metal
+
+    public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
+            register("metal/" + type.name() + "/" + metal.name(), () -> type.create(metal))
+        )
     );
 
     // Wood

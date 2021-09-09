@@ -9,25 +9,21 @@ package net.dries007.tfc.common.blocks.rock;
 import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.TFCItemGroup;
-import net.dries007.tfc.common.TFCItemTier;
-import net.dries007.tfc.common.items.tools.JavelinItem;
-import net.dries007.tfc.common.items.tools.TFCAxeItem;
-import net.dries007.tfc.common.items.tools.TFCShovelItem;
-import net.dries007.tfc.common.items.tools.TFCToolItem;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.TFCTiers;
+import net.dries007.tfc.common.items.JavelinItem;
+import net.dries007.tfc.common.items.ToolItem;
 
 public enum RockCategory implements StringRepresentable
 {
-    IGNEOUS_EXTRUSIVE(TFCItemTier.IGNEOUS_EXTRUSIVE, 0f),
-    IGNEOUS_INTRUSIVE(TFCItemTier.IGNEOUS_INTRUSIVE, 0.2f),
-    METAMORPHIC(TFCItemTier.METAMORPHIC, -0.2f),
-    SEDIMENTARY(TFCItemTier.SEDIMENTARY, -0.4f);
+    IGNEOUS_EXTRUSIVE(TFCTiers.IGNEOUS_EXTRUSIVE, 0f),
+    IGNEOUS_INTRUSIVE(TFCTiers.IGNEOUS_INTRUSIVE, 0.2f),
+    METAMORPHIC(TFCTiers.METAMORPHIC, -0.2f),
+    SEDIMENTARY(TFCTiers.SEDIMENTARY, -0.4f);
 
     private final String serializedName;
     private final Tier itemTier;
@@ -40,7 +36,7 @@ public enum RockCategory implements StringRepresentable
         this.hardnessModifier = hardnessModifier;
     }
 
-    public Tier getItemTier()
+    public Tier getTier()
     {
         return itemTier;
     }
@@ -58,17 +54,17 @@ public enum RockCategory implements StringRepresentable
 
     public enum ItemType
     {
-        AXE(rock -> new TFCAxeItem(rock.getItemTier(), 1.5F, -3.2F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         AXE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HAMMER(rock -> new TFCToolItem(rock.getItemTier(), 1.0F, -3.0F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        HAMMER(rock -> new ToolItem(rock.getTier(), 1.0F, -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         HAMMER_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HOE(rock -> new HoeItem(rock.getItemTier(), -1, -3.0f, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         HOE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        JAVELIN(rock -> new JavelinItem(rock.getItemTier(), 0.7F, -1.8F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        JAVELIN(rock -> new JavelinItem(rock.getTier(), 0.7F, -1.8F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         JAVELIN_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        KNIFE(rock -> new TFCToolItem(rock.getItemTier(), 0.54F, -1.5F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        KNIFE(rock -> new ToolItem(rock.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         KNIFE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        SHOVEL(rock -> new TFCShovelItem(rock.getItemTier(), 0.875F, -3.0F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
         SHOVEL_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS)));
 
         private final NonNullFunction<RockCategory, Item> itemFactory;
