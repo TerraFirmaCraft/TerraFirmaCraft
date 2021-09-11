@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -35,18 +36,30 @@ import net.dries007.tfc.common.items.*;
 
 public class Metal
 {
-    public static final DataManager<Metal> MANAGER = new DataManager.Instance<>(Metal::new, "metals", "metal");
+    public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
+    public static final MetalManager MANAGER = new MetalManager();
+
+    public static Metal unknown()
+    {
+        return Objects.requireNonNull(MANAGER.get(UNKNOWN_ID));
+    }
 
     private final Tier tier;
     private final Fluid fluid;
+    private final float meltTemperature;
+    private final float heatCapacity;
 
     private final ResourceLocation id;
+    private final String translationKey;
 
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
         this.tier = Tier.valueOf(GsonHelper.getAsInt(json, "tier"));
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
+        this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
+        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
     }
 
     public ResourceLocation getId()
@@ -64,9 +77,24 @@ public class Metal
         return fluid;
     }
 
-    public Component getDisplayName()
+    public float getMeltTemperature()
     {
-        return new TranslatableComponent("metal." + id.getNamespace() + "." + id.getPath());
+        return meltTemperature;
+    }
+
+    public float getHeatCapacity()
+    {
+        return heatCapacity;
+    }
+
+    public MutableComponent getDisplayName()
+    {
+        return new TranslatableComponent(translationKey);
+    }
+
+    public String getTranslationKey()
+    {
+        return translationKey;
     }
 
     /**
@@ -287,40 +315,40 @@ public class Metal
     public enum ItemType
     {
         // Generic
-        INGOT("ingots", Type.DEFAULT, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        ROD("rods", Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        INGOT(Type.DEFAULT, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        DOUBLE_INGOT(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SHEET(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        DOUBLE_SHEET(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        ROD(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
 
         // Tools and Tool Heads
         PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75F, metal.getTier()), -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        PICKAXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        PICKAXE_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         PROPICK(Type.TOOL, metal -> new PropickItem(metal.getTier(), 0.5F, -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        PROPICK_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        PROPICK_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         AXE(Type.TOOL, metal -> new AxeItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, metal.getTier()), -3.2F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        AXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        AXE_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.getTier()), -3.0F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        SHOVEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SHOVEL_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         HOE(Type.TOOL, metal -> new HoeItem(metal.getTier(), -1, -2f, new Item.Properties().tab(TFCItemGroup.METAL))),
-        HOE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        HOE_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getTier(), 0.27F, -1.5F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        CHISEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        CHISEL_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         HAMMER(Type.TOOL, metal -> new ToolItem(metal.getTier(), 1.0F, -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(TFCItemGroup.METAL))),
-        HAMMER_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        HAMMER_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SAW(Type.TOOL, metal -> new AxeItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(0.5F, metal.getTier()), -3, new Item.Properties().tab(TFCItemGroup.METAL))),
-        SAW_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SAW_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.getTier(), 0.7F, -1.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        JAVELIN_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        JAVELIN_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(1.0F, metal.getTier()), -2.4F, new Item.Properties().tab(TFCItemGroup.METAL))),
-        SWORD_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SWORD_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         MACE(Type.TOOL, metal -> new SwordItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3F, metal.getTier()), -3, new Item.Properties().tab(TFCItemGroup.METAL))),
-        MACE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        MACE_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         KNIFE(Type.TOOL, metal -> new ToolItem(metal.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.METAL))),
-        KNIFE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        KNIFE_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SCYTHE(Type.TOOL, metal -> new ToolItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(2, metal.getTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, new Item.Properties().tab(TFCItemGroup.METAL))),
-        SCYTHE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        SCYTHE_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHEARS(Type.TOOL, metal -> new ShearsItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getTier().getUses()))),
 
         // Armor
@@ -344,18 +372,18 @@ public class Metal
 
         private final NonNullFunction<Metal.Default, Item> itemFactory;
         private final Type type;
-        @Nullable private final String tag;
-
-        ItemType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Item> itemFactory)
-        {
-            this.type = type;
-            this.tag = tag;
-            this.itemFactory = itemFactory;
-        }
+        private final boolean mold;
 
         ItemType(Type type, NonNullFunction<Metal.Default, Item> itemFactory)
         {
-            this(null, type, itemFactory);
+            this(type, false, itemFactory);
+        }
+
+        ItemType(Type type, boolean mold, NonNullFunction<Metal.Default, Item> itemFactory)
+        {
+            this.type = type;
+            this.mold = mold;
+            this.itemFactory = itemFactory;
         }
 
         public Item create(Metal.Default metal)
@@ -363,19 +391,14 @@ public class Metal
             return itemFactory.apply(metal);
         }
 
-        public boolean hasMetal(Default metal)
+        public boolean has(Default metal)
         {
             return type.hasType(metal);
         }
 
-        public String getTag()
+        public boolean hasMold()
         {
-            return hasTag() ? tag : "";
-        }
-
-        public boolean hasTag()
-        {
-            return tag != null;
+            return mold;
         }
     }
 

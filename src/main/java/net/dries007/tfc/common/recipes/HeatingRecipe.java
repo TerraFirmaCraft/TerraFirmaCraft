@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
@@ -32,6 +34,17 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 {
     public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
+
+    @Nullable
+    public static HeatingRecipe getRecipe(ItemStack stack)
+    {
+        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null)
+        {
+            return getRecipe(server.overworld(), new ItemStackRecipeWrapper(stack));
+        }
+        return null;
+    }
 
     @Nullable
     public static HeatingRecipe getRecipe(Level world, ItemStackRecipeWrapper wrapper)
@@ -62,7 +75,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     @Override
-    public boolean matches(ItemStackRecipeWrapper inv, Level worldIn)
+    public boolean matches(ItemStackRecipeWrapper inv, @Nullable Level worldIn)
     {
         return ingredient.test(inv.getStack());
     }

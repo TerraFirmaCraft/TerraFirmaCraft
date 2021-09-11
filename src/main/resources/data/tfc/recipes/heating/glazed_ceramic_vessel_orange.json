@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/orange_unfired_vessel"
+  },
+  "result_item": {
+    "item": "tfc:ceramic/orange_glazed_vessel"
+  },
+  "temperature": 1199
+}

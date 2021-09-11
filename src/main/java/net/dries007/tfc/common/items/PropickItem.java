@@ -6,16 +6,123 @@
 
 package net.dries007.tfc.common.items;
 
-import net.minecraft.world.item.Tier;
+import java.util.ArrayList;
+import java.util.Random;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.ProspectedPacket;
+import net.dries007.tfc.util.events.ProspectedEvent;
+import net.dries007.tfc.world.noise.NoiseUtil;
 
 public class PropickItem extends ToolItem
 {
+    private static final int RADIUS = 12;
+    private static final int COOLDOWN = 10;
+
+    private static final Random RANDOM = new Random();
+
+    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, Tag<Block> tag)
+    {
+        final Object2IntMap<BlockState> results = new Object2IntOpenHashMap<>();
+        for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
+        {
+            final BlockState state = level.getBlockState(cursor);
+            if (state.is(tag))
+            {
+                results.mergeInt(state, 1, Integer::sum);
+            }
+        }
+        return results;
+    }
+
+    private final float falseNegativeChance;
+
+    @SuppressWarnings("deprecation")
     public PropickItem(Tier tier, float attackDamage, float attackSpeed, Properties properties)
     {
         super(tier, attackDamage, attackSpeed, TFCTags.Blocks.MINEABLE_WITH_PROPICK, properties);
+
+        this.falseNegativeChance = 0.3f - Mth.clamp(tier.getLevel(), 0, 5) * (0.3f / 5f);
     }
 
-    // todo implement stuff
+    @Override
+    public InteractionResult useOn(UseOnContext context)
+    {
+        final Level level = context.getLevel();
+        final Player player = context.getPlayer();
+        final BlockPos pos = context.getClickedPos();
+        final BlockState state = level.getBlockState(pos);
+
+        if (player != null && !level.isClientSide())
+        {
+            if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
+            {
+                final SoundType sound = state.getSoundType(level, pos, player);
+                level.playSound(player, pos, sound.getHitSound(), SoundSource.PLAYERS, sound.getVolume(), sound.getPitch());
+
+                player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                player.getCooldowns().addCooldown(this, COOLDOWN);
+
+                ProspectResult result;
+                BlockState found = state;
+                RANDOM.setSeed(NoiseUtil.hash(pos.getX() * 238461923, pos.getY() * 62938412, pos.getZ() * 928349123));
+                if (state.is(TFCTags.Blocks.PROSPECTABLE))
+                {
+                    // Found
+                    result = ProspectResult.FOUND;
+                }
+                else if (RANDOM.nextFloat() < falseNegativeChance)
+                {
+                    // False Negative (Nothing)
+                    result = ProspectResult.NOTHING;
+                }
+                else
+                {
+                    final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
+                    if (states.isEmpty())
+                    {
+                        // Nothing
+                        result = ProspectResult.NOTHING_FALSE_NEGATIVE;
+                    }
+                    else
+                    {
+                        // Found Traces
+                        final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
+                        found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
+                        final int amount = states.getOrDefault(found, 1);
+
+                        if (amount < 10) result = ProspectResult.TRACES;
+                        else if (amount < 20) result = ProspectResult.SMALL;
+                        else if (amount < 40) result = ProspectResult.MEDIUM;
+                        else if (amount < 80) result = ProspectResult.LARGE;
+                        else result = ProspectResult.VERY_LARGE;
+                    }
+                }
+
+                MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found.getBlock()));
+                PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result));
+            }
+        }
+        return InteractionResult.SUCCESS;
+    }
+
 }

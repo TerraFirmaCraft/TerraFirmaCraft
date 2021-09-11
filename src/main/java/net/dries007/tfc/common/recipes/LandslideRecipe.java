@@ -28,6 +28,7 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.SupportManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -91,7 +92,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     @Nullable
     public static BlockPos getLandSlidePos(Level world, BlockPos pos)
     {
-        if (SupportManager.isSupported(world, pos))
+        if (Support.isSupported(world, pos))
         {
             return null;
         }

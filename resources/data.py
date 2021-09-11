@@ -46,11 +46,13 @@ def generate(rm: ResourceManager):
         # Metal
         rm.data(('tfc', 'metals', metal), {
             'tier': metal_data.tier,
-            'fluid': 'tfc:metal/%s' % metal
+            'fluid': 'tfc:metal/%s' % metal,
+            'melt_temperature': metal_data.melt_temperature,
+            'heat_capacity': metal_data.heat_capacity
         })
 
         # Metal Items and Blocks
-        for item, item_data in {**METAL_ITEMS, **METAL_BLOCKS}.items():
+        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
                 if item_data.tag is not None:
                     rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
@@ -76,7 +78,7 @@ def generate(rm: ResourceManager):
     heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
-    for pottery in PAIRED_POTTERY:
+    for pottery in SIMPLE_POTTERY:
         heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)
 
     # Supports
@@ -180,6 +182,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('forge:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
+    rm.block_tag('prospectable', '#forge:ores')
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
@@ -218,6 +221,21 @@ def generate(rm: ResourceManager):
 
     for plant in PLANTS.keys():
         rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
+
+    # Ore tags
+    # todo: relevant item tags for the below ore tags
+    for ore, data in ORES.items():
+        if data.tag not in DEFAULT_FORGE_ORE_TAGS:
+            rm.block_tag('forge:ores', '#forge:ores/%s' % data.tag)
+        if data.graded:  # graded ores -> each grade is declared as a TFC tag, then added to the forge tag
+            rm.block_tag('forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
+        for rock in ROCKS.keys():
+            if data.graded:
+                rm.block_tag('ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
+                rm.block_tag('ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
+                rm.block_tag('ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
+            else:
+                rm.block_tag('forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
 
     # can_carve Tag
     for rock in ROCKS.keys():
@@ -315,10 +333,13 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
 
+    # Item Sizes
+
     # todo: specific item size definitions for a whole bunch of items that aren't naturally assigned
     item_size(rm, 'logs', 'tag!minecraft:logs', Size.very_large, Weight.medium)
 
     # Food
+
     food_item(rm, 'banana', 'tfc:food/banana', Category.fruit, 4, 0.2, 0, 2, fruit=1)
     food_item(rm, 'blackberry', 'tfc:food/blackberry', Category.fruit, 4, 0.2, 5, 4.9, fruit=0.75)
     food_item(rm, 'blueberry', 'tfc:food/blueberry', Category.fruit, 4, 0.2, 5, 4.9, fruit=0.75)

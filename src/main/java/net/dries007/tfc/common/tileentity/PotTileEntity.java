@@ -204,7 +204,7 @@ public class PotTileEntity extends AbstractFirepitTileEntity<PotTileEntity.PotIn
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return new PotContainer(this, playerInv, windowID);
+        return PotContainer.create(this, playerInv, windowID);
     }
 
     public static class PotInventory implements IInventoryNoop, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>

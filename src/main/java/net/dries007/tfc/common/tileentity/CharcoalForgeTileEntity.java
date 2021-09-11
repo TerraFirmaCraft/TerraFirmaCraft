@@ -31,6 +31,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
@@ -232,7 +234,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return new CharcoalForgeContainer(this, playerInv, windowID);
+        return CharcoalForgeContainer.create(this, playerInv, windowID);
     }
 
     @Override
@@ -310,16 +312,15 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
                 FluidStack fluidStack = recipe.getOutputFluid(new ItemStackRecipeWrapper(stack));
                 ItemStack outputStack = recipe.assemble(new ItemStackRecipeWrapper(stack));
                 float itemTemperature = cap.getTemperature();
-                if (!fluidStack.isEmpty())
+
+                // Loop through all input slots
+                for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
                 {
-                    // Loop through all input slots
-                    for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
-                    {
-                        FluidStack leftover = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, itemTemperature, slot);
-                        if (leftover.isEmpty()) break;
-                    }
+                    fluidStack = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, itemTemperature, slot);
+                    if (fluidStack.isEmpty()) break;
                 }
-                //todo CapabilityFood.applyTrait(outputStack, FoodTrait.CHARCOAL_GRILLED);
+
+                FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
                 inventory.setStackInSlot(startIndex, outputStack);
             }
         });

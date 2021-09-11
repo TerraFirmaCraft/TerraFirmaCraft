@@ -85,19 +85,25 @@ public final class ClientEventHandler
     public static void clientSetup(FMLClientSetupEvent event)
     {
         // Screens
-        MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
-        MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
-        MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
-        MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
-        MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
-        MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
-        MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
-        MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
-        MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
-        MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
-        MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
-        MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
-        MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
+        event.enqueueWork(() -> {
+
+            // Not thread-safe
+            MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
+            MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+            MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+            MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+            MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
+            MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
+            MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
+            MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
+            MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+            MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
+            MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+        });
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);

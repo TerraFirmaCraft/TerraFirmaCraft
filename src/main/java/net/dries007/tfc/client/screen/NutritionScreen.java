@@ -20,18 +20,18 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.NutritionData;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.container.SimpleContainer;
+import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class NutritionScreen extends TFCContainerScreen<SimpleContainer>
+public class NutritionScreen extends TFCContainerScreen<Container>
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/player_nutrition.png");
 
-    public NutritionScreen(SimpleContainer container, Inventory playerInventory, Component name)
+    public NutritionScreen(Container container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, TEXTURE);
     }

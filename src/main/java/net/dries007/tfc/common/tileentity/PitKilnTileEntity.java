@@ -8,21 +8,21 @@ package net.dries007.tfc.common.tileentity;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.Containers;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -39,32 +39,20 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
     public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
-    private static final float MAX_TEMP = 1200f;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PitKilnTileEntity pitKiln)
     {
         if (pitKiln.isLit)
         {
-            if (level.getGameTime() % 10 == 0)
+            BlockPos above = pos.above();
+            if (level.isEmptyBlock(above))
             {
-                BlockPos above = pos.above();
-                if (level.isEmptyBlock(above))
-                {
-                    level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
-                }
-                else
-                {
-                    BlockState stateAbove = level.getBlockState(above);
-                    if (stateAbove.getMaterial() != Material.FIRE)
-                    {
-                        // consume contents, don't cook items, convert to placed item
-                        pitKiln.emptyFuelContents();
-                        convertPitKilnToPlacedItem(level, pos);
-                        return;
-                    }
-                }
-
-                if (!isValid(level, pos))
+                level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
+            }
+            else
+            {
+                BlockState stateAbove = level.getBlockState(above);
+                if (stateAbove.getMaterial() != Material.FIRE)
                 {
                     // consume contents, don't cook items, convert to placed item
                     pitKiln.emptyFuelContents();
@@ -72,13 +60,20 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
                     return;
                 }
             }
-            pitKiln.cookContents(false); // we are always heating
+
+            if (!isValid(level, pos))
+            {
+                // consume contents, don't cook items, convert to placed item
+                pitKiln.emptyFuelContents();
+                convertPitKilnToPlacedItem(level, pos);
+                return;
+            }
+
+            pitKiln.cookContents();
 
             long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - pitKiln.litTick);
-            if (remainingTicks <= 0) //thus the only thing to do at the end is to delete the pit kiln block
+            if (remainingTicks <= 0)
             {
-                pitKiln.cookContents(true);
-                pitKiln.adjustTempsForTime(-1 * remainingTicks);
                 pitKiln.emptyFuelContents();
                 level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
                 pitKiln.markForBlockUpdate();
@@ -236,7 +231,8 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
                 markForBlockUpdate();
                 level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PitKilnBlock.STAGE, PitKilnBlock.LIT));
                 level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
-                //Light other adjacent pit kilns
+
+                // Light other adjacent pit kilns
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
@@ -278,29 +274,22 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
         return strawItems;
     }
 
-    private void adjustTempsForTime(long remainingTicks)
+    private void cookContents()
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> heat.setTemperature(Mth.clamp(heat.getTemperature() - remainingTicks / 10.0f, 0, MAX_TEMP)));
-        }
-    }
+        assert level != null;
 
-    private void cookContents(boolean isEnding)
-    {
-        if (level == null) return;
-        float pitTicks = (float) TFCConfig.SERVER.pitKilnTicks.get();
-        float temp = MAX_TEMP * ((pitTicks - (Calendars.SERVER.getTicks() - litTick)) / pitTicks);
+        final float progress = (float) Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
+        final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach max temperature just before the end
+        final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
         for (int i = 0; i < inventory.getSlots(); i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
-            int slot = i; // the boy genius Lex Manos has turned me into a functional programmer
+            final ItemStack stack = inventory.getStackInSlot(i);
+            final int slot = i; // the boy genius LexManos has turned me into a functional programmer
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
-                heat.setTemperature(isEnding ? MAX_TEMP : temp);
+                heat.setTemperature(targetTemperature);
                 HeatingRecipe recipe = cachedRecipes[slot];
-                if (recipe != null && recipe.isValidTemperature(temp))
+                if (recipe != null && recipe.isValidTemperature(targetTemperature))
                 {
                     ItemStack out = recipe.assemble(new ItemStackRecipeWrapper(stack));
                     inventory.setStackInSlot(slot, out);

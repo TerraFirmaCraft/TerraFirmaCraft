@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/knife_blade_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/copper"
+  },
+  "result": {
+    "item": "tfc:metal/knife_blade/copper"
+  },
+  "break_chance": 1
+}

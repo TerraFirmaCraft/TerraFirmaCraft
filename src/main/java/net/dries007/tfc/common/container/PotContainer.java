@@ -18,11 +18,16 @@ import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPU
 
 public class PotContainer extends BlockEntityContainer<PotTileEntity>
 {
-    public PotContainer(PotTileEntity tile, Inventory playerInv, int windowId)
+    public static PotContainer create(PotTileEntity pot, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.POT.get(), tile, playerInv, windowId, 20);
+        return new PotContainer(pot, windowId).init(playerInv, 20);
+    }
 
-        addDataSlots(tile.getSyncableData());
+    private PotContainer(PotTileEntity pot, int windowId)
+    {
+        super(TFCContainerTypes.POT.get(), windowId, pot);
+
+        addDataSlots(pot.getSyncableData());
     }
 
     @Override

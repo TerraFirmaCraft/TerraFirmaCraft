@@ -9,13 +9,13 @@ package net.dries007.tfc.common.tileentity;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.Containers;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -47,7 +47,7 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return new FirepitContainer(this, playerInv, windowID);
+        return FirepitContainer.create(this, playerInv, windowID);
     }
 
     @Override
@@ -115,10 +115,6 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
     private void mergeOutputFluids(FluidStack fluidStack, float temperature)
     {
         fluidStack = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_1);
-        if (fluidStack.isEmpty())
-        {
-            return;
-        }
         Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, temperature, SLOT_OUTPUT_2);
         // Any remaining fluid is lost at this point
     }

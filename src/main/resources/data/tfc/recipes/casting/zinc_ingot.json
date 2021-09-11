@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/ingot_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/zinc"
+  },
+  "result": {
+    "item": "tfc:metal/ingot/zinc"
+  },
+  "break_chance": 0.1
+}

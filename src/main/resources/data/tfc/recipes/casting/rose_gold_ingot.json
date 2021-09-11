@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/ingot_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/rose_gold"
+  },
+  "result": {
+    "item": "tfc:metal/ingot/rose_gold"
+  },
+  "break_chance": 0.1
+}

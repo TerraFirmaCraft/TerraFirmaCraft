@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/pickaxe_head_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/bronze"
+  },
+  "result": {
+    "item": "tfc:metal/pickaxe_head/bronze"
+  },
+  "break_chance": 1
+}

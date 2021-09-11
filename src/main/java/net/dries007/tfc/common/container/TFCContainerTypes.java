@@ -9,8 +9,10 @@ package net.dries007.tfc.common.container;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -19,41 +21,51 @@ import net.minecraftforge.fmllegacy.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
+import net.dries007.tfc.common.tileentity.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("RedundantTypeArguments") // For some reason javac dies on the cases where these are explicitly specified, I have no idea why
 public final class TFCContainerTypes
 {
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
 
-    public static final RegistryObject<MenuType<SimpleContainer>> CALENDAR = register("calendar", (windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.CALENDAR.get(), windowId, inv));
-    public static final RegistryObject<MenuType<SimpleContainer>> NUTRITION = register("nutrition", ((windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.NUTRITION.get(), windowId, inv)));
-    public static final RegistryObject<MenuType<SimpleContainer>> CLIMATE = register("climate", ((windowId, inv, data) -> new SimpleContainer(TFCContainerTypes.CLIMATE.get(), windowId, inv)));
-    public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = register("firepit", TFCTileEntities.FIREPIT, FirepitContainer::new);
-    public static final RegistryObject<MenuType<GrillContainer>> GRILL = register("grill", TFCTileEntities.GRILL, GrillContainer::new);
-    public static final RegistryObject<MenuType<PotContainer>> POT = register("pot", TFCTileEntities.POT, PotContainer::new);
-    public static final RegistryObject<MenuType<CharcoalForgeContainer>> CHARCOAL_FORGE = register("charcoal_forge", TFCTileEntities.CHARCOAL_FORGE, CharcoalForgeContainer::new);
-    public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = register("log_pile", TFCTileEntities.LOG_PILE, LogPileContainer::new);
-    public static final RegistryObject<MenuType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (((windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv))));
-    public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = register("clay_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.CLAY_KNAPPING.get(), TFCRecipeTypes.CLAY_KNAPPING, windowId, inv, 5, true, true, TFCSounds.KNAP_CLAY.get())))));
-    public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), TFCRecipeTypes.FIRE_CLAY_KNAPPING, windowId, inv, 5, true, true, TFCSounds.KNAP_CLAY.get())))));
-    public static final RegistryObject<MenuType<LeatherKnappingContainer>> LEATHER_KNAPPING = register("leather_knapping", ((((windowId, inv, data) -> new LeatherKnappingContainer(TFCContainerTypes.LEATHER_KNAPPING.get(), TFCRecipeTypes.LEATHER_KNAPPING, windowId, inv, 1, false, false, TFCSounds.KNAP_LEATHER.get())))));
-    public static final RegistryObject<MenuType<KnappingContainer>> ROCK_KNAPPING = register("rock_knapping", ((((windowId, inv, data) -> new KnappingContainer(TFCContainerTypes.ROCK_KNAPPING.get(), TFCRecipeTypes.ROCK_KNAPPING, windowId, inv, 1, false, false, TFCSounds.KNAP_STONE.get())))));
+    public static final RegistryObject<MenuType<Container>> CALENDAR = register("calendar", (windowId, inv, data) -> Container.create(TFCContainerTypes.CALENDAR.get(), windowId, inv));
+    public static final RegistryObject<MenuType<Container>> NUTRITION = register("nutrition", (windowId, inv, data) -> Container.create(TFCContainerTypes.NUTRITION.get(), windowId, inv));
+    public static final RegistryObject<MenuType<Container>> CLIMATE = register("climate", (windowId, inv, data) -> Container.create(TFCContainerTypes.CLIMATE.get(), windowId, inv));
+    public static final RegistryObject<MenuType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv));
 
+    public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = TFCContainerTypes.<FirepitTileEntity, FirepitContainer>registerBlock("firepit", TFCTileEntities.FIREPIT, FirepitContainer::create);
+    public static final RegistryObject<MenuType<GrillContainer>> GRILL = TFCContainerTypes.<GrillTileEntity, GrillContainer>registerBlock("grill", TFCTileEntities.GRILL, GrillContainer::create);
+    public static final RegistryObject<MenuType<PotContainer>> POT = TFCContainerTypes.<PotTileEntity, PotContainer>registerBlock("pot", TFCTileEntities.POT, PotContainer::create);
+    public static final RegistryObject<MenuType<CharcoalForgeContainer>> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeTileEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCTileEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
+    public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileTileEntity, LogPileContainer>registerBlock("log_pile", TFCTileEntities.LOG_PILE, LogPileContainer::create);
 
-    @SuppressWarnings("SameParameterValue")
-    private static <T extends InventoryTileEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> register(String name, Supplier<? extends BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
+    public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
+    public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);
+    public static final RegistryObject<MenuType<LeatherKnappingContainer>> LEATHER_KNAPPING = registerItem("leather_knapping", KnappingContainer::createLeather);
+    public static final RegistryObject<MenuType<KnappingContainer>> ROCK_KNAPPING = registerItem("rock_knapping", KnappingContainer::createRock);
+    public static final RegistryObject<MenuType<SmallVesselInventoryContainer>> SMALL_VESSEL_INVENTORY = registerItem("small_vessel_inventory", SmallVesselInventoryContainer::create);
+    public static final RegistryObject<MenuType<MoldLikeAlloyContainer>> MOLD_LIKE_ALLOY = registerItem("mold_like_alloy", MoldLikeAlloyContainer::create);
+
+    private static <T extends InventoryTileEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
-        return register(name, (windowId, playerInventory, packetBuffer) -> {
-            Level world = playerInventory.player.level;
-            BlockPos pos = packetBuffer.readBlockPos();
-            T entity = world.getBlockEntity(pos, type.get()).orElseThrow();
+        return register(name, (windowId, playerInventory, buffer) -> {
+            final Level world = playerInventory.player.level;
+            final BlockPos pos = buffer.readBlockPos();
+            final T entity = world.getBlockEntity(pos, type.get()).orElseThrow();
 
             return factory.create(entity, playerInventory, windowId);
+        });
+    }
+
+    private static <C extends ItemStackContainer> RegistryObject<MenuType<C>> registerItem(String name, ItemStackContainer.Factory<C> factory)
+    {
+        return register(name, (windowId, playerInventory, buffer) -> {
+            final InteractionHand hand = ItemStackContainerProvider.read(buffer);
+            final ItemStack stack = playerInventory.player.getItemInHand(hand);
+
+            return factory.create(stack, hand, playerInventory, windowId);
         });
     }
 

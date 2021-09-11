@@ -8,21 +8,17 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.List;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraft.world.item.ItemStack;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * This is the capability interface for an instance of a heat applied to an item stack
  */
-public interface IHeat extends ICapabilitySerializable<CompoundTag>
+public interface IHeat
 {
     /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally
@@ -37,6 +33,18 @@ public interface IHeat extends ICapabilitySerializable<CompoundTag>
      * @param temperature the temperature to set.
      */
     void setTemperature(float temperature);
+
+    /**
+     * Effectively, sets the temperature to the maximum of the current temperature and the provided temperature.
+     */
+    default void setTemperatureIfWarmer(float temperature)
+    {
+        final float current = getTemperature();
+        if (temperature > current)
+        {
+            setTemperature(temperature);
+        }
+    }
 
     /**
      * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
@@ -72,7 +80,6 @@ public interface IHeat extends ICapabilitySerializable<CompoundTag>
      * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
-    @OnlyIn(Dist.CLIENT)
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         float temperature = getTemperature();

@@ -27,6 +27,7 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.SupportManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.tracker.Collapse;
@@ -72,7 +73,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 int radX = (RANDOM.nextInt(5) + 4) / 2;
                 int radY = (RANDOM.nextInt(3) + 2) / 2;
                 int radZ = (RANDOM.nextInt(5) + 4) / 2;
-                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
+                for (BlockPos checking : Support.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
                     if (canStartCollapse(world, checking))
                     {

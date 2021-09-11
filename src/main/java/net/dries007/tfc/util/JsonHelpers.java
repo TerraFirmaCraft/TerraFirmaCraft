@@ -11,8 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -80,6 +82,22 @@ public final class JsonHelpers extends GsonHelper
             return defaultValue;
         }
         throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+    }
+
+    public static <T> T getFrom(JsonObject json, String key, DataManager<T> manager)
+    {
+        final ResourceLocation id = new ResourceLocation(getAsString(json, key));
+        final T obj = manager.get(id);
+        if (obj == null)
+        {
+            throw new JsonParseException("No " + manager.typeName + " of name " + id);
+        }
+        return obj;
+    }
+
+    public static ItemStack getItemStack(JsonObject json, String key)
+    {
+        return CraftingHelper.getItemStack(getAsJsonObject(json, key), true);
     }
 
     public static JsonElement get(JsonObject json, String key)

@@ -8,8 +8,8 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -26,7 +26,7 @@ public enum Heat
     YELLOW("yellow", 1100f, 1300f, ChatFormatting.YELLOW),
     YELLOW_WHITE("yellow_white", 1300f, 1400f, ChatFormatting.YELLOW),
     WHITE("white", 1400f, 1500f, ChatFormatting.WHITE),
-    BRILLIANT_WHITE("brilliant_white", 1500f, 1601f, ChatFormatting.WHITE);
+    BRILLIANT_WHITE("brilliant_white", 1500f, 1600f, ChatFormatting.WHITE);
 
     private static final Heat[] VALUES = values();
 

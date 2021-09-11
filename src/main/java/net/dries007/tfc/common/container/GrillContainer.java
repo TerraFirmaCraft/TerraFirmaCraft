@@ -16,11 +16,16 @@ import static net.dries007.tfc.common.tileentity.GrillTileEntity.*;
 
 public class GrillContainer extends BlockEntityContainer<GrillTileEntity>
 {
-    public GrillContainer(GrillTileEntity tile, Inventory playerInv, int windowId)
+    public static GrillContainer create(GrillTileEntity grill, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.GRILL.get(), tile, playerInv, windowId, 20);
+        return new GrillContainer(grill, windowId).init(playerInv, 20);
+    }
 
-        addDataSlots(tile.getSyncableData());
+    private GrillContainer(GrillTileEntity grill, int windowId)
+    {
+        super(TFCContainerTypes.GRILL.get(), windowId, grill);
+
+        addDataSlots(grill.getSyncableData());
     }
 
     @Override

@@ -24,7 +24,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -43,6 +42,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
@@ -322,7 +322,7 @@ public final class InteractionManager
         register(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues, targetAir));
     }
 
-    public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, MenuProvider container)
+    public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)
     {
         return (stack, context) -> {
             final Player player = context.getPlayer();
@@ -330,7 +330,7 @@ public final class InteractionManager
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, container);
+                    NetworkHooks.openGui(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
                 }
                 return InteractionResult.SUCCESS;
             }

@@ -65,6 +65,7 @@ public final class ClearWorldCommand
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final Predicate<BlockState> predicate = preset.make(source.getServer());
+        final int minY = world.getMinBuildHeight();
 
         int blocksRemoved = 0;
 
@@ -73,7 +74,7 @@ public final class ClearWorldCommand
             for (int z = -radius; z <= radius; z++)
             {
                 final int height = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
-                for (int y = 0; y < height; y++)
+                for (int y = minY; y < height; y++)
                 {
                     mutablePos.set(center).move(x, 0, z).setY(y);
                     BlockState state = world.getBlockState(mutablePos);

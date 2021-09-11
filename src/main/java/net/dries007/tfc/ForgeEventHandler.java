@@ -360,7 +360,7 @@ public final class ForgeEventHandler
         registry.registerReloadListener(Fuel.MANAGER);
         registry.registerReloadListener(Drinkable.MANAGER);
 
-        registry.registerReloadListener(SupportManager.INSTANCE);
+        registry.registerReloadListener(Support.MANAGER);
         registry.registerReloadListener(ItemSizeManager.MANAGER);
 
         registry.registerReloadListener(HeatCapability.MANAGER);

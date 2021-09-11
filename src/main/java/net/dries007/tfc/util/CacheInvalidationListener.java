@@ -40,6 +40,7 @@ public enum CacheInvalidationListener implements SyncReloadListener
             HeatingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.HEATING));
             QuernRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.QUERN));
             ScrapingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.SCRAPING));
+            CastingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.CASTING));
 
             HeatCapability.CACHE.reload(HeatCapability.MANAGER.getValues());
             FoodCapability.CACHE.reload(FoodCapability.MANAGER.getValues());

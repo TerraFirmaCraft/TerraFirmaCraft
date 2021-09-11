@@ -1,5 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "tier": 6,
-  "fluid": "tfc:metal/red_steel"
+  "fluid": "tfc:metal/red_steel",
+  "melt_temperature": 1540,
+  "heat_capacity": 0.35
 }

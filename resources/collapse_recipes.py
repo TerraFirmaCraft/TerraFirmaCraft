@@ -24,14 +24,6 @@ def generate(rm: ResourceManager):
             'result': result
         })
 
-    def support(name: str, ingredient, up: int, down: int, horizontal: int):
-        rm.data(('tfc', 'supports', name), {
-            'ingredient': ingredient,
-            'support_up': up,
-            'support_down': down,
-            'support_horizontal': horizontal
-        })
-
     for rock in ROCKS:
         raw = 'tfc:rock/raw/%s' % rock
         cobble = 'tfc:rock/cobble/%s' % rock

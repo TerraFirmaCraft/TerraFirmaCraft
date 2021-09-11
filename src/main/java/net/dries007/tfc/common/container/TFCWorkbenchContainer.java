@@ -23,10 +23,10 @@ public class TFCWorkbenchContainer extends CraftingMenu
         this.access = ContainerLevelAccess.NULL;
     }
 
-    public TFCWorkbenchContainer(int id, Inventory playerInventory, ContainerLevelAccess worldPos)
+    public TFCWorkbenchContainer(int id, Inventory playerInventory, ContainerLevelAccess access)
     {
-        super(id, playerInventory, worldPos);
-        this.access = worldPos;
+        super(id, playerInventory, access);
+        this.access = access;
     }
 
     /**

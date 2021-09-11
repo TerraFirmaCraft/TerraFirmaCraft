@@ -1,11 +1,11 @@
 {
-  "item.ceramicbreak": {
+  "ceramic_break": {
     "category": "ambient",
     "sounds": [
-      "tfc:ceramicbreak1"
+      "tfc:ceramic_break"
     ]
   },
-  "item.firestarter": {
+  "firestarter": {
     "category": "ambient",
     "sounds": [
       "tfc:firestarter1",

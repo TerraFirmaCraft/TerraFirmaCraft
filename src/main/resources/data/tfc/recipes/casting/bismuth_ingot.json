@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/ingot_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/bismuth"
+  },
+  "result": {
+    "item": "tfc:metal/ingot/bismuth"
+  },
+  "break_chance": 0.1
+}

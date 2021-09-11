@@ -152,7 +152,10 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': 'tag!forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('tag!forge:sheets/steel')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': 'tag!forge:rods/wooden', 'S': 'tag!forge:rods/steel'}, (16, 'minecraft:rail')).with_advancement('tag!forge:rods/steel')
 
+    # ============
     # Heat Recipes
+    # ============
+
     heat_recipe(rm, 'torch_from_stick', 'tag!forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
@@ -162,8 +165,32 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', 1500, result_item='tfc:ceramic/jug')
     heat_recipe(rm, 'terracotta', 'minecraft:clay', 1200, result_item='minecraft:terracotta')
 
+    for ore, ore_data in ORES.items():
+        if ore_data.metal and ore_data.graded:
+            temp = METALS[ore_data.metal].melt_temperature
+            heat_recipe(rm, ('ore', 'small_%s' % ore), 'tfc:ore/small_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 10)
+            heat_recipe(rm, ('ore', 'poor_%s' % ore), 'tfc:ore/poor_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 15)
+            heat_recipe(rm, ('ore', 'normal_%s' % ore), 'tfc:ore/normal_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 25)
+            heat_recipe(rm, ('ore', 'rich_%s' % ore), 'tfc:ore/rich_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 35)
+
+    for metal, metal_data in METALS.items():
+        melt_metal = metal if metal_data.melt_metal is None else metal_data.melt_metal
+        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
+            if item_data.type == 'all' or item_data.type in metal_data.types:
+                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, 'tfc:metal/%s' % melt_metal, item_data.smelt_amount)
+
+    # Mold, Ceramic Firing
+    for tool, tool_data in METAL_ITEMS.items():
+        if tool == 'ingot':
+            heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_TEMP, 'tfc:ceramic/%s_mold' % tool)
+
+    for pottery in SIMPLE_POTTERY:
+        heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_TEMP, result_item='tfc:ceramic/' + pottery)
+
     for color in COLORS:
-        heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, 1200, result_item='minecraft:%s_glazed_terracotta' % color)
+        heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, POTTERY_TEMP, result_item='minecraft:%s_glazed_terracotta' % color)
+        heat_recipe(rm, 'glazed_ceramic_vessel_%s' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_TEMP, 'tfc:ceramic/%s_glazed_vessel' % color)
+
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_vessel'), 'tfc:ceramic/%s_unfired_vessel' % color).with_advancement('minecraft:%s_dye' % color)
         if color != 'white':
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('tag!tfc:high_quality_cloth')
@@ -200,9 +227,6 @@ def generate(rm: ResourceManager):
     for color, plants in PLANT_COLORS.items():
         for plant in plants:
             quern_recipe(rm, 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
-
-    for pottery in PAIRED_POTTERY:
-        heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1500, result_item='tfc:ceramic/' + pottery)
 
     for i, size in enumerate(('small', 'medium', 'large')):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
@@ -262,6 +286,15 @@ def generate(rm: ResourceManager):
         for tool in ROCK_CATEGORY_ITEMS:
             rm.crafting_shaped('crafting/stone/%s_%s' % (tool, category), ['X', 'Y'], {'X': 'tfc:stone/%s_head/%s' % (tool, category), 'Y': 'tag!forge:rods/wooden'}, 'tfc:stone/%s/%s' % (tool, category)).with_advancement('tfc:stone/%s_head/%s' % (tool, category))
 
+    # Casting Recipes
+
+    for metal, metal_data in METALS.items():
+        for tool, tool_data in METAL_ITEMS.items():
+            if tool == 'ingot' or (tool_data.mold and 'tool' in metal_data.types and metal_data.tier <= 2):
+                casting_recipe(rm, '%s_%s' % (metal, tool), tool, metal, 0.1 if tool == 'ingot' else 1)
+
+    rm.recipe('casting', 'tfc:casting_crafting', {})  # simple recipe to allow any casting recipe to be used in a crafting grid
+
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
@@ -303,17 +336,6 @@ def scraping_recipe(rm: ResourceManager, name, item: str, result: str, count: in
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None, amount: int = 1000) -> RecipeContext:
-    result_item = None if result_item is None else utils.item_stack(result_item)
-    result_fluid = None if result_fluid is None else fluid_stack(result_fluid, amount)
-    return rm.recipe(('heating', name_parts), 'tfc:heating', {
-        'ingredient': utils.ingredient(item),
-        'result_item': result_item,
-        'result_fluid': result_fluid,
-        'temperature': temperature
-    })
-
-
 def knapping_recipe(rm: ResourceManager, knap_type: str, name, pattern: List[str], item: str, count: int = 1, outside_slot_required: bool = None):
     return rm.recipe((knap_type, name), 'tfc:%s' % knap_type, {
         'matrix': {
@@ -333,6 +355,26 @@ def rock_knapping_recipe(rm: ResourceManager, name, pattern: List[str], item: st
         },
         'result': utils.item_stack((count, item)),
         'ingredient': ingredient
+    })
+
+
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None, amount: int = 1000) -> RecipeContext:
+    result_item = None if result_item is None else utils.item_stack(result_item)
+    result_fluid = None if result_fluid is None else fluid_stack(result_fluid, amount)
+    return rm.recipe(('heating', name_parts), 'tfc:heating', {
+        'ingredient': utils.ingredient(ingredient),
+        'result_item': result_item,
+        'result_fluid': result_fluid,
+        'temperature': temperature
+    })
+
+
+def casting_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, mold: str, metal: str, break_chance: float):
+    rm.recipe(('casting', name_parts), 'tfc:casting', {
+        'mold': {'item': 'tfc:ceramic/%s_mold' % mold},
+        'fluid': {'fluid': 'tfc:metal/%s' % metal},
+        'result': utils.item_stack('tfc:metal/%s/%s' % (mold, metal)),
+        'break_chance': break_chance
     })
 
 

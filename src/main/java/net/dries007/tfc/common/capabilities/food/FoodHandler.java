@@ -169,7 +169,11 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         ListTag traitList = nbt.getList("traits", Constants.NBT.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
         {
-            foodTraits.add(FoodTrait.TRAITS.get(traitList.getString(i)));
+            final FoodTrait trait = FoodTrait.getTrait(traitList.getString(i));
+            if (trait != null)
+            {
+                foodTraits.add(trait);
+            }
         }
         creationDate = nbt.contains("creationDate") ? nbt.getLong("creationDate") : FoodCapability.getRoundedCreationDate();
     }

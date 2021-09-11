@@ -6,16 +6,18 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class HeatHandler implements IHeat
+public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
 {
     private final LazyOptional<IHeat> capability = LazyOptional.of(() -> this);
 
@@ -23,7 +25,7 @@ public class HeatHandler implements IHeat
     private final float weldingTemp; // Temperature at which this item can be welded
 
 
-    // This is almost "constant". Some implementations will want to change these based on other factors. (See ItemMold)
+    // This is almost "constant". Some implementations will want to change these based on other factors. (See molds or small vessels)
     protected float heatCapacity; // How fast temperature rises and drops
 
     // These are the values from last point of update. They are updated when read from NBT, or when the temperature is set manually.
@@ -90,6 +92,7 @@ public class HeatHandler implements IHeat
         return weldingTemp;
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -121,5 +124,18 @@ public class HeatHandler implements IHeat
     {
         temperature = nbt.getFloat("heat");
         lastUpdateTick = nbt.getLong("ticks");
+    }
+
+    /**
+     * Sets the current heat capacity, for implementations that might change this based on an internal state
+     */
+    public void setHeatCapacity(float heatCapacity)
+    {
+        if (getHeatCapacity() != heatCapacity)
+        {
+            // Note: in order not to perform a sudden jump in temperature, we need to reset any latent temperature delta.
+            setTemperature(getTemperature());
+            this.heatCapacity = heatCapacity;
+        }
     }
 }

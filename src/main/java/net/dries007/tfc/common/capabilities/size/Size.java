@@ -27,4 +27,9 @@ public enum Size
     {
         return this.ordinal() < other.ordinal();
     }
+
+    public boolean isEqualOrSmallerThan(Size other)
+    {
+        return this.ordinal() <= other.ordinal();
+    }
 }

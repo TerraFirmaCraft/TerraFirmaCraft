@@ -7,6 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.Nullable;
@@ -54,6 +55,11 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     public T get(ResourceLocation id)
     {
         return types.get(id);
+    }
+
+    public T getOrThrow(ResourceLocation id)
+    {
+        return Objects.requireNonNull(types.get(id));
     }
 
     @Nullable

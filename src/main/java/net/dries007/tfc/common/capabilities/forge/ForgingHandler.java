@@ -6,29 +6,24 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class ForgingHandler implements IForging
 {
     private final LazyOptional<IForging> capability = LazyOptional.of(() -> this);
-
-    protected ItemStack container;
+    private final ItemStack container;
 
     public ForgingHandler(ItemStack container)
     {
         this.container = container;
-    }
-
-    public ForgingHandler()
-    {
-        container = ItemStack.EMPTY;
     }
 
     public ItemStack getContainer()
@@ -113,6 +108,7 @@ public class ForgingHandler implements IForging
         }
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

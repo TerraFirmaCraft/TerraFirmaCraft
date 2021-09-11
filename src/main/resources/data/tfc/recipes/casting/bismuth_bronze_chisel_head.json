@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfc:ceramic/chisel_head_mold"
+  },
+  "fluid": {
+    "fluid": "tfc:metal/bismuth_bronze"
+  },
+  "result": {
+    "item": "tfc:metal/chisel_head/bismuth_bronze"
+  },
+  "break_chance": 1
+}

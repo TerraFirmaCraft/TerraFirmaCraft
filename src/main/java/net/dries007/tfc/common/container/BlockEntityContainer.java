@@ -12,18 +12,13 @@ import net.minecraft.world.inventory.MenuType;
 
 import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 
-public abstract class BlockEntityContainer<T extends InventoryTileEntity<?>> extends SimpleContainer
+public abstract class BlockEntityContainer<T extends InventoryTileEntity<?>> extends Container
 {
     protected final T blockEntity;
 
-    protected BlockEntityContainer(MenuType<?> containerType, T blockEntity, Inventory playerInventory, int windowId)
+    protected BlockEntityContainer(MenuType<?> containerType, int windowId, T blockEntity)
     {
-        this(containerType, blockEntity, playerInventory, windowId, 0);
-    }
-
-    protected BlockEntityContainer(MenuType<?> containerType, T blockEntity, Inventory playerInventory, int windowId, int yOffset)
-    {
-        super(containerType, windowId, playerInventory, yOffset);
+        super(containerType, windowId);
 
         this.blockEntity = blockEntity;
     }

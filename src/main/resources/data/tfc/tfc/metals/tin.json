@@ -1,5 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "tier": 1,
-  "fluid": "tfc:metal/tin"
+  "fluid": "tfc:metal/tin",
+  "melt_temperature": 230,
+  "heat_capacity": 0.14
 }

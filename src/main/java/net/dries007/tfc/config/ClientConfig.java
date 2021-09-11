@@ -30,6 +30,7 @@ public class ClientConfig
     public final ForgeConfigSpec.ConfigValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.ConfigValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
+    public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -65,6 +66,7 @@ public class ClientConfig
             "BOTH - Shows both of the above, e.g. Expires on June 3, 05:00 (in about 3 day(s))."
         ).defineEnum("foodExpiryTooltipStyle", FoodExpiryTooltipStyle.BOTH);
         enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
+        sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect informtion should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 
         innerBuilder.pop();
     }

@@ -1,5 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "tier": 1,
-  "fluid": "tfc:metal/nickel"
+  "fluid": "tfc:metal/nickel",
+  "melt_temperature": 1453,
+  "heat_capacity": 0.48
 }

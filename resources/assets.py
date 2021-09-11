@@ -449,22 +449,37 @@ def generate(rm: ResourceManager):
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
         rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
+
     for powder in GENERIC_POWDERS:
         rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder))
+
     for powder in POWDERS:
         rm.item_model(('powder', powder)).with_lang(lang(powder))
+
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
-    for pottery in PAIRED_POTTERY:
+
+    # Pottery
+    for pottery in SIMPLE_POTTERY:  # both fired and unfired items
         rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
         rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
-    for pottery in UNFIRED_ITEMS:
+
+    for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
         rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
-    # todo: custom model
-    rm.item_model(('ceramic', 'jug')).with_lang(lang('Jug'))
+
+    rm.item_model(('ceramic', 'jug')).with_lang(lang('Ceramic Jug'))
+
+    # Small Ceramic Vessels (colored)
     for color in COLORS:
         rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
+
+    # Molds
+    for variant, data in METAL_ITEMS.items():
+        if data.mold:
+            rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
+            rm.item_model(('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s/empty' % variant).with_lang(lang('%s mold', variant))  # todo: custom model per fluid. some jank ass shit or something
+
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))

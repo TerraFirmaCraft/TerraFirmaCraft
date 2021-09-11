@@ -19,9 +19,11 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
 import org.apache.commons.lang3.tuple.Triple;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -36,6 +38,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -323,6 +326,28 @@ public final class Helpers
         }
     }
 
+    /**
+     * Set a {@code stack}'s count to {@code count}, after respecting both the slot stack limit, and the stack's max stack size.
+     * Returns the difference between the count that was attempted to set, and the actual count set.
+     */
+    public static int setCountSafely(ItemStack stack, int count, int slotStackLimit)
+    {
+        final int initialCount = count;
+        if (count > slotStackLimit)
+        {
+            count = slotStackLimit;
+        }
+        if (count > stack.getMaxStackSize())
+        {
+            count = stack.getMaxStackSize();
+        }
+        stack.setCount(count);
+        return initialCount - count;
+    }
+
+    /**
+     * Iterate through all slots in an {@code inventory}.
+     */
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
         final int slots = inventory.getSlots();
@@ -362,6 +387,11 @@ public final class Helpers
         return stack;
     }
 
+    /**
+     * Extracts all items of an {@code inventory}, and copies them into a list, indexed with the slots.
+     *
+     * @see #insertAllItems(IItemHandlerModifiable, NonNullList)
+     */
     public static NonNullList<ItemStack> extractAllItems(IItemHandlerModifiable inventory)
     {
         NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
@@ -373,6 +403,11 @@ public final class Helpers
         return saved;
     }
 
+    /**
+     * Given a saved copy of an inventory {@code from}, inserts each stack into the provided {@code inventory}, if possible.
+     *
+     * @see #extractAllItems(IItemHandlerModifiable)
+     */
     public static void insertAllItems(IItemHandlerModifiable inventory, NonNullList<ItemStack> from)
     {
         // We allow the list to have a different size than the new inventory
@@ -380,6 +415,49 @@ public final class Helpers
         {
             inventory.setStackInSlot(slot, from.get(slot));
         }
+    }
+
+    /**
+     * Adds a tooltip based on an inventory, listing out the items inside.
+     * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
+     */
+    public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
+    {
+        int maximumItems = 0, totalItems = 0;
+        for (ItemStack stack : Helpers.iterate(inventory))
+        {
+            if (!stack.isEmpty())
+            {
+                ++totalItems;
+                if (maximumItems <= 4)
+                {
+                    ++maximumItems;
+                    tooltips.add(stack.getHoverName().copy()
+                        .append(" x")
+                        .append(String.valueOf(stack.getCount())));
+                }
+            }
+        }
+
+        if (totalItems - maximumItems > 0)
+        {
+            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+        }
+    }
+
+    /**
+     * @return {@code true} if every slot in the provided inventory is empty.
+     */
+    public static boolean isEmpty(IItemHandler inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            if (!inventory.getStackInSlot(i).isEmpty())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -577,6 +655,10 @@ public final class Helpers
 
     public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
     {
+        if (fluidStack.isEmpty())
+        {
+            return FluidStack.EMPTY; // No fluid to merge, so we just exit immediately
+        }
         final ItemStack mergeStack = inventory.getStackInSlot(slot);
         return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
             int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);

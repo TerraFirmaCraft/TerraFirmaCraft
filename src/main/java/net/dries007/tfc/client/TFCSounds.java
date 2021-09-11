@@ -48,13 +48,15 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_PLACE = create("charcoal_place");
     public static final RegistryObject<SoundEvent> CHARCOAL_PILE_STEP = create("charcoal_step");
 
-    public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter");
+    public static final RegistryObject<SoundEvent> FIRESTARTER = create("firestarter");
 
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
 
     public static final RegistryObject<SoundEvent> KNAP_STONE = create("knap_stone");
     public static final RegistryObject<SoundEvent> KNAP_CLAY = create("knap_clay");
     public static final RegistryObject<SoundEvent> KNAP_LEATHER = create("knap_leather");
+
+    public static final RegistryObject<SoundEvent> CERAMIC_BREAK = create("ceramic_break");
 
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
     public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);

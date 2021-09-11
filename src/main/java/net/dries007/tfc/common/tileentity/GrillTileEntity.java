@@ -52,7 +52,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return new GrillContainer(this, playerInv, windowID);
+        return GrillContainer.create(this, playerInv, windowID);
     }
 
     @Override

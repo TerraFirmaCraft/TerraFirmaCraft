@@ -10,6 +10,9 @@ import java.util.function.Function;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.util.Alloy;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
@@ -49,6 +52,10 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
     public final ForgeConfigSpec.IntValue pitKilnTicks;
+    public final ForgeConfigSpec.IntValue pitKilnTemperature;
+    // Items - Small Vessel
+    public final ForgeConfigSpec.IntValue smallVesselCapacity;
+    public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
     // Mechanics - Collapses
@@ -132,6 +139,12 @@ public class ServerConfig
         innerBuilder.pop().push("pit_kiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
+        pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).", "The default is enough to fire all pottery items.").defineInRange("pitKilnTemperature", 1200, 0, Integer.MAX_VALUE);
+
+        innerBuilder.pop().pop().push("items").push("small_vessel");
+
+        smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
+        smallVesselMaximumItemSize = builder.apply("smallVesselMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a small vessel.").defineEnum("smallVesselMaximumItemSize", Size.SMALL);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

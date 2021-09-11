@@ -9,15 +9,15 @@ package net.dries007.tfc.client.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
-import net.dries007.tfc.common.container.SimpleContainer;
+import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
@@ -25,11 +25,11 @@ import net.dries007.tfc.util.KoppenClimateClassification;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
+public class ClimateScreen extends TFCContainerScreen<Container>
 {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_climate.png");
 
-    public ClimateScreen(SimpleContainer container, Inventory playerInv, Component name)
+    public ClimateScreen(Container container, Inventory playerInv, Component name)
     {
         super(container, playerInv, name, BACKGROUND);
     }
@@ -64,16 +64,10 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
 
-        drawLine(stack, climateType, 17);
-        drawLine(stack, plateTectonics, 28);
-        drawLine(stack, averageTempTooltip, 39);
-        drawLine(stack, rainfallTooltip, 50);
-        drawLine(stack, currentTempTooltip, 61);
-    }
-
-    private void drawLine(PoseStack stack, String text, int y)
-    {
-        final int x = (imageWidth - font.width(text)) / 2;
-        font.draw(stack, text, x, y, 0x404040);
+        drawCenteredLine(stack, climateType, 17);
+        drawCenteredLine(stack, plateTectonics, 28);
+        drawCenteredLine(stack, averageTempTooltip, 39);
+        drawCenteredLine(stack, rainfallTooltip, 50);
+        drawCenteredLine(stack, currentTempTooltip, 61);
     }
 }

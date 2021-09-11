@@ -6,15 +6,17 @@ from typing import Dict, List, NamedTuple, Sequence, Optional, Literal
 Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
 RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 Rock = NamedTuple('Rock', category=RockCategory, sand=str)
-Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
-MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
-Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier)
+Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float, melt_metal=Optional[str])
+MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool)
+Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier, tag=str)
 OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, duration=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
+
+POTTERY_TEMP = 1200 - 1
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -63,127 +65,129 @@ ROCKS: Dict[str, Rock] = {
     'rhyolite': Rock('igneous_extrusive', 'red')
 }
 METALS: Dict[str, Metal] = {
-    'bismuth': Metal(1, {'part'}, 0.14, 270),
-    'bismuth_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 985),
-    'black_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 1070),
-    'bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 950),
-    'brass': Metal(2, {'part'}, 0.35, 930),
-    'copper': Metal(1, {'part', 'tool', 'armor', 'utility'}, 0.35, 1080),
-    'gold': Metal(1, {'part'}, 0.6, 1060),
-    'nickel': Metal(1, {'part'}, 0.48, 1453),
-    'rose_gold': Metal(1, {'part'}, 0.35, 960),
-    'silver': Metal(1, {'part'}, 0.48, 961),
-    'tin': Metal(1, {'part'}, 0.14, 230),
-    'zinc': Metal(1, {'part'}, 0.21, 420),
-    'sterling_silver': Metal(1, {'part'}, 0.35, 950),
-    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535),
-    'cast_iron': Metal(1, {'part'}, 0.35, 1535),
-    'pig_iron': Metal(3, set(), 0.35, 1535),
-    'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
-    'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485),
-    'blue_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
-    'red_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
-    'weak_steel': Metal(4, set(), 0.35, 1540),
-    'weak_blue_steel': Metal(5, set(), 0.35, 1540),
-    'weak_red_steel': Metal(5, set(), 0.35, 1540),
-    'high_carbon_steel': Metal(3, set(), 0.35, 1540),
-    'high_carbon_black_steel': Metal(4, set(), 0.35, 1540),
-    'high_carbon_blue_steel': Metal(5, set(), 0.35, 1540),
-    'high_carbon_red_steel': Metal(5, set(), 0.35, 1540),
-    'unknown': Metal(0, set(), 0.5, 1250)
+    'bismuth': Metal(1, {'part'}, 0.14, 270, None),
+    'bismuth_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 985, None),
+    'black_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 1070, None),
+    'bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 950, None),
+    'brass': Metal(2, {'part'}, 0.35, 930, None),
+    'copper': Metal(1, {'part', 'tool', 'armor', 'utility'}, 0.35, 1080, None),
+    'gold': Metal(1, {'part'}, 0.6, 1060, None),
+    'nickel': Metal(1, {'part'}, 0.48, 1453, None),
+    'rose_gold': Metal(1, {'part'}, 0.35, 960, None),
+    'silver': Metal(1, {'part'}, 0.48, 961, None),
+    'tin': Metal(1, {'part'}, 0.14, 230, None),
+    'zinc': Metal(1, {'part'}, 0.21, 420, None),
+    'sterling_silver': Metal(1, {'part'}, 0.35, 950, None),
+    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535, 'cast_iron'),
+    'cast_iron': Metal(1, {'part'}, 0.35, 1535, None),
+    'pig_iron': Metal(3, set(), 0.35, 1535, None),
+    'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
+    'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485, None),
+    'blue_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
+    'red_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
+    'weak_steel': Metal(4, set(), 0.35, 1540, None),
+    'weak_blue_steel': Metal(5, set(), 0.35, 1540, None),
+    'weak_red_steel': Metal(5, set(), 0.35, 1540, None),
+    'high_carbon_steel': Metal(3, set(), 0.35, 1540, 'pig_iron'),
+    'high_carbon_black_steel': Metal(4, set(), 0.35, 1540, 'weak_steel'),
+    'high_carbon_blue_steel': Metal(5, set(), 0.35, 1540, 'weak_blue_steel'),
+    'high_carbon_red_steel': Metal(5, set(), 0.35, 1540, 'weak_red_steel'),
+    'unknown': Metal(0, set(), 0.5, 1250, None)
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
-    'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None),
-    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None)
+    'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False),
+    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False)
 }
 METAL_ITEMS: Dict[str, MetalItem] = {
-    'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots'),
-    'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots'),
-    'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets'),
-    'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets'),
-    'rod': MetalItem('part', 100, 'item/generated', 'forge:rods'),
+    'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots', True),
+    'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False),
+    'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False),
+    'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False),
+    'rod': MetalItem('part', 100, 'item/generated', 'forge:rods', False),
 
-    'tuyere': MetalItem('tool', 100, 'item/generated', None),
-    'pickaxe': MetalItem('tool', 100, 'item/handheld', None),
-    'pickaxe_head': MetalItem('tool', 100, 'item/generated', None),
-    'shovel': MetalItem('tool', 100, 'item/handheld', None),
-    'shovel_head': MetalItem('tool', 100, 'item/generated', None),
-    'axe': MetalItem('tool', 100, 'item/handheld', None),
-    'axe_head': MetalItem('tool', 100, 'item/generated', None),
-    'hoe': MetalItem('tool', 100, 'item/handheld', None),
-    'hoe_head': MetalItem('tool', 100, 'item/generated', None),
-    'chisel': MetalItem('tool', 100, 'item/handheld', None),
-    'chisel_head': MetalItem('tool', 100, 'item/generated', None),
-    'sword': MetalItem('tool', 100, 'item/handheld', None),
-    'sword_blade': MetalItem('tool', 100, 'item/generated', None),
-    'mace': MetalItem('tool', 100, 'item/handheld', None),
-    'mace_head': MetalItem('tool', 100, 'item/generated', None),
-    'saw': MetalItem('tool', 100, 'item/handheld', None),
-    'saw_blade': MetalItem('tool', 100, 'item/generated', None),
-    'javelin': MetalItem('tool', 100, 'item/handheld', None),
-    'javelin_head': MetalItem('tool', 100, 'item/generated', None),
-    'hammer': MetalItem('tool', 100, 'item/handheld', None),
-    'hammer_head': MetalItem('tool', 100, 'item/generated', None),
-    'propick': MetalItem('tool', 100, 'item/handheld', None),
-    'propick_head': MetalItem('tool', 100, 'item/generated', None),
-    'knife': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None),
-    'knife_blade': MetalItem('tool', 100, 'item/generated', None),
-    'scythe': MetalItem('tool', 100, 'item/handheld', None),
-    'scythe_blade': MetalItem('tool', 100, 'item/generated', None),
-    'shears': MetalItem('tool', 200, 'item/handheld', None),
+    'tuyere': MetalItem('tool', 100, 'item/generated', None, False),
+    'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False),
+    'pickaxe_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'shovel': MetalItem('tool', 100, 'item/handheld', None, False),
+    'shovel_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'axe': MetalItem('tool', 100, 'item/handheld', None, False),
+    'axe_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'hoe': MetalItem('tool', 100, 'item/handheld', None, False),
+    'hoe_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'chisel': MetalItem('tool', 100, 'item/handheld', None, False),
+    'chisel_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'sword': MetalItem('tool', 100, 'item/handheld', None, False),
+    'sword_blade': MetalItem('tool', 100, 'item/generated', None, True),
+    'mace': MetalItem('tool', 100, 'item/handheld', None, False),
+    'mace_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'saw': MetalItem('tool', 100, 'item/handheld', None, False),
+    'saw_blade': MetalItem('tool', 100, 'item/generated', None, True),
+    'javelin': MetalItem('tool', 100, 'item/handheld', None, False),
+    'javelin_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'hammer': MetalItem('tool', 100, 'item/handheld', None, False),
+    'hammer_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'propick': MetalItem('tool', 100, 'item/handheld', None, False),
+    'propick_head': MetalItem('tool', 100, 'item/generated', None, True),
+    'knife': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False),
+    'knife_blade': MetalItem('tool', 100, 'item/generated', None, True),
+    'scythe': MetalItem('tool', 100, 'item/handheld', None, False),
+    'scythe_blade': MetalItem('tool', 100, 'item/generated', None, True),
+    'shears': MetalItem('tool', 200, 'item/handheld', None, False),
 
-    'unfinished_helmet': MetalItem('armor', 400, 'item/generated', None),
-    'helmet': MetalItem('armor', 600, 'item/generated', None),
-    'unfinished_chestplate': MetalItem('armor', 400, 'item/generated', None),
-    'chestplate': MetalItem('armor', 800, 'item/generated', None),
-    'unfinished_greaves': MetalItem('armor', 400, 'item/generated', None),
-    'greaves': MetalItem('armor', 600, 'item/generated', None),
-    'unfinished_boots': MetalItem('armor', 200, 'item/generated', None),
-    'boots': MetalItem('armor', 400, 'item/generated', None),
+    'unfinished_helmet': MetalItem('armor', 400, 'item/generated', None, False),
+    'helmet': MetalItem('armor', 600, 'item/generated', None, False),
+    'unfinished_chestplate': MetalItem('armor', 400, 'item/generated', None, False),
+    'chestplate': MetalItem('armor', 800, 'item/generated', None, False),
+    'unfinished_greaves': MetalItem('armor', 400, 'item/generated', None, False),
+    'greaves': MetalItem('armor', 600, 'item/generated', None, False),
+    'unfinished_boots': MetalItem('armor', 200, 'item/generated', None, False),
+    'boots': MetalItem('armor', 400, 'item/generated', None, False),
 
-    'shield': MetalItem('tool', 400, 'item/handheld', None)
+    'shield': MetalItem('tool', 400, 'item/handheld', None, False)
 }
+METAL_ITEMS_AND_BLOCKS = {**METAL_ITEMS, **METAL_BLOCKS}
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
 ORES: Dict[str, Ore] = {
-    'native_copper': Ore('copper', True, 'copper'),
-    'native_gold': Ore('gold', True, 'copper'),
-    'hematite': Ore('cast_iron', True, 'bronze'),
-    'native_silver': Ore('silver', True, 'copper'),
-    'cassiterite': Ore('tin', True, 'copper'),
-    'bismuthinite': Ore('bismuth', True, 'copper'),
-    'garnierite': Ore('nickel', True, 'wrought_iron'),
-    'malachite': Ore('copper', True, 'copper'),
-    'magnetite': Ore('cast_iron', True, 'bronze'),
-    'limonite': Ore('cast_iron', True, 'bronze'),
-    'sphalerite': Ore('zinc', True, 'copper'),
-    'tetrahedrite': Ore('copper', True, 'copper'),
-    'bituminous_coal': Ore(None, False, 'copper'),
-    'lignite': Ore(None, False, 'copper'),
-    'kaolinite': Ore(None, False, 'copper'),
-    'gypsum': Ore(None, False, 'copper'),
-    'graphite': Ore(None, False, 'copper'),
-    'sulfur': Ore(None, False, 'copper'),
-    'cinnabar': Ore(None, False, 'bronze'),
-    'cryolite': Ore(None, False, 'bronze'),
-    'saltpeter': Ore(None, False, 'copper'),
-    'sylvite': Ore(None, False, 'copper'),
-    'borax': Ore(None, False, 'copper'),
-    'halite': Ore(None, False, 'bronze'),
-    'amethyst': Ore(None, False, 'steel'),  # Mohs: 7
-    'diamond': Ore(None, False, 'black_steel'),  # Mohs: 10
-    'emerald': Ore(None, False, 'steel'),  # Mohs: 7.5-8
-    'lapis_lazuli': Ore(None, False, 'wrought_iron'),  # Mohs: 5-6
-    'opal': Ore(None, False, 'wrought_iron'),  # Mohs: 5.5-6.5
-    'pyrite': Ore(None, False, 'copper'),
-    'ruby': Ore(None, False, 'black_steel'),  # Mohs: 9
-    'sapphire': Ore(None, False, 'black_steel'),  # Mohs: 9
-    'topaz': Ore(None, False, 'steel')  # Mohs: 8
+    'native_copper': Ore('copper', True, 'copper', 'copper'),
+    'native_gold': Ore('gold', True, 'copper', 'gold'),
+    'hematite': Ore('cast_iron', True, 'copper', 'iron'),
+    'native_silver': Ore('silver', True, 'copper', 'silver'),
+    'cassiterite': Ore('tin', True, 'copper', 'tin'),
+    'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth'),
+    'garnierite': Ore('nickel', True, 'bronze', 'nickel'),
+    'malachite': Ore('copper', True, 'copper', 'copper'),
+    'magnetite': Ore('cast_iron', True, 'copper', 'iron'),
+    'limonite': Ore('cast_iron', True, 'copper', 'iron'),
+    'sphalerite': Ore('zinc', True, 'copper', 'zinc'),
+    'tetrahedrite': Ore('copper', True, 'copper', 'copper'),
+    'bituminous_coal': Ore(None, False, 'copper', 'coal'),
+    'lignite': Ore(None, False, 'copper', 'coal'),
+    'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
+    'gypsum': Ore(None, False, 'copper', 'gypsum'),
+    'graphite': Ore(None, False, 'copper', 'graphite'),
+    'sulfur': Ore(None, False, 'copper', 'sulfur'),
+    'cinnabar': Ore(None, False, 'bronze', 'redstone'),
+    'cryolite': Ore(None, False, 'bronze', 'redstone'),
+    'saltpeter': Ore(None, False, 'copper', 'saltpeter'),
+    'sylvite': Ore(None, False, 'copper', 'sylvite'),
+    'borax': Ore(None, False, 'copper', 'borax'),
+    'halite': Ore(None, False, 'bronze', 'halite'),
+    'amethyst': Ore(None, False, 'steel', 'amethyst'),  # Mohs: 7
+    'diamond': Ore(None, False, 'black_steel', 'diamond'),  # Mohs: 10
+    'emerald': Ore(None, False, 'steel', 'emerald'),  # Mohs: 7.5-8
+    'lapis_lazuli': Ore(None, False, 'wrought_iron', 'lapis'),  # Mohs: 5-6
+    'opal': Ore(None, False, 'wrought_iron', 'opal'),  # Mohs: 5.5-6.5
+    'pyrite': Ore(None, False, 'copper', 'pyrite'),
+    'ruby': Ore(None, False, 'black_steel', 'ruby'),  # Mohs: 9
+    'sapphire': Ore(None, False, 'black_steel', 'sapphire'),  # Mohs: 9
+    'topaz': Ore(None, False, 'steel', 'topaz')  # Mohs: 8
 }
 ORE_GRADES: Dict[str, OreGrade] = {
     'normal': OreGrade(50, 5),
     'poor': OreGrade(30, 3),
     'rich': OreGrade(20, 7)
 }
+DEFAULT_FORGE_ORE_TAGS: List[str] = ['coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone']
 
 
 def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0):
@@ -377,8 +381,8 @@ SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'dirty_ju
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite')
 POWDERS = ('fertilizer', 'flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
-PAIRED_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
-UNFIRED_ITEMS = ('brick', 'crucible', 'flower_pot', 'jug')
+SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
+SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
 FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
@@ -497,6 +501,29 @@ DEFAULT_LANG = {
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
     'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
+    'tfc.tooltip.propick.found_very_large': 'Found a very large sample of',
+    'tfc.tooltip.propick.found_large': 'Found a large sample of',
+    'tfc.tooltip.propick.found_medium': 'Found a medium sample of',
+    'tfc.tooltip.propick.found_small': 'Found a small sample of',
+    'tfc.tooltip.propick.found_traces': 'Found traces of',
+    'tfc.tooltip.propick.found': 'Found',
+    'tfc.tooltip.propick.nothing': 'Found nothing.',
+    'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
+    'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
+    'tfc.tooltip.small_vessel.contents': 'Contents:',
+    'tfc.tooltip.small_vessel.alloy_units': '%s mB',
+    'tfc.tooltip.small_vessel.solid': '- Solid.',
+    'tfc.tooltip.small_vessel.molten': '- Molten!',
+    'tfc.tooltip.small_vessel.still_has_unmelted_items': 'Contains un-melted items!',
+    'tfc.tooltip.mold_like.alloy_units': '%s mB',
+    'tfc.tooltip.food_trait.salted': 'Salted',
+    'tfc.tooltip.food_trait.brined': 'Brined',
+    'tfc.tooltip.food_trait.pickled': 'Pickled',
+    'tfc.tooltip.food_trait.preserved': 'Preserved',
+    'tfc.tooltip.food_trait.vinegar': 'Preserved in Vinegar',
+    'tfc.tooltip.food_trait.charcoal_grilled': 'Charcoal Grilled',
+    'tfc.tooltip.food_trait.wood_grilled': 'Wood Grilled',
+    'tfc.tooltip.food_trait.burnt_to_a_crisp': 'Burnt to a crisp!',
 
     # Commands
 
@@ -567,5 +594,5 @@ DEFAULT_LANG = {
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
-    **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys())
+    **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 }

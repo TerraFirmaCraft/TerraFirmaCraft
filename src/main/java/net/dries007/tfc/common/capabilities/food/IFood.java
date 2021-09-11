@@ -228,12 +228,12 @@ public interface IFood extends INBTSerializable<CompoundTag>
         // Add info for each trait
         for (FoodTrait trait : getTraits())
         {
-            trait.addTraitInfo(stack, text);
+            trait.addTooltipInfo(stack, text);
         }
 
         if (TFCConfig.CLIENT.enableDebug.get())
         {
-            text.add(new TextComponent("[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
+            text.add(new TextComponent(ChatFormatting.GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }

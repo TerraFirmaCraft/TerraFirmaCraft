@@ -9,14 +9,14 @@ package net.dries007.tfc.client.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
-import net.dries007.tfc.common.container.SimpleContainer;
+import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -24,11 +24,11 @@ import net.dries007.tfc.util.calendar.Month;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
+public class CalendarScreen extends TFCContainerScreen<Container>
 {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_calendar.png");
 
-    public CalendarScreen(SimpleContainer container, Inventory playerInv, Component name)
+    public CalendarScreen(Container container, Inventory playerInv, Component name)
     {
         super(container, playerInv, name, BACKGROUND);
     }

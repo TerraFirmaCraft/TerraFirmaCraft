@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:ore/graphite/chalk",
+    "tfc:ore/graphite/chert",
+    "tfc:ore/graphite/claystone",
+    "tfc:ore/graphite/conglomerate",
+    "tfc:ore/graphite/dolomite",
+    "tfc:ore/graphite/limestone",
+    "tfc:ore/graphite/shale",
+    "tfc:ore/graphite/gneiss",
+    "tfc:ore/graphite/marble",
+    "tfc:ore/graphite/phyllite",
+    "tfc:ore/graphite/quartzite",
+    "tfc:ore/graphite/schist",
+    "tfc:ore/graphite/slate",
+    "tfc:ore/graphite/diorite",
+    "tfc:ore/graphite/gabbro",
+    "tfc:ore/graphite/granite",
+    "tfc:ore/graphite/andesite",
+    "tfc:ore/graphite/basalt",
+    "tfc:ore/graphite/dacite",
+    "tfc:ore/graphite/rhyolite"
+  ]
+}

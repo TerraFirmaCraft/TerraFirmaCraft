@@ -122,7 +122,8 @@ public abstract class AbstractFirepitTileEntity<C extends IItemHandlerModifiable
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
 
-        updateCachedRecipe();
+        // todo: set a flag that is checked on tick
+        // updateCachedRecipe();
 
         super.load(nbt);
     }

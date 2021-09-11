@@ -14,10 +14,15 @@ import net.dries007.tfc.common.tileentity.LogPileTileEntity;
 
 public class LogPileContainer extends BlockEntityContainer<LogPileTileEntity>
 {
-    public LogPileContainer(LogPileTileEntity tile, Inventory playerInventory, int windowId)
+    public static LogPileContainer create(LogPileTileEntity logPile, Inventory playerInventory, int windowId)
     {
-        super(TFCContainerTypes.LOG_PILE.get(), tile, playerInventory, windowId);
-        tile.onOpen(playerInventory.player);
+        return new LogPileContainer(logPile, playerInventory, windowId).init(playerInventory);
+    }
+
+    public LogPileContainer(LogPileTileEntity logPile, Inventory playerInventory, int windowId)
+    {
+        super(TFCContainerTypes.LOG_PILE.get(), windowId, logPile);
+        logPile.onOpen(playerInventory.player);
     }
 
     @Override

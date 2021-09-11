@@ -1,5 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "tier": 1,
-  "fluid": "tfc:metal/zinc"
+  "fluid": "tfc:metal/zinc",
+  "melt_temperature": 420,
+  "heat_capacity": 0.21
 }

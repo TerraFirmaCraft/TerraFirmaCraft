@@ -71,7 +71,7 @@ public final class TFCItems
     // Metal
 
     public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
+        Helpers.mapOfKeys(Metal.ItemType.class, type -> type.has(metal), type ->
             register("metal/" + type.name() + "/" + metal.name(), () -> type.create(metal))
         )
     );
@@ -168,17 +168,23 @@ public final class TFCItems
     public static final RegistryObject<Item> SPINDLE_HEAD = register("ceramic/spindle_head", MISC);
 
     public static final RegistryObject<Item> UNFIRED_VESSEL = register("ceramic/unfired_vessel", MISC);
-    public static final RegistryObject<Item> VESSEL = register("ceramic/vessel", () -> new VesselItem(new Item.Properties().tab(MISC)));
+    public static final RegistryObject<Item> VESSEL = register("ceramic/vessel", () -> new VesselItem(new Item.Properties().tab(MISC).stacksTo(1)));
 
     public static final Map<DyeColor, RegistryObject<Item>> UNFIRED_GLAZED_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
         register("ceramic/" + color + "_unfired_vessel", MISC)
     );
 
     public static final Map<DyeColor, RegistryObject<Item>> GLAZED_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
-        register("ceramic/" + color + "_glazed_vessel", () -> new VesselItem(new Item.Properties().tab(MISC)))
+        register("ceramic/" + color + "_glazed_vessel", () -> new VesselItem(new Item.Properties().tab(MISC).stacksTo(1)))
     );
 
-    //todo: molds
+    public static final Map<Metal.ItemType, RegistryObject<Item>> UNFIRED_MOLDS = Helpers.mapOfKeys(Metal.ItemType.class, Metal.ItemType::hasMold, type ->
+        register("ceramic/unfired_" + type.name() + "_mold", MISC)
+    );
+
+    public static final Map<Metal.ItemType, RegistryObject<Item>> MOLDS = Helpers.mapOfKeys(Metal.ItemType.class, Metal.ItemType::hasMold, type ->
+        register("ceramic/" + type.name() + "_mold", () -> new MoldItem(new Item.Properties().tab(MISC).stacksTo(1)))
+    );
 
     // Fluid Buckets
 

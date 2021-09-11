@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.util.ItemDefinition;
 
@@ -19,7 +20,7 @@ import net.dries007.tfc.util.ItemDefinition;
  */
 public class HeatDefinition extends ItemDefinition
 {
-    private final Supplier<IHeat> capability;
+    private final Supplier<ICapabilityProvider> capability;
 
     public HeatDefinition(ResourceLocation id, JsonObject json)
     {
@@ -35,7 +36,7 @@ public class HeatDefinition extends ItemDefinition
     /**
      * Creates a new instance of the capability defined by this object.
      */
-    public IHeat create()
+    public ICapabilityProvider create()
     {
         return capability.get();
     }

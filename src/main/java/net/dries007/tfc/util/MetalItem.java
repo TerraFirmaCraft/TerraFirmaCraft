@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class MetalItem
@@ -49,8 +48,8 @@ public class MetalItem
         MetalItem def = get(stack);
         if (def != null)
         {
-            text.add(new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.metal", def.getMetal().getDisplayName()));
-            text.add(new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.units", def.getAmount()));
+            text.add(new TranslatableComponent("tfc.tooltip.metal", def.getMetal().getDisplayName()));
+            text.add(new TranslatableComponent("tfc.tooltip.units", def.getAmount()));
             text.add(def.getMetal().getTier().getDisplayName());
         }
     }

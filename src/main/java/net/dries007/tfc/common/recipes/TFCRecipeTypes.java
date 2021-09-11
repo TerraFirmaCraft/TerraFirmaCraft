@@ -25,6 +25,8 @@ public class TFCRecipeTypes
     public static final RecipeType<KnappingRecipe> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
     public static final RecipeType<KnappingRecipe> LEATHER_KNAPPING = register("leather_knapping");
     public static final RecipeType<RockKnappingRecipe> ROCK_KNAPPING = register("rock_knapping");
+    public static final RecipeType<AlloyRecipe> ALLOY = register("alloy");
+    public static final RecipeType<CastingRecipe> CASTING = register("casting");
 
     public static void registerPotRecipeOutputTypes()
     {

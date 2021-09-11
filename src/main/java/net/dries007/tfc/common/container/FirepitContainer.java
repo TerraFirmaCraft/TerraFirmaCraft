@@ -16,9 +16,14 @@ import static net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity.SLOT_
 
 public class FirepitContainer extends BlockEntityContainer<FirepitTileEntity>
 {
-    public FirepitContainer(FirepitTileEntity tile, Inventory playerInv, int windowId)
+    public static FirepitContainer create(FirepitTileEntity tile, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.FIREPIT.get(), tile, playerInv, windowId, 20);
+        return new FirepitContainer(tile, windowId).init(playerInv, 20);
+    }
+
+    private FirepitContainer(FirepitTileEntity tile, int windowId)
+    {
+        super(TFCContainerTypes.FIREPIT.get(), windowId, tile);
 
         addDataSlots(tile.getSyncableData());
     }

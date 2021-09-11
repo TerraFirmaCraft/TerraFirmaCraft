@@ -1,0 +1,122 @@
+package net.dries007.tfc.common.recipes;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+
+import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+
+import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
+import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
+
+public class CastingRecipe implements ISimpleRecipe<MoldLike>
+{
+    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = new IndirectHashCollection<>(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()));
+
+    @Nullable
+    public static CastingRecipe get(MoldLike mold)
+    {
+        for (CastingRecipe recipe : CACHE.getAll(mold.getContainer().getItem()))
+        {
+            if (recipe.matches(mold, null))
+            {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    private final ResourceLocation id;
+    private final Ingredient ingredient;
+    private final FluidIngredient fluidIngredient;
+    private final ItemStack result;
+    private final float breakChance;
+
+    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidIngredient fluidIngredient, ItemStack result, float breakChance)
+    {
+        this.id = id;
+        this.ingredient = ingredient;
+        this.fluidIngredient = fluidIngredient;
+        this.result = result;
+        this.breakChance = breakChance;
+    }
+
+    public float getBreakChance()
+    {
+        return breakChance;
+    }
+
+    @Override
+    public boolean matches(MoldLike mold, @Nullable Level level)
+    {
+        return ingredient.test(mold.getContainer()) && fluidIngredient.test(mold.getFluidInTank(0));
+    }
+
+    @Override
+    public ItemStack getResultItem()
+    {
+        return result;
+    }
+
+    @Override
+    public ResourceLocation getId()
+    {
+        return id;
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer()
+    {
+        return TFCRecipeSerializers.CASTING.get();
+    }
+
+    @Override
+    public RecipeType<?> getType()
+    {
+        return TFCRecipeTypes.CASTING;
+    }
+
+    public static class Serializer extends RecipeSerializerImpl<CastingRecipe>
+    {
+        @Override
+        public CastingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
+        {
+            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "mold"));
+            final FluidIngredient fluidIngredient = FluidIngredients.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
+            final ItemStack result = JsonHelpers.getItemStack(json, "result");
+            final float breakChance = JsonHelpers.getAsFloat(json, "break_chance");
+            return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
+        }
+
+        @Nullable
+        @Override
+        public CastingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
+        {
+            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            final FluidIngredient fluidIngredient = FluidIngredients.fromNetwork(buffer);
+            final ItemStack result = buffer.readItem();
+            final float breakChance = buffer.readFloat();
+            return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, CastingRecipe recipe)
+        {
+            recipe.ingredient.toNetwork(buffer);
+            FluidIngredients.toNetwork(buffer, recipe.fluidIngredient);
+            buffer.writeItem(recipe.result);
+            buffer.writeFloat(recipe.breakChance);
+        }
+    }
+}

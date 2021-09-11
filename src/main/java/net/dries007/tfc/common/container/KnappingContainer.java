@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -20,8 +21,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
 import net.dries007.tfc.util.KnappingPattern;
 
@@ -29,10 +31,24 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 {
     public static final int SLOT_OUTPUT = 0;
 
-    private static ItemStack getItemForKnapping(Inventory inv)
+    public static KnappingContainer createClay(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
     {
-        final ItemStack main = inv.player.getMainHandItem();
-        return TFCTags.Items.KNAPPING_ANY.contains(main.getItem()) ? main : inv.player.getOffhandItem();
+        return new KnappingContainer(TFCContainerTypes.CLAY_KNAPPING.get(), TFCRecipeTypes.CLAY_KNAPPING, windowId, playerInventory, stack, hand, 5, true, true, TFCSounds.KNAP_CLAY.get()).init(playerInventory, 20);
+    }
+
+    public static KnappingContainer createFireClay(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
+    {
+        return new KnappingContainer(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), TFCRecipeTypes.FIRE_CLAY_KNAPPING, windowId, playerInventory, stack, hand, 5, true, true, TFCSounds.KNAP_CLAY.get()).init(playerInventory, 20);
+    }
+
+    public static KnappingContainer createRock(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
+    {
+        return new KnappingContainer(TFCContainerTypes.ROCK_KNAPPING.get(), TFCRecipeTypes.ROCK_KNAPPING, windowId, playerInventory, stack, hand, 1, false, false, TFCSounds.KNAP_STONE.get()).init(playerInventory, 20);
+    }
+
+    public static LeatherKnappingContainer createLeather(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
+    {
+        return new LeatherKnappingContainer(TFCContainerTypes.LEATHER_KNAPPING.get(), TFCRecipeTypes.LEATHER_KNAPPING, windowId, playerInventory, stack, hand, 1, false, false, TFCSounds.KNAP_LEATHER.get()).init(playerInventory, 20);
     }
 
     private final int amountToConsume;
@@ -48,9 +64,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
 
-    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
+    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
-        super(containerType, windowId, playerInv, getItemForKnapping(playerInv), 20);
+        super(containerType, windowId, playerInv, stack, hand);
 
         this.amountToConsume = amountToConsume;
         this.usesDisabledTex = usesDisabledTex;

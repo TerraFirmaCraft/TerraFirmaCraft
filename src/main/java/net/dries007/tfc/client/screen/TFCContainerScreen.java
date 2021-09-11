@@ -15,12 +15,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCContainerScreen<C extends AbstractContainerMenu> extends AbstractContainerScreen<C>
 {
-    protected static final ResourceLocation SMALL_INV = new ResourceLocation(MOD_ID, "textures/gui/small_inventory.png");
+    public static final ResourceLocation INVENTORY_1x1 = Helpers.identifier("textures/gui/single_inventory.png");
+    public static final ResourceLocation INVENTORY_2x2 = Helpers.identifier("textures/gui/small_inventory.png");
+
     protected final ResourceLocation texture;
     protected final Inventory playerInventory;
 
@@ -52,5 +53,11 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         RenderSystem.setShaderTexture(0, this.texture);
 
         blit(poseStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
+    }
+
+    protected void drawCenteredLine(PoseStack stack, String text, int y)
+    {
+        final int x = (imageWidth - font.width(text)) / 2;
+        font.draw(stack, text, x, y, 0x404040);
     }
 }

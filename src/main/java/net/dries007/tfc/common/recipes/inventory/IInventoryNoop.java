@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.recipes.inventory;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -59,8 +59,7 @@ public interface IInventoryNoop extends Container
     @Deprecated
     default void setChanged() {}
 
-    @Override
-    @Deprecated
+    @Override // Not deprecated, because it's implemented by containers
     default boolean stillValid(Player player)
     {
         return true;

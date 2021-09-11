@@ -15,6 +15,11 @@ public class ItemStackRecipeWrapper implements IInventoryNoop
 {
     protected ItemStack stack;
 
+    public ItemStackRecipeWrapper()
+    {
+        this(ItemStack.EMPTY);
+    }
+
     public ItemStackRecipeWrapper(ItemStack stack)
     {
         this.stack = stack;
@@ -23,5 +28,10 @@ public class ItemStackRecipeWrapper implements IInventoryNoop
     public ItemStack getStack()
     {
         return stack;
+    }
+
+    public void setStack(ItemStack stack)
+    {
+        this.stack = stack;
     }
 }
