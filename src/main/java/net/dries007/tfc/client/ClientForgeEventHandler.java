@@ -42,7 +42,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -143,7 +142,7 @@ public class ClientForgeEventHandler
                     {
                         final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
                             .append(new TranslatableComponent(metal.getTranslationKey()));
-                        final MutableComponent heat = Heat.getTooltip(recipe.getTemperature());
+                        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
                             line.append(new TranslatableComponent("tfc.tooltip.item_melts_into_open"))
@@ -159,7 +158,7 @@ public class ClientForgeEventHandler
             final Fuel fuel = Fuel.get(stack);
             if (fuel != null)
             {
-                final MutableComponent heat = Heat.getTooltip(fuel.getTemperature());
+                final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
                     text.add(new TranslatableComponent("tfc.tooltip.fuel_burns_at")

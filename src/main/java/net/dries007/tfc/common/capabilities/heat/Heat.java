@@ -13,7 +13,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.config.TFCConfig;
 
 public enum Heat
 {
@@ -51,12 +50,6 @@ public enum Heat
             return BRILLIANT_WHITE;
         }
         return null;
-    }
-
-    @Nullable
-    public static MutableComponent getTooltip(float temperature)
-    {
-        return TFCConfig.SERVER.heatTooltipStyle.get().formatColored(temperature);
     }
 
     private final ChatFormatting color;

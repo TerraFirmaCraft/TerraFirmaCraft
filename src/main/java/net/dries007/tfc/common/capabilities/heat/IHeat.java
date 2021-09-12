@@ -85,7 +85,7 @@ public interface IHeat
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         final float temperature = getTemperature();
-        final MutableComponent tooltip = TFCConfig.SERVER.heatTooltipStyle.get().formatColored(temperature);
+        final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
