@@ -456,8 +456,8 @@ def generate(rm: ResourceManager):
 
     rm.feature(('vein', 'gravel'), wg.configure('tfc:disc_vein', {
         'rarity': 30,
-        'min_y': -64,
-        'max_y': 100,
+        'min_y': vertical_anchor(-64, 'absolute'),
+        'max_y': vertical_anchor(100, 'absolute'),
         'size': 44,
         'height': 2,
         'density': 0.98,
@@ -485,8 +485,8 @@ def generate(rm: ResourceManager):
 
             rm.feature(('vein', '%s_dike' % rock), wg.configure('tfc:pipe_vein', {
                 'rarity': 220,
-                'min_y': -64,
-                'max_y': 180,
+                'min_y': vertical_anchor(-64, 'absolute'),
+                'max_y': vertical_anchor(180, 'absolute'),
                 'size': 150,
                 'density': 0.98,
                 'blocks': dike_block_config,

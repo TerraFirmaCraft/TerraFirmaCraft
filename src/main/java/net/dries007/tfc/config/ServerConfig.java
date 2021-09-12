@@ -72,7 +72,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
     public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
     // Mechanics - Heat
-    public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
+    public final ForgeConfigSpec.DoubleValue heatingModifier;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -180,7 +180,7 @@ public class ServerConfig
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
-        itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 

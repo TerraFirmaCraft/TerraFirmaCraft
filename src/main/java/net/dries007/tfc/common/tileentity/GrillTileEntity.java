@@ -108,7 +108,7 @@ public class GrillTileEntity extends AbstractFirepitTileEntity<ItemStackHandler>
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
         {
             final ItemStack stack = inventory.getStackInSlot(slot);
-            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
+            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(stack));
         }
     }
 }

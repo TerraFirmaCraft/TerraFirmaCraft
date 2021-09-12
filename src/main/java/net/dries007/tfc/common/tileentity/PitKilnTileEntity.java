@@ -303,7 +303,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
         if (level == null) return;
         for (int i = 0; i < 4; i++)
         {
-            cachedRecipes[i] = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(i)));
+            cachedRecipes[i] = HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(inventory.getStackInSlot(i)));
         }
     }
 }

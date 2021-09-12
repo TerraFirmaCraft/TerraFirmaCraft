@@ -69,7 +69,7 @@ def generate(rm: ResourceManager):
         def plank(thing: str):
             return 'tfc:wood/planks/%s_%s' % (wood, thing)
 
-        rm.crafting_shapeless('crafting/wood/%s_twig' % wood, item('twig'), 'minecraft:stick').with_advancement(item('twig'))
+        rm.crafting_shaped('crafting/wood/%s_twig' % wood, ['X', 'X'], {'X': item('twig')}, 'minecraft:stick').with_advancement(item('twig'))
         rm.crafting_shaped('crafting/wood/%s_bookshelf' % wood, ['XXX', 'YYY', 'XXX'], {'X': item('planks'), 'Y': 'minecraft:book'}, plank('bookshelf')).with_advancement('minecraft:book')
         rm.crafting_shapeless('crafting/wood/%s_button' % wood, item('planks'), plank('button')).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_door' % wood, ['XX', 'XX', 'XX'], {'X': item('lumber')}, (2, plank('door'))).with_advancement(item('lumber'))

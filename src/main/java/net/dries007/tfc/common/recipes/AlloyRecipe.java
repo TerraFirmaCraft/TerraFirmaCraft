@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -70,7 +71,6 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyRecipeWrapper>
         return TFCRecipeTypes.ALLOY;
     }
 
-
     public record Range(double min, double max)
     {
         public boolean isIn(double value, double epsilon)
@@ -85,11 +85,11 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyRecipeWrapper>
         public AlloyRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Metal result = JsonHelpers.getFrom(json, "result", Metal.MANAGER);
-            final JsonObject contents = JsonHelpers.getAsJsonObject(json, "contents");
+            final JsonArray contents = JsonHelpers.getAsJsonArray(json, "contents");
             final Map<Metal, Range> metals = new HashMap<>();
-            for (Map.Entry<String, JsonElement> entry : contents.entrySet())
+            for (JsonElement element : contents)
             {
-                final JsonObject content = JsonHelpers.convertToJsonObject(entry.getValue(), "entry in 'contents'");
+                final JsonObject content = JsonHelpers.convertToJsonObject(element, "entry in 'contents'");
                 final Metal metal = JsonHelpers.getFrom(content, "metal", Metal.MANAGER);
                 final double min = JsonHelpers.getAsDouble(content, "min");
                 final double max = JsonHelpers.getAsDouble(content, "max");

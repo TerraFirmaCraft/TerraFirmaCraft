@@ -8,8 +8,8 @@ package net.dries007.tfc.common.capabilities.forge;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -51,15 +51,21 @@ public interface IForging extends ICapabilityProvider
     void setRecipe(@Nullable ResourceLocation recipeName);
 
     /**
-     * Gets the last three steps, wrapped in a {@link ForgeSteps} instance.
-     * The return value is nonnull, however the individual steps might be
+     * Gets the step in the last n'th position of work.
+     *
+     * @param index must be 0, 1, or 2, for the most recent, second, and third most recent step respectively.
      */
-    ForgeSteps getSteps();
+    @Nullable
+    ForgeStep getStep(int index);
 
     /**
-     * Adds a step to the object, shuffling the last three steps down
-     *
-     * @param step The step to add. In general this should not be null, although it is perfectly valid for it to be
+     * @param rule The rule to match
+     * @return {@code true} if the current instance matches the provided rule.
+     */
+    boolean matches(ForgeRule rule);
+
+    /**
+     * Adds (works) a step as the new most recent, updating the other three most recent steps.
      */
     void addStep(@Nullable ForgeStep step);
 

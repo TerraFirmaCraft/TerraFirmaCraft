@@ -13,6 +13,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.config.TFCConfig;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
@@ -82,8 +84,8 @@ public interface IHeat
      */
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        float temperature = getTemperature();
-        MutableComponent tooltip = Heat.getTooltip(temperature);
+        final float temperature = getTemperature();
+        final MutableComponent tooltip = TFCConfig.SERVER.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set

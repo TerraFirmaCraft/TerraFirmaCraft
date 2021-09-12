@@ -111,7 +111,7 @@ public class MoldItem extends Item
                     {
                         NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
                     }
-                    else
+                    else if (!mold.getFluidInTank(0).isEmpty())
                     {
                         player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
                     }

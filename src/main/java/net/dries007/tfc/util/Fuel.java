@@ -8,13 +8,10 @@ package net.dries007.tfc.util;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
@@ -39,16 +36,6 @@ public class Fuel
             }
         }
         return null;
-    }
-
-    public static void addTooltipInfo(ItemStack stack, List<Component> text)
-    {
-        final Fuel fuel = get(stack);
-        if (fuel != null)
-        {
-            // todo: color and convert temperature and duration to words
-            text.add(new TranslatableComponent("tfc.tooltip.fuel", fuel.getDuration(), fuel.getTemperature()));
-        }
     }
 
     private final ResourceLocation id;

@@ -1,11 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "key": {
+    "X": {
       "item": "tfc:wood/twig/douglas_fir"
     }
-  ],
+  },
   "result": {
     "item": "minecraft:stick"
   }

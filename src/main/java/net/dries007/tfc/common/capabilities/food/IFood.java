@@ -137,42 +137,27 @@ public interface IFood extends INBTSerializable<CompoundTag>
             else
             {
                 final long rottenCalendarTime = rottenDate - Calendars.CLIENT.getTicks() + Calendars.CLIENT.getCalendarTicks(); // Date food rots on.
-                final long daysToRotInTicks = ICalendar.getTotalDays(rottenCalendarTime - Calendars.CLIENT.getCalendarTicks()); // Days till food rots.
+                final long ticksRemaining = rottenDate - Calendars.CLIENT.getTicks(); // Ticks remaining until rotten
 
-                switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
+                final Component tooltip = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
+                    {
+                        case EXPIRY -> new TranslatableComponent("tfc.tooltip.food_expiry_date")
+                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
+                            .withStyle(ChatFormatting.DARK_GREEN);
+                        case TIME_LEFT -> new TranslatableComponent("tfc.tooltip.food_expiry_left")
+                            .append(Calendars.CLIENT.getTimeDelta(ticksRemaining))
+                            .withStyle(ChatFormatting.DARK_GREEN);
+                        case BOTH -> new TranslatableComponent("tfc.tooltip.food_expiry_date")
+                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
+                            .append(new TranslatableComponent("tfc.tooltip.food_expiry_and_days_left"))
+                            .append(Calendars.CLIENT.getTimeDelta(ticksRemaining))
+                            .append(new TranslatableComponent("tfc.tooltip.food_expiry_and_days_left_close"))
+                            .withStyle(ChatFormatting.DARK_GREEN);
+                        default -> null;
+                    };
+                if (tooltip != null)
                 {
-                    case EXPIRY:
-                        text.add(new TranslatableComponent("tfc.tooltip.food_expiry_date")
-                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
-                            .withStyle(ChatFormatting.DARK_GREEN));
-                        break;
-                    case TIME_LEFT:
-                        if (daysToRotInTicks < 1)
-                        {
-                            text.add(new TranslatableComponent("tfc.tooltip.food_expiry_less_than_one_day_left")
-                                .withStyle(ChatFormatting.DARK_GREEN));
-                        }
-                        else
-                        {
-                            text.add(new TranslatableComponent("tfc.tooltip.food_expiry_days_left", String.valueOf(daysToRotInTicks))
-                                .withStyle(ChatFormatting.DARK_GREEN));
-                        }
-                        break;
-                    case BOTH:
-                        final TranslatableComponent timeLeft;
-                        if (daysToRotInTicks < 1)
-                        {
-                            timeLeft = new TranslatableComponent("tfc.tooltip.food_expiry_and_less_than_one_day_left");
-                        }
-                        else
-                        {
-                            timeLeft = new TranslatableComponent("tfc.tooltip.food_expiry_and_days_left", String.valueOf(daysToRotInTicks));
-                        }
-                        text.add(new TranslatableComponent("tfc.tooltip.food_expiry_date")
-                            .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
-                            .append(timeLeft)
-                            .withStyle(ChatFormatting.DARK_GREEN));
-                        break;
+                    text.add(tooltip);
                 }
             }
         }

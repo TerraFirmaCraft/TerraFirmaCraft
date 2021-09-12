@@ -6,87 +6,46 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import java.util.LinkedList;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 
 public class ForgeSteps
 {
-    public static ForgeSteps get(CompoundTag tag)
+    @Nullable private ForgeStep first, second, third;
+
+    public void addStep(@Nullable ForgeStep step)
     {
-        if (tag.isEmpty())
-        {
-            return empty();
-        }
-        else
-        {
-            return new ForgeSteps(tag);
-        }
+        third = second;
+        second = first;
+        first = step;
     }
 
-    public static ForgeSteps empty()
+    public void write(CompoundTag tag)
     {
-        return new ForgeSteps();
+        // Serialize to ordinal + 1, so that a zero entry (which is the default when reading from a nbt tag where the value doesn't exist) turns into null.
+        tag.putInt("first", first != null ? first.ordinal() + 1 : 0);
+        tag.putInt("second", second != null ? second.ordinal() + 1 : 0);
+        tag.putInt("third", third != null ? third.ordinal() + 1 : 0);
     }
 
-    private final LinkedList<ForgeStep> steps;
-
-    private ForgeSteps(CompoundTag nbt)
+    public void read(CompoundTag nbt)
     {
-        steps = new LinkedList<>();
-        deserialize(nbt);
-    }
-
-    private ForgeSteps()
-    {
-        steps = new LinkedList<>();
-        reset();
-    }
-
-    public void reset()
-    {
-        for (int i = 0; i < 3; i++) addStep(null);
-    }
-
-    public ForgeSteps addStep(@Nullable ForgeStep step)
-    {
-        steps.add(step);
-        while (steps.size() > 3)
-        {
-            steps.remove();
-        }
-        return this;
-    }
-
-    public CompoundTag serialize()
-    {
-        CompoundTag nbt = new CompoundTag();
-        nbt.putInt("last", getStepInt(0));
-        nbt.putInt("second", getStepInt(1));
-        nbt.putInt("third", getStepInt(2));
-        return nbt;
-    }
-
-    public void deserialize(CompoundTag nbt)
-    {
-        addStep(ForgeStep.valueOf(nbt.getInt("last")));
-        addStep(ForgeStep.valueOf(nbt.getInt("second")));
-        addStep(ForgeStep.valueOf(nbt.getInt("third")));
-    }
-
-    public ForgeSteps copy()
-    {
-        ForgeSteps newSteps = new ForgeSteps();
-        for (ForgeStep step : this.steps)
-            newSteps.addStep(step);
-        return newSteps;
+        first = ForgeStep.valueOf(nbt.getInt("first") - 1);
+        second = ForgeStep.valueOf(nbt.getInt("second") - 1);
+        third = ForgeStep.valueOf(nbt.getInt("third") - 1);
     }
 
     @Nullable
-    public ForgeStep getStep(int idx)
+    public ForgeStep getStep(int step)
     {
-        return steps.get(idx);
+        return switch (step)
+            {
+                case 0 -> first;
+                case 1 -> second;
+                case 2 -> third;
+                default -> throw new IllegalArgumentException("Cannot get step for index: " + step);
+            };
     }
 
     @Override
@@ -98,28 +57,10 @@ public class ForgeSteps
     /**
      * Checks if this is fresh new (no forging has been done yet)
      *
-     * @return true if has been worked at least once, false otherwise
+     * @return {@code true} if has been worked at least once, {@code false} otherwise
      */
-    public boolean hasWork()
+    public boolean any()
     {
-        for (ForgeStep step : steps)
-        {
-            if (step != null)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private int getStepInt(int idx)
-    {
-        ForgeStep step = steps.get(idx);
-        return step == null ? -1 : step.ordinal();
-    }
-
-    private void setStepInt(int position, int step)
-    {
-        steps.set(position, ForgeStep.valueOf(step));
+        return first != null || second != null || third != null;
     }
 }

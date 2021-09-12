@@ -19,7 +19,9 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,14 +35,18 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
@@ -49,7 +55,7 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.MetalItem;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -123,10 +129,44 @@ public class ClientForgeEventHandler
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
 
-            if (event.getFlags().isAdvanced())
+            // Metal content, inferred from a matching heat recipe.
+            ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper(stack);
+            HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
+            if (recipe != null)
             {
-                MetalItem.addTooltipInfo(stack, text);
-                Fuel.addTooltipInfo(stack, text);
+                // Check what we would get if melted
+                final FluidStack fluid = recipe.getOutputFluid(wrapper);
+                if (!fluid.isEmpty())
+                {
+                    final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+                    if (metal != null)
+                    {
+                        final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
+                            .append(new TranslatableComponent(metal.getTranslationKey()));
+                        final MutableComponent heat = Heat.getTooltip(recipe.getTemperature());
+                        if (heat != null)
+                        {
+                            line.append(new TranslatableComponent("tfc.tooltip.item_melts_into_open"))
+                                .append(heat)
+                                .append(new TranslatableComponent("tfc.tooltip.item_melts_into_close"));
+                        }
+                        text.add(line);
+                    }
+                }
+            }
+
+            // Fuel information
+            final Fuel fuel = Fuel.get(stack);
+            if (fuel != null)
+            {
+                final MutableComponent heat = Heat.getTooltip(fuel.getTemperature());
+                if (heat != null)
+                {
+                    text.add(new TranslatableComponent("tfc.tooltip.fuel_burns_at")
+                        .append(heat)
+                        .append(new TranslatableComponent("tfc.tooltip.fuel_burns_at_duration"))
+                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                }
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())

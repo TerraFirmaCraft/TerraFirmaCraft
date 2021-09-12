@@ -6,6 +6,7 @@
 
 package net.dries007.tfc;
 
+import java.util.List;
 import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -79,6 +83,7 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.tileentity.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
+import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
@@ -353,21 +358,29 @@ public final class ForgeEventHandler
 
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
-        // Resource reload listeners
-        ReloadableResourceManager registry = (ReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
-        registry.registerReloadListener(Metal.MANAGER);
-        registry.registerReloadListener(MetalItem.MANAGER);
-        registry.registerReloadListener(Fuel.MANAGER);
-        registry.registerReloadListener(Drinkable.MANAGER);
+        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
+        // So, we hack internal resource lists in order to stick metals before recipes.
+        final ResourceManager resourceManager = event.getDataPackRegistries().getResourceManager();
+        if (resourceManager instanceof SimpleReloadableResourceManager resources)
+        {
+            final List<PreparableReloadListener> listeners = ((SimpleReloadableResourceManagerAccessor) resources).accessor$getListeners();
+            final RecipeManager recipes = event.getDataPackRegistries().getRecipeManager();
+            Helpers.insertBefore(listeners, Metal.MANAGER, recipes);
+        }
 
-        registry.registerReloadListener(Support.MANAGER);
-        registry.registerReloadListener(ItemSizeManager.MANAGER);
+        // All other resource reload listeners can be inserted after recipes.
+        event.addListener(MetalItem.MANAGER);
+        event.addListener(Fuel.MANAGER);
+        event.addListener(Drinkable.MANAGER);
 
-        registry.registerReloadListener(HeatCapability.MANAGER);
-        registry.registerReloadListener(FoodCapability.MANAGER);
+        event.addListener(Support.MANAGER);
+        event.addListener(ItemSizeManager.MANAGER);
+
+        event.addListener(HeatCapability.MANAGER);
+        event.addListener(FoodCapability.MANAGER);
 
         // Last
-        registry.registerReloadListener(CacheInvalidationListener.INSTANCE);
+        event.addListener(CacheInvalidationListener.INSTANCE);
     }
 
     public static void beforeServerStart(FMLServerAboutToStartEvent event)

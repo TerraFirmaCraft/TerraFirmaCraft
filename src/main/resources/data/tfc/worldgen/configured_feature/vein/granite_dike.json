@@ -3,8 +3,12 @@
   "type": "tfc:pipe_vein",
   "config": {
     "rarity": 220,
-    "min_y": -64,
-    "max_y": 180,
+    "min_y": {
+      "absolute": -64
+    },
+    "max_y": {
+      "absolute": 180
+    },
     "size": 150,
     "density": 0.98,
     "blocks": [

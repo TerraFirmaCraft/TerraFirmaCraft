@@ -86,7 +86,7 @@ public class FirepitTileEntity extends AbstractFirepitTileEntity<ItemStackHandle
     protected void updateCachedRecipe()
     {
         assert level != null;
-        cachedRecipe = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitTileEntity.SLOT_ITEM_INPUT)));
+        cachedRecipe = HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitTileEntity.SLOT_ITEM_INPUT)));
     }
 
     /**

@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.config.TFCConfig;
 
 public enum Heat
 {
@@ -53,36 +54,9 @@ public enum Heat
     }
 
     @Nullable
-    public static MutableComponent getTooltipColorless(float temperature)
-    {
-        Heat heat = Heat.getHeat(temperature);
-        if (heat != null)
-        {
-            MutableComponent base = heat.getDisplayName();
-            if (heat != Heat.BRILLIANT_WHITE)
-            {
-                for (int i = 1; i <= 4; i++)
-                {
-                    if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
-                        continue;
-                    base.append("\u066D");
-                }
-            }
-            return base;
-        }
-        return null;
-    }
-
-    @Nullable
     public static MutableComponent getTooltip(float temperature)
     {
-        Heat heat = Heat.getHeat(temperature);
-        MutableComponent tooltip = getTooltipColorless(temperature);
-        if (tooltip != null && heat != null)
-        {
-            tooltip.withStyle(heat.color);
-        }
-        return tooltip;
+        return TFCConfig.SERVER.heatTooltipStyle.get().formatColored(temperature);
     }
 
     private final ChatFormatting color;
@@ -96,6 +70,11 @@ public enum Heat
         this.max = max;
         this.translationKey = TerraFirmaCraft.MOD_ID + ".enum.heat." + name;
         this.color = color;
+    }
+
+    public ChatFormatting getColor()
+    {
+        return color;
     }
 
     public float getMin()

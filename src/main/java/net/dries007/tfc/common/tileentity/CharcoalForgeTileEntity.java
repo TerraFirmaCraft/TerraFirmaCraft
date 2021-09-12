@@ -357,7 +357,7 @@ public class CharcoalForgeTileEntity extends TickableInventoryTileEntity<ItemSta
             ItemStack inputStack = inventory.getStackInSlot(i);
             if (!inputStack.isEmpty())
             {
-                cachedRecipes[i - SLOT_INPUT_MIN] = HeatingRecipe.getRecipe(level, new ItemStackRecipeWrapper(inputStack));
+                cachedRecipes[i - SLOT_INPUT_MIN] = HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(inputStack));
             }
         }
     }

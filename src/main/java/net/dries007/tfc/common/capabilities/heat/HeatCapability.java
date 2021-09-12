@@ -50,7 +50,7 @@ public final class HeatCapability
         float target = targetDeviceTemp(baseTarget, airTicks, isRaining);
         if (temp != target)
         {
-            float delta = TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+            float delta = TFCConfig.SERVER.heatingModifier.get().floatValue();
             float deltaPositive = 1, deltaNegative = 1;
             if (airTicks > 0)
             {
@@ -90,7 +90,7 @@ public final class HeatCapability
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
         if (ticksSinceUpdate <= 0) return temp;
-        final float newTemp = temp - heatCapacity * (float) (ticksSinceUpdate * TFCConfig.SERVER.itemHeatingModifier.get());
+        final float newTemp = temp - heatCapacity * (float) (ticksSinceUpdate * TFCConfig.SERVER.heatingModifier.get());
         return newTemp < 0 ? 0 : newTemp;
     }
 
@@ -107,7 +107,7 @@ public final class HeatCapability
      */
     public static void addTemp(IHeat instance, float target, float modifier)
     {
-        float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+        float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.heatingModifier.get().floatValue();
         if (temp > target)
         {
             temp = target;

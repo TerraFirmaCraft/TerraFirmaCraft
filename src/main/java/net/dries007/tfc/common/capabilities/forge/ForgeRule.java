@@ -45,11 +45,6 @@ public enum ForgeRule
 
     private static final ForgeRule[] VALUES = values();
 
-    public static int getID(@Nullable ForgeRule rule)
-    {
-        return rule == null ? -1 : rule.ordinal();
-    }
-
     @Nullable
     public static ForgeRule valueOf(int id)
     {
@@ -62,20 +57,19 @@ public enum ForgeRule
     ForgeRule(Order order, ForgeStep type)
     {
         this.order = order;
-        if (type == HIT_MEDIUM || type == HIT_HARD)
-            this.type = HIT_LIGHT;
-        else
-            this.type = type;
+        this.type = type;
+
+        assert type != HIT_MEDIUM && type != HIT_HARD;
     }
 
     public int getU()
     {
-        return this.type == HIT_LIGHT ? 218 : this.type.getU();
+        return type == HIT_LIGHT ? 218 : type.getU();
     }
 
     public int getV()
     {
-        return this.type == HIT_LIGHT ? 18 : this.type.getV();
+        return type == HIT_LIGHT ? 18 : type.getV();
     }
 
     public int getW()
@@ -85,24 +79,17 @@ public enum ForgeRule
 
     public boolean matches(ForgeSteps steps)
     {
-        switch (this.order)
-        {
-            case ANY:
-                return matchesStep(steps.getStep(2)) || matchesStep(steps.getStep(1)) || matchesStep(steps.getStep(0));
-            case NOT_LAST:
-                return matchesStep(steps.getStep(1)) || matchesStep(steps.getStep(0));
-            case LAST:
-                return matchesStep(steps.getStep(2));
-            case SECOND_LAST:
-                return matchesStep(steps.getStep(1));
-            case THIRD_LAST:
-                return matchesStep(steps.getStep(0));
-            default:
-                return false;
-        }
+        return switch (order)
+            {
+                case ANY -> matches(steps.getStep(2)) || matches(steps.getStep(1)) || matches(steps.getStep(0));
+                case NOT_LAST -> matches(steps.getStep(1)) || matches(steps.getStep(0));
+                case LAST -> matches(steps.getStep(2));
+                case SECOND_LAST -> matches(steps.getStep(1));
+                case THIRD_LAST -> matches(steps.getStep(0));
+            };
     }
 
-    private boolean matchesStep(@Nullable ForgeStep step)
+    private boolean matches(@Nullable ForgeStep step)
     {
         if (this.type == HIT_LIGHT)
         {

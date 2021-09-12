@@ -99,13 +99,13 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp, firepit=True)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
-    fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350, bloomery=True)
-    fuel_item(rm, 'peat', 'tfc:peat', 2500, 600, firepit=True)
-    fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900, firepit=True)
+    fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350)
+    fuel_item(rm, 'peat', 'tfc:peat', 2500, 600)
+    fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900)
 
     # =========
     # ITEM TAGS
@@ -124,9 +124,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
     rm.item_tag('forge_fuel', '#minecraft:coals')
+    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle')
+    rm.item_tag('bloomery_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
-    rm.item_tag('firepit_fuel', '#minecraft:logs')
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('log_pile_logs', '#minecraft:logs')
     rm.item_tag('pit_kiln_logs', '#minecraft:logs')
@@ -514,13 +515,7 @@ def heat_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float, forge: bool = False, bloomery: bool = False, firepit: bool = False):
-    if forge:
-        rm.item_tag('forge_fuel', ingredient)
-    if bloomery:
-        rm.item_tag('bloomery_fuel', ingredient)
-    if firepit:
-        rm.item_tag('firepit_fuel', ingredient)
+def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float):
     rm.data(('tfc', 'fuels', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'duration': duration,

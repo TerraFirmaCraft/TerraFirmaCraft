@@ -16,131 +16,134 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
+import net.dries007.tfc.common.items.VesselItem;
+
 public class ForgingHandler implements IForging
 {
-    private final LazyOptional<IForging> capability = LazyOptional.of(() -> this);
-    private final ItemStack container;
+    private final LazyOptional<IForging> capability;
+    private final ItemStack stack;
 
-    public ForgingHandler(ItemStack container)
+    private final ForgeSteps steps;
+
+    private int work;
+    @Nullable private ResourceLocation recipe;
+
+    private boolean initialized;
+
+    public ForgingHandler(ItemStack stack)
     {
-        this.container = container;
+        this.capability = LazyOptional.of(() -> this);
+        this.stack = stack;
+
+        this.work = 0;
+        this.recipe = null;
+        this.steps = new ForgeSteps();
     }
 
     public ItemStack getContainer()
     {
-        return container;
+        return stack;
     }
 
     @Override
     public int getWork()
     {
-        CompoundTag tag = container.getTag();
-        if (tag != null && tag.contains("forging"))
-        {
-            return tag.getCompound("forging").getInt("work");
-        }
-        return 0;
+        return work;
     }
 
     @Override
     public void setWork(int work)
     {
-        getTag().putInt("work", work);
-        checkEmpty();
+        this.work = work;
+        save();
     }
 
     @Nullable
     @Override
     public ResourceLocation getRecipeName()
     {
-        CompoundTag tag = container.getTag();
-        if (tag != null && tag.contains("forging") && tag.getCompound("forging").contains("recipe"))
-        {
-            return new ResourceLocation(tag.getCompound("forging").getString("recipe"));
-        }
-        return null;
+        return recipe;
     }
 
     @Override
-    public void setRecipe(@Nullable ResourceLocation recipeName)
+    public void setRecipe(@Nullable ResourceLocation recipe)
     {
-        if (recipeName == null)
-        {
-            getTag().remove("recipe");
-            checkEmpty();
-        }
-        else
-        {
-            getTag().putString("recipe", recipeName.toString());
-        }
+        this.recipe = recipe;
+        save();
+    }
+
+    @Nullable
+    @Override
+    public ForgeStep getStep(int step)
+    {
+        return steps.getStep(step);
     }
 
     @Override
-    public ForgeSteps getSteps()
+    public boolean matches(ForgeRule rule)
     {
-        CompoundTag tag = container.getTag();
-        if (tag != null && tag.contains("forging"))
-        {
-            return ForgeSteps.get(tag.getCompound("forging").getCompound("steps"));
-        }
-        return ForgeSteps.empty();
+        return rule.matches(steps);
     }
 
     @Override
     public void addStep(@Nullable ForgeStep step)
     {
-        getTag().put("steps", ForgeSteps.get(getTag().getCompound("steps")).addStep(step).serialize());
-        checkEmpty();
+        steps.addStep(step);
+        save();
     }
 
     @Override
     public void reset()
     {
-        CompoundTag tag = container.getTag();
-        if (tag != null)
-        {
-            tag.remove("forging");
-            // Also, removes nbt data from container item if there's nothing there
-            if (container.getTag().isEmpty())
-            {
-                container.setTag(null);
-            }
-        }
+        save();
     }
 
+    /**
+     * @see VesselItem.VesselCapability#load()
+     */
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return ForgingCapability.CAPABILITY.orEmpty(cap, capability);
-    }
-
-    /**
-     * Initialize tag if needed, returns a tag with forging data
-     * Only call this when adding work / forge step
-     */
-    private CompoundTag getTag()
-    {
-        CompoundTag tag = container.getTag();
-        if (tag == null)
+        if (cap == ForgingCapability.CAPABILITY)
         {
-            tag = new CompoundTag();
-            container.setTag(tag);
+            load();
+            return capability.cast();
         }
-        tag.put("forging", new CompoundTag());
-        tag.getCompound("forging").put("steps", new CompoundTag());
-        return tag.getCompound("forging");
+        return LazyOptional.empty();
     }
 
-    private void checkEmpty()
+    private void load()
     {
-        // Checks if the capability is empty and resets the container tag
-        CompoundTag tag = container.getTag();
-        if (tag != null && tag.contains("forging"))
+        if (!initialized)
         {
-            if (getWork() == 0 && !getSteps().hasWork() && getRecipeName() == null)
+            initialized = true;
+
+            final CompoundTag tag = stack.getTagElement("tfc:forging");
+            if (tag != null)
             {
-                reset();
+                work = tag.getInt("work");
+                steps.read(tag);
+                recipe = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
+            }
+        }
+    }
+
+    private void save()
+    {
+        if (work == 0 && !steps.any() && recipe == null)
+        {
+            // No defining data, so don't save anything
+            stack.removeTagKey("tfc:forging");
+        }
+        else
+        {
+            final CompoundTag tag = stack.getOrCreateTagElement("tfc:forging");
+            tag.putInt("work", work);
+            steps.write(tag);
+            if (recipe != null)
+            {
+                tag.putString("recipe", recipe.toString());
             }
         }
     }

@@ -67,8 +67,9 @@ public final class TerraFirmaCraft
 
     public TerraFirmaCraft()
     {
-        LOGGER.info("TFC Constructor");
+        LOGGER.info("Initializing TerraFirmaCraft");
         LOGGER.debug("Debug Logging Enabled");
+        if (Helpers.detectAssertionsEnabled()) LOGGER.debug("Assertions Enabled");
 
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 

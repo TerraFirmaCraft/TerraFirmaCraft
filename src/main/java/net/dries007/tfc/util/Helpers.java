@@ -537,6 +537,19 @@ public final class Helpers
         return list.subList(length - n, length);
     }
 
+    public static <T> void insertBefore(List<? super T> list, T element, T before)
+    {
+        final int index = list.indexOf(before);
+        if (index == -1)
+        {
+            list.add(element); // Element not found, so just insert at the end
+        }
+        else
+        {
+            list.add(index, element); // Insert at the target location, shifts the target forwards
+        }
+    }
+
     public static Field findUnobfField(Class<?> clazz, String fieldName)
     {
         try
@@ -678,6 +691,14 @@ public final class Helpers
     public static BlockPos quartToBlock(int x, int y, int z)
     {
         return new BlockPos(x << 2, y << 2, z << 2);
+    }
+
+    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
+    public static boolean detectAssertionsEnabled()
+    {
+        boolean enabled = false;
+        assert enabled = true;
+        return enabled;
     }
 
     /**

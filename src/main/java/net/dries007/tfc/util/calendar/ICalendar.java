@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -33,6 +32,11 @@ public interface ICalendar
     float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
 
     /* Total Calculation Methods */
+
+    static float getTotalMinutes(long time)
+    {
+        return time / TICKS_IN_MINUTE;
+    }
 
     static long getTotalHours(long time)
     {
@@ -90,17 +94,42 @@ public interface ICalendar
 
     /* Format Methods */
 
-    static Component getTimeAndDate(long time, long daysInMonth)
+    static MutableComponent getTimeAndDate(long time, long daysInMonth)
     {
         return ICalendar.getTimeAndDate(ICalendar.getHourOfDay(time), ICalendar.getMinuteOfHour(time), ICalendar.getMonthOfYear(time, daysInMonth), ICalendar.getDayOfMonth(time, daysInMonth), ICalendar.getTotalYears(time, daysInMonth));
     }
 
-    static Component getTimeAndDate(int hour, int minute, Month month, int day, long years)
+    static MutableComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         return new TextComponent(String.format("%d:%02d ", hour, minute))
             .append(Helpers.translateEnum(month))
             .append(" ")
             .append(new TranslatableComponent("tfc.tooltip.calendar_days_years", day, years));
+    }
+
+    static MutableComponent getTimeDelta(long ticks, int daysInMonth)
+    {
+        final long hours = getTotalHours(ticks);
+        if (hours < 1)
+        {
+            return new TranslatableComponent("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
+        }
+        final long days = getTotalDays(ticks);
+        if (days < 1)
+        {
+            return new TranslatableComponent("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
+        }
+        final long months = getTotalMonths(ticks, daysInMonth);
+        if (months < 1)
+        {
+            return new TranslatableComponent("tfc.tooltip.time_delta_days", days);
+        }
+        final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
+        if (years < 1)
+        {
+            return new TranslatableComponent("tfc.tooltip.time_delta_months_days", months, days);
+        }
+        return new TranslatableComponent("tfc.tooltip.time_delta_years_months_days", years, months, days);
     }
 
     /**
@@ -192,7 +221,7 @@ public interface ICalendar
      * Get the equivalent total world time
      * World time 0 = 6:00 AM, which is calendar time 6000
      *
-     * @return a value in [0, 24000) which should match the result of {@link World#getDayTime()}
+     * @return a value in [0, 24000) which should match the result of {@link net.minecraft.world.level.Level#getDayTime()}
      */
     default long getCalendarDayTime()
     {
@@ -255,8 +284,13 @@ public interface ICalendar
         return (long) getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
     }
 
-    default Component getCalendarTimeAndDate()
+    default MutableComponent getCalendarTimeAndDate()
     {
         return ICalendar.getTimeAndDate(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    default MutableComponent getTimeDelta(long ticks)
+    {
+        return ICalendar.getTimeDelta(ticks, getCalendarDaysInMonth());
     }
 }
