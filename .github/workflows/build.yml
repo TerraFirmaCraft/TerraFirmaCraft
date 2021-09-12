@@ -1,0 +1,93 @@
+name: Test and Build 1.17.x
+
+on:
+  push:
+    branches:
+      - 1.17.x
+
+jobs:
+  main:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up JDK 16
+      uses: actions/setup-java@v2
+      with:
+        java-version: '16'
+        distribution: 'adopt'
+    - name: Cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: Get Version
+      id: version
+      uses: actions/github-script@0.4.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        result-encoding: string
+        script: |
+          let ref = '${{ github.ref }}';
+          return ref.startsWith('refs/tags/v') ? ref.replace('refs/tags/v', '') : 'indev';
+    - name: Get Version Type
+      id: version_type
+      uses: actions/github-script@0.4.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        result-encoding: string
+        script: |
+          let version = '${{ steps.version.outputs.result }}';
+          return version.includes('alpha') ? 'alpha' : (version.includes('beta') ? 'beta' : (version == 'indev' ? 'indev' : 'release'));
+    - name: Log Version Info
+      env:
+        VERSION: ${{ steps.version.outputs.result }}
+        VERSION_TYPE: ${{ steps.version_type.outputs.result }}
+      run: echo "version = $VERSION, type = $VERSION_TYPE"
+    - name: Check Licenses
+      run: ./gradlew checkLicenses
+      env:
+          VERSION: ${{ steps.version.outputs.result }}
+    - name: Run Test
+      run: ./gradlew test
+      env:
+          VERSION: ${{ steps.version.outputs.result }}
+    - name: Build
+      if: ${{ steps.version.outputs.result != 'indev' && success() }}
+      run: ./gradlew build
+      env:
+        VERSION: ${{ steps.version.outputs.result }}
+    - name: Create Release
+      id: create_release
+      if: ${{ steps.version.outputs.result != 'indev' && success() }}
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.result }}
+        release_name: TerraFirmaCraft 1.17.1-${{ steps.version.outputs.result }}
+        body: |
+          Version ${{ steps.version.outputs.result }}
+          
+          ### Changes
+          
+          - todo: document changes
+        draft: true
+        prerelease: ${{ steps.version_type.outputs.result != 'release' }}
+    - name: Upload Main Jar
+      id: upload_main_jar
+      if: ${{ steps.version.outputs.result != 'indev' && success() }}
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/libs/terrafirmacraft-1.17.1-${{ steps.version.outputs.result }}.jar
+        asset_name: terrafirmacraft-forge-1.17.1-${{ steps.version.outputs.result }}.jar
+        asset_content_type: application/java-archive
