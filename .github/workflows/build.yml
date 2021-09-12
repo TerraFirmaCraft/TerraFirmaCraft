@@ -50,17 +50,13 @@ jobs:
         VERSION: ${{ steps.version.outputs.result }}
         VERSION_TYPE: ${{ steps.version_type.outputs.result }}
       run: echo "version = $VERSION, type = $VERSION_TYPE"
-    - name: Check Licenses
-      run: ./gradlew checkLicenses
-      env:
-          VERSION: ${{ steps.version.outputs.result }}
-    - name: Run Test
-      run: ./gradlew test
-      env:
-          VERSION: ${{ steps.version.outputs.result }}
     - name: Build
-      if: ${{ steps.version.outputs.result != 'indev' && success() }}
       run: ./gradlew build
+      env:
+        VERSION: ${{ steps.version.outputs.result }}
+    - name: Test
+      if: ${{ success() }}
+      run: ./gradlew test
       env:
         VERSION: ${{ steps.version.outputs.result }}
     - name: Create Release
@@ -88,6 +84,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/libs/terrafirmacraft-1.17.1-${{ steps.version.outputs.result }}.jar
-        asset_name: terrafirmacraft-forge-1.17.1-${{ steps.version.outputs.result }}.jar
+        asset_path: ./build/libs/TerraFirmaCraft-Forge-1.17.1-${{ steps.version.outputs.result }}.jar
+        asset_name: TerraFirmaCraft-Forge-1.17.1-${{ steps.version.outputs.result }}.jar
         asset_content_type: application/java-archive

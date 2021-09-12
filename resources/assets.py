@@ -431,7 +431,10 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
-                item.with_lang(lang('%s %s' % (metal, metal_item)))
+                if metal_item == 'propick':
+                    item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
+                else:
+                    item.with_lang(lang('%s %s', metal, metal_item))
 
         # Metal Blocks
         for metal_block, metal_block_data in METAL_BLOCKS.items():
