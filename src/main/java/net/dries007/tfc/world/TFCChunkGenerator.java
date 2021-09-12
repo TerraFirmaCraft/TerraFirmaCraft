@@ -399,7 +399,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
 
         final Biome[] localBiomes = new Biome[16 * 16];
-        final double[] sampledHeightMap = new double[7 * 7];
         final int[] surfaceHeightMap = new int[16 * 16];
 
         final ChunkBiomeContainer biomeContainer = chunk.getBiomes();
@@ -423,21 +422,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
         helper.fillFromNoise();
-
-        // Fill in additional derivative sampling points
-        for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)
-        {
-            int x = EXTERIOR_POINTS[i << 1];
-            int z = EXTERIOR_POINTS[(i << 1) | 1];
-
-            int x0 = chunkX + ((x - 1) << 2);
-            int z0 = chunkZ + ((z - 1) << 2);
-
-            helper.setupColumn(x0, z0);
-            sampledHeightMap[x + 7 * z] = helper.sampleColumnHeightAndBiome(biomeWeights[x + z * 7], false);
-        }
-
-        final double[] slopeMap = buildSlopeMap(sampledHeightMap);
+        final double[] slopeMap = helper.buildSlopeMap();
 
         buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
         if (ENABLE_SLOPE_VISUALIZATION)
@@ -669,35 +654,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 accumulator.mergeDouble(entry.getKey(), entry.getDoubleValue() * t, Double::sum);
             }
         }
-    }
-
-    /**
-     * Builds a 6x6, 4x4 resolution slope map for a chunk
-     * This is enough to do basic linear interpolation for every point within the chunk.
-     *
-     * @param sampledHeightMap A 7x7, 4x4 resolution map of the heights in the chunk, offset by (-1, -1)
-     * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
-     */
-    @SuppressWarnings("PointlessArithmeticExpression")
-    private double[] buildSlopeMap(double[] sampledHeightMap)
-    {
-        double[] slopeMap = new double[6 * 6];
-        for (int x = 0; x < 6; x++)
-        {
-            for (int z = 0; z < 6; z++)
-            {
-                // Math people (including myself) cry at what I'm calling 'the derivative'
-                final double nw = sampledHeightMap[(x + 0) + 7 * (z + 0)];
-                final double ne = sampledHeightMap[(x + 1) + 7 * (z + 0)];
-                final double sw = sampledHeightMap[(x + 0) + 7 * (z + 1)];
-                final double se = sampledHeightMap[(x + 1) + 7 * (z + 1)];
-
-                final double center = (nw + ne + sw + se) / 4;
-                final double slope = Math.abs(nw - center) + Math.abs(ne - center) + Math.abs(sw - center) + Math.abs(se - center);
-                slopeMap[x + 6 * z] = slope;
-            }
-        }
-        return slopeMap;
     }
 
     private <T> Object2DoubleMap<T> newWeightMap()
@@ -943,6 +899,58 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     }
                 }
             }
+        }
+
+        /**
+         * Builds a 6x6, 4x4 resolution slope map for a chunk
+         * This is enough to do basic linear interpolation for every point within the chunk.
+         *
+         * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
+         */
+        @SuppressWarnings("PointlessArithmeticExpression")
+        double[] buildSlopeMap()
+        {
+            double[] sampledHeightMap = new double[7 * 7]; // A 7x7, 4x4 resolution map of heights in the chunk, offset by (-1, -1)
+
+            // Interior points - record from the existing positions in the chunk
+            for (int x = 0; x < 4; x++)
+            {
+                for (int z = 0; z < 4; z++)
+                {
+                    sampledHeightMap[(x + 1) + 7 * (z + 1)] = surfaceHeight[(x << 2) + 16 * (z << 2)];
+                }
+            }
+
+            // Exterior points
+            for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)
+            {
+                int x = EXTERIOR_POINTS[i << 1];
+                int z = EXTERIOR_POINTS[(i << 1) | 1];
+
+                int x0 = chunkX + ((x - 1) << 2);
+                int z0 = chunkZ + ((z - 1) << 2);
+
+                setupColumn(x0, z0);
+                sampledHeightMap[x + 7 * z] = sampleColumnHeightAndBiome(sampledBiomeWeights[x + z * 7], false);
+            }
+
+            double[] slopeMap = new double[6 * 6];
+            for (int x = 0; x < 6; x++)
+            {
+                for (int z = 0; z < 6; z++)
+                {
+                    // Math people (including myself) cry at what I'm calling 'the derivative'
+                    final double nw = sampledHeightMap[(x + 0) + 7 * (z + 0)];
+                    final double ne = sampledHeightMap[(x + 1) + 7 * (z + 0)];
+                    final double sw = sampledHeightMap[(x + 0) + 7 * (z + 1)];
+                    final double se = sampledHeightMap[(x + 1) + 7 * (z + 1)];
+
+                    final double center = (nw + ne + sw + se) / 4;
+                    final double slope = Math.abs(nw - center) + Math.abs(ne - center) + Math.abs(sw - center) + Math.abs(se - center);
+                    slopeMap[x + 6 * z] = slope;
+                }
+            }
+            return slopeMap;
         }
 
         /**
