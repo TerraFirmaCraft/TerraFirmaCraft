@@ -1371,8 +1371,11 @@ public class FastNoiseLite
                         int hash = Hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
 
-                        float vecX = (float) (xi - x) + RandVecs2D[idx] * cellularJitter;
-                        float vecY = (float) (yi - y) + RandVecs2D[idx | 1] * cellularJitter;
+                        float centerX = xi + RandVecs2D[idx] * cellularJitter;
+                        float centerY = yi + RandVecs2D[idx | 1] * cellularJitter;
+
+                        float vecX = centerX - x;
+                        float vecY = centerY - y;
 
                         float newDistance = vecX * vecX + vecY * vecY;
 
@@ -1383,8 +1386,8 @@ public class FastNoiseLite
                             closestHash = hash;
 
                             // Store the last computed centers
-                            lastCenterX = xi + x;
-                            lastCenterY = yi + y;
+                            lastCenterX = centerX;
+                            lastCenterY = centerY;
                         }
                         yPrimed += PrimeY;
                     }
@@ -1401,8 +1404,11 @@ public class FastNoiseLite
                         int hash = Hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
 
-                        float vecX = (float) (xi - x) + RandVecs2D[idx] * cellularJitter;
-                        float vecY = (float) (yi - y) + RandVecs2D[idx | 1] * cellularJitter;
+                        float centerX = xi + RandVecs2D[idx] * cellularJitter;
+                        float centerY = yi + RandVecs2D[idx | 1] * cellularJitter;
+
+                        float vecX = centerX - x;
+                        float vecY = centerY - y;
 
                         float newDistance = FastAbs(vecX) + FastAbs(vecY);
 
@@ -1413,8 +1419,8 @@ public class FastNoiseLite
                             closestHash = hash;
 
                             // Store the last computed centers
-                            lastCenterX = xi + x;
-                            lastCenterY = yi + y;
+                            lastCenterX = centerX;
+                            lastCenterY = centerY;
                         }
                         yPrimed += PrimeY;
                     }
@@ -1431,8 +1437,11 @@ public class FastNoiseLite
                         int hash = Hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
 
-                        float vecX = (float) (xi - x) + RandVecs2D[idx] * cellularJitter;
-                        float vecY = (float) (yi - y) + RandVecs2D[idx | 1] * cellularJitter;
+                        float centerX = xi + RandVecs2D[idx] * cellularJitter;
+                        float centerY = yi + RandVecs2D[idx | 1] * cellularJitter;
+
+                        float vecX = centerX - x;
+                        float vecY = centerY - y;
 
                         float newDistance = (FastAbs(vecX) + FastAbs(vecY)) + (vecX * vecX + vecY * vecY);
 
@@ -1443,8 +1452,8 @@ public class FastNoiseLite
                             closestHash = hash;
 
                             // Store the last computed centers
-                            lastCenterX = xi + x;
-                            lastCenterY = yi + y;
+                            lastCenterX = centerX;
+                            lastCenterY = centerY;
                         }
                         yPrimed += PrimeY;
                     }
@@ -1525,9 +1534,13 @@ public class FastNoiseLite
                             int hash = Hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
 
-                            float vecX = (float) (xi - x) + RandVecs3D[idx] * cellularJitter;
-                            float vecY = (float) (yi - y) + RandVecs3D[idx | 1] * cellularJitter;
-                            float vecZ = (float) (zi - z) + RandVecs3D[idx | 2] * cellularJitter;
+                            float centerX = xi + RandVecs3D[idx] * cellularJitter;
+                            float centerY = yi + RandVecs3D[idx | 1] * cellularJitter;
+                            float centerZ = zi + RandVecs3D[idx | 2] * cellularJitter;
+
+                            float vecX = centerX - x;
+                            float vecY = centerY - y;
+                            float vecZ = centerZ - z;
 
                             float newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
 
@@ -1538,9 +1551,9 @@ public class FastNoiseLite
                                 closestHash = hash;
 
                                 // Store the last computed centers
-                                lastCenterX = xi + x;
-                                lastCenterY = yi + y;
-                                lastCenterZ = zi + z;
+                                lastCenterX = centerX;
+                                lastCenterY = centerY;
+                                lastCenterZ = centerZ;
                             }
                             zPrimed += PrimeZ;
                         }
@@ -1563,9 +1576,13 @@ public class FastNoiseLite
                             int hash = Hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
 
-                            float vecX = (float) (xi - x) + RandVecs3D[idx] * cellularJitter;
-                            float vecY = (float) (yi - y) + RandVecs3D[idx | 1] * cellularJitter;
-                            float vecZ = (float) (zi - z) + RandVecs3D[idx | 2] * cellularJitter;
+                            float centerX = xi + RandVecs3D[idx] * cellularJitter;
+                            float centerY = yi + RandVecs3D[idx | 1] * cellularJitter;
+                            float centerZ = zi + RandVecs3D[idx | 2] * cellularJitter;
+
+                            float vecX = centerX - x;
+                            float vecY = centerY - y;
+                            float vecZ = centerZ - z;
 
                             float newDistance = FastAbs(vecX) + FastAbs(vecY) + FastAbs(vecZ);
 
@@ -1576,9 +1593,9 @@ public class FastNoiseLite
                                 closestHash = hash;
 
                                 // Store the last computed centers
-                                lastCenterX = xi + x;
-                                lastCenterY = yi + y;
-                                lastCenterZ = zi + z;
+                                lastCenterX = centerX;
+                                lastCenterY = centerY;
+                                lastCenterZ = centerZ;
                             }
                             zPrimed += PrimeZ;
                         }
@@ -1601,9 +1618,13 @@ public class FastNoiseLite
                             int hash = Hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
 
-                            float vecX = (float) (xi - x) + RandVecs3D[idx] * cellularJitter;
-                            float vecY = (float) (yi - y) + RandVecs3D[idx | 1] * cellularJitter;
-                            float vecZ = (float) (zi - z) + RandVecs3D[idx | 2] * cellularJitter;
+                            float centerX = xi + RandVecs3D[idx] * cellularJitter;
+                            float centerY = yi + RandVecs3D[idx | 1] * cellularJitter;
+                            float centerZ = zi + RandVecs3D[idx | 2] * cellularJitter;
+
+                            float vecX = centerX - x;
+                            float vecY = centerY - y;
+                            float vecZ = centerZ - z;
 
                             float newDistance = (FastAbs(vecX) + FastAbs(vecY) + FastAbs(vecZ)) + (vecX * vecX + vecY * vecY + vecZ * vecZ);
 
@@ -1614,9 +1635,9 @@ public class FastNoiseLite
                                 closestHash = hash;
 
                                 // Store the last computed centers
-                                lastCenterX = xi + x;
-                                lastCenterY = yi + y;
-                                lastCenterZ = zi + z;
+                                lastCenterX = centerX;
+                                lastCenterY = centerY;
+                                lastCenterZ = centerZ;
                             }
                             zPrimed += PrimeZ;
                         }

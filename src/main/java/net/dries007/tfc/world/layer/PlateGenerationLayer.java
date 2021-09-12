@@ -17,12 +17,12 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
     private static final float PI = (float) Math.PI;
 
     private final Cellular2D plateNoise;
-    private final int oceanPercent;
+    private final float oceanPercent;
 
     public PlateGenerationLayer(Cellular2D plateNoise, int oceanPercent)
     {
         this.plateNoise = plateNoise;
-        this.oceanPercent = oceanPercent;
+        this.oceanPercent = oceanPercent * 0.01f;
     }
 
     @Override
@@ -31,12 +31,11 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
         plateNoise.noise(x, z);
         float centerX = plateNoise.centerX();
         float centerZ = plateNoise.centerZ();
-        context.setSeed(Float.floatToRawIntBits(centerX), Float.floatToRawIntBits(centerZ));
-        for (int j = 0; j < 10; j++) context.nextInt(1);
-        boolean oceanic = context.nextInt(100) < oceanPercent;
-        float angle = 2 * PI * context.nextInt(100) / 100f;
-        float velocity = context.nextInt(100) / 100f;
-        float elevation = context.nextInt(100) / 100f;
+        context.setSeed((long) centerX, (long) centerZ);
+        boolean oceanic = context.nextFloat() < oceanPercent;
+        float angle = 2 * PI * context.nextFloat();
+        float velocity = context.nextFloat();
+        float elevation = context.nextFloat();
         float driftX = Mth.cos(angle) * velocity;
         float driftZ = Mth.sin(angle) * velocity;
         return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);

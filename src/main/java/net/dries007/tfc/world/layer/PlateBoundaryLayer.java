@@ -14,10 +14,10 @@ public enum PlateBoundaryLayer
 {
     INSTANCE;
 
-    public static final float SHEAR_THRESHOLD = 0.9f;
+    public static final float SHEAR_THRESHOLD = 0.75f;
 
-    public static final float HIGH_ELEVATION = 0.66f;
-    public static final float MID_ELEVATION = 0.33f;
+    public static final float HIGH_ELEVATION = 0.7f;
+    public static final float MID_ELEVATION = 0.3f;
 
     public AreaFactory apply(long seed, TypedAreaFactory<Plate> plateLayer)
     {

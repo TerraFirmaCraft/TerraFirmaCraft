@@ -8,7 +8,7 @@ package net.dries007.tfc.world.noise;
 
 public class Cellular2D implements Noise2D
 {
-    final FastNoiseLite fnl;
+    private final FastNoiseLite fnl;
     private float frequency;
 
     public Cellular2D(long seed)

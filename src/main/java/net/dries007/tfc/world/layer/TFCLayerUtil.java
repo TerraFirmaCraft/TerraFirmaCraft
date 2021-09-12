@@ -161,7 +161,7 @@ public class TFCLayerUtil
         AreaFactory mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 30).apply(random.nextLong());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
         plateArtist.draw("plate_generation", 1, plateLayer);
         plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(random.nextLong(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
@@ -300,7 +300,7 @@ public class TFCLayerUtil
         AreaFactory mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 30).apply(random.nextLong());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
         plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(random.nextLong(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
 

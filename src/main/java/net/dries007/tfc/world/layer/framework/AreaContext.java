@@ -22,7 +22,7 @@ public class AreaContext extends SimpleRandomSource
 
     public void setSeed(long x, long z)
     {
-        setSeed((x * 26394813L) ^ (z * 8236491231L) ^ seed);
+        setSeed(((x * 501125321L) ^ (z * 1136930381L) ^ seed) * 0x27d4eb2d);
     }
 
     public int choose(int first, int second)
