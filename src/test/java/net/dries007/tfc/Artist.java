@@ -169,7 +169,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         static <T> Pixel<T> coerceInt(IntPixel<T> pixel)
         {
-            return (x, y) -> pixel.apply((int) x, (int) y);
+            return (x, y) -> pixel.apply((int) (x + 0.5), (int) (y + 0.5));
         }
 
         static <T> Pixel<T> coerceFloat(FloatPixel<T> pixel)
@@ -198,7 +198,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         static NoisePixel coerceInt(IntNoisePixel pixel)
         {
-            return (x, y) -> pixel.apply((int) x, (int) y);
+            return (x, y) -> pixel.apply((int) (x + 0.5), (int) (y + 0.5));
         }
 
         static NoisePixel coerceFloat(FloatNoisePixel pixel)
