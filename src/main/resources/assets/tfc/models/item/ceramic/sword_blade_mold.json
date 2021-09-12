@@ -1,7 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "loader": "forge:bucket",
+  "parent": "forge:item/default",
+  "fluid": "empty",
   "textures": {
-    "layer0": "tfc:item/ceramic/fired_mold/sword_blade/empty"
+    "base": "tfc:item/ceramic/fired_mold/sword_blade_empty",
+    "fluid": "tfc:item/ceramic/fired_mold/sword_blade_overlay"
   }
 }

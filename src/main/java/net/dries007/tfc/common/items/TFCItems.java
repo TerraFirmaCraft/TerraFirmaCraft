@@ -183,7 +183,7 @@ public final class TFCItems
     );
 
     public static final Map<Metal.ItemType, RegistryObject<Item>> MOLDS = Helpers.mapOfKeys(Metal.ItemType.class, Metal.ItemType::hasMold, type ->
-        register("ceramic/" + type.name() + "_mold", () -> new MoldItem(new Item.Properties().tab(MISC).stacksTo(1)))
+        register("ceramic/" + type.name() + "_mold", () -> new MoldItem(type, new Item.Properties().tab(MISC).stacksTo(1)))
     );
 
     // Fluid Buckets

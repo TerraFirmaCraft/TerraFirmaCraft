@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "tier": 0,
   "fluid": "tfc:metal/unknown",
-  "melt_temperature": 1250,
+  "melt_temperature": 400,
   "heat_capacity": 0.5
 }

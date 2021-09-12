@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.vein;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
@@ -32,9 +33,9 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     }
 
     @Override
-    protected DiscVein createVein(int chunkX, int chunkZ, Random random, DiscVeinConfig config)
+    protected DiscVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, Random random, DiscVeinConfig config)
     {
-        return new DiscVein(defaultPos(chunkX, chunkZ, random, config), random, config.getSize());
+        return new DiscVein(defaultPos(context, chunkX, chunkZ, random, config), random, config.getSize());
     }
 
     @Override

@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/sword_blade_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/black_bronze"
+    "fluid": "tfc:metal/black_bronze",
+    "amount": 200
   },
   "result": {
     "item": "tfc:metal/sword_blade/black_bronze"

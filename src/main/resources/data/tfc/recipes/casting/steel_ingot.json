@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/ingot_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/steel"
+    "fluid": "tfc:metal/steel",
+    "amount": 100
   },
   "result": {
     "item": "tfc:metal/ingot/steel"

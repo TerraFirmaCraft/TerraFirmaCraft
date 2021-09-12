@@ -17,6 +17,13 @@ public class MetalManager extends DataManager.Instance<Metal>
         this.metalsFromFluids = new HashMap<>();
     }
 
+    /**
+     * Reverse lookup for metals attached to fluids.
+     * For the other direction, see {@link Metal#getFluid()}.
+     *
+     * @param fluid The fluid, can be empty.
+     * @return A metal if it exists, and null if it doesn't.
+     */
     @Nullable
     public Metal getMetal(Fluid fluid)
     {

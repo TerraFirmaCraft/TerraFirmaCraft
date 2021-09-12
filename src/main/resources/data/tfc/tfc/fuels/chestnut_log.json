@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/chestnut"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/chestnut"
+    },
+    {
+      "item": "tfc:wood/wood/chestnut"
+    }
+  ],
   "duration": 1500,
   "temperature": 651
 }

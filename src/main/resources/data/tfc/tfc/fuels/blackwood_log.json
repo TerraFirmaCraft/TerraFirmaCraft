@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/blackwood"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/blackwood"
+    },
+    {
+      "item": "tfc:wood/wood/blackwood"
+    }
+  ],
   "duration": 1750,
   "temperature": 720
 }

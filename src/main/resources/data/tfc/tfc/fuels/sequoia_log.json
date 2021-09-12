@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/sequoia"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/sequoia"
+    },
+    {
+      "item": "tfc:wood/wood/sequoia"
+    }
+  ],
   "duration": 1750,
   "temperature": 612
 }

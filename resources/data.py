@@ -72,14 +72,19 @@ def generate(rm: ResourceManager):
     heat_item(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
     heat_item(rm, 'glass_shard', 'tfc:glass_shard', 1)
     heat_item(rm, 'sand', 'tag!forge:sand', 0.8)
-    heat_item(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', 1)
-    heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 1)
-    heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', 1)
+    heat_item(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
+    heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
+    heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
     heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
     for pottery in SIMPLE_POTTERY:
-        heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, 1)
+        heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+
+    for item, item_data in METAL_ITEMS.items():
+        if item_data.mold:
+            heat_item(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
+            # No need to do fired molds, as they have their own capability implementation
 
     # Supports
 
@@ -94,7 +99,7 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', 'tfc:wood/log/' + wood, wood_data.duration, wood_data.temp, firepit=True)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp, firepit=True)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)

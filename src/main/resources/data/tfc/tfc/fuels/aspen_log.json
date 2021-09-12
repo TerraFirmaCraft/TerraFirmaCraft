@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/aspen"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/aspen"
+    },
+    {
+      "item": "tfc:wood/wood/aspen"
+    }
+  ],
   "duration": 1000,
   "temperature": 611
 }

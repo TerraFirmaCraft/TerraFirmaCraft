@@ -3,5 +3,5 @@
   "ingredient": {
     "item": "tfc:ceramic/unfired_pot"
   },
-  "heat_capacity": 1
+  "heat_capacity": 0.2
 }

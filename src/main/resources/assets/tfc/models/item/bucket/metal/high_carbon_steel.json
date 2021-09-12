@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "forge:item/bucket",
   "loader": "forge:bucket",
-  "fluid": "tfc:high_carbon_steel"
+  "parent": "forge:item/bucket",
+  "fluid": "tfc:metal/high_carbon_steel"
 }

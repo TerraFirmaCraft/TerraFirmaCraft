@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/pine"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/pine"
+    },
+    {
+      "item": "tfc:wood/wood/pine"
+    }
+  ],
   "duration": 1250,
   "temperature": 627
 }

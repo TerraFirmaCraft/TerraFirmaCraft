@@ -1,10 +1,15 @@
 package net.dries007.tfc.common.items;
 
+import java.util.List;
+import java.util.function.IntSupplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,13 +38,46 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.CastingRecipe;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Metal;
 
 public class MoldItem extends Item
 {
-    public MoldItem(Properties properties)
+    private static IntSupplier mapItemTypeToConfigValue(Metal.ItemType type)
+    {
+        return switch (type)
+            {
+                case INGOT -> TFCConfig.SERVER.moldIngotCapacity::get;
+                case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity::get;
+                case PROPICK_HEAD -> TFCConfig.SERVER.moldPropickHeadCapacity::get;
+                case AXE_HEAD -> TFCConfig.SERVER.moldAxeHeadCapacity::get;
+                case SHOVEL_HEAD -> TFCConfig.SERVER.moldShovelHeadCapacity::get;
+                case HOE_HEAD -> TFCConfig.SERVER.moldHoeHeadCapacity::get;
+                case CHISEL_HEAD -> TFCConfig.SERVER.moldChiselHeadCapacity::get;
+                case HAMMER_HEAD -> TFCConfig.SERVER.moldHammerHeadCapacity::get;
+                case SAW_BLADE -> TFCConfig.SERVER.moldSawBladeCapacity::get;
+                case JAVELIN_HEAD -> TFCConfig.SERVER.moldJavelinHeadCapacity::get;
+                case SWORD_BLADE -> TFCConfig.SERVER.moldSwordBladeCapacity::get;
+                case MACE_HEAD -> TFCConfig.SERVER.moldMaceHeadCapacity::get;
+                case KNIFE_BLADE -> TFCConfig.SERVER.moldKnifeBladeCapacity::get;
+                case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity::get;
+                default -> throw new AssertionError("No config value for type: " + type.name());
+            };
+    }
+
+    private final IntSupplier capacity;
+
+    public MoldItem(Metal.ItemType type, Properties properties)
+    {
+        this(mapItemTypeToConfigValue(type), properties);
+        assert type.hasMold(); // Easy sanity check
+    }
+
+    public MoldItem(IntSupplier capacity, Properties properties)
     {
         super(properties);
+
+        this.capacity = capacity;
     }
 
     @Override
@@ -69,7 +107,14 @@ public class MoldItem extends Item
                 }
                 else
                 {
-                    NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                    if (mold.isMolten())
+                    {
+                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                    }
+                    else
+                    {
+                        player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
+                    }
                 }
             }
         }
@@ -80,7 +125,7 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack);
+        return new MoldCapability(stack, capacity.getAsInt());
     }
 
     static class MoldCapability implements MoldLike, ICapabilityProvider, DelegateHeatHandler, DelegateFluidHandler
@@ -93,15 +138,13 @@ public class MoldItem extends Item
 
         private boolean initialized; // If the internal capability objects have loaded their data.
 
-        MoldCapability(ItemStack stack)
+        MoldCapability(ItemStack stack, int capacity)
         {
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(100, fluid -> Metal.MANAGER.getMetal(fluid.getFluid()) != null); // Only allow filling with metals
-
-            load();
+            this.tank = new FluidTank(capacity, fluid -> Metal.MANAGER.getMetal(fluid.getFluid()) != null); // Must be a metal
         }
 
         @Override
@@ -109,6 +152,26 @@ public class MoldItem extends Item
         {
             heat.setTemperature(temperature);
             save();
+        }
+
+        @Override
+        public void addTooltipInfo(ItemStack stack, List<Component> text)
+        {
+            heat.addTooltipInfo(stack, text);
+            final FluidStack fluid = tank.getFluid();
+            if (!fluid.isEmpty())
+            {
+                final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+                if (metal != null)
+                {
+                    text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                    text.add(metal.getDisplayName()
+                        .append(" ")
+                        .append(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_units", fluid.getAmount()))
+                        .append(" ")
+                        .append(new TranslatableComponent(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
+                }
+            }
         }
 
         @Nonnull
@@ -164,17 +227,13 @@ public class MoldItem extends Item
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
-            if (isMolten()) // Can only remove fluid from a mold if the mold is not solid
+            final FluidStack result = tank.drain(maxDrain, action);
+            if (!result.isEmpty())
             {
-                final FluidStack result = tank.drain(maxDrain, action);
-                if (!result.isEmpty())
-                {
-                    updateHeatCapacity();
-                    save();
-                }
-                return result;
+                updateHeatCapacity();
+                save();
             }
-            return FluidStack.EMPTY;
+            return result;
         }
 
         @Override
@@ -192,14 +251,10 @@ public class MoldItem extends Item
         @Override
         public boolean isMolten()
         {
-            final FluidStack fluid = tank.getFluid();
-            if (!fluid.isEmpty())
+            final Metal metal = getContainedMetal();
+            if (metal != null)
             {
-                final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
-                if (metal != null)
-                {
-                    return getTemperature() >= metal.getMeltTemperature();
-                }
+                return getTemperature() >= metal.getMeltTemperature();
             }
             return false;
         }
@@ -216,6 +271,8 @@ public class MoldItem extends Item
                 final CompoundTag tag = stack.getOrCreateTag();
                 tank.readFromNBT(tag.getCompound("tank"));
                 heat.deserializeNBT(tag.getCompound("heat"));
+
+                updateHeatCapacity();
             }
         }
 
@@ -226,10 +283,15 @@ public class MoldItem extends Item
             tag.put("heat", heat.serializeNBT());
         }
 
+        @Nullable
+        private Metal getContainedMetal()
+        {
+            return Metal.MANAGER.getMetal(tank.getFluid().getFluid());
+        }
+
         private void updateHeatCapacity()
         {
-            final FluidStack fluid = tank.getFluid();
-            final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+            final Metal metal = getContainedMetal();
             heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1); // If fluid is not empty, should not be null, but we don't check for that case here
         }
     }

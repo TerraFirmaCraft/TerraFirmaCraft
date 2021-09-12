@@ -1,7 +1,5 @@
 package net.dries007.tfc.client.screen;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,13 +12,9 @@ import net.dries007.tfc.util.Metal;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
 {
-    @Nullable private final MoldLike mold;
-
     public MoldLikeAlloyScreen(MoldLikeAlloyContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, INVENTORY_1x1);
-
-        mold = MoldLike.get(container.getTargetStack());
     }
 
     @Override
@@ -29,6 +23,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
         super.renderLabels(stack, mouseX, mouseY);
 
         // Metal and contents tooltip
+        final MoldLike mold = MoldLike.get(menu.getTargetStack());
         if (mold != null)
         {
             final FluidStack fluid = mold.getFluidInTank(0);

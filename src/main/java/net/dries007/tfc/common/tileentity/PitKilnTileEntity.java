@@ -279,7 +279,7 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
         assert level != null;
 
         final float progress = (float) Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
-        final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach max temperature just before the end
+        final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
         for (int i = 0; i < inventory.getSlots(); i++)
@@ -287,16 +287,12 @@ public class PitKilnTileEntity extends PlacedItemTileEntity
             final ItemStack stack = inventory.getStackInSlot(i);
             final int slot = i; // the boy genius LexManos has turned me into a functional programmer
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
-                heat.setTemperature(targetTemperature);
-                HeatingRecipe recipe = cachedRecipes[slot];
+                heat.setTemperature(targetTemperature); // Heat each individual item
+                final HeatingRecipe recipe = cachedRecipes[slot]; // And transform recipes
                 if (recipe != null && recipe.isValidTemperature(targetTemperature))
                 {
-                    ItemStack out = recipe.assemble(new ItemStackRecipeWrapper(stack));
+                    final ItemStack out = recipe.assemble(new ItemStackRecipeWrapper(stack)); // Liquids are lost
                     inventory.setStackInSlot(slot, out);
-                }
-                else
-                {
-                    inventory.setStackInSlot(slot, ItemStack.EMPTY);
                 }
             });
         }

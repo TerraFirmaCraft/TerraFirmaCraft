@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/ingot_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/tin"
+    "fluid": "tfc:metal/tin",
+    "amount": 100
   },
   "result": {
     "item": "tfc:metal/ingot/tin"

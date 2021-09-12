@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/propick_head_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/bronze"
+    "fluid": "tfc:metal/bronze",
+    "amount": 100
   },
   "result": {
     "item": "tfc:metal/propick_head/bronze"

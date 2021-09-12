@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
@@ -38,9 +39,9 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     }
 
     @Override
-    protected PipeVein createVein(int chunkX, int chunkZ, Random random, PipeVeinConfig config)
+    protected PipeVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, Random random, PipeVeinConfig config)
     {
-        return new PipeVein(defaultPos(chunkX, chunkZ, random, config), random, config);
+        return new PipeVein(defaultPos(context, chunkX, chunkZ, random, config), random, config);
     }
 
     @Override

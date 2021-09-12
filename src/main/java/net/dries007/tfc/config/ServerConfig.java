@@ -56,6 +56,21 @@ public class ServerConfig
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
+    // Items - Mold(s)
+    public final ForgeConfigSpec.IntValue moldIngotCapacity;
+    public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldPropickHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldAxeHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldShovelHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldHoeHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldChiselHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldHammerHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldSawBladeCapacity;
+    public final ForgeConfigSpec.IntValue moldJavelinHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldSwordBladeCapacity;
+    public final ForgeConfigSpec.IntValue moldMaceHeadCapacity;
+    public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
+    public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
     // Mechanics - Collapses
@@ -139,12 +154,29 @@ public class ServerConfig
         innerBuilder.pop().push("pit_kiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
-        pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).", "The default is enough to fire all pottery items.").defineInRange("pitKilnTemperature", 1200, 0, Integer.MAX_VALUE);
+        pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("small_vessel");
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
         smallVesselMaximumItemSize = builder.apply("smallVesselMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a small vessel.").defineEnum("smallVesselMaximumItemSize", Size.SMALL);
+
+        innerBuilder.pop().push("molds");
+
+        moldIngotCapacity = builder.apply("moldIngotCapacity").comment("Tank capacity of a Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldPickaxeHeadCapacity = builder.apply("moldPickaxeHeadCapacity").comment("Tank capacity of a Pickaxe Head mold (in mB).").defineInRange("moldPickaxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldPropickHeadCapacity = builder.apply("moldPropickHeadCapacity").comment("Tank capacity of a Propick Head mold (in mB).").defineInRange("moldPropickHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldAxeHeadCapacity = builder.apply("moldAxeHeadCapacity").comment("Tank capacity of a Axe Head mold (in mB).").defineInRange("moldAxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldShovelHeadCapacity = builder.apply("moldShovelHeadCapacity").comment("Tank capacity of a Shovel Head mold (in mB).").defineInRange("moldShovelHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldHoeHeadCapacity = builder.apply("moldHoeHeadCapacity").comment("Tank capacity of a Hoe Head mold (in mB).").defineInRange("moldHoeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldChiselHeadCapacity = builder.apply("moldChiselHeadCapacity").comment("Tank capacity of a Chisel Head mold (in mB).").defineInRange("moldChiselHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldHammerHeadCapacity = builder.apply("moldHammerHeadCapacity").comment("Tank capacity of a Hammer Head mold (in mB).").defineInRange("moldHammerHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldSawBladeCapacity = builder.apply("moldSawBladeCapacity").comment("Tank capacity of a Saw Blade mold (in mB).").defineInRange("moldSawBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldJavelinHeadCapacity = builder.apply("moldJavelinHeadCapacity").comment("Tank capacity of a Javelin Head mold (in mB).").defineInRange("moldJavelinHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldSwordBladeCapacity = builder.apply("moldSwordBladeCapacity").comment("Tank capacity of a Sword Blade mold (in mB).").defineInRange("moldSwordBladeCapacity", 200, 0, Alloy.MAX_ALLOY);
+        moldMaceHeadCapacity = builder.apply("moldMaceHeadCapacity").comment("Tank capacity of a Mace Head mold (in mB).").defineInRange("moldMaceHeadCapacity", 200, 0, Alloy.MAX_ALLOY);
+        moldKnifeBladeCapacity = builder.apply("moldKnifeBladeCapacity").comment("Tank capacity of a Knife Blade mold (in mB).").defineInRange("moldKnifeBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldScytheBladeCapacity = builder.apply("moldScytheBladeCapacity").comment("Tank capacity of a Scythe Blade mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

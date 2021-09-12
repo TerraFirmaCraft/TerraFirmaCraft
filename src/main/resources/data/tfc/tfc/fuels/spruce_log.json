@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/spruce"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/spruce"
+    },
+    {
+      "item": "tfc:wood/wood/spruce"
+    }
+  ],
   "duration": 1500,
   "temperature": 608
 }

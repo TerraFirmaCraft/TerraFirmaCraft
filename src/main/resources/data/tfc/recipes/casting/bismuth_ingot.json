@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/ingot_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/bismuth"
+    "fluid": "tfc:metal/bismuth",
+    "amount": 100
   },
   "result": {
     "item": "tfc:metal/ingot/bismuth"

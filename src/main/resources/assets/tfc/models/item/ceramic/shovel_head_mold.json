@@ -1,7 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "loader": "forge:bucket",
+  "parent": "forge:item/default",
+  "fluid": "empty",
   "textures": {
-    "layer0": "tfc:item/ceramic/fired_mold/shovel_head/empty"
+    "base": "tfc:item/ceramic/fired_mold/shovel_head_empty",
+    "fluid": "tfc:item/ceramic/fired_mold/shovel_head_overlay"
   }
 }

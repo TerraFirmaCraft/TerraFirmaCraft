@@ -22,7 +22,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 
 public class IngameOverlays
 {
-    public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/icons/overlay.png");
+    public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/icons/axe_head_overlay.png"); // todo: fix
 
     public static final IIngameOverlay HEALTH = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " Health", IngameOverlays::renderHealth);
 
@@ -168,7 +168,7 @@ public class IngameOverlays
     {
         if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && minecraft.getCameraEntity() instanceof Player)
         {
-            gui.setupOverlayRenderState(true, false, TEXTURE);
+            gui.setupOverlayRenderState(true, false, Helpers.identifier("textures/gui/icons/overlay.png")); // todo: TEXTURE
             return true;
         }
         return false;

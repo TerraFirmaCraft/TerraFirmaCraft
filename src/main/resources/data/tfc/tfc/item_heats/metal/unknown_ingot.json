@@ -4,6 +4,6 @@
     "tag": "forge:ingots/unknown"
   },
   "heat_capacity": 0.5,
-  "forging_temperature": 750.0,
-  "welding_temperature": 1000.0
+  "forging_temperature": 240.0,
+  "welding_temperature": 320.0
 }

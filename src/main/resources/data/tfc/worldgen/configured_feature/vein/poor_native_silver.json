@@ -2,11 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 140,
-    "min_y": 5,
-    "max_y": 100,
+    "rarity": 80,
+    "min_y": {
+      "absolute": 0
+    },
+    "max_y": {
+      "absolute": 100
+    },
     "size": 15,
-    "density": 0.6,
+    "density": 0.4,
     "blocks": [
       {
         "stone": [
@@ -14,7 +18,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/granite"
           },
           {
@@ -33,7 +37,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/gneiss"
           },
           {
@@ -52,7 +56,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/marble"
           },
           {
@@ -71,7 +75,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/phyllite"
           },
           {
@@ -90,7 +94,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/quartzite"
           },
           {
@@ -109,7 +113,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/schist"
           },
           {
@@ -128,7 +132,7 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 40,
             "block": "tfc:ore/poor_native_silver/slate"
           },
           {

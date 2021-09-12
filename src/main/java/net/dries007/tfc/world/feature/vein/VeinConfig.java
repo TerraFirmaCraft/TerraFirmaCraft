@@ -12,12 +12,13 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.util.LinearCongruentialGenerator;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -40,9 +41,9 @@ public class VeinConfig implements FeatureConfiguration
         Codecs.POSITIVE_INT.optionalFieldOf("rarity", 60).forGetter(VeinConfig::getRarity),
         Codecs.POSITIVE_INT.optionalFieldOf("size", 8).forGetter(VeinConfig::getSize),
         Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
-        Codec.intRange(0, 256).optionalFieldOf("min_y", 16).forGetter(VeinConfig::getMinY),
-        Codec.intRange(0, 256).optionalFieldOf("max_y", 128).forGetter(VeinConfig::getMaxY),
-        Codec.LONG.optionalFieldOf("salt").forGetter(c -> Optional.of(c.salt)),
+        VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
+        VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
+        Codec.LONG.fieldOf("salt").forGetter(c -> c.salt),
         Codec.either( // Filter can't accept biomes as it ends up resolving the biomes too early (circular reference)
             Biome.BiomeCategory.CODEC.fieldOf("category").codec(),
             Codecs.BIOME_DICTIONARY.fieldOf("biome_dictionary").codec()
@@ -51,23 +52,22 @@ public class VeinConfig implements FeatureConfiguration
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
     private final Map<Block, IWeighted<BlockState>> states;
-    @Nullable
-    private final Indicator indicator;
+    @Nullable private final Indicator indicator;
     private final int rarity;
     private final int size;
     private final float density;
-    private final int minY;
-    private final int maxY;
+    private final VerticalAnchor minY;
+    private final VerticalAnchor maxY;
     private final long salt;
     private final List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter;
     private final Predicate<Supplier<Biome>> resolvedBiomeFilter;
 
     public VeinConfig(VeinConfig other)
     {
-        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt), other.biomeFilter);
+        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, other.salt, other.biomeFilter);
     }
 
-    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
+    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, VerticalAnchor minY, VerticalAnchor maxY, long salt, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
     {
         this.states = states;
         this.indicator = indicator.orElse(null);
@@ -76,14 +76,7 @@ public class VeinConfig implements FeatureConfiguration
         this.density = density;
         this.minY = minY;
         this.maxY = maxY;
-        this.salt = salt.orElseGet(() -> {
-            long seed = LinearCongruentialGenerator.next(size, Float.floatToIntBits(density));
-            seed = LinearCongruentialGenerator.next(seed, minY);
-            seed = LinearCongruentialGenerator.next(seed, maxY);
-            seed = LinearCongruentialGenerator.next(seed, rarity);
-            seed = LinearCongruentialGenerator.next(seed, rarity);
-            return seed;
-        });
+        this.salt = salt;
         this.biomeFilter = biomeFilter;
         this.resolvedBiomeFilter = resolveBiomeFilter();
     }
@@ -145,14 +138,14 @@ public class VeinConfig implements FeatureConfiguration
         return 1 + (size >> 4);
     }
 
-    public int getMinY()
+    public int getMinY(WorldGenerationContext context)
     {
-        return minY;
+        return minY.resolveY(context);
     }
 
-    public int getMaxY()
+    public int getMaxY(WorldGenerationContext context)
     {
-        return maxY;
+        return maxY.resolveY(context);
     }
 
     private Predicate<Supplier<Biome>> resolveBiomeFilter()

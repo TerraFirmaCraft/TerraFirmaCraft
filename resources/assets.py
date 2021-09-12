@@ -2,7 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 import itertools
-from typing import Any, Tuple
+from typing import Any
 
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
@@ -478,7 +478,14 @@ def generate(rm: ResourceManager):
     for variant, data in METAL_ITEMS.items():
         if data.mold:
             rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
-            rm.item_model(('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s/empty' % variant).with_lang(lang('%s mold', variant))  # todo: custom model per fluid. some jank ass shit or something
+            rm.custom_item_model(('ceramic', '%s_mold' % variant), 'forge:bucket', {
+                'parent': 'forge:item/default',
+                'fluid': 'empty',
+                'textures': {
+                    'base': 'tfc:item/ceramic/fired_mold/%s_empty' % variant,
+                    'fluid': 'tfc:item/ceramic/fired_mold/%s_overlay' % variant
+                }
+            }).with_lang(lang('%s mold', variant))
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -786,40 +793,23 @@ def generate(rm: ResourceManager):
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
-    def bucket_item_model(name_parts, fluid):
-        res = utils.resource_location(rm.domain, name_parts)
-        rm.write((*rm.resource_dir, 'assets', res.domain, 'models', 'item', res.path), {
-            'parent': 'forge:item/bucket',
-            'loader': 'forge:bucket',
-            'fluid': fluid
-        })
-        return rm.item(name_parts)
-
     # Fluids
-    def water_based_fluid(name: str):
-        rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
-        rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
-        rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
-        rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
-        item = bucket_item_model(('bucket', name), 'tfc:%s' % name)
-        item.with_lang(lang('%s bucket', name))
-
-    def molten_fluid(name: str):
-        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
-        rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
-
-        item = bucket_item_model(('bucket', 'metal', name), 'tfc:%s' % name)
-        item.with_lang(lang('molten %s bucket', name))
-
-    water_based_fluid('salt_water')
-    water_based_fluid('spring_water')
+    water_based_fluid(rm, 'salt_water')
+    water_based_fluid(rm, 'spring_water')
 
     # Mixable tags for vanilla water
     rm.fluid_tag('mixable', '#minecraft:water')
 
     for metal in METALS.keys():
-        molten_fluid(metal)
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
+        rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
+
+        item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
+            'parent': 'forge:item/bucket',
+            'fluid': 'tfc:metal/%s' % metal
+        })
+        item.with_lang(lang('molten %s bucket', metal))
 
     # Thin Spikes: Calcite + Icicles
     for variant, texture in (('calcite', 'tfc:block/calcite'), ('icicle', 'minecraft:block/ice')):
@@ -833,30 +823,44 @@ def generate(rm: ResourceManager):
         rm.block_model(variant, textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike')
         rm.block_model(variant + '_tip', textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike_tip')
 
-    def corals(color: str, dead: bool):
-        # vanilla and tfc have a different convention for dead/color order
-        left = 'dead_' + color if dead else color
-        right = color + '_dead' if dead else color
-
-        rm.blockstate('coral/%s_coral' % right, 'minecraft:block/%s_coral' % left)
-        rm.blockstate('coral/%s_coral_fan' % right, 'minecraft:block/%s_coral_fan' % left)
-        rm.blockstate('coral/%s_coral_wall_fan' % right, variants=dict(
-            ('facing=%s' % d, {'model': 'minecraft:block/%s_coral_wall_fan' % left, 'y': r})
-            for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
-        ))
-
-        for variant in ('coral', 'coral_fan', 'coral_wall_fan'):
-            rm.item_model('coral/%s_%s' % (right, variant), 'minecraft:block/%s_%s' % (left, variant))
-            rm.lang('block.tfc.coral.%s_%s' % (right, variant), lang('%s %s', left, variant))
-
-        if not dead:
-            # Tag contents are used for selecting a random coral to place by features
-            rm.block_tag('wall_corals', 'coral/%s_coral_wall_fan' % color)
-            rm.block_tag('corals', 'coral/%s_coral' % color, 'coral/%s_coral_fan' % color)
-
     for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
-        corals(color, False)
-        corals(color, True)
+        corals(rm, color, False)
+        corals(rm, color, True)
+
+
+def water_based_fluid(rm: ResourceManager, name: str):
+    rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
+    rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
+    rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
+    rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
+
+    item = rm.custom_item_model(('bucket', name), 'forge:bucket', {
+        'parent': 'forge:item/bucket',
+        'fluid': 'tfc:%s' % name
+    })
+    item.with_lang(lang('%s bucket', name))
+
+
+def corals(rm: ResourceManager, color: str, dead: bool):
+    # vanilla and tfc have a different convention for dead/color order
+    left = 'dead_' + color if dead else color
+    right = color + '_dead' if dead else color
+
+    rm.blockstate('coral/%s_coral' % right, 'minecraft:block/%s_coral' % left)
+    rm.blockstate('coral/%s_coral_fan' % right, 'minecraft:block/%s_coral_fan' % left)
+    rm.blockstate('coral/%s_coral_wall_fan' % right, variants=dict(
+        ('facing=%s' % d, {'model': 'minecraft:block/%s_coral_wall_fan' % left, 'y': r})
+        for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
+    ))
+
+    for variant in ('coral', 'coral_fan', 'coral_wall_fan'):
+        rm.item_model('coral/%s_%s' % (right, variant), 'minecraft:block/%s_%s' % (left, variant))
+        rm.lang('block.tfc.coral.%s_%s' % (right, variant), lang('%s %s', left, variant))
+
+    if not dead:
+        # Tag contents are used for selecting a random coral to place by features
+        rm.block_tag('wall_corals', 'coral/%s_coral_wall_fan' % color)
+        rm.block_tag('corals', 'coral/%s_coral' % color, 'coral/%s_coral_fan' % color)
 
 
 def four_ways(model: str) -> List[Dict[str, Any]]:

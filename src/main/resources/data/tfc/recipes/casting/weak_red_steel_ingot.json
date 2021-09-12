@@ -5,7 +5,8 @@
     "item": "tfc:ceramic/ingot_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/weak_red_steel"
+    "fluid": "tfc:metal/weak_red_steel",
+    "amount": 100
   },
   "result": {
     "item": "tfc:metal/ingot/weak_red_steel"

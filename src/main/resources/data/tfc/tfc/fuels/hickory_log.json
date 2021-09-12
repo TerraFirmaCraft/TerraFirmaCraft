@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/hickory"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/hickory"
+    },
+    {
+      "item": "tfc:wood/wood/hickory"
+    }
+  ],
   "duration": 2000,
   "temperature": 762
 }

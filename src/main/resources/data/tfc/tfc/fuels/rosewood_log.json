@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/rosewood"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/rosewood"
+    },
+    {
+      "item": "tfc:wood/wood/rosewood"
+    }
+  ],
   "duration": 1500,
   "temperature": 640
 }

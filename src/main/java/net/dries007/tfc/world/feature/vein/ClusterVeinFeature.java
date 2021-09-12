@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.vein;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
@@ -28,9 +29,9 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
     }
 
     @Override
-    protected ClusterVein createVein(int chunkX, int chunkZ, Random random, VeinConfig config)
+    protected ClusterVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, Random random, VeinConfig config)
     {
-        return new ClusterVein(defaultPos(chunkX, chunkZ, random, config), random, config.getSize());
+        return new ClusterVein(defaultPos(context, chunkX, chunkZ, random, config), random, config.getSize());
     }
 
     @Override

@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/palm"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/palm"
+    },
+    {
+      "item": "tfc:wood/wood/palm"
+    }
+  ],
   "duration": 1250,
   "temperature": 730
 }

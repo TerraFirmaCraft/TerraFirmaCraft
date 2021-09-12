@@ -12,27 +12,23 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.commands.LocateCommand;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.commands.LocateCommand;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -94,6 +90,7 @@ public class LocateVeinCommand
         final ArrayList<? extends Vein> veins = new ArrayList<>();
         final Random random = new Random();
         final BiomeManager biomeManager = world.getBiomeManager().withDifferentSource(world.getChunkSource().getGenerator().getBiomeSource());
+        final WorldGenerationContext generationContext = new WorldGenerationContext(world.getChunkSource().getGenerator(), world);
         final Function<BlockPos, Biome> biomeQuery = biomeManager::getBiome;
         for (int radius = 0; radius <= 16; radius++)
         {
@@ -108,7 +105,7 @@ public class LocateVeinCommand
                         continue;
                     }
 
-                    ((VeinFeature) vein.feature()).getVeinsAtChunk(world, pos.x + dx, pos.z + dz, veins, (VeinConfig) vein.config(), random, biomeQuery);
+                    ((VeinFeature) vein.feature()).getVeinsAtChunk(world, generationContext, pos.x + dx, pos.z + dz, veins, (VeinConfig) vein.config(), random, biomeQuery);
                     if (!veins.isEmpty())
                     {
                         final BlockPos veinPos = veins.get(0).getPos();

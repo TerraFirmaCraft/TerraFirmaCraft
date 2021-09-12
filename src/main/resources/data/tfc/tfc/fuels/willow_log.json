@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/willow"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/willow"
+    },
+    {
+      "item": "tfc:wood/wood/willow"
+    }
+  ],
   "duration": 1000,
   "temperature": 603
 }

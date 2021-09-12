@@ -2,7 +2,7 @@
 
 import hashlib
 from enum import IntEnum
-from typing import Tuple, Any, Literal, Union
+from typing import Any, Union
 
 from mcresources import ResourceManager, world_gen as wg, utils
 
@@ -409,35 +409,6 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
     rm.feature(('tree', 'willow_large'), wg.configure('tfc:random_tree', random_config('willow', 14, 1, True)))
 
-    def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
-        ore_blocks = [{
-            'weight': vein.poor,
-            'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
-        }, {
-            'weight': vein.normal,
-            'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
-        }, {
-            'weight': vein.rich,
-            'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
-        }]
-        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
-            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
-            ore_blocks.append({
-                'weight': int(100 * p / (1 - p)),
-                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
-            })
-        return ore_blocks
-
-    def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
-        if biome_filter == 'river':
-            return [{'category': 'river'}]
-        elif biome_filter == 'volcanic':
-            return [{'biome_dictionary': 'volcanic'}]
-        elif biome_filter is not None:
-            raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
-        else:
-            return None
-
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
         rocks = expand_rocks(vein.rocks, vein_name)
@@ -445,10 +416,10 @@ def generate(rm: ResourceManager):
         if ore.graded:  # graded ore vein
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
                 'rarity': vein.rarity,
-                'min_y': vein.min_y,
-                'max_y': vein.max_y,
+                'min_y': vertical_anchor(vein.min_y, 'absolute'),
+                'max_y': vertical_anchor(vein.max_y, 'absolute'),
                 'size': vein.size,
-                'density': vein.density * 0.01,
+                'density': vein_density(vein.density),
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': vein_ore_blocks(vein, rock)
@@ -465,10 +436,10 @@ def generate(rm: ResourceManager):
         else:  # non-graded ore vein (mineral)
             vein_config = {
                 'rarity': vein.rarity,
-                'min_y': vein.min_y,
-                'max_y': vein.max_y,
+                'min_y': vertical_anchor(vein.min_y, 'absolute'),
+                'max_y': vertical_anchor(vein.max_y, 'absolute'),
                 'size': vein.size,
-                'density': vein.density * 0.01,
+                'density': vein_density(vein.density),
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
@@ -485,11 +456,11 @@ def generate(rm: ResourceManager):
 
     rm.feature(('vein', 'gravel'), wg.configure('tfc:disc_vein', {
         'rarity': 30,
-        'min_y': 0,
-        'max_y': 180,
+        'min_y': -64,
+        'max_y': 100,
         'size': 44,
         'height': 2,
-        'density': 1,
+        'density': 0.98,
         'blocks': [{
             'stone': ['tfc:rock/raw/%s' % rock],
             'ore': [{'block': 'tfc:rock/gravel/%s' % rock}]
@@ -514,10 +485,10 @@ def generate(rm: ResourceManager):
 
             rm.feature(('vein', '%s_dike' % rock), wg.configure('tfc:pipe_vein', {
                 'rarity': 220,
-                'min_y': 40,
+                'min_y': -64,
                 'max_y': 180,
-                'size': 90,
-                'density': 0.95,
+                'size': 150,
+                'density': 0.98,
                 'blocks': dike_block_config,
                 'salt': vein_salt('%s_dike' % rock),
                 'radius': 4,
@@ -730,13 +701,49 @@ def generate(rm: ResourceManager):
     rm.feature('underground_guano', wg.configure_decorated(cave_patch_feature('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), 'minecraft:square', decorate_range(40, 100)))
 
 
+def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
+    ore_blocks = [{
+        'weight': vein.poor,
+        'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
+    }, {
+        'weight': vein.normal,
+        'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
+    }, {
+        'weight': vein.rich,
+        'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
+    }]
+    if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
+        p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
+        ore_blocks.append({
+            'weight': int(100 * p / (1 - p)),
+            'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
+        })
+    return ore_blocks
+
+
+def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
+    if biome_filter == 'river':
+        return [{'category': 'river'}]
+    elif biome_filter == 'volcanic':
+        return [{'biome_dictionary': 'volcanic'}]
+    elif biome_filter is not None:
+        raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
+    else:
+        return None
+
+
+def vein_density(density: int) -> float:
+    assert 0 <= density <= 100, 'Invalid density: %s' % str(density)
+    return round(density * 0.01, 2)
+
+
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
     cfg = {
         'min_rain': min_rain,
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'log': 'tfc:wood/wood/%s' % tree,
+        'log': wg.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree),
         'leaves': 'tfc:wood/leaves/%s' % tree,
         'twig': 'tfc:wood/twig/%s' % tree,
         'fallen_leaves': 'tfc:wood/fallen_leaves/%s' % tree,

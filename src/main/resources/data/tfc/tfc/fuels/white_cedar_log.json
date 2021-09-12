@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/white_cedar"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/white_cedar"
+    },
+    {
+      "item": "tfc:wood/wood/white_cedar"
+    }
+  ],
   "duration": 1500,
   "temperature": 625
 }

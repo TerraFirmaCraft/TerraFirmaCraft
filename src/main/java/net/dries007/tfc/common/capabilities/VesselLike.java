@@ -10,8 +10,14 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.ISlotCallback;
+import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
 
-public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, IHeat, ISlotCallback
+/**
+ * Interface for capability instances which behave like vessels. Meaning:
+ * - They have both fluid, and item inventories.
+ * - They can be heated, in both states, and can contain either items, or alloys.
+ */
+public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, IHeat, IInventoryNoop, ISlotCallback
 {
     @Nullable
     static VesselLike get(ItemStack stack)
@@ -33,8 +39,10 @@ public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHand
         return mode() == Mode.MOLTEN_ALLOY;
     }
 
+    /**
+     * Need to override to resolve default method conflict
+     */
     @Override
-        // Need to override to resolve default method conflict
     boolean isItemValid(int slot, @Nonnull ItemStack stack);
 
     enum Mode

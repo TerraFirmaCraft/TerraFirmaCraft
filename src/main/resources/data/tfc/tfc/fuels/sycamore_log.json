@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/sycamore"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/sycamore"
+    },
+    {
+      "item": "tfc:wood/wood/sycamore"
+    }
+  ],
   "duration": 1750,
   "temperature": 653
 }

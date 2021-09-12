@@ -3,8 +3,12 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 14,
-    "min_y": 60,
-    "max_y": 75,
+    "min_y": {
+      "absolute": 40
+    },
+    "max_y": {
+      "absolute": 60
+    },
     "size": 8,
     "density": 0.2,
     "blocks": [

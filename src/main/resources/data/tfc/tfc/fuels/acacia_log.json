@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/acacia"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/acacia"
+    },
+    {
+      "item": "tfc:wood/wood/acacia"
+    }
+  ],
   "duration": 1000,
   "temperature": 650
 }

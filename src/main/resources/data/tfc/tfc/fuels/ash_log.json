@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:wood/log/ash"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/ash"
+    },
+    {
+      "item": "tfc:wood/wood/ash"
+    }
+  ],
   "duration": 1250,
   "temperature": 696
 }
