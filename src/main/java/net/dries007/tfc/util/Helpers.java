@@ -686,6 +686,20 @@ public final class Helpers
     }
 
     /**
+     * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
+     */
+    public static boolean detectTestSourcesPresent()
+    {
+        try
+        {
+            Class.forName("net.dries007.tfc.TestMarker");
+            return true;
+        }
+        catch (ClassNotFoundException e) { /* Guess not */ }
+        return false;
+    }
+
+    /**
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant
      */

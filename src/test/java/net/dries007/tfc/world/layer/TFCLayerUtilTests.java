@@ -13,14 +13,10 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
-import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.Noise2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -119,36 +115,6 @@ public class TFCLayerUtilTests
         AreaFactory layer = TFCLayerUtil.createOverworldForestLayer(seed, artist);
         AREA.color(this::forestColor).center(1250).size(1250); // 10km image (biomes are 1/4 scale), at 1 pixel = 4 blocks
         AREA.draw("forest_10km", layer);
-    }
-
-    @Test
-    public void testBiomesWithVolcanoes()
-    {
-        long seed = System.currentTimeMillis();
-
-        Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
-        Noise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
-
-        Area biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()).get();
-
-        Artist.Pixel<Color> volcanoBiomeMap = Artist.Pixel.coerceInt((x, z) -> {
-            int value = biomeArea.get(x >> 2, z >> 2);
-            BiomeVariants biome = TFCLayerUtil.getFromLayerId(value);
-            if (biome.isVolcanic())
-            {
-                float chance = volcanoNoise.noise(x, z);
-                float distance = volcanoNoise.f1() + volcanoJitterNoise.noise(x, z);
-                float volcano = VolcanoNoise.calculateEasing(distance);
-                if (volcano > 0 && chance < biome.getVolcanoChance())
-                {
-                    return new Color(Artist.clamp((int) (155 + 100 * volcano), 0, 255), 30, 30); // Near volcano
-                }
-            }
-            return biomeColor(value);
-        });
-
-        RAW.center(10_000).size(1_000); // 20 km image, at 1 pixel = 10 blocks
-        RAW.draw("volcanos_20km", volcanoBiomeMap);
     }
 
     @Test

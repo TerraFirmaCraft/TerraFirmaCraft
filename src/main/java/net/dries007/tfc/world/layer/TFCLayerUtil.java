@@ -8,9 +8,11 @@ package net.dries007.tfc.world.layer;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -101,40 +103,41 @@ public class TFCLayerUtil
     public static final int OCEAN_REEF_MARKER;
 
     private static final CrudeIncrementalIntIdentityHashBiMap<BiomeVariants> REGISTRY = new CrudeIncrementalIntIdentityHashBiMap<>(32);
+    private static final boolean ENABLE_DEBUG = Helpers.detectTestSourcesPresent();
 
     static
     {
-        OCEAN = register(TFCBiomes.OCEAN);
-        OCEAN_REEF = register(TFCBiomes.OCEAN_REEF);
-        DEEP_OCEAN = register(TFCBiomes.DEEP_OCEAN);
-        DEEP_OCEAN_TRENCH = register(TFCBiomes.DEEP_OCEAN_TRENCH);
-        PLAINS = register(TFCBiomes.PLAINS);
-        HILLS = register(TFCBiomes.HILLS);
-        LOWLANDS = register(TFCBiomes.LOWLANDS);
-        LOW_CANYONS = register(TFCBiomes.LOW_CANYONS);
-        ROLLING_HILLS = register(TFCBiomes.ROLLING_HILLS);
-        BADLANDS = register(TFCBiomes.BADLANDS);
-        PLATEAU = register(TFCBiomes.PLATEAU);
-        OLD_MOUNTAINS = register(TFCBiomes.OLD_MOUNTAINS);
-        MOUNTAINS = register(TFCBiomes.MOUNTAINS);
-        VOLCANIC_MOUNTAINS = register(TFCBiomes.VOLCANIC_MOUNTAINS);
-        OCEANIC_MOUNTAINS = register(TFCBiomes.OCEANIC_MOUNTAINS);
-        VOLCANIC_OCEANIC_MOUNTAINS = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
-        CANYONS = register(TFCBiomes.CANYONS);
-        SHORE = register(TFCBiomes.SHORE);
-        LAKE = register(TFCBiomes.LAKE);
-        RIVER = register(TFCBiomes.RIVER);
-        MOUNTAIN_RIVER = register(TFCBiomes.MOUNTAIN_RIVER);
-        VOLCANIC_MOUNTAIN_RIVER = register(TFCBiomes.VOLCANIC_MOUNTAIN_RIVER);
-        OLD_MOUNTAIN_RIVER = register(TFCBiomes.OLD_MOUNTAIN_RIVER);
-        OCEANIC_MOUNTAIN_RIVER = register(TFCBiomes.OCEANIC_MOUNTAIN_RIVER);
-        VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_RIVER);
-        MOUNTAIN_LAKE = register(TFCBiomes.MOUNTAIN_LAKE);
-        VOLCANIC_MOUNTAIN_LAKE = register(TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
-        OLD_MOUNTAIN_LAKE = register(TFCBiomes.OLD_MOUNTAIN_LAKE);
-        OCEANIC_MOUNTAIN_LAKE = register(TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
-        VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
-        PLATEAU_LAKE = register(TFCBiomes.PLATEAU_LAKE);
+        OCEAN = register(() -> TFCBiomes.OCEAN);
+        OCEAN_REEF = register(() -> TFCBiomes.OCEAN_REEF);
+        DEEP_OCEAN = register(() -> TFCBiomes.DEEP_OCEAN);
+        DEEP_OCEAN_TRENCH = register(() -> TFCBiomes.DEEP_OCEAN_TRENCH);
+        PLAINS = register(() -> TFCBiomes.PLAINS);
+        HILLS = register(() -> TFCBiomes.HILLS);
+        LOWLANDS = register(() -> TFCBiomes.LOWLANDS);
+        LOW_CANYONS = register(() -> TFCBiomes.LOW_CANYONS);
+        ROLLING_HILLS = register(() -> TFCBiomes.ROLLING_HILLS);
+        BADLANDS = register(() -> TFCBiomes.BADLANDS);
+        PLATEAU = register(() -> TFCBiomes.PLATEAU);
+        OLD_MOUNTAINS = register(() -> TFCBiomes.OLD_MOUNTAINS);
+        MOUNTAINS = register(() -> TFCBiomes.MOUNTAINS);
+        VOLCANIC_MOUNTAINS = register(() -> TFCBiomes.VOLCANIC_MOUNTAINS);
+        OCEANIC_MOUNTAINS = register(() -> TFCBiomes.OCEANIC_MOUNTAINS);
+        VOLCANIC_OCEANIC_MOUNTAINS = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
+        CANYONS = register(() -> TFCBiomes.CANYONS);
+        SHORE = register(() -> TFCBiomes.SHORE);
+        LAKE = register(() -> TFCBiomes.LAKE);
+        RIVER = register(() -> TFCBiomes.RIVER);
+        MOUNTAIN_RIVER = register(() -> TFCBiomes.MOUNTAIN_RIVER);
+        VOLCANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.VOLCANIC_MOUNTAIN_RIVER);
+        OLD_MOUNTAIN_RIVER = register(() -> TFCBiomes.OLD_MOUNTAIN_RIVER);
+        OCEANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_RIVER);
+        VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_RIVER);
+        MOUNTAIN_LAKE = register(() -> TFCBiomes.MOUNTAIN_LAKE);
+        VOLCANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
+        OLD_MOUNTAIN_LAKE = register(() -> TFCBiomes.OLD_MOUNTAIN_LAKE);
+        OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
+        VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
+        PLATEAU_LAKE = register(() -> TFCBiomes.PLATEAU_LAKE);
 
         OCEAN_OCEAN_CONVERGING_MARKER = registerDummy();
         OCEAN_OCEAN_DIVERGING_MARKER = registerDummy();
@@ -450,9 +453,10 @@ public class TFCLayerUtil
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    public static int register(BiomeVariants variants)
+    @SuppressWarnings("ConstantConditions")
+    public static int register(Supplier<BiomeVariants> variants)
     {
-        return REGISTRY.add(variants);
+        return REGISTRY.add(ENABLE_DEBUG ? null : variants.get());
     }
 
     @SuppressWarnings("ConstantConditions")

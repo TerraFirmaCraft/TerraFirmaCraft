@@ -119,7 +119,8 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         try
         {
-            File outFile = new File(name + ".png");
+            new File("artist").mkdirs();
+            File outFile = new File("artist/" + name + ".png");
             BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = ((Graphics2D) image.getGraphics());
             drawInternal(name, instance, graphics);
