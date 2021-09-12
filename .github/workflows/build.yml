@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 1.17.x
+    tags:
+      - 'v*'
 
 jobs:
   main:
