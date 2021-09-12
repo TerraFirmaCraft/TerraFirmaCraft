@@ -9,33 +9,33 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.FruitTreeLeavesBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
-import net.dries007.tfc.common.tileentity.FruitTreeLeavesTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -60,7 +60,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
-        FruitTreeLeavesTileEntity te = Helpers.getTileEntity(world, pos, FruitTreeLeavesTileEntity.class);
+        FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(world, pos, FruitTreeLeavesBlockEntity.class);
         if (te == null) return;
 
         Lifecycle old = state.getValue(LIFECYCLE); // have to put this in random tick to capture the old state
@@ -92,7 +92,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         }
     }
 
-    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (te.getDeath() > 10)
         {
@@ -107,11 +107,11 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         builder.add(PERSISTENT);
     }
 
-    protected Lifecycle updateLifecycle(BerryBushTileEntity te)
+    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
     {
         Lifecycle lifecycle = super.updateLifecycle(te);
 
-        FruitTreeLeavesTileEntity fruityTE = (FruitTreeLeavesTileEntity) te;
+        FruitTreeLeavesBlockEntity fruityTE = (FruitTreeLeavesBlockEntity) te;
         if (lifecycle == Lifecycle.FRUITING && !fruityTE.isOnYear())
         {
             lifecycle = Lifecycle.HEALTHY;

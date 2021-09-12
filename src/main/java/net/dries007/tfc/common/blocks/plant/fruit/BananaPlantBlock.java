@@ -9,25 +9,25 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -65,7 +65,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
         // no op the superclass
     }
 
-    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -81,7 +81,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
                 if (world.isEmptyBlock(abovePos))
                 {
                     world.setBlockAndUpdate(abovePos, state.setValue(STAGE, stage));
-                    BerryBushTileEntity newTe = Helpers.getTileEntity(world, abovePos, BerryBushTileEntity.class);
+                    BerryBushBlockEntity newTe = Helpers.getBlockEntity(world, abovePos, BerryBushBlockEntity.class);
                     if (newTe != null)
                     {
                         newTe.reduceCounter(-1 * (te.getTicksSinceUpdate() - ICalendar.TICKS_IN_DAY));

@@ -32,11 +32,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -90,7 +90,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
         if (te != null)
         {
             if (!world.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
@@ -105,7 +105,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                 {
                     boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-                    TickCounterTileEntity newTE = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+                    TickCounterBlockEntity newTE = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
                     if (newTE != null)
                     {
                         newTE.resetCounter();
@@ -141,7 +141,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
         if (te != null)
         {
             te.resetCounter();

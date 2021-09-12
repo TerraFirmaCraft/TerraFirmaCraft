@@ -8,38 +8,37 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
-import net.dries007.tfc.common.tileentity.GrillTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
 
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
 
 public class GrillBlock extends FirepitBlock
 {
@@ -62,7 +61,7 @@ public class GrillBlock extends FirepitBlock
     {
         super.animateTick(state, world, pos, rand);
         if (!state.getValue(LIT)) return;
-        GrillTileEntity te = Helpers.getTileEntity(world, pos, GrillTileEntity.class);
+        GrillBlockEntity te = Helpers.getBlockEntity(world, pos, GrillBlockEntity.class);
         if (te != null)
         {
             te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
@@ -85,7 +84,7 @@ public class GrillBlock extends FirepitBlock
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, pos, AbstractFirepitTileEntity.class);
+        final AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, pos, AbstractFirepitBlockEntity.class);
         if (firepit != null)
         {
             final ItemStack stack = player.getItemInHand(hand);
@@ -100,7 +99,7 @@ public class GrillBlock extends FirepitBlock
                     }
                     else
                     {
-                        AbstractFirepitTileEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
+                        AbstractFirepitBlockEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
                     }
                 }
                 return InteractionResult.SUCCESS;

@@ -10,20 +10,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.tileentity.PotTileEntity;
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
 
-import static net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity.SLOT_FUEL_INPUT;
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_INPUT;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
 
-public class PotContainer extends BlockEntityContainer<PotTileEntity>
+public class PotContainer extends BlockEntityContainer<PotBlockEntity>
 {
-    public static PotContainer create(PotTileEntity pot, Inventory playerInv, int windowId)
+    public static PotContainer create(PotBlockEntity pot, Inventory playerInv, int windowId)
     {
         return new PotContainer(pot, windowId).init(playerInv, 20);
     }
 
-    private PotContainer(PotTileEntity pot, int windowId)
+    private PotContainer(PotBlockEntity pot, int windowId)
     {
         super(TFCContainerTypes.POT.get(), windowId, pot);
 

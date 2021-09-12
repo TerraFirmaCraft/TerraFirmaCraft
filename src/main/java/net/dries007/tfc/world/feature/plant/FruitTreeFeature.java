@@ -8,25 +8,21 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class FruitTreeFeature extends Feature<BlockStateConfiguration>
 {
@@ -66,7 +62,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
                     int saplings = Mth.clamp(rand.nextInt(5) + 1, 2, 4);
                     BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
                     setBlock(world, mutablePos, branch);
-                    world.getBlockEntity(mutablePos, TFCTileEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
+                    world.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
                     world.getBlockTicks().scheduleTick(mutablePos, branch.getBlock(), 1);
                     return true;
                 }

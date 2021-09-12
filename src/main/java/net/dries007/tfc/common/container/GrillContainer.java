@@ -10,18 +10,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.tileentity.GrillTileEntity;
+import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 
-import static net.dries007.tfc.common.tileentity.GrillTileEntity.*;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
-public class GrillContainer extends BlockEntityContainer<GrillTileEntity>
+public class GrillContainer extends BlockEntityContainer<GrillBlockEntity>
 {
-    public static GrillContainer create(GrillTileEntity grill, Inventory playerInv, int windowId)
+    public static GrillContainer create(GrillBlockEntity grill, Inventory playerInv, int windowId)
     {
         return new GrillContainer(grill, windowId).init(playerInv, 20);
     }
 
-    private GrillContainer(GrillTileEntity grill, int windowId)
+    private GrillContainer(GrillBlockEntity grill, int windowId)
     {
         super(TFCContainerTypes.GRILL.get(), windowId, grill);
 

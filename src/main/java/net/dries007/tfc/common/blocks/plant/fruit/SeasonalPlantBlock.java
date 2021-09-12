@@ -10,45 +10,44 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -104,7 +103,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     {
         if (!worldIn.isClientSide() && handIn == InteractionHand.MAIN_HAND && state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
-            BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+            BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
             if (te != null)
             {
                 te.use();
@@ -142,7 +141,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
-        BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
+        BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
         if (te == null) return;
 
         ChunkData chunkData = ChunkData.get(world, pos);
@@ -196,7 +195,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * A means of performing X amount of random ticks to catch up with the calendar.
      */
-    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
 
     }
@@ -212,7 +211,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+        BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
         if (te != null)
         {
             te.resetCounter();
@@ -230,7 +229,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * Queries the lifecycle based on the data, but catches certain conditions that would
      */
-    protected Lifecycle updateLifecycle(BerryBushTileEntity te)
+    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
     {
         Lifecycle cycle = stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
 

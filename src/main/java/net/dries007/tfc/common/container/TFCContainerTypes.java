@@ -21,7 +21,7 @@ import net.minecraftforge.fmllegacy.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.common.tileentity.*;
+import net.dries007.tfc.common.blockentities.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -35,11 +35,11 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<Container>> CLIMATE = register("climate", (windowId, inv, data) -> Container.create(TFCContainerTypes.CLIMATE.get(), windowId, inv));
     public static final RegistryObject<MenuType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv));
 
-    public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = TFCContainerTypes.<FirepitTileEntity, FirepitContainer>registerBlock("firepit", TFCTileEntities.FIREPIT, FirepitContainer::create);
-    public static final RegistryObject<MenuType<GrillContainer>> GRILL = TFCContainerTypes.<GrillTileEntity, GrillContainer>registerBlock("grill", TFCTileEntities.GRILL, GrillContainer::create);
-    public static final RegistryObject<MenuType<PotContainer>> POT = TFCContainerTypes.<PotTileEntity, PotContainer>registerBlock("pot", TFCTileEntities.POT, PotContainer::create);
-    public static final RegistryObject<MenuType<CharcoalForgeContainer>> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeTileEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCTileEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
-    public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileTileEntity, LogPileContainer>registerBlock("log_pile", TFCTileEntities.LOG_PILE, LogPileContainer::create);
+    public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = TFCContainerTypes.<FirepitBlockEntity, FirepitContainer>registerBlock("firepit", TFCBlockEntities.FIREPIT, FirepitContainer::create);
+    public static final RegistryObject<MenuType<GrillContainer>> GRILL = TFCContainerTypes.<GrillBlockEntity, GrillContainer>registerBlock("grill", TFCBlockEntities.GRILL, GrillContainer::create);
+    public static final RegistryObject<MenuType<PotContainer>> POT = TFCContainerTypes.<PotBlockEntity, PotContainer>registerBlock("pot", TFCBlockEntities.POT, PotContainer::create);
+    public static final RegistryObject<MenuType<CharcoalForgeContainer>> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeBlockEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCBlockEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
+    public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileBlockEntity, LogPileContainer>registerBlock("log_pile", TFCBlockEntities.LOG_PILE, LogPileContainer::create);
 
     public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
     public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);
@@ -48,7 +48,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<SmallVesselInventoryContainer>> SMALL_VESSEL_INVENTORY = registerItem("small_vessel_inventory", SmallVesselInventoryContainer::create);
     public static final RegistryObject<MenuType<MoldLikeAlloyContainer>> MOLD_LIKE_ALLOY = registerItem("mold_like_alloy", MoldLikeAlloyContainer::create);
 
-    private static <T extends InventoryTileEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
+    private static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
         return register(name, (windowId, playerInventory, buffer) -> {
             final Level world = playerInventory.player.level;

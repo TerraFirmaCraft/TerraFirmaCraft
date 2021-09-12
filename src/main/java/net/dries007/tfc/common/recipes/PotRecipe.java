@@ -26,15 +26,15 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.Helpers;
 
 /**
  * Recipe type for all cooking pot recipes
  */
-public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInventory>
+public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
 {
     private static final BiMap<ResourceLocation, OutputType> OUTPUT_TYPES = HashBiMap.create();
 
@@ -73,14 +73,14 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
     }
 
     @Override
-    public boolean matches(PotTileEntity.PotInventory inventory, Level worldIn)
+    public boolean matches(PotBlockEntity.PotInventory inventory, Level worldIn)
     {
         if (!fluidIngredient.test(inventory.getFluidInTank(0)))
         {
             return false;
         }
         List<ItemStack> stacks = new ArrayList<>();
-        for (int i = PotTileEntity.SLOT_EXTRA_INPUT_START; i <= PotTileEntity.SLOT_EXTRA_INPUT_END; i++)
+        for (int i = PotBlockEntity.SLOT_EXTRA_INPUT_START; i <= PotBlockEntity.SLOT_EXTRA_INPUT_END; i++)
         {
             ItemStack stack = inventory.getStackInSlot(i);
             if (!stack.isEmpty())
@@ -128,17 +128,17 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
     /**
      * @return The output of the pot recipe.
      */
-    public abstract PotRecipe.Output getOutput(PotTileEntity.PotInventory inventory);
+    public abstract PotRecipe.Output getOutput(PotBlockEntity.PotInventory inventory);
 
     /**
      * The output of a pot recipe
      * This output can be fairly complex, but follows a specific contract:
-     * 1. The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotTileEntity.PotInventory)}
-     * 2. {@link Output#onFinish(PotTileEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary
+     * 1. The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotBlockEntity.PotInventory)}
+     * 2. {@link Output#onFinish(PotBlockEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary
      * 3. THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...
-     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotTileEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
+     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotBlockEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
      *
-     * @see PotTileEntity#handleCooking()
+     * @see PotBlockEntity#handleCooking()
      */
     public interface Output
     {
@@ -181,12 +181,12 @@ public abstract class PotRecipe implements ISimpleRecipe<PotTileEntity.PotInvent
         /**
          * Called with an empty pot inventory immediately after completion, before checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output.
          */
-        default void onFinish(PotTileEntity.PotInventory inventory) {}
+        default void onFinish(PotBlockEntity.PotInventory inventory) {}
 
         /**
          * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
          */
-        default InteractionResult onInteract(PotTileEntity entity, Player player, ItemStack clickedWith)
+        default InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
             return InteractionResult.PASS;
         }

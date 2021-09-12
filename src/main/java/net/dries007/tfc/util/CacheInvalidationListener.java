@@ -17,7 +17,7 @@ import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.command.LocateVeinCommand;
+import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;

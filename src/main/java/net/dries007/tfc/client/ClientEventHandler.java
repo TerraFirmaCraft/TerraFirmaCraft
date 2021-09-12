@@ -53,6 +53,7 @@ import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -60,7 +61,6 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 
@@ -173,12 +173,12 @@ public final class ClientEventHandler
 
         // TE Rendering
 
-        BlockEntityRenderers.register(TFCTileEntities.POT.get(), context -> new PotTileEntityRenderer());
-        BlockEntityRenderers.register(TFCTileEntities.GRILL.get(), context -> new GrillTileEntityRenderer());
-        BlockEntityRenderers.register(TFCTileEntities.PLACED_ITEM.get(), context -> new PlacedItemTileEntityRenderer());
-        BlockEntityRenderers.register(TFCTileEntities.PIT_KILN.get(), context -> new PitKilnTileEntityRenderer());
-        BlockEntityRenderers.register(TFCTileEntities.QUERN.get(), context -> new QuernTileEntityRenderer());
-        BlockEntityRenderers.register(TFCTileEntities.SCRAPING.get(), context -> new ScrapingTileEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.POT.get(), context -> new PotBlockEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.GRILL.get(), context -> new GrillBlockEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.PLACED_ITEM.get(), context -> new PlacedItemBlockEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.PIT_KILN.get(), context -> new PitKilnBlockEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.QUERN.get(), context -> new QuernBlockEntityRenderer());
+        BlockEntityRenderers.register(TFCBlockEntities.SCRAPING.get(), context -> new ScrapingBlockEntityRenderer());
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
@@ -250,7 +250,7 @@ public final class ClientEventHandler
     public static void selfTest()
     {
         if (ClientEventHandler.validateModelsAndTranslations()
-            | TFCTileEntities.validateBlockEntities())
+            | TFCBlockEntities.validateBlockEntities())
         {
             throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
         }

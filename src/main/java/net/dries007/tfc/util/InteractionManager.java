@@ -41,12 +41,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -212,7 +212,7 @@ public final class InteractionManager
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
                 {
-                    return world.getBlockEntity(posClicked, TFCTileEntities.LOG_PILE.get())
+                    return world.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
                         .map(cap -> {
                             ItemStack insertStack = stack.copy();
@@ -243,7 +243,7 @@ public final class InteractionManager
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        world.getBlockEntity(relativePos, TFCTileEntities.LOG_PILE.get())
+                        world.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
                             .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
                             .ifPresent(cap -> {
                                 insertStack.setCount(1);
@@ -267,7 +267,7 @@ public final class InteractionManager
                 if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
-                    level.getBlockEntity(abovePos, TFCTileEntities.SCRAPING.get())
+                    level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
                         .map(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
                             if (!level.isClientSide)
                             {

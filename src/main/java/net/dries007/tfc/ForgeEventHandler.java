@@ -58,6 +58,7 @@ import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DeadWallTorchBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -77,10 +78,9 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.command.TFCCommands;
+import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.tileentity.*;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
@@ -533,7 +533,7 @@ public final class ForgeEventHandler
         if (block == (TFCBlocks.FIREPIT.get()) || block == (TFCBlocks.POT.get()) || block == (TFCBlocks.GRILL.get()))
         {
             final BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof AbstractFirepitTileEntity<?> firepit)
+            if (entity instanceof AbstractFirepitBlockEntity<?> firepit)
             {
                 firepit.light(state);
             }
@@ -541,7 +541,7 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
-            world.getBlockEntity(pos, TFCTileEntities.TICK_COUNTER.get()).ifPresent(TickCounterTileEntity::resetCounter);
+            world.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
         else if (block == (TFCBlocks.DEAD_TORCH.get()))
@@ -562,12 +562,12 @@ public final class ForgeEventHandler
         }
         else if (block == (TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            world.getBlockEntity(pos, TFCTileEntities.PIT_KILN.get()).ifPresent(PitKilnTileEntity::tryLight);
+            world.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKiLnBlockEntity::tryLight);
         }
         else if (block == (TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(HEAT, 2));
-            world.getBlockEntity(pos, TFCTileEntities.CHARCOAL_FORGE.get()).ifPresent(CharcoalForgeTileEntity::onCreate);
+            world.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(CharcoalForgeBlockEntity::onCreate);
         }
         else if (block == (TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
         {

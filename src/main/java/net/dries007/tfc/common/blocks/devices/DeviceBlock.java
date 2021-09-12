@@ -6,15 +6,15 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -34,10 +34,10 @@ public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBl
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        InventoryTileEntity<?> entity = Helpers.getTileEntity(world, pos, InventoryTileEntity.class);
+        InventoryBlockEntity<?> entity = Helpers.getBlockEntity(world, pos, InventoryBlockEntity.class);
         if (entity != null && !(state.is(newState.getBlock())))
         {
-            beforeRemovingTileEntity(entity);
+            beforeRemove(entity);
         }
         super.onRemove(state, world, pos, newState, isMoving);
     }
@@ -48,7 +48,7 @@ public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBl
         return properties;
     }
 
-    protected void beforeRemovingTileEntity(InventoryTileEntity<?> entity)
+    protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
         entity.ejectInventory();
         entity.invalidateCapabilities();

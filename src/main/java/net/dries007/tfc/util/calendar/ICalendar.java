@@ -127,9 +127,9 @@ public interface ICalendar
         final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
         if (years < 1)
         {
-            return new TranslatableComponent("tfc.tooltip.time_delta_months_days", months, days);
+            return new TranslatableComponent("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
         }
-        return new TranslatableComponent("tfc.tooltip.time_delta_years_months_days", years, months, days);
+        return new TranslatableComponent("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
     }
 
     /**

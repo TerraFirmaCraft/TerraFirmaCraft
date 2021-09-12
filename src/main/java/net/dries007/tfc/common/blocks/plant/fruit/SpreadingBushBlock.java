@@ -9,20 +9,20 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.Item;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -42,7 +42,7 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     }
 
     @Override
-    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -69,7 +69,7 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
                 if (world.isEmptyBlock(offsetPos))
                 {
                     world.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, d));
-                    TickCounterTileEntity cane = Helpers.getTileEntity(world, offsetPos, TickCounterTileEntity.class);
+                    TickCounterBlockEntity cane = Helpers.getBlockEntity(world, offsetPos, TickCounterBlockEntity.class);
                     if (cane != null)
                     {
                         cane.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());

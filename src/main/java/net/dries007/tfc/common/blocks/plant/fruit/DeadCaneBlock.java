@@ -8,23 +8,23 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -40,7 +40,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     {
         if (random.nextInt(15) == 0 && world.isEmptyBlock(pos.above()))
         {
-            TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+            TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
             if (te != null)
             {
                 if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)

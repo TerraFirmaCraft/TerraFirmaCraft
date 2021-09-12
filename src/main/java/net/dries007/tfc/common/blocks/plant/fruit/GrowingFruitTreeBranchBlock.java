@@ -12,21 +12,21 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -90,7 +90,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
         if (te == null || world.isClientSide()) return;
 
         // todo: better climate checks
@@ -194,7 +194,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
     {
         super.tick(state, world, pos, rand);
-        TickCounterTileEntity te = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
         if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
 
         long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
@@ -209,7 +209,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     private void placeGrownFlower(ServerLevel worldIn, BlockPos pos, int stage, int saplings, int cycles)
     {
         worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
-        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
         if (te != null)
         {
             te.resetCounter();

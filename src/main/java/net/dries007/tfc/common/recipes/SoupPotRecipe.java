@@ -20,8 +20,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
 
 public class SoupPotRecipe extends PotRecipe
 {
@@ -36,7 +36,7 @@ public class SoupPotRecipe extends PotRecipe
     }
 
     @Override
-    public Output getOutput(PotTileEntity.PotInventory inventory)
+    public Output getOutput(PotBlockEntity.PotInventory inventory)
     {
         return new SoupOutput(3); // todo: calculate soup output
     }
@@ -69,7 +69,7 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        public InteractionResult onInteract(PotTileEntity entity, Player player, ItemStack clickedWith)
+        public InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
             if (clickedWith.getItem() == Items.BOWL) // todo: proper soup item and output
             {

@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -30,11 +30,11 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-import net.dries007.tfc.common.tileentity.QuernTileEntity;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.tileentity.QuernTileEntity.*;
+import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 
 public class QuernBlock extends DeviceBlock implements IHighlightHandler
 {
@@ -53,7 +53,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static SelectionPlace getPlayerSelection(BlockGetter world, BlockPos pos, Player player, BlockHitResult result)
     {
-        QuernTileEntity te = Helpers.getTileEntity(world, pos, QuernTileEntity.class);
+        QuernBlockEntity te = Helpers.getBlockEntity(world, pos, QuernBlockEntity.class);
         if (te != null)
         {
             return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> {
@@ -65,12 +65,12 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                     {
                         return SelectionPlace.HANDLE;
                     }
-                    else if (!te.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(QuernTileEntity.SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
+                    else if (!te.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(QuernBlockEntity.SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
                     {
                         return SelectionPlace.INPUT_SLOT;
                     }
                 }
-                if ((te.hasHandstone() || te.isItemValid(QuernTileEntity.SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
+                if ((te.hasHandstone() || te.isItemValid(QuernBlockEntity.SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
                 {
                     return SelectionPlace.HANDSTONE;
                 }
@@ -85,13 +85,27 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         super(properties);
     }
 
+    private static InteractionResult insertOrExtract(Level level, QuernBlockEntity teQuern, IItemHandler inventory, Player player, ItemStack stack, int slot)
+    {
+        if (!stack.isEmpty())
+        {
+            player.setItemInHand(InteractionHand.MAIN_HAND, inventory.insertItem(slot, stack, false));
+        }
+        else
+        {
+            ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
+        }
+        teQuern.setAndUpdateSlots(slot);
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         if (hand == InteractionHand.MAIN_HAND)
         {
-            QuernTileEntity teQuern = Helpers.getTileEntity(level, pos, QuernTileEntity.class);
+            QuernBlockEntity teQuern = Helpers.getBlockEntity(level, pos, QuernBlockEntity.class);
             if (teQuern != null && !teQuern.isGrinding())
             {
                 ItemStack heldStack = player.getItemInHand(hand);
@@ -122,25 +136,11 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return InteractionResult.PASS;
     }
 
-    private static InteractionResult insertOrExtract(Level level, QuernTileEntity teQuern, IItemHandler inventory, Player player, ItemStack stack, int slot)
-    {
-        if (!stack.isEmpty())
-        {
-            player.setItemInHand(InteractionHand.MAIN_HAND, inventory.insertItem(slot, stack, false));
-        }
-        else
-        {
-            ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
-        }
-        teQuern.setAndUpdateSlots(slot);
-        return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
     {
-        QuernTileEntity te = Helpers.getTileEntity(world, pos, QuernTileEntity.class);
+        QuernBlockEntity te = Helpers.getBlockEntity(world, pos, QuernBlockEntity.class);
         return te != null && te.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
     }
 

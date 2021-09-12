@@ -10,32 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
-import net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.StartFireEvent;
@@ -109,11 +109,11 @@ public class FirestarterItem extends Item
 
                             final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
                             world.setBlock(abovePos, state, 3);
-                            AbstractFirepitTileEntity<?> firepit = Helpers.getTileEntity(world, abovePos, AbstractFirepitTileEntity.class);
+                            AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, abovePos, AbstractFirepitBlockEntity.class);
                             if (firepit != null)
                             {
                                 firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                    .ifPresent(cap -> ((IItemHandlerModifiable) cap).setStackInSlot(AbstractFirepitTileEntity.SLOT_FUEL_CONSUME, initialLog));
+                                    .ifPresent(cap -> ((IItemHandlerModifiable) cap).setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog));
                                 firepit.light(state);
                             }
                         }

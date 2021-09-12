@@ -6,35 +6,34 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.*;
-import net.dries007.tfc.common.tileentity.PitKilnTileEntity;
-import net.dries007.tfc.common.tileentity.PlacedItemTileEntity;
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.PitKiLnBlockEntity;
+import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
+import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.util.Helpers;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -72,7 +71,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
 
     private static void convertPlacedItemToPitKiln(Level world, BlockPos pos, ItemStack strawStack)
     {
-        PlacedItemTileEntity teOld = Helpers.getTileEntity(world, pos, PlacedItemTileEntity.class);
+        PlacedItemBlockEntity teOld = Helpers.getBlockEntity(world, pos, PlacedItemBlockEntity.class);
         if (teOld != null)
         {
             // Remove inventory items
@@ -91,7 +90,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             // Play placement sound
             world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
-            PitKilnTileEntity teNew = Helpers.getTileEntity(world, pos, PitKilnTileEntity.class);
+            PitKiLnBlockEntity teNew = Helpers.getBlockEntity(world, pos, PitKiLnBlockEntity.class);
             if (teNew != null)
             {
                 // Copy inventory
@@ -122,7 +121,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         BlockState updateState = updateStateValues(worldIn, currentPos.below(), stateIn);
-        PlacedItemTileEntity te = Helpers.getTileEntity(worldIn, currentPos, PlacedItemTileEntity.class);
+        PlacedItemBlockEntity te = Helpers.getBlockEntity(worldIn, currentPos, PlacedItemBlockEntity.class);
         if (te != null)
         {
             if (isEmpty(updateState))
@@ -139,11 +138,11 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     {
         if (!worldIn.isClientSide())
         {
-            PlacedItemTileEntity te = Helpers.getTileEntity(worldIn, pos, PlacedItemTileEntity.class);
+            PlacedItemBlockEntity te = Helpers.getBlockEntity(worldIn, pos, PlacedItemBlockEntity.class);
             if (te != null)
             {
                 ItemStack held = player.getItemInHand(handIn);
-                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKilnTileEntity.isValid(worldIn, pos))
+                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKiLnBlockEntity.isValid(worldIn, pos))
                 {
                     convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
                     return InteractionResult.SUCCESS;

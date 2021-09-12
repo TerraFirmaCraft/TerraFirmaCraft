@@ -10,9 +10,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 
-import net.dries007.tfc.common.tileentity.InventoryTileEntity;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 
-public abstract class BlockEntityContainer<T extends InventoryTileEntity<?>> extends Container
+public abstract class BlockEntityContainer<T extends InventoryBlockEntity<?>> extends Container
 {
     protected final T blockEntity;
 
@@ -35,7 +35,7 @@ public abstract class BlockEntityContainer<T extends InventoryTileEntity<?>> ext
     }
 
     @FunctionalInterface
-    public interface Factory<T extends InventoryTileEntity<?>, C extends BlockEntityContainer<T>>
+    public interface Factory<T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>>
     {
         C create(T tile, Inventory playerInventory, int windowId);
     }

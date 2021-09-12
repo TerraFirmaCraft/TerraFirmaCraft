@@ -10,32 +10,32 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -62,7 +62,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
             ItemStack held = player.getItemInHand(handIn);
             if (Tags.Items.SHEARS.contains(held.getItem()))
             {
-                BerryBushTileEntity te = Helpers.getTileEntity(worldIn, pos, BerryBushTileEntity.class);
+                BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
                 if (te != null)
                 {
                     if (state.getValue(LIFECYCLE) == Lifecycle.DORMANT)
@@ -113,7 +113,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public void cycle(BerryBushTileEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)
         {
@@ -136,7 +136,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
                 if (((SpreadingCaneBlock) state.getBlock()).canSurvive(state, world, pos))
                 {
                     world.setBlockAndUpdate(pos, companion.get().defaultBlockState().setValue(STAGE, 1));
-                    TickCounterTileEntity bush = Helpers.getTileEntity(world, pos, TickCounterTileEntity.class);
+                    TickCounterBlockEntity bush = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
                     if (bush != null)
                     {
                         bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());

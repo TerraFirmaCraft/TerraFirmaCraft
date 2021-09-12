@@ -30,7 +30,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -113,20 +112,6 @@ public final class Helpers
         return null;
     }
 
-    /**
-     * Applies two possible consumers of a given lazy optional
-     */
-    public static <T> void ifPresentOrElse(LazyOptional<T> lazyOptional, Consumer<T> ifPresent, Runnable orElse)
-    {
-        lazyOptional.map(t -> {
-            ifPresent.accept(t);
-            return Unit.INSTANCE;
-        }).orElseGet(() -> {
-            orElse.run();
-            return Unit.INSTANCE;
-        });
-    }
-
     public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
     {
         return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
@@ -199,7 +184,7 @@ public final class Helpers
     @Nullable
     @SuppressWarnings("unchecked")
     @Deprecated
-    public static <T extends BlockEntity> T getTileEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
+    public static <T extends BlockEntity> T getBlockEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
     {
         BlockEntity te = world.getBlockEntity(pos);
         if (tileEntityClass.isInstance(te))
@@ -350,7 +335,6 @@ public final class Helpers
      */
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
-        final int slots = inventory.getSlots();
         return () -> new AbstractIterator<>()
         {
             private int slot = -1;
@@ -359,7 +343,7 @@ public final class Helpers
             protected ItemStack computeNext()
             {
                 slot++;
-                if (slot < slots)
+                if (slot < inventory.getSlots())
                 {
                     return inventory.getStackInSlot(slot);
                 }

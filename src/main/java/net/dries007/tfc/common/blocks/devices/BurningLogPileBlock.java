@@ -8,45 +8,38 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.tileentity.BurningLogPileTileEntity;
-import net.dries007.tfc.common.tileentity.LogPileTileEntity;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void tryLightLogPile(Level world, BlockPos pos)
     {
-        LogPileTileEntity pile = Helpers.getTileEntity(world, pos, LogPileTileEntity.class);
+        LogPileBlockEntity pile = Helpers.getBlockEntity(world, pos, LogPileBlockEntity.class);
         if (pile != null)
         {
             int logs = pile.logCount();
@@ -54,7 +47,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
             world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
             Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);
 
-            BurningLogPileTileEntity newPile = Helpers.getTileEntity(world, pos, BurningLogPileTileEntity.class);
+            BurningLogPileBlockEntity newPile = Helpers.getBlockEntity(world, pos, BurningLogPileBlockEntity.class);
             if (newPile != null)
             {
                 newPile.light(logs);

@@ -8,22 +8,21 @@ package net.dries007.tfc.common.blocks;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.tileentity.SnowPileTileEntity;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.blockentities.SnowPileBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 
 /**
  * This block is a snow layer block that hides / covers a block underneath
@@ -41,7 +40,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public static void convertToPile(LevelAccessor world, BlockPos pos, BlockState state)
     {
         world.setBlock(pos, TFCBlocks.SNOW_PILE.get().defaultBlockState(), 3);
-        world.getBlockEntity(pos, TFCTileEntities.SNOW_PILE.get()).ifPresent(entity -> entity.setInternalState(state));
+        world.getBlockEntity(pos, TFCBlockEntities.SNOW_PILE.get()).ifPresent(entity -> entity.setInternalState(state));
     }
 
     private final ForgeBlockProperties properties;
@@ -68,7 +67,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
-        return world.getBlockEntity(pos, TFCTileEntities.SNOW_PILE.get()).map(entity -> {
+        return world.getBlockEntity(pos, TFCBlockEntities.SNOW_PILE.get()).map(entity -> {
             BlockState newState = entity.getDestroyedState(state);
             return world.setBlock(pos, newState, world.isClientSide ? 11 : 3);
         }).orElse(false);
@@ -84,6 +83,6 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return new SnowPileTileEntity(pos, state);
+        return new SnowPileBlockEntity(pos, state);
     }
 }

@@ -19,10 +19,10 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
@@ -52,7 +52,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
         {
             if (!worldIn.isAreaLoaded(pos, 1))
                 return; // Forge: prevent loading unloaded chunks when checking neighbor's light
-            TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+            TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
             if (te != null)
             {
                 long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
@@ -73,7 +73,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterTileEntity te = Helpers.getTileEntity(worldIn, pos, TickCounterTileEntity.class);
+        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
         if (te != null)
         {
             te.resetCounter();

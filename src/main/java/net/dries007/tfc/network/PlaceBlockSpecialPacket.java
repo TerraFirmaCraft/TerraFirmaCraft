@@ -16,9 +16,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
 
 public class PlaceBlockSpecialPacket
 {
@@ -41,7 +41,7 @@ public class PlaceBlockSpecialPacket
                         final ItemStack stack = player.getMainHandItem();
                         if (state.is(TFCBlocks.PLACED_ITEM.get()))
                         {
-                            world.getBlockEntity(pos, TFCTileEntities.PLACED_ITEM.get()).ifPresent(e -> e.onRightClick(player, stack, blockResult));
+                            world.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.onRightClick(player, stack, blockResult));
                         }
                         else if (!stack.isEmpty() && world.isEmptyBlock(above))
                         {
@@ -49,7 +49,7 @@ public class PlaceBlockSpecialPacket
                             if (y == 0 || y == 1)
                             {
                                 world.setBlockAndUpdate(above, PlacedItemBlock.updateStateValues(world, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState()));
-                                world.getBlockEntity(above, TFCTileEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
+                                world.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
                             }
                         }
                     }

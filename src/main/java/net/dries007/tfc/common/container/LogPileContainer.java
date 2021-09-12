@@ -10,16 +10,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.tileentity.LogPileTileEntity;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 
-public class LogPileContainer extends BlockEntityContainer<LogPileTileEntity>
+public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
 {
-    public static LogPileContainer create(LogPileTileEntity logPile, Inventory playerInventory, int windowId)
+    public static LogPileContainer create(LogPileBlockEntity logPile, Inventory playerInventory, int windowId)
     {
         return new LogPileContainer(logPile, playerInventory, windowId).init(playerInventory);
     }
 
-    public LogPileContainer(LogPileTileEntity logPile, Inventory playerInventory, int windowId)
+    public LogPileContainer(LogPileBlockEntity logPile, Inventory playerInventory, int windowId)
     {
         super(TFCContainerTypes.LOG_PILE.get(), windowId, logPile);
         logPile.onOpen(playerInventory.player);

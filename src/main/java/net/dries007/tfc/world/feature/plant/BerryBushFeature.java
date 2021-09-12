@@ -8,25 +8,23 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.WaterloggedBerryBushBlock;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class BerryBushFeature extends Feature<BlockStateConfiguration>
 {
@@ -59,7 +57,7 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration>
                 bushState = bushState.setValue(WaterloggedBerryBushBlock.WILD, true);
             world.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);
 
-            BerryBushTileEntity te = Helpers.getTileEntity(world, pos, BerryBushTileEntity.class);
+            BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
             if (te != null)
             {
                 te.reduceCounter(REDUCTION_AMOUNT);

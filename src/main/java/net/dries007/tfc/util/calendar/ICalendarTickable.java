@@ -9,7 +9,6 @@ package net.dries007.tfc.util.calendar;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
- * todo: block entity ticking is totally different?
  * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
  * Note: the default {@code update()} casts the implementor to {@link BlockEntity}
  */
@@ -18,7 +17,7 @@ public interface ICalendarTickable
     /**
      * Here we check every tick for a calendar discrepancy. This only checks for differences in player time, and calls {@link ICalendarTickable#onCalendarUpdate(long playerTickDelta)} as necessary
      *
-     * Implementations MUST call {@code ICalendarTickable.super.update()} in their implementation
+     * Implementations MUST call {@code ICalendarTickable.super.update()} in their {@code serverTick} method.
      */
     default void checkForCalendarUpdate()
     {

@@ -10,18 +10,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.tileentity.FirepitTileEntity;
+import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 
-import static net.dries007.tfc.common.tileentity.AbstractFirepitTileEntity.SLOT_FUEL_INPUT;
+import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_INPUT;
 
-public class FirepitContainer extends BlockEntityContainer<FirepitTileEntity>
+public class FirepitContainer extends BlockEntityContainer<FirepitBlockEntity>
 {
-    public static FirepitContainer create(FirepitTileEntity tile, Inventory playerInv, int windowId)
+    public static FirepitContainer create(FirepitBlockEntity tile, Inventory playerInv, int windowId)
     {
         return new FirepitContainer(tile, windowId).init(playerInv, 20);
     }
 
-    private FirepitContainer(FirepitTileEntity tile, int windowId)
+    private FirepitContainer(FirepitBlockEntity tile, int windowId)
     {
         super(TFCContainerTypes.FIREPIT.get(), windowId, tile);
 
@@ -33,7 +33,7 @@ public class FirepitContainer extends BlockEntityContainer<FirepitTileEntity>
     {
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, SLOT_FUEL_INPUT, FirepitTileEntity.SLOT_ITEM_INPUT + 1, false);
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, SLOT_FUEL_INPUT, FirepitBlockEntity.SLOT_ITEM_INPUT + 1, false);
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }
@@ -47,9 +47,9 @@ public class FirepitContainer extends BlockEntityContainer<FirepitTileEntity>
             {
                 addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));
             }
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitTileEntity.SLOT_ITEM_INPUT, 80, 29));
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitTileEntity.SLOT_OUTPUT_1, 71, 57));
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitTileEntity.SLOT_OUTPUT_2, 89, 57));
+            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_ITEM_INPUT, 80, 29));
+            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_OUTPUT_1, 71, 57));
+            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_OUTPUT_2, 89, 57));
         });
     }
 }

@@ -17,8 +17,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.tileentity.PotTileEntity;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class FluidPotRecipe extends PotRecipe
@@ -32,7 +32,7 @@ public class FluidPotRecipe extends PotRecipe
     }
 
     @Override
-    public Output getOutput(PotTileEntity.PotInventory inventory)
+    public Output getOutput(PotBlockEntity.PotInventory inventory)
     {
         return new FluidOutput(outputFluid);
     }
@@ -56,7 +56,7 @@ public class FluidPotRecipe extends PotRecipe
         }
 
         @Override
-        public void onFinish(PotTileEntity.PotInventory inventory)
+        public void onFinish(PotBlockEntity.PotInventory inventory)
         {
             inventory.fill(stack.copy(), IFluidHandler.FluidAction.EXECUTE);
         }

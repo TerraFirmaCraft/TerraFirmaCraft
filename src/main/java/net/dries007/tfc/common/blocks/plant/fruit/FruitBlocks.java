@@ -6,19 +6,16 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.tileentity.BerryBushTileEntity;
-import net.dries007.tfc.common.tileentity.FruitTreeLeavesTileEntity;
-import net.dries007.tfc.common.tileentity.TFCTileEntities;
-import net.dries007.tfc.common.tileentity.TickCounterTileEntity;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
 
@@ -29,17 +26,17 @@ public class FruitBlocks
 
     public static WaterloggedBerryBushBlock createCranberry()
     {
-        return new WaterloggedBerryBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCTileEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, 9);
+        return new WaterloggedBerryBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, 9);
     }
 
     public static Block createBananaSapling()
     {
-        return new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCTileEntities.TICK_COUNTER).flammable(60, 30), BANANA_STAGES, TFCBlocks.BANANA_PLANT, 6);
+        return new BananaSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), BANANA_STAGES, TFCBlocks.BANANA_PLANT, 6);
     }
 
     public static Block createBananaPlant()
     {
-        return new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCTileEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.BANANA), BANANA_STAGES);
+        return new BananaPlantBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.BANANA), BANANA_STAGES);
     }
 
     public enum SpreadingBush
@@ -64,12 +61,12 @@ public class FruitBlocks
 
         public Block createBush()
         {
-            return new SpreadingBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCTileEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, TFCBlocks.SPREADING_CANES.get(this), maxHeight, deathChance);
+            return new SpreadingBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, TFCBlocks.SPREADING_CANES.get(this), maxHeight, deathChance);
         }
 
         public Block createCane()
         {
-            return new SpreadingCaneBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCTileEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, TFCBlocks.SPREADING_BUSHES.get(this), maxHeight, deathChance);
+            return new SpreadingCaneBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, TFCBlocks.SPREADING_BUSHES.get(this), maxHeight, deathChance);
         }
     }
 
@@ -95,7 +92,7 @@ public class FruitBlocks
 
         public Block create()
         {
-            return new StationaryBerryBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCTileEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, deathChance);
+            return new StationaryBerryBushBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, deathChance);
         }
     }
 
@@ -121,12 +118,12 @@ public class FruitBlocks
 
         public Block createSapling()
         {
-            return new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCTileEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8);
+            return new FruitTreeSaplingBlock(new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8);
         }
 
         public Block createLeaves()
         {
-            return new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCTileEntities.FRUIT_TREE).flammable(90, 60), TFCItems.FOOD.get(product), stages);
+            return new FruitTreeLeavesBlock(new ForgeBlockProperties(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCBlockEntities.FRUIT_TREE).flammable(90, 60), TFCItems.FOOD.get(product), stages);
         }
 
         public Block createBranch()
@@ -136,7 +133,7 @@ public class FruitBlocks
 
         public Block createGrowingBranch()
         {
-            return new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).blockEntity(TFCTileEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this));
+            return new GrowingFruitTreeBranchBlock(new ForgeBlockProperties(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this));
         }
     }
 }
