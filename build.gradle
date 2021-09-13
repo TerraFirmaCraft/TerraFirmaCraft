@@ -149,7 +149,6 @@ processResources {
         doLast {
             fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
                 file.text = file.text
-                    .replaceAll('[\n\r\t ]+', '')
                     .replace('"__comment__":"This file was automatically created by mcresources",', '')
             }
         }
