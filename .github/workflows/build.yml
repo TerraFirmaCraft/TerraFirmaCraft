@@ -1,9 +1,7 @@
-name: Test and Build 1.17.x
+name: Build 1.17.x
 
 on:
   push:
-    branches:
-      - 1.17.x
     tags:
       - 'v*'
 
@@ -54,11 +52,6 @@ jobs:
       run: echo "version = $VERSION, type = $VERSION_TYPE"
     - name: Build
       run: ./gradlew build
-      env:
-        VERSION: ${{ steps.version.outputs.result }}
-    - name: Test
-      if: ${{ success() }}
-      run: ./gradlew test
       env:
         VERSION: ${{ steps.version.outputs.result }}
     - name: Create Release
