@@ -134,9 +134,9 @@ public class RockData
         nbt.put("pallet", pallet);
 
         // Record the raw byte values
-        nbt.putByteArray("bottomLayer", toByteArray(topLayer, uniqueRocks));
+        nbt.putByteArray("bottomLayer", toByteArray(bottomLayer, uniqueRocks));
         nbt.putByteArray("middleLayer", toByteArray(middleLayer, uniqueRocks));
-        nbt.putByteArray("topLayer", toByteArray(bottomLayer, uniqueRocks));
+        nbt.putByteArray("topLayer", toByteArray(topLayer, uniqueRocks));
 
         nbt.putIntArray("height", rockLayerHeight);
         if (surfaceHeight != null)
