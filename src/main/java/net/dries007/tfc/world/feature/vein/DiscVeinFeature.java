@@ -52,7 +52,7 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
         DiscVein(BlockPos pos, Random rand, int size)
         {
             super(pos);
-            metaballs = new Metaballs2D(size, rand);
+            metaballs = Metaballs2D.simple(rand, size);
             width = size;
         }
     }

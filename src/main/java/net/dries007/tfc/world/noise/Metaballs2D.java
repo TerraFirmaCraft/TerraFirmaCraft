@@ -13,15 +13,25 @@ import java.util.Random;
  */
 public class Metaballs2D
 {
+    public static Metaballs2D simple(Random random, int size)
+    {
+        return new Metaballs2D(random, 3, 8, 0.1f * size, 0.3f * size, 0.5f * size);
+    }
+
     private final Ball[] balls; // x, y, weight
 
-    public Metaballs2D(int size, Random random)
+    public Metaballs2D(Random random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
     {
-        balls = new Ball[3 + random.nextInt(5)];
+        final int ballCount = NoiseUtil.uniform(random, minBalls, maxBalls);
+
+        balls = new Ball[ballCount];
         for (int i = 0; i < balls.length; i++)
         {
-            float ballSize = (0.1f + random.nextFloat() * 0.2f) * size;
-            balls[i] = new Ball((random.nextFloat() - random.nextFloat()) * size * 0.5f, (random.nextFloat() - random.nextFloat()) * size * 0.5f, ballSize);
+            balls[i] = new Ball(
+                NoiseUtil.triangle(random, radius),
+                NoiseUtil.triangle(random, radius),
+                NoiseUtil.uniform(random, minSize, maxSize)
+            );
         }
     }
 

@@ -146,10 +146,10 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos);
 
-        BiomeVariants variants = biomeLayer.get(quartX, quartZ);
+        BiomeVariants variants = TFCBiomes.ROLLING_HILLS; // biomeLayer.get(quartX, quartZ);
 
-        final BiomeTemperature temperature = ONLY_NORMAL_NORMAL_CLIMATES ? BiomeTemperature.NORMAL : calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = ONLY_NORMAL_NORMAL_CLIMATES ? BiomeRainfall.NORMAL : calculateRainfall(data.getRainfall(pos));
+        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
+        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }

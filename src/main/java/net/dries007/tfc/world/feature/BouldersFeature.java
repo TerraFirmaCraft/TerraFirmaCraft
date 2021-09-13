@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.noise.Metaballs3D;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public class BouldersFeature extends Feature<BoulderConfig>
@@ -48,9 +50,8 @@ public class BouldersFeature extends Feature<BoulderConfig>
     private void place(WorldGenLevel worldIn, BlockPos pos, List<BlockState> states, Random rand)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
-        final float radiusSquared = radius * radius;
-        final int size = Mth.ceil(radius);
+        final int size = 6 + rand.nextInt(4);
+        final Metaballs3D noise = new Metaballs3D(rand, 6, 8, -0.12f * size, 0.3f * size, 0.3f * size);
 
         Supplier<BlockState> state;
         if (states.size() == 1)
@@ -69,9 +70,9 @@ public class BouldersFeature extends Feature<BoulderConfig>
             {
                 for (int z = -size; z <= size; z++)
                 {
-                    if (x * x + y * y + z * z <= radiusSquared)
+                    if (noise.inside(x, y, z))
                     {
-                        mutablePos.set(pos).move(x, y, z);
+                        mutablePos.setWithOffset(pos, x, y, z);
                         setBlock(worldIn, mutablePos, state.get());
                     }
                 }

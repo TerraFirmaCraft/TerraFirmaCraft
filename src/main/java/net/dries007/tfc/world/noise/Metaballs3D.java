@@ -10,15 +10,26 @@ import java.util.Random;
 
 public class Metaballs3D
 {
+    public static Metaballs3D simple(Random random, int size)
+    {
+        return new Metaballs3D(random, 5, 7, 0.1f * size, 0.3f * size, 0.5f * size);
+    }
+
     private final Ball[] balls;
 
-    public Metaballs3D(int size, Random random)
+    public Metaballs3D(Random random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
     {
-        balls = new Ball[5 + random.nextInt(7)];
+        final int ballCount = NoiseUtil.uniform(random, minBalls, maxBalls);
+        final int negativeBallCount = minSize < 0 ? (int) (ballCount * (-minSize / (maxSize - minSize))) : 0;
+        balls = new Ball[ballCount];
         for (int i = 0; i < balls.length; i++)
         {
-            float ballSize = (0.1f + random.nextFloat() * 0.2f) * size;
-            balls[i] = new Ball((random.nextFloat() - random.nextFloat()) * size * 0.5f, (random.nextFloat() - random.nextFloat()) * size * 0.5f, (random.nextFloat() - random.nextFloat()) * size * 0.5f, ballSize);
+            balls[i] = new Ball(
+                NoiseUtil.triangle(random, radius),
+                NoiseUtil.triangle(random, radius),
+                NoiseUtil.triangle(random, radius),
+                i < negativeBallCount ? NoiseUtil.uniform(random, minSize, 0) : NoiseUtil.uniform(random, 0, maxSize)
+            );
         }
     }
 

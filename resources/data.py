@@ -161,6 +161,13 @@ def generate(rm: ResourceManager):
             for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
 
+    # Blocks and Items
+    block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
+
+    # Sand
+    for color in SAND_BLOCK_TYPES:
+        block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
+
     # ==========
     # BLOCK TAGS
     # ==========
@@ -198,16 +205,12 @@ def generate(rm: ResourceManager):
         if plant_data.type in {'standard', 'short_grass', 'creeping'}:
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
 
-    # Sand
-    for color in SAND_BLOCK_TYPES:
-        rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
-
     # Rocks
     for rock, rock_data in ROCKS.items():
         def block(block_type: str):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
-        rm.block_tag('forge:gravel', block('gravel'))
+        block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('forge:stone', block('raw'), block('hardened'))
         rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
@@ -229,7 +232,6 @@ def generate(rm: ResourceManager):
         rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
 
     # Ore tags
-    # todo: relevant item tags for the below ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
             rm.block_tag('forge:ores', '#forge:ores/%s' % data.tag)
@@ -521,3 +523,8 @@ def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'duration': duration,
         'temperature': temperature
     })
+
+
+def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):
+    rm.block_tag(name_parts, *values, replace=replace)
+    rm.item_tag(name_parts, *values, replace=replace)

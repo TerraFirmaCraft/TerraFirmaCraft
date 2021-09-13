@@ -43,7 +43,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final Random rand = context.random();
         final HotSpringConfig config = context.config();
 
-        final Metaballs2D noise = new Metaballs2D(config.radius(), rand);
+        final Metaballs2D noise = Metaballs2D.simple(rand, config.radius());
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(pos);

@@ -47,7 +47,7 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
         ClusterVein(BlockPos pos, Random random, int size)
         {
             super(pos);
-            this.metaballs = new Metaballs3D(size, random);
+            this.metaballs = Metaballs3D.simple(random, size);
         }
     }
 }

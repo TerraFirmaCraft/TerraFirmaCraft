@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.noise;
 
+import java.util.Random;
+
 import net.minecraft.util.Mth;
 
 /**
@@ -44,5 +46,20 @@ public final class NoiseUtil
     {
         float p = phaseShift + frequency * q;
         return midpoint + amplitude * (Math.abs(2f * p + 1f - 4f * Mth.floor(p / 2f + 0.75f)) - 1f);
+    }
+
+    public static int uniform(Random random, int min, int max)
+    {
+        return min == max ? min : min + random.nextInt(max - min);
+    }
+
+    public static float uniform(Random random, float min, float max)
+    {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public static float triangle(Random random, float size)
+    {
+        return (random.nextFloat() - random.nextFloat()) * size;
     }
 }

@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -28,7 +29,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     @Override
     public boolean place(FeaturePlaceContext<ThinSpikeConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final ThinSpikeConfig config = context.config();
@@ -40,40 +41,71 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
         for (int attempt = 0; attempt < config.tries(); attempt++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), rand.nextInt(config.radius() - rand.nextInt(config.radius())), rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
+
             // Move upwards to find a suitable spot
             for (int i = 0; i < 7; i++)
             {
                 mutablePos.move(0, 1, 0);
-                if (!FluidHelpers.isAirOrEmptyFluid(world.getBlockState(mutablePos)))
+                if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(mutablePos)))
                 {
                     mutablePos.move(0, -1, 0);
                     break;
                 }
             }
-            if (spike.canSurvive(world, mutablePos) && world.isEmptyBlock(mutablePos))
-            {
-                placeSpike(world, mutablePos, spike, rand, config);
-                placedAny = true;
-            }
+
+            placedAny |= placeSpike(level, mutablePos, spike, rand, config);
         }
         return placedAny;
     }
 
-    private void placeSpike(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, BlockState spike, Random rand, ThinSpikeConfig config)
+    private boolean placeSpike(WorldGenLevel level, BlockPos.MutableBlockPos pos, BlockState spike, Random random, ThinSpikeConfig config)
     {
-        final int height = config.getHeight(rand);
+        // Place the first spike block
+        if (!placeSpikeBlock(level, pos, spike))
+        {
+            return false;
+        }
+
+        // Continue downwards, until we reach max height, or we can't go any further
+        final int height = config.getHeight(random);
         for (int i = 0; i < height; i++)
         {
-            setBlock(world, mutablePos, spike);
-            mutablePos.move(0, -1, 0);
-            if (!FluidHelpers.isAirOrEmptyFluid(world.getBlockState(mutablePos)))
+            pos.move(0, -1, 0);
+            if (!placeSpikeBlock(level, pos, spike))
             {
-                // Make the previous state the tip, and exit
-                setBlock(world, mutablePos.move(0, 1, 0), spike.setValue(ThinSpikeBlock.TIP, true));
-                return;
+                // Could not place a spike at this position. Back up, and exit the loop to fix the tip.
+                pos.move(0, 1, 0);
+                break;
             }
         }
-        // Add the tip
-        setBlock(world, mutablePos, spike.setValue(ThinSpikeBlock.TIP, true));
+
+        // Add the tip, at the last valid position
+        BlockState lastState = level.getBlockState(pos);
+        if (lastState.getBlock() == spike.getBlock())
+        {
+            lastState = lastState.setValue(ThinSpikeBlock.TIP, true);
+        }
+        else
+        {
+            // wut
+            lastState = Blocks.REDSTONE_LAMP.defaultBlockState();
+        }
+        level.setBlock(pos, lastState, 2);
+        return true;
+    }
+
+    private boolean placeSpikeBlock(WorldGenLevel level, BlockPos pos, BlockState spike)
+    {
+        final BlockState state = level.getBlockState(pos);
+        if (FluidHelpers.isAirOrEmptyFluid(state) && spike.canSurvive(level, pos))
+        {
+            final BlockState adjustedSpike = FluidHelpers.fillWithFluid(spike, state.getFluidState().getType());
+            if (adjustedSpike != null)
+            {
+                level.setBlock(pos, spike, 2);
+                return true;
+            }
+        }
+        return false;
     }
 }

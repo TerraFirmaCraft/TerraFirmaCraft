@@ -22,21 +22,21 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
     public static FluidProperty create(String name, Stream<Object> fluids)
     {
         return new FluidProperty(name, fluids.map(obj -> {
-            if (obj instanceof ResourceLocation)
+            if (obj instanceof ResourceLocation id)
             {
-                return (ResourceLocation) obj; // Direct references to fluid IDs are allowed
+                return id; // Direct references to fluid IDs are allowed
             }
-            else if (obj instanceof Fluid)
+            else if (obj instanceof Fluid fluid)
             {
-                return ((Fluid) obj).getRegistryName(); // Vanilla fluids are allowed
+                return fluid.getRegistryName(); // Vanilla fluids are allowed
             }
-            else if (obj instanceof RegistryObject)
+            else if (obj instanceof RegistryObject<?> reg)
             {
-                return ((RegistryObject<?>) obj).getId(); // Registry objects are allowed, we assume they're fluids
+                return reg.getId(); // Registry objects are allowed, we assume they're fluids
             }
-            else if (obj instanceof TFCFluids.FluidPair<?>)
+            else if (obj instanceof TFCFluids.FluidPair<?> pair)
             {
-                return ((TFCFluids.FluidPair<?>) obj).getSecond().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
+                return pair.getSecond().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
             }
             else
             {

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.fluids.FluidProperty;
 
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -66,25 +68,19 @@ public class ThinSpikeBlock extends Block
     );
 
     public static final BooleanProperty TIP = TFCBlockStateProperties.TIP;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
     public ThinSpikeBlock(Properties properties)
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(TIP, false));
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
-        boolean flag = context.getLevel().getBlockState(context.getClickedPos().above()).is(TFCTags.Blocks.SMALL_SPIKE);
-        return defaultBlockState().setValue(TIP, flag);
+        registerDefaultState(getStateDefinition().any().setValue(TIP, false).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(TIP);
+        builder.add(TIP, FLUID);
     }
 
     @Override

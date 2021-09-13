@@ -194,7 +194,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_vessel'), 'tfc:ceramic/%s_unfired_vessel' % color).with_advancement('minecraft:%s_dye' % color)
         if color != 'white':
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('tag!tfc:high_quality_cloth')
-        rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!minecraft:sand', 'tag!forge:gravel', 'tag!forge:gravel', 'tag!forge:gravel', 'tag!forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
+        rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
 
     # Quern
     quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
