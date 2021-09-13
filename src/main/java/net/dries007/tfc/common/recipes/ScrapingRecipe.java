@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class ScrapingRecipe extends SimpleItemRecipe
@@ -24,7 +24,7 @@ public class ScrapingRecipe extends SimpleItemRecipe
     public static final IndirectHashCollection<Item, ScrapingRecipe> CACHE = new IndirectHashCollection<>(ScrapingRecipe::getValidItems);
 
     @Nullable
-    public static ScrapingRecipe getRecipe(Level world, ItemStackRecipeWrapper wrapper)
+    public static ScrapingRecipe getRecipe(Level world, ItemStackInventory wrapper)
     {
         for (ScrapingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {

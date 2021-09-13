@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
@@ -83,7 +84,8 @@ public class SurfaceBuilderContext
             final boolean saltWater = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().isSalty();
 
             // We iterate down based on the actual surface height (since our capability for overhangs is much more limited than vanilla)
-            final int actualMinSurfaceHeight = Math.max(minY, startHeight - 30);
+            final int oceanFloor = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x & 15, z & 15);
+            final int actualMinSurfaceHeight = Math.max(minY, Math.min(startHeight, oceanFloor) - 20); // Iterate down to at least the ocean floor and below
             ((ContextSurfaceBuilder<C>) surfaceBuilder).apply(this, biome, x, z, startHeight, actualMinSurfaceHeight, noise, slope, temperature, rainfall, saltWater, config);
         }
         else

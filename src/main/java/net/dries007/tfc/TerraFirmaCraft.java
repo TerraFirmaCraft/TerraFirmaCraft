@@ -119,6 +119,9 @@ public final class TerraFirmaCraft
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
+        // todo: remove once forge fixes it's damn fluid blocks
+        TFCBlocks.fixForgeBrokenFluidBlocks();
+
         event.enqueueWork(() -> {
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();

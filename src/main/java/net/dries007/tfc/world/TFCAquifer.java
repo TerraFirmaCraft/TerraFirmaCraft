@@ -92,12 +92,12 @@ public class TFCAquifer implements AquiferExtension
         {
             double resultNoiseValue;
             BlockState resultFluidOrAirState;
-            boolean resultIsProbablyInterestingEnough;
+            boolean shouldScheduleFluidUpdate;
             if (this.isLavaLevel(y)) // lowest 9 y values in the world
             {
                 resultFluidOrAirState = Blocks.LAVA.defaultBlockState(); // always place lava
                 resultNoiseValue = 0.0D; // don't bother carving any extra area or something
-                resultIsProbablyInterestingEnough = false;
+                shouldScheduleFluidUpdate = false;
             }
             else
             {
@@ -202,7 +202,7 @@ public class TFCAquifer implements AquiferExtension
                 double secondToThirdSimilarity = this.similarity(secondClosestDistanceSq, thirdClosestDistanceSq);
 
                 // We have an interesting result if the first and second aquifers are not too close together
-                resultIsProbablyInterestingEnough = closestToSecondSimilarity > 0.0D;
+                shouldScheduleFluidUpdate = closestToSecondSimilarity > 0.0D;
                 if (closestAquifer.fluidLevel >= y && closestAquifer.fluidType.is(Blocks.WATER) && this.isLavaLevel(y - 1))
                 {
                     // IF, our closest aquifer is a water one, and the current y value below is is lava level, and we're beneath the aquifer...
@@ -260,7 +260,11 @@ public class TFCAquifer implements AquiferExtension
                 // otherwise, if resultNoiseValue is small enough, then we arrive here
                 // we schedule a fluid update based on the heuristic that we did above for interesting enough (weird)
                 // and we return the precomputed fluid or air state. badda bing, badda boom, we have an aquifer
-                this.shouldScheduleFluidUpdate = resultIsProbablyInterestingEnough;
+                this.shouldScheduleFluidUpdate = shouldScheduleFluidUpdate;
+                if (stoneSource instanceof BaseBlockSource source)
+                {
+                    return source.modifyFluid(resultFluidOrAirState, x, z);
+                }
                 return resultFluidOrAirState;
             }
         }
@@ -358,14 +362,14 @@ public class TFCAquifer implements AquiferExtension
     private AquiferStatus computeAquifer(int x, int y, int z)
     {
         int seaLevel = this.noiseGeneratorSettings.seaLevel();
-        if (y > ALWAYS_USE_SEA_LEVEL_WHEN_ABOVE)
+        if (y > 10) // in vanilla, this is ALWAYS_USE_SEA_LEVEL_WHEN_ABOVE = 30. Our oceans are deeper and in order to stop tearing up the surface, we need to place blocks here.
         {
-            // Above y=30, all aquifers are at sea level, and consist of water
+            // Above y=10, all aquifers are at sea level, and consist of water
             return new AquiferStatus(seaLevel, Blocks.WATER.defaultBlockState());
         }
         else
         {
-            // below y=30, the water level may vary depending on a noise value... which we now query
+            // below y=10, the water level may vary depending on a noise value... which we now query
             // it's a 3d noise, and as you can see, the value passed in, because of the floor div, is going to be the same across larger areas
             double waterLevelNoiseValue = this.waterLevelNoise.getValue(Math.floorDiv(x, 64), Math.floorDiv(y, 40) / 1.4D, Math.floorDiv(z, 64)) * 30.0D + -10.0D;
             // if the aquifer is a lava one

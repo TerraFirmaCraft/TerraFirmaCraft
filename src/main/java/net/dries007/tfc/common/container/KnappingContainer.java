@@ -24,10 +24,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
+import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.KnappingPattern;
 
-public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, IInventoryNoop, ISlotCallback
+public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, EmptyInventory, ISlotCallback
 {
     public static final int SLOT_OUTPUT = 0;
 

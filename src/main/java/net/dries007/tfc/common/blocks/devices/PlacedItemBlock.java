@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.PitKiLnBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.util.Helpers;
@@ -90,7 +90,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             // Play placement sound
             world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
-            PitKiLnBlockEntity teNew = Helpers.getBlockEntity(world, pos, PitKiLnBlockEntity.class);
+            PitKilnBlockEntity teNew = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
             if (teNew != null)
             {
                 // Copy inventory
@@ -142,7 +142,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             if (te != null)
             {
                 ItemStack held = player.getItemInHand(handIn);
-                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKiLnBlockEntity.isValid(worldIn, pos))
+                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(worldIn, pos))
                 {
                     convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
                     return InteractionResult.SUCCESS;

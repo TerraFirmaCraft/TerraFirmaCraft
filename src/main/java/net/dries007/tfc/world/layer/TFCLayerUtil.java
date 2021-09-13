@@ -331,7 +331,7 @@ public class TFCLayerUtil
 
         for (int i = 0; i < 2; i++)
         {
-            layer = ExactZoomLayer.INSTANCE.apply(random.nextLong(), layer);
+            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
             layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
             layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
         }

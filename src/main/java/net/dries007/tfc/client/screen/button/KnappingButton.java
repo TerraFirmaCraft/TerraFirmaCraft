@@ -17,6 +17,7 @@ import net.minecraft.network.chat.TextComponent;
 
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketHandler;
@@ -58,7 +59,7 @@ public class KnappingButton extends Button
     {
         if (visible)
         {
-            Minecraft.getInstance().getTextureManager().bindForSetup(texture);
+            RenderSystem.setShaderTexture(0, texture);
             isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
             blit(matrixStack, x, y, 0, 0, 16, 16, 16, 16);

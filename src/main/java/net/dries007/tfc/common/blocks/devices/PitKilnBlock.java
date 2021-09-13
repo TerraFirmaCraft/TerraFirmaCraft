@@ -37,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.PitKiLnBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.ForgeBlockProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
@@ -105,7 +105,7 @@ public class PitKilnBlock extends DeviceBlock
     {
         if (!world.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
-            PitKiLnBlockEntity te = Helpers.getBlockEntity(world, pos, PitKiLnBlockEntity.class);
+            PitKilnBlockEntity te = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
             if (te != null)
             {
 
@@ -147,7 +147,7 @@ public class PitKilnBlock extends DeviceBlock
                         }
                         if (stage == 0)
                         {
-                            PitKiLnBlockEntity.convertPitKilnToPlacedItem(world, pos);
+                            PitKilnBlockEntity.convertPitKilnToPlacedItem(world, pos);
                         }
                         else
                         {

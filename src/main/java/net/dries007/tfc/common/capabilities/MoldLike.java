@@ -7,10 +7,10 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
+import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 
 // Extends IInventory because we need to be able to use it as a recipe query for casting.
-public interface MoldLike extends IFluidHandlerItem, IHeat, IInventoryNoop
+public interface MoldLike extends IFluidHandlerItem, IHeat, EmptyInventory
 {
     @Nullable
     static MoldLike get(ItemStack stack)

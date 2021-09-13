@@ -17,6 +17,7 @@
     "accessor.GameRulesAccessor",
     "accessor.GameRulesTypeAccessor",
     "accessor.ItemAccessor",
+    "accessor.LiquidBlockAccessor",
     "accessor.PlayerAccessor",
     "accessor.ProtoChunkAccessor",
     "accessor.RecipeManagerAccessor",

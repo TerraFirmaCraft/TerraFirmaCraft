@@ -14,7 +14,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Clearable;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +38,7 @@ import net.dries007.tfc.util.Helpers;
  * An abstraction for a tile entity containing at least, an inventory (item handler) capability
  * However, the inventory itself is generic.
  */
-public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TFCBlockEntity implements ISlotCallback, Clearable
+public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TFCBlockEntity implements ISlotCallback, MenuProvider, Clearable
 {
     public static <C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> InventoryFactory<ItemStackHandler> defaultInventory(int slots)
     {
@@ -56,9 +59,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         this.defaultName = defaultName;
     }
 
-    /**
-     * Default implementation of {@link net.minecraft.world.MenuProvider#getDisplayName()} but without implementing the interface.
-     */
+    @Override
     public Component getDisplayName()
     {
         return customName == null ? defaultName : customName;
@@ -67,6 +68,13 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     public void setCustomName(Component customName)
     {
         this.customName = customName;
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
+    {
+        return null;
     }
 
     @Override

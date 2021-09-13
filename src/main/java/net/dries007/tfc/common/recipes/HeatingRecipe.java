@@ -25,22 +25,22 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
+public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 {
     public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
 
     @Nullable
     public static HeatingRecipe getRecipe(ItemStack stack)
     {
-        return getRecipe(new ItemStackRecipeWrapper(stack));
+        return getRecipe(new ItemStackInventory(stack));
     }
 
     @Nullable
-    public static HeatingRecipe getRecipe(ItemStackRecipeWrapper wrapper)
+    public static HeatingRecipe getRecipe(ItemStackInventory wrapper)
     {
         for (HeatingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {
@@ -68,7 +68,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     @Override
-    public boolean matches(ItemStackRecipeWrapper inv, @Nullable Level worldIn)
+    public boolean matches(ItemStackInventory inv, @Nullable Level worldIn)
     {
         return ingredient.test(inv.getStack());
     }
@@ -98,7 +98,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     @Override
-    public ItemStack assemble(ItemStackRecipeWrapper inventory)
+    public ItemStack assemble(ItemStackInventory inventory)
     {
         final ItemStack inputStack = inventory.getStack();
         final ItemStack outputStack = outputItem.copy();
@@ -108,7 +108,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         return outputStack;
     }
 
-    public FluidStack getOutputFluid(ItemStackRecipeWrapper inventory)
+    public FluidStack getOutputFluid(ItemStackInventory inventory)
     {
         return outputFluid.copy();
     }

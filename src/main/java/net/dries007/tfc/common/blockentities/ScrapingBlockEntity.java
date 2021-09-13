@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -60,7 +60,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 ScrapingRecipe recipe = getRecipe(currentItem);
                 if (recipe != null)
                 {
-                    inventory.setStackInSlot(0, recipe.assemble(new ItemStackRecipeWrapper(currentItem)));
+                    inventory.setStackInSlot(0, recipe.assemble(new ItemStackInventory(currentItem)));
                 }
             }
             markForBlockUpdate();
@@ -117,6 +117,6 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     private ScrapingRecipe getRecipe(ItemStack stack)
     {
         assert level != null;
-        return ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
+        return ScrapingRecipe.getRecipe(level, new ItemStackInventory(stack));
     }
 }

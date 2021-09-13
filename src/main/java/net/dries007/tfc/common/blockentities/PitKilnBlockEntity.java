@@ -29,18 +29,18 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class PitKiLnBlockEntity extends PlacedItemBlockEntity
+public class PitKilnBlockEntity extends PlacedItemBlockEntity
 {
     public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
     public static final int STRAW_NEEDED = 8;
     public static final int WOOD_NEEDED = 8;
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, PitKiLnBlockEntity pitKiln)
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PitKilnBlockEntity pitKiln)
     {
         if (pitKiln.isLit)
         {
@@ -85,7 +85,7 @@ public class PitKiLnBlockEntity extends PlacedItemBlockEntity
 
     public static void convertPitKilnToPlacedItem(Level world, BlockPos pos)
     {
-        PitKiLnBlockEntity teOld = Helpers.getBlockEntity(world, pos, PitKiLnBlockEntity.class);
+        PitKilnBlockEntity teOld = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
         if (teOld != null)
         {
             // Remove inventory items
@@ -142,12 +142,12 @@ public class PitKiLnBlockEntity extends PlacedItemBlockEntity
     private long litTick;
     private boolean isLit;
 
-    public PitKiLnBlockEntity(BlockPos pos, BlockState state)
+    public PitKilnBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.PIT_KILN.get(), pos, state);
     }
 
-    protected PitKiLnBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    protected PitKilnBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
         cachedRecipes = new HeatingRecipe[4];
@@ -236,7 +236,7 @@ public class PitKiLnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    PitKiLnBlockEntity pitKiln = Helpers.getBlockEntity(level, pitPos, PitKiLnBlockEntity.class);
+                    PitKilnBlockEntity pitKiln = Helpers.getBlockEntity(level, pitPos, PitKilnBlockEntity.class);
                     if (pitKiln != null)
                     {
                         pitKiln.tryLight();
@@ -291,7 +291,7 @@ public class PitKiLnBlockEntity extends PlacedItemBlockEntity
                 final HeatingRecipe recipe = cachedRecipes[slot]; // And transform recipes
                 if (recipe != null && recipe.isValidTemperature(targetTemperature))
                 {
-                    final ItemStack out = recipe.assemble(new ItemStackRecipeWrapper(stack)); // Liquids are lost
+                    final ItemStack out = recipe.assemble(new ItemStackInventory(stack)); // Liquids are lost
                     inventory.setStackInSlot(slot, out);
                 }
             });
@@ -303,7 +303,7 @@ public class PitKiLnBlockEntity extends PlacedItemBlockEntity
         if (level == null) return;
         for (int i = 0; i < 4; i++)
         {
-            cachedRecipes[i] = HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(inventory.getStackInSlot(i)));
+            cachedRecipes[i] = HeatingRecipe.getRecipe(new ItemStackInventory(inventory.getStackInSlot(i)));
         }
     }
 }

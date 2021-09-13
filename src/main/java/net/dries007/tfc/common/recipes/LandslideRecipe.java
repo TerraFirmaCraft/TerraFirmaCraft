@@ -26,7 +26,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.SupportManager;
@@ -45,7 +45,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     private static final Random RANDOM = new Random();
 
     @Nullable
-    public static LandslideRecipe getRecipe(Level world, BlockRecipeWrapper wrapper)
+    public static LandslideRecipe getRecipe(Level world, BlockInventory wrapper)
     {
         for (LandslideRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
         {
@@ -70,7 +70,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
             BlockPos fallPos = getLandSlidePos(world, pos);
             if (fallPos != null)
             {
-                BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
+                BlockInventory wrapper = new BlockInventory(pos, state);
                 LandslideRecipe recipe = getRecipe(world, wrapper);
                 if (recipe != null)
                 {

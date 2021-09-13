@@ -14,11 +14,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.recipes.inventory.AlloyRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.Metal;
 
-public class AlloyRecipe implements ISimpleRecipe<AlloyRecipeWrapper>
+public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
 {
     private final ResourceLocation id;
     private final Map<Metal, Range> metals;
@@ -42,7 +42,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyRecipeWrapper>
     }
 
     @Override
-    public boolean matches(AlloyRecipeWrapper wrapper, Level level)
+    public boolean matches(AlloyInventory wrapper, Level level)
     {
         return wrapper.getAlloy().matches(this);
     }

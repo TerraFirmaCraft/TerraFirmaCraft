@@ -14,7 +14,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.AlloyRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 
 public class Alloy implements INBTSerializable<CompoundTag>
 {
@@ -36,7 +36,7 @@ public class Alloy implements INBTSerializable<CompoundTag>
     private int totalUnits;
     private int maxUnits;
 
-    @Nullable private AlloyRecipeWrapper wrapper; // Lazy, initialized on demand and cached
+    @Nullable private AlloyInventory wrapper; // Lazy, initialized on demand and cached
     @Nullable private Metal cachedResult;
 
     /**
@@ -323,11 +323,11 @@ public class Alloy implements INBTSerializable<CompoundTag>
         return metalMap.values().stream().mapToDouble(x -> x).sum();
     }
 
-    private AlloyRecipeWrapper getWrapper()
+    private AlloyInventory getWrapper()
     {
         if (wrapper == null)
         {
-            wrapper = new AlloyRecipeWrapper(this);
+            wrapper = new AlloyInventory(this);
         }
         return wrapper;
     }

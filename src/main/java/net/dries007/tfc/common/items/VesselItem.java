@@ -45,7 +45,7 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
@@ -365,7 +365,7 @@ public class VesselItem extends Item
         private void updateInventoryMelting()
         {
             boolean updatedAlloy = false;
-            final ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper();
+            final ItemStackInventory wrapper = new ItemStackInventory();
             for (int i = 0; i < SLOTS; i++)
             {
                 final ItemStack stack = inventory.getStackInSlot(i);

@@ -21,13 +21,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * Handling for simple Ingredient -> ItemStack recipes
  */
-public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
+public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInventory>
 {
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
@@ -46,7 +46,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
     }
 
     @Override
-    public boolean matches(ItemStackRecipeWrapper wrapper, Level worldIn)
+    public boolean matches(ItemStackInventory wrapper, Level worldIn)
     {
         return this.ingredient.test(wrapper.getStack());
     }
@@ -64,7 +64,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackRecipeW
     }
 
     @Override
-    public ItemStack assemble(ItemStackRecipeWrapper wrapper)
+    public ItemStack assemble(ItemStackInventory wrapper)
     {
         return result.copy();
     }

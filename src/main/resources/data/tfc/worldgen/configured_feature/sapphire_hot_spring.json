@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:hot_spring",
   "config": {
-    "fluid_state": "minecraft:water",
+    "fluid_state": "tfc:fluid/spring_water",
     "radius": 14,
     "decoration": {
       "blocks": [

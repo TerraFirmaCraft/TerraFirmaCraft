@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
-import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
@@ -49,7 +49,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     }
 
     @Override
-    public BlockState getBlockCraftingResult(BlockRecipeWrapper wrapper)
+    public BlockState getBlockCraftingResult(BlockInventory wrapper)
     {
         return copyInputState ? wrapper.getState() : outputState;
     }

@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 
@@ -83,7 +83,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 HeatingRecipe recipe = cachedRecipes[finalSlot - SLOT_EXTRA_INPUT_START];
                 if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
                 {
-                    ItemStack output = recipe.assemble(new ItemStackRecipeWrapper(inputStack));
+                    ItemStack output = recipe.assemble(new ItemStackInventory(inputStack));
                     //todo: apply trait WOOD_GRILLED
                     inventory.setStackInSlot(finalSlot, output);
                     markForSync();
@@ -108,7 +108,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
         {
             final ItemStack stack = inventory.getStackInSlot(slot);
-            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(stack));
+            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(new ItemStackInventory(stack));
         }
     }
 }

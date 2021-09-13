@@ -46,7 +46,7 @@ import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -258,7 +258,7 @@ public final class InteractionManager
 
         register(TFCTags.Items.SCRAPABLE, false, (stack, context) -> {
             Level level = context.getLevel();
-            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack));
+            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackInventory(stack));
             if (recipe != null)
             {
                 final BlockPos pos = context.getClickedPos();

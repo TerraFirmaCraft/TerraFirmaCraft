@@ -139,6 +139,17 @@ public class TFCLayerUtilTests
         RAW.draw("biomes_with_forests_10km", forestBiomeMap);
     }
 
+    @Test
+    public void testOverworldRockLayer()
+    {
+        long seed = System.currentTimeMillis();
+        AreaFactory rockArea = TFCLayerUtil.createOverworldRockLayer(seed, 7, 20);
+        AREA.color(i -> Artist.Colors.COLORS[Math.floorMod(i, Artist.Colors.COLORS.length)])
+            .center(5_000).size(1000)
+            .draw("rocks_10km", rockArea);
+
+    }
+
     private Color plateElevationColor(Plate plate)
     {
         if (plate.oceanic())

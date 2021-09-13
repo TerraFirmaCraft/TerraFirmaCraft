@@ -22,7 +22,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.QuernRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -105,7 +105,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 return TFCTags.Items.HANDSTONE.contains(stack.getItem()); // needs to be handstone
             case SLOT_INPUT:
                 assert level != null;
-                return QuernRecipe.getRecipe(level, new ItemStackRecipeWrapper(stack)) != null; // recipe must exist + weird item swap glitch workaround
+                return QuernRecipe.getRecipe(level, new ItemStackInventory(stack)) != null; // recipe must exist + weird item swap glitch workaround
             case SLOT_OUTPUT:
                 return true;
         }
@@ -180,7 +180,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         if (!level.isClientSide && !inputStack.isEmpty())
         {
-            ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper(inputStack);
+            ItemStackInventory wrapper = new ItemStackInventory(inputStack);
             QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
             if (recipe != null)
             {

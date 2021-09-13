@@ -11,16 +11,16 @@ import net.minecraft.world.item.ItemStack;
 /**
  * A {@link net.minecraftforge.items.wrapper.RecipeWrapper} for single item stacks.
  */
-public class ItemStackRecipeWrapper implements IInventoryNoop
+public class ItemStackInventory implements EmptyInventory
 {
     protected ItemStack stack;
 
-    public ItemStackRecipeWrapper()
+    public ItemStackInventory()
     {
         this(ItemStack.EMPTY);
     }
 
-    public ItemStackRecipeWrapper(ItemStack stack)
+    public ItemStackInventory(ItemStack stack)
     {
         this.stack = stack;
     }

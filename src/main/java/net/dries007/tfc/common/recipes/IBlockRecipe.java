@@ -15,15 +15,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 
 /**
- * A simple {@link net.minecraft.world.item.crafting.Recipe} extension for {@link BlockRecipeWrapper}
+ * A simple {@link net.minecraft.world.item.crafting.Recipe} extension for {@link BlockInventory}
  */
-public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
+public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
 {
     @Override
-    default boolean matches(BlockRecipeWrapper inv, Level worldIn)
+    default boolean matches(BlockInventory inv, Level worldIn)
     {
         return matches(worldIn, inv.getPos(), inv.getState());
     }
@@ -35,7 +35,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     @Override
-    default ItemStack assemble(BlockRecipeWrapper inventory)
+    default ItemStack assemble(BlockInventory inventory)
     {
         return new ItemStack(getBlockCraftingResult(inventory).getBlock());
     }
@@ -51,7 +51,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     /**
      * Specific parameter version of {@link Recipe#assemble(Container)} for block recipes.
      */
-    default BlockState getBlockCraftingResult(BlockRecipeWrapper wrapper)
+    default BlockState getBlockCraftingResult(BlockInventory wrapper)
     {
         return getBlockRecipeOutput().defaultBlockState();
     }

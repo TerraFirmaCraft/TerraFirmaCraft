@@ -317,8 +317,7 @@ def generate(rm: ResourceManager):
 
     # six different variants: both filled + not, and both sapphire, emerald, and no decoration
     for ore in ('sapphire', 'emerald', ''):
-        # todo: change back to tfc:fluid/spring_water once fluids are fixed
-        for variant, fill_state, count in (('empty', 'minecraft:air', 2), ('', 'minecraft:water', 5)):
+        for variant, fill_state, count in (('empty', 'minecraft:air', 2), ('', 'tfc:fluid/spring_water', 5)):
             rm.feature(join_not_empty('_', ore, variant, 'hot_spring'), wg.configure('tfc:hot_spring', {
                 'fluid_state': fill_state,
                 'radius': 14,

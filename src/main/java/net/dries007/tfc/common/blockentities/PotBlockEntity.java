@@ -36,7 +36,7 @@ import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.IInventoryNoop;
+import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Fuel;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -207,7 +207,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return PotContainer.create(this, playerInv, windowID);
     }
 
-    public static class PotInventory implements IInventoryNoop, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>
+    public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>
     {
         private final ItemStackHandler inventory;
         private final FluidTank tank;

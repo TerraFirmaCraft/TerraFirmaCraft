@@ -193,7 +193,7 @@ public final class BiomeNoise
             {
                 x = (x + 0.3f) / 1.3f;  // In [0, 1]
                 x = x * x * x; // Power scaled
-                return -35f * x; // In [0, -35]
+                return -16f * x; // In [0, -16]
             }
             return 0; // No modifications outside of ridge area
         });

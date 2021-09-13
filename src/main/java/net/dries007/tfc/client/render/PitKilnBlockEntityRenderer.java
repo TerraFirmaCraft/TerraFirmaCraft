@@ -16,13 +16,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.common.blockentities.PitKiLnBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 
-public class PitKilnBlockEntityRenderer implements BlockEntityRenderer<PitKiLnBlockEntity>
+public class PitKilnBlockEntityRenderer implements BlockEntityRenderer<PitKilnBlockEntity>
 {
     @Override
-    public void render(PitKiLnBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(PitKilnBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (te.getBlockState().getValue(PitKilnBlock.STAGE) > 9) return;
 

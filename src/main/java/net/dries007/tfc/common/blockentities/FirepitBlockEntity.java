@@ -23,7 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -63,7 +63,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                 if (cachedRecipe != null && cachedRecipe.isValidTemperature(itemTemp))
                 {
                     HeatingRecipe recipe = cachedRecipe;
-                    ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper(inputStack);
+                    ItemStackInventory wrapper = new ItemStackInventory(inputStack);
 
                     // Clear input
                     inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
@@ -86,7 +86,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     protected void updateCachedRecipe()
     {
         assert level != null;
-        cachedRecipe = HeatingRecipe.getRecipe(new ItemStackRecipeWrapper(inventory.getStackInSlot(FirepitBlockEntity.SLOT_ITEM_INPUT)));
+        cachedRecipe = HeatingRecipe.getRecipe(new ItemStackInventory(inventory.getStackInSlot(FirepitBlockEntity.SLOT_ITEM_INPUT)));
     }
 
     /**

@@ -1,12 +1,16 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import net.minecraft.network.FriendlyByteBuf;
 
 import io.netty.buffer.Unpooled;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,32 +34,46 @@ public class KnappingPatternTests
     }
 
     @Test
-    public void testGetAndSet()
+    public Stream<DynamicTest> testGetAndSetIndex()
     {
-        for (int i = 0; i < 25; i++)
-        {
-            KnappingPattern p = new KnappingPattern();
-            p.set(i, false);
-            assertFalse(p.get(i));
-            p.set(i, true);
-            assertTrue(p.get(i));
-        }
+        return IntStream.range(0, 25)
+            .mapToObj(i -> DynamicTest.dynamicTest("index = " + i, () -> {
+                KnappingPattern p = new KnappingPattern();
+                p.set(i, false);
+                assertFalse(p.get(i));
+                p.set(i, true);
+                assertTrue(p.get(i));
+            }));
     }
 
-    @Test
-    public void testGetAndSetCoordinates()
+    @TestFactory
+    public Stream<DynamicTest> testGetAndSetCoordinates()
     {
-        for (int x = 0; x < 5; x++)
-        {
-            for (int y = 0; y < 5; y++)
-            {
-                KnappingPattern p = new KnappingPattern();
-                p.set(x, y, false);
-                assertFalse(p.get(x, y));
-                p.set(x, y, true);
-                assertTrue(p.get(x, y));
-            }
-        }
+        return IntStream.range(0, 5)
+            .mapToObj(x -> IntStream.range(0, 5)
+                .mapToObj(y -> DynamicTest.dynamicTest("pos = (" + x + ", " + y + ")", () -> {
+                    KnappingPattern p = new KnappingPattern();
+                    p.set(x, y, false);
+                    assertFalse(p.get(x, y));
+                    p.set(x, y, true);
+                    assertTrue(p.get(x, y));
+                }))).flatMap(t -> t);
+    }
+
+    @TestFactory
+    public Stream<DynamicTest> testSetFalseLeavesOthersUnchanged()
+    {
+        return IntStream.range(0, 5)
+            .mapToObj(x -> IntStream.range(0, 5)
+                .mapToObj(y -> DynamicTest.dynamicTest("pos = (" + x + ", " + y + ")", () -> {
+                    KnappingPattern p = new KnappingPattern();
+                    p.set(x, y, false);
+                    assertFalse(p.get(x, y));
+                    for (int x0 = 0; x0 < 5; x0++)
+                        for (int y0 = 0; y0 < 5; y0++)
+                            if (x0 != x || y0 != y)
+                                assertTrue(p.get(x0, y0));
+                }))).flatMap(t -> t);
     }
 
     @RepeatedTest(value = 10)

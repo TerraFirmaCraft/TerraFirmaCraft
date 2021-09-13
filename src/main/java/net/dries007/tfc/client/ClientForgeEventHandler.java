@@ -45,7 +45,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
@@ -129,7 +129,7 @@ public class ClientForgeEventHandler
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
 
             // Metal content, inferred from a matching heat recipe.
-            ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper(stack);
+            ItemStackInventory wrapper = new ItemStackInventory(stack);
             HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
             if (recipe != null)
             {

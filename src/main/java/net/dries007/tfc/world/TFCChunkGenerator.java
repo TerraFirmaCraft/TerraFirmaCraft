@@ -270,9 +270,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public BaseStoneSource createBaseStoneSource(ChunkPos pos)
+    public BaseBlockSource createBaseStoneSource(LevelAccessor level, ChunkAccess chunk)
     {
-        return new RockLayerStoneSource(pos, chunkDataProvider.get(pos).getRockData());
+        final BiomeManager manager = level.getBiomeManager().withDifferentSource(biomeSource);
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        final Sampler<Biome> biomeSampler = (x, z) -> {
+            cursor.set(x, 0, z);
+            return manager.getBiome(cursor);
+        };
+        return new DefaultBaseBlockSource(level, chunk.getPos(), chunkDataProvider.get(chunk.getPos()).getRockData(), biomeSampler);
     }
 
     /**
@@ -291,7 +297,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final WorldgenRandom random = new WorldgenRandom();
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
         final ChunkPos chunkPos = chunk.getPos();
-        final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, createBaseStoneSource(chunkPos));
+        final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, createBaseStoneSource((LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor(), chunk));
         final Aquifer aquifer = createAquifer(chunk);
         final BitSet carvingMask = CarverHelpers.getCarvingMask(chunk, noiseGeneratorSettings().noiseSettings().height());
 
@@ -343,10 +349,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         {
             aquifer = new TFCAquifer(pos, aquiferBarrierNoise, aquiferWaterLevelNoise, aquiferLavaLevelNoise, noiseGeneratorSettings(), minCellY * cellHeight, cellCountY * cellHeight);
             aquiferCache.set(pos.x, pos.z, aquifer);
-        }
-        else
-        {
-            assert aquifer.getPos().x == pos.x && aquifer.getPos().z == pos.z : "Aquifer cache borked, expected " + pos + " but got " + aquifer.getPos();
         }
         return aquifer;
     }
@@ -698,11 +700,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
-    interface Sampler<T>
-    {
-        T get(int x, int z);
-    }
-
     class FillFromNoiseHelper
     {
         // Initialized from the chunk
@@ -742,7 +739,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.chunkZ = chunk.getPos().getMinBlockZ();
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
             this.aquifer = createAquifer(chunk);
-            this.stoneSource = createBaseStoneSource(chunk.getPos());
+            this.stoneSource = createBaseStoneSource(world, chunk);
 
             this.interpolators = new ArrayList<>();
 

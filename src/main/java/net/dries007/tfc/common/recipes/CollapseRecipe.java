@@ -25,7 +25,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.inventory.BlockRecipeWrapper;
+import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.SupportManager;
@@ -46,7 +46,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
     private static final Random RANDOM = new Random();
 
     @Nullable
-    public static CollapseRecipe getRecipe(Level world, BlockRecipeWrapper wrapper)
+    public static CollapseRecipe getRecipe(Level world, BlockInventory wrapper)
     {
         for (CollapseRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
         {
@@ -148,7 +148,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean collapseBlock(Level world, BlockPos pos, BlockState state)
     {
-        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
+        BlockInventory wrapper = new BlockInventory(pos, state);
         CollapseRecipe recipe = getRecipe(world, wrapper);
         if (recipe != null)
         {
