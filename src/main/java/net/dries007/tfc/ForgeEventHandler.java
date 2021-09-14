@@ -372,7 +372,6 @@ public final class ForgeEventHandler
         }
 
         // All other resource reload listeners can be inserted after recipes.
-        event.addListener(MetalItem.MANAGER);
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
 

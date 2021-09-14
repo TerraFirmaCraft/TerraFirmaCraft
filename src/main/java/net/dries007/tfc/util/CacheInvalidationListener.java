@@ -47,7 +47,6 @@ public enum CacheInvalidationListener implements SyncReloadListener
 
             ItemSizeManager.CACHE.reload(ItemSizeManager.MANAGER.getValues());
 
-            MetalItem.CACHE.reload(MetalItem.MANAGER.getValues());
             Fuel.CACHE.reload(Fuel.MANAGER.getValues());
             Drinkable.CACHE.reload(Drinkable.MANAGER.getValues());
 

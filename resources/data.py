@@ -60,10 +60,7 @@ def generate(rm: ResourceManager):
                 else:
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
 
-                metal_item(rm, ('metal', metal + '_' + item), ingredient, 'tfc:%s' % metal, item_data.smelt_amount)
                 heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
-
-    metal_item(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 'tfc:cast_iron', 100)
 
     # Item Heats
 
@@ -492,14 +489,6 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'ingredient': utils.ingredient(ingredient),
         'size': size.name,
         'weight': weight.name
-    })
-
-
-def metal_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, metal: str, amount: int):
-    rm.data(('tfc', 'metal_items', name_parts), {
-        'ingredient': utils.ingredient(ingredient),
-        'metal': metal,
-        'amount': amount
     })
 
 
