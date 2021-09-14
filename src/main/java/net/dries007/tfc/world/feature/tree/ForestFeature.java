@@ -40,13 +40,13 @@ public class ForestFeature extends Feature<ForestConfig>
     @Override
     public boolean place(FeaturePlaceContext<ForestConfig> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final ForestConfig config = context.config();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(pos);
+        final ChunkData data = provider.get(level, pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
 
@@ -61,9 +61,9 @@ public class ForestFeature extends Feature<ForestConfig>
                 int trees = 1 + rand.nextInt(3);
                 for (int i = 0; i < trees; i++)
                 {
-                    placedTrees |= placeTree(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos, false);
+                    placedTrees |= placeTree(level, context.chunkGenerator(), rand, pos, config, data, mutablePos, false);
                 }
-                placeGroundcover(worldIn, rand, pos, config, data, mutablePos, 10);
+                placeGroundcover(level, rand, pos, config, data, mutablePos, 10);
             }
             return true;
         }
@@ -91,16 +91,16 @@ public class ForestFeature extends Feature<ForestConfig>
         treeCount = (int) (treeCount * (0.6f + 0.9f * density));
         for (int i = 0; i < treeCount; i++)
         {
-            placedTrees |= placeTree(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
+            placedTrees |= placeTree(level, context.chunkGenerator(), rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
         }
         int bushCount = (int) (treeCount * 2 * density);
         for (int j = 0; j < bushCount; j++)
         {
-            placedBushes |= placeBush(worldIn, context.chunkGenerator(), rand, pos, config, data, mutablePos);
+            placedBushes |= placeBush(level, context.chunkGenerator(), rand, pos, config, data, mutablePos);
         }
         if (placedTrees)
         {
-            placeGroundcover(worldIn, rand, pos, config, data, mutablePos, groundCount);
+            placeGroundcover(level, rand, pos, config, data, mutablePos, groundCount);
         }
         return placedTrees || placedBushes;
     }

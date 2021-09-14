@@ -54,7 +54,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockInventory.Mutable wrapper = new BlockInventory.Mutable();
-        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos).getRockData();
+        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunk).getRockData();
 
         final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
         final RockLayerSettings rockSettings = ex.getRockLayerSettings();

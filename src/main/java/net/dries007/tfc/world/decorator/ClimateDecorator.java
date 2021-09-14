@@ -28,8 +28,8 @@ public class ClimateDecorator extends FeatureDecorator<ClimateConfig>
     @Override
     public Stream<BlockPos> getPositions(DecorationContext context, Random random, ClimateConfig config, BlockPos pos)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.get(((ServerChunkCache) context.getLevel().getChunkSource()).getGenerator());
-        final ChunkData data = provider.get(pos);
+        final ChunkDataProvider provider = ChunkDataProvider.get(context.getLevel());
+        final ChunkData data = provider.get(context.getLevel(), pos);
         if (config.isValid(data, pos, random))
         {
             return Stream.of(pos);

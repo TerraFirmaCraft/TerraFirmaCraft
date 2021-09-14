@@ -55,7 +55,6 @@ public enum CacheInvalidationListener implements SyncReloadListener
             InteractionManager.reload();
         }
 
-        ChunkDataCache.clearAll();
         LocateVeinCommand.clearCache();
     }
 

@@ -19,9 +19,14 @@ import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 /**
  * A generic interface for a block which is able to contain any number of predetermined fluid properties
+ *
+ * Implementors should also (in general) override {@link net.minecraft.world.level.block.state.BlockBehaviour#getFluidState(BlockState)}, and delegate to {@link #getFluidState(BlockState)}
  *
  * @see FluidProperty
  * @see FluidHelpers
@@ -62,8 +67,9 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
         if (containedFluid != Fluids.EMPTY)
         {
             worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
+            return FluidUtil.getFilledBucket(new FluidStack(containedFluid, FluidAttributes.BUCKET_VOLUME));
         }
-        return ItemStack.EMPTY; // todo: what? return value changed containedFluid;
+        return ItemStack.EMPTY;
     }
 
     /**

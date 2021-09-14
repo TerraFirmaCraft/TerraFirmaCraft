@@ -6,13 +6,12 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
@@ -24,10 +23,9 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
- * Cache of chunk data
- * Used for various purposes:
- * {@link ChunkDataCache#CLIENT} and {@link ChunkDataCache#SERVER} are logical sided caches, used for when chunk data is needed without a world context. Care must be taken to choose the cache for the correct logical side
- * {@link ChunkDataCache#WORLD_GEN} is used for chunk data during world generation, as it's being generated. It is cleared once the chunk is completely generated
+ * Sided cache of chunk data instances, for when a world context is unavailable.
+ * Automatically synchronized on chunk watch / unwatch events, and updated on chunk load and unload.
+ * This is only valid in the overworld.
  */
 public final class ChunkDataCache
 {
@@ -35,19 +33,13 @@ public final class ChunkDataCache
      * This is a cache of client side chunk data, used for when there is no world context available.
      * It is synced on chunk watch / unwatch
      */
-    public static final ChunkDataCache CLIENT = new ChunkDataCache("client", false);
+    public static final ChunkDataCache CLIENT = new ChunkDataCache("client");
 
     /**
      * This is a cache of server side chunk data.
      * It is not synced, it is updated on chunk load / unload
      */
-    public static final ChunkDataCache SERVER = new ChunkDataCache("server", false);
-
-    /**
-     * This is a cache of chunk data during generation, before the chunk is fully generated.
-     * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
-     */
-    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen", true);
+    public static final ChunkDataCache SERVER = new ChunkDataCache("server");
 
     /**
      * This is a set of chunk positions which have been queued for chunk watch, but were not loaded or generated at the time.
@@ -63,24 +55,21 @@ public final class ChunkDataCache
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
 
-    public static void clearAll()
+    public static void clearCaches()
     {
+        // The world gen cache should not be cleared, as it is both automatically cleared (as it uses weak keys), and is the only place where chunk data is stored between save operations (it is not a true cache, in that sense, as it's data cannot be generated from it's entirety)
         CLIENT.cache.clear();
         SERVER.cache.clear();
-        WORLD_GEN.cache.clear();
         WATCH_QUEUE.queue.clear();
     }
 
+    protected final Map<ChunkPos, ChunkData> cache;
     private final String name;
-    private final Map<ChunkPos, ChunkData> cache;
 
-    /**
-     * Creates an infinite size cache that must be managed to not create memory leaks
-     */
-    private ChunkDataCache(String name, boolean sync)
+    private ChunkDataCache(String name)
     {
         this.name = name;
-        this.cache = sync ? new ConcurrentHashMap<>() : new HashMap<>();
+        this.cache = new HashMap<>();
     }
 
     public ChunkData getOrEmpty(BlockPos pos)
@@ -116,9 +105,9 @@ public final class ChunkDataCache
         cache.put(pos, data);
     }
 
-    public ChunkData getOrCreate(ChunkPos pos, RockLayerSettings settings)
+    public ChunkData computeIfAbsent(ChunkPos pos, Function<ChunkPos, ChunkData> mappingFunction)
     {
-        return cache.computeIfAbsent(pos, key -> new ChunkData(pos, settings));
+        return cache.computeIfAbsent(pos, mappingFunction);
     }
 
     @Override
@@ -158,7 +147,7 @@ public final class ChunkDataCache
         {
             if (queue.containsKey(pos))
             {
-                Set<ServerPlayer> players = queue.remove(pos);
+                final Set<ServerPlayer> players = queue.remove(pos);
                 for (ServerPlayer player : players)
                 {
                     PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), data.getUpdatePacket());

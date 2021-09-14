@@ -13,8 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
@@ -220,23 +223,26 @@ public final class ForgeEventHandler
             final Level world = event.getObject().getLevel();
             final ChunkPos chunkPos = event.getObject().getPos();
 
-            ChunkData data;
+            ChunkData data = null;
             if (Helpers.isClientSide(world))
             {
                 // This may happen before or after the chunk is watched and synced to client
                 // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
-                data = ChunkDataCache.CLIENT.getOrCreate(chunkPos, RockLayerSettings.EMPTY);
+                // We don't want to use getOrEmpty here, as the instance has to be mutable. In addition, we can't just wait for the chunk data to arrive, we have to assign one.
+                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::createClient);
             }
             else
             {
                 // Chunk was created on server thread.
-                // 1. If this was due to world gen, it won't have any cap data. This is where we clear the world gen cache and attach it to the chunk
-                // 2. If this was due to chunk loading, the caps will be deserialized from NBT after this event is posted. Attach empty data here
-                data = ChunkDataCache.WORLD_GEN.remove(chunkPos);
+                // We try and promote partial data, if it's available via an identifiable chunk generator.
+                // Otherwise, we fallback to empty data.
+                if (world instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+                {
+                    data = ex.getChunkDataProvider().promotePartial(chunkPos);
+                }
                 if (data == null)
                 {
-                    final RockLayerSettings layerSettings = world instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator ? generator.getRockLayerSettings() : RockLayerSettings.EMPTY;
-                    data = new ChunkData(chunkPos, layerSettings);
+                    data = new ChunkData(chunkPos, RockLayerSettings.EMPTY);
                 }
 
             }
@@ -332,13 +338,12 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
-            final ChunkPos pos = event.getChunk().getPos();
-            final ChunkData data = ChunkDataCache.WORLD_GEN.get(pos);
-            if (data != null && data.getStatus() != ChunkData.Status.EMPTY)
+            CompoundTag nbt = ex.getChunkDataProvider().savePartial(event.getChunk());
+            if (nbt != null)
             {
-                event.getData().put("tfc_protochunk_data", data.serializeNBT());
+                event.getData().put("tfc_protochunk_data", nbt);
             }
         }
     }
@@ -350,9 +355,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
-            final ChunkPos pos = event.getChunk().getPos();
-            final ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos, generator.getRockLayerSettings());
-            data.deserializeNBT(event.getData().getCompound("tfc_protochunk_data"));
+            generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 
@@ -493,10 +496,12 @@ public final class ForgeEventHandler
                 rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
                 rules.getRule(GameRules.RULE_DO_TRADER_SPAWNING).set(false, server);
 
-                LOGGER.info("Updating TFC Relevant Game Rules for level {}.", world.dimension());
+                LOGGER.info("Updating TFC Relevant Game Rules for level {}.", world.dimension().location());
             }
         }
     }
+
+    // todo: unload hook for chunk data cache cleaning
 
     public static void onCreateNetherPortal(BlockEvent.PortalSpawnEvent event)
     {

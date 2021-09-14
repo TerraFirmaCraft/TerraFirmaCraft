@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature.cave;
 
+import java.util.BitSet;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
@@ -36,28 +37,28 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random random = context.random();
         final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
 
         // The direction that the spike is pointed
         Direction direction = random.nextBoolean() ? Direction.UP : Direction.DOWN;
-        BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));
+        BlockState wallState = level.getBlockState(pos.relative(direction.getOpposite()));
         RockSettings wallRock = rockSettings.getRock(wallState.getBlock());
         if (wallRock != null && wallRock.raw() == wallState.getBlock())
         {
-            placeIfPresent(worldIn, pos, direction, random, wallRock);
+            placeIfPresent(level, pos, direction, random, wallRock);
         }
         else
         {
             // Switch directions and try again
             direction = direction.getOpposite();
-            wallState = worldIn.getBlockState(pos.relative(direction));
+            wallState = level.getBlockState(pos.relative(direction));
             wallRock = rockSettings.getRock(wallState.getBlock());
             if (wallRock != null && wallRock.raw() == wallState.getBlock())
             {
-                placeIfPresent(worldIn, pos, direction, random, wallRock);
+                placeIfPresent(level, pos, direction, random, wallRock);
             }
         }
         return true;
@@ -101,7 +102,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     protected void replaceBlock(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         Block block = world.getBlockState(pos).getBlock();
-        if (block == Blocks.AIR)
+        if (block == Blocks.CAVE_AIR)
         {
             setBlock(world, pos, state);
         }
@@ -118,7 +119,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     protected void replaceBlockWithoutFluid(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         Block block = world.getBlockState(pos).getBlock();
-        if (block == Blocks.AIR || block == Blocks.WATER || block == Blocks.LAVA)
+        if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)
         {
             setBlock(world, pos, state);
         }
@@ -126,8 +127,6 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 
     private void placeIfPresent(WorldGenLevel worldIn, BlockPos pos, Direction direction, Random random, RockSettings wallRock)
     {
-        wallRock.spike().ifPresent(spike -> {
-            place(worldIn, pos, spike.defaultBlockState(), wallRock.raw().defaultBlockState(), direction, random);
-        });
+        wallRock.spike().ifPresent(spike -> place(worldIn, pos, spike.defaultBlockState(), wallRock.raw().defaultBlockState(), direction, random));
     }
 }

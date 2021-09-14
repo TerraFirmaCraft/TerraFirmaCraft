@@ -46,7 +46,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final Metaballs2D noise = Metaballs2D.simple(rand, config.radius());
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(pos);
+        final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
         final BlockState rockState = rock.raw().defaultBlockState();
         final BlockState gravelState = rock.gravel().defaultBlockState();

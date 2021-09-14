@@ -81,7 +81,7 @@ public class ChunkWatchPacket
                     .map(dataIn -> {
                         ChunkDataCache.CLIENT.update(pos, dataIn);
                         return dataIn;
-                    }).orElseGet(() -> ChunkDataCache.CLIENT.getOrCreate(pos, RockLayerSettings.EMPTY));
+                    }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::createClient));
                 data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
             }
         });

@@ -83,15 +83,12 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
         BlockState lastState = level.getBlockState(pos);
         if (lastState.getBlock() == spike.getBlock())
         {
+            // This can technically still be false, when the chunk is an impostor, as no blocks will have been set.
             lastState = lastState.setValue(ThinSpikeBlock.TIP, true);
+            level.setBlock(pos, lastState, 2);
+            return true;
         }
-        else
-        {
-            // wut
-            lastState = Blocks.REDSTONE_LAMP.defaultBlockState();
-        }
-        level.setBlock(pos, lastState, 2);
-        return true;
+        return false;
     }
 
     private boolean placeSpikeBlock(WorldGenLevel level, BlockPos pos, BlockState spike)
@@ -102,7 +99,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
             final BlockState adjustedSpike = FluidHelpers.fillWithFluid(spike, state.getFluidState().getType());
             if (adjustedSpike != null)
             {
-                level.setBlock(pos, spike, 2);
+                level.setBlock(pos, adjustedSpike, 2);
                 return true;
             }
         }

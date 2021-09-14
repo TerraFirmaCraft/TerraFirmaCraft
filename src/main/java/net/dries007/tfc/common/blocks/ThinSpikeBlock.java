@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -27,11 +28,12 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class ThinSpikeBlock extends Block
+public class ThinSpikeBlock extends Block implements IFluidLoggable
 {
     public static final VoxelShape PILLAR_SHAPE = Shapes.or(
         box(9.5, 0, 12.5, 11.5, 16, 14.5),
@@ -112,11 +114,14 @@ public class ThinSpikeBlock extends Block
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        BlockPos posDown = pos.below();
-        BlockState otherState = worldIn.getBlockState(posDown);
-        if (otherState.getBlock() == this)
+        if (newState.getBlock() != state.getBlock())
         {
-            worldIn.getBlockTicks().scheduleTick(posDown, this, 0);
+            BlockPos posDown = pos.below();
+            BlockState otherState = worldIn.getBlockState(posDown);
+            if (otherState.getBlock() == this)
+            {
+                worldIn.getBlockTicks().scheduleTick(posDown, this, 0);
+            }
         }
     }
 
@@ -141,5 +146,18 @@ public class ThinSpikeBlock extends Block
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         worldIn.destroyBlock(pos, false);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return FLUID;
     }
 }

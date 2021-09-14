@@ -31,7 +31,7 @@ import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 
 public final class CarverHelpers
 {
-    public static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    public static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
     public static final FluidState WATER = Fluids.WATER.defaultFluidState();
     public static final FluidState LAVA = Fluids.LAVA.defaultFluidState();
 

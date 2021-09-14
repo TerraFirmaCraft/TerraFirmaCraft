@@ -592,9 +592,9 @@ def generate(rm: ResourceManager):
     rm.feature(('plant', 'timothy_grass'), wg.configure_decorated(plant_feature('tfc:plant/timothy_grass[age=1,stage=1]', 1, 15, 128), decorate_count(2), 'minecraft:square', decorate_climate(15, 29, 289, 500)))
 
     # Covers
-    rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(15, 35, 300, 500, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
-    rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(7, 19, 160, 300, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
-    rm.feature(('plant', 'reindeer_lichen_cover'), wg.configure_decorated(plant_feature('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-7, 5, 210, 390, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
+    rm.feature(('plant', 'moss_cover'), wg.configure_decorated(plant_feature('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
+    rm.feature(('plant', 'morning_glory_cover'), wg.configure_decorated(plant_feature('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
+    rm.feature(('plant', 'reindeer_lichen_cover'), wg.configure_decorated(plant_feature('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-6, 2, 220, 310, True, fuzzy=True), decorate_count(4), 'minecraft:square'))
 
     # Clay Indicator Plants
     # These piggy back on the clay disc feature, and so have limited decorators

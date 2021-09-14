@@ -53,18 +53,18 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
 
-        initSeed(worldIn.getSeed());
+        initSeed(level.getSeed());
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         // Since this feature may be run *both* during world generation, and after during climate updates, we need to query both the existing data, and fallback to the world gen data if empty.
-        ChunkData chunkData = ChunkData.get(worldIn, chunkPos);
+        ChunkData chunkData = ChunkData.get(level, chunkPos);
         if (chunkData.getStatus() == ChunkData.Status.EMPTY)
         {
-            chunkData = ChunkDataProvider.get(context.chunkGenerator()).get(chunkPos);
+            chunkData = ChunkDataProvider.get(context.chunkGenerator()).get(level, chunkPos);
         }
 
         final BlockState snowState = Blocks.SNOW.defaultBlockState();
@@ -73,25 +73,25 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
         {
             for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++)
             {
-                mutablePos.set(x, worldIn.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
+                mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
                 final float noise = temperatureNoise.noise(x, z);
                 final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER);
-                final Biome biome = worldIn.getBiome(mutablePos);
+                final Biome biome = level.getBiome(mutablePos);
 
-                BlockState stateAt = worldIn.getBlockState(mutablePos);
+                BlockState stateAt = level.getBlockState(mutablePos);
                 FluidState fluidAt;
-                if (stateAt.isAir() && snowState.canSurvive(worldIn, mutablePos))
+                if (stateAt.isAir() && snowState.canSurvive(level, mutablePos))
                 {
                     if (temperature + noise < 0)
                     {
-                        worldIn.setBlock(mutablePos, Blocks.SNOW.defaultBlockState(), 2);
+                        level.setBlock(mutablePos, Blocks.SNOW.defaultBlockState(), 2);
 
                         mutablePos.move(0, -1, 0);
-                        BlockState blockstate = worldIn.getBlockState(mutablePos);
+                        BlockState blockstate = level.getBlockState(mutablePos);
                         if (blockstate.hasProperty(SnowyDirtBlock.SNOWY))
                         {
-                            worldIn.setBlock(mutablePos, blockstate.setValue(SnowyDirtBlock.SNOWY, true), 2);
+                            level.setBlock(mutablePos, blockstate.setValue(SnowyDirtBlock.SNOWY, true), 2);
                         }
                         mutablePos.move(0, 1, 0);
                     }
@@ -100,24 +100,24 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
                 {
                     if (temperature + noise < 0)
                     {
-                        SnowPileBlock.convertToPile(worldIn, mutablePos, stateAt);
+                        SnowPileBlock.convertToPile(level, mutablePos, stateAt);
                     }
                 }
 
                 mutablePos.move(0, -1, 0);
-                stateAt = worldIn.getBlockState(mutablePos);
+                stateAt = level.getBlockState(mutablePos);
                 fluidAt = stateAt.getFluidState();
 
-                if (biome.shouldFreeze(worldIn, mutablePos, true))
+                if (biome.shouldFreeze(level, mutablePos, true))
                 {
-                    worldIn.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 2);
+                    level.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 2);
                 }
                 else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
                 {
                     final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
                     if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
                     {
-                        worldIn.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
+                        level.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
                     }
                 }
             }

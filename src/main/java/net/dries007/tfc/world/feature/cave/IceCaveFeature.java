@@ -45,7 +45,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkPos chunkPos = new ChunkPos(pos);
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData chunkData = provider.get(chunkPos);
+        final ChunkData chunkData = provider.get(world, chunkPos);
         for (int i = 0; i < 72; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -3, rand.nextInt(15) - rand.nextInt(15));

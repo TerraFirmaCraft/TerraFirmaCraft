@@ -278,7 +278,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             cursor.set(x, 0, z);
             return manager.getBiome(cursor);
         };
-        return new DefaultBaseBlockSource(level, chunk.getPos(), chunkDataProvider.get(chunk.getPos()).getRockData(), biomeSampler);
+        return new DefaultBaseBlockSource(level, chunk.getPos(), chunkDataProvider.get(chunk).getRockData(), biomeSampler);
     }
 
     /**
@@ -418,7 +418,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         // Set a reference to the surface height map, which the helper will modify later
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
-        chunkDataProvider.get(chunkPos).getRockData().setSurfaceHeight(surfaceHeightMap);
+        chunkDataProvider.get(chunk).getRockData().setSurfaceHeight(surfaceHeightMap);
 
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeSampler);
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
@@ -596,7 +596,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private void buildSurfaceWithContext(LevelAccessor world, ProtoChunk chunk, Biome[] accurateChunkBiomes, double[] slopeMap, Random random)
     {
         final ChunkPos chunkPos = chunk.getPos();
-        final ChunkData chunkData = chunkDataProvider.get(chunkPos);
+        final ChunkData chunkData = chunkDataProvider.get(chunk);
         final NoiseGeneratorSettings settings = noiseGeneratorSettings();
         final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, settings, getRockLayerSettings(), getSeaLevel(), minY);
         for (int x = 0; x < 16; ++x)
@@ -792,6 +792,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                             localZ = z & 15;
                             cellDeltaZ = (double) localCellZ / cellWidth;
 
+                            mutablePos.set(x, 0, z);
                             fillColumn(mutablePos);
                         }
                     }
@@ -847,12 +848,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     final int carvingMaskIndex = CarverHelpers.maskIndex(localX, y, localZ, minY);
 
                     // Set block
+                    mutablePos.setY(y);
                     if (!state.isAir())
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
                         if (aquifer.shouldScheduleFluidUpdate() && !state.getFluidState().isEmpty())
                         {
-                            mutablePos.set(x, y, z);
                             chunk.getLiquidTicks().scheduleTick(mutablePos, state.getFluidState().getType(), 0);
                         }
                     }
@@ -862,8 +863,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     {
                         if (topSolidBlockPlaced)
                         {
-                            // Air under solid blocks, so mark as carved
+                            // Air under solid blocks, so mark as carved, and replace with cave air
                             carvingMask.set(carvingMaskIndex);
+                            section.setBlockState(localX, localY, localZ, Blocks.CAVE_AIR.defaultBlockState(), false);
                         }
                     }
                     else if (!state.getFluidState().isEmpty()) // Fluids

@@ -6,10 +6,14 @@
 
 package net.dries007.tfc.common.fluids;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

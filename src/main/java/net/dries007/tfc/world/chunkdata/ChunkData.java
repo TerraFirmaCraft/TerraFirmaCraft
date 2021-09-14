@@ -64,6 +64,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return LazyOptional.empty();
     }
 
+    public static ChunkData createClient(ChunkPos pos)
+    {
+        return new ChunkData(pos, RockLayerSettings.EMPTY); // Client has empty settings here as it doesn't save
+    }
+
     private final LazyOptional<ChunkData> capability;
     private final RockLayerSettings rockLayerSettings;
     private final ChunkPos pos;

@@ -40,7 +40,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         final BoulderConfig config = context.config();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(pos);
+        final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos);
         final List<BlockState> states = config.states().get(rock.raw());
         place(worldIn, pos, states, rand);
