@@ -39,6 +39,7 @@ import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuild
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
+import net.minecraft.world.level.material.FluidState;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -804,7 +805,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         /**
          * Fills a single column
+         *
+         * Deprecation for the use of {@link BlockState#getLightEmission()}
          */
+        @SuppressWarnings("deprecation")
         void fillColumn(BlockPos.MutableBlockPos mutablePos)
         {
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
@@ -845,6 +849,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
                     final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
                     final BlockState state = modifyNoiseAndGetState(aquifer, stoneSource, x, y, z, noise);
+                    final FluidState fluid = state.getFluidState();
                     final int carvingMaskIndex = CarverHelpers.maskIndex(localX, y, localZ, minY);
 
                     // Set block
@@ -852,9 +857,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     if (!state.isAir())
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
-                        if (aquifer.shouldScheduleFluidUpdate() && !state.getFluidState().isEmpty())
+                        if (aquifer.shouldScheduleFluidUpdate() && !fluid.isEmpty())
                         {
-                            chunk.getLiquidTicks().scheduleTick(mutablePos, state.getFluidState().getType(), 0);
+                            chunk.getLiquidTicks().scheduleTick(mutablePos, fluid.getType(), 0);
+                        }
+
+                        // Handle lava
+                        if (state.getLightEmission() != 0)
+                        {
+                            chunk.addLight(mutablePos);
                         }
                     }
 
@@ -868,7 +879,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                             section.setBlockState(localX, localY, localZ, Blocks.CAVE_AIR.defaultBlockState(), false);
                         }
                     }
-                    else if (!state.getFluidState().isEmpty()) // Fluids
+                    else if (!fluid.isEmpty()) // Fluids
                     {
                         if (!topBlockPlaced)
                         {
