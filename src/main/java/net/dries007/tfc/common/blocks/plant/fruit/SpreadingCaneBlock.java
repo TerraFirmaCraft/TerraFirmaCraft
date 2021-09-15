@@ -34,7 +34,7 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -48,7 +48,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     private static final VoxelShape CANE_SOUTH = Block.box(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 8.0D);
     private static final VoxelShape CANE_NORTH = Block.box(0.0D, 3.0D, 8.0D, 16.0D, 12.0D, 16.0D);
 
-    public SpreadingCaneBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
+    public SpreadingCaneBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
     {
         super(properties, productItem, stages, companion, maxHeight, deathChance);
     }

@@ -31,8 +31,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
-import net.dries007.tfc.common.blockentities.GrillBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
@@ -50,7 +50,7 @@ public class GrillBlock extends FirepitBlock
         box(2, 0, 2, 3, 11, 3),
         box(13, 0, 2, 14, 11, 3));
 
-    public GrillBlock(ForgeBlockProperties properties)
+    public GrillBlock(ExtendedProperties properties)
     {
         super(properties);
     }
@@ -60,24 +60,24 @@ public class GrillBlock extends FirepitBlock
     public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
         super.animateTick(state, world, pos, rand);
-        if (!state.getValue(LIT)) return;
-        GrillBlockEntity te = Helpers.getBlockEntity(world, pos, GrillBlockEntity.class);
-        if (te != null)
+        if (state.getValue(LIT))
         {
-            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
-                {
-                    if (!cap.getStackInSlot(i).isEmpty())
+            world.getBlockEntity(pos, TFCBlockEntities.GRILL.get())
+                .flatMap(grill -> grill.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+                .ifPresent(cap -> {
+                    for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
                     {
-                        double x = pos.getX() + 0.5D;
-                        double y = pos.getY() + 0.5D;
-                        double z = pos.getZ() + 0.5D;
-                        world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
-                        world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
-                        break;
+                        if (!cap.getStackInSlot(i).isEmpty())
+                        {
+                            double x = pos.getX() + 0.5D;
+                            double y = pos.getY() + 0.5D;
+                            double z = pos.getZ() + 0.5D;
+                            world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                            world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
+                            break;
+                        }
                     }
-                }
-            });
+                });
         }
     }
 

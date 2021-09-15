@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -45,7 +44,19 @@ public class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<FirepitBlockEntity>> FIREPIT = register("firepit", FirepitBlockEntity::new, TFCBlocks.FIREPIT);
     public static final RegistryObject<BlockEntityType<GrillBlockEntity>> GRILL = register("grill", GrillBlockEntity::new, TFCBlocks.GRILL);
     public static final RegistryObject<BlockEntityType<PotBlockEntity>> POT = register("pot", PotBlockEntity::new, TFCBlocks.POT);
-    public static final RegistryObject<BlockEntityType<TickCounterBlockEntity>> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(SAPLING_LIST, TFCBlocks.FRUIT_TREE_SAPLINGS.values(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.values(), Arrays.asList(TFCBlocks.TORCH, TFCBlocks.WALL_TORCH, TFCBlocks.DEAD_BERRY_BUSH, TFCBlocks.DEAD_CANE, TFCBlocks.BANANA_SAPLING)).flatMap(Collection::stream));
+
+    public static final RegistryObject<BlockEntityType<TickCounterBlockEntity>> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
+        TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)),
+        TFCBlocks.FRUIT_TREE_SAPLINGS.values(),
+        TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.values(),
+        TFCBlocks.TORCH,
+        TFCBlocks.WALL_TORCH,
+        TFCBlocks.DEAD_BERRY_BUSH,
+        TFCBlocks.DEAD_CANE,
+        TFCBlocks.BANANA_SAPLING
+        ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
+    );
+
     public static final RegistryObject<BlockEntityType<LogPileBlockEntity>> LOG_PILE = register("log_pile", LogPileBlockEntity::new, TFCBlocks.LOG_PILE);
     public static final RegistryObject<BlockEntityType<BurningLogPileBlockEntity>> BURNING_LOG_PILE = register("burning_log_pile", BurningLogPileBlockEntity::new, TFCBlocks.BURNING_LOG_PILE);
     public static final RegistryObject<BlockEntityType<PlacedItemBlockEntity>> PLACED_ITEM = register("placed_item", PlacedItemBlockEntity::new, TFCBlocks.PLACED_ITEM);
@@ -53,6 +64,7 @@ public class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<CharcoalForgeBlockEntity>> CHARCOAL_FORGE = register("charcoal_forge", CharcoalForgeBlockEntity::new, TFCBlocks.CHARCOAL_FORGE);
     public static final RegistryObject<BlockEntityType<QuernBlockEntity>> QUERN = register("quern", QuernBlockEntity::new, TFCBlocks.QUERN);
     public static final RegistryObject<BlockEntityType<ScrapingBlockEntity>> SCRAPING = register("scraping", ScrapingBlockEntity::new, TFCBlocks.SCRAPING);
+    public static final RegistryObject<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE = register("crucible", CrucibleBlockEntity::new, TFCBlocks.CRUCIBLE);
 
     public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
@@ -65,11 +77,11 @@ public class TFCBlockEntities
         final List<Block> fbeButNoEbe = new ArrayList<>(), ebeButNoFbe = new ArrayList<>(), ebButNoEbe = new ArrayList<>();
         Helpers.streamOurs(ForgeRegistries.BLOCKS)
             .forEach(b -> {
-                if (b instanceof IForgeBlockExtension ex && ex.getForgeProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
+                if (b instanceof IForgeBlockExtension ex && ex.getExtendedProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
                 {
                     fbeButNoEbe.add(b);
                 }
-                if (b instanceof EntityBlockExtension && (!(b instanceof IForgeBlockExtension ex) || !ex.getForgeProperties().hasBlockEntity()))
+                if (b instanceof EntityBlockExtension && (!(b instanceof IForgeBlockExtension ex) || !ex.getExtendedProperties().hasBlockEntity()))
                 {
                     ebeButNoFbe.add(b);
                 }

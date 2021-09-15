@@ -30,7 +30,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
@@ -86,16 +86,16 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
         }
     }
 
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public BurningLogPileBlock(ForgeBlockProperties properties)
+    public BurningLogPileBlock(ExtendedProperties properties)
     {
         super(properties.properties());
         this.properties = properties;
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

@@ -6,13 +6,10 @@
 
 package net.dries007.tfc.common.blocks;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.extensions.IForgeBlock;
 
 /**
@@ -20,17 +17,17 @@ import net.minecraftforge.common.extensions.IForgeBlock;
  */
 public interface IForgeBlockExtension extends IForgeBlock
 {
-    ForgeBlockProperties getForgeProperties();
+    ExtendedProperties getExtendedProperties();
 
     @Override
     default int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
-        return getForgeProperties().getFlammability();
+        return getExtendedProperties().getFlammability();
     }
 
     @Override
     default int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
-        return getForgeProperties().getFireSpreadSpeed();
+        return getExtendedProperties().getFireSpreadSpeed();
     }
 }

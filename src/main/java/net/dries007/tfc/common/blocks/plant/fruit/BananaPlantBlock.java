@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -37,7 +37,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
 
-    public BananaPlantBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    public BananaPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
         super(properties, productItem, stages);
     }

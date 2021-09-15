@@ -53,6 +53,9 @@ public class ServerConfig
     // Blocks - Pit Kiln
     public final ForgeConfigSpec.IntValue pitKilnTicks;
     public final ForgeConfigSpec.IntValue pitKilnTemperature;
+    // Blocks - Crucible
+    public final ForgeConfigSpec.IntValue crucibleCapacity;
+    public final ForgeConfigSpec.IntValue cruciblePouringRate;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -155,6 +158,11 @@ public class ServerConfig
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
         pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("crucible");
+
+        crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
+        cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("small_vessel");
 

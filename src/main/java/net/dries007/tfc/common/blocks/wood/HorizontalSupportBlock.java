@@ -9,28 +9,28 @@ package net.dries007.tfc.common.blocks.wood;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
 public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockExtension
 {
     private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
 
-    public HorizontalSupportBlock(ForgeBlockProperties properties)
+    public HorizontalSupportBlock(ExtendedProperties properties)
     {
         super(properties);
         SHAPE_BY_STATE = makeShapes(box(5.0D, 10.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());

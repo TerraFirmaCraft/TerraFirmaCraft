@@ -70,13 +70,13 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Marks a tile entity for syncing without sending a block update.
+     * Marks a tile entity for syncing without sending a block update. Also internally marks dirty
      * Use preferentially over {@link InventoryBlockEntity#markForBlockUpdate()} if there's no reason to have a block update.
      */
     public void markForSync()
     {
         sendVanillaUpdatePacket();
-        setChanged();
+        markDirtyFast();
     }
 
     /**

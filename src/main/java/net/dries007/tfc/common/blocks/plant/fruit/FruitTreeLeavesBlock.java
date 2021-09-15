@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.FruitTreeLeavesBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
@@ -44,7 +44,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    public FruitTreeLeavesBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
         super(properties, productItem, stages);
 

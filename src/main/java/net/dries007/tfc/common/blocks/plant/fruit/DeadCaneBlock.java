@@ -24,13 +24,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExtension
 {
-    public DeadCaneBlock(ForgeBlockProperties properties)
+    public DeadCaneBlock(ExtendedProperties properties)
     {
         super(properties, () -> Items.AIR, new Lifecycle[12], () -> Blocks.AIR, 0, 0);
     }

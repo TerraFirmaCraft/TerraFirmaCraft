@@ -18,8 +18,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ForgeBlockProperties
+public class ExtendedProperties
 {
+    public static ExtendedProperties of(BlockBehaviour.Properties properties)
+    {
+        return new ExtendedProperties(properties);
+    }
+
     private final BlockBehaviour.Properties properties;
 
     // Handles block entity tickers without requiring overrides in every class
@@ -28,11 +33,14 @@ public class ForgeBlockProperties
     @Nullable private BlockEntityTicker<?> serverTicker;
     @Nullable private BlockEntityTicker<?> clientTicker;
 
+    // For devices
+    private Mode deviceInventoryRemoveMode = Mode.NOOP;
+
     // Forge methods
     private int flammability;
     private int fireSpreadSpeed;
 
-    public ForgeBlockProperties(BlockBehaviour.Properties properties)
+    private ExtendedProperties(BlockBehaviour.Properties properties)
     {
         this.properties = properties;
 
@@ -45,29 +53,29 @@ public class ForgeBlockProperties
         fireSpreadSpeed = 0;
     }
 
-    public ForgeBlockProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
+    public ExtendedProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
     {
         this.blockEntityType = blockEntityType;
         this.blockEntityFactory = (pos, state) -> blockEntityType.get().create(pos, state);
         return this;
     }
 
-    public <T extends BlockEntity> ForgeBlockProperties ticks(BlockEntityTicker<T> ticker)
+    public <T extends BlockEntity> ExtendedProperties ticks(BlockEntityTicker<T> ticker)
     {
         return ticks(ticker, ticker);
     }
 
-    public <T extends BlockEntity> ForgeBlockProperties serverTicks(BlockEntityTicker<T> serverTicker)
+    public <T extends BlockEntity> ExtendedProperties serverTicks(BlockEntityTicker<T> serverTicker)
     {
         return ticks(serverTicker, null);
     }
 
-    public <T extends BlockEntity> ForgeBlockProperties clientTicks(BlockEntityTicker<T> clientTicker)
+    public <T extends BlockEntity> ExtendedProperties clientTicks(BlockEntityTicker<T> clientTicker)
     {
         return ticks(null, clientTicker);
     }
 
-    public <T extends BlockEntity> ForgeBlockProperties ticks(@Nullable BlockEntityTicker<T> serverTicker, @Nullable BlockEntityTicker<T> clientTicker)
+    public <T extends BlockEntity> ExtendedProperties ticks(@Nullable BlockEntityTicker<T> serverTicker, @Nullable BlockEntityTicker<T> clientTicker)
     {
         assert this.blockEntityType != null : "Must call .blockEntity() before adding a ticker";
         this.serverTicker = serverTicker;
@@ -75,7 +83,19 @@ public class ForgeBlockProperties
         return this;
     }
 
-    public ForgeBlockProperties flammable(int flammability, int fireSpreadSpeed)
+    public ExtendedProperties dropInventoryOnRemove()
+    {
+        deviceInventoryRemoveMode = Mode.DUMP;
+        return this;
+    }
+
+    public ExtendedProperties saveInventoryOnRemove()
+    {
+        deviceInventoryRemoveMode = Mode.SAVE;
+        return this;
+    }
+
+    public ExtendedProperties flammable(int flammability, int fireSpreadSpeed)
     {
         this.flammability = flammability;
         this.fireSpreadSpeed = fireSpreadSpeed;
@@ -90,6 +110,11 @@ public class ForgeBlockProperties
     public boolean hasBlockEntity()
     {
         return blockEntityType != null;
+    }
+
+    public Mode getDeviceInventoryRemoveMode()
+    {
+        return deviceInventoryRemoveMode;
     }
 
     // Internal methods
@@ -120,5 +145,12 @@ public class ForgeBlockProperties
     int getFireSpreadSpeed()
     {
         return fireSpreadSpeed;
+    }
+
+    public enum Mode
+    {
+        NOOP,
+        SAVE,
+        DUMP
     }
 }

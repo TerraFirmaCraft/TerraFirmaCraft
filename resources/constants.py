@@ -470,6 +470,7 @@ DEFAULT_LANG = {
     'tfc.tile_entity.firepit': 'Firepit',
     'tfc.tile_entity.log_pile': 'Log Pile',
     'tfc.tile_entity.charcoal_forge': 'Forge',
+    'tfc.tile_entity.crucible': 'Crucible',
     'item.tfc.handstone': 'Handstone',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
@@ -532,11 +533,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',
-    'tfc.tooltip.small_vessel.alloy_units': '%s mB',
     'tfc.tooltip.small_vessel.solid': '- Solid.',
     'tfc.tooltip.small_vessel.molten': '- Molten!',
     'tfc.tooltip.small_vessel.still_has_unmelted_items': 'Contains un-melted items!',
-    'tfc.tooltip.mold_like.alloy_units': '%s mB',
     'tfc.tooltip.food_trait.salted': 'Salted',
     'tfc.tooltip.food_trait.brined': 'Brined',
     'tfc.tooltip.food_trait.pickled': 'Pickled',
@@ -556,6 +555,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.time_delta_years_months_days': '%s year(s), %s month(s) and %s day(s)',
     'tfc.tooltip.temperature_celsius': '%s\u00b0C',
     'tfc.tooltip.temperature_fahrenheit': '%s\u00b0F',
+    'tfc.tooltip.fluid_units': '%s mB',
+    'tfc.tooltip.fluid_units_of': '%s mB of ',
+    'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
 
     # Commands
 

@@ -110,7 +110,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         }
     }
 
-    public PlacedItemBlock(ForgeBlockProperties properties)
+    public PlacedItemBlock(ExtendedProperties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(ITEM_0, true).setValue(ITEM_1, true).setValue(ITEM_2, true).setValue(ITEM_3, true));

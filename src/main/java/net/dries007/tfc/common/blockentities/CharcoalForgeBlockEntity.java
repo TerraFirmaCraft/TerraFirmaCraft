@@ -10,7 +10,6 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,6 +23,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -63,6 +63,12 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     {
         forge.checkForLastTickSync();
         forge.checkForCalendarUpdate();
+
+        if (forge.needsRecipeUpdate)
+        {
+            forge.needsRecipeUpdate = false;
+            forge.updateCachedRecipes();
+        }
 
         boolean isRaining = level.isRainingAt(pos);
         if (state.getValue(CharcoalForgeBlock.HEAT) > 0)
@@ -118,12 +124,13 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         if (forge.temperature > 0 || forge.burnTemperature > 0)
         {
             forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, isRaining);
-                /*todo // Provide heat to blocks that are one block above
-                Block blockUp = world.getBlockState(pos.above()).getBlock();
-                if (blockUp instanceof IHeatConsumerBlock)
-                {
-                    ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.above(), temperature);
-                }*/
+
+            // Provide heat to blocks above
+            final BlockEntity above = level.getBlockEntity(pos.above());
+            if (above != null)
+            {
+                above.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(forge.temperature));
+            }
 
             for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
             {
@@ -159,6 +166,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     private float burnTemperature; // Temperature provided from the current item of fuel
     private int airTicks; // Ticks of air provided by bellows
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
+    private boolean needsRecipeUpdate; // Set to indicate on tick, the cached recipes need to be re-updated
 
     public CharcoalForgeBlockEntity(BlockPos pos, BlockState state)
     {
@@ -184,25 +192,27 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
-    public void onCalendarUpdate(long deltaPlayerTicks)
+    public void onCalendarUpdate(long ticks)
     {
         assert level != null;
-        BlockState state = level.getBlockState(worldPosition);
-        if (state.getValue(CharcoalForgeBlock.HEAT) == 0) return;
-
-        Triple<Integer, Float, Long> triple = Helpers.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
-        burnTicks = triple.getLeft();
-        burnTemperature = triple.getMiddle();
-        deltaPlayerTicks = triple.getRight();
-        needsSlotUpdate = true;
-        if (deltaPlayerTicks > 0)
+        final BlockState state = level.getBlockState(worldPosition);
+        if (state.getValue(CharcoalForgeBlock.HEAT) != 0)
         {
-            // Consumed all fuel, so extinguish and cool instantly
-            extinguish(state);
-            for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+            HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
+
+            burnTicks = remainder.burnTicks();
+            burnTemperature = remainder.burnTemperature();
+            needsSlotUpdate = true;
+
+            if (remainder.ticks() > 0)
             {
-                ItemStack stack = inventory.getStackInSlot(i);
-                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+                // Consumed all fuel, so extinguish and cool instantly
+                extinguish(state);
+                for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+                {
+                    ItemStack stack = inventory.getStackInSlot(i);
+                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+                }
             }
         }
     }
@@ -245,8 +255,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
-
-        updateCachedRecipes();
         super.load(nbt);
     }
 

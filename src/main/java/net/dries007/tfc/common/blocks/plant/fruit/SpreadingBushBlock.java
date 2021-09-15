@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
@@ -32,7 +32,7 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     protected final int maxHeight;
     protected final int deathChance;
 
-    public SpreadingBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
+    public SpreadingBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
     {
         super(properties, productItem, stages);
         this.companion = companion;

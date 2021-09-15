@@ -11,30 +11,30 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.SupportType;
-import net.minecraft.core.Direction;
 import net.minecraft.Util;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockExtension
@@ -48,9 +48,9 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
     public static final BooleanProperty WEST = PipeBlock.WEST;
 
     private final Map<BlockState, VoxelShape> cachedShapes;
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public VerticalSupportBlock(ForgeBlockProperties properties)
+    public VerticalSupportBlock(ExtendedProperties properties)
     {
         super(properties.properties());
         this.properties = properties;
@@ -60,7 +60,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

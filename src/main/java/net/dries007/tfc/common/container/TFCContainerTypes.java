@@ -40,6 +40,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<PotContainer>> POT = TFCContainerTypes.<PotBlockEntity, PotContainer>registerBlock("pot", TFCBlockEntities.POT, PotContainer::create);
     public static final RegistryObject<MenuType<CharcoalForgeContainer>> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeBlockEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCBlockEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
     public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileBlockEntity, LogPileContainer>registerBlock("log_pile", TFCBlockEntities.LOG_PILE, LogPileContainer::create);
+    public static final RegistryObject<MenuType<CrucibleContainer>> CRUCIBLE = TFCContainerTypes.<CrucibleBlockEntity, CrucibleContainer>registerBlock("crucible", TFCBlockEntities.CRUCIBLE, CrucibleContainer::create);
 
     public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
     public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);

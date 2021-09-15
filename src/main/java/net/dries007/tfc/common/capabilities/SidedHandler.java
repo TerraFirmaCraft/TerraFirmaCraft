@@ -46,9 +46,9 @@ public interface SidedHandler<T>
             this.handlers.add(this.internal);
         }
 
-        public List<LazyOptional<T>> getHandlers()
+        public void invalidate()
         {
-            return handlers;
+            handlers.forEach(LazyOptional::invalidate);
         }
 
         public Builder<T> on(T handler, Predicate<Direction> sides)
@@ -79,7 +79,33 @@ public interface SidedHandler<T>
         @Override
         public LazyOptional<T> getSidedHandler(@Nullable Direction side)
         {
-            return side == null ? internal : sidedHandlers[side.ordinal()];
+            if (side == null)
+            {
+                return internal;
+            }
+            final LazyOptional<T> sided = sidedHandlers[side.ordinal()];
+            return sided == null ? LazyOptional.empty() : sided;
+        }
+    }
+
+    class Noop<T> implements SidedHandler<LazyOptional<T>>
+    {
+        private final LazyOptional<T> internal;
+
+        public Noop(T internal)
+        {
+            this.internal = LazyOptional.of(() -> internal);
+        }
+
+        public void invalidate()
+        {
+            internal.invalidate();
+        }
+
+        @Override
+        public LazyOptional<T> getSidedHandler(@Nullable Direction side)
+        {
+            return internal;
         }
     }
 }

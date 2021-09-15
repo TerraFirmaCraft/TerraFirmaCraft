@@ -27,7 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 public class ScrapingBlock extends DeviceBlock
@@ -40,7 +40,7 @@ public class ScrapingBlock extends DeviceBlock
         return rayPoint.subtract(rayVector.scale(rayPoint.dot(planeNormal) / rayVector.dot(planeNormal)));
     }
 
-    public ScrapingBlock(ForgeBlockProperties properties)
+    public ScrapingBlock(ExtendedProperties properties)
     {
         super(properties);
     }

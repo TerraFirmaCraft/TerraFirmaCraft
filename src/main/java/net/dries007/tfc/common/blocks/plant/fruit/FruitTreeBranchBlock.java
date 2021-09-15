@@ -8,30 +8,30 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
 public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtension
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public FruitTreeBranchBlock(ForgeBlockProperties properties)
+    public FruitTreeBranchBlock(ExtendedProperties properties)
     {
         super(0.25F, properties.properties());
         this.properties = properties;
@@ -116,7 +116,7 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

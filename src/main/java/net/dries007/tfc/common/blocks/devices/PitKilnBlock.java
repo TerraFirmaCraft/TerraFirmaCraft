@@ -38,7 +38,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 
@@ -64,7 +64,7 @@ public class PitKilnBlock extends DeviceBlock
         shapes[16] = Shapes.block(); // lit stage
     });
 
-    public PitKilnBlock(ForgeBlockProperties properties)
+    public PitKilnBlock(ExtendedProperties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));

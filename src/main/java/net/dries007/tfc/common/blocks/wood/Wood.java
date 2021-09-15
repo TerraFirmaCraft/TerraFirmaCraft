@@ -18,7 +18,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
@@ -119,7 +119,7 @@ public enum Wood implements StringRepresentable
         STRIPPED_WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), false),
         LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), wood.getMaxDecayDistance()), false),
         PLANKS(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), false),
-        SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), new ForgeBlockProperties(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER), wood.getDaysToGrow()), false),
+        SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), ExtendedProperties.of(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER), wood.getDaysToGrow()), false),
         BOOKSHELF(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         DOOR(wood -> new DoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
         TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
@@ -133,9 +133,9 @@ public enum Wood implements StringRepresentable
         TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
-        VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
-        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
-        WORKBENCH(wood -> new TFCCraftingTableBlock(new ForgeBlockProperties(Block.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)).flammable(60, 30)), true);
+        VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(ExtendedProperties.of(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(ExtendedProperties.of(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
+        WORKBENCH(wood -> new TFCCraftingTableBlock(ExtendedProperties.of(Block.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)).flammable(60, 30)), true);
 
         public static final BlockType[] VALUES = values();
 

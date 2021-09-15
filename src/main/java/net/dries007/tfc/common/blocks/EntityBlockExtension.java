@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
-
 /**
  * Borrowed from {@link net.minecraft.world.level.block.BaseEntityBlock}
  */
@@ -20,19 +18,19 @@ public interface EntityBlockExtension extends EntityBlock
     /**
      * Implement with {@link net.dries007.tfc.common.blocks.IForgeBlockExtension}
      */
-    ForgeBlockProperties getForgeProperties();
-
-    @Nullable
-    @Override
-    default <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
-    {
-        return getForgeProperties().getTicker(level, state, givenType);
-    }
+    ExtendedProperties getExtendedProperties();
 
     @Nullable
     @Override
     default BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return getForgeProperties().newBlockEntity(pos, state);
+        return getExtendedProperties().newBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    default <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
+    {
+        return getExtendedProperties().getTicker(level, state, givenType);
     }
 }

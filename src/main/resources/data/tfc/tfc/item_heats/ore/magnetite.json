@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_magnetite"
+    },
+    {
+      "item": "tfc:ore/normal_magnetite"
+    },
+    {
+      "item": "tfc:ore/poor_magnetite"
+    },
+    {
+      "item": "tfc:ore/rich_magnetite"
+    }
+  ],
+  "heat_capacity": 0.5,
+  "forging_temperature": 240.0,
+  "welding_temperature": 320.0
+}

@@ -32,7 +32,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCDamageSources;
@@ -62,7 +62,7 @@ public class PotBlock extends FirepitBlock
         box(7.5, 13, 4, 8.5, 14, 12),
         box(7.5, 11, 12, 8.5, 13, 13));
 
-    public PotBlock(ForgeBlockProperties properties)
+    public PotBlock(ExtendedProperties properties)
     {
         super(properties);
     }

@@ -60,27 +60,31 @@ def generate(rm: ResourceManager):
                 else:
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
 
-                heat_item(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
+                item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
+
+    for ore, ore_data in ORES.items():
+        if ore_data.metal and ore_data.graded:
+            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, metal_data.melt_temperature)
 
     # Item Heats
 
-    heat_item(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
-    heat_item(rm, 'stick', 'tag!forge:rods/wooden', 0.3)
-    heat_item(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
-    heat_item(rm, 'glass_shard', 'tfc:glass_shard', 1)
-    heat_item(rm, 'sand', 'tag!forge:sand', 0.8)
-    heat_item(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
-    heat_item(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
-    heat_item(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
-    heat_item(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
-    heat_item(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
+    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
+    item_heat(rm, 'stick', 'tag!forge:rods/wooden', 0.3)
+    item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
+    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 1)
+    item_heat(rm, 'sand', 'tag!forge:sand', 0.8)
+    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
+    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
+    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
+    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
+    item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
 
     for pottery in SIMPLE_POTTERY:
-        heat_item(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
 
     for item, item_data in METAL_ITEMS.items():
         if item_data.mold:
-            heat_item(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
+            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
             # No need to do fired molds, as they have their own capability implementation
 
     # Supports
@@ -146,7 +150,7 @@ def generate(rm: ResourceManager):
     for wood in WOODS.keys():
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
         rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
-        rm.item_tag('forge:rods/wooden', 'tfc:wood/twig/%s' % wood)
+        rm.item_tag('twigs', 'tfc:wood/twig/%s' % wood)
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
@@ -182,7 +186,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('lit_by_dropped_torch', 'tfc:log_pile', 'tfc:thatch', 'tfc:pit_kiln')
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
-    rm.block_tag('forge_invisible_whitelist', 'minecraft:glass')  # todo: set this to just be crucibles
+    rm.block_tag('forge_invisible_whitelist', 'tfc:crucible')
     rm.block_tag('any_spreading_bush', '#tfc:spreading_bush')
     rm.block_tag('logs_that_log', '#minecraft:logs')
     rm.block_tag('scraping_surface', '#minecraft:logs')
@@ -492,7 +496,7 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def heat_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[int] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[int] = None):
     if melt_temperature is not None:
         forging_temperature = melt_temperature * 0.6
         welding_temperature = melt_temperature * 0.8

@@ -9,6 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -69,6 +70,11 @@ public class RockData
 
         rockLayerHeight = nbt.getIntArray("height");
         surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
+
+        if (Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).anyMatch(Objects::isNull))
+        {
+            String s = "wtf?";
+        }
     }
 
     public RockSettings getRock(BlockPos pos)
@@ -83,7 +89,7 @@ public class RockData
         final int i = index(x, z);
         final int sh = surfaceHeight[i];
         final int rh = rockLayerHeight[i];
-        if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, maybe by keeping a LevelHeightAccessor reference around somewhere?
+        if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, keep a sea level reference held by the rock data instance.
         {
             return topLayer[i];
         }

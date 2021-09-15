@@ -39,7 +39,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
@@ -238,9 +237,9 @@ public final class ForgeEventHandler
                 // Otherwise, we fallback to empty data.
                 if (world instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
                 {
-                    data = ex.getChunkDataProvider().promotePartial(chunkPos);
+                    data = ex.getChunkDataProvider().promotePartialOrCreate(chunkPos);
                 }
-                if (data == null)
+                else
                 {
                     data = new ChunkData(chunkPos, RockLayerSettings.EMPTY);
                 }

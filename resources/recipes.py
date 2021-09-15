@@ -62,6 +62,8 @@ def generate(rm: ResourceManager):
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
                 rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
+    rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
+
     for wood in WOODS.keys():
         def item(thing: str):
             return 'tfc:wood/%s/%s' % (thing, wood)

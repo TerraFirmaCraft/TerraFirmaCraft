@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -49,8 +49,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
         world.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
 
-        final AbstractFirepitBlockEntity<?> newFirepit = Helpers.getBlockEntity(world, pos, AbstractFirepitBlockEntity.class);
-        if (newFirepit != null)
+        final BlockEntity newEntity = world.getBlockEntity(pos);
+        if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
         {
             Helpers.insertAllItems(newFirepit.inventory, saved);
             newFirepit.copyFrom(firepit);
@@ -148,20 +148,21 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     @Override
-    public void onCalendarUpdate(long deltaPlayerTicks)
+    public void onCalendarUpdate(long ticks)
     {
         assert level != null;
-        if (!level.getBlockState(worldPosition).getValue(FirepitBlock.LIT)) return;
-
-        Triple<Integer, Float, Long> triple = Helpers.consumeFuelForTicks(deltaPlayerTicks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
-        burnTicks = triple.getLeft();
-        burnTemperature = triple.getMiddle();
-        deltaPlayerTicks = triple.getRight();
-        needsSlotUpdate = true;
-        if (deltaPlayerTicks > 0) // Consumed all fuel, so extinguish and cool instantly
+        if (level.getBlockState(worldPosition).getValue(FirepitBlock.LIT))
         {
-            extinguish(level.getBlockState(worldPosition));
-            coolInstantly();
+            final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+
+            burnTicks = remainder.burnTicks();
+            burnTemperature = remainder.burnTemperature();
+            needsSlotUpdate = true;
+            if (remainder.ticks() > 0) // Consumed all fuel, so extinguish and cool instantly
+            {
+                extinguish(level.getBlockState(worldPosition));
+                coolInstantly();
+            }
         }
     }
 

@@ -40,7 +40,7 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
@@ -74,7 +74,7 @@ public class CharcoalForgeBlock extends DeviceBlock
         return FORGE_MULTIBLOCK.test(world, pos);
     }
 
-    public CharcoalForgeBlock(ForgeBlockProperties properties)
+    public CharcoalForgeBlock(ExtendedProperties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(HEAT, 0));
@@ -120,8 +120,7 @@ public class CharcoalForgeBlock extends DeviceBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(HEAT);
+        super.createBlockStateDefinition(builder.add(HEAT));
     }
 
     @Override

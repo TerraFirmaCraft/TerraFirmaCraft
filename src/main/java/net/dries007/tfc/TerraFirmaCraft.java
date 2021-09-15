@@ -29,6 +29,7 @@ import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -134,6 +135,7 @@ public final class TerraFirmaCraft
     public void registerCapabilities(RegisterCapabilitiesEvent event)
     {
         event.register(IHeat.class);
+        event.register(IHeatBlock.class);
         event.register(IForging.class);
         event.register(ChunkData.class);
         event.register(IWorldTracker.class);

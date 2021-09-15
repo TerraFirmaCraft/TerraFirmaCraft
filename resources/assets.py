@@ -249,8 +249,15 @@ def generate(rm: ResourceManager):
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
         .with_block_model(textures={'side': 'tfc:block/log_pile_side', 'end': 'tfc:block/log_pile_front'}, parent='minecraft:block/cube_column_horizontal').with_lang(lang('Log Pile'))
     rm.blockstate('burning_log_pile', model='tfc:block/burning_log_pile').with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/devices/charcoal_forge/lit'}).with_lang(lang('Burning Log Pile'))
+
     for i in range(0, 7 + 1):
         rm.block_model('charcoal_forge/heat_%d' % i, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % i})
+
+    # Uses a custom block model
+    rm.blockstate('crucible').with_item_model().with_lang(lang('crucible')).with_block_loot(one_pool({
+        'name': 'tfc:crucible',
+        'functions': [copy_block_entity_name(), copy_block_entity_nbt()]
+    }))
 
     block = rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
     block.with_block_loot(one_pool({
@@ -362,7 +369,13 @@ def generate(rm: ResourceManager):
     for soil in SOIL_BLOCK_VARIANTS:
         for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % soil), ('clay_grass', 'tfc:block/clay/%s' % soil)):
             block = rm.blockstate_multipart((grass_var, soil), grass_multipart('tfc:block/%s/%s' % (grass_var, soil)))
-            block.with_block_loot('tfc:dirt/%s' % soil)
+            if grass_var == 'grass':
+                block.with_block_loot('tfc:dirt/%s' % soil)
+            else:
+                block.with_block_loot(one_pool({
+                    'name': 'minecraft:clay_ball',
+                    'functions': [loot_tables.set_count(1, 3)]
+                }))
             block.with_tag('grass')
             block.with_lang(lang('%s %s', soil, grass_var))
             grass_models((grass_var, soil), dirt)
@@ -481,9 +494,8 @@ def generate(rm: ResourceManager):
     for variant, data in METAL_ITEMS.items():
         if data.mold:
             rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
-            rm.custom_item_model(('ceramic', '%s_mold' % variant), 'forge:bucket', {
+            rm.custom_item_model(('ceramic', '%s_mold' % variant), 'tfc:contained_fluid', {
                 'parent': 'forge:item/default',
-                'fluid': 'empty',
                 'textures': {
                     'base': 'tfc:item/ceramic/fired_mold/%s_empty' % variant,
                     'fluid': 'tfc:item/ceramic/fired_mold/%s_overlay' % variant
@@ -951,4 +963,23 @@ def counted_item(item: str, min_count: int, max_count: int) -> Dict[str, Any]:
         'functions': [
             loot_tables.set_count(min_count, max_count)
         ]
+    }
+
+
+def copy_block_entity_name() -> Dict[str, Any]:
+    return {
+        'function': 'minecraft:copy_name',
+        'source': 'block_entity'
+    }
+
+
+def copy_block_entity_nbt() -> Dict[str, Any]:
+    return {
+        'function': 'minecraft:copy_nbt',
+        'source': 'block_entity',
+        'ops': [{
+            'source': '',
+            'target': 'BlockEntityTag',
+            'op': 'replace'
+        }]
     }

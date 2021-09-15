@@ -18,7 +18,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
-import org.apache.commons.lang3.tuple.Triple;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -134,13 +133,13 @@ public final class Helpers
     }
 
     /**
-     * Flattens a homogeneous stream of {@code Collection<T>} and Ts together into a {@code Stream<T>}
+     * Flattens a homogeneous stream of {@code Collection<T>}, {@code Stream<T>} and {@code T}s together into a {@code Stream<T>}
      * Usage: {@code stream.flatMap(Helpers::flatten)}
      */
     @SuppressWarnings("unchecked")
     public static <R> Stream<? extends R> flatten(Object t)
     {
-        return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : Stream.of((R) t);
+        return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : (t instanceof Stream<?> s ? (Stream<? extends R>) s : Stream.of((R) t));
     }
 
     public static TranslatableComponent translateEnum(Enum<?> anEnum)
@@ -430,6 +429,15 @@ public final class Helpers
     }
 
     /**
+     * Adds a tooltip based on a single fluid stack
+     */
+    public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
+    {
+        tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+            .append(fluid.getDisplayName()));
+    }
+
+    /**
      * @return {@code true} if every slot in the provided inventory is empty.
      */
     public static boolean isEmpty(IItemHandler inventory)
@@ -602,52 +610,20 @@ public final class Helpers
     }
 
     /**
-     * Common logic for block entities to consume fuel during larger time skips.
+     * Drains an amount from {@code from}, to {@code to}, without any wastage.
      *
-     * @param deltaPlayerTicks   Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
-     * @param inventory          Inventory to be modified (this should contain the fuel)
-     * @param burnTicks          Remaining burn ticks of the fuel being burned
-     * @param burnTemperature    Current burning temperature of the TE (this is the fuel's target temperature)
-     * @param slotStart          Index of the first fuel slot
-     * @param slotEnd            Index of the last fuel slot
-     *
-     * @return burnTicks, burnTemperature, deltaPlayerTicks. These are modified versions of the variables that got passed in.
-     * They should be directly assigned back to the TE's values, in order. Return 0 for deltaPlayerTicks to indicate that the TE need not be extinguished.
+     * @return {@code true} if a non-zero amount was drained.
      */
-    public static Triple<Integer, Float, Long> consumeFuelForTicks(long deltaPlayerTicks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
+    public static boolean transferFluid(IFluidHandler from, IFluidHandler to, int amount)
     {
-        if (burnTicks > deltaPlayerTicks)
+        final FluidStack fluid = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
+        if (filled > 0)
         {
-            burnTicks -= deltaPlayerTicks;
-            return Triple.of(burnTicks, burnTemperature, 0L); // the zero doesn't actually get saved, so this is fine. needed to prevent extinguishing
+            from.drain(filled, IFluidHandler.FluidAction.EXECUTE); // Only drain the amount that was removed.
+            return true;
         }
-        else
-        {
-            deltaPlayerTicks -= burnTicks;
-            burnTicks = 0;
-        }
-        // Need to consume fuel
-        for (int i = slotStart; i <= slotEnd; i++)
-        {
-            ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = Fuel.get(fuelStack);
-            if (fuel != null)
-            {
-                inventory.setStackInSlot(i, ItemStack.EMPTY);
-                if (fuel.getDuration() > deltaPlayerTicks)
-                {
-                    burnTicks = (int) (fuel.getDuration() - deltaPlayerTicks);
-                    burnTemperature = fuel.getTemperature();
-                    return Triple.of(burnTicks, burnTemperature, 0L); // see above
-                }
-                else
-                {
-                    deltaPlayerTicks -= fuel.getDuration();
-                    burnTicks = 0;
-                }
-            }
-        }
-        return Triple.of(burnTicks, burnTemperature, deltaPlayerTicks);
+        return false;
     }
 
     public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)

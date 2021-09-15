@@ -32,7 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 
@@ -40,7 +40,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    public LogPileBlock(ForgeBlockProperties properties)
+    public LogPileBlock(ExtendedProperties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));

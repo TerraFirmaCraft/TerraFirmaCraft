@@ -39,8 +39,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -48,6 +50,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -76,6 +79,7 @@ public final class ClientEventHandler
 
         bus.addListener(ClientEventHandler::clientSetup);
         bus.addListener(ClientEventHandler::onConfigReload);
+        bus.addListener(ClientEventHandler::registerModelLoaders);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
         bus.addListener(ClientEventHandler::registerColorHandlerItems);
         bus.addListener(ClientEventHandler::registerParticleFactories);
@@ -97,6 +101,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+            MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
@@ -189,6 +194,11 @@ public final class ClientEventHandler
     public static void onConfigReload(ModConfigEvent.Reloading event)
     {
         IngameOverlays.reloadOverlays();
+    }
+
+    public static void registerModelLoaders(ModelRegistryEvent event)
+    {
+        ModelLoaderRegistry.registerLoader(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)

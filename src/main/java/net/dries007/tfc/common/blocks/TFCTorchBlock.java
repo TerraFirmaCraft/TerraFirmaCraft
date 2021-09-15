@@ -44,16 +44,16 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
         }
     }
 
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public TFCTorchBlock(ForgeBlockProperties properties, ParticleOptions particle)
+    public TFCTorchBlock(ExtendedProperties properties, ParticleOptions particle)
     {
         super(properties.properties(), particle);
         this.properties = properties;
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

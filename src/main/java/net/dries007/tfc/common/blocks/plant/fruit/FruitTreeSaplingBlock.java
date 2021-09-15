@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
@@ -46,9 +46,9 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     protected final Supplier<? extends Block> block;
     protected final int treeGrowthDays;
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public FruitTreeSaplingBlock(ForgeBlockProperties properties, Supplier<? extends Block> block, int treeGrowthDays)
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays)
     {
         super(properties.properties());
         this.properties = properties;
@@ -156,7 +156,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

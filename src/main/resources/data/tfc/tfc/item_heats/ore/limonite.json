@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_limonite"
+    },
+    {
+      "item": "tfc:ore/normal_limonite"
+    },
+    {
+      "item": "tfc:ore/poor_limonite"
+    },
+    {
+      "item": "tfc:ore/rich_limonite"
+    }
+  ],
+  "heat_capacity": 0.5,
+  "forging_temperature": 240.0,
+  "welding_temperature": 320.0
+}

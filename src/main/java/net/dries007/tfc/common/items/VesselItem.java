@@ -32,10 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
-import net.dries007.tfc.common.capabilities.DelegateItemHandler;
-import net.dries007.tfc.common.capabilities.ItemStackHandlerCallback;
-import net.dries007.tfc.common.capabilities.VesselLike;
+import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -100,7 +97,7 @@ public class VesselItem extends Item
         return new VesselCapability(stack);
     }
 
-    static class VesselCapability implements VesselLike, ICapabilityProvider, DelegateItemHandler, DelegateHeatHandler
+    static class VesselCapability implements VesselLike, ICapabilityProvider, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
     {
         private final ItemStack stack;
         private final LazyOptional<VesselCapability> capability;
@@ -197,7 +194,7 @@ public class VesselItem extends Item
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(alloy.getResult().getDisplayName()
                             .append(" ")
-                            .append(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_units", alloy.getAmount()))
+                            .append(new TranslatableComponent("tfc.tooltip.fluid_units", alloy.getAmount()))
                             .append(" ")
                             .append(new TranslatableComponent(mode() == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
                         if (!Helpers.isEmpty(inventory))
@@ -234,12 +231,6 @@ public class VesselItem extends Item
             return LazyOptional.empty();
         }
 
-        @Override
-        public int getTanks()
-        {
-            return 1;
-        }
-
         @Nonnull
         @Override
         public FluidStack getFluidInTank(int tank)
@@ -256,7 +247,7 @@ public class VesselItem extends Item
         @Override
         public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
         {
-            return false; // We never deal with insertions, only extractions.
+            return Metal.MANAGER.getMetal(stack.getFluid()) != null;
         }
 
         @Override
@@ -268,17 +259,6 @@ public class VesselItem extends Item
                 return alloy.add(metal, resource.getAmount(), action.simulate());
             }
             return 0;
-        }
-
-        @Nonnull
-        @Override
-        public FluidStack drain(FluidStack resource, FluidAction action)
-        {
-            if (resource.getFluid() == alloy.getResult().getFluid())
-            {
-                return drain(resource.getAmount(), action);
-            }
-            return FluidStack.EMPTY;
         }
 
         @Nonnull

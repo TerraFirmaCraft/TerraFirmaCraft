@@ -9,6 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.ProspectResult;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.events.ProspectedEvent;
 
 public class ProspectedPacket
@@ -41,7 +42,7 @@ public class ProspectedPacket
             if (player != null)
             {
                 MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, block));
-                player.displayClientMessage(result.getText(block), true);
+                player.displayClientMessage(result.getText(block), TFCConfig.CLIENT.sendProspectResultsToActionbar.get());
             }
         });
     }

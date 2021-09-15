@@ -167,7 +167,7 @@ public class MoldItem extends Item
                     text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(metal.getDisplayName()
                         .append(" ")
-                        .append(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_units", fluid.getAmount()))
+                        .append(new TranslatableComponent("tfc.tooltip.fluid_units", fluid.getAmount()))
                         .append(" ")
                         .append(new TranslatableComponent(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
                 }
@@ -227,13 +227,17 @@ public class MoldItem extends Item
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
-            final FluidStack result = tank.drain(maxDrain, action);
-            if (!result.isEmpty())
+            if (isMolten())
             {
-                updateHeatCapacity();
-                save();
+                final FluidStack result = tank.drain(maxDrain, action);
+                if (!result.isEmpty())
+                {
+                    updateHeatCapacity();
+                    save();
+                }
+                return result;
             }
-            return result;
+            return FluidStack.EMPTY;
         }
 
         @Override

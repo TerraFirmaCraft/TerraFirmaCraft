@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 public class MetalManager extends DataManager.Instance<Metal>
 {
@@ -27,7 +28,7 @@ public class MetalManager extends DataManager.Instance<Metal>
     @Nullable
     public Metal getMetal(Fluid fluid)
     {
-        return metalsFromFluids.get(fluid);
+        return fluid == Fluids.EMPTY ? null : metalsFromFluids.get(fluid);
     }
 
     @Override

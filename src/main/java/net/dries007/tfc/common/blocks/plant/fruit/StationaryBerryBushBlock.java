@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
@@ -37,7 +37,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock
 
     private final int deathChance;
 
-    public StationaryBerryBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
+    public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
     {
         super(properties, productItem, stages);
 

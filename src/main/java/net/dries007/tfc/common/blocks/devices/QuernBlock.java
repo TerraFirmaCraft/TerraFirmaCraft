@@ -31,7 +31,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
@@ -80,7 +80,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return SelectionPlace.BASE;
     }
 
-    public QuernBlock(ForgeBlockProperties properties)
+    public QuernBlock(ExtendedProperties properties)
     {
         super(properties);
     }

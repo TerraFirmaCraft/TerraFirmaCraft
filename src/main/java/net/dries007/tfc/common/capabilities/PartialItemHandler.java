@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.common.capabilities;
 
+import java.util.Arrays;
+import javax.annotation.Nonnull;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -26,12 +29,24 @@ public class PartialItemHandler implements DelegateItemHandler
         this.extractSlots = new boolean[internal.getSlots()];
     }
 
+    public PartialItemHandler insertAll()
+    {
+        Arrays.fill(insertSlots, true);
+        return this;
+    }
+
     public PartialItemHandler insert(int... slots)
     {
         for (int slot : slots)
         {
             insertSlots[slot] = true;
         }
+        return this;
+    }
+
+    public PartialItemHandler extractAll()
+    {
+        Arrays.fill(extractSlots, true);
         return this;
     }
 
@@ -50,12 +65,14 @@ public class PartialItemHandler implements DelegateItemHandler
         return internal;
     }
 
+    @Nonnull
     @Override
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
     {
         return insertSlots[slot] ? internal.insertItem(slot, stack, simulate) : stack;
     }
 
+    @Nonnull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {

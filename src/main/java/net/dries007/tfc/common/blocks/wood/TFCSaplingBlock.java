@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -29,10 +29,10 @@ import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
     private final int daysToGrow;
 
-    public TFCSaplingBlock(TFCTreeGrower tree, ForgeBlockProperties properties, int days)
+    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, int days)
     {
         super(tree, properties.properties());
         this.properties = properties;
@@ -40,7 +40,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

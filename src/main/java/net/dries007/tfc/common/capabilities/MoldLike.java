@@ -9,7 +9,13 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 
-// Extends IInventory because we need to be able to use it as a recipe query for casting.
+/**
+ * Interface for capabilities that are "like" molds. In that,
+ * - They have both a internal fluid, and heat capability.
+ * - They have an {@link #isMolten()}, which defines if the contents is able to be extracted (and should be checked before trying to extract!)
+ *
+ * Also extends {@link EmptyInventory} in order to easily use it as a recipe query container.
+ */
 public interface MoldLike extends IFluidHandlerItem, IHeat, EmptyInventory
 {
     @Nullable

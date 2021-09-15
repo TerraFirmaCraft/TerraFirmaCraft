@@ -40,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
@@ -75,9 +75,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     private final Supplier<? extends Item> productItem;
     private final Lifecycle[] stages;
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public SeasonalPlantBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
         super(properties.properties());
 
@@ -92,7 +92,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

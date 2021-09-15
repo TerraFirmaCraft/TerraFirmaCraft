@@ -43,9 +43,9 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
         world.getBlockEntity(pos, TFCBlockEntities.SNOW_PILE.get()).ifPresent(entity -> entity.setInternalState(state));
     }
 
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public SnowPileBlock(ForgeBlockProperties properties)
+    public SnowPileBlock(ExtendedProperties properties)
     {
         super(properties.properties());
 
@@ -53,7 +53,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

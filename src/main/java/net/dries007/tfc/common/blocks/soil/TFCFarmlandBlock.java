@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
@@ -34,15 +34,15 @@ public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlo
         worldIn.setBlockAndUpdate(pos, pushEntitiesUp(state, ((TFCFarmlandBlock) state.getBlock()).getDirt(), worldIn, pos));
     }
 
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
     private final Supplier<? extends Block> dirt;
 
-    public TFCFarmlandBlock(ForgeBlockProperties properties, SoilBlockType.Variant variant)
+    public TFCFarmlandBlock(ExtendedProperties properties, SoilBlockType.Variant variant)
     {
         this(properties, TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant));
     }
 
-    public TFCFarmlandBlock(ForgeBlockProperties properties, Supplier<? extends Block> dirt)
+    public TFCFarmlandBlock(ExtendedProperties properties, Supplier<? extends Block> dirt)
     {
         super(properties.properties());
 
@@ -87,7 +87,7 @@ public class TFCFarmlandBlock extends FarmBlock implements ISoilBlock, IForgeBlo
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

@@ -6,14 +6,10 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.WeakHashMap;
-
 import javax.annotation.Nullable;
 
 import com.google.common.collect.MapMaker;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
@@ -127,14 +123,21 @@ public final class ChunkDataProvider
     }
 
     /**
-     * Promote a partial chunk data instance to a full level chunk.
+     * Promote a partial chunk data instance to a full level chunk, or creates a new instance if none exists.
      * Removes the partial instance from internal cache.
      */
-    @Nullable
-    public ChunkData promotePartial(ChunkPos pos)
+    public ChunkData promotePartialOrCreate(ChunkPos pos)
     {
         final ChunkAccess partial = partialChunkLookup.remove(pos);
-        return partialChunkData.remove(partial);
+        final ChunkData partialData = partialChunkData.remove(partial);
+        if (partialData != null)
+        {
+            // Partial data exists, this is usually for a proto chunk.
+            return partialData;
+        }
+        // No partial data, so we initialize a new chunk data. This is for data read from disk, which will then be initialized later.
+        // However, it is important we create the data with a valid reference to the rock layer settings.
+        return new ChunkData(pos, rockLayerSettings);
     }
 
     @Override

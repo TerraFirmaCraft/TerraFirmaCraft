@@ -30,7 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -41,7 +41,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
-    public DeadBerryBushBlock(ForgeBlockProperties properties)
+    public DeadBerryBushBlock(ExtendedProperties properties)
     {
         super(properties, () -> Items.AIR, new Lifecycle[12]);
 

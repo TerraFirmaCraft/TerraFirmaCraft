@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
@@ -67,16 +66,19 @@ public final class ItemSizeManager
     }
 
     /**
-     * Gets the instance to be applied to the given stack during {@link net.minecraftforge.event.AttachCapabilitiesEvent}
-     * This is NOT a replacement for {@link ItemStack#getCapability(Capability)}
+     * @return an instance describing the size and weight of a given item stack.
      */
     public static IItemSize get(ItemStack stack)
     {
-        // If the item defines itself as an IItemSize, we use that first
+        // If the item (or, a block) defines itself as an IItemSize, we use that first
         final Item item = stack.getItem();
-        if (item instanceof IItemSize)
+        if (item instanceof IItemSize size)
         {
-            return (IItemSize) item;
+            return size;
+        }
+        if (item instanceof BlockItem block && block.getBlock() instanceof IItemSize size)
+        {
+            return size;
         }
 
         // Definitions

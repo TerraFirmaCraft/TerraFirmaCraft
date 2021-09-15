@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -76,7 +76,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     private final Supplier<? extends Block> body;
     private final Supplier<? extends Block> leaves;
 
-    public GrowingFruitTreeBranchBlock(ForgeBlockProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves)
+    public GrowingFruitTreeBranchBlock(ExtendedProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves)
     {
         super(properties);
 

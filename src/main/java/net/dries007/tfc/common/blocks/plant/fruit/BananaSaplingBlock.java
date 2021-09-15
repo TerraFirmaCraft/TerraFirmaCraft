@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -32,7 +32,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
 {
     private final Lifecycle[] stages;
 
-    public BananaSaplingBlock(ForgeBlockProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
+    public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
     {
         super(properties, block, treeGrowthDays);
 

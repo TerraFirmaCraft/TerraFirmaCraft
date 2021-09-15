@@ -37,9 +37,9 @@ public interface ICalendarTickable
     /**
      * Called when the calendar updates (either player or calendar time)
      *
-     * @param playerTickDelta the difference in player ticks observed between last tick and this tick
+     * @param ticks the difference in player ticks observed between last tick and this tick
      */
-    void onCalendarUpdate(long playerTickDelta);
+    void onCalendarUpdate(long ticks);
 
     /**
      * Gets the last update tick.

@@ -74,12 +74,12 @@ public class ClientConfig
             "The style to display all heat tooltips in.",
             "COLOR = Approximate, color based tooltips (like Very Hot**, Brilliant White)",
             "CELSIUS = Exact degrees celsius",
-            "FAREHHEIT = Exact degrees farenheit"
+            "FAHRENHEIT = Exact degrees fahrenheit"
         ).defineEnum("heatTooltipStyle", HeatTooltipStyle.COLOR);
 
         enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 
-        sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect informtion should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
+        sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 
         innerBuilder.pop();
     }

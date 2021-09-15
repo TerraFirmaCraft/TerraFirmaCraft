@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.util.Helpers;
 
 public class ThatchBlock extends Block implements IForgeBlockExtension
 {
-    private final ForgeBlockProperties properties;
+    private final ExtendedProperties properties;
 
-    public ThatchBlock(ForgeBlockProperties properties)
+    public ThatchBlock(ExtendedProperties properties)
     {
         super(properties.properties());
 
@@ -44,7 +44,7 @@ public class ThatchBlock extends Block implements IForgeBlockExtension
     }
 
     @Override
-    public ForgeBlockProperties getForgeProperties()
+    public ExtendedProperties getExtendedProperties()
     {
         return properties;
     }

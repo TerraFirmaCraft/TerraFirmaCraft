@@ -31,7 +31,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             if (metal != null)
             {
                 drawCenteredLine(stack, I18n.get(metal.getTranslationKey()), 14);
-                drawCenteredLine(stack, I18n.get("tfc.tooltip.mold_like.alloy_units", fluid.getAmount()), 23);
+                drawCenteredLine(stack, I18n.get("tfc.tooltip.fluid_units", fluid.getAmount()), 23);
             }
         }
     }

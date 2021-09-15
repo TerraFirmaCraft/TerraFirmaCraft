@@ -13,9 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.DataManager;
+import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -23,21 +25,52 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class HeatCapability
 {
+    // For heat defined on item stacks
     @CapabilityInject(IHeat.class)
     public static final Capability<IHeat> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
+
+    // For heat providers and consumers defined on blocks
+    @CapabilityInject(IHeatBlock.class)
+    public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.notNull();
+    public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
+
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
     public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat");
 
+    @Nullable
+    public static HeatDefinition get(ItemStack stack)
+    {
+        for (HeatDefinition def : CACHE.getAll(stack.getItem()))
+        {
+            if (def.matches(stack))
+            {
+                return def;
+            }
+        }
+        return null;
+    }
+
+    public static float adjustTempTowards(float temp, float target)
+    {
+        return adjustTempTowards(temp, target, 1, 1);
+    }
+
+    public static float adjustTempTowards(float temp, float target, float delta)
+    {
+        return adjustTempTowards(temp, target, delta, delta);
+    }
+
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
+        final float delta = TFCConfig.SERVER.heatingModifier.get().floatValue();
         if (temp < target)
         {
-            return Math.min(temp + deltaPositive, target);
+            return Math.min(temp + delta * deltaPositive, target);
         }
         else if (temp > target)
         {
-            return Math.max(temp - deltaNegative, target);
+            return Math.max(temp - delta * deltaNegative, target);
         }
         else
         {
@@ -45,19 +78,27 @@ public final class HeatCapability
         }
     }
 
+    /**
+     * Adjusts the temperature of a device, after one tick, using some common factors
+     *
+     * @param temp       The current temperature of the device.
+     * @param baseTarget The baseline "target temperature" of the device. This is the temperature of whatever is heating (fuel, or external sources)
+     * @param airTicks   Air ticks, provided by a bellows or other similar device. Can raise the target temperature by up to 600 C
+     * @param isRaining  If it is raining. Will lower the target temperature by 300 C
+     * @return The temperature after one tick's worth of movement.
+     */
     public static float adjustDeviceTemp(float temp, float baseTarget, int airTicks, boolean isRaining)
     {
         float target = targetDeviceTemp(baseTarget, airTicks, isRaining);
         if (temp != target)
         {
-            float delta = TFCConfig.SERVER.heatingModifier.get().floatValue();
             float deltaPositive = 1, deltaNegative = 1;
             if (airTicks > 0)
             {
                 deltaPositive = 2f;
                 deltaNegative = 0.5f;
             }
-            return adjustTempTowards(temp, target, delta * deltaPositive, delta * deltaNegative);
+            return adjustTempTowards(temp, target, deltaPositive, deltaNegative);
         }
         return target;
     }
@@ -89,7 +130,10 @@ public final class HeatCapability
      */
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
-        if (ticksSinceUpdate <= 0) return temp;
+        if (ticksSinceUpdate <= 0)
+        {
+            return temp;
+        }
         final float newTemp = temp - heatCapacity * (float) (ticksSinceUpdate * TFCConfig.SERVER.heatingModifier.get());
         return newTemp < 0 ? 0 : newTemp;
     }
@@ -115,16 +159,52 @@ public final class HeatCapability
         instance.setTemperature(temp);
     }
 
-    @Nullable
-    public static HeatDefinition get(ItemStack stack)
+    /**
+     * Common logic for block entities to consume fuel during larger time skips.
+     *
+     * @param ticks           Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
+     * @param inventory       Inventory to be modified (this should contain the fuel)
+     * @param burnTicks       Remaining burn ticks of the fuel being burned
+     * @param burnTemperature Current burning temperature of the TE (this is the fuel's target temperature)
+     * @param slotStart       Index of the first fuel slot
+     * @param slotEnd         Index of the last fuel slot
+     * @return The remainder after consuming fuel, along with an amount (possibly > 0) of ticks that haven't been accounted for.
+     */
+    public static Remainder consumeFuelForTicks(long ticks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
     {
-        for (HeatDefinition def : CACHE.getAll(stack.getItem()))
+        if (burnTicks > ticks)
         {
-            if (def.matches(stack))
+            burnTicks -= ticks;
+            return new Remainder(burnTicks, burnTemperature, 0L);
+        }
+        else
+        {
+            ticks -= burnTicks;
+            burnTicks = 0;
+        }
+        // Need to consume fuel
+        for (int i = slotStart; i <= slotEnd; i++)
+        {
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = Fuel.get(fuelStack);
+            if (fuel != null)
             {
-                return def;
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
+                if (fuel.getDuration() > ticks)
+                {
+                    burnTicks = (int) (fuel.getDuration() - ticks);
+                    burnTemperature = fuel.getTemperature();
+                    return new Remainder(burnTicks, burnTemperature, 0L);
+                }
+                else
+                {
+                    ticks -= fuel.getDuration();
+                    burnTicks = 0;
+                }
             }
         }
-        return null;
+        return new Remainder(burnTicks, burnTemperature, ticks);
     }
+
+    public record Remainder(int burnTicks, float burnTemperature, long ticks) {}
 }

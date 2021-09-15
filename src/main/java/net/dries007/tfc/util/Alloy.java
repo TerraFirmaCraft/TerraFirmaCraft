@@ -7,7 +7,6 @@ import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -16,7 +15,7 @@ import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 
-public class Alloy implements INBTSerializable<CompoundTag>
+public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
 {
     /**
      * This is the maximum safe value for an alloy.
@@ -38,6 +37,7 @@ public class Alloy implements INBTSerializable<CompoundTag>
 
     @Nullable private AlloyInventory wrapper; // Lazy, initialized on demand and cached
     @Nullable private Metal cachedResult;
+    @Nullable private AlloyView readonlyView; // A read-only view of this alloy
 
     /**
      * Constructs a new alloy. It starts with no metal content
@@ -108,11 +108,7 @@ public class Alloy implements INBTSerializable<CompoundTag>
         return amount;
     }
 
-    /**
-     * Gets the result of mixing the alloy right now
-     *
-     * @return the result metal. Unknown if it doesn't match any recipe
-     */
+    @Override
     public Metal getResult()
     {
         if (cachedResult == null)
@@ -128,7 +124,7 @@ public class Alloy implements INBTSerializable<CompoundTag>
                 {
                     cachedResult = server.getRecipeManager().getRecipeFor(TFCRecipeTypes.ALLOY, getWrapper(), server.overworld())
                         .map(AlloyRecipe::getResult)
-                        .orElse(null);
+                        .orElseGet(Metal::unknown);
                 }
             }
         }
@@ -137,15 +133,6 @@ public class Alloy implements INBTSerializable<CompoundTag>
             return Metal.unknown();
         }
         return cachedResult;
-    }
-
-    public FluidStack getResultAsFluidStack()
-    {
-        if (!isEmpty())
-        {
-            return new FluidStack(getResult().getFluid(), getAmount());
-        }
-        return FluidStack.EMPTY;
     }
 
     /**
@@ -187,26 +174,13 @@ public class Alloy implements INBTSerializable<CompoundTag>
         }
     }
 
-    /**
-     * Gets the total amount of alloy created
-     *
-     * @return The amount, rounded to the closest integer
-     */
+    @Override
     public int getAmount()
     {
         return totalUnits;
     }
 
-    public boolean isEmpty()
-    {
-        return totalUnits == 0;
-    }
-
-    /**
-     * Gets the maximum amount this storage can hold
-     *
-     * @return The maximum amount
-     */
+    @Override
     public int getMaxUnits()
     {
         return maxUnits;
@@ -222,12 +196,7 @@ public class Alloy implements INBTSerializable<CompoundTag>
         maxUnits = value;
     }
 
-    /**
-     * Returns a read-only copy of the metals in an alloy
-     * The alloy may also contain values with a % content less than epsilon, which are not visible in this view
-     *
-     * @return a map of metals -> unit values
-     */
+    @Override
     public Object2DoubleMap<Metal> getMetals()
     {
         return sanitizedMetalMap;
@@ -273,6 +242,15 @@ public class Alloy implements INBTSerializable<CompoundTag>
         }
 
         updateCaches();
+    }
+
+    public AlloyView unmodifiableView()
+    {
+        if (readonlyView == null)
+        {
+            readonlyView = new View(this);
+        }
+        return readonlyView;
     }
 
     public boolean matches(AlloyRecipe recipe)
@@ -346,5 +324,42 @@ public class Alloy implements INBTSerializable<CompoundTag>
             }
         }
         return true;
+    }
+
+    /**
+     * An unmodifiable view of an alloy
+     */
+    private static class View implements AlloyView
+    {
+        private final Alloy alloy;
+
+        private View(Alloy alloy)
+        {
+            this.alloy = alloy;
+        }
+
+        @Override
+        public Metal getResult()
+        {
+            return alloy.getResult();
+        }
+
+        @Override
+        public int getAmount()
+        {
+            return alloy.getAmount();
+        }
+
+        @Override
+        public int getMaxUnits()
+        {
+            return alloy.getMaxUnits();
+        }
+
+        @Override
+        public Object2DoubleMap<Metal> getMetals()
+        {
+            return alloy.getMetals();
+        }
     }
 }

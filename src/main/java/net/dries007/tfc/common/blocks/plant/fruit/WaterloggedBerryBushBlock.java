@@ -34,7 +34,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -45,7 +45,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
     public static final BooleanProperty WILD = TFCBlockStateProperties.WILD;
 
-    public WaterloggedBerryBushBlock(ForgeBlockProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
+    public WaterloggedBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
     {
         super(properties, productItem, stages, deathChance);
     }

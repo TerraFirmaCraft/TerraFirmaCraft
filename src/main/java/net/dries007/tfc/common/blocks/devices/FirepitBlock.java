@@ -81,7 +81,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
         return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
     }
 
-    public FirepitBlock(ForgeBlockProperties properties)
+    public FirepitBlock(ExtendedProperties properties)
     {
         super(properties);
 

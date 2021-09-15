@@ -130,10 +130,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
 
     public void invalidateCapabilities()
     {
-        for (LazyOptional<IItemHandler> handler : sidedInventory.getHandlers())
-        {
-            handler.invalidate();
-        }
+        sidedInventory.invalidate();
     }
 
     @Override
