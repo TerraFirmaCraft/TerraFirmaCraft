@@ -1,16 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "matrix": {
-    "outside_slot_required": false,
-    "pattern": [
-      " X X ",
-      "XX XX",
-      "XX XX",
-      "XX XX",
-      "XX XX"
-    ]
-  },
+  "outside_slot_required": false,
+  "pattern": [
+    " X X ",
+    "XX XX",
+    "XX XX",
+    "XX XX",
+    "XX XX"
+  ],
   "result": {
     "count": 2,
     "item": "tfc:stone/knife_head/igneous_extrusive"

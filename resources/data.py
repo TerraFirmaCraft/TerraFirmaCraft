@@ -64,7 +64,8 @@ def generate(rm: ResourceManager):
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
-            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, metal_data.melt_temperature)
+            metal_data = METALS[ore_data.metal]
+            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature))
 
     # Item Heats
 

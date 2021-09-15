@@ -1,13 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
-  "outside_slot_required": false,
+  "outside_slot_required": true,
   "pattern": [
     "X   X",
-    " XXX "
+    "X   X",
+    "X   X",
+    "X   X",
+    "XX XX"
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:ceramic/unfired_bowl"
+    "item": "tfc:ceramic/unfired_shovel_head_mold"
   }
 }

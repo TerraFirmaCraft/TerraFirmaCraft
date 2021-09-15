@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_cassiterite"
     }
   ],
-  "heat_capacity": 0.5,
-  "forging_temperature": 240.0,
-  "welding_temperature": 320.0
+  "heat_capacity": 0.14,
+  "forging_temperature": 138.0,
+  "welding_temperature": 184.0
 }

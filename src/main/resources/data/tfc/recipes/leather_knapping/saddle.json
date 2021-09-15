@@ -1,17 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:leather_knapping",
-  "matrix": {
-    "pattern": [
-      "  X  ",
-      "XXXXX",
-      "XXXXX",
-      "XXXXX",
-      "  X  "
-    ]
-  },
+  "pattern": [
+    "  X  ",
+    "XXXXX",
+    "XXXXX",
+    "XXXXX",
+    "  X  "
+  ],
   "result": {
-    "count": 1,
     "item": "minecraft:saddle"
   }
 }

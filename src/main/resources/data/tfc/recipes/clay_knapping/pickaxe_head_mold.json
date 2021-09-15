@@ -1,14 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
+  "outside_slot_required": true,
   "pattern": [
-    " X   ",
-    "XXXX ",
-    "XXX X",
-    "XXXX ",
-    "XXX  "
+    "XXXXX",
+    "X   X",
+    " XXX ",
+    "XXXXX"
   ],
   "result": {
-    "item": "tfc:ceramic/unfired_jug"
+    "item": "tfc:ceramic/unfired_pickaxe_head_mold"
   }
 }

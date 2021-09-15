@@ -1,13 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
-  "outside_slot_required": false,
+  "outside_slot_required": true,
   "pattern": [
-    "  X  ",
     "XXXXX",
-    "  X  "
+    "     ",
+    "     ",
+    "XX XX",
+    "XXXXX"
   ],
   "result": {
-    "item": "tfc:ceramic/unfired_spindle_head"
+    "item": "tfc:ceramic/unfired_hammer_head_mold"
   }
 }

@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_hematite"
     }
   ],
-  "heat_capacity": 0.5,
-  "forging_temperature": 240.0,
-  "welding_temperature": 320.0
+  "heat_capacity": 0.35,
+  "forging_temperature": 921.0,
+  "welding_temperature": 1228.0
 }

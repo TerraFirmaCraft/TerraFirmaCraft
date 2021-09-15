@@ -1,15 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
+  "outside_slot_required": true,
   "pattern": [
-    "XXXXX",
+    "   XX",
+    "    X",
     "     ",
-    "XXXXX",
-    "     ",
-    "XXXXX"
+    "X   X",
+    "XX XX"
   ],
   "result": {
-    "count": 3,
-    "item": "tfc:ceramic/unfired_brick"
+    "item": "tfc:ceramic/unfired_javelin_head_mold"
   }
 }

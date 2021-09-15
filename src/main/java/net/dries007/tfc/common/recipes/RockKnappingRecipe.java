@@ -45,7 +45,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         {
             final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             final Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.get("ingredient")) : Ingredient.of(TFCTags.Items.ROCK_KNAPPING);
-            return new RockKnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, ingredient);
+            return new RockKnappingRecipe(id, KnappingPattern.fromJson(json), stack, ingredient);
         }
 
         @Nullable

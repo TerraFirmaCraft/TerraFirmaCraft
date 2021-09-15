@@ -12,6 +12,7 @@
   "tfc.tile_entity.firepit": "Firepit",
   "tfc.tile_entity.log_pile": "Log Pile",
   "tfc.tile_entity.charcoal_forge": "Forge",
+  "tfc.tile_entity.crucible": "Crucible",
   "item.tfc.handstone": "Handstone",
   "itemGroup.tfc.earth": "TFC Earth",
   "itemGroup.tfc.ores": "TFC Ores",

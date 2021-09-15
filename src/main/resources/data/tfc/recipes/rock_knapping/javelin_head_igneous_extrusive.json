@@ -1,18 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "matrix": {
-    "outside_slot_required": false,
-    "pattern": [
-      "XXX  ",
-      "XXXX ",
-      "XXXXX",
-      " XXX ",
-      "  X  "
-    ]
-  },
+  "outside_slot_required": false,
+  "pattern": [
+    "XXX  ",
+    "XXXX ",
+    "XXXXX",
+    " XXX ",
+    "  X  "
+  ],
   "result": {
-    "count": 1,
     "item": "tfc:stone/javelin_head/igneous_extrusive"
   },
   "ingredient": {

@@ -1,15 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rock_knapping",
-  "matrix": {
-    "outside_slot_required": false,
-    "pattern": [
-      "XXXXX",
-      "   XX"
-    ]
-  },
+  "outside_slot_required": false,
+  "pattern": [
+    "XXXXX",
+    "   XX"
+  ],
   "result": {
-    "count": 1,
     "item": "tfc:stone/hoe_head/igneous_intrusive"
   },
   "ingredient": {

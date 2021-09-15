@@ -1,14 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:leather_knapping",
+  "type": "tfc:clay_knapping",
+  "outside_slot_required": true,
   "pattern": [
-    "XXXXX",
-    "XXXXX",
+    "XX XX",
+    "XX XX",
     "XX XX",
     "XX XX",
     "XX XX"
   ],
   "result": {
-    "item": "minecraft:leather_leggings"
+    "item": "tfc:ceramic/unfired_chisel_head_mold"
   }
 }

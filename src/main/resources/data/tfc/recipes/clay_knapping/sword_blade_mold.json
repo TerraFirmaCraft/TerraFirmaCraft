@@ -1,13 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
-  "outside_slot_required": false,
+  "outside_slot_required": true,
   "pattern": [
+    "  XXX",
+    "   XX",
     "X   X",
-    " XXX "
+    "XX  X",
+    "XXXX "
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:ceramic/unfired_bowl"
+    "item": "tfc:ceramic/unfired_sword_blade_mold"
   }
 }

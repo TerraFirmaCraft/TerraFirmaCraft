@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_garnierite"
     }
   ],
-  "heat_capacity": 0.5,
-  "forging_temperature": 240.0,
-  "welding_temperature": 320.0
+  "heat_capacity": 0.48,
+  "forging_temperature": 871.8,
+  "welding_temperature": 1162.4
 }

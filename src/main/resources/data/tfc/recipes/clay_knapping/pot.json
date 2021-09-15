@@ -1,17 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:clay_knapping",
-  "matrix": {
-    "pattern": [
-      "X   X",
-      "X   X",
-      "X   X",
-      "XXXXX",
-      " XXX "
-    ]
-  },
+  "pattern": [
+    "X   X",
+    "X   X",
+    "X   X",
+    "XXXXX",
+    " XXX "
+  ],
   "result": {
-    "count": 1,
     "item": "tfc:ceramic/unfired_pot"
   }
 }

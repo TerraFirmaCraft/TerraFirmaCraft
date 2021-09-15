@@ -79,7 +79,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         public KnappingRecipe fromJson(ResourceLocation id, JsonObject json)
         {
             final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return new KnappingRecipe(id, KnappingPattern.fromJson(json.getAsJsonObject("matrix")), stack, this);
+            return new KnappingRecipe(id, KnappingPattern.fromJson(json), stack, this);
         }
 
         @Nullable

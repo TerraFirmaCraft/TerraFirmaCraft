@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_native_gold"
     }
   ],
-  "heat_capacity": 0.5,
-  "forging_temperature": 240.0,
-  "welding_temperature": 320.0
+  "heat_capacity": 0.6,
+  "forging_temperature": 636.0,
+  "welding_temperature": 848.0
 }
