@@ -6,12 +6,10 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.BaseStoneSource;
 
 import net.dries007.tfc.world.BaseBlockSource;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
@@ -35,7 +33,7 @@ public interface ChunkGeneratorExtension
         return getBiomeSource().getRockLayerSettings();
     }
 
-    Aquifer createAquifer(ChunkAccess chunk);
+    Aquifer getAquifer(ChunkAccess chunk);
 
     BaseBlockSource createBaseStoneSource(LevelAccessor level, ChunkAccess chunk);
 

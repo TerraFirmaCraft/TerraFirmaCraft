@@ -58,7 +58,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 
         final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
         final RockLayerSettings rockSettings = ex.getRockLayerSettings();
-        final Aquifer aquifer = ex.createAquifer(chunk);
+        final Aquifer aquifer = ex.getAquifer(chunk);
         final BaseBlockSource blockSource = ex.createBaseStoneSource(level, chunk);
 
 

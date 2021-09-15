@@ -261,13 +261,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return chunkDataProvider;
     }
 
-    public NoiseGeneratorSettings noiseGeneratorSettings()
+    @Override
+    public Aquifer getAquifer(ChunkAccess chunk)
     {
-        if (cachedSettings == null)
-        {
-            cachedSettings = settings.get();
-        }
-        return cachedSettings;
+        return createAquifer(chunk);
     }
 
     @Override
@@ -280,6 +277,33 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return manager.getBiome(cursor);
         };
         return new DefaultBaseBlockSource(level, chunk.getPos(), chunkDataProvider.get(chunk).getRockData(), biomeSampler);
+    }
+
+    public NoiseGeneratorSettings noiseGeneratorSettings()
+    {
+        if (cachedSettings == null)
+        {
+            cachedSettings = settings.get();
+        }
+        return cachedSettings;
+    }
+
+    @Override
+    protected Codec<TFCChunkGenerator> codec()
+    {
+        return CODEC;
+    }
+
+    @Override
+    public ChunkGenerator withSeed(long seedIn)
+    {
+        return new TFCChunkGenerator(customBiomeSource.withSeed(seed), settings, flatBedrock, seedIn);
+    }
+
+    @Override
+    public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
+    {
+        ((ProtoChunk) chunk).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
     }
 
     /**
@@ -299,7 +323,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
         final ChunkPos chunkPos = chunk.getPos();
         final ExtendedCarvingContext.Impl context = new ExtendedCarvingContext.Impl(this, chunk, createBaseStoneSource((LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor(), chunk));
-        final Aquifer aquifer = createAquifer(chunk);
+        final Aquifer aquifer = getAquifer(chunk);
         final BitSet carvingMask = CarverHelpers.getCarvingMask(chunk, noiseGeneratorSettings().noiseSettings().height());
 
         for (int dx = -8; dx <= 8; ++dx)
@@ -324,25 +348,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    protected Codec<TFCChunkGenerator> codec()
-    {
-        return CODEC;
-    }
-
-    @Override
-    public ChunkGenerator withSeed(long seedIn)
-    {
-        return new TFCChunkGenerator(customBiomeSource.withSeed(seed), settings, flatBedrock, seedIn);
-    }
-
-    @Override
-    public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
-    {
-        ((ProtoChunk) chunk).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
-    }
-
-    @Override
-    public Aquifer createAquifer(ChunkAccess chunk)
+    protected Aquifer createAquifer(ChunkAccess chunk)
     {
         ChunkPos pos = chunk.getPos();
         AquiferExtension aquifer = aquiferCache.getIfPresent(pos.x, pos.z);
@@ -449,12 +455,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public boolean hasStronghold(ChunkPos pos)
-    {
-        return false;
-    }
-
-    @Override
     public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level)
     {
         return SEA_LEVEL_Y;
@@ -464,6 +464,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level)
     {
         return new NoiseColumn(0, new BlockState[0]);
+    }
+
+    @Override
+    public boolean hasStronghold(ChunkPos pos)
+    {
+        return false;
     }
 
     /**
@@ -739,7 +745,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.chunkX = chunk.getPos().getMinBlockX();
             this.chunkZ = chunk.getPos().getMinBlockZ();
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
-            this.aquifer = createAquifer(chunk);
+            this.aquifer = getAquifer(chunk);
             this.stoneSource = createBaseStoneSource(world, chunk);
 
             this.interpolators = new ArrayList<>();
