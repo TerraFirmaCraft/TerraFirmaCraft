@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.BiConsumer;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
@@ -54,9 +55,19 @@ public abstract class Artist<T, A extends Artist<T, A>>
         return new Artist.Colored<>(transformer); // An artist that handler pixel -> color objects with predefined colors
     }
 
+    public static <V> Artist.Custom<V> custom(BiConsumer<V, Graphics2D> drawing)
+    {
+        return new Custom<>(drawing);
+    }
+
     public static int clamp(int value, int min, int max)
     {
         return value < min ? min : Math.min(value, max);
+    }
+
+    public static int floor(double f)
+    {
+        return f >= 0 ? (int) f : (int) f - 1;
     }
 
     protected int size = 1000;
@@ -132,7 +143,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
     }
 
-    protected abstract void drawInternal(String name, T instance, Graphics graphics);
+    public abstract void drawInternal(String name, T instance, Graphics graphics);
 
     protected A copy(Artist<?, ?> other)
     {
@@ -169,7 +180,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         static <T> Pixel<T> coerceInt(IntPixel<T> pixel)
         {
-            return (x, y) -> pixel.apply((int) (x + 0.5), (int) (y + 0.5));
+            return (x, y) -> pixel.apply(floor(x), floor(y));
         }
 
         static <T> Pixel<T> coerceFloat(FloatPixel<T> pixel)
@@ -325,7 +336,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        protected void drawInternal(String name, T instance, Graphics graphics)
+        public void drawInternal(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
             final int[] distribution = new int[histogramBins];
@@ -358,7 +369,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static final class Raw extends Artist<Pixel<Color>, Raw>
     {
         @Override
-        protected void drawInternal(String name, Pixel<Color> instance, Graphics graphics)
+        public void drawInternal(String name, Pixel<Color> instance, Graphics graphics)
         {
             drawStream(graphics, stream(instance));
         }
@@ -374,7 +385,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        protected void drawInternal(String name, T instance, Graphics graphics)
+        public void drawInternal(String name, T instance, Graphics graphics)
         {
             drawStream(graphics, stream(colorTransformer.apply(instance)));
         }
@@ -385,7 +396,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         private final Function<K, Pixel<V>> transformer;
         private Function<V, Color> colorTransformer = k -> Colors.random();
 
-        public Typed(Function<K, Pixel<V>> transformer)
+        private Typed(Function<K, Pixel<V>> transformer)
         {
             this.transformer = transformer;
         }
@@ -407,10 +418,36 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        protected void drawInternal(String name, K instance, Graphics graphics)
+        public void drawInternal(String name, K instance, Graphics graphics)
         {
             final Pixel<V> pixel = transformer.apply(instance);
             drawStream(graphics, stream((x, y) -> colorTransformer.apply(pixel.apply(x, y))));
+        }
+    }
+
+    public static class Custom<T> extends Artist<T, Custom<T>>
+    {
+        private final BiConsumer<T, Graphics2D> drawing;
+
+        private Custom(BiConsumer<T, Graphics2D> drawing)
+        {
+            this.drawing = drawing;
+        }
+
+        public Custom<T> before(BiConsumer<T, Graphics2D> pre)
+        {
+            return new Custom<>(pre.andThen(drawing));
+        }
+
+        public Custom<T> after(BiConsumer<T, Graphics2D> post)
+        {
+            return new Custom<>(drawing.andThen(post));
+        }
+
+        @Override
+        public void drawInternal(String name, T instance, Graphics graphics)
+        {
+            drawing.accept(instance, (Graphics2D) graphics);
         }
     }
 

@@ -55,10 +55,10 @@ repositories {
         name 'Jitpack'
         url 'https://jitpack.io'
     }
-    /*maven {
-        name 'Blame'
-        url "https://nexus.resourcefulbees.com/repository/maven-public/"
+    flatDir {
+        dirs 'libs'
     }
+    /*
     maven {
         // JEI
         name = "Progwml6 maven"
@@ -126,6 +126,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}") { transitive = false }
+    // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
 
     // JEI
     // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")

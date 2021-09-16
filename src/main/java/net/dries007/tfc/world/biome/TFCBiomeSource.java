@@ -25,8 +25,11 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
+import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
+import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -73,7 +76,10 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.biomeRegistry = biomeRegistry;
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
 
-        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+        final TypedAreaFactory<Plate> plates = TFCLayerUtil.createEarlyPlateLayers(seed);
+        final Watershed.Context context = new Watershed.Context(plates, seed, 0.5f, 0.8f, 14, 0.2f);
+
+        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, context, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
     }
 
     @Override

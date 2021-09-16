@@ -206,7 +206,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final Cavifier cavifier;
     private final NoodleCavifier noodleCavifier;
 
-    private final ConcurrentChunkPosBasedCache<AquiferExtension> aquiferCache;
+    private final FastConcurrentCache<AquiferExtension> aquiferCache;
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
 
@@ -252,7 +252,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.cavifier = new Cavifier(random, noiseSettings.minY() / this.cellHeight);
         this.noodleCavifier = new NoodleCavifier(seed);
 
-        this.aquiferCache = new ConcurrentChunkPosBasedCache<>(256);
+        this.aquiferCache = new FastConcurrentCache<>(256);
     }
 
     @Override

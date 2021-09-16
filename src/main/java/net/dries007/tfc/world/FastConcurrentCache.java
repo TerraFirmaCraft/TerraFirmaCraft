@@ -9,9 +9,9 @@ import net.minecraft.world.level.ChunkPos;
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
- * A concurrent (safe to read and write between multiple threads) chunk pos based, fast lossy cache.
+ * A concurrent (safe to read and write between multiple threads) positional based, lossy, cache.
  */
-public class ConcurrentChunkPosBasedCache<T>
+public class FastConcurrentCache<T>
 {
     private final Object lock = new Object();
 
@@ -20,7 +20,7 @@ public class ConcurrentChunkPosBasedCache<T>
     private final int mask;
 
     @SuppressWarnings("unchecked")
-    public ConcurrentChunkPosBasedCache(int size)
+    public FastConcurrentCache(int size)
     {
         size = Mth.smallestEncompassingPowerOfTwo(size);
 
