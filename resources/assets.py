@@ -813,6 +813,11 @@ def generate(rm: ResourceManager):
     water_based_fluid(rm, 'salt_water')
     water_based_fluid(rm, 'spring_water')
 
+    # River water, since it doesn't have a bucket
+    rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
+    rm.fluid_tag('minecraft:water', 'tfc:river_water')  # Need to use water fluid tag for behavior
+    rm.fluid_tag('mixable', 'tfc:river_water')
+
     # Mixable tags for vanilla water
     rm.fluid_tag('mixable', '#minecraft:water')
 

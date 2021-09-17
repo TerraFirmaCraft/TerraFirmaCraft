@@ -19,6 +19,7 @@ import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.world.river.Flow;
 
 /**
  * @see BlockStateProperties
@@ -77,4 +78,6 @@ public class TFCBlockStateProperties
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
 
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
+
+    public static final EnumProperty<Flow> FLOW = EnumProperty.create("flow", Flow.class);
 }

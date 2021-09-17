@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -25,10 +24,10 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
-import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
-import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.river.Flow;
+import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -45,8 +44,6 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
 
-    private static final boolean ONLY_NORMAL_NORMAL_CLIMATES = false;
-
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {
         return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.getDefault(), biomeRegistry);
@@ -62,6 +59,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 
     private final ConcurrentArea<BiomeVariants> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
+    private final Watershed.Context watershedContext;
 
     public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
     {
@@ -75,11 +73,31 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
+        this.watershedContext = new Watershed.Context(TFCLayerUtil.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
+        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, watershedContext, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+    }
 
-        final TypedAreaFactory<Plate> plates = TFCLayerUtil.createEarlyPlateLayers(seed);
-        final Watershed.Context context = new Watershed.Context(plates, seed, 0.5f, 0.8f, 14, 0.2f);
-
-        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, context, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+    public Flow getRiverFlow(int x, int z, float extraReach)
+    {
+        final float scale = 1f / (1 << 7);
+        final float x0 = x * scale, z0 = z * scale;
+        for (MidpointFractal fractal : watershedContext.getFractalsByPartition(x, z))
+        {
+            // maybeIntersect will skip the more expensive calculation if it fails
+            if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH + extraReach))
+            {
+                final Flow flow = fractal.intersectWithFlow(x0, z0, Watershed.RIVER_WIDTH + extraReach);
+                if (flow != Flow.NONE)
+                {
+                    return flow;
+                }
+                else if (fractal.intersect(x0, z0, Watershed.RIVER_WIDTH + extraReach))
+                {
+                    System.out.println("wut?");
+                }
+            }
+        }
+        return Flow.NONE;
     }
 
     @Override
@@ -225,11 +243,5 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     public TFCBiomeSource withSeed(long seedIn)
     {
         return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, climateSettings, biomeRegistry);
-    }
-
-    private BiomeVariants stripeBiome(int x)
-    {
-        final List<BiomeVariants> variants = TFCBiomes.getVariants();
-        return variants.get(Math.floorMod(x >> 6, variants.size()));
     }
 }

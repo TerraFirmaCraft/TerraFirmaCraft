@@ -103,6 +103,8 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     );
 
+    public static final RegistryObject<RiverWaterFluid> RIVER_WATER = register("river_water", RiverWaterFluid::new);
+
     /**
      * Registration helper for fluids and this stupid API
      *

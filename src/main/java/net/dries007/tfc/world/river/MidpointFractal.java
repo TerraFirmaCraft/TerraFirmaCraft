@@ -1,6 +1,7 @@
 package net.dries007.tfc.world.river;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
 
 public class MidpointFractal
@@ -103,15 +104,36 @@ public class MidpointFractal
      */
     public boolean intersect(float x, float y, float distance)
     {
-        final float distSq = distance * distance;
-        for (int i = 0; i < (segments.length >> 1) - 1; i++)
+        return intersectIndex(x, y, distance * distance) != -1;
+    }
+
+    /**
+     * Checks if the provided point (x, y) comes within a minimum {@code distance} of the fractal.
+     *
+     * @return A vector describing the flow of the river at the intersected location, if found.
+     */
+    public Flow intersectWithFlow(float x, float y, float distance)
+    {
+        final int i = intersectIndex(x, y, distance * distance);
+        if (i != -1)
         {
-            float d = RiverHelpers.distancePointToLineSq(segments[(i << 1)], segments[(i << 1) + 1], segments[(i << 1) + 2], segments[(i << 1) + 3], x, y);
+            float sourceX = segments[i], sourceY = segments[i + 1], drainX = segments[i + 2], drainY = segments[i + 3];
+            float angle = (float) Mth.atan2(-(drainY - sourceY), drainX - sourceX);
+            return Flow.fromAngle(angle);
+        }
+        return Flow.NONE;
+    }
+
+    private int intersectIndex(float x, float y, float distSq)
+    {
+        for (int i = 0; i < segments.length - 2; i += 2)
+        {
+            float d = RiverHelpers.distancePointToLineSq(segments[i], segments[i + 1], segments[i + 2], segments[i + 3], x, y);
             if (d < distSq)
             {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }

@@ -5,6 +5,7 @@
     "tfc:salt_water",
     "tfc:flowing_salt_water",
     "tfc:spring_water",
-    "tfc:flowing_spring_water"
+    "tfc:flowing_spring_water",
+    "tfc:river_water"
   ]
 }

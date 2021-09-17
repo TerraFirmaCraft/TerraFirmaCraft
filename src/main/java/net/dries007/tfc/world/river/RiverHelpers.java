@@ -11,7 +11,6 @@ public final class RiverHelpers
     {
         // Return minimum distance between line segment vw and point p, i.e. |w - v|^2
         float l2 = norm2(vx - wx, vy - wy);
-        ;
         if (l2 == 0)
         {
             return l2;

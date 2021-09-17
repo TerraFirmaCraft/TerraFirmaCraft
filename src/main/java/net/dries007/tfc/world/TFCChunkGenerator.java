@@ -40,6 +40,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -47,6 +48,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.dries007.tfc.common.fluids.RiverWaterFluid;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.world.biome.BiomeVariants;
@@ -58,6 +61,7 @@ import net.dries007.tfc.world.carver.ExtendedCarvingContext;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.surfacebuilder.SurfaceBuilderContext;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
@@ -712,12 +716,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Initialized from the chunk
         private final LevelAccessor world;
         private final ProtoChunk chunk;
-        private final int chunkX, chunkZ;
+        private final int chunkX, chunkZ; // Min block positions for the chunk
+        private final int quartX, quartZ; // Min quart positions for the chunk
         private final Object2DoubleMap<BiomeNoiseSampler> biomeSamplers;
         private final Heightmap oceanFloor, worldSurface;
         private final BitSet carvingMask; // We mark the air carving mask for everything
         private final Aquifer aquifer;
         private final BaseStoneSource stoneSource;
+        private final FluidState riverWater;
+        private final Flow[] flows;
 
         // Noise caves / interpolators, setup initially for the chunk
         private final List<NoiseInterpolator> interpolators;
@@ -744,11 +751,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             this.chunk = chunk;
             this.chunkX = chunk.getPos().getMinBlockX();
             this.chunkZ = chunk.getPos().getMinBlockZ();
+            this.quartX = QuartPos.fromBlock(chunkX);
+            this.quartZ = QuartPos.fromBlock(chunkZ);
             this.biomeSamplers = new Object2DoubleOpenHashMap<>();
             this.aquifer = getAquifer(chunk);
             this.stoneSource = createBaseStoneSource(world, chunk);
+            this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
 
             this.interpolators = new ArrayList<>();
+            this.flows = buildFlowMap();
 
             this.cavifierSampler = new CavifierSampler(cavifier, chunk.getPos(), cellWidth, cellHeight, cellCountX, cellCountY, cellCountZ, minCellY);
             this.noodleCaveSampler = new NoodleCaveSampler(noodleCavifier, chunk.getPos(), cellCountX, cellCountY, cellCountZ, minCellY);
@@ -800,7 +811,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                             cellDeltaZ = (double) localCellZ / cellWidth;
 
                             mutablePos.set(x, 0, z);
-                            fillColumn(mutablePos);
+                            fillColumn(mutablePos, cellX, cellZ);
                         }
                     }
                 }
@@ -815,11 +826,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
          * Deprecation for the use of {@link BlockState#getLightEmission()}
          */
         @SuppressWarnings("deprecation")
-        void fillColumn(BlockPos.MutableBlockPos mutablePos)
+        void fillColumn(BlockPos.MutableBlockPos mutablePos, int cellX, int cellZ)
         {
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
 
+            // Interpolate flow for this column
+            final Flow flow00 = flows[cellX + 5 * cellZ];
+            final Flow flow01 = flows[cellX + 5 * (cellZ + 1)];
+            final Flow flow10 = flows[(cellX + 1) + 5 * cellZ];
+            final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
+            final Flow flow = Flow.combine(flow10, flow11, flow00, flow01, (float) cellDeltaX, 1 - (float) cellDeltaZ);
+
             final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
+
             final int maxFilledY = 1 + Math.max((int) heightNoiseValue, getSeaLevel());
             final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Math.floorDiv(maxFilledY, cellHeight) - minCellY);
             final int maxFilledSectionY = Math.min(chunk.getSectionsCount() - 1, 1 + chunk.getSectionIndex(maxFilledY));
@@ -862,7 +881,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     mutablePos.setY(y);
                     if (!state.isAir())
                     {
-                        section.setBlockState(localX, localY, localZ, state, false);
+                        if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= heightNoiseValue)
+                        {
+                            // Place a flowing fluid block according to the river flow at this location
+                            section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock());
+                        }
+                        else
+                        {
+                            section.setBlockState(localX, localY, localZ, state, false);
+                        }
                         if (aquifer.shouldScheduleFluidUpdate() && !fluid.isEmpty())
                         {
                             chunk.getLiquidTicks().scheduleTick(mutablePos, fluid.getType(), 0);
@@ -967,6 +994,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 }
             }
             return slopeMap;
+        }
+
+        Flow[] buildFlowMap()
+        {
+            final Flow[] flowMap = new Flow[5 * 5];
+            for (int x = 0; x < 5; x++)
+            {
+                for (int z = 0; z < 5; z++)
+                {
+                    flowMap[x + 5 * z] = customBiomeSource.getRiverFlow(quartX + x, quartZ + z, 0);
+                }
+            }
+            return flowMap;
         }
 
         /**

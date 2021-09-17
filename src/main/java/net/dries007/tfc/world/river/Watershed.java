@@ -21,6 +21,8 @@ import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 
 public abstract class Watershed
 {
+    public static final float RIVER_WIDTH = 0.013f;
+
     private static final int[] DIRECTIONS = new int[] {-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1};
 
     public static Watershed create(TypedArea<Plate> area, int sampleX, int sampleZ, long seed, float sourceChance, float length, int depth, float feather)
@@ -248,7 +250,7 @@ public abstract class Watershed
                 final float partitionToWatershedScale = 1f / (1 << PARTITION_TO_ZOOM_BITS);
 
                 final float x1 = partitionToWatershedScale * partitionCenterX, z1 = partitionToWatershedScale * partitionCenterZ;
-                final float radius = partitionToWatershedScale * (PARTITION_RADIUS + 2 * 0.015f);
+                final float radius = partitionToWatershedScale * (PARTITION_RADIUS + 2 * RIVER_WIDTH);
 
                 partition = new ArrayList<>(32);
                 for (Watershed shed : nearbySheds)

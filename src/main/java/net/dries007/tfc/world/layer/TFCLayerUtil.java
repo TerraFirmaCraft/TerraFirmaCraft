@@ -346,7 +346,7 @@ public class TFCLayerUtil
                     for (MidpointFractal fractal : watershedContext.getFractalsByPartition(x, z))
                     {
                         // maybeIntersect will skip the more expensive calculation if it fails
-                        if (fractal.maybeIntersect(x0, z0, 0.015f) && fractal.intersect(x0, z0, 0.015f))
+                        if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH) && fractal.intersect(x0, z0, Watershed.RIVER_WIDTH))
                         {
                             return TFCLayerUtil.riverFor(value);
                         }
