@@ -124,7 +124,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                     if (level.getBlockState(mutablePos).isAir())
                                     {
                                         mutablePos.setY(y + 1);
-                                        BlockState airOrLiquidState = aquifer.computeState(blockSource, chunkX + x, y, chunkZ + z, -1);
+                                        BlockState airOrLiquidState = aquifer.computeState(blockSource, chunkX + x, y + 1, chunkZ + z, -1);
                                         level.setBlock(mutablePos, airOrLiquidState, 2);
                                     }
                                     else
