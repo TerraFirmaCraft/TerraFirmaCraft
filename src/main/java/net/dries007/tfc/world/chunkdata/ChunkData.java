@@ -216,13 +216,10 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         this.forestWeirdness = forestWeirdness;
         this.plateTectonicsInfo = plateTectonicsInfo;
 
-        if (status == Status.EMPTY)
+        switch (status)
         {
-            this.status = Status.CLIENT;
-        }
-        else
-        {
-            throw new IllegalStateException("ChunkData#onUpdatePacket was called on non client side chunk data: " + this);
+            case EMPTY -> this.status = Status.CLIENT;
+            case FULL -> throw new IllegalStateException("ChunkData#onUpdatePacket was called on full data: " + this);
         }
     }
 

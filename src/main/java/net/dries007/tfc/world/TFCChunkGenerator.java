@@ -307,6 +307,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
     {
+        // Before we sample biomes, we need to generate chunk data for this chunk.
+        // As when the biome source queries the chunk data provider, it only has the chunk position, therefore the chunk data needs to be generated and present within the provider before we query biomes in order to accurately place temperature.
+        chunkDataProvider.get(chunk);
         ((ProtoChunk) chunk).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
     }
 

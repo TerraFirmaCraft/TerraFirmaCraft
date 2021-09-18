@@ -45,21 +45,20 @@ public class MidpointFractal
             splitSegments[0] = segments[0];
             splitSegments[1] = segments[1];
 
-            int sources = (segments.length >> 1) - 1;
             int splitIndex = 2;
-            for (int index = 0; index < sources; index++)
+            for (int index = 0; index < segments.length - 2; index += 2)
             {
                 // Bisect the segment from [source, source + 1]
-                // The first source should already be in the array, we need to set the bisection point and the array
+                // The first source should already be in the array, we need to set the bisection point and the drain
 
-                float sourceX = segments[(index << 1)];
-                float sourceY = segments[(index << 1) + 1];
-                float drainX = segments[(index << 1) + 2];
-                float drainY = segments[(index << 1) + 3];
+                float sourceX = segments[index];
+                float sourceY = segments[index + 1];
+                float drainX = segments[index + 2];
+                float drainY = segments[index + 3];
 
                 float norm = RiverHelpers.normInf(sourceX - drainX, sourceY - drainY);
 
-                // Bisect at the midpoint, plus some variance that's up to ~30% of the distance in either direction
+                // Bisect at the midpoint, plus some variance scaled by the inf-norm of the line segment
                 float bisectX = (random.nextFloat() * JITTER_RANGE - JITTER_MIN) * norm + (sourceX + drainX) * 0.5f;
                 float bisectY = (random.nextFloat() * JITTER_RANGE - JITTER_MIN) * norm + (sourceY + drainY) * 0.5f;
 

@@ -19,10 +19,30 @@ public class RiverWaterFluid extends WaterFluid
 {
     public static final EnumProperty<Flow> FLOW = TFCBlockStateProperties.FLOW;
 
+    private static boolean isSameAbove(FluidState fluid, BlockGetter level, BlockPos pos)
+    {
+        return fluid.getType().isSame(level.getFluidState(pos.above()).getType());
+    }
+
     @Override
     public boolean isSource(FluidState state)
     {
         return true;
+    }
+
+    @Override
+    public boolean isSame(Fluid fluid)
+    {
+        return super.isSame(fluid) || fluid == TFCFluids.RIVER_WATER.get();
+    }
+
+    /**
+     * Override to check {@link #isSame(Fluid)} for the above block, including river water.
+     */
+    @Override
+    public float getHeight(FluidState fluid, BlockGetter level, BlockPos pos)
+    {
+        return isSameAbove(fluid, level, pos) ? 1f : getOwnHeight(fluid);
     }
 
     @Override

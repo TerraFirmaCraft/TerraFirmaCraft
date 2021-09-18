@@ -9,14 +9,14 @@ package net.dries007.tfc.world.biome;
 import java.util.*;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.worldgen.biome.VanillaBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.data.worldgen.biome.VanillaBiomes;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.DeferredRegister;
@@ -94,7 +94,7 @@ public final class TFCBiomes
         BiomeExtension extension = getExtension(world, biome);
         if (extension == null)
         {
-            throw new IllegalStateException("Biome missing a required extension!");
+            throw new IllegalStateException("No extension found for biome: " + biome + " (" + biome.getRegistryName() + ")");
         }
         return extension;
     }
