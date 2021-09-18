@@ -75,8 +75,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     public static final int SEA_LEVEL_Y = 63; // Matches vanilla
 
-    public static final double[] KERNEL_9x9 = makeKernel((x, z) -> 0.0211640211641D * (1 - 0.03125D * (z * z + x * x)), 4);
-    public static final double[] KERNEL_5x5 = makeKernel((x, z) -> 0.08D * (1 - 0.125D * (z * z + x * x)), 2);
+    public static final Kernel KERNEL_9x9 = makeKernel((x, z) -> 0.0211640211641D * (1 - 0.03125D * (z * z + x * x)), 4);
+    public static final Kernel KERNEL_5x5 = makeKernel((x, z) -> 0.08D * (1 - 0.125D * (z * z + x * x)), 2);
 
     /**
      * Positions used by the derivative sampling map. This represents a 7x7 grid of 4x4 sub chunks / biome positions, where 0, 0 = -1, -1 relative to the target chunk.
@@ -101,7 +101,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
-    public static double[] makeKernel(ToDoubleBiFunction<Integer, Integer> func, int radius)
+    public static Kernel makeKernel(ToDoubleBiFunction<Integer, Integer> func, int radius)
     {
         final int size = radius * 2 + 1;
         final double[] array = new double[size * size];
@@ -117,7 +117,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             }
         }
         assert 0.99 < sum && sum < 1.01 : "Invalid kernel sum: " + sum + " is not ~= 1.00";
-        return array;
+        return new Kernel(array, radius);
     }
 
     /**
@@ -425,7 +425,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             {
                 return biomeContainer.getNoiseBiome(x >> 2, 0, z >> 2);
             }
-            return biomeSource.getNoiseBiome(x >> 2, 0, z >> 2);
+            return customBiomeSource.getNoiseBiomeIgnoreClimate(x >> 2, z >> 2);
         };
 
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
@@ -434,7 +434,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
         chunkDataProvider.get(chunk).getRockData().setSurfaceHeight(surfaceHeightMap);
 
-        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(level, chunkPos, biomeSampler);
+        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(level, biome).getVariants().getGroup());
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
         helper.fillFromNoise();
@@ -501,105 +501,114 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return slope;
     }
 
-    protected Object2DoubleMap<Biome>[] sampleBiomes(LevelAccessor world, ChunkPos pos, Sampler<Biome> biomeSampler)
+    /**
+     * @param pos           The target chunk pos.
+     * @param biomeSampler  A sampler for biomes, in block coordinates.
+     * @param groupFunction A function to access a {@link BiomeVariants.Group} from a {@link Biome}.
+     * @return A 7x7 array of sampled biome weights, at quart pos resolution, where the (0, 0) index aligns to the (-1, -1) quart position relative to the target chunk.
+     */
+    protected Object2DoubleMap<Biome>[] sampleBiomes(ChunkPos pos, Sampler<Biome> biomeSampler, Function<Biome, BiomeVariants.Group> groupFunction)
     {
         // First, sample biomes at chunk distance, in a 4x4 grid centered on the target chunk.
         // These are used to build the large-scale biome blending radius
-        Object2DoubleMap<Biome>[] biomeWeights16 = newWeightArray(4 * 4);
-
-        int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
+        final Object2DoubleMap<Biome>[] chunkBiomeWeightArray = newWeightArray(4 * 4);
+        final int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ(); // Block coordinates
         for (int x = 0; x < 4; x++)
         {
             for (int z = 0; z < 4; z++)
             {
-                Object2DoubleMap<Biome> map = newWeightMap();
-
-                for (int dx = 0; dx < 9; dx++)
-                {
-                    for (int dz = 0; dz < 9; dz++)
-                    {
-                        double weight = KERNEL_9x9[dx + dz * 9];
-                        int x0 = chunkX + ((x + dx - 4) << 4);
-                        int z0 = chunkZ + ((z + dz - 4) << 4);
-                        Biome biome = biomeSampler.get(x0, z0);
-                        map.mergeDouble(biome, weight, Double::sum);
-                    }
-                }
-
-                biomeWeights16[x | (z << 2)] = map;
+                // x, z = 0, 0 is the -1, -1 chunk relative to chunkX, chunkZ
+                final Object2DoubleMap<Biome> chunkBiomeWeight = new Object2DoubleOpenHashMap<>();
+                chunkBiomeWeightArray[x | (z << 2)] = chunkBiomeWeight;
+                sampleBiomesAtPositionWithKernel(chunkBiomeWeight, biomeSampler, KERNEL_9x9, 4, chunkX, chunkZ, x - 1, z - 1);
             }
         }
 
-        Object2DoubleMap<Biome>[] biomeWeights1 = newWeightArray(7 * 7);
-        Object2DoubleMap<Biome> biomeWeight16 = newWeightMap(), biomeWeight4 = newWeightMap();
+        // A 7x7 grid, in quart positions relative to the target chunk, where (1, 1) is the target chunk origin.
+        final Object2DoubleMap<Biome>[] quartBiomeWeightArray = newWeightArray(7 * 7);
+        final Object2DoubleMap<Biome> chunkBiomeWeight = new Object2DoubleOpenHashMap<>(), wideQuartBiomeWeight = new Object2DoubleOpenHashMap<>();
 
         for (int x = 0; x < 7; x++)
         {
             for (int z = 0; z < 7; z++)
             {
-                biomeWeight4.clear();
+                // Reset
+                wideQuartBiomeWeight.clear();
+                chunkBiomeWeight.clear();
 
-                for (int dx = 0; dx < 9; dx++)
-                {
-                    for (int dz = 0; dz < 9; dz++)
-                    {
-                        double weight = KERNEL_9x9[dx + dz * 9];
-                        int x0 = chunkX + ((x + dx - 1) << 2);
-                        int z0 = chunkZ + ((z + dz - 1) << 2);
-                        Biome biome = biomeSampler.get(x0, z0);
-                        biomeWeight4.mergeDouble(biome, weight, Double::sum);
-                    }
-                }
+                sampleBiomesAtPositionWithKernel(wideQuartBiomeWeight, biomeSampler, KERNEL_9x9, 2, chunkX, chunkZ, x - 1, z - 1);
 
-                biomeWeight16.clear();
+                // Calculate contribution from the four corners of the 16x16 grid. First, calculate the current grid cell coordinates.
+                final int x1 = chunkX + ((x - 1) << 2); // Block coordinates
+                final int z1 = chunkZ + ((z - 1) << 2);
 
-                // Contribution from four corners
-                int x1 = chunkX + ((x - 1) << 2);
-                int z1 = chunkZ + ((z - 1) << 2);
+                final int coordX = x1 >> 4; // Chunk coordinates
+                final int coordZ = z1 >> 4;
 
-                int coordX = x1 >> 4;
-                int coordZ = z1 >> 4;
+                final double lerpX = (x1 - (coordX << 4)) * (1 / 16d); // Deltas, in the range [0, 1)
+                final double lerpZ = (z1 - (coordZ << 4)) * (1 / 16d);
 
-                double lerpX = (x1 - (coordX << 4)) * (1 / 16d);
-                double lerpZ = (z1 - (coordZ << 4)) * (1 / 16d);
+                final int index16X = ((x1 - chunkX) >> 4) + 1; // Index into chunkBiomeWeightArray
+                final int index16Z = ((z1 - chunkZ) >> 4) + 1;
 
-                int index16X = ((x1 - chunkX) >> 4) + 1;
-                int index16Z = ((z1 - chunkZ) >> 4) + 1;
+                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[index16X | (index16Z << 2)], (1 - lerpX) * (1 - lerpZ));
+                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[(index16X + 1) | (index16Z << 2)], lerpX * (1 - lerpZ));
+                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[index16X | ((index16Z + 1) << 2)], (1 - lerpX) * lerpZ);
+                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[(index16X + 1) | ((index16Z + 1) << 2)], lerpX * lerpZ);
 
-                sampleBiomesCornerContribution(biomeWeight16, biomeWeights16[index16X | (index16Z << 2)], (1 - lerpX) * (1 - lerpZ));
-                sampleBiomesCornerContribution(biomeWeight16, biomeWeights16[(index16X + 1) | (index16Z << 2)], lerpX * (1 - lerpZ));
-                sampleBiomesCornerContribution(biomeWeight16, biomeWeights16[index16X | ((index16Z + 1) << 2)], (1 - lerpX) * lerpZ);
-                sampleBiomesCornerContribution(biomeWeight16, biomeWeights16[(index16X + 1) | ((index16Z + 1) << 2)], lerpX * lerpZ);
-
-                composeSampleWeights(biomeWeight4, biomeWeight16, biome -> {
-                    BiomeVariants.Group group = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().getGroup();
+                // Compose chunk weights -> wide quart weights.
+                composeSampleWeights(wideQuartBiomeWeight, chunkBiomeWeight, biome -> {
+                    final BiomeVariants.Group group = groupFunction.apply(biome);
                     return group.ordinal();
                 }, BiomeVariants.Group.SIZE);
 
-                Object2DoubleMap<Biome> biomeWeight1 = newWeightMap();
+                // Same as wideQuartBiomeWeight, but only with a sample radius of 2, rather than 4
+                final Object2DoubleMap<Biome> quartBiomeWeight = new Object2DoubleOpenHashMap<>();
+                sampleBiomesAtPositionWithKernel(quartBiomeWeight, biomeSampler, KERNEL_5x5, 2, chunkX, chunkZ, x - 1, z - 1);
 
-                for (int dx = 0; dx < 5; dx++)
-                {
-                    for (int dz = 0; dz < 5; dz++)
-                    {
-                        double weight = KERNEL_5x5[dx + dz * 5];
-                        int x0 = chunkX + ((x + dx - 1) << 2);
-                        int z0 = chunkZ + ((z + dz - 1) << 2);
-                        Biome biome = biomeSampler.get(x0, z0);
-                        biomeWeight1.mergeDouble(biome, weight, Double::sum);
-                    }
-                }
-
-                composeSampleWeights(biomeWeight1, biomeWeight4, biome -> {
-                    BiomeVariants.Group group = TFCBiomes.getExtensionOrThrow(world, biome).getVariants().getGroup();
+                composeSampleWeights(quartBiomeWeight, wideQuartBiomeWeight, biome -> {
+                    final BiomeVariants.Group group = groupFunction.apply(biome);
                     return group == BiomeVariants.Group.RIVER ? 1 : 0;
                 }, 2);
 
-                biomeWeights1[x + 7 * z] = biomeWeight1;
+                quartBiomeWeightArray[x + 7 * z] = quartBiomeWeight;
             }
         }
+        return quartBiomeWeightArray;
+    }
 
-        return biomeWeights1;
+    protected void sampleBiomesAtPositionWithKernel(Object2DoubleMap<Biome> weights, Sampler<Biome> biomeSampler, Kernel kernel, int kernelBits, int chunkX, int chunkZ, int xOffsetInKernelBits, int zOffsetInKernelBits)
+    {
+        final int kernelRadius = kernel.radius();
+        final int kernelWidth = kernel.width();
+        for (int dx = -kernelRadius; dx <= kernelRadius; dx++)
+        {
+            for (int dz = -kernelRadius; dz <= kernelRadius; dz++)
+            {
+                final double weight = kernel.values()[(dx + kernelRadius) + (dz + kernelRadius) * kernelWidth];
+                final int blockX = chunkX + ((xOffsetInKernelBits + dx) << kernelBits); // Block positions
+                final int blockZ = chunkZ + ((zOffsetInKernelBits + dz) << kernelBits);
+                final Biome biome = biomeSampler.get(blockX, blockZ);
+                weights.mergeDouble(biome, weight, Double::sum);
+            }
+        }
+    }
+
+    protected void sampleBiomesCornerContribution(Object2DoubleMap<Biome> accumulator, Object2DoubleMap<Biome> corner, double t)
+    {
+        if (t > 0)
+        {
+            for (Object2DoubleMap.Entry<Biome> entry : corner.object2DoubleEntrySet())
+            {
+                accumulator.mergeDouble(entry.getKey(), entry.getDoubleValue() * t, Double::sum);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> Object2DoubleMap<T>[] newWeightArray(int size)
+    {
+        return (Object2DoubleMap<T>[]) new Object2DoubleMap[size]; // Avoid generic array warnings / errors
     }
 
     /**
@@ -607,7 +616,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * - Passes additional context to the surface builder (if desired), such as world, and slope data
      * - Picks the biome from the accurate biomes computed in the noise step, rather than the chunk biome magnifier.
      */
-    private void buildSurfaceWithContext(LevelAccessor world, ProtoChunk chunk, Biome[] accurateChunkBiomes, double[] slopeMap, Random random)
+    protected void buildSurfaceWithContext(LevelAccessor world, ProtoChunk chunk, Biome[] accurateChunkBiomes, double[] slopeMap, Random random)
     {
         final ChunkPos chunkPos = chunk.getPos();
         final ChunkData chunkData = chunkDataProvider.get(chunk);
@@ -634,7 +643,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock
      * Writes directly to the bottom chunk section for better efficiency
      */
-    private void makeBedrock(ProtoChunk chunk, Random random)
+    protected void makeBedrock(ProtoChunk chunk, Random random)
     {
         final LevelChunkSection bottomSection = chunk.getOrCreateSection(0);
         final BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
@@ -661,29 +670,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
-    private void sampleBiomesCornerContribution(Object2DoubleMap<Biome> accumulator, Object2DoubleMap<Biome> corner, double t)
-    {
-        if (t > 0)
-        {
-            for (Object2DoubleMap.Entry<Biome> entry : corner.object2DoubleEntrySet())
-            {
-                accumulator.mergeDouble(entry.getKey(), entry.getDoubleValue() * t, Double::sum);
-            }
-        }
-    }
-
-    private <T> Object2DoubleMap<T> newWeightMap()
-    {
-        return new Object2DoubleOpenHashMap<>(); // This is just for my own curiosity, it can be inlined later.
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> Object2DoubleMap<T>[] newWeightArray(int size)
-    {
-        return (Object2DoubleMap<T>[]) new Object2DoubleMap[size]; // Avoid generic array warnings / errors
-    }
-
-    private void slopeVisualization(ChunkAccess chunk, double[] slopeMap, int chunkX, int chunkZ)
+    protected void slopeVisualization(ChunkAccess chunk, double[] slopeMap, int chunkX, int chunkZ)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final Block[] meter = new Block[] {
@@ -711,6 +698,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 int slopeIndex = Mth.clamp((int) slope, 0, meter.length - 1);
                 chunk.setBlockState(mutablePos, meter[slopeIndex].defaultBlockState(), false);
             }
+        }
+    }
+
+    public record Kernel(double[] values, int radius)
+    {
+        public int width()
+        {
+            return 2 * radius + 1;
         }
     }
 
@@ -833,14 +828,20 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         {
             prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
 
-            // Interpolate flow for this column
-            final Flow flow00 = flows[cellX + 5 * cellZ];
-            final Flow flow01 = flows[cellX + 5 * (cellZ + 1)];
-            final Flow flow10 = flows[(cellX + 1) + 5 * cellZ];
-            final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
-            final Flow flow = Flow.combine(flow10, flow11, flow00, flow01, (float) cellDeltaX, 1 - (float) cellDeltaZ);
-
             final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
+
+            // Only calculate flow if we're in a river type biome
+            Flow flow = Flow.NONE;
+            if (TFCBiomes.getExtensionOrThrow(world, localBiomes[localX + 16 * localZ]).getVariants().isRiver())
+            {
+                // Interpolate flow for this column
+                final Flow flow00 = flows[cellX + 5 * cellZ];
+                final Flow flow01 = flows[cellX + 5 * (cellZ + 1)];
+                final Flow flow10 = flows[(cellX + 1) + 5 * cellZ];
+                final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
+
+                flow = Flow.combine(flow10, flow11, flow00, flow01, (float) cellDeltaX, 1 - (float) cellDeltaZ);
+            }
 
             final int maxFilledY = 1 + Math.max((int) heightNoiseValue, getSeaLevel());
             final int maxFilledCellY = Math.min(cellCountY - 1, 1 + Math.floorDiv(maxFilledY, cellHeight) - minCellY);
@@ -884,7 +885,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     mutablePos.setY(y);
                     if (!state.isAir())
                     {
-                        if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= heightNoiseValue)
+                        // Need to account for underground rivers in this y level check, thus the smaller value between sea level and height noise
+                        if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= Math.min(SEA_LEVEL_Y - 4, heightNoiseValue))
                         {
                             // Place a flowing fluid block according to the river flow at this location
                             section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock());
@@ -1006,7 +1008,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             {
                 for (int z = 0; z < 5; z++)
                 {
-                    flowMap[x + 5 * z] = customBiomeSource.getRiverFlow(quartX + x, quartZ + z, 0);
+                    flowMap[x + 5 * z] = customBiomeSource.getRiverFlow(quartX + x, quartZ + z);
                 }
             }
             return flowMap;
@@ -1048,9 +1050,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             for (Object2DoubleMap.Entry<Biome> entry : biomeWeights.object2DoubleEntrySet())
             {
-                double weight = entry.getDoubleValue();
-                BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, entry.getKey()).getVariants();
-                BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
+                final double weight = entry.getDoubleValue();
+                final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, entry.getKey()).getVariants();
+                final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
 
                 if (biomeSamplers.containsKey(sampler))
                 {
@@ -1149,7 +1151,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             double noise = 0;
             for (Object2DoubleMap.Entry<BiomeNoiseSampler> entry : biomeSamplers.object2DoubleEntrySet())
             {
-                noise += entry.getKey().noise(y) * entry.getDoubleValue();
+                final BiomeNoiseSampler sampler = entry.getKey();
+                noise += sampler.noise(y) * entry.getDoubleValue();
             }
 
             noise = 0.4f - noise; // > 0 is solid

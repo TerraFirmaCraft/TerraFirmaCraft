@@ -77,21 +77,21 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, watershedContext, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
     }
 
-    public Flow getRiverFlow(int x, int z, float extraReach)
+    public Flow getRiverFlow(int x, int z)
     {
         final float scale = 1f / (1 << 7);
         final float x0 = x * scale, z0 = z * scale;
         for (MidpointFractal fractal : watershedContext.getFractalsByPartition(x, z))
         {
             // maybeIntersect will skip the more expensive calculation if it fails
-            if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH + extraReach))
+            if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH))
             {
-                final Flow flow = fractal.intersectWithFlow(x0, z0, Watershed.RIVER_WIDTH + extraReach);
+                final Flow flow = fractal.intersectWithFlow(x0, z0, Watershed.RIVER_WIDTH);
                 if (flow != Flow.NONE)
                 {
                     return flow;
                 }
-                else if (fractal.intersect(x0, z0, Watershed.RIVER_WIDTH + extraReach))
+                else if (fractal.intersect(x0, z0, Watershed.RIVER_WIDTH))
                 {
                     System.out.println("wut?");
                 }

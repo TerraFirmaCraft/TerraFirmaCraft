@@ -30,12 +30,7 @@ public class BiomeVariants
     private final int volcanoFrequency;
     private final int volcanoBasaltHeight;
 
-    protected BiomeVariants(BiomeVariants parent)
-    {
-        this(parent.noiseFactory, parent.group, parent.salty, parent.volcanic, parent.volcanoFrequency, parent.volcanoBasaltHeight);
-    }
-
-    public BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
         this.group = group;
@@ -54,6 +49,11 @@ public class BiomeVariants
     public Group getGroup()
     {
         return group;
+    }
+
+    public boolean isRiver()
+    {
+        return group == Group.RIVER;
     }
 
     public boolean isSalty()
