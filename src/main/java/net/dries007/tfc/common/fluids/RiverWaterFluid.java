@@ -65,7 +65,7 @@ public class RiverWaterFluid extends WaterFluid
     {
         final Flow flow = fluid.getValue(FLOW);
 
-        Vec3 vector = new Vec3(flow.getX(), 0.0D, flow.getZ());
+        Vec3 vector = flow.getVector();
         if (fluid.getValue(FALLING))
         {
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();

@@ -2,27 +2,30 @@ package net.dries007.tfc.world.river;
 
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.phys.Vec3;
 
 public enum Flow implements StringRepresentable
 {
-    // The order of these is important, as we do ordinal based rotations and averages
-    NNN("n", 0, -2), // 0
-    NNE("nne", 1, -2),
-    N_E("ne", 1, -1),
-    NEE("nee", 2, -1),
-    EEE("e", 2, 0), // 4
-    SEE("see", 2, 1),
-    S_E("se", 1, 1),
-    SSE("sse", 1, 2),
-    SSS("s", 0, 2), // 8
-    SSW("ssw", -1, 2),
-    S_W("sw", -1, 1),
-    SWW("sww", -2, 1),
-    WWW("w", -2, 0), // 12
-    NWW("nww", -2, -1),
-    N_W("nw", -1, -1),
-    NNW("nnw", -1, -2), // 15
-    NONE("none", 0, 0);
+    // Ordered by unit circle angles
+    EEE("e"),
+    NEE("nee"),
+    N_E("ne"),
+    NNE("nne"),
+    NNN("n"),
+    NNW("nnw"),
+    N_W("nw"),
+    NWW("nww"),
+    WWW("w"),
+    SWW("sww"),
+    S_W("sw"),
+    SSW("ssw"),
+    SSS("s"),
+    SSE("sse"),
+    S_E("se"),
+    SEE("see"),
+    ___("none");
+
+    public static final Flow NONE = ___;
 
     private static final Flow[] VALUES = values();
     private static final int MODULUS = VALUES.length - 1; // Since when taking modulo, we want to skip NONE
@@ -32,10 +35,12 @@ public enum Flow implements StringRepresentable
         return i >= 0 && i < VALUES.length ? VALUES[i] : NONE;
     }
 
+    /**
+     * @return The closest flow to the polar coordinate angle, between [-pi, pi].
+     */
     public static Flow fromAngle(float angle)
     {
-        // Polar coordinates - angle 0 = East, positive up to pi is -> north -> west, negative down to -pi is -> south -> west
-        int ordinal = Math.round(4 - (8 * (angle / Mth.PI)));
+        int ordinal = Math.round(8 * (angle / Mth.PI));
         if (ordinal < 0)
         {
             ordinal += MODULUS;
@@ -44,70 +49,120 @@ public enum Flow implements StringRepresentable
     }
 
     /**
-     * Averages four flows from the corners of a square, using two weights to describe the location within the square.
+     * Linearly interpolates flows in a square, with parameters {@code delta0, delta1} in [0, 1] x [0, 1].
+     * Biases towards returning a non-none flow in edge cases.
      */
-    public static Flow combine(Flow flowNE, Flow flowSE, Flow flowNW, Flow flowSW, float weightE, float weightN)
+    public static Flow lerp(Flow flow00, Flow flow01, Flow flow10, Flow flow11, float delta0, float delta1)
     {
-        Flow flowN = combine(flowNE, flowNW, weightE, flowSE != NONE && flowSW != NONE);
-        Flow flowS = combine(flowSE, flowSW, weightE, flowNE != NONE && flowNW != NONE);
-        return combine(flowN, flowS, weightN, false);
+        final Flow flow0 = lerp(flow00, flow01, delta0);
+        final Flow flow1 = lerp(flow10, flow11, delta0);
+        return lerp(flow0, flow1, delta1, lerpWeight(flow00, flow01, delta0), lerpWeight(flow10, flow11, delta0));
     }
 
     /**
-     * Averages two flows with a weighted value.
-     *
-     * @param preventNone if true, this will default to not return none, unless both left and right are none
+     * Linearly interpolates between two flows, with parameter of delta in [0, 1].
+     * Biases towards returning a non-none flow in edge cases.
      */
-    public static Flow combine(Flow left, Flow right, float weightLeft, boolean preventNone)
+    public static Flow lerp(Flow left, Flow right, float delta)
     {
         if (left == NONE)
         {
-            return preventNone || weightLeft < 0.5 ? right : NONE;
+            return delta < 0.5f ? left : right;
         }
         else if (right == NONE)
         {
-            return preventNone || weightLeft > 0.5 ? left : NONE;
+            return delta <= 0.5f ? left : right;
         }
         else
         {
-            int ordinalDistance = Math.abs(left.ordinal() - right.ordinal());
-            if (ordinalDistance == 8)
+            return lerpNonEmpty(left, right, delta);
+        }
+    }
+
+    /**
+     * Interpolates two flows, assuming each has a specific weight representing the fraction of that flow which is empty.
+     */
+    private static Flow lerp(Flow left, Flow right, float delta, float weightLeft, float weightRight)
+    {
+        if (left == NONE && right == NONE)
+        {
+            return NONE;
+        }
+        else if (left == NONE)
+        {
+            return Mth.lerp(delta, weightLeft, weightRight) < 0.5f ? left : right;
+        }
+        else if (right == NONE)
+        {
+            return Mth.lerp(delta, weightLeft, weightRight) >= 0.5f ? left : right;
+        }
+        else
+        {
+            return lerpNonEmpty(left, right, delta);
+        }
+    }
+
+    private static Flow lerpNonEmpty(Flow left, Flow right, float delta)
+    {
+        final int ordinalDistance = Math.abs(left.ordinal() - right.ordinal());
+        if (ordinalDistance == 8)
+        {
+            return delta == 0.5f ? NONE : (delta < 0.5f ? left : right);
+        }
+        else if (ordinalDistance < 8)
+        {
+            // The center is the correct average
+            return VALUES[lerp(left.ordinal(), right.ordinal(), delta)];
+        }
+        else
+        {
+            // We need to average outside the center, by shifting the smaller one, averaging, and then taking a modulo
+            int leftValue = left.ordinal(), rightValue = right.ordinal();
+            if (leftValue < rightValue)
             {
-                // exact opposites
-                return weightLeft > 0.5 ? left : right;
-            }
-            else if (ordinalDistance < 8)
-            {
-                // The center is the correct average
-                int newOrdinal = (int) (left.ordinal() * weightLeft + right.ordinal() * (1 - weightLeft));
-                return VALUES[newOrdinal];
+                leftValue += MODULUS;
             }
             else
             {
-                // We need to average outside the center, by shifting the smaller one, averaging, and then taking a modulo
-                int leftValue = left.ordinal(), rightValue = right.ordinal();
-                if (leftValue < rightValue)
-                {
-                    leftValue += 16;
-                }
-                else
-                {
-                    rightValue += 16;
-                }
-                int newOrdinal = (int) (leftValue * weightLeft + rightValue * (1 - weightLeft));
-                return VALUES[newOrdinal % MODULUS];
+                rightValue += MODULUS;
             }
+            return VALUES[lerp(leftValue, rightValue, delta) % MODULUS];
+        }
+    }
+
+    private static int lerp(int left, int right, float delta)
+    {
+        return Math.round(Mth.lerp(delta, left, right));
+    }
+
+    private static float lerpWeight(Flow left, Flow right, float delta)
+    {
+        if (left == NONE && right == NONE)
+        {
+            return 0;
+        }
+        else if (left == NONE)
+        {
+            return delta;
+        }
+        else if (right == NONE)
+        {
+            return 1 - delta;
+        }
+        else
+        {
+            return 1;
         }
     }
 
     private final String name;
-    private final int x, z;
+    private final Vec3 vector;
 
-    Flow(String name, int x, int z)
+    Flow(String name)
     {
         this.name = name;
-        this.x = x;
-        this.z = z;
+        float angle = ordinal() * (1 / 8f) * Mth.PI;
+        this.vector = new Vec3(Mth.cos(angle), 0, -Mth.sin(angle));
     }
 
     @Override
@@ -116,13 +171,8 @@ public enum Flow implements StringRepresentable
         return name;
     }
 
-    public int getX()
+    public Vec3 getVector()
     {
-        return x;
-    }
-
-    public int getZ()
-    {
-        return z;
+        return vector;
     }
 }

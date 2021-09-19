@@ -836,11 +836,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             {
                 // Interpolate flow for this column
                 final Flow flow00 = flows[cellX + 5 * cellZ];
-                final Flow flow01 = flows[cellX + 5 * (cellZ + 1)];
-                final Flow flow10 = flows[(cellX + 1) + 5 * cellZ];
+                final Flow flow10 = flows[cellX + 5 * (cellZ + 1)];
+                final Flow flow01 = flows[(cellX + 1) + 5 * cellZ];
                 final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
 
-                flow = Flow.combine(flow10, flow11, flow00, flow01, (float) cellDeltaX, 1 - (float) cellDeltaZ);
+                flow = Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
             }
 
             final int maxFilledY = 1 + Math.max((int) heightNoiseValue, getSeaLevel());
