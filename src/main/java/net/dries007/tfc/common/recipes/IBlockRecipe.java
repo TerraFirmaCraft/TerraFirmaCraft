@@ -6,14 +6,15 @@
 
 package net.dries007.tfc.common.recipes;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.world.Container;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 
@@ -23,9 +24,9 @@ import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
 {
     @Override
-    default boolean matches(BlockInventory inv, Level worldIn)
+    default boolean matches(BlockInventory inv, @Nullable Level level)
     {
-        return matches(worldIn, inv.getPos(), inv.getState());
+        return matches(inv.getState());
     }
 
     @Override
@@ -43,7 +44,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
     /**
      * Specific parameter version of {@link net.minecraft.world.item.crafting.Recipe#matches(Container, Level)} for block recipes
      */
-    default boolean matches(Level worldIn, BlockPos pos, BlockState state)
+    default boolean matches(BlockState state)
     {
         return false;
     }
@@ -51,7 +52,12 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
     /**
      * Specific parameter version of {@link Recipe#assemble(Container)} for block recipes.
      */
-    default BlockState getBlockCraftingResult(BlockInventory wrapper)
+    default BlockState getBlockCraftingResult(BlockInventory inventory)
+    {
+        return getBlockCraftingResult(inventory.getState());
+    }
+
+    default BlockState getBlockCraftingResult(BlockState state)
     {
         return getBlockRecipeOutput().defaultBlockState();
     }

@@ -26,7 +26,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.SupportManager;
@@ -45,11 +44,11 @@ public class LandslideRecipe extends SimpleBlockRecipe
     private static final Random RANDOM = new Random();
 
     @Nullable
-    public static LandslideRecipe getRecipe(Level world, BlockInventory wrapper)
+    public static LandslideRecipe getRecipe(BlockState state)
     {
-        for (LandslideRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
+        for (LandslideRecipe recipe : CACHE.getAll(state.getBlock()))
         {
-            if (recipe.matches(wrapper, world))
+            if (recipe.matches(state))
             {
                 return recipe;
             }
@@ -70,11 +69,10 @@ public class LandslideRecipe extends SimpleBlockRecipe
             BlockPos fallPos = getLandSlidePos(world, pos);
             if (fallPos != null)
             {
-                BlockInventory wrapper = new BlockInventory(pos, state);
-                LandslideRecipe recipe = getRecipe(world, wrapper);
+                LandslideRecipe recipe = getRecipe(state);
                 if (recipe != null)
                 {
-                    BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
+                    BlockState fallingState = recipe.getBlockCraftingResult(state);
                     if (!fallPos.equals(pos))
                     {
                         world.removeBlock(pos, false);

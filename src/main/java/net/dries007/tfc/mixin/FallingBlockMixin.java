@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.LandslideRecipe;
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +19,7 @@ public abstract class FallingBlockMixin
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void preventVanillaFallingBlockBehavior(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci)
     {
-        if (LandslideRecipe.getRecipe(level, new BlockInventory(pos, state)) != null)
+        if (LandslideRecipe.getRecipe(state) != null)
         {
             ci.cancel();
         }

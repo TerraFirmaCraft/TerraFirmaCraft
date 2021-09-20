@@ -9,11 +9,9 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
@@ -43,15 +40,15 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     }
 
     @Override
-    public boolean matches(Level worldIn, BlockPos pos, BlockState state)
+    public boolean matches(BlockState state)
     {
         return ingredient.test(state);
     }
 
     @Override
-    public BlockState getBlockCraftingResult(BlockInventory wrapper)
+    public BlockState getBlockCraftingResult(BlockState state)
     {
-        return copyInputState ? wrapper.getState() : outputState;
+        return copyInputState ? state : outputState;
     }
 
     @Override

@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.common.recipes.inventory;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.IBlockRecipe;
 
@@ -35,27 +34,5 @@ public class BlockInventory implements EmptyInventory
     public BlockState getState()
     {
         return state;
-    }
-
-    public static class Mutable extends BlockInventory
-    {
-        private final BlockPos.MutableBlockPos cursor;
-
-        public Mutable()
-        {
-            this(new BlockPos.MutableBlockPos());
-        }
-
-        private Mutable(BlockPos.MutableBlockPos pos)
-        {
-            super(pos, Blocks.AIR.defaultBlockState()); // Since the position is not expected to be initialized, we set a default null block state
-            this.cursor = pos;
-        }
-
-        public void update(int x, int y, int z, BlockState state)
-        {
-            this.cursor.set(x, y, z);
-            this.state = state;
-        }
     }
 }

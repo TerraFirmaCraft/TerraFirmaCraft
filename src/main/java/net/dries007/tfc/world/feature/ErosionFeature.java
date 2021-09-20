@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.world.BaseBlockSource;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
@@ -35,9 +33,6 @@ import net.dries007.tfc.world.settings.RockSettings;
 
 public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
-    @SuppressWarnings("ConstantConditions")
-    private static final LandslideRecipe CACHE_MISS = new LandslideRecipe(null, null, null, false);
-
     public ErosionFeature(Codec<NoneFeatureConfiguration> codec)
     {
         super(codec);
@@ -53,18 +48,12 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final ChunkPos chunkPos = new ChunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final BlockInventory.Mutable wrapper = new BlockInventory.Mutable();
         final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunk).getRockData();
 
         final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
         final RockLayerSettings rockSettings = ex.getRockLayerSettings();
         final Aquifer aquifer = ex.getAquifer(chunk);
         final BaseBlockSource blockSource = ex.createBaseStoneSource(level, chunk);
-
-
-        // Avoid repeated recipe queries for blocks
-        // This does make some simplifying assumptions about landslide recipes, and the types present in world gen, that we are ignoring here.
-        final Map<BlockState, LandslideRecipe> cachedRecipes = new HashMap<>();
         final Map<Block, Block> hardeningBlocks = rockSettings.getRocks().stream().collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
 
         for (int x = 0; x < 16; x++)
@@ -79,24 +68,12 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 
                 mutablePos.set(chunkX + x, baseHeight, chunkZ + z);
 
-                // Iterate down to sea level
                 for (int y = baseHeight; y >= context.chunkGenerator().getMinY(); y--)
                 {
                     mutablePos.setY(y);
 
                     BlockState stateAt = level.getBlockState(mutablePos);
-                    LandslideRecipe recipe = cachedRecipes.get(stateAt);
-                    if (recipe == CACHE_MISS)
-                    {
-                        recipe = null;
-                    }
-                    else if (recipe == null)
-                    {
-                        wrapper.update(chunkX + x, y, chunkZ + z, stateAt);
-                        recipe = LandslideRecipe.getRecipe(level.getLevel(), wrapper);
-                        cachedRecipes.put(stateAt, recipe != null ? recipe : CACHE_MISS);
-                    }
-
+                    LandslideRecipe recipe = stateAt.isAir() ? null : LandslideRecipe.getRecipe(stateAt);
                     boolean stateAtIsFragile = stateAt.isAir() || TFCFallingBlockEntity.canFallThrough(level, mutablePos, stateAt);
                     if (prevBlockCanLandslide)
                     {
