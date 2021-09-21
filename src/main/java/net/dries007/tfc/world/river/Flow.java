@@ -65,18 +65,7 @@ public enum Flow implements StringRepresentable
      */
     public static Flow lerp(Flow left, Flow right, float delta)
     {
-        if (left == NONE)
-        {
-            return delta < 0.5f ? left : right;
-        }
-        else if (right == NONE)
-        {
-            return delta <= 0.5f ? left : right;
-        }
-        else
-        {
-            return lerpNonEmpty(left, right, delta);
-        }
+        return lerp(left, right, delta, left == NONE ? 0 : 1, right == NONE ? 0 : 1);
     }
 
     /**
