@@ -1,12 +1,12 @@
 package net.dries007.tfc.world.river;
 
 import net.dries007.tfc.world.layer.Plate;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.world.river.RiverTestHelper.seed;
+import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WatershedTests
@@ -15,7 +15,7 @@ public class WatershedTests
     public void testBasicWatershedProperties()
     {
         final long seed = seed();
-        final TypedArea<Plate> plates = TFCLayerUtil.createEarlyPlateLayers(seed).get();
+        final TypedArea<Plate> plates = TFCLayers.createEarlyPlateLayers(seed).get();
 
         for (int x = -40; x <= 40; x++)
         {
@@ -45,7 +45,7 @@ public class WatershedTests
         for (int i = 0; i < 100; i++)
         {
             seed = seed();
-            plates = TFCLayerUtil.createEarlyPlateLayers(seed).get();
+            plates = TFCLayers.createEarlyPlateLayers(seed).get();
             Watershed origin = Watershed.create(plates, 0, 0, seed, 1, 0.8f, 10, 0.1f);
             if (origin instanceof Watershed.Rivers rv)
             {

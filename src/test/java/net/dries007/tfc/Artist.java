@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
@@ -250,6 +249,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
             int x = clamp((int) (255 * value), 0, 255);
             return new Color(x, 255, 0);
         };
+        public static final DoubleFunction<Color> RANDOM_NEAREST_INT = value -> {
+            int x = (int) Math.round(value);
+            return Artist.Colors.COLORS[Math.floorMod(x, Artist.Colors.COLORS.length)];
+        };
+        public static final Function<Integer, Color> RANDOM_INT = value -> Colors.COLORS[Math.floorMod(value, Colors.COLORS.length)];
 
         public static final Color[] COLORS = new Color[] {
             new Color(0xFFB300),
@@ -273,13 +277,6 @@ public abstract class Artist<T, A extends Artist<T, A>>
             new Color(0xF13A13),
             new Color(0x232C16),
         };
-
-        private static final Random RNG = new Random();
-
-        public static Color random()
-        {
-            return new Color(RNG.nextInt(255), RNG.nextInt(255), RNG.nextInt(255));
-        }
     }
 
     public static final class Scales
@@ -394,7 +391,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static final class Typed<K, V> extends Artist<K, Typed<K, V>>
     {
         private final Function<K, Pixel<V>> transformer;
-        private Function<V, Color> colorTransformer = k -> Colors.random();
+        private Function<V, Color> colorTransformer = k -> Color.BLACK;
 
         private Typed(Function<K, Pixel<V>> transformer)
         {

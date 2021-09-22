@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 public enum EdgeBiomeLayer implements AdjacentTransformLayer
 {
@@ -33,9 +33,9 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
                 return ROLLING_HILLS;
             }
         }
-        else if (TFCLayerUtil.isMountains(center))
+        else if (TFCLayers.isMountains(center))
         {
-            if (matcher.test(TFCLayerUtil::isLow))
+            if (matcher.test(TFCLayers::isLow))
             {
                 return ROLLING_HILLS;
             }
@@ -47,7 +47,7 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
             {
                 return HILLS;
             }
-            else if (matcher.test(TFCLayerUtil::isMountains))
+            else if (matcher.test(TFCLayers::isMountains))
             {
                 return ROLLING_HILLS;
             }
@@ -58,14 +58,14 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
             {
                 return HILLS;
             }
-            else if (matcher.test(TFCLayerUtil::isMountains))
+            else if (matcher.test(TFCLayers::isMountains))
             {
                 return ROLLING_HILLS;
             }
         }
         else if (center == DEEP_OCEAN_TRENCH)
         {
-            if (matcher.test(i -> !TFCLayerUtil.isOcean(i)))
+            if (matcher.test(i -> !TFCLayers.isOcean(i)))
             {
                 return OCEAN;
             }

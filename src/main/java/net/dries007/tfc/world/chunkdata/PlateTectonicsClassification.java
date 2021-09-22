@@ -10,10 +10,12 @@ import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
 
+import net.dries007.tfc.world.layer.TFCLayers;
+
 /**
  * Values for plate tectonics
  *
- * These must match the compile time constants in {@link net.dries007.tfc.world.layer.TFCLayerUtil}
+ * These must match the compile time constants in {@link TFCLayers}
  */
 public enum PlateTectonicsClassification implements StringRepresentable
 {

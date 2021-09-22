@@ -8,7 +8,7 @@ package net.dries007.tfc.world.layer;
 
 import net.dries007.tfc.world.layer.framework.*;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 public enum PlateBoundaryLayer
 {

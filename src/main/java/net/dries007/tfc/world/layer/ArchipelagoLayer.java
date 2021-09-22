@@ -9,7 +9,7 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.CenterTransformLayer;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 /**
  * Replaces the final plate tectonic marker biomes with the actual biomes

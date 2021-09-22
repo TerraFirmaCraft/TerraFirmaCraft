@@ -25,11 +25,11 @@ public class ForestInitLayer implements SourceLayer
         final float noise = forestBaseNoise.noise(x, z);
         if (noise < 0)
         {
-            return TFCLayerUtil.FOREST_NONE;
+            return TFCLayers.FOREST_NONE;
         }
         else
         {
-            return TFCLayerUtil.FOREST_NORMAL;
+            return TFCLayers.FOREST_NORMAL;
         }
     }
 }

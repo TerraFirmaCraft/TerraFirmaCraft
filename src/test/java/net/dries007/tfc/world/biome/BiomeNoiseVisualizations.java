@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public class BiomeNoiseTests
+public class BiomeNoiseVisualizations
 {
     static final Artist.Noise<Noise2D> ARTIST = Artist.<Noise2D>forNoise(noise -> Artist.NoisePixel.coerceFloat(noise::noise)).centerSized(200);
     static final long seed = System.currentTimeMillis();

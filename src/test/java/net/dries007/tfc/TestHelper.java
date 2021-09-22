@@ -1,17 +1,24 @@
-package net.dries007.tfc.world.river;
+package net.dries007.tfc;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 
-import net.dries007.tfc.Artist;
+import net.minecraft.DetectedVersion;
+import net.minecraft.SharedConstants;
+
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.river.RiverFractal;
 
-public interface RiverTestHelper
+import static org.junit.jupiter.api.Assertions.fail;
+
+public interface TestHelper
 {
     Artist.Custom<MidpointFractal> MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
     Artist.Custom<List<MidpointFractal>> MULTI_MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> fractal.forEach(f -> draw(f, g, 1)));
@@ -29,6 +36,8 @@ public interface RiverTestHelper
         return Artist.Pixel.coerceInt(area::get);
     });
 
+    Artist.Raw RAW = Artist.raw();
+
     Random SEEDS = new Random();
 
     static long seed()
@@ -36,6 +45,20 @@ public interface RiverTestHelper
         long seed = SEEDS.nextLong();
         System.out.println("Seed " + seed);
         return seed;
+    }
+
+    static void hackSharedConstantsVersion()
+    {
+        try
+        {
+            Field field = SharedConstants.class.getDeclaredField("CURRENT_VERSION");
+            field.setAccessible(true);
+            field.set(null, DetectedVersion.BUILT_IN);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            fail("Unable to set SharedConstants#CURRENT_VERSION", e);
+        }
     }
 
     static <T> void background(T t, Graphics2D g)

@@ -12,15 +12,16 @@ import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.SimpleRandomSource;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.Plate;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.world.river.RiverTestHelper.*;
+import static net.dries007.tfc.TestHelper.*;
 
 @Disabled
 public class RiverVisualizations
@@ -33,7 +34,7 @@ public class RiverVisualizations
         {
             RandomSource random = new SimpleRandomSource(seed);
             MidpointFractal fractal = new MidpointFractal(random, i, 0, 500, 1000, 500);
-            MIDPOINT_FRACTAL.before(RiverTestHelper::background).draw("midpoint_fractal" + i, fractal);
+            MIDPOINT_FRACTAL.before(TestHelper::background).draw("midpoint_fractal" + i, fractal);
         }
     }
 
@@ -43,7 +44,7 @@ public class RiverVisualizations
         long seed = seed();
         RandomSource random = new SimpleRandomSource(seed);
         RiverFractal fractal = RiverFractal.build(random, 250, 500, 0, 60, 15, 10);
-        RIVER_FRACTAL.before(RiverTestHelper::background).draw("grown_fractal", fractal);
+        RIVER_FRACTAL.before(TestHelper::background).draw("grown_fractal", fractal);
     }
 
     @Test
@@ -53,8 +54,8 @@ public class RiverVisualizations
         final RandomSource random = new SimpleRandomSource(seed);
         final RiverFractal fractal = RiverFractal.build(random, 250, 500, 0, 80, 15, 10);
         final List<MidpointFractal> fractals = fractal.getEdges().stream().map(e -> e.fractal(random, 4)).collect(Collectors.toList());
-        RIVER_FRACTAL.before(RiverTestHelper::background).draw("grown_fractal", fractal);
-        MULTI_MIDPOINT_FRACTAL.before(RiverTestHelper::background).draw("grown_fractal_midpoint", fractals);
+        RIVER_FRACTAL.before(TestHelper::background).draw("grown_fractal", fractal);
+        MULTI_MIDPOINT_FRACTAL.before(TestHelper::background).draw("grown_fractal_midpoint", fractals);
     }
 
     @Test
@@ -72,8 +73,8 @@ public class RiverVisualizations
 
         final List<RiverFractal> fractals = context.build();
         final List<MidpointFractal> midpoints = fractals.stream().flatMap(fractal -> fractal.getEdges().stream().map(e -> e.fractal(random, 4))).collect(Collectors.toList());
-        MULTI_RIVER_FRACTAL.before(RiverTestHelper::background).draw("multi_grown_fractal", fractals);
-        MULTI_MIDPOINT_FRACTAL.before(RiverTestHelper::background).draw("multi_grown_fractal_midpoint", midpoints);
+        MULTI_RIVER_FRACTAL.before(TestHelper::background).draw("multi_grown_fractal", fractals);
+        MULTI_MIDPOINT_FRACTAL.before(TestHelper::background).draw("multi_grown_fractal_midpoint", midpoints);
     }
 
     @Test
@@ -100,15 +101,15 @@ public class RiverVisualizations
         final List<RiverFractal> fractals = context.build();
         final List<MidpointFractal> midpoints = fractals.stream().flatMap(fractal -> fractal.getEdges().stream().map(e -> e.fractal(random, 4))).collect(Collectors.toList());
 
-        MULTI_RIVER_FRACTAL.before(RiverTestHelper::islandBackground).draw("multi_grown_fractal_island", fractals);
-        MULTI_MIDPOINT_FRACTAL.before(RiverTestHelper::islandBackground).draw("multi_grown_fractal_island_midpoint", midpoints);
+        MULTI_RIVER_FRACTAL.before(TestHelper::islandBackground).draw("multi_grown_fractal_island", fractals);
+        MULTI_MIDPOINT_FRACTAL.before(TestHelper::islandBackground).draw("multi_grown_fractal_island_midpoint", midpoints);
     }
 
     @Test
     public void testWatershedsWithRivers()
     {
         final long seed = seed();
-        final TypedAreaFactory<Plate> plates = TFCLayerUtil.createEarlyPlateLayers(seed);
+        final TypedAreaFactory<Plate> plates = TFCLayers.createEarlyPlateLayers(seed);
         final Watershed.Context context = new Watershed.Context(plates, seed, 0.8f, 1.1f, 16, 0.2f);
         final Set<Watershed> sheds = new HashSet<>();
 
@@ -119,7 +120,7 @@ public class RiverVisualizations
             .collect(Collectors.toList());
 
         final float s = 1000 / 40f;
-        PLATES.color(RiverTestHelper::plateColor).dimensions(40);
+        PLATES.color(TestHelper::plateColor).dimensions(40);
         Artist.custom((t, g) -> {
             PLATES.drawInternal("", plates, g);
 
@@ -157,20 +158,18 @@ public class RiverVisualizations
     @Test
     public void testRiverComparison()
     {
-        long seed = 110418646130145382L;
+        long seed = seed();
         AREA.dimensions(5000).color(i -> {
-            if (TFCLayerUtil.isRiver(i)) return new Color(100, 200, 255);
-            if (TFCLayerUtil.isLake(i)) return new Color(50, 200, 255);
-            if (TFCLayerUtil.isOcean(i)) return new Color(50, 150, 255);
+            if (TFCLayers.isRiver(i)) return new Color(100, 200, 255);
+            if (TFCLayers.isLake(i)) return new Color(50, 200, 255);
+            if (TFCLayers.isOcean(i)) return new Color(50, 150, 255);
             return new Color(70, 160, 100);
         });
 
-        final TypedAreaFactory<Plate> plates = TFCLayerUtil.createEarlyPlateLayers(seed);
+        final TypedAreaFactory<Plate> plates = TFCLayers.createEarlyPlateLayers(seed);
         final Watershed.Context context = new Watershed.Context(plates, seed, 0.8f, 1.1f, 16, 0.2f);
-        final AreaFactory oldRiverArea = TFCLayerUtil.createOverworldBiomeLayer(seed, IArtist.nope(), IArtist.nope());
-        final AreaFactory riverArea = TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, context, IArtist.nope(), IArtist.nope());
+        final AreaFactory riverArea = TFCLayers.createOverworldBiomeLayerWithRivers(seed, context, IArtist.nope(), IArtist.nope());
 
-        AREA.draw("rivers_on_biomes_old", oldRiverArea);
         AREA.draw("rivers_on_biomes", riverArea);
     }
 }

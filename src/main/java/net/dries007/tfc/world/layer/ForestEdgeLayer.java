@@ -9,7 +9,7 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 public enum ForestEdgeLayer implements AdjacentTransformLayer
 {

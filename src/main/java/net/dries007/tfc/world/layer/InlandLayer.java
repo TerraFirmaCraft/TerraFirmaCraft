@@ -9,8 +9,8 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.INLAND_MARKER;
-import static net.dries007.tfc.world.layer.TFCLayerUtil.NULL_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayers.INLAND_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayers.NULL_MARKER;
 
 /**
  * This layer pipes the initial biome generation, and marks specific areas as inland, which are allowed to generate lakes
@@ -23,7 +23,7 @@ public enum InlandLayer implements AdjacentTransformLayer
     @Override
     public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
-        if (TFCLayerUtil.isOceanOrMarker(north) || TFCLayerUtil.isOceanOrMarker(east) || TFCLayerUtil.isOceanOrMarker(south) || TFCLayerUtil.isOceanOrMarker(west))
+        if (TFCLayers.isOceanOrMarker(north) || TFCLayers.isOceanOrMarker(east) || TFCLayers.isOceanOrMarker(south) || TFCLayers.isOceanOrMarker(west))
         {
             return NULL_MARKER;
         }

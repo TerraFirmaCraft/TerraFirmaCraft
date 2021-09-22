@@ -24,7 +24,7 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.river.MidpointFractal;
@@ -73,8 +73,8 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
-        this.watersheds = new Watershed.Context(TFCLayerUtil.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
-        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+        this.watersheds = new Watershed.Context(TFCLayers.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
+        this.biomeLayer = new ConcurrentArea<>(TFCLayers.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayers::getFromLayerId);
     }
 
     public Flow getRiverFlow(int quartX, int quartZ)

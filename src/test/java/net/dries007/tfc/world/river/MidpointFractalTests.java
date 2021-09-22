@@ -8,11 +8,12 @@ import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.SimpleRandomSource;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.world.river.RiverTestHelper.seed;
+import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MidpointFractalTests
@@ -72,9 +73,9 @@ public class MidpointFractalTests
             }
 
             g.setColor(Color.RED);
-            prev.forEach(m -> RiverTestHelper.draw(m, g, 1000));
+            prev.forEach(m -> TestHelper.draw(m, g, 1000));
             g.setColor(Color.WHITE);
-            RiverTestHelper.draw(fractal, g, 1000);
+            TestHelper.draw(fractal, g, 1000);
 
         }).draw("midpoint_example", null);
     }

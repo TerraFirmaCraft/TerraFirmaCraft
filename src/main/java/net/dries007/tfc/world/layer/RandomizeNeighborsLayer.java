@@ -9,11 +9,13 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-public class RandomizeNeighborsLayer extends CallbackLimitLayer implements AdjacentTransformLayer
+public class RandomizeNeighborsLayer implements AdjacentTransformLayer
 {
+    private final int limit;
+
     public RandomizeNeighborsLayer(int limit)
     {
-        super(limit);
+        this.limit = limit;
     }
 
     @Override

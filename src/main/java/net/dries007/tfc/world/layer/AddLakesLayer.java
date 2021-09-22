@@ -9,8 +9,8 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.CenterTransformLayer;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.INLAND_MARKER;
-import static net.dries007.tfc.world.layer.TFCLayerUtil.LAKE_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayers.INLAND_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayers.LAKE_MARKER;
 
 /**
  * Adds instances of lake markers to a layer randomly

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.layer.framework;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,30 +14,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import net.minecraft.DetectedVersion;
-import net.minecraft.SharedConstants;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static net.dries007.tfc.TestHelper.hackSharedConstantsVersion;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LayerFrameworkTests
 {
     @BeforeAll
-    public static void hackVersionForThreadingDetector()
+    public static void setup()
     {
-        try
-        {
-            Field field = SharedConstants.class.getDeclaredField("CURRENT_VERSION");
-            field.setAccessible(true);
-            field.set(null, DetectedVersion.BUILT_IN);
-        }
-        catch (NoSuchFieldException | IllegalAccessException e)
-        {
-            fail("Hacks pooped", e);
-        }
+        hackSharedConstantsVersion();
     }
 
     @Test

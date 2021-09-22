@@ -14,7 +14,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -31,7 +31,7 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
 {
     private static ConcurrentArea<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
     {
-        return new ConcurrentArea<>(TFCLayerUtil.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
+        return new ConcurrentArea<>(TFCLayers.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
     }
 
     private final ConcurrentArea<RockSettings> bottomRockLayer, middleRockLayer, topRockLayer;
@@ -72,12 +72,12 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
-        forestTypeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
+        forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
         forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
         forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
         // Plate Tectonics
-        plateTectonicsInfo = new ConcurrentArea<>(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed), PlateTectonicsClassification::valueOf);
+        plateTectonicsInfo = new ConcurrentArea<>(TFCLayers.createOverworldPlateTectonicInfoLayer(worldSeed), PlateTectonicsClassification::valueOf);
     }
 
     @Override

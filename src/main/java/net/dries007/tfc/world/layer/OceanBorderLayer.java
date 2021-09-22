@@ -9,8 +9,8 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.DEEP_OCEAN;
-import static net.dries007.tfc.world.layer.TFCLayerUtil.OCEAN;
+import static net.dries007.tfc.world.layer.TFCLayers.DEEP_OCEAN;
+import static net.dries007.tfc.world.layer.TFCLayers.OCEAN;
 
 /**
  * Creates oceans on borders between land and deep ocean
@@ -25,7 +25,7 @@ public enum OceanBorderLayer implements AdjacentTransformLayer
         if (center == DEEP_OCEAN)
         {
             // Add ocean to land - deep ocean borders
-            if (!TFCLayerUtil.isOceanOrMarker(north) || !TFCLayerUtil.isOceanOrMarker(east) || !TFCLayerUtil.isOceanOrMarker(south) || !TFCLayerUtil.isOceanOrMarker(west))
+            if (!TFCLayers.isOceanOrMarker(north) || !TFCLayers.isOceanOrMarker(east) || !TFCLayers.isOceanOrMarker(south) || !TFCLayers.isOceanOrMarker(west))
             {
                 return OCEAN;
             }
@@ -33,7 +33,7 @@ public enum OceanBorderLayer implements AdjacentTransformLayer
         else if (center == OCEAN)
         {
             // And in the reverse, in large sections of ocean, add deep ocean in fully ocean-locked area
-            if (TFCLayerUtil.isOceanOrMarker(north) && TFCLayerUtil.isOceanOrMarker(east) && TFCLayerUtil.isOceanOrMarker(west) && TFCLayerUtil.isOceanOrMarker(south))
+            if (TFCLayers.isOceanOrMarker(north) && TFCLayers.isOceanOrMarker(east) && TFCLayers.isOceanOrMarker(west) && TFCLayers.isOceanOrMarker(south))
             {
                 return DEEP_OCEAN;
             }

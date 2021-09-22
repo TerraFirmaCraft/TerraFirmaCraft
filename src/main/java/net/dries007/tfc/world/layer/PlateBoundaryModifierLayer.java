@@ -9,7 +9,7 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 /**
  * Modifies various types of plate tectonic boundaries after initial assignment from plate layers
@@ -29,7 +29,7 @@ public enum PlateBoundaryModifierLayer implements AdjacentTransformLayer
 
         if (north == OCEAN_CONTINENT_DIVERGING || east == OCEAN_CONTINENT_DIVERGING || west == OCEAN_CONTINENT_DIVERGING || south == OCEAN_CONTINENT_DIVERGING)
         {
-            if (TFCLayerUtil.isContinental(center))
+            if (TFCLayers.isContinental(center))
             {
                 return CONTINENTAL_SHELF;
             }

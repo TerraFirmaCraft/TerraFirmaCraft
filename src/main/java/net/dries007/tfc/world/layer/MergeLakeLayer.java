@@ -9,7 +9,7 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.CenterMergeLayer;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.LAKE_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayers.LAKE_MARKER;
 
 /**
  * Mixes lakes into the standard biome layer
@@ -21,6 +21,6 @@ public enum MergeLakeLayer implements CenterMergeLayer
     @Override
     public int apply(AreaContext context, int main, int lake)
     {
-        return lake == LAKE_MARKER && TFCLayerUtil.hasLake(main) ? TFCLayerUtil.lakeFor(main) : main;
+        return lake == LAKE_MARKER && TFCLayers.hasLake(main) ? TFCLayers.lakeFor(main) : main;
     }
 }

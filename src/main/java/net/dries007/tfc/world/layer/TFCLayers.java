@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.world.layer;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
@@ -18,16 +17,13 @@ import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
-import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
-import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
-import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.Watershed;
 
-public class TFCLayerUtil
+public class TFCLayers
 {
     /**
      * These IDs are used during plate tectonic layer generation
@@ -100,12 +96,12 @@ public class TFCLayerUtil
     public static final int OCEAN_OCEAN_CONVERGING_MARKER;
     public static final int OCEAN_OCEAN_DIVERGING_MARKER;
     public static final int LAKE_MARKER;
-    public static final int RIVER_MARKER;
     public static final int NULL_MARKER;
     public static final int INLAND_MARKER;
     public static final int OCEAN_REEF_MARKER;
 
-    private static final CrudeIncrementalIntIdentityHashBiMap<BiomeVariants> REGISTRY = new CrudeIncrementalIntIdentityHashBiMap<>(64);
+    private static final BiomeVariants[] BIOME_LAYERS = new BiomeVariants[64];
+    private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
     private static final boolean ENABLE_DEBUG = Helpers.detectTestSourcesPresent();
 
     static
@@ -142,128 +138,25 @@ public class TFCLayerUtil
         VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
         PLATEAU_LAKE = register(() -> TFCBiomes.PLATEAU_LAKE);
 
-        OCEAN_OCEAN_CONVERGING_MARKER = registerDummy();
-        OCEAN_OCEAN_DIVERGING_MARKER = registerDummy();
-        LAKE_MARKER = registerDummy();
-        RIVER_MARKER = registerDummy();
-        NULL_MARKER = registerDummy();
-        INLAND_MARKER = registerDummy();
-        OCEAN_REEF_MARKER = registerDummy();
+        OCEAN_OCEAN_CONVERGING_MARKER = register();
+        OCEAN_OCEAN_DIVERGING_MARKER = register();
+        LAKE_MARKER = register();
+        NULL_MARKER = register();
+        INLAND_MARKER = register();
+        OCEAN_REEF_MARKER = register();
     }
 
     public static BiomeVariants getFromLayerId(int id)
     {
-        return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
+        final BiomeVariants v = BIOME_LAYERS[id];
+        if (v == null)
+        {
+            throw new NullPointerException("Layer id = " + id + " returned null!");
+        }
+        return v;
     }
 
     public static AreaFactory createOverworldBiomeLayer(long seed, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
-    {
-        final Random random = new Random(seed);
-
-        TypedAreaFactory<Plate> plateLayer;
-        AreaFactory mainLayer, riverLayer, lakeLayer;
-
-        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
-        plateArtist.draw("plate_generation", 1, plateLayer);
-        plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(random.nextLong(), plateLayer);
-        plateArtist.draw("plate_generation", 2, plateLayer);
-
-        mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
-        layerArtist.draw("plate_boundary", 1, mainLayer);
-        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("plate_boundary", 2, mainLayer);
-        mainLayer = PlateBoundaryModifierLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("plate_boundary", 3, mainLayer);
-
-        // Plates -> Biomes
-        mainLayer = PlateBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 1, mainLayer);
-
-        // Initial Biomes -> Lake Setup
-        lakeLayer = InlandLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("lake", 1, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1001, lakeLayer);
-        layerArtist.draw("lake", 2, lakeLayer);
-
-        // Lakes
-        lakeLayer = AddLakesLayer.LARGE.apply(random.nextLong(), lakeLayer);
-        layerArtist.draw("lake", 3, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1002, lakeLayer);
-        layerArtist.draw("lake", 4, lakeLayer);
-        lakeLayer = AddLakesLayer.SMALL.apply(random.nextLong(), lakeLayer);
-        layerArtist.draw("lake", 5, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1003, lakeLayer);
-        layerArtist.draw("lake", 6, lakeLayer);
-
-        // Biome level features - ocean borders, lakes, island chains, edge biomes, shores
-        // Apply lakes back to biomes
-        mainLayer = OceanBorderLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 2, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1001, mainLayer);
-        layerArtist.draw("biomes", 3, mainLayer);
-        mainLayer = ArchipelagoLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 4, mainLayer);
-        mainLayer = ReefBorderLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 5, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1002, mainLayer);
-        layerArtist.draw("biomes", 6, mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 7, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1003, mainLayer);
-        layerArtist.draw("biomes", 8, mainLayer);
-        mainLayer = MergeLakeLayer.INSTANCE.apply(random.nextLong(), mainLayer, lakeLayer);
-        layerArtist.draw("biomes", 9, mainLayer);
-        mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 10, mainLayer);
-
-        for (int i = 0; i < 4; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
-            layerArtist.draw("biomes", 11 + i, mainLayer);
-        }
-
-        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 15, mainLayer);
-
-        // River Setup
-        final float riverScale = 1.7f;
-        final float riverSpread = 0.15f;
-        final OpenSimplex2D riverWarpNoise = new OpenSimplex2D(random.nextInt()).spread(riverSpread).scaled(-riverScale, riverScale);
-        final Noise2D riverNoise = new Cellular2D(random.nextInt()).spread(0.072f).warped(riverWarpNoise).terraces(5);
-
-        // River Noise
-        riverLayer = new FloatNoiseLayer(riverNoise).apply(random.nextLong());
-        layerArtist.draw("river", 1, riverLayer);
-
-        for (int i = 0; i < 4; i++)
-        {
-            riverLayer = ZoomLayer.NORMAL.apply(random.nextLong(), riverLayer);
-            layerArtist.draw("river", 2 + i, riverLayer);
-        }
-
-        // River shape and modifications
-        riverLayer = RiverLayer.INSTANCE.apply(random.nextLong(), riverLayer);
-        layerArtist.draw("river", 6, riverLayer);
-        riverLayer = RiverAcuteVertexLayer.INSTANCE.apply(random.nextLong(), riverLayer);
-        layerArtist.draw("river", 7, riverLayer);
-        riverLayer = ZoomLayer.NORMAL.apply(random.nextLong(), riverLayer);
-        layerArtist.draw("river", 8, riverLayer);
-        riverLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), riverLayer);
-        layerArtist.draw("river", 9, riverLayer);
-
-        // Apply rivers
-        mainLayer = MergeRiverLayer.INSTANCE.apply(random.nextLong(), mainLayer, riverLayer);
-        layerArtist.draw("biomes", 16, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 17, mainLayer);
-        mainLayer = BiomeRiverWidenLayer.LOW.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 18, mainLayer);
-
-        return mainLayer;
-    }
-
-    public static AreaFactory createOverworldBiomeLayerWithRivers(long seed, Watershed.Context watersheds, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
     {
         final Random random = new Random(seed);
 
@@ -333,28 +226,12 @@ public class TFCLayerUtil
         mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
         layerArtist.draw("biomes", 15, mainLayer);
 
-        final AreaFactory finishedLayer = mainLayer;
+        return mainLayer;
+    }
 
-        return () -> {
-            final Area inner = finishedLayer.get();
-            return new Area((x, z) -> {
-                int value = inner.get(x, z);
-                if (TFCLayerUtil.hasRiver(value))
-                {
-                    final float scale = 1f / (1 << 7);
-                    final float x0 = x * scale, z0 = z * scale;
-                    for (MidpointFractal fractal : watersheds.getFractalsByPartition(x, z))
-                    {
-                        // maybeIntersect will skip the more expensive calculation if it fails
-                        if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH) && fractal.intersect(x0, z0, Watershed.RIVER_WIDTH))
-                        {
-                            return TFCLayerUtil.riverFor(value);
-                        }
-                    }
-                }
-                return value;
-            }, 1024);
-        };
+    public static AreaFactory createOverworldBiomeLayerWithRivers(long seed, Watershed.Context watersheds, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
+    {
+        return new MergeRiverLayer(watersheds).apply(seed, createOverworldBiomeLayer(seed, plateArtist, layerArtist));
     }
 
     public static AreaFactory createOverworldForestLayer(long seed, IArtist<AreaFactory> artist)
@@ -564,15 +441,19 @@ public class TFCLayerUtil
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public static int register(Supplier<BiomeVariants> variants)
+    public static int register()
     {
-        return REGISTRY.add(ENABLE_DEBUG ? null : variants.get());
+        return register(() -> null);
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public static int registerDummy()
+    public static int register(Supplier<BiomeVariants> variants)
     {
-        return REGISTRY.add(null);
+        final int index = BIOME_LAYER_INDEX.getAndIncrement();
+        if (index >= BIOME_LAYERS.length)
+        {
+            throw new IllegalStateException("Tried to register layer id " + index + " but only had space for " + BIOME_LAYERS.length + " layers");
+        }
+        BIOME_LAYERS[index] = ENABLE_DEBUG ? null : variants.get();
+        return index;
     }
 }

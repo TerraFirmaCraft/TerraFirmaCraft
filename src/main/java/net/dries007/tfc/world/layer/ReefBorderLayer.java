@@ -9,10 +9,10 @@ package net.dries007.tfc.world.layer;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 /**
- * Operates on the {@link TFCLayerUtil#OCEAN_REEF_MARKER} markers
+ * Operates on the {@link TFCLayers#OCEAN_REEF_MARKER} markers
  * Borders reef - land with ocean, and adds ocean to reef - deep ocean borders
  */
 public enum ReefBorderLayer implements AdjacentTransformLayer
@@ -24,13 +24,13 @@ public enum ReefBorderLayer implements AdjacentTransformLayer
     {
         if (center == OCEAN_REEF_MARKER)
         {
-            if (!TFCLayerUtil.isOceanOrMarker(north) || !TFCLayerUtil.isOceanOrMarker(east) || !TFCLayerUtil.isOceanOrMarker(south) || !TFCLayerUtil.isOceanOrMarker(west))
+            if (!TFCLayers.isOceanOrMarker(north) || !TFCLayers.isOceanOrMarker(east) || !TFCLayers.isOceanOrMarker(south) || !TFCLayers.isOceanOrMarker(west))
             {
                 return OCEAN;
             }
             return OCEAN_REEF;
         }
-        else if (TFCLayerUtil.isOceanOrMarker(center) && (north == OCEAN_REEF_MARKER || east == OCEAN_REEF_MARKER || south == OCEAN_REEF_MARKER || west == OCEAN_REEF_MARKER))
+        else if (TFCLayers.isOceanOrMarker(center) && (north == OCEAN_REEF_MARKER || east == OCEAN_REEF_MARKER || south == OCEAN_REEF_MARKER || west == OCEAN_REEF_MARKER))
         {
             return OCEAN;
         }
