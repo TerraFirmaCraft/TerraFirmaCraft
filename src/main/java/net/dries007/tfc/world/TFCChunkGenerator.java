@@ -1046,7 +1046,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
             double riverWeight = 0, shoreWeight = 0;
             Biome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
-            double maxNormalWeight = 0, maxRiverWeight = 0, maxShoreWeight = 0;
+            double maxNormalWeight = 0, maxRiverWeight = 0, maxShoreWeight = 0; // Partition on biome type
+
+            Biome oceanicBiomeAt = null;
+            double oceanicWeight = 0, maxOceanicWeight = 0; // Partition on ocean/non-ocean or water type.
 
             for (Object2DoubleMap.Entry<Biome> entry : biomeWeights.object2DoubleEntrySet())
             {
@@ -1066,7 +1069,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
                 double height = weight * sampler.height();
                 totalHeight += height;
-                if (variants == TFCBiomes.RIVER)
+
+                // Partition into river / shore / normal for standard biome transformations
+                if (variants.isRiver())
                 {
                     riverHeight += height;
                     riverWeight += weight;
@@ -1076,7 +1081,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                         maxRiverWeight = weight;
                     }
                 }
-                else if (variants == TFCBiomes.SHORE)
+                else if (variants.isShore())
                 {
                     shoreHeight += height;
                     shoreWeight += weight;
@@ -1091,23 +1096,42 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     normalBiomeAt = entry.getKey();
                     maxNormalWeight = weight;
                 }
+
+                // Also record oceanic biome types
+                if (variants.isSalty())
+                {
+                    oceanicWeight += weight;
+                    if (maxOceanicWeight < weight)
+                    {
+                        oceanicBiomeAt = entry.getKey();
+                        maxOceanicWeight = weight;
+                    }
+                }
             }
 
             double actualHeight = totalHeight;
             if (riverWeight > 0.6 && riverBiomeAt != null)
             {
-                // River bottom / shore
-                double aboveWaterDelta = actualHeight - riverHeight / riverWeight;
-                if (aboveWaterDelta > 0)
+                // Primarily river biomes.
+                // Based on the oceanic weight, we may apply a modifier which scales rivers down, and creates sharp cliffs near river borders.
+                // If oceanic weight is high, this effect is ignored, and we intentionally weight towards the oceanic biome.
+                double aboveWaterDelta = Mth.clamp(actualHeight - riverHeight / riverWeight, 0, 20);
+                double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
+                double actualHeightWithRiverContribution = riverHeight / riverWeight + adjustedAboveWaterDelta;
+
+                // Contribution of ocean type biomes to the 'normal' weight.
+                double normalWeight = 1 - riverWeight - shoreWeight;
+                double oceanicContribution = Mth.clamp(oceanicWeight == 0 || normalWeight == 0 ? 0 : oceanicWeight / normalWeight, 0, 1);
+                if (oceanicContribution < 0.5)
                 {
-                    if (aboveWaterDelta > 20)
-                    {
-                        aboveWaterDelta = 20;
-                    }
-                    double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
-                    actualHeight = riverHeight / riverWeight + adjustedAboveWaterDelta;
+                    actualHeight = Mth.lerp(2 * oceanicContribution, actualHeightWithRiverContribution, actualHeight);
+                    biomeAt = riverBiomeAt;
                 }
-                biomeAt = riverBiomeAt; // Use river surface for the bottom of the river + small shore beneath cliffs
+                else
+                {
+                    // Consider this primarily an oceanic weight area, in biome only. Do not adjust the nominal height.
+                    biomeAt = oceanicBiomeAt;
+                }
             }
             else if (riverWeight > 0 && normalBiomeAt != null)
             {
@@ -1143,6 +1167,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 surfaceHeight[localX + 16 * localZ] = (int) actualHeight;
             }
 
+            if (biomeAt == null)
+            {
+                throw new NullPointerException();
+            }
             return actualHeight;
         }
 

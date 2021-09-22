@@ -64,7 +64,7 @@ public class RiverVisualizations
         final RandomSource random = new SimpleRandomSource(seed);
 
         // Rivers grown from both horizontal edges, pointing inwards.
-        final RiverFractal.MultiContext context = new RiverFractal.MultiContext();
+        final RiverFractal.MultiParallelBuilder context = new RiverFractal.MultiParallelBuilder();
         for (int i = 0; i < 6; i++)
         {
             context.add(new RiverFractal.Builder(random, (i % 2 == 0) ? 50 : 950, i * 100 + 150, (i % 2 == 0) ? 0 : (float) Math.PI, 50, 15, 10));
@@ -82,7 +82,7 @@ public class RiverVisualizations
         final long seed = seed();
         final RandomSource random = new SimpleRandomSource(seed);
 
-        final RiverFractal.MultiContext context = new RiverFractal.MultiContext()
+        final RiverFractal.MultiParallelBuilder context = new RiverFractal.MultiParallelBuilder()
         {
             @Override
             protected boolean isLegal(RiverFractal.Vertex vertex)

@@ -56,6 +56,11 @@ public class BiomeVariants
         return group == Group.RIVER;
     }
 
+    public boolean isShore()
+    {
+        return this == TFCBiomes.SHORE;
+    }
+
     public boolean isSalty()
     {
         return salty;

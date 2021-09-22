@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.BitSet;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -106,7 +106,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         {
             setBlock(world, pos, state);
         }
-        else if (block == Blocks.WATER)
+        else if (block == Blocks.WATER || block == TFCBlocks.RIVER_WATER.get())
         {
             setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
         }
@@ -119,7 +119,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
     protected void replaceBlockWithoutFluid(WorldGenLevel world, BlockPos pos, BlockState state)
     {
         Block block = world.getBlockState(pos).getBlock();
-        if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)
+        if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == TFCBlocks.RIVER_WATER.get() || block == Blocks.LAVA)
         {
             setBlock(world, pos, state);
         }

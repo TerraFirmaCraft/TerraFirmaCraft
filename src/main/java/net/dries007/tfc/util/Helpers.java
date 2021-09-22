@@ -72,6 +72,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
+
     private static final Random RANDOM = new Random();
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
@@ -556,7 +557,7 @@ public final class Helpers
         }
     }
 
-    public static void uncheck(Runnable action)
+    public static void uncheck(ThrowingRunnable action)
     {
         uncheck(() -> {
             action.run();
@@ -739,5 +740,10 @@ public final class Helpers
         }
 
         private ItemProtectedAccessor(Properties properties) { super(properties); }
+    }
+
+    interface ThrowingRunnable
+    {
+        void run() throws Exception;
     }
 }

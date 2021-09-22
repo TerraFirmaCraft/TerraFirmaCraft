@@ -133,7 +133,7 @@ public abstract class Watershed
             // We need to have a consistent iteration order across sources, in order to deterministically generate a watershed from any given sample position
             // The easiest way to guarantee this, is to sort the sources.
             final List<Long> sortedSources = sources.stream().sorted().toList();
-            final RiverFractal.MultiContext context = new RiverFractalContext();
+            final RiverFractal.MultiParallelBuilder context = new Builder();
             for (long key : sortedSources)
             {
                 final float x0 = RiverHelpers.unpackX(key) + 0.5f, z0 = RiverHelpers.unpackZ(key) + 0.5f;
@@ -170,7 +170,7 @@ public abstract class Watershed
             return sources;
         }
 
-        class RiverFractalContext extends RiverFractal.MultiContext
+        class Builder extends RiverFractal.MultiParallelBuilder
         {
             @Override
             protected boolean isLegal(RiverFractal.Vertex vertex)

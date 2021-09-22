@@ -59,7 +59,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
 
     private final ConcurrentArea<BiomeVariants> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
-    private final Watershed.Context watershedContext;
+    private final Watershed.Context watersheds;
 
     public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
     {
@@ -73,15 +73,15 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
-        this.watershedContext = new Watershed.Context(TFCLayerUtil.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
-        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, watershedContext, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
+        this.watersheds = new Watershed.Context(TFCLayerUtil.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
+        this.biomeLayer = new ConcurrentArea<>(TFCLayerUtil.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayerUtil::getFromLayerId);
     }
 
-    public Flow getRiverFlow(int x, int z)
+    public Flow getRiverFlow(int quartX, int quartZ)
     {
         final float scale = 1f / (1 << 7);
-        final float x0 = x * scale, z0 = z * scale;
-        for (MidpointFractal fractal : watershedContext.getFractalsByPartition(x, z))
+        final float x0 = quartX * scale, z0 = quartZ * scale;
+        for (MidpointFractal fractal : watersheds.getFractalsByPartition(quartX, quartZ))
         {
             // maybeIntersect will skip the more expensive calculation if it fails
             if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH))
@@ -90,10 +90,6 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
                 if (flow != Flow.NONE)
                 {
                     return flow;
-                }
-                else if (fractal.intersect(x0, z0, Watershed.RIVER_WIDTH))
-                {
-                    System.out.println("wut?");
                 }
             }
         }
@@ -136,6 +132,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
      * - It's slightly optimized for finding a random biome, and using mutable positions.
      */
     @Nullable
+    @Override
     public BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> biomesIn, Random rand)
     {
         final int centerBiomeX = x >> 2;
@@ -178,14 +175,14 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
-    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordZ)
+    public Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
     {
-        final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
+        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
-    public BiomeTemperature calculateTemperature(float averageTemperature)
+    private BiomeTemperature calculateTemperature(float averageTemperature)
     {
         if (averageTemperature < climateSettings.frozenColdCutoff())
         {

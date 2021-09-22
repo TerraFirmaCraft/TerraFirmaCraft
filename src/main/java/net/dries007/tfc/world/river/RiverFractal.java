@@ -260,11 +260,11 @@ public class RiverFractal
         }
     }
 
-    public static class MultiContext implements Context
+    public static class MultiParallelBuilder implements Context
     {
         private final List<Builder> builders;
 
-        public MultiContext()
+        public MultiParallelBuilder()
         {
             this.builders = new ArrayList<>();
         }

@@ -263,7 +263,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static AreaFactory createOverworldBiomeLayerWithRivers(long seed, Watershed.Context watershedContext, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
+    public static AreaFactory createOverworldBiomeLayerWithRivers(long seed, Watershed.Context watersheds, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
     {
         final Random random = new Random(seed);
 
@@ -343,7 +343,7 @@ public class TFCLayerUtil
                 {
                     final float scale = 1f / (1 << 7);
                     final float x0 = x * scale, z0 = z * scale;
-                    for (MidpointFractal fractal : watershedContext.getFractalsByPartition(x, z))
+                    for (MidpointFractal fractal : watersheds.getFractalsByPartition(x, z))
                     {
                         // maybeIntersect will skip the more expensive calculation if it fails
                         if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH) && fractal.intersect(x0, z0, Watershed.RIVER_WIDTH))
