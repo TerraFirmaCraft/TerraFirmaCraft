@@ -9,16 +9,17 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
-import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayer;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -29,7 +30,7 @@ import net.dries007.tfc.world.settings.RockSettings;
  */
 public class TFCChunkDataGenerator implements ChunkDataGenerator
 {
-    private static ConcurrentArea<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
+    public static ConcurrentArea<RockSettings> createRockLayer(Random seedGenerator, RockLayerSettings settings, List<RockSettings> rocks)
     {
         return new ConcurrentArea<>(TFCLayers.createOverworldRockLayer(seedGenerator.nextLong(), settings.getScale(), rocks.size()), rocks::get);
     }
@@ -45,29 +46,29 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
 
     private final ConcurrentArea<PlateTectonicsClassification> plateTectonicsInfo;
 
-    public TFCChunkDataGenerator(long worldSeed, RockLayerSettings settings)
+    public TFCChunkDataGenerator(long worldSeed, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
     {
         final Random random = new Random(worldSeed);
         random.setSeed(worldSeed ^ random.nextLong());
 
-        this.bottomRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
-        this.middleRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
-        this.topRockLayer = createRockLayer(random, settings, settings.getRocksForLayer(RockLayer.BOTTOM));
+        this.bottomRockLayer = createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.BOTTOM));
+        this.middleRockLayer = createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.MIDDLE));
+        this.topRockLayer = createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.TOP));
 
         this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-10, 10).spread(0.03f);
 
         // Climate
-        temperatureNoise = ((Noise2D) (x, z) -> NoiseUtil.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0, z))
+        temperatureNoise = ((Noise2D) (x, z) -> Helpers.triangle(1, 0, 1f / (4f * temperatureSettings.scale()), temperatureSettings.endlessPoles() ? Mth.clamp(z, -temperatureSettings.scale(), temperatureSettings.scale()) : z))
             .scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
-                .spread(12f / TFCConfig.SERVER.temperatureScale.get())
+                .spread(12f / temperatureSettings.scale())
                 .scaled(-Climate.REGIONAL_TEMPERATURE_SCALE, Climate.REGIONAL_TEMPERATURE_SCALE));
-        rainfallNoise = ((Noise2D) (x, z) -> NoiseUtil.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.rainfallScale.get()), 0, x))
+        rainfallNoise = ((Noise2D) (x, z) -> Helpers.triangle(1, 0, 1f / (4f * rainfallSettings.scale()), x))
             .scaled(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
-                .spread(12f / TFCConfig.SERVER.rainfallScale.get())
+                .spread(12f / rainfallSettings.scale())
                 .scaled(-Climate.REGIONAL_RAINFALL_SCALE, Climate.REGIONAL_RAINFALL_SCALE))
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
@@ -119,8 +120,8 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
             }
         }
 
-        data.setRainfall(rainNW, rainNE, rainSW, rainSE);
-        data.setAverageTemp(tempNW, tempNE, tempSW, tempSE);
+        data.setRainfall(new LerpFloatLayer(rainNW, rainNE, rainSW, rainSE));
+        data.setAverageTemp(new LerpFloatLayer(tempNW, tempNE, tempSW, tempSE));
         data.setFloraData(forestType, forestWeirdness, forestDensity);
         data.setPlateTectonicsInfo(plateTectonicsInfo.get(data.getPos().x, data.getPos().z));
         data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, rockLayerHeight));

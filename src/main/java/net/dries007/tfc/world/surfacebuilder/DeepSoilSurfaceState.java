@@ -24,13 +24,13 @@ public class DeepSoilSurfaceState extends SoilSurfaceState
         if (rainfall < RAINFALL_SAND)
         {
             // Sandy
-            return sandstone(rockData, x, z);
+            return sandstone(rockData, x, y, z);
         }
         else if (rainfall < RAINFALL_SAND_SANDY_MIX)
         {
             // Sandy - Sand Transition Zone
             float noise = patchNoise.noise(x, z);
-            return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sandstone(rockData, x, z) : gravel(rockData, x, y, z);
+            return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sandstone(rockData, x, y, z) : gravel(rockData, x, y, z);
         }
         else
         {
@@ -44,8 +44,8 @@ public class DeepSoilSurfaceState extends SoilSurfaceState
         return rockData.getRock(x, y, z).gravel().defaultBlockState();
     }
 
-    private BlockState sandstone(RockData rockData, int x, int z)
+    private BlockState sandstone(RockData rockData, int x, int y, int z)
     {
-        return rockData.getTopRock(x, z).sandstone().defaultBlockState();
+        return rockData.getRock(x, y, z).sandstone().defaultBlockState();
     }
 }

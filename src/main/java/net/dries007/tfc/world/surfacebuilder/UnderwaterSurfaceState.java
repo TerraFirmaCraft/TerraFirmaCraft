@@ -32,10 +32,10 @@ public class UnderwaterSurfaceState implements SurfaceState
         {
             if (deep)
             {
-                return rockData.getTopRock(x, z).sandstone().defaultBlockState(); // Sandstone
+                return rockData.getRock(x, y, z).sandstone().defaultBlockState(); // Sandstone
             }
-            return rockData.getTopRock(x, z).sand().defaultBlockState(); // Sand
+            return rockData.getRock(x, y, z).sand().defaultBlockState(); // Sand
         }
-        return rockData.getTopRock(x, z).gravel().defaultBlockState(); // Gravel
+        return rockData.getRock(x, y, z).gravel().defaultBlockState(); // Gravel
     }
 }

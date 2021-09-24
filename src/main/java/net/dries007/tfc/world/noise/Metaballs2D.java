@@ -8,6 +8,8 @@ package net.dries007.tfc.world.noise;
 
 import java.util.Random;
 
+import net.dries007.tfc.util.Helpers;
+
 /**
  * A 2D Implementation of <a href="https://en.wikipedia.org/wiki/Metaballs">Metaballs</a>, primarily using the techniques outlined in <a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/">this blog</a>
  */
@@ -22,15 +24,15 @@ public class Metaballs2D
 
     public Metaballs2D(Random random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
     {
-        final int ballCount = NoiseUtil.uniform(random, minBalls, maxBalls);
+        final int ballCount = Helpers.uniform(random, minBalls, maxBalls);
 
         balls = new Ball[ballCount];
         for (int i = 0; i < balls.length; i++)
         {
             balls[i] = new Ball(
-                NoiseUtil.triangle(random, radius),
-                NoiseUtil.triangle(random, radius),
-                NoiseUtil.uniform(random, minSize, maxSize)
+                Helpers.triangle(random, radius),
+                Helpers.triangle(random, radius),
+                Helpers.uniform(random, minSize, maxSize)
             );
         }
     }

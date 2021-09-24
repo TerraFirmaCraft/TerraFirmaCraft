@@ -27,9 +27,6 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
-    // Climate
-    public final ForgeConfigSpec.IntValue temperatureScale;
-    public final ForgeConfigSpec.IntValue rainfallScale;
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
@@ -110,11 +107,6 @@ public class ServerConfig
         ).define("enableForcedTFCGameRules", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
-
-        innerBuilder.pop().push("climate");
-
-        temperatureScale = builder.apply("temperatureScale").comment("This is the distance in blocks to the first peak (Either cold or hot) temperature zone, in the north-south direction.").defineInRange("temperatureScale", 20_000, 1_000, 1_000_000);
-        rainfallScale = builder.apply("rainfallScale").comment("This is the distance in blocks to the first peak (Either wet or dry) rainfall zone, in the east-west direction").defineInRange("rainfallScale", 20_000, 1_000, 1_000_000);
 
         innerBuilder.pop().push("blocks").push("farmland");
 

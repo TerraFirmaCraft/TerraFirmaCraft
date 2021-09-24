@@ -8,6 +8,8 @@ package net.dries007.tfc.world.noise;
 
 import java.util.Random;
 
+import net.dries007.tfc.util.Helpers;
+
 public class Metaballs3D
 {
     public static Metaballs3D simple(Random random, int size)
@@ -19,16 +21,16 @@ public class Metaballs3D
 
     public Metaballs3D(Random random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
     {
-        final int ballCount = NoiseUtil.uniform(random, minBalls, maxBalls);
+        final int ballCount = Helpers.uniform(random, minBalls, maxBalls);
         final int negativeBallCount = minSize < 0 ? (int) (ballCount * (-minSize / (maxSize - minSize))) : 0;
         balls = new Ball[ballCount];
         for (int i = 0; i < balls.length; i++)
         {
             balls[i] = new Ball(
-                NoiseUtil.triangle(random, radius),
-                NoiseUtil.triangle(random, radius),
-                NoiseUtil.triangle(random, radius),
-                i < negativeBallCount ? NoiseUtil.uniform(random, minSize, 0) : NoiseUtil.uniform(random, 0, maxSize)
+                Helpers.triangle(random, radius),
+                Helpers.triangle(random, radius),
+                Helpers.triangle(random, radius),
+                i < negativeBallCount ? Helpers.uniform(random, minSize, 0) : Helpers.uniform(random, 0, maxSize)
             );
         }
     }

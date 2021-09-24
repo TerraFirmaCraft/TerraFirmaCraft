@@ -530,6 +530,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.propick.found_traces': 'Found traces of',
     'tfc.tooltip.propick.found': 'Found',
     'tfc.tooltip.propick.nothing': 'Found nothing.',
+    'tfc.tooltip.propick.accuracy': 'Accuracy: %s%%',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',

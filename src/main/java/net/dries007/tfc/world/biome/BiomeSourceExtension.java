@@ -15,6 +15,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public interface BiomeSourceExtension
@@ -28,6 +29,8 @@ public interface BiomeSourceExtension
     ChunkDataProvider getChunkDataProvider();
 
     RockLayerSettings getRockLayerSettings();
+
+    ClimateSettings getTemperatureSettings();
 
     /**
      * An optional implementation, see {@link TFCBiomeSource}

@@ -51,12 +51,12 @@ public class SoilSurfaceState implements SurfaceState
             {
                 // Sandy - Sand Transition Zone
                 float noise = patchNoise.noise(x, z);
-                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sand(rockData, x, z) : soil(SoilBlockType.Variant.SANDY_LOAM);
+                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sand(rockData, x, y, z) : soil(SoilBlockType.Variant.SANDY_LOAM);
             }
             else
             {
                 // Sand
-                return sand(rockData, x, z);
+                return sand(rockData, x, y, z);
             }
         }
         else if (rainfall > RAINFALL_SILTY)
@@ -96,9 +96,9 @@ public class SoilSurfaceState implements SurfaceState
         }
     }
 
-    private BlockState sand(RockData rockData, int x, int z)
+    private BlockState sand(RockData rockData, int x, int y, int z)
     {
-        return rockData.getTopRock(x, z).sand().defaultBlockState();
+        return rockData.getRock(x, y, z).sand().defaultBlockState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)

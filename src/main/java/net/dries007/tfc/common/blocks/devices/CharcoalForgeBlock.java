@@ -95,15 +95,15 @@ public class CharcoalForgeBlock extends DeviceBlock
         }
         for (int i = 0; i < 1 + rand.nextInt(2); i++)
         {
-            world.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.07D, 0);
+            world.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
         }
         for (int i = 0; i < rand.nextInt(3); i++)
         {
-            world.addParticle(ParticleTypes.SMOKE, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
         if (rand.nextInt(8) == 1)
         {
-            world.addParticle(ParticleTypes.LAVA, x + Helpers.fastGaussian(rand), y + rand.nextDouble(), z + Helpers.fastGaussian(rand), 0, 0.005D, 0);
+            world.addParticle(ParticleTypes.LAVA, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
     }
 

@@ -9,6 +9,7 @@ package net.dries007.tfc.util;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -22,6 +23,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +31,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -74,11 +77,8 @@ public final class Helpers
     public static final Direction[] DIRECTIONS = Direction.values();
 
     private static final Random RANDOM = new Random();
-
-    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
-    {
-        return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
-    }
+    private static final int PRIME_X = 501125321;
+    private static final int PRIME_Y = 1136930381;
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
@@ -110,11 +110,6 @@ public final class Helpers
     public static <T> T notNull()
     {
         return null;
-    }
-
-    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
-    {
-        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
     }
 
     /**
@@ -178,6 +173,11 @@ public final class Helpers
         return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
     }
 
+    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
+    {
+        return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+    }
+
     /**
      * @deprecated Use {@link BlockGetter#getBlockEntity(BlockPos, BlockEntityType)} instead as it's safer
      */
@@ -194,21 +194,9 @@ public final class Helpers
         return null;
     }
 
-    /**
-     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
-     */
-    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
     {
-        int i = randValue >> 2;
-        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
-    }
-
-    /**
-     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
-     */
-    public static <E> E resolveEither(Either<E, E> either)
-    {
-        return either.map(e -> e, e -> e);
+        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
     }
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
@@ -487,14 +475,6 @@ public final class Helpers
         }
     }
 
-    /**
-     * Lightning fast. Not actually Gaussian.
-     */
-    public static double fastGaussian(Random rand)
-    {
-        return (rand.nextDouble() - rand.nextDouble()) * 0.5;
-    }
-
     public static void playSound(Level world, BlockPos pos, SoundEvent sound)
     {
         Random rand = world.getRandom();
@@ -509,6 +489,90 @@ public final class Helpers
     public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack)
     {
         return spawnItem(world, pos, stack, 0.5D);
+    }
+
+    /**
+     * Drains an amount from {@code from}, to {@code to}, without any wastage.
+     *
+     * @return {@code true} if a non-zero amount was drained.
+     */
+    public static boolean transferFluid(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        final FluidStack fluid = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
+        if (filled > 0)
+        {
+            from.drain(filled, IFluidHandler.FluidAction.EXECUTE); // Only drain the amount that was removed.
+            return true;
+        }
+        return false;
+    }
+
+    public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
+    {
+        if (fluidStack.isEmpty())
+        {
+            return FluidStack.EMPTY; // No fluid to merge, so we just exit immediately
+        }
+        final ItemStack mergeStack = inventory.getStackInSlot(slot);
+        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (filled > 0)
+            {
+                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+            }
+            FluidStack remainder = fluidStack.copy();
+            remainder.shrink(filled);
+            return remainder;
+        }).orElse(FluidStack.EMPTY);
+    }
+
+    /**
+     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
+     */
+    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    {
+        int i = randValue >> 2;
+        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
+    }
+
+    /**
+     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
+     */
+    public static <E> E resolveEither(Either<E, E> either)
+    {
+        return either.map(e -> e, e -> e);
+    }
+
+    public static <T> void encodeNullable(@Nullable T instance, FriendlyByteBuf buffer, BiConsumer<T, FriendlyByteBuf> encoder)
+    {
+        if (instance != null)
+        {
+            buffer.writeBoolean(true);
+            encoder.accept(instance, buffer);
+        }
+        else
+        {
+            buffer.writeBoolean(false);
+        }
+    }
+
+    @Nullable
+    public static <T> T decodeNullable(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> decoder)
+    {
+        if (buffer.readBoolean())
+        {
+            return decoder.apply(buffer);
+        }
+        return null;
+    }
+
+    /**
+     * @see net.minecraft.core.QuartPos#toBlock(int)
+     */
+    public static BlockPos quartToBlock(int x, int y, int z)
+    {
+        return new BlockPos(x << 2, y << 2, z << 2);
     }
 
     /**
@@ -582,6 +646,110 @@ public final class Helpers
         }
     }
 
+    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
+    public static boolean detectAssertionsEnabled()
+    {
+        boolean enabled = false;
+        assert enabled = true;
+        return enabled;
+    }
+
+    /**
+     * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
+     */
+    public static boolean detectTestSourcesPresent()
+    {
+        try
+        {
+            Class.forName("net.dries007.tfc.TestMarker");
+            return true;
+        }
+        catch (ClassNotFoundException e) { /* Guess not */ }
+        return false;
+    }
+
+    // Math Functions
+    // Some are duplicated from Mth, but kept here as they might have slightly different parameter order or names
+
+    /**
+     * Linearly interpolates between [min, max].
+     */
+    public static float lerp(float delta, float min, float max)
+    {
+        return min + (max - min) * delta;
+    }
+
+    /**
+     * Linearly interpolates between four values on a unit square.
+     */
+    public static float lerp4(float value00, float value01, float value10, float value11, float delta0, float delta1)
+    {
+        final float value0 = lerp(delta1, value00, value01);
+        final float value1 = lerp(delta1, value10, value11);
+        return lerp(delta0, value0, value1);
+    }
+
+    /**
+     * @return A t = inverseLerp(value, min, max) s.t. lerp(t, min, max) = value;
+     */
+    public static float inverseLerp(float value, float min, float max)
+    {
+        return (value - min) / (max - min);
+    }
+
+    public static int hash(long salt, BlockPos pos)
+    {
+        return hash(salt, pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static int hash(long salt, int x, int y, int z)
+    {
+        long hash = salt ^ ((long) x * PRIME_X) ^ ((long) y * PRIME_Y) ^ z;
+        hash *= 0x27d4eb2d;
+        return (int) hash;
+    }
+
+    /**
+     * A triangle function, with input {@code value} and parameters {@code amplitude, midpoint, frequency}.
+     * A period T = 1 / frequency, with a sinusoidal shape. triangle(0) = midpoint, with triangle(+/-1 / (4 * frequency)) = the first peak.
+     */
+    public static float triangle(float amplitude, float midpoint, float frequency, float value)
+    {
+        return midpoint + amplitude * (Math.abs(4f * frequency * value + 1f - 4f * Mth.floor(frequency * value + 0.75f)) - 1f);
+    }
+
+    /**
+     * @return A random integer, uniformly distributed in the range [min, max).
+     */
+    public static int uniform(Random random, int min, int max)
+    {
+        return min == max ? min : min + random.nextInt(max - min);
+    }
+
+    /**
+     * @return A random float, uniformly distributed in the range [min, max).
+     */
+    public static float uniform(Random random, float min, float max)
+    {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    /**
+     * @return A random float, distributed around [-1, 1] in a triangle distribution X ~ pdf(t) = 1 - |t|.
+     */
+    public static double triangle(Random random)
+    {
+        return random.nextFloat() - random.nextFloat() * 0.5f;
+    }
+
+    /**
+     * @return A random float, distributed around [-delta, delta] in a triangle distribution X ~ pdf(t) = (1 - |t|) / (2 * delta).
+     */
+    public static float triangle(Random random, float delta)
+    {
+        return (random.nextFloat() - random.nextFloat()) * delta;
+    }
+
     /**
      * Checks the existence of a <a href="https://en.wikipedia.org/wiki/Perfect_matching">perfect matching</a> of a <a href="https://en.wikipedia.org/wiki/Bipartite_graph">bipartite graph</a>.
      * The graph is interpreted as the matches between the set of inputs, and the set of tests.
@@ -611,76 +779,10 @@ public final class Helpers
     }
 
     /**
-     * Drains an amount from {@code from}, to {@code to}, without any wastage.
-     *
-     * @return {@code true} if a non-zero amount was drained.
-     */
-    public static boolean transferFluid(IFluidHandler from, IFluidHandler to, int amount)
-    {
-        final FluidStack fluid = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
-        final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
-        if (filled > 0)
-        {
-            from.drain(filled, IFluidHandler.FluidAction.EXECUTE); // Only drain the amount that was removed.
-            return true;
-        }
-        return false;
-    }
-
-    public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
-    {
-        if (fluidStack.isEmpty())
-        {
-            return FluidStack.EMPTY; // No fluid to merge, so we just exit immediately
-        }
-        final ItemStack mergeStack = inventory.getStackInSlot(slot);
-        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
-            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-            if (filled > 0)
-            {
-                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
-            }
-            FluidStack remainder = fluidStack.copy();
-            remainder.shrink(filled);
-            return remainder;
-        }).orElse(FluidStack.EMPTY);
-    }
-
-    /**
-     * @see net.minecraft.core.QuartPos#toBlock(int)
-     */
-    public static BlockPos quartToBlock(int x, int y, int z)
-    {
-        return new BlockPos(x << 2, y << 2, z << 2);
-    }
-
-    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
-    public static boolean detectAssertionsEnabled()
-    {
-        boolean enabled = false;
-        assert enabled = true;
-        return enabled;
-    }
-
-    /**
-     * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
-     */
-    public static boolean detectTestSourcesPresent()
-    {
-        try
-        {
-            Class.forName("net.dries007.tfc.TestMarker");
-            return true;
-        }
-        catch (ClassNotFoundException e) { /* Guess not */ }
-        return false;
-    }
-
-    /**
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant
      */
-    private static boolean perfectMatchDet(boolean[][] matrices, int size)
+    public static boolean perfectMatchDet(boolean[][] matrices, int size)
     {
         // matrix true = nonzero = matches
         final boolean[] matrix = matrices[size - 1];
@@ -712,7 +814,7 @@ public final class Helpers
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes the symbolic minor of a matrix by removing an arbitrary column.
      */
-    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    public static void perfectMatchSub(boolean[][] matrices, int size, int dc)
     {
         final int subSize = size - 1;
         final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];

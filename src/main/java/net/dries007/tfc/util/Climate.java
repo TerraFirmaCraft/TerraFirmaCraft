@@ -14,7 +14,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -22,7 +21,7 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.noise.NoiseUtil;
+import net.dries007.tfc.world.settings.ClimateSettings;
 
 /**
  * Central class for all TFC climate requirements.
@@ -55,7 +54,19 @@ public final class Climate
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
 
     public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
-    public static final float DEPTH_LEVEL = 0;
+    public static final float DEPTH_LEVEL = -64;
+
+    @Nullable private static ClimateSettings overworldTemperatureSettings;
+
+    public static ClimateSettings getOverworldTemperatureSettings()
+    {
+        return overworldTemperatureSettings != null ? overworldTemperatureSettings : ClimateSettings.DEFAULT_TEMPERATURE;
+    }
+
+    public static void setOverworldTemperatureSettings(ClimateSettings settings)
+    {
+        overworldTemperatureSettings = settings;
+    }
 
     /**
      * Gets the equivalent to {@link Biome#getTemperature(BlockPos)} for TFC biomes.
@@ -82,25 +93,25 @@ public final class Climate
     /**
      * Used to calculate the actual temperature at a world and position.
      * Will be valid when used on both logical sides.
-     * MUST NOT be used by world generation, it should use {@link Climate#calculateTemperature(BlockPos, float, Calendar)} instead, with the average temperature obtained through the correct chunk data source
+     * MUST NOT be used by world generation, it should use {@link Climate#calculateTemperature(BlockPos, float, Calendar)} instead, with the average temperature obtained through the correct chunk data source.
      */
     public static float getTemperature(LevelAccessor world, BlockPos pos)
     {
-        ChunkData data = ChunkData.get(world, pos);
-        ICalendar calendar = Calendars.get(world);
+        final ChunkData data = ChunkData.get(world, pos);
+        final ICalendar calendar = Calendars.get(world);
         return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
     public static Biome.Precipitation getPrecipitation(LevelAccessor world, BlockPos pos)
     {
-        ChunkData data = ChunkData.get(world, pos);
-        ICalendar calendar = Calendars.get(world);
-        float rainfall = data.getRainfall(pos);
+        final ChunkData data = ChunkData.get(world, pos);
+        final ICalendar calendar = Calendars.get(world);
+        final float rainfall = data.getRainfall(pos);
         if (rainfall < 100)
         {
             return Biome.Precipitation.NONE;
         }
-        float temperature = calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+        final float temperature = calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
         return temperature < 0 ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
     }
 
@@ -115,7 +126,7 @@ public final class Climate
     }
 
     /**
-     * The reverse of {@link Climate#toVanillaTemperature(float)}
+     * The inverse of {@link Climate#toVanillaTemperature(float)}
      */
     public static float toActualTemperature(float vanillaTemperature)
     {
@@ -147,7 +158,7 @@ public final class Climate
         // Month temperature
         final Month currentMonth = ICalendar.getMonthOfYear(calendarTime, daysInMonth);
         final float delta = ICalendar.getFractionOfMonth(calendarTime, daysInMonth);
-        final float monthFactor = NoiseUtil.lerp(currentMonth.getTemperatureModifier(), currentMonth.next().getTemperatureModifier(), delta);
+        final float monthFactor = Mth.lerp(delta, currentMonth.getTemperatureModifier(), currentMonth.next().getTemperatureModifier());
 
         final float monthTemperature = calculateMonthlyTemperature(z, monthFactor);
         final float dailyTemperature = calculateDailyTemperature(calendarTime);
@@ -164,26 +175,25 @@ public final class Climate
         // Above sea level, temperature lowers linearly with y.
         // Below sea level, temperature tends towards the average temperature for the area (having less influence from daily and monthly temperature)
         // Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"
-        y = Mth.clamp(y, 0, 255); // Future proofing for 1.17
         if (y > SEA_LEVEL)
         {
             // -1.6 C / 10 blocks above sea level
             float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
             return averageTemperature + monthTemperature - elevationTemperature + dailyTemperature;
         }
-        else if (y > DEPTH_LEVEL)
+        else if (y > 0)
         {
             // The influence of daily and monthly temperature is reduced as depth increases
-            float monthInfluence = (y - DEPTH_LEVEL) / (SEA_LEVEL - DEPTH_LEVEL); // Range 0 - 1
+            float monthInfluence = Helpers.inverseLerp(y, 0, SEA_LEVEL);
             float dailyInfluence = Mth.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
-            return averageTemperature + NoiseUtil.lerp(0, monthTemperature, monthInfluence) + NoiseUtil.lerp(0, dailyTemperature, dailyInfluence);
+            return averageTemperature + Mth.lerp(monthInfluence, (float) 0, monthTemperature) + Mth.lerp(dailyInfluence, (float) 0, dailyTemperature);
         }
-        else // y <= DEPTH_LEVEL
+        else
         {
-            // At y = DEPTH_LEVEL, there will be no influence from either month or daily temperature
-            // Between this and y = 0, linearly scale average temperature towards depth temperature
-            float depthInfluence = y / DEPTH_LEVEL;
-            return NoiseUtil.lerp(LAVA_LEVEL_TEMPERATURE, averageTemperature, depthInfluence);
+            // At y = 0, there will be no influence from either month or daily temperature
+            // Between this and the bottom of the world, linearly scale average temperature towards depth temperature
+            float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
+            return Mth.lerp(depthInfluence, LAVA_LEVEL_TEMPERATURE, averageTemperature);
         }
     }
 
@@ -192,8 +202,7 @@ public final class Climate
      */
     private static float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
-        float temperatureScale = TFCConfig.SERVER.temperatureScale.get();
-        return monthTemperatureModifier * NoiseUtil.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1 / (2 * temperatureScale), 0, z);
+        return monthTemperatureModifier * Helpers.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1f / (4f * getOverworldTemperatureSettings().scale()), z);
     }
 
     /**

@@ -69,21 +69,21 @@ public abstract class Artist<T, A extends Artist<T, A>>
         return f >= 0 ? (int) f : (int) f - 1;
     }
 
-    protected int size = 1000;
-    protected int minX = 0, minY = 0, maxX = size, maxY = size;
+    protected int width = 1000, height = 1000;
+    protected int minX = 0, minY = 0, maxX = width, maxY = height;
 
     protected Artist() {}
 
     public A size(int size)
     {
-        this.size = size;
-        return (A) this;
+        return size(size, size);
     }
 
-    public A centerSized(int radius)
+    public A size(int width, int height)
     {
-        size(radius * 2);
-        return center(radius);
+        this.width = width;
+        this.height = height;
+        return (A) this;
     }
 
     public A center(int radius)
@@ -125,14 +125,36 @@ public abstract class Artist<T, A extends Artist<T, A>>
         return (A) this;
     }
 
+    public A centerSized(int radius)
+    {
+        return center(radius).size(radius * 2);
+    }
+
+    public A dimensionsSized(int size)
+    {
+        return dimensions(size).size(size);
+    }
+
+    public A dimensionsSized(int width, int height)
+    {
+        return dimensions(width, height).size(width, height);
+    }
+
+    public void draw(String name)
+    {
+        draw(name, null);
+    }
+
     public void draw(String name, T instance)
     {
         try
         {
             new File("artist").mkdirs();
-            File outFile = new File("artist/" + name + ".png");
-            BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics = ((Graphics2D) image.getGraphics());
+
+            final File outFile = new File("artist/" + name + ".png");
+            final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            final Graphics2D graphics = ((Graphics2D) image.getGraphics());
+
             drawInternal(name, instance, graphics);
             ImageIO.write(image, "PNG", outFile);
         }
@@ -142,22 +164,27 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
     }
 
-    public abstract void drawInternal(String name, T instance, Graphics graphics);
+    public void draw(T instance, Graphics graphics)
+    {
+        drawInternal("<internal call>", instance, graphics);
+    }
+
+    protected abstract void drawInternal(String name, T instance, Graphics graphics);
 
     protected A copy(Artist<?, ?> other)
     {
-        dimensions(other.minX, other.minY, other.maxX, other.maxY).size(other.size);
+        dimensions(other.minX, other.minY, other.maxX, other.maxY).size(other.width);
         return (A) this;
     }
 
     protected final <S> Stream<Local<S>> stream(Pixel<S> step)
     {
-        return IntStream.range(0, size * size)
+        return IntStream.range(0, width * height)
             .mapToObj(i -> {
-                int posX = (i / size);
-                int posY = (i % size);
-                double x = minX + (posX + 0.5) * (double) (maxX - minX) / size;
-                double y = minY + (posY + 0.5) * (double) (maxY - minY) / size;
+                int posX = (i / height);
+                int posY = (i % height);
+                double x = minX + (posX + 0.5) * (double) (maxX - minX) / width;
+                double y = minY + (posY + 0.5) * (double) (maxY - minY) / height;
                 S s = step.apply(x, y);
                 return new Local<>(posX, posY, s);
             });
@@ -333,7 +360,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        public void drawInternal(String name, T instance, Graphics graphics)
+        protected void drawInternal(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
             final int[] distribution = new int[histogramBins];
@@ -366,7 +393,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static final class Raw extends Artist<Pixel<Color>, Raw>
     {
         @Override
-        public void drawInternal(String name, Pixel<Color> instance, Graphics graphics)
+        protected void drawInternal(String name, Pixel<Color> instance, Graphics graphics)
         {
             drawStream(graphics, stream(instance));
         }
@@ -382,7 +409,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        public void drawInternal(String name, T instance, Graphics graphics)
+        protected void drawInternal(String name, T instance, Graphics graphics)
         {
             drawStream(graphics, stream(colorTransformer.apply(instance)));
         }
@@ -415,7 +442,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        public void drawInternal(String name, K instance, Graphics graphics)
+        protected void drawInternal(String name, K instance, Graphics graphics)
         {
             final Pixel<V> pixel = transformer.apply(instance);
             drawStream(graphics, stream((x, y) -> colorTransformer.apply(pixel.apply(x, y))));
@@ -442,7 +469,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
 
         @Override
-        public void drawInternal(String name, T instance, Graphics graphics)
+        protected void drawInternal(String name, T instance, Graphics graphics)
         {
             drawing.accept(instance, (Graphics2D) graphics);
         }

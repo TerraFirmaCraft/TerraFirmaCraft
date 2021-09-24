@@ -56,6 +56,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 
@@ -87,6 +88,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
+import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
@@ -100,6 +102,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
@@ -219,11 +222,11 @@ public final class ForgeEventHandler
         final LevelChunk chunk = event.getObject();
         if (!chunk.isEmpty())
         {
-            final Level world = event.getObject().getLevel();
+            final Level level = event.getObject().getLevel();
             final ChunkPos chunkPos = event.getObject().getPos();
 
-            ChunkData data = null;
-            if (Helpers.isClientSide(world))
+            ChunkData data;
+            if (Helpers.isClientSide(level))
             {
                 // This may happen before or after the chunk is watched and synced to client
                 // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
@@ -235,7 +238,7 @@ public final class ForgeEventHandler
                 // Chunk was created on server thread.
                 // We try and promote partial data, if it's available via an identifiable chunk generator.
                 // Otherwise, we fallback to empty data.
-                if (world instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+                if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
                 {
                     data = ex.getChunkDataProvider().promotePartialOrCreate(chunkPos);
                 }
@@ -482,24 +485,31 @@ public final class ForgeEventHandler
 
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof final ServerLevel world)
+        if (event.getWorld() instanceof final ServerLevel level)
         {
+            final MinecraftServer server = level.getServer();
+
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
-                final GameRules rules = world.getGameRules();
-                final MinecraftServer server = world.getServer();
+                final GameRules rules = level.getGameRules();
 
                 rules.getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, server);
                 rules.getRule(GameRules.RULE_DOINSOMNIA).set(false, server);
                 rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
                 rules.getRule(GameRules.RULE_DO_TRADER_SPAWNING).set(false, server);
 
-                LOGGER.info("Updating TFC Relevant Game Rules for level {}.", world.dimension().location());
+                LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
+            }
+
+            if (level.dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+            {
+                // Update climate settings
+                final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
+                Climate.setOverworldTemperatureSettings(settings);
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings));
             }
         }
     }
-
-    // todo: unload hook for chunk data cache cleaning
 
     public static void onCreateNetherPortal(BlockEvent.PortalSpawnEvent event)
     {
@@ -611,6 +621,12 @@ public final class ForgeEventHandler
         if (event.getPlayer() instanceof ServerPlayer)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
+
+            final ServerLevel overworld = ServerLifecycleHooks.getCurrentServer().overworld();
+            if (overworld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+            {
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings()));
+            }
         }
     }
 

@@ -82,7 +82,7 @@ public class PotBlock extends FirepitBlock
             {
                 world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
             }
-            world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.fastGaussian(rand), 0.5, Helpers.fastGaussian(rand));
+            world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.triangle(rand), 0.5, Helpers.triangle(rand));
             world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
         }
     }

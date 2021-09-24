@@ -223,7 +223,7 @@ public final class BiomeNoise
             {
                 final float th = VolcanoNoise.calculateHeight(distance + volcanoJitterNoise.noise(x, z));
                 final float height = SEA_LEVEL_Y + baseVolcanoHeight + th * scaleVolcanoHeight;
-                return NoiseUtil.lerp(baseHeight, 0.5f * (height + Math.max(height, baseHeight)), t);
+                return Mth.lerp(t, baseHeight, 0.5f * (height + Math.max(height, baseHeight)));
             }
             return baseHeight;
         };

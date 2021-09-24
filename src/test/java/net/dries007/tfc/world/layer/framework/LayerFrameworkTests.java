@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.hackSharedConstantsVersion;
+import static net.dries007.tfc.TestHelper.boostrap;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LayerFrameworkTests
@@ -26,7 +26,7 @@ public class LayerFrameworkTests
     @BeforeAll
     public static void setup()
     {
-        hackSharedConstantsVersion();
+        boostrap();
     }
 
     @Test

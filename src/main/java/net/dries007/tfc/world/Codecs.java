@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -142,5 +143,13 @@ public final class Codecs
             list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
             map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
         );
+    }
+
+    /**
+     * @return A data result of the given nullable value, with success defined as the result being non-null
+     */
+    public static <T> DataResult<T> resultFromNullable(@Nullable T result, String error)
+    {
+        return result != null ? DataResult.success(result) : DataResult.error(error);
     }
 }

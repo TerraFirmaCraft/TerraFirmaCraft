@@ -77,6 +77,6 @@ public class MidpointFractalTests
             g.setColor(Color.WHITE);
             TestHelper.draw(fractal, g, 1000);
 
-        }).draw("midpoint_example", null);
+        }).draw("midpoint_example");
     }
 }

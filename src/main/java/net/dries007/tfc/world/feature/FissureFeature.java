@@ -86,36 +86,39 @@ public class FissureFeature extends Feature<FissureConfig>
 
     private static Direction randomBoundedDirection(Random random, BlockPos center, BlockPos target, int radius)
     {
+        // Adjust the branch to stay within a bounded region
         final Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         final int distX = target.getX() - center.getX(), distZ = target.getZ() - center.getZ();
-        switch (direction) // Adjust the branch to stay within a bounded region
+        // Adjust the branch to stay within a bounded region
+        switch (direction)
         {
             case EAST:
                 if (distX > radius)
                 {
                     return Direction.WEST;
                 }
-                break;
+                return direction;
             case WEST:
                 if (distX < -radius)
                 {
                     return Direction.EAST;
                 }
-                break;
+                return direction;
             case NORTH:
                 if (distZ < -radius)
                 {
                     return Direction.SOUTH;
                 }
-                break;
+                return direction;
             case SOUTH:
                 if (distZ > radius)
                 {
                     return Direction.NORTH;
                 }
-                break;
+                return direction;
+            default:
+                return direction;
         }
-        return direction;
     }
 
     public FissureFeature(Codec<FissureConfig> codec)
@@ -136,7 +139,7 @@ public class FissureFeature extends Feature<FissureConfig>
         final BlockState insideState = config.wallState().orElseGet(() -> {
             final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
             final ChunkData data = provider.get(context.level(), pos);
-            final RockSettings rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
+            final RockSettings rock = data.getRockData().getRock(pos.getX(), context.chunkGenerator().getMinY() + 1, pos.getZ());
             return rock.raw().defaultBlockState();
         });
 

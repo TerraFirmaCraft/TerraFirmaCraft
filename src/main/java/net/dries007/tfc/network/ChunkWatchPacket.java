@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.network;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -13,8 +15,8 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.*;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
@@ -23,14 +25,14 @@ public class ChunkWatchPacket
 {
     private final int chunkX;
     private final int chunkZ;
-    private final LerpFloatLayer rainfallLayer;
-    private final LerpFloatLayer temperatureLayer;
+    @Nullable private final LerpFloatLayer rainfallLayer;
+    @Nullable private final LerpFloatLayer temperatureLayer;
     private final ForestType forestType;
     private final float forestWeirdness;
     private final float forestDensity;
     private final PlateTectonicsClassification plateTectonicsInfo;
 
-    public ChunkWatchPacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+    public ChunkWatchPacket(int chunkX, int chunkZ, @Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -46,8 +48,8 @@ public class ChunkWatchPacket
     {
         chunkX = buffer.readVarInt();
         chunkZ = buffer.readVarInt();
-        rainfallLayer = new LerpFloatLayer(buffer);
-        temperatureLayer = new LerpFloatLayer(buffer);
+        rainfallLayer = Helpers.decodeNullable(buffer, LerpFloatLayer::new);
+        temperatureLayer = Helpers.decodeNullable(buffer, LerpFloatLayer::new);
         forestType = ForestType.valueOf(buffer.readByte());
         forestDensity = buffer.readFloat();
         forestWeirdness = buffer.readFloat();
@@ -58,8 +60,8 @@ public class ChunkWatchPacket
     {
         buffer.writeVarInt(chunkX);
         buffer.writeVarInt(chunkZ);
-        rainfallLayer.serialize(buffer);
-        temperatureLayer.serialize(buffer);
+        Helpers.encodeNullable(rainfallLayer, buffer, LerpFloatLayer::encode);
+        Helpers.encodeNullable(temperatureLayer, buffer, LerpFloatLayer::encode);
         buffer.writeByte(forestType.ordinal());
         buffer.writeFloat(forestDensity);
         buffer.writeFloat(forestWeirdness);

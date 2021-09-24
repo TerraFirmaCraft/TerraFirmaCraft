@@ -8,29 +8,34 @@ package net.dries007.tfc.world.chunkdata;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.world.noise.NoiseUtil;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * This is a simple linearly interpolated float grid.
  * It records the value at the corner, and interpolates the values between on demand.
  */
-public class LerpFloatLayer implements INBTSerializable<CompoundTag>
+public class LerpFloatLayer
 {
-    private float valueNW, valueNE, valueSW, valueSE;
+    private final float valueNW, valueNE, valueSW, valueSE;
 
     public LerpFloatLayer(FriendlyByteBuf buffer)
     {
-        deserialize(buffer);
+        valueNW = buffer.readFloat();
+        valueNE = buffer.readFloat();
+        valueSW = buffer.readFloat();
+        valueSE = buffer.readFloat();
     }
 
-    public LerpFloatLayer(float defaultValue)
+    public LerpFloatLayer(CompoundTag nbt)
     {
-        init(defaultValue, defaultValue, defaultValue, defaultValue);
+        valueNW = nbt.getFloat("nw");
+        valueNE = nbt.getFloat("ne");
+        valueSW = nbt.getFloat("sw");
+        valueSE = nbt.getFloat("se");
     }
 
-    public void init(float valueNW, float valueNE, float valueSW, float valueSE)
+    public LerpFloatLayer(float valueNW, float valueNE, float valueSW, float valueSE)
     {
         this.valueNW = valueNW;
         this.valueNE = valueNE;
@@ -46,13 +51,12 @@ public class LerpFloatLayer implements INBTSerializable<CompoundTag>
      */
     public float getValue(float tNS, float tEW)
     {
-        return NoiseUtil.lerp4(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
+        return Helpers.lerp4(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
     }
 
-    @Override
-    public CompoundTag serializeNBT()
+    public CompoundTag write()
     {
-        CompoundTag nbt = new CompoundTag();
+        final CompoundTag nbt = new CompoundTag();
         nbt.putFloat("nw", valueNW);
         nbt.putFloat("ne", valueNE);
         nbt.putFloat("sw", valueSW);
@@ -60,28 +64,11 @@ public class LerpFloatLayer implements INBTSerializable<CompoundTag>
         return nbt;
     }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        valueNW = nbt.getFloat("nw");
-        valueNE = nbt.getFloat("ne");
-        valueSW = nbt.getFloat("sw");
-        valueSE = nbt.getFloat("se");
-    }
-
-    public void serialize(FriendlyByteBuf buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeFloat(valueNW);
         buffer.writeFloat(valueNE);
         buffer.writeFloat(valueSW);
         buffer.writeFloat(valueSE);
-    }
-
-    public void deserialize(FriendlyByteBuf buffer)
-    {
-        valueNW = buffer.readFloat();
-        valueNE = buffer.readFloat();
-        valueSW = buffer.readFloat();
-        valueSE = buffer.readFloat();
     }
 }

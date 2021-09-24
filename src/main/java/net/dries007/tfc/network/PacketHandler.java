@@ -41,6 +41,7 @@ public class PacketHandler
         register(FoodDataUpdatePacket.class, FoodDataUpdatePacket::encode, FoodDataUpdatePacket::new, FoodDataUpdatePacket::handle);
         register(PlayerDataUpdatePacket.class, PlayerDataUpdatePacket::encode, PlayerDataUpdatePacket::new, PlayerDataUpdatePacket::handle);
         register(ProspectedPacket.class, ProspectedPacket::encode, ProspectedPacket::new, ProspectedPacket::handle);
+        register(ClimateSettingsUpdatePacket.class, ClimateSettingsUpdatePacket::encode, ClimateSettingsUpdatePacket::new, ClimateSettingsUpdatePacket::handle);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);

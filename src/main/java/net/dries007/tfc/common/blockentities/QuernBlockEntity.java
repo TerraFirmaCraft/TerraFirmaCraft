@@ -78,7 +78,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private static void addParticle(Level level, BlockPos pos, ItemStack item)
     {
-        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
+        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D);
     }
 
     private int rotationTimer;
@@ -170,7 +170,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         assert level != null;
         if (level.isClientSide && !item.isEmpty())
         {
-            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.fastGaussian(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.fastGaussian(level.random) / 2.0D);
+            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D);
         }
     }
 

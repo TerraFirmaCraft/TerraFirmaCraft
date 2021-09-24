@@ -7,16 +7,23 @@
 package net.dries007.tfc.common.items;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import javax.annotation.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,8 +37,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ProspectedPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.ProspectedEvent;
-import net.dries007.tfc.world.noise.NoiseUtil;
 
 public class PropickItem extends ToolItem
 {
@@ -84,7 +91,7 @@ public class PropickItem extends ToolItem
 
                 ProspectResult result;
                 BlockState found = state;
-                RANDOM.setSeed(NoiseUtil.hash(pos.getX() * 238461923, pos.getY() * 62938412, pos.getZ() * 928349123));
+                RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
                 if (state.is(TFCTags.Blocks.PROSPECTABLE))
                 {
                     // Found
@@ -123,6 +130,15 @@ public class PropickItem extends ToolItem
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> text, TooltipFlag flag)
+    {
+        if (flag.isAdvanced())
+        {
+            text.add(new TranslatableComponent("tfc.tooltip.propick.accuracy", (int) (100 * (1 - falseNegativeChance))).withStyle(ChatFormatting.GRAY));
+        }
     }
 
 }

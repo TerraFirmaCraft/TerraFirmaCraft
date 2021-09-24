@@ -29,6 +29,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
 
+    private static final float UNKNOWN_RAINFALL = 250;
+    private static final float UNKNOWN_TEMPERATURE = 10;
+
     public static ChunkData get(LevelAccessor world, BlockPos pos)
     {
         return get(world, new ChunkPos(pos));
@@ -76,8 +79,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private Status status;
 
     @Nullable private RockData rockData;
-    private LerpFloatLayer rainfallLayer;
-    private LerpFloatLayer temperatureLayer;
+    @Nullable private LerpFloatLayer rainfallLayer;
+    @Nullable private LerpFloatLayer temperatureLayer;
     private ForestType forestType;
     private float forestWeirdness;
     private float forestDensity;
@@ -117,12 +120,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
+        return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
-    public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
+    public void setRainfall(LerpFloatLayer rainfallLayer)
     {
-        rainfallLayer.init(rainNW, rainNE, rainSW, rainSE);
+        this.rainfallLayer = rainfallLayer;
     }
 
     public float getAverageTemp(BlockPos pos)
@@ -132,12 +135,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
+        return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
     }
 
-    public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
+    public void setAverageTemp(LerpFloatLayer temperatureLayer)
     {
-        temperatureLayer.init(tempNW, tempNE, tempSW, tempSE);
+        this.temperatureLayer = temperatureLayer;
     }
 
     public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
@@ -207,7 +210,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+    public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
@@ -238,14 +241,20 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         if (status == Status.FULL)
         {
             nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
-            nbt.put("rainfall", rainfallLayer.serializeNBT());
-            nbt.put("temperature", temperatureLayer.serializeNBT());
+            if (rainfallLayer != null)
+            {
+                nbt.put("rainfall", rainfallLayer.write());
+            }
+            if (temperatureLayer != null)
+            {
+                nbt.put("temperature", temperatureLayer.write());
+            }
             nbt.putByte("forestType", (byte) forestType.ordinal());
             nbt.putFloat("forestWeirdness", forestWeirdness);
             nbt.putFloat("forestDensity", forestDensity);
             if (rockData != null)
             {
-                nbt.put("rockData", rockData.write());
+                nbt.put("rockData", rockData.write(rockLayerSettings));
             }
         }
         return nbt;
@@ -259,8 +268,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         if (status == Status.FULL)
         {
             plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
-            rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
-            temperatureLayer.deserializeNBT(nbt.getCompound("temperature"));
+            rainfallLayer = nbt.contains("rainfall") ? new LerpFloatLayer(nbt.getCompound("rainfall")) : null;
+            temperatureLayer = nbt.contains("temperature") ? new LerpFloatLayer(nbt.getCompound("temperature")) : null;
             rockData = nbt.contains("rockData", Constants.NBT.TAG_COMPOUND) ? new RockData(nbt.getCompound("rockData"), rockLayerSettings) : null;
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
             forestWeirdness = nbt.getFloat("forestWeirdness");
@@ -277,8 +286,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private void reset()
     {
         rockData = null;
-        rainfallLayer = new LerpFloatLayer(250);
-        temperatureLayer = new LerpFloatLayer(10);
+        rainfallLayer = null;
+        temperatureLayer = null;
         forestWeirdness = 0.5f;
         forestDensity = 0.5f;
         forestType = ForestType.NONE;
@@ -318,13 +327,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         }
 
         @Override
-        public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
+        public void setRainfall(LerpFloatLayer rainfallLayer)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override
-        public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
+        public void setAverageTemp(LerpFloatLayer temperatureLayer)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
@@ -348,7 +357,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

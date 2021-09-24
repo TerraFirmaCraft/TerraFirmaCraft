@@ -56,6 +56,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placer.TFCBlockPlacers;
+import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 @Mod(TerraFirmaCraft.MOD_ID)
@@ -117,6 +118,7 @@ public final class TerraFirmaCraft
         TFCLoot.registerLootConditions();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
+        RockSettings.registerDefaultRocks();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 

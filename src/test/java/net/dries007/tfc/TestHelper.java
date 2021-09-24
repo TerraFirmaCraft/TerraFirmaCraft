@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
 
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
@@ -47,7 +48,7 @@ public interface TestHelper
         return seed;
     }
 
-    static void hackSharedConstantsVersion()
+    static void boostrap()
     {
         try
         {
@@ -59,6 +60,8 @@ public interface TestHelper
         {
             fail("Unable to set SharedConstants#CURRENT_VERSION", e);
         }
+
+        Bootstrap.bootStrap();
     }
 
     static <T> void background(T t, Graphics2D g)

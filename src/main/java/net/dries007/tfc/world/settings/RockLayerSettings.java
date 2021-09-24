@@ -7,19 +7,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fmllegacy.RegistryObject;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.rock.Rock;
-import net.dries007.tfc.common.blocks.rock.Rock.BlockType;
-import net.dries007.tfc.common.blocks.rock.RockCategory;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.events.RockLoadingEvent;
 import net.dries007.tfc.world.Codecs;
 
 public class RockLayerSettings
@@ -33,30 +24,7 @@ public class RockLayerSettings
 
     public static RockLayerSettings getDefault()
     {
-        final Map<ResourceLocation, RockSettings> rocks = new HashMap<>();
-        for (Rock rock : Rock.values())
-        {
-            final ResourceLocation id = Helpers.identifier(rock.getSerializedName());
-            final RockCategory category = rock.getCategory();
-            final Map<Rock.BlockType, RegistryObject<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
-            final RockSettings instance = new RockSettings(
-                id,
-                blocks.get(BlockType.RAW).get(),
-                blocks.get(Rock.BlockType.HARDENED).get(),
-                blocks.get(Rock.BlockType.GRAVEL).get(),
-                blocks.get(Rock.BlockType.COBBLE).get(),
-                TFCBlocks.SAND.get(rock.getSandType()).get(),
-                TFCBlocks.SANDSTONE.get(rock.getSandType()).get(SandstoneBlockType.RAW).get(),
-                Optional.of(blocks.get(Rock.BlockType.SPIKE).get()),
-                Optional.of(blocks.get(Rock.BlockType.LOOSE).get()),
-                category != RockCategory.IGNEOUS_INTRUSIVE,
-                true,
-                category == RockCategory.IGNEOUS_INTRUSIVE || category == RockCategory.METAMORPHIC
-            );
-            rocks.put(id, instance);
-        }
-        MinecraftForge.EVENT_BUS.post(new RockLoadingEvent(rocks)); // Allow addons to mutate rocks
-        return new RockLayerSettings(ImmutableMap.copyOf(rocks), 7); // copy the map so no sneaky references get held
+        return new RockLayerSettings(RockSettings.getDefaults(), 7);
     }
 
     private static DataResult<Map<ResourceLocation, RockSettings>> collect(List<RockSettings> rocks)
@@ -151,7 +119,7 @@ public class RockLayerSettings
 
     public List<RockSettings> getRocksForLayer(RockLayer layer)
     {
-        return this.rocks
+        return rocks
             .stream()
             .filter(rock -> switch (layer)
                 {

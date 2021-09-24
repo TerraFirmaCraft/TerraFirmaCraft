@@ -122,7 +122,7 @@ public class RiverVisualizations
         final float s = 1000 / 40f;
         PLATES.color(TestHelper::plateColor).dimensions(40);
         Artist.custom((t, g) -> {
-            PLATES.drawInternal("", plates, g);
+            PLATES.draw(plates, g);
 
             g.setColor(Color.RED);
             for (Watershed shed : sheds)
@@ -139,7 +139,7 @@ public class RiverVisualizations
             g.setColor(Color.ORANGE);
             g.setStroke(new BasicStroke(2));
             rivers.forEach(fractal -> draw(fractal, g, s));
-        }).draw("rivers", null);
+        }).draw("rivers");
 
         final RandomSource random = new SimpleRandomSource(seed);
         final List<MidpointFractal> fractals = rivers.stream()
@@ -147,12 +147,12 @@ public class RiverVisualizations
             .collect(Collectors.toList());
 
         Artist.custom((t, g) -> {
-            PLATES.drawInternal("", plates, g);
+            PLATES.draw(plates, g);
 
             g.setColor(Color.CYAN);
             g.setStroke(new BasicStroke(2));
             fractals.forEach(fractal -> draw(fractal, g, s));
-        }).draw("rivers_midpoint", null);
+        }).draw("rivers_midpoint");
     }
 
     @Test

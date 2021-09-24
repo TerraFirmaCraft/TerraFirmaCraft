@@ -25,7 +25,6 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.noise.NoiseUtil;
 
 public final class TFCColors
 {
@@ -130,7 +129,7 @@ public final class TFCColors
                 case SUMMER:
                     return getClimateColor(FOLIAGE_COLORS_CACHE, pos);
                 case FALL:
-                    int index = NoiseUtil.hash(pos.getX() * 9283491, pos.getY() * 7483921, pos.getZ() * 673283712);
+                    int index = Helpers.hash(91273491823412341L, pos);
                     return FOLIAGE_FALL_COLORS_CACHE[index & COLORMAP_MASK];
                 case WINTER:
                     return getClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
@@ -184,7 +183,7 @@ public final class TFCColors
         }
 
         // Smoothly transition - based on when the chunk updates - from one season to the next
-        int positionDeltaHash = (NoiseUtil.hash(pos.getX() * 2834123, pos.getY() * 92349, pos.getZ() * 4792831) & 255);
+        int positionDeltaHash = (Helpers.hash(836494186029734123L, pos) & 255);
         if (positionDeltaHash < 256 * seasonDelta)
         {
             season = season.next();

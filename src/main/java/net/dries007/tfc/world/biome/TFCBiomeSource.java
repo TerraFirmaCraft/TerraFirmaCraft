@@ -40,13 +40,14 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         Codec.INT.fieldOf("spawn_center_x").forGetter(c -> c.spawnCenterX),
         Codec.INT.fieldOf("spawn_center_z").forGetter(c -> c.spawnCenterZ),
         RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
-        ClimateSettings.CODEC.fieldOf("climate_settings").forGetter(c -> c.climateSettings),
+        ClimateSettings.CODEC.fieldOf("temperature_settings").forGetter(c -> c.temperatureSettings),
+        ClimateSettings.CODEC.fieldOf("rainfall_settings").forGetter(c -> c.rainfallSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
 
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {
-        return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.getDefault(), biomeRegistry);
+        return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.DEFAULT_TEMPERATURE, ClimateSettings.DEFAULT_RAINFALL, biomeRegistry);
     }
 
     // Set from codec
@@ -54,14 +55,14 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     private final int spawnDistance;
     private final int spawnCenterX, spawnCenterZ;
     private final RockLayerSettings rockLayerSettings;
-    private final ClimateSettings climateSettings;
+    private final ClimateSettings temperatureSettings, rainfallSettings;
     private final Registry<Biome> biomeRegistry;
 
     private final ConcurrentArea<BiomeVariants> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
     private final Watershed.Context watersheds;
 
-    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
+    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
@@ -70,9 +71,10 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         this.spawnCenterX = spawnCenterX;
         this.spawnCenterZ = spawnCenterZ;
         this.rockLayerSettings = rockLayerSettings;
-        this.climateSettings = climateSettings;
+        this.temperatureSettings = temperatureSettings;
+        this.rainfallSettings = rainfallSettings;
         this.biomeRegistry = biomeRegistry;
-        this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings), rockLayerSettings);
+        this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings, temperatureSettings, rainfallSettings), rockLayerSettings);
         this.watersheds = new Watershed.Context(TFCLayers.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
         this.biomeLayer = new ConcurrentArea<>(TFCLayers.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayers::getFromLayerId);
     }
@@ -106,6 +108,12 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     public RockLayerSettings getRockLayerSettings()
     {
         return rockLayerSettings;
+    }
+
+    @Override
+    public ClimateSettings getTemperatureSettings()
+    {
+        return temperatureSettings;
     }
 
     @Override
@@ -182,45 +190,21 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
-    private BiomeTemperature calculateTemperature(float averageTemperature)
-    {
-        if (averageTemperature < climateSettings.frozenColdCutoff())
-        {
-            return BiomeTemperature.FROZEN;
-        }
-        else if (averageTemperature < climateSettings.coldNormalCutoff())
-        {
-            return BiomeTemperature.COLD;
-        }
-        else if (averageTemperature < climateSettings.normalLukewarmCutoff())
-        {
-            return BiomeTemperature.NORMAL;
-        }
-        else if (averageTemperature < climateSettings.lukewarmWarmCutoff())
-        {
-            return BiomeTemperature.LUKEWARM;
-        }
-        else
-        {
-            return BiomeTemperature.WARM;
-        }
-    }
-
     public BiomeRainfall calculateRainfall(float rainfall)
     {
-        if (rainfall < climateSettings.aridDryCutoff())
+        if (rainfall < rainfallSettings.firstMax())
         {
             return BiomeRainfall.ARID;
         }
-        else if (rainfall < climateSettings.dryNormalCutoff())
+        else if (rainfall < rainfallSettings.secondMax())
         {
             return BiomeRainfall.DRY;
         }
-        else if (rainfall < climateSettings.normalDampCutoff())
+        else if (rainfall < rainfallSettings.thirdMax())
         {
             return BiomeRainfall.NORMAL;
         }
-        else if (rainfall < climateSettings.dampWetCutoff())
+        else if (rainfall < rainfallSettings.fourthMax())
         {
             return BiomeRainfall.DAMP;
         }
@@ -231,14 +215,38 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
     }
 
     @Override
+    public TFCBiomeSource withSeed(long seedIn)
+    {
+        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, temperatureSettings, rainfallSettings, biomeRegistry);
+    }
+
+    @Override
     protected Codec<TFCBiomeSource> codec()
     {
         return CODEC;
     }
 
-    @Override
-    public TFCBiomeSource withSeed(long seedIn)
+    private BiomeTemperature calculateTemperature(float averageTemperature)
     {
-        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, climateSettings, biomeRegistry);
+        if (averageTemperature < temperatureSettings.firstMax())
+        {
+            return BiomeTemperature.FROZEN;
+        }
+        else if (averageTemperature < temperatureSettings.secondMax())
+        {
+            return BiomeTemperature.COLD;
+        }
+        else if (averageTemperature < temperatureSettings.thirdMax())
+        {
+            return BiomeTemperature.NORMAL;
+        }
+        else if (averageTemperature < temperatureSettings.fourthMax())
+        {
+            return BiomeTemperature.LUKEWARM;
+        }
+        else
+        {
+            return BiomeTemperature.WARM;
+        }
     }
 }

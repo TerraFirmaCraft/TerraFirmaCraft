@@ -6,24 +6,16 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
 
-import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
+
+import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
 
 public class RockData
 {
@@ -56,25 +48,12 @@ public class RockData
         this.middleLayer = new RockSettings[SIZE];
         this.topLayer = new RockSettings[SIZE];
 
-        // Build pallet
-        final ListTag pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
-        final List<RockSettings> uniqueRocks = new ArrayList<>(pallet.size());
-        for (int i = 0; i < pallet.size(); i++)
-        {
-            uniqueRocks.add(settings.getRock(new ResourceLocation(pallet.getString(i))));
-        }
-
-        fromByteArray(bottomLayer, nbt.getByteArray("bottomLayer"), uniqueRocks);
-        fromByteArray(middleLayer, nbt.getByteArray("middleLayer"), uniqueRocks);
-        fromByteArray(topLayer, nbt.getByteArray("topLayer"), uniqueRocks);
+        read(bottomLayer, nbt.getIntArray("bottomLayer"), settings);
+        read(middleLayer, nbt.getIntArray("middleLayer"), settings);
+        read(topLayer, nbt.getIntArray("topLayer"), settings);
 
         rockLayerHeight = nbt.getIntArray("height");
         surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
-
-        if (Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).anyMatch(Objects::isNull))
-        {
-            String s = "wtf?";
-        }
     }
 
     public RockSettings getRock(BlockPos pos)
@@ -89,11 +68,11 @@ public class RockData
         final int i = index(x, z);
         final int sh = surfaceHeight[i];
         final int rh = rockLayerHeight[i];
-        if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, keep a sea level reference held by the rock data instance.
+        if (y > (int) (SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, keep a sea level reference held by the rock data instance.
         {
             return topLayer[i];
         }
-        else if (y > (int) (TFCChunkGenerator.SEA_LEVEL_Y - 14 - 0.2 * sh + rh))
+        else if (y > (int) (SEA_LEVEL_Y - 34 - 0.2 * sh + rh))
         {
             return middleLayer[i];
         }
@@ -101,16 +80,6 @@ public class RockData
         {
             return bottomLayer[i];
         }
-    }
-
-    public RockSettings getTopRock(int x, int z)
-    {
-        return topLayer[index(x, z)];
-    }
-
-    public RockSettings getMidRock(int x, int z)
-    {
-        return middleLayer[index(x, z)];
     }
 
     public RockSettings getBottomRock(int x, int z)
@@ -123,26 +92,14 @@ public class RockData
         this.surfaceHeight = surfaceHeightMap;
     }
 
-    public CompoundTag write()
+    public CompoundTag write(RockLayerSettings settings)
     {
-        CompoundTag nbt = new CompoundTag();
-
-        // Record a map from bytes -> rocks (pallet, similar to vanilla world save format)
-        // This should really be shorts (but NBT does not have a short array, only ints), since three rock layers *technically* can use up to 3 * 256 unique rocks. However I think it's probably safe to assume there will never be (in chunk data), more than 256 rocks per chunk.
-        // However, at that point it's not actually more efficient to store a pallet, as the int ID of the rock is probably shorter.
-        // But, it does safeguard this chunk against changing rocks in the future, which is important.
-        final List<RockSettings> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
-        final ListTag pallet = new ListTag();
-        for (RockSettings rock : uniqueRocks)
-        {
-            pallet.add(StringTag.valueOf(rock.id().toString()));
-        }
-        nbt.put("pallet", pallet);
+        final CompoundTag nbt = new CompoundTag();
 
         // Record the raw byte values
-        nbt.putByteArray("bottomLayer", toByteArray(bottomLayer, uniqueRocks));
-        nbt.putByteArray("middleLayer", toByteArray(middleLayer, uniqueRocks));
-        nbt.putByteArray("topLayer", toByteArray(topLayer, uniqueRocks));
+        nbt.putIntArray("bottomLayer", write(bottomLayer, settings));
+        nbt.putIntArray("middleLayer", write(middleLayer, settings));
+        nbt.putIntArray("topLayer", write(topLayer, settings));
 
         nbt.putIntArray("height", rockLayerHeight);
         if (surfaceHeight != null)
@@ -152,19 +109,22 @@ public class RockData
         return nbt;
     }
 
-    private byte[] toByteArray(RockSettings[] layer, List<RockSettings> palette)
+    private int[] write(RockSettings[] layer, RockLayerSettings settings)
     {
-        byte[] array = new byte[SIZE];
+        final int[] array = new int[SIZE];
+        final List<RockSettings> palette = settings.getRocks();
         for (int i = 0; i < array.length; i++)
         {
-            array[i] = (byte) palette.indexOf(layer[i]); // indexOf() is O(n) but should be fast enough for our purposes, this isn't called that often
+            array[i] = palette.indexOf(layer[i]); // indexOf() is O(n) but should be fast enough for our purposes, this isn't called that often
         }
         return array;
     }
 
-    private void fromByteArray(RockSettings[] layer, byte[] data, List<RockSettings> palette)
+    private void read(RockSettings[] layer, int[] data, RockLayerSettings settings)
     {
         assert data.length == SIZE;
+
+        final List<RockSettings> palette = settings.getRocks();
         for (int i = 0; i < data.length; i++)
         {
             layer[i] = palette.get(data[i]);
