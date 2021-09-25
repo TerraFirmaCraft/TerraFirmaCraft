@@ -1,0 +1,97 @@
+package net.dries007.tfc.common.blocks.crop;
+
+import java.util.function.Supplier;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.Tags;
+
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.ClimateRanges;
+
+public abstract class ClimbingCropBlock extends DoubleCropBlock
+{
+    public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
+
+    public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
+    {
+        final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
+        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        {
+            @Override
+            public IntegerProperty getAgeProperty()
+            {
+                return property;
+            }
+        };
+    }
+
+    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    {
+        super(properties, maxSingleAge, maxAge, dead, seeds, primaryNutrient, climateRange);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    {
+        final ItemStack heldStack = player.getItemInHand(hand);
+        final BlockPos posAbove = pos.above();
+        if (Tags.Items.RODS_WOODEN.contains(heldStack.getItem()) && !state.getValue(STICK) && level.isEmptyBlock(posAbove) && posAbove.getY() <= level.getMaxBuildHeight())
+        {
+            if (!level.isClientSide())
+            {
+                level.setBlock(pos, state.setValue(STICK, true), Block.UPDATE_CLIENTS);
+                level.setBlock(pos.above(), state.setValue(STICK, true).setValue(PART, Part.TOP), Block.UPDATE_ALL);
+                heldStack.shrink(1);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.use(state, level, pos, player, hand, hit);
+    }
+
+    @Override
+    public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
+    {
+        final BlockState stateAbove = level.getBlockState(pos.above());
+        return stateAbove.getBlock() == this && stateAbove.getValue(STICK) && stateAbove.getValue(PART) == Part.TOP ? CropHelpers.GROWTH_LIMIT : maxSingleGrowth;
+    }
+
+    @Override
+    public void die(Level level, BlockPos pos, BlockState state, boolean fullyGrown)
+    {
+        final BlockPos posAbove = pos.above();
+        final BlockState stateAbove = level.getBlockState(posAbove);
+        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
+        if (stateAbove.getBlock() == this || (stateAbove.isAir() && state.getValue(STICK)))
+        {
+            level.setBlock(posAbove, deadState.setValue(DoubleDeadCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
+        }
+        else
+        {
+            level.destroyBlock(posAbove, false);
+        }
+        level.setBlockAndUpdate(pos, deadState.setValue(DoubleDeadCropBlock.PART, Part.BOTTOM));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(STICK));
+    }
+}

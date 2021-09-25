@@ -68,6 +68,8 @@ public class TFCTags
         public static final Tag.Named<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
         public static final Tag.Named<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
         public static final Tag.Named<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
+        public static final Tag.Named<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
+        public static final Tag.Named<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
 
         private static Tag.Named<Block> create(String id)
         {

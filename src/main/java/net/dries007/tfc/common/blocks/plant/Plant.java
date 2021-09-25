@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -162,19 +163,16 @@ public enum Plant implements IPlant
         this.speedFactor = speedFactor;
         this.stagesByMonth = stagesByMonth;
 
+        int maxStage = 1;
         if (stagesByMonth != null)
         {
-            int maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
-            if (maxStage > TFCBlockStateProperties.STAGES.length)
-            {
-                throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
-            }
-            this.property = TFCBlockStateProperties.STAGES[maxStage];
+            maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
         }
-        else
-        {
-            this.property = null;
-        }
+
+        // todo: this should really not stick an extra stage property on stuff that doesn't need it
+        // but to handle that we'd need to make this properly nullable, and then trace down all locations where plant blocks don't actually have a stage property (mostly likely adding setStage(BlockState, int) to IPlant
+        // For now, this will do to avoid errors elsewhere
+        this.property = maxStage > 0 ? TFCBlockStateProperties.getStageProperty(maxStage) : TFCBlockStateProperties.getStageProperty(1);
     }
 
     public Block create()
@@ -182,9 +180,10 @@ public enum Plant implements IPlant
         return type.factory.apply(this, type);
     }
 
-    public BlockItem createBlockItem(Block block, Item.Properties properties)
+    @Nullable
+    public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
     {
-        return type.blockItemFactory.apply(block, properties);
+        return needsItem() ? block -> type.blockItemFactory.apply(block, properties) : null;
     }
 
     @Override

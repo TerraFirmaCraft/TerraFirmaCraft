@@ -482,6 +482,12 @@ def generate(rm: ResourceManager):
     for berry, data in BERRIES.items():
         climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
 
+    # Crops
+    for crop, data in CROPS.items():
+        # todo: values
+        climate_range(rm, 'crop/%s' % crop, hydration=(40, 100, 30), temperature=(5, 25, 5))
+
+
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
     rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=21)))
@@ -503,7 +509,6 @@ def generate(rm: ResourceManager):
     rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
     rm.entity_loot('salmon', 'tfc:food/salmon')
     rm.entity_loot('pufferfish', 'minecraft:pufferfish')
-
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:
     return {

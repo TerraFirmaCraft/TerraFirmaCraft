@@ -24,13 +24,14 @@ public interface ICalendarTickable
         BlockEntity te = ((BlockEntity) this);
         if (te.getLevel() != null && !te.getLevel().isClientSide())
         {
-            long playerTick = Calendars.SERVER.getTicks();
-            long tickDelta = playerTick - getLastUpdateTick();
-            if (tickDelta != 1) // Expect 1 tick
+            final long thisTick = Calendars.SERVER.getTicks();
+            final long lastTick = getLastUpdateTick();
+            final long tickDelta = thisTick - lastTick;
+            if (lastTick != Integer.MIN_VALUE && tickDelta != 1)
             {
                 onCalendarUpdate(tickDelta - 1);
             }
-            setLastUpdateTick(playerTick);
+            setLastUpdateTick(thisTick);
         }
     }
 

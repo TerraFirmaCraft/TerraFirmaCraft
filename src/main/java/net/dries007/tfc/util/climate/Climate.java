@@ -38,7 +38,7 @@ import net.dries007.tfc.world.settings.ClimateSettings;
 public final class Climate
 {
     private static final Map<ResourceKey<Level>, ClimateModel> DIMENSIONS = new IdentityHashMap<>();
-    private static final WorldGenClimateModel DEFAULT = new BiomeBasedClimateModel();
+    private static final ClimateModel DEFAULT = new BiomeBasedClimateModel();
 
     static
     {
@@ -52,11 +52,6 @@ public final class Climate
     public static synchronized void register(ResourceKey<Level> dimension, ClimateModel model)
     {
         DIMENSIONS.put(dimension, model);
-    }
-
-    public static float getAverageTemperature(Level level, BlockPos pos)
-    {
-        return model(level).getAverageTemperature(level, pos);
     }
 
     public static float getTemperature(Level level, BlockPos pos, long calendarTick, int daysInMonth)
@@ -77,6 +72,11 @@ public final class Climate
     public static float getTemperature(Level level, BlockPos pos)
     {
         return getTemperature(level, pos, Calendars.get(level));
+    }
+
+    public static float getAverageTemperature(Level level, BlockPos pos)
+    {
+        return model(level).getAverageTemperature(level, pos);
     }
 
     public static float getRainfall(Level level, BlockPos pos)

@@ -506,6 +506,79 @@ def generate(rm: ResourceManager):
                 }
             }).with_lang(lang('%s mold', variant))
 
+    # Crops
+    for crop, crop_data in CROPS.items():
+        if crop_data.type == 'default':
+            block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=true': {'model': 'tfc:block/dead_crop/%s' % crop},
+                'mature=false': {'model': 'tfc:block/dead_crop/%s_young' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            rm.block_model(('dead_crop', crop + '_young'), textures={'crop': 'tfc:block/crop/%s_dead_young' % crop}, parent='block/crop')
+            rm.block_model(('dead_crop', crop), textures={'crop': 'tfc:block/crop/%s_dead' % crop}, parent='block/crop')
+
+        elif crop_data.type == 'double':
+            half = crop_data.stages // 2
+            block = rm.blockstate(('crop', crop), variants={
+                **dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_bottom' % (crop, i)}) for i in range(half, crop_data.stages)),
+                **dict(('age=%d,part=top' % i, {'model': 'tfc:block/crop/%s_age_%d_top' % (crop, i)}) for i in range(half, crop_data.stages))
+            })
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                if i < half:
+                    rm.block_model(('crop', '%s_age_%d' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+                else:
+                    rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
+                'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            for variant in ('young', 'top', 'bottom'):
+                rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
+
+        elif crop_data.type == 'double_stick':
+            half = crop_data.stages // 2
+            block = rm.blockstate(('crop', crop), variants={
+                **dict(('age=%d,stick=false' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,stick=true,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_stick' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,stick=true,part=top' % i, {'model': 'tfc:block/crop/stick'}) for i in range(half)),
+                **dict(('age=%d,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_bottom' % (crop, i)}) for i in range(half, crop_data.stages)),
+                **dict(('age=%d,part=top' % i, {'model': 'tfc:block/crop/%s_age_%d_top' % (crop, i)}) for i in range(half, crop_data.stages))
+            })
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                if i < half:
+                    rm.block_model(('crop', '%s_age_%d' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_stick' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_stick' % (crop, i)}, parent='block/crop')
+                else:
+                    rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
+                'mature=false,stick=true,part=top': {'model': 'tfc:block/dead_crop/%s_young_stick' % crop},
+                'mature=false,stick=true,part=bottom': {'model': 'tfc:block/crop/stick'},
+                'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            for variant in ('young', 'young_stick', 'top', 'bottom'):
+                rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
+
+        rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop))
+
+    rm.block_model(('crop', 'stick'), {'crop': 'tfc:block/crop/stick_top'}, parent='block/crop')
+
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))

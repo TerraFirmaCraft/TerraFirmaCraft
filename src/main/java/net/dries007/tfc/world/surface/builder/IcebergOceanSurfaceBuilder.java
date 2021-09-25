@@ -50,7 +50,7 @@ public class IcebergOceanSurfaceBuilder implements SurfaceBuilder
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;
 
-        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(z, seaLevel, context.averageTemperature(), 1);
+        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(new BlockPos(x, seaLevel, z), context.averageTemperature(), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;

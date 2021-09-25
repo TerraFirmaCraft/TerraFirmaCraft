@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendar;
@@ -60,10 +61,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
     /**
      * Calculates the average monthly temperature for a location and given month.
      */
-    public static float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
+    public static float getAverageMonthlyTemperature(BlockPos pos, float averageTemperature, float monthFactor)
     {
-        final float monthlyTemperature = INSTANCE.calculateMonthlyTemperature(z, monthFactor);
-        return INSTANCE.adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
+        return INSTANCE.calculateAverageMonthlyTemperature(pos, averageTemperature, monthFactor);
     }
 
     /**
@@ -120,6 +120,11 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public void updateCachedTemperatureSettings(ClimateSettings settings)
     {
         temperatureSettings = settings;
+    }
+
+    private float calculateAverageMonthlyTemperature(BlockPos pos, float averageTemperature, float monthTemperatureModifier)
+    {
+        return adjustTemperatureByElevation(pos.getY(), averageTemperature, calculateMonthlyTemperature(pos.getZ(), monthTemperatureModifier), 0);
     }
 
     /**

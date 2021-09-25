@@ -17,7 +17,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 /**
  * A default climate model, for dimensions that are entirely biome determined (i.e. vanilla).
  */
-public class BiomeBasedClimateModel implements WorldGenClimateModel
+public class BiomeBasedClimateModel implements TimeInvariantClimateModel
 {
     @Override
     public float getTemperature(LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
