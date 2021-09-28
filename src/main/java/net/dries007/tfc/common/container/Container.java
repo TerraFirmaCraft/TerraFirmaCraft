@@ -32,7 +32,7 @@ public class Container extends AbstractContainerMenu
     }
 
     /**
-     * Problem: calling add slots from the container superclass, means that we cannot access subclass parameters, such as an item stack or tile entity, which are necessary in order to do some things such as setup container slots.
+     * Problem: calling add slots from the container superclass, means that we cannot access subclass parameters, such as an item fluid or tile entity, which are necessary in order to do some things such as setup container slots.
      * Solutions for running this at the right time are very difficult.
      * So, we have an explicit post-constructor-initialization method, which needs to be ran externally, but will always run after final fields have been initialized.
      *
@@ -56,9 +56,9 @@ public class Container extends AbstractContainerMenu
     public ItemStack quickMoveStack(Player player, int index)
     {
         final Slot slot = slots.get(index);
-        if (slot.hasItem()) // Only move a stack when the index clicked has any contents
+        if (slot.hasItem()) // Only move a fluid when the index clicked has any contents
         {
-            final ItemStack stack = slot.getItem(); // The stack in the current slot
+            final ItemStack stack = slot.getItem(); // The fluid in the current slot
             final ItemStack original = stack.copy(); // The original amount in the slot
             if (moveStack(stack, index))
             {

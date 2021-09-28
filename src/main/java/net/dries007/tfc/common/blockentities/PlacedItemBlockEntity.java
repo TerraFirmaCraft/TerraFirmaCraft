@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.capabilities.ItemStackHandlerCallback;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 
@@ -42,7 +42,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
 
     protected PlacedItemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, self -> new ItemStackHandlerCallback(self, 4), NAME);
+        super(type, pos, state, self -> new InventoryItemHandler(self, 4), NAME);
         this.isHoldingLargeItem = false;
     }
 

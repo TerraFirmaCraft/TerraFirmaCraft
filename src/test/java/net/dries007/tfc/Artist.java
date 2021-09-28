@@ -20,7 +20,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +30,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings({"unchecked", "unused", "UnusedReturnValue"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
-    private static final Level LEVEL = Level.forName("UNITTEST", 50);
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger("Artist");
 
     public static Artist.Raw raw()
     {
@@ -381,11 +379,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
                 })
                 .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
             );
-            LOGGER.log(LEVEL, "Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
+            LOGGER.info("Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
             if (histogram)
             {
-                LOGGER.log(LEVEL, "Histogram for {}", name);
-                LOGGER.log(LEVEL, "Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
+                LOGGER.info("Histogram for {}", name);
+                LOGGER.info("Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
             }
         }
     }

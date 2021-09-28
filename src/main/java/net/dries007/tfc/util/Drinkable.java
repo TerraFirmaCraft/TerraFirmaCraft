@@ -1,19 +1,23 @@
 package net.dries007.tfc.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Drinkable extends FluidDefinition
@@ -22,9 +26,9 @@ public class Drinkable extends FluidDefinition
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = new IndirectHashCollection<>(Drinkable::getFluids);
 
     @Nullable
-    public static Drinkable get(FluidStack fluid)
+    public static Drinkable get(Fluid fluid)
     {
-        for (Drinkable drinkable : CACHE.getAll(fluid.getFluid()))
+        for (Drinkable drinkable : CACHE.getAll(fluid))
         {
             if (drinkable.matches(fluid))
             {
@@ -46,8 +50,8 @@ public class Drinkable extends FluidDefinition
         this.consumeChance = JsonHelpers.getAsFloat(json, "consume_chance", 0);
         this.thirst = JsonHelpers.getAsInt(json, "thirst", 0);
         this.intoxication = JsonHelpers.getAsInt(json, "intoxication", 0);
-        this.effects = new ArrayList<>();
 
+        final ImmutableList.Builder<Effect> builder = new ImmutableList.Builder<>();
         if (json.has("effects"))
         {
             JsonArray array = JsonHelpers.getAsJsonArray(json, "effects");
@@ -58,7 +62,32 @@ public class Drinkable extends FluidDefinition
                 final int duration = JsonHelpers.getAsInt(effectJson, "duration", 20);
                 final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 1);
                 final float chance = (float) JsonHelpers.getAsDouble(effectJson, "chance", 1);
-                this.effects.add(new Effect(type, duration, amplifier, chance));
+
+                builder.add(new Effect(type, duration, amplifier, chance));
+            }
+        }
+        this.effects = builder.build();
+    }
+
+    public void onDrink(Player player)
+    {
+        final Random random = player.getRandom();
+
+        if (thirst > 0 && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            foodData.addThirst(thirst);
+        }
+
+        if (intoxication > 0)
+        {
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.addIntoxicatedTicks(intoxication));
+        }
+
+        for (Drinkable.Effect effect : effects)
+        {
+            if (effect.chance() > random.nextFloat())
+            {
+                player.addEffect(new MobEffectInstance(effect.type(), effect.duration(), effect.amplifier(), false, false, true));
             }
         }
     }
@@ -81,11 +110,6 @@ public class Drinkable extends FluidDefinition
     public Collection<Effect> getEffects()
     {
         return effects;
-    }
-
-    public boolean hasEffects()
-    {
-        return !effects.isEmpty();
     }
 
     public record Effect(MobEffect type, int duration, int amplifier, float chance) {}

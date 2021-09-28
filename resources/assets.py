@@ -483,7 +483,13 @@ def generate(rm: ResourceManager):
     for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
         rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
 
-    rm.item_model(('ceramic', 'jug')).with_lang(lang('Ceramic Jug'))
+    rm.custom_item_model(('ceramic', 'jug'), 'tfc:contained_fluid', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'base': 'tfc:item/ceramic/jug_empty',
+            'fluid': 'tfc:item/ceramic/jug_overlay'
+        }
+    }).with_lang(lang('Ceramic Jug'))
 
     # Small Ceramic Vessels (colored)
     for color in COLORS:

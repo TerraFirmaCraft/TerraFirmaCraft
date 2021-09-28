@@ -7,44 +7,126 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.Predicate;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 
-public interface FluidIngredient extends Predicate<FluidStack>
+/**
+ * An ingredient for a single fluid.
+ * Used in conjunction with recipes that primarily accept {@link Fluid}s.
+ */
+public final class FluidIngredient implements Predicate<Fluid>
 {
-    SimpleFluidIngredient.Serializer FLUID = FluidIngredients.register(Helpers.identifier("fluid"), new SimpleFluidIngredient.Serializer());
-    TagFluidIngredient.Serializer TAG = FluidIngredients.register(Helpers.identifier("tag"), new TagFluidIngredient.Serializer());
-
-    /**
-     * Test the ingredient against the provided fluid stack, including amounts.
-     */
-    @Override
-    boolean test(FluidStack fluidStack);
-
-    /**
-     * Test the ingredient against the provided fluid stack, ignoring amounts.
-     */
-    boolean testIgnoreAmount(Fluid fluid);
-
-    /**
-     * Get all possible fluids that can matching this ingredient
-     */
-    Collection<Fluid> getMatchingFluids();
-
-    FluidIngredient.Serializer<?> getSerializer();
-
-    interface Serializer<T extends FluidIngredient>
+    public static FluidIngredient fromJson(JsonElement json)
     {
-        T fromJson(JsonObject json);
+        if (json.isJsonPrimitive())
+        {
+            return new FluidIngredient(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS));
+        }
+        if (json.isJsonObject())
+        {
+            return new FluidIngredient(fromJsonObject(json.getAsJsonObject(), new ObjectOpenHashSet<>()));
+        }
+        return new FluidIngredient(fromJsonArray(JsonHelpers.convertToJsonArray(json, "fluid ingredient"), new ObjectOpenHashSet<>()));
+    }
 
-        T fromNetwork(FriendlyByteBuf buffer);
+    public static FluidIngredient fromNetwork(FriendlyByteBuf buffer)
+    {
+        return new FluidIngredient(buffer);
+    }
 
-        void toNetwork(FriendlyByteBuf buffer, T ingredient);
+    public static void toNetwork(FriendlyByteBuf buffer, FluidIngredient ingredient)
+    {
+        Helpers.encodeAll(buffer, ingredient.fluids, (b, f) -> b.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, f));
+    }
+
+    private static void fromJson(JsonElement json, Set<Fluid> entries)
+    {
+        if (json.isJsonPrimitive())
+        {
+            entries.add(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS));
+        }
+        else if (json.isJsonObject())
+        {
+            fromJsonObject(json.getAsJsonObject(), entries);
+        }
+        else if (json.isJsonArray())
+        {
+            fromJsonArray(JsonHelpers.convertToJsonArray(json, "fluid ingredient array entry"), entries);
+        }
+        else
+        {
+            throw new JsonParseException("Expected fluid ingredient array entry to be either string, object, or array, was " + JsonHelpers.getType(json));
+        }
+    }
+
+    private static Set<Fluid> fromJsonArray(JsonArray array, Set<Fluid> entries)
+    {
+        for (JsonElement json : array)
+        {
+            fromJson(json, entries);
+        }
+        return entries;
+    }
+
+    private static Set<Fluid> fromJsonObject(JsonObject json, Set<Fluid> entries)
+    {
+        if (json.has("fluid") && json.has("tag"))
+        {
+            throw new JsonParseException("Fluid ingredient cannot have both 'fluid' and 'tag' entries");
+        }
+        if (json.has("fluid"))
+        {
+            entries.add(JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS));
+        }
+        else if (json.has("tag"))
+        {
+            entries.addAll(JsonHelpers.getTag(json, "tag", FluidTags.getAllTags()).getValues());
+        }
+        else
+        {
+            throw new JsonParseException("Fluid ingredient must have one of 'fluid' or 'tag' entries");
+        }
+        return entries;
+    }
+
+    private final Set<Fluid> fluids;
+
+    FluidIngredient(Fluid fluid)
+    {
+        this(Collections.singleton(fluid));
+    }
+
+    FluidIngredient(Set<Fluid> fluids)
+    {
+        this.fluids = fluids;
+    }
+
+    FluidIngredient(FriendlyByteBuf buffer)
+    {
+        this.fluids = Helpers.decodeAll(buffer, new ObjectOpenHashSet<>(), b -> b.readRegistryIdUnsafe(ForgeRegistries.FLUIDS));
+    }
+
+    public boolean test(Fluid fluid)
+    {
+        return fluids.contains(fluid);
+    }
+
+    public Collection<Fluid> getMatchingFluids()
+    {
+        return fluids;
     }
 }

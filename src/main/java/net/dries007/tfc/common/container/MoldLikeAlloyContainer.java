@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.capabilities.ItemStackHandlerCallback;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 
@@ -31,7 +31,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
         super(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand);
 
         this.mold = MoldLike.get(stack);
-        this.inventory = new ItemStackHandlerCallback(this, 1);
+        this.inventory = new InventoryItemHandler(this, 1);
     }
 
     @Override

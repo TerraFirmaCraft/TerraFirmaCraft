@@ -4,12 +4,9 @@ import java.util.Collection;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
 
 public class FluidDefinition
 {
@@ -18,7 +15,7 @@ public class FluidDefinition
 
     protected FluidDefinition(ResourceLocation id, JsonObject json)
     {
-        this(id, FluidIngredients.fromJson(GsonHelper.getAsJsonObject(json, "ingredient")));
+        this(id, FluidIngredient.fromJson(JsonHelpers.get(json, "ingredient")));
     }
 
     protected FluidDefinition(ResourceLocation id, FluidIngredient ingredient)
@@ -32,9 +29,9 @@ public class FluidDefinition
         return id;
     }
 
-    public boolean matches(FluidStack stack)
+    public boolean matches(Fluid fluid)
     {
-        return ingredient.test(stack);
+        return ingredient.test(fluid);
     }
 
     public Collection<Fluid> getFluids()

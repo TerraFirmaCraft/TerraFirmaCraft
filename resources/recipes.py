@@ -237,7 +237,7 @@ def generate(rm: ResourceManager):
     # todo: actual pot recipes
     rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
         'ingredients': [utils.ingredient('minecraft:gunpowder')],
-        'fluid_ingredient': fluid_ingredient('tfc:salt_water', 1000),
+        'fluid_ingredient': fluid_stack_ingredient('tfc:salt_water', 1000),
         'duration': 200,
         'temperature': 300,
         'fluid_output': fluid_stack('minecraft:water', 1000)
@@ -245,7 +245,7 @@ def generate(rm: ResourceManager):
 
     rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
         'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
-        'fluid_ingredient': fluid_ingredient('minecraft:water', 1000),
+        'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
         'duration': 200,
         'temperature': 300
     })
@@ -407,7 +407,7 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingre
 def casting_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, mold: str, metal: str, amount: int, break_chance: float):
     rm.recipe(('casting', name_parts), 'tfc:casting', {
         'mold': {'item': 'tfc:ceramic/%s_mold' % mold},
-        'fluid': fluid_ingredient('tfc:metal/%s' % metal, amount),
+        'fluid': fluid_stack_ingredient('tfc:metal/%s' % metal, amount),
         'result': utils.item_stack('tfc:metal/%s/%s' % (mold, metal)),
         'break_chance': break_chance
     })
@@ -431,8 +431,23 @@ def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
     }
 
 
-def fluid_ingredient(fluid: str, amount: int = None) -> Dict[str, Any]:
+def fluid_stack_ingredient(fluid: str, amount: int = None) -> Dict[str, Any]:
     if fluid.startswith('#'):
         return {'tag': fluid[1:], 'amount': amount}
     else:
         return {'fluid': fluid, 'amount': amount}
+
+
+def fluid_ingredient(data_in: utils.Json) -> utils.Json:
+    if isinstance(data_in, str):
+        if data_in[0:4] == 'tag!':
+            return {'tag': data_in[4:]}
+        elif data_in[0] == '#':
+            return {'tag': data_in[1:]}
+        else:
+            return {'fluid': data_in}
+    elif isinstance(data_in, Sequence):
+        return [*utils.flatten_list([fluid_ingredient(e) for e in data_in])]
+    elif isinstance(data_in, dict):
+        assert ('tag' in data_in) != ('fluid' in data_in), 'Fluid ingredient must have either fluid or tag entries'
+        return data_in

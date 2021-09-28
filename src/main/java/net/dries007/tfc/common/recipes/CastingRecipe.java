@@ -15,8 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -39,11 +38,11 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
 
     private final ResourceLocation id;
     private final Ingredient ingredient;
-    private final FluidIngredient fluidIngredient;
+    private final FluidStackIngredient fluidIngredient;
     private final ItemStack result;
     private final float breakChance;
 
-    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidIngredient fluidIngredient, ItemStack result, float breakChance)
+    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidStackIngredient fluidIngredient, ItemStack result, float breakChance)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -93,7 +92,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         public CastingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "mold"));
-            final FluidIngredient fluidIngredient = FluidIngredients.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
+            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
             final ItemStack result = JsonHelpers.getItemStack(json, "result");
             final float breakChance = JsonHelpers.getAsFloat(json, "break_chance");
             return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
@@ -104,7 +103,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         public CastingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final FluidIngredient fluidIngredient = FluidIngredients.fromNetwork(buffer);
+            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromNetwork(buffer);
             final ItemStack result = buffer.readItem();
             final float breakChance = buffer.readFloat();
             return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
@@ -114,7 +113,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         public void toNetwork(FriendlyByteBuf buffer, CastingRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
-            FluidIngredients.toNetwork(buffer, recipe.fluidIngredient);
+            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
             buffer.writeItem(recipe.result);
             buffer.writeFloat(recipe.breakChance);
         }

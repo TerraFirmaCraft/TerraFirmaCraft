@@ -12,11 +12,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.container.ISlotCallback;
 
-public class ItemStackHandlerCallback extends ItemStackHandler implements ISlotCallback
+public class InventoryItemHandler extends ItemStackHandler implements ISlotCallback
 {
     private final ISlotCallback callback;
 
-    public ItemStackHandlerCallback(ISlotCallback callback, int slots)
+    public InventoryItemHandler(ISlotCallback callback, int slots)
     {
         super(slots);
         this.callback = callback;

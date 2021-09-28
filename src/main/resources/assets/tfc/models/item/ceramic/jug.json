@@ -1,7 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "loader": "tfc:contained_fluid",
+  "parent": "forge:item/default",
   "textures": {
-    "layer0": "tfc:item/ceramic/jug"
+    "base": "tfc:item/ceramic/jug_empty",
+    "fluid": "tfc:item/ceramic/jug_overlay"
   }
 }

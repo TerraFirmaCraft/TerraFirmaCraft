@@ -78,6 +78,7 @@ public class TFCTags
     {
         public static final Tag.Named<Fluid> MIXABLE = create("mixable");
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
+        public static final Tag.Named<Fluid> USABLE_IN_JUG = create("usable_in_jug");
 
         private static Tag.Named<Fluid> create(String id)
         {

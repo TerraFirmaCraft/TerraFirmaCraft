@@ -6,16 +6,18 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -23,14 +25,108 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 
-public class FluidHelpers
+public final class FluidHelpers
 {
+    /**
+     * Transfer an amount up to and inclusive of {@code amount} between two fluid handlers.
+     */
+    public static boolean transferUpTo(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        if (!drained.isEmpty())
+        {
+            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+            if (filled > 0)
+            {
+                return transferExact(from, to, filled);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Transfer exactly {@code amount} between two fluid handlers.
+     */
+    public static boolean transferExact(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        if (drained.getAmount() == amount)
+        {
+            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+            if (filled == amount)
+            {
+                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean pickupFluidInto(LevelAccessor level, BlockPos pos, BlockState state, @Nullable Player player, IFluidHandler to)
+    {
+        final FluidStack fluid = pickupFluid(level, pos, state, player, IFluidHandler.FluidAction.SIMULATE);
+        if (fluid != null && !fluid.isEmpty())
+        {
+            final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
+            if (filled > 0)
+            {
+                // Some fluid was filled, so we need to be aggressive about picking up the original fluid
+                pickupFluid(level, pos, state, player, IFluidHandler.FluidAction.EXECUTE);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Pickup a fluid fluid from a block in the world, leaving the block empty.
+     */
+    @Nullable
+    public static FluidStack pickupFluid(LevelAccessor level, BlockPos pos, BlockState state, @Nullable Player player, IFluidHandler.FluidAction action)
+    {
+        final Block block = state.getBlock();
+        if (block instanceof BucketPickup pickup)
+        {
+            if (action.execute())
+            {
+                final ItemStack stack = pickup.pickupBlock(level, pos, state);
+                final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
+
+                pickup.getPickupSound().ifPresent(sound -> level.playSound(player, pos, sound, SoundSource.PLAYERS, 1.0f, 1.0f));
+                return fluid;
+            }
+            else
+            {
+                return new FluidStack(state.getFluidState().getType(), FluidAttributes.BUCKET_VOLUME);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static IFluidHandler getBlockEntityFluidHandler(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        if (state.hasBlockEntity())
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity != null)
+            {
+                return entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).resolve().orElse(null);
+            }
+        }
+        return null;
+    }
+
     /**
      * Checks if a block state is empty other than a provided fluid
      *

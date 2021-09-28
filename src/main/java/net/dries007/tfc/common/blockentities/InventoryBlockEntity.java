@@ -29,7 +29,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.capabilities.ItemStackHandlerCallback;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.util.Helpers;
@@ -42,7 +42,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
 {
     public static <C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> InventoryFactory<ItemStackHandler> defaultInventory(int slots)
     {
-        return self -> new ItemStackHandlerCallback(self, slots);
+        return self -> new InventoryItemHandler(self, slots);
     }
 
     protected final C inventory;

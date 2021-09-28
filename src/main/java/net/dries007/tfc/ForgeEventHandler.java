@@ -27,7 +27,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +38,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
@@ -53,8 +53,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fluids.FluidAttributes;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
@@ -740,10 +738,10 @@ public final class ForgeEventHandler
         {
             final BlockPos pos = hit.getBlockPos();
             final BlockState state = level.getBlockState(pos);
-            final FluidStack fluid = new FluidStack(state.getFluidState().getType(), FluidAttributes.BUCKET_VOLUME);
+            final Fluid fluid = state.getFluidState().getType();
             final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
             final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
-            if (!fluid.isEmpty() && playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
+            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
             {
                 final Drinkable drinkable = Drinkable.get(fluid);
                 if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
@@ -763,29 +761,10 @@ public final class ForgeEventHandler
     {
         playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
         level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
+        drinkable.onDrink(player);
 
-        // Drink fluid, applying all stated effects
-        final Random random = player.getRandom();
-        if (drinkable.getThirst() > 0 && player.getFoodData() instanceof TFCFoodData foodData)
-        {
-            foodData.addThirst(drinkable.getThirst());
-        }
-        if (drinkable.getIntoxication() > 0)
-        {
-            playerData.ifPresent(p -> p.addIntoxicatedTicks(drinkable.getIntoxication()));
-        }
-        if (drinkable.hasEffects())
-        {
-            for (Drinkable.Effect effect : drinkable.getEffects())
-            {
-                if (effect.chance() > random.nextFloat())
-                {
-                    player.addEffect(new MobEffectInstance(effect.type(), effect.duration(), effect.amplifier(), false, false, true));
-                }
-            }
-        }
-
-        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > random.nextFloat())
+        // Since we're drinking from a source block, we need to apply the consume chance
+        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > player.getRandom().nextFloat())
         {
             final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
             if (emptyState != null)

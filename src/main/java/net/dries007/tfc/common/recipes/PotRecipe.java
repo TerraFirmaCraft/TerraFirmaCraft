@@ -27,8 +27,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredients;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -59,11 +58,11 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
 
     protected final ResourceLocation id;
     protected final List<Ingredient> itemIngredients;
-    protected final FluidIngredient fluidIngredient;
+    protected final FluidStackIngredient fluidIngredient;
     protected final int duration;
     protected final float minTemp;
 
-    protected PotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+    protected PotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
     {
         this.id = id;
         this.itemIngredients = itemIngredients;
@@ -229,7 +228,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
                 ingredients.add(Ingredient.fromJson(element));
             }
 
-            final FluidIngredient fluidIngredient = FluidIngredients.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
+            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
             final int duration = GsonHelper.getAsInt(json, "duration");
             final float minTemp = GsonHelper.getAsFloat(json, "temperature");
             return fromJson(recipeId, json, ingredients, fluidIngredient, duration, minTemp);
@@ -245,7 +244,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
             {
                 ingredients.add(Ingredient.fromNetwork(buffer));
             }
-            final FluidIngredient fluidIngredient = FluidIngredients.fromNetwork(buffer);
+            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromNetwork(buffer);
             final int duration = buffer.readVarInt();
             final float minTemp = buffer.readFloat();
             return fromNetwork(recipeId, buffer, ingredients, fluidIngredient, duration, minTemp);
@@ -259,13 +258,13 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
             {
                 ingredient.toNetwork(buffer);
             }
-            FluidIngredients.toNetwork(buffer, recipe.fluidIngredient);
+            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
             buffer.writeVarInt(recipe.duration);
             buffer.writeFloat(recipe.minTemp);
         }
 
-        protected abstract R fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp);
+        protected abstract R fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp);
 
-        protected abstract R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp);
+        protected abstract R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp);
     }
 }

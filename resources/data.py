@@ -7,6 +7,7 @@ from mcresources import ResourceManager, utils
 from mcresources.utils import item_stack
 
 from constants import *
+from recipes import fluid_ingredient
 
 
 class Size(Enum):
@@ -340,8 +341,11 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water')
+
+    rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
+    rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
 
     # Item Sizes
 
@@ -459,7 +463,7 @@ def generate(rm: ResourceManager):
 
     # Drinkables
 
-    drinkable(rm, 'fresh_water', 'minecraft:water', thirst=10)
+    drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:fluid/salt_water', thirst=-1)
 
 
@@ -479,9 +483,9 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: str, thirst: Optional[int] = None, intoxication: Optional[int] = None):
+def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
     rm.data(('tfc', 'drinkables', name_parts), {
-        'ingredient': {'fluid': fluid},
+        'ingredient': fluid_ingredient(fluid),
         'thirst': thirst,
         'intoxication': intoxication
         # todo: effects

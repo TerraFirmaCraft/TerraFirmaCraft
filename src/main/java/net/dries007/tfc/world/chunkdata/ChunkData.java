@@ -39,10 +39,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     /**
      * Called to get chunk data when a world context is available.
-     * If on client, will query capability, falling back to cache, and send request packets if necessary
-     * If on server, will either query capability falling back to cache, or query provider to generate the data.
-     *
-     * @see ChunkDataCache#get(ChunkPos) to directly access the cache
      */
     public static ChunkData get(LevelAccessor world, ChunkPos pos)
     {
@@ -58,11 +54,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     /**
      * Helper method, since lazy optionals and instanceof checks together are ugly
      */
-    public static LazyOptional<ChunkData> getCapability(@Nullable ChunkAccess chunk)
+    public static LazyOptional<ChunkData> getCapability(@Nullable ChunkAccess maybe)
     {
-        if (chunk instanceof LevelChunk)
+        if (maybe instanceof LevelChunk chunk)
         {
-            return ((LevelChunk) chunk).getCapability(ChunkDataCapability.CAPABILITY);
+            return chunk.getCapability(ChunkDataCapability.CAPABILITY);
         }
         return LazyOptional.empty();
     }

@@ -21,7 +21,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 
 public class SoupPotRecipe extends PotRecipe
 {
@@ -30,7 +30,7 @@ public class SoupPotRecipe extends PotRecipe
         return new SoupOutput(servings);
     };
 
-    protected SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+    protected SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
     {
         super(id, itemIngredients, fluidIngredient, duration, minTemp);
     }
@@ -91,13 +91,13 @@ public class SoupPotRecipe extends PotRecipe
     public static class Serializer extends PotRecipe.Serializer<SoupPotRecipe>
     {
         @Override
-        protected SoupPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected SoupPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
         {
             return new SoupPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp);
         }
 
         @Override
-        protected SoupPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected SoupPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
         {
             return new SoupPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp);
         }

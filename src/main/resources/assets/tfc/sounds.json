@@ -20,10 +20,10 @@
       "tfc:firestarter10"
     ]
   },
-  "item.jug.blow": {
+  "jug_blow": {
     "category": "ambient",
     "sounds": [
-      "tfc:jugblow1"
+      "tfc:jug_blow"
     ]
   },
   "item.throw": {

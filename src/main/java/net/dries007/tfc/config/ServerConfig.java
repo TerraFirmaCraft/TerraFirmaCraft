@@ -71,6 +71,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue moldMaceHeadCapacity;
     public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
     public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
+    // Items - Jug
+    public final ForgeConfigSpec.IntValue jugCapacity;
+    public final ForgeConfigSpec.DoubleValue jugBreakChance;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
     // Mechanics - Collapses
@@ -177,6 +180,11 @@ public class ServerConfig
         moldMaceHeadCapacity = builder.apply("moldMaceHeadCapacity").comment("Tank capacity of a Mace Head mold (in mB).").defineInRange("moldMaceHeadCapacity", 200, 0, Alloy.MAX_ALLOY);
         moldKnifeBladeCapacity = builder.apply("moldKnifeBladeCapacity").comment("Tank capacity of a Knife Blade mold (in mB).").defineInRange("moldKnifeBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldScytheBladeCapacity = builder.apply("moldScytheBladeCapacity").comment("Tank capacity of a Scythe Blade mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+
+        innerBuilder.pop().push("jug");
+
+        jugCapacity = builder.apply("jugCapacity").comment("Tank capacity of a ceramic jug (in mB).").defineInRange("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
+        jugBreakChance = builder.apply("jugBreakChance").comment("The chance a jug will break after drinking.").defineInRange("jugBreakChance", 0.02, 0, 1);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

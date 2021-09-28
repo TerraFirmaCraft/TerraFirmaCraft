@@ -31,6 +31,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollection;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -491,57 +493,53 @@ public final class Helpers
         return spawnItem(world, pos, stack, 0.5D);
     }
 
-    /**
-     * Drains an amount from {@code from}, to {@code to}, without any wastage.
-     *
-     * @return {@code true} if a non-zero amount was drained.
-     */
-    public static boolean transferFluid(IFluidHandler from, IFluidHandler to, int amount)
-    {
-        final FluidStack fluid = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
-        final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
-        if (filled > 0)
-        {
-            from.drain(filled, IFluidHandler.FluidAction.EXECUTE); // Only drain the amount that was removed.
-            return true;
-        }
-        return false;
-    }
-
     public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
     {
-        if (fluidStack.isEmpty())
+        if (!fluidStack.isEmpty())
         {
-            return FluidStack.EMPTY; // No fluid to merge, so we just exit immediately
+            final ItemStack mergeStack = inventory.getStackInSlot(slot);
+            return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+                int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                if (filled > 0)
+                {
+                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+                }
+                FluidStack remainder = fluidStack.copy();
+                remainder.shrink(filled);
+                return remainder;
+            }).orElse(FluidStack.EMPTY);
         }
-        final ItemStack mergeStack = inventory.getStackInSlot(slot);
-        return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
-            int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-            if (filled > 0)
-            {
-                mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
-            }
-            FluidStack remainder = fluidStack.copy();
-            remainder.shrink(filled);
-            return remainder;
-        }).orElse(FluidStack.EMPTY);
+        return FluidStack.EMPTY;
     }
 
-    /**
-     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
-     */
-    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    public static <T> Tag<T> decodeTag(FriendlyByteBuf buffer, TagCollection<T> tags)
     {
-        int i = randValue >> 2;
-        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
+        final ResourceLocation id = buffer.readResourceLocation();
+        return tags.getTagOrEmpty(id);
     }
 
-    /**
-     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
-     */
-    public static <E> E resolveEither(Either<E, E> either)
+    public static <T> void encodeTag(FriendlyByteBuf buffer, Tag<T> tag, TagCollection<T> tags)
     {
-        return either.map(e -> e, e -> e);
+        buffer.writeResourceLocation(Objects.requireNonNull(tags.getId(tag), "Tried to write unknown tag to network"));
+    }
+
+    public static <E, C extends Collection<E>> C decodeAll(FriendlyByteBuf buffer, C collection, Function<FriendlyByteBuf, E> decoder)
+    {
+        final int size = buffer.readVarInt();
+        for (int i = 0; i < size; i++)
+        {
+            collection.add(decoder.apply(buffer));
+        }
+        return collection;
+    }
+
+    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<FriendlyByteBuf, E> encoder)
+    {
+        buffer.writeVarInt(collection.size());
+        for (E e : collection)
+        {
+            encoder.accept(buffer, e);
+        }
     }
 
     public static <T> void encodeNullable(@Nullable T instance, FriendlyByteBuf buffer, BiConsumer<T, FriendlyByteBuf> encoder)
@@ -565,6 +563,23 @@ public final class Helpers
             return decoder.apply(buffer);
         }
         return null;
+    }
+
+    /**
+     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
+     */
+    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    {
+        int i = randValue >> 2;
+        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
+    }
+
+    /**
+     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
+     */
+    public static <E> E resolveEither(Either<E, E> either)
+    {
+        return either.map(e -> e, e -> e);
     }
 
     /**

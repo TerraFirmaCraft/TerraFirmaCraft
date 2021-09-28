@@ -115,7 +115,7 @@ public class VesselItem extends Item
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
-            this.inventory = new ItemStackHandlerCallback(this, SLOTS);
+            this.inventory = new InventoryItemHandler(this, SLOTS);
             this.alloy = new Alloy(TFCConfig.SERVER.smallVesselCapacity.get());
             this.heat = new HeatHandler(1, 0, 0);
 

@@ -18,14 +18,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class FluidPotRecipe extends PotRecipe
 {
     protected final FluidStack outputFluid;
 
-    protected FluidPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidIngredient fluidIngredient, int duration, float minTemp, FluidStack outputFluid)
+    protected FluidPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp, FluidStack outputFluid)
     {
         super(id, itemIngredients, fluidIngredient, duration, minTemp);
         this.outputFluid = outputFluid;
@@ -72,14 +72,14 @@ public class FluidPotRecipe extends PotRecipe
         }
 
         @Override
-        protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected FluidPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
         {
             JsonObject output = GsonHelper.getAsJsonObject(json, "fluid_output");
             return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, JsonHelpers.getFluidStack(output));
         }
 
         @Override
-        protected FluidPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidIngredient fluidIngredient, int duration, float minTemp)
+        protected FluidPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
         {
             return new FluidPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, buffer.readFluidStack());
         }

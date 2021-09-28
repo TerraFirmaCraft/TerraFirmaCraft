@@ -29,6 +29,7 @@ import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -111,7 +112,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                 if (mold != null && mold.isMolten())
                 {
                     // Drain contents into the crucible
-                    if (Helpers.transferFluid(mold, crucible.inventory, 1))
+                    if (FluidHelpers.transferExact(mold, crucible.inventory, 1))
                     {
                         crucible.lastFillTicks = TFCConfig.SERVER.cruciblePouringRate.get();
                         crucible.markForSync();
@@ -132,7 +133,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             final MoldLike mold = MoldLike.get(outputStack);
             if (mold != null)
             {
-                Helpers.transferFluid(crucible.inventory, mold, 1);
+                FluidHelpers.transferExact(crucible.inventory, mold, 1);
                 mold.setTemperatureIfWarmer(crucible.temperature);
                 crucible.markForSync();
             }
@@ -274,13 +275,13 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         private final CrucibleBlockEntity crucible;
 
-        private final ItemStackHandlerCallback inventory;
+        private final InventoryItemHandler inventory;
         private final Alloy alloy;
 
         CrucibleInventory(InventoryBlockEntity<?> entity)
         {
             this.crucible = (CrucibleBlockEntity) entity;
-            this.inventory = new ItemStackHandlerCallback(entity, SLOTS);
+            this.inventory = new InventoryItemHandler(entity, SLOTS);
             this.alloy = new Alloy(TFCConfig.SERVER.crucibleCapacity.get());
         }
 
