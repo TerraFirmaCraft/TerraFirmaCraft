@@ -11,22 +11,24 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
 
-public class FruitBlocks
+public final class FruitBlocks
 {
     private static final Lifecycle[] CRANBERRY_STAGES = new Lifecycle[] {DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT};
     private static final Lifecycle[] BANANA_STAGES = new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT};
 
     public static WaterloggedBerryBushBlock createCranberry()
     {
-        return new WaterloggedBerryBushBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, 9);
+        return new WaterloggedBerryBushBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, 9, ClimateRanges.CRANBERRY_BUSH);
     }
 
     public static Block createBananaSapling()
@@ -72,27 +74,25 @@ public class FruitBlocks
 
     public enum StationaryBush
     {
-        SNOWBERRY(Food.SNOWBERRY, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, 10),
-        BUNCHBERRY(Food.BUNCHBERRY, new Lifecycle[] {DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}, 8),
-        GOOSEBERRY(Food.GOOSEBERRY, new Lifecycle[] {DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}, 9),
-        CLOUDBERRY(Food.CLOUDBERRY, new Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, 8),
-        STRAWBERRY(Food.STRAWBERRY, new Lifecycle[] {FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY}, 11),
-        WINTERGREEN_BERRY(Food.WINTERGREEN_BERRY, new Lifecycle[] {DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING}, 12);
+        SNOWBERRY(Food.SNOWBERRY, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT),
+        BUNCHBERRY(Food.BUNCHBERRY, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT),
+        GOOSEBERRY(Food.GOOSEBERRY, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT),
+        CLOUDBERRY(Food.CLOUDBERRY, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT),
+        STRAWBERRY(Food.STRAWBERRY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY),
+        WINTERGREEN_BERRY(Food.WINTERGREEN_BERRY, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING);
 
         private final Food product;
         private final Lifecycle[] stages;
-        private final int deathChance;
 
-        StationaryBush(Food product, Lifecycle[] stages, int deathChance)
+        StationaryBush(Food product, Lifecycle... stages)
         {
             this.product = product;
             this.stages = stages;
-            this.deathChance = deathChance;
         }
 
         public Block create()
         {
-            return new StationaryBerryBushBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(60, 30), TFCItems.FOOD.get(product), stages, deathChance);
+            return new StationaryBerryBushBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammable(60, 30), TFCItems.FOOD.get(product), stages, ClimateRanges.STATIONARY_BUSHES.get(this));
         }
     }
 

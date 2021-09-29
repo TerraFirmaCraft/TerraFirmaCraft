@@ -91,7 +91,6 @@ public final class EnvironmentHelpers
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean tryStackSnow(LevelAccessor world, BlockPos pos, BlockState state)
     {
         if ((state.is(Blocks.SNOW) || state.is(TFCBlocks.SNOW_PILE.get())) && state.getValue(SnowLayerBlock.LAYERS) < 7)
@@ -140,7 +139,6 @@ public final class EnvironmentHelpers
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static BlockPos findOptimalSnowLocation(LevelAccessor world, BlockPos pos, Random random)
     {
         BlockState state = world.getBlockState(pos);
@@ -170,7 +168,6 @@ public final class EnvironmentHelpers
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     private static BlockPos findIcicleLocation(Level world, BlockPos pos, Random random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);

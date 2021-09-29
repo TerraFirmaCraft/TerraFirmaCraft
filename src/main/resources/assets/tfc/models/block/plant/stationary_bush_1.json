@@ -1,14 +1,15 @@
 {
-	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "#bush",
-		"particle": "#bush"
-	},
-	"elements": [
-		{
-			"from": [0, 2, 1],
-			"to": [16, 14, 1],
-			"rotation": {"angle": -45, "axis": "x", "origin": [8, 10, 8]},
+  "parent": "block/block",
+  "credit": "Made with Blockbench",
+  "textures": {
+    "0": "#bush",
+    "particle": "#bush"
+  },
+  "elements": [
+    {
+      "from": [0, 2, 1],
+      "to": [16, 14, 1],
+      "rotation": {"angle": -45, "axis": "x", "origin": [8, 10, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 14], "texture": "#0"},
 				"south": {"uv": [16, 0, 0, 14], "texture": "#0"}

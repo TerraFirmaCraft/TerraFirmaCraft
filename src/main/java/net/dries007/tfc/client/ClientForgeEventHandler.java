@@ -38,9 +38,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -70,6 +72,7 @@ public class ClientForgeEventHandler
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
+        bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
@@ -114,6 +117,23 @@ public class ClientForgeEventHandler
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
                 }
+            }
+        }
+    }
+
+    /**
+     * Render overlays for looking at particular block / item combinations
+     */
+    public static void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
+    {
+        final PoseStack stack = event.getMatrixStack();
+        final Minecraft minecraft = Minecraft.getInstance();
+        final Player player = minecraft.player;
+        if (player != null)
+        {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (TFCTags.Items.HOES.contains(player.getMainHandItem().getItem())) || TFCTags.Items.HOES.contains(player.getOffhandItem().getItem()) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            {
+                HoeOverlays.render(minecraft, event.getWindow(), stack);
             }
         }
     }

@@ -54,56 +54,52 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (worldIn.isClientSide() || handIn != InteractionHand.MAIN_HAND) return InteractionResult.FAIL;
+        if (level.isClientSide() || hand != InteractionHand.MAIN_HAND) return InteractionResult.FAIL;
         if (state.getValue(STAGE) == 2)
         {
-            ItemStack held = player.getItemInHand(handIn);
+            ItemStack held = player.getItemInHand(hand);
             if (Tags.Items.SHEARS.contains(held.getItem()))
             {
-                BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
+                BerryBushBlockEntity te = Helpers.getBlockEntity(level, pos, BerryBushBlockEntity.class);
                 if (te != null)
                 {
                     if (state.getValue(LIFECYCLE) == Lifecycle.DORMANT)
                     {
                         te.setGrowing(true);
                         te.resetDeath();
-                        held.hurt(1, worldIn.getRandom(), null);
-                        Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
-                        worldIn.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
+                        held.hurt(1, level.getRandom(), null);
+                        Helpers.playSound(level, pos, SoundEvents.SHEEP_SHEAR);
+                        level.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
                         return InteractionResult.SUCCESS;
                     }
                     else if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
                     {
-                        held.hurt(1, worldIn.getRandom(), null);
-                        Helpers.playSound(worldIn, pos, SoundEvents.SHEEP_SHEAR);
-                        if (worldIn.getRandom().nextInt(3) != 0)
-                            Helpers.spawnItem(worldIn, pos, new ItemStack(companion.get()));
-                        worldIn.destroyBlock(pos, true, null);
+                        held.hurt(1, level.getRandom(), null);
+                        Helpers.playSound(level, pos, SoundEvents.SHEEP_SHEAR);
+                        if (level.getRandom().nextInt(3) != 0)
+                            Helpers.spawnItem(level, pos, new ItemStack(companion.get()));
+                        level.destroyBlock(pos, true, null);
                         return InteractionResult.SUCCESS;
                     }
                 }
             }
         }
-        return super.use(state, worldIn, pos, player, handIn, hit);
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(FACING))
-        {
-            case NORTH:
-                return CANE_NORTH;
-            case WEST:
-                return CANE_WEST;
-            case EAST:
-                return CANE_EAST;
-            case SOUTH:
-                return CANE_SOUTH;
-        }
-        return CANE_EAST;
+        return switch (state.getValue(FACING))
+            {
+                case NORTH -> CANE_NORTH;
+                case WEST -> CANE_WEST;
+                case EAST -> CANE_EAST;
+                case SOUTH -> CANE_SOUTH;
+                default -> CANE_EAST;
+            };
     }
 
     @Override
@@ -160,9 +156,9 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
+        return true;
     }
 
     @Nonnull
@@ -173,8 +169,8 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return true;
+        return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 }

@@ -54,13 +54,13 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return state.getValue(STAGE) == 2 ? Shapes.empty() : getShape(state, worldIn, pos, context);
+        return state.getValue(STAGE) == 2 ? Shapes.empty() : getShape(state, level, pos, context);
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         // no op the superclass
     }
@@ -104,10 +104,10 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
+        BlockState belowState = level.getBlockState(belowPos);
         return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
     }
 

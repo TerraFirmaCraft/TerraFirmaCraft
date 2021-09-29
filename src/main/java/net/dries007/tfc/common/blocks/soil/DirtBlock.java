@@ -9,39 +9,34 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class DirtBlock extends Block implements IDirtBlock
 {
     private final Supplier<? extends Block> grass;
-    @Nullable
-    private final Supplier<? extends Block> grassPath;
-    @Nullable
-    private final Supplier<? extends Block> farmland;
+    @Nullable private final Supplier<? extends Block> path;
 
     public DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
+        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant));
     }
 
-    public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)
+    public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path)
     {
         super(properties);
 
         this.grass = grass;
-        this.grassPath = grassPath;
-        this.farmland = farmland;
+        this.path = path;
     }
 
     public BlockState getGrass()
@@ -49,21 +44,14 @@ public class DirtBlock extends Block implements IDirtBlock
         return grass.get().defaultBlockState();
     }
 
-    /*
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolType toolType)
+    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
     {
-        if (toolType == ToolType.HOE && TFCConfig.SERVER.enableFarmlandCreation.get() && farmland != null)
+        if (stack.canPerformAction(action) && action == ToolActions.SHOVEL_FLATTEN && path != null && TFCConfig.SERVER.enableGrassPathCreation.get())
         {
-            return farmland.get().defaultBlockState();
-        }
-        else if (toolType == ToolType.SHOVEL && TFCConfig.SERVER.enableGrassPathCreation.get() && grassPath != null)
-        {
-            return grassPath.get().defaultBlockState();
+            return path.get().defaultBlockState();
         }
         return state;
     }
-    todo: tool modified states
-     */
 }

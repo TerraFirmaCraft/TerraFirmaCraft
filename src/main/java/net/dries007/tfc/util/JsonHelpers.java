@@ -39,7 +39,7 @@ public final class JsonHelpers extends GsonHelper
     {
         final ResourceLocation res = new ResourceLocation(key);
         final T obj = registry.getValue(res);
-        if (obj == null)
+        if (obj == null || !registry.containsKey(res))
         {
             throw new JsonParseException("Unknown entry from " + registry.getRegistryName().getPath() + ": " + key);
         }

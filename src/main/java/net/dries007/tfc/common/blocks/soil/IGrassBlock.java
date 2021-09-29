@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LayerLightEngine;
 
 /**
@@ -22,7 +22,7 @@ import net.minecraft.world.level.lighting.LayerLightEngine;
 public interface IGrassBlock extends ISoilBlock
 {
     /**
-     * Like {@link net.minecraft.block.SpreadableSnowyDirtBlock#canBeGrass(BlockState, IWorldReader, BlockPos)}, but omits the requirement that snow layers only be one thick.
+     * Like {@link net.minecraft.world.level.block.SpreadingSnowyDirtBlock#canBeGrass(BlockState, LevelReader, BlockPos)}, but omits the requirement that snow layers only be one thick.
      * Represents if the current block state can be grass
      */
     default boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos)
@@ -44,7 +44,7 @@ public interface IGrassBlock extends ISoilBlock
     }
 
     /**
-     * Like {@link net.minecraft.block.SpreadableSnowyDirtBlock#canPropagate(BlockState, IWorldReader, BlockPos)}
+     * Like {@link net.minecraft.world.level.block.SpreadingSnowyDirtBlock#canPropagate(BlockState, LevelReader, BlockPos)}
      * Represents if the current grass can spread to the given location.
      *
      * @param state The grass state to place

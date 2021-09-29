@@ -17,7 +17,7 @@ public interface ICalendarTickable
     /**
      * Here we check every tick for a calendar discrepancy. This only checks for differences in player time, and calls {@link ICalendarTickable#onCalendarUpdate(long playerTickDelta)} as necessary
      *
-     * Implementations MUST call {@code ICalendarTickable.super.update()} in their {@code serverTick} method.
+     * Implementations MUST call {@code checkForCalendarUpdate()} in their {@code serverTick} method.
      */
     default void checkForCalendarUpdate()
     {

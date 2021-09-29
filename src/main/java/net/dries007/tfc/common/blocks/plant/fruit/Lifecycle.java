@@ -12,7 +12,30 @@ import net.minecraft.util.StringRepresentable;
 
 public enum Lifecycle implements StringRepresentable
 {
-    HEALTHY, FLOWERING, FRUITING, DORMANT;
+    DORMANT, HEALTHY, FLOWERING, FRUITING;
+
+    private static final Lifecycle[] VALUES = values();
+
+    public boolean active()
+    {
+        return this != DORMANT;
+    }
+
+    /**
+     * Advances one 'stage' towards the target lifecycle, if it is greater. Otherwise defaults down to other.
+     */
+    public Lifecycle advanceTowards(Lifecycle other)
+    {
+        if (other.ordinal() < this.ordinal())
+        {
+            return other;
+        }
+        if (other.ordinal() > this.ordinal() && this != FRUITING)
+        {
+            return VALUES[this.ordinal() + 1];
+        }
+        return this;
+    }
 
     @Override
     public String getSerializedName()

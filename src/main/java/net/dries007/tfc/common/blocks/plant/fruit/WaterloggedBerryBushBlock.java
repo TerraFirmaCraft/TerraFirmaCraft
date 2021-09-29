@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.ClimateRange;
 import net.dries007.tfc.util.Helpers;
 
 public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implements IFluidLoggable
@@ -45,38 +46,26 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
     public static final BooleanProperty WILD = TFCBlockStateProperties.WILD;
 
-    public WaterloggedBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
+    public WaterloggedBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, stages, deathChance);
+        super(properties, productItem, stages, climateRange);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
             return InteractionResult.FAIL; // pick berries by flooding
         }
-        return super.use(state, worldIn, pos, player, handIn, hit);
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (state.getValue(WILD)) return; // prevent wild blocks from spreading
-        if (lifecycle == Lifecycle.HEALTHY && state.getFluidState().getType().is(FluidTags.WATER))
-        {
-            super.cycle(te, world, pos, state, stage, Lifecycle.FLOWERING, random); // cannot grow if its waterlogged so we pretend it flowers so we cant grow (without actually disabling growth forever)
-            return;
-        }
-        super.cycle(te, world, pos, state, stage, lifecycle, random);
-    }
-
-    @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
-    {
-        super.randomTick(state, world, pos, random);
-        BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
+        super.randomTick(state, level, pos, random);
+        BerryBushBlockEntity te = Helpers.getBlockEntity(level, pos, BerryBushBlockEntity.class);
         if (te == null) return;
 
         Lifecycle lifecycle = state.getValue(LIFECYCLE);
@@ -91,18 +80,18 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         }
         else if (lifecycle == Lifecycle.FRUITING && fluid.is(FluidTags.WATER))
         {
-            Helpers.spawnItem(world, pos, getProductItem());
+            Helpers.spawnItem(level, pos, getProductItem());
             te.setHarvested(true);
-            world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
+            level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+        BlockState belowState = level.getBlockState(belowPos);
+        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
     }
 
     @Override

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "fluid": "tfc:fluid/salt_water"
+    "fluid": "tfc:salt_water"
   },
   "thirst": -1
 }

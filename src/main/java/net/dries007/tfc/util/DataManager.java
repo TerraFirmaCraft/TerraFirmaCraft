@@ -29,6 +29,9 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
+/**
+ * An implementation of a typical json reload manager.
+ */
 public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
 {
     public static final Logger LOGGER = LogManager.getLogger();
@@ -74,13 +77,13 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
+    protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
-        for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet())
+        for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             ResourceLocation name = entry.getKey();
-            JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "root");
+            JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
             try
             {
                 if (CraftingHelper.processConditions(json, "conditions"))
@@ -90,7 +93,7 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
                 }
                 else
                 {
-                    LOGGER.info("Skipping loading {} '{}' as it's conditions were not met", typeName, name);
+                    LOGGER.debug("Skipping loading {} '{}' as it's conditions were not met", typeName, name);
                 }
             }
             catch (IllegalArgumentException | JsonParseException e)

@@ -30,9 +30,9 @@ public class ClientConfig
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.EnumValue<HeatTooltipStyle> heatTooltipStyle;
-
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
+    public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -80,6 +80,8 @@ public class ClientConfig
         enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 
         sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
+
+        showHoeOverlaysOnlyWhenShifting = builder.apply("showHoeOverlaysOnlyWhenShifting").comment("If hoe overlays (for hydration, nutrition, or temperature, shown when hovering over a plant or farmland while holding a hoe), should only be shown when the shift key is held down.").define("showHoeOverlaysOnlyWhenShifting", false);
 
         innerBuilder.pop();
     }

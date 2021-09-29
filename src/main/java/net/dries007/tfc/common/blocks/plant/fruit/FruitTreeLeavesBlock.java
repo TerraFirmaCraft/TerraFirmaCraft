@@ -58,9 +58,9 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(world, pos, FruitTreeLeavesBlockEntity.class);
+        FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(level, pos, FruitTreeLeavesBlockEntity.class);
         if (te == null) return;
 
         Lifecycle old = state.getValue(LIFECYCLE); // have to put this in random tick to capture the old state
@@ -80,15 +80,16 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         {
             te.setOnYear(false); // reset when we're not in season
         }
-        super.randomTick(state, world, pos, random);
+        super.randomTick(state, level, pos, random);
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
+        // todo: remove this override
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
-            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
+            Helpers.slowEntityInBlock(entity, 0.2f, 5);
         }
     }
 
