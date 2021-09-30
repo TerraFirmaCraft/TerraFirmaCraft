@@ -17,7 +17,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.ClimateRanges;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
 

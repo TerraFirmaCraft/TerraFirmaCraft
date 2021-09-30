@@ -53,7 +53,6 @@ import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -99,15 +98,17 @@ public class ClientForgeEventHandler
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {
-                    list.add(String.format("Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+                    list.add(String.format("[Debug] Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
                 }
+
+                // Always add climate data
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getAverageTemperature())));
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getTemperature())));
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getRainfall())));
 
                 ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus() == ChunkData.Status.CLIENT)
                 {
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.CLIENT))));
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_type") + WHITE + I18n.get(Helpers.getEnumTranslationKey(data.getForestType())));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_properties",
                         WHITE + String.format("%.1f%%", 100 * data.getForestDensity()) + GRAY,

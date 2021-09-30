@@ -9,7 +9,8 @@ import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +30,7 @@ public abstract class IceBlockMixin
         {
             // Only run this if the default logic hasn't already set the block to air
             BlockState prevState = level.getBlockState(pos);
-            if (prevState == state && Climate.getTemperature(level, pos) > Climate.ICE_MELT_TEMPERATURE)
+            if (prevState == state && Climate.getTemperature(level, pos) > OverworldClimateModel.ICE_MELT_TEMPERATURE)
             {
                 melt(state, level, pos);
             }

@@ -6,17 +6,13 @@
 
 package net.dries007.tfc.world.decorator;
 
-import java.util.Locale;
 import java.util.Random;
 
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.util.Climate;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
@@ -25,7 +21,6 @@ public class ClimateConfig implements DecoratorConfiguration
     public static final Codec<ClimateConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.FLOAT.optionalFieldOf("min_temperature", -Float.MAX_VALUE).forGetter(c -> c.minTemp),
         Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
-        TemperatureType.CODEC.optionalFieldOf("temperature_type", TemperatureType.AVERAGE).forGetter(c -> c.tempType),
         Codec.FLOAT.optionalFieldOf("min_rainfall", -Float.MAX_VALUE).forGetter(c -> c.minRainfall),
         Codec.FLOAT.optionalFieldOf("max_rainfall", Float.MAX_VALUE).forGetter(c -> c.maxRainfall),
         ForestType.CODEC.optionalFieldOf("min_forest", ForestType.NONE).forGetter(c -> c.minForest),
@@ -35,7 +30,6 @@ public class ClimateConfig implements DecoratorConfiguration
 
     private final float minTemp;
     private final float maxTemp;
-    private final TemperatureType tempType;
     private final float targetTemp;
     private final float minRainfall;
     private final float maxRainfall;
@@ -44,11 +38,10 @@ public class ClimateConfig implements DecoratorConfiguration
     private final ForestType maxForest;
     private final boolean fuzzy;
 
-    public ClimateConfig(float minTemp, float maxTemp, TemperatureType tempType, float minRainfall, float maxRainfall, ForestType minForest, ForestType maxForest, boolean fuzzy)
+    public ClimateConfig(float minTemp, float maxTemp, float minRainfall, float maxRainfall, ForestType minForest, ForestType maxForest, boolean fuzzy)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
-        this.tempType = tempType;
         this.targetTemp = (minTemp + maxTemp) / 2f;
         this.minRainfall = minRainfall;
         this.maxRainfall = maxRainfall;
@@ -60,7 +53,7 @@ public class ClimateConfig implements DecoratorConfiguration
 
     public boolean isValid(ChunkData data, BlockPos pos, Random random)
     {
-        final float temperature = getTemperature(data, pos);
+        final float temperature = data.getAverageTemp(pos);
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 
@@ -75,37 +68,5 @@ public class ClimateConfig implements DecoratorConfiguration
             return true;
         }
         return false;
-    }
-
-    private float getTemperature(ChunkData data, BlockPos pos)
-    {
-        return switch (tempType)
-            {
-                case AVERAGE -> data.getAverageTemp(pos);
-                case MONTHLY -> Climate.calculateMonthlyAverageTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarMonthOfYear().getTemperatureModifier());
-                case ACTUAL -> Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.SERVER);
-            };
-    }
-
-    public enum TemperatureType implements StringRepresentable
-    {
-        AVERAGE,
-        MONTHLY,
-        ACTUAL;
-
-        public static final Codec<TemperatureType> CODEC = StringRepresentable.fromEnum(TemperatureType::values, name -> TemperatureType.valueOf(name.toUpperCase()));
-
-        private final String serializedName;
-
-        TemperatureType()
-        {
-            serializedName = name().toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        public String getSerializedName()
-        {
-            return serializedName;
-        }
     }
 }

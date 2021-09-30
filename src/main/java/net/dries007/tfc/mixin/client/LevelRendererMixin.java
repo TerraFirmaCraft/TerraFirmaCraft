@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
 
-import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.climate.Climate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +24,7 @@ public abstract class LevelRendererMixin
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
     private float renderSnowAndRainRedirectGetTemperature(Biome biome, BlockPos pos)
     {
-        return Climate.getVanillaBiomeTemperature(biome, level, pos);
+        return Climate.getVanillaBiomeTemperature(level, pos);
     }
 
     /**
@@ -33,7 +33,7 @@ public abstract class LevelRendererMixin
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitation()Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
     private Biome.Precipitation renderSnowAndRainRedirectGetPrecipitation(Biome biome, LightTexture lightTexture, float partialTicks, double xIn, double yIn, double zIn)
     {
-        return Climate.getVanillaBiomePrecipitation(biome, level, new BlockPos(xIn, yIn, zIn));
+        return Climate.getPrecipitation(level, new BlockPos(xIn, yIn, zIn));
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class LevelRendererMixin
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
     private float tickRainRedirectGetTemperature(Biome biome, BlockPos pos)
     {
-        return Climate.getVanillaBiomeTemperature(biome, level, pos);
+        return Climate.getVanillaBiomeTemperature(level, pos);
     }
 
     /**
@@ -51,6 +51,6 @@ public abstract class LevelRendererMixin
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitation()Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
     private Biome.Precipitation tickRainRedirectGetPrecipitation(Biome biome, Camera activeRenderInfo)
     {
-        return Climate.getVanillaBiomePrecipitation(biome, level, activeRenderInfo.getBlockPosition());
+        return Climate.getPrecipitation(level, activeRenderInfo.getBlockPosition());
     }
 }

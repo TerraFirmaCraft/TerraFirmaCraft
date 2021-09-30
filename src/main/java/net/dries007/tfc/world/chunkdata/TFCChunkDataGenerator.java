@@ -12,9 +12,10 @@ import java.util.Random;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -59,18 +60,18 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
 
         // Climate
         temperatureNoise = ((Noise2D) (x, z) -> Helpers.triangle(1, 0, 1f / (4f * temperatureSettings.scale()), temperatureSettings.endlessPoles() ? Mth.clamp(z, -temperatureSettings.scale(), temperatureSettings.scale()) : z))
-            .scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE)
+            .scaled(OverworldClimateModel.MINIMUM_TEMPERATURE_SCALE, OverworldClimateModel.MAXIMUM_TEMPERATURE_SCALE)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(12f / temperatureSettings.scale())
-                .scaled(-Climate.REGIONAL_TEMPERATURE_SCALE, Climate.REGIONAL_TEMPERATURE_SCALE));
+                .scaled(-OverworldClimateModel.REGIONAL_TEMPERATURE_SCALE, OverworldClimateModel.REGIONAL_TEMPERATURE_SCALE));
         rainfallNoise = ((Noise2D) (x, z) -> Helpers.triangle(1, 0, 1f / (4f * rainfallSettings.scale()), x))
-            .scaled(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL)
+            .scaled(ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(12f / rainfallSettings.scale())
-                .scaled(-Climate.REGIONAL_RAINFALL_SCALE, Climate.REGIONAL_RAINFALL_SCALE))
-            .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
+                .scaled(-OverworldClimateModel.REGIONAL_RAINFALL_SCALE, OverworldClimateModel.REGIONAL_RAINFALL_SCALE))
+            .flattened(ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL);
 
         // Flora
         forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);

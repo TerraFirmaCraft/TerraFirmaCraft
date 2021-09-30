@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public final class ClientHelpers
 {
     @Nullable
-    public static Level getWorld()
+    public static Level getLevel()
     {
         return Minecraft.getInstance().level;
     }

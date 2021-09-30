@@ -1,10 +1,12 @@
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.climate;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.RegisteredDataManager;
 
 public class ClimateRanges
 {

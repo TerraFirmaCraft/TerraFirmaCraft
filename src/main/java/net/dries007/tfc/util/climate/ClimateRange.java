@@ -1,9 +1,12 @@
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.climate;
 
 import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
+
+import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.RegisteredDataManager;
 
 public class ClimateRange
 {

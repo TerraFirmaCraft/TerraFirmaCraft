@@ -28,6 +28,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -176,6 +177,21 @@ public final class Helpers
     public static boolean isClientSide(LevelReader world)
     {
         return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
+    }
+
+    @Nullable
+    @SuppressWarnings("deprecation")
+    public static Level getUnsafeLevel(Object maybeLevel)
+    {
+        if (maybeLevel instanceof Level level)
+        {
+            return level; // Most obvious case, if we can directly cast up to level.
+        }
+        if (maybeLevel instanceof WorldGenRegion)
+        {
+            return ((WorldGenRegion) maybeLevel).getLevel(); // Special case for world gen, when we can access the level unsafely
+        }
+        return null; // A modder has done a strange ass thing
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)

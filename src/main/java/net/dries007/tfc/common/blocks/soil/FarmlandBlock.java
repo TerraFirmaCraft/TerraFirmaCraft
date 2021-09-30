@@ -38,9 +38,10 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Climate;
-import net.dries007.tfc.util.ClimateRange;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock, IForgeBlockExtension, EntityBlockExtension
@@ -75,7 +76,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         return tooltip;
     }
 
-    public static Component getTemperatureTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
+    public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
         final float temperature = Climate.getTemperature(level, pos);
         final MutableComponent tooltip = new TranslatableComponent("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
@@ -97,7 +98,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final ChunkData data = ChunkData.get(level, pos);
         final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return (int) (60 * rainfall / Climate.MAXIMUM_RAINFALL) + 20 * (5 - waterCost);
+        return (int) (60 * rainfall / ClimateModel.MAXIMUM_RAINFALL) + 20 * (5 - waterCost);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)

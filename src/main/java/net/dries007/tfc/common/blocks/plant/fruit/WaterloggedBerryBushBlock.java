@@ -38,8 +38,8 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.util.ClimateRange;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implements IFluidLoggable
 {

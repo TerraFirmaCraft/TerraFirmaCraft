@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -36,11 +37,11 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
-import net.dries007.tfc.util.Climate;
-import net.dries007.tfc.util.ClimateRange;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeOverlayBlock, IBushBlock
@@ -56,11 +57,16 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         this.climateRange = climateRange;
     }
 
-    // todo: getStateForPlacement override to get the current lifecycle (either healthy or dormant)
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return defaultBlockState().setValue(LIFECYCLE, getLifecycleForCurrentMonth().active() ? Lifecycle.HEALTHY : Lifecycle.DORMANT);
+    }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
+        // todo: remove debug
         if (player.getMainHandItem().getItem() == Items.ARROW && hand == InteractionHand.MAIN_HAND && !level.isClientSide)
         {
             onUpdate(level, pos, state);
@@ -166,8 +172,8 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 int stagesGrown = 0, monthsSpentDying = 0;
                 do
                 {
-                    // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least half a month. Otherwise it will just wait for the next random tick.
-                    // This basically makes the
+                    // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
+                    // Otherwise it will just wait for the next random tick.
 
                     // Jump forward to nextTick.
                     // Advance both the stage (randomly, if the previous month was healthy), and lifecycle (if the at-the-time conditions were valid)
@@ -178,7 +184,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                         stagesGrown++;
                     }
 
-                    float temperatureAtNextTick = Climate.calculateTemperature(pos.getZ(), pos.getY(), averageTemperature, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
+                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
                     Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
                     if (range.checkBoth(hydration, temperatureAtNextTick, false))
                     {
