@@ -12,9 +12,27 @@
               "type": "minecraft:decorated",
               "config": {
                 "feature": {
-                  "type": "tfc:berry_bushes",
+                  "type": "tfc:random_patch",
                   "config": {
-                    "state": "tfc:plant/gooseberry_bush"
+                    "state_provider": {
+                      "type": "minecraft:simple_state_provider",
+                      "state": {
+                        "Name": "tfc:plant/snowberry_bush",
+                        "Properties": {
+                          "lifecycle": "healthy",
+                          "stage": "0"
+                        }
+                      }
+                    },
+                    "block_placer": {
+                      "type": "minecraft:simple_block_placer"
+                    },
+                    "whitelist": [],
+                    "blacklist": [],
+                    "yspread": 1,
+                    "xspread": 4,
+                    "zspread": 4,
+                    "tries": 8
                   }
                 },
                 "decorator": {
@@ -28,13 +46,12 @@
             "decorator": {
               "type": "tfc:climate",
               "config": {
-                "min_temperature": 5,
-                "max_temperature": 27,
+                "min_temperature": -5,
+                "max_temperature": 18,
                 "min_rainfall": 100,
                 "max_rainfall": 400,
-                "min_forest": "none",
-                "max_forest": "sparse",
-                "fuzzy": false
+                "min_forest": "normal",
+                "max_forest": "old_growth"
               }
             }
           }

@@ -627,16 +627,15 @@ def generate(rm: ResourceManager):
     }), decorate_chance(10), 'minecraft:square', decorate_heightmap('world_surface_wg'), 'tfc:near_water'))
 
     for berry, info in BERRIES.items():
-        config = {
-            'min_temperature': info.min_temp,
-            'max_temperature': info.max_temp,
-            'min_rainfall': info.min_rain,
-            'max_rainfall': info.max_rain,
-            'min_forest': info.min_forest,
-            'max_forest': info.max_forest,
-            'fuzzy': False
-        }
-        rm.feature(('plant', berry), wg.configure_decorated(wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry}), decorate_heightmap('world_surface_wg'), 'minecraft:square', ('tfc:climate', config), decorate_chance(15)))
+        if info.type == 'stationary':
+            feature = simple_patch_feature('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 8, water_agnostic=False)
+        elif info.type == 'waterlogged':
+            feature = simple_patch_feature('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 8)
+        else:
+            # todo: replace with above
+            feature = wg.configure('tfc:berry_bushes', {'state': 'tfc:plant/%s_bush' % berry})
+        rm.feature(('plant', berry + '_bush'), wg.configure_decorated(feature, decorate_heightmap('world_surface_wg'), 'minecraft:square', decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_chance(15)))
+
     for fruit, info in FRUITS.items():
         config = {
             'min_temperature': info.min_temp,
@@ -651,8 +650,6 @@ def generate(rm: ResourceManager):
             feature = 'tfc:bananas'
             state = 'tfc:plant/banana_plant'
         rm.feature(('plant', fruit), wg.configure_decorated(wg.configure(feature, {'state': state}), decorate_heightmap('world_surface_wg'), 'minecraft:square', ('tfc:climate', config), decorate_chance(200)))
-
-    # todo: convert the creeping plant blocks to use the target climate thing natively in the spreadsheet rather than here
 
     rm.feature('bamboo', wg.configure_decorated(wg.configure('minecraft:bamboo', {'probability': 0.2}), decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:count_noise_biased', {
         'noise_to_count_ratio': 160,
@@ -820,8 +817,8 @@ def vein_salt(vein_name: str) -> int:
 
 
 def plant_feature(block: str, vertical_spread: int, horizontal_spread: int, count: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False):
-    if horizontal_spread > 15:
-        print('fail!', horizontal_spread, block)
+    assert horizontal_spread < 16
+
     placer = random_property_placer(block, 'age')
     target = 'air'
     if water_plant:
@@ -940,15 +937,18 @@ def decorate_carving_mask(probability: float, min_y: Optional[VerticalAnchor] = 
     }))
 
 
-def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Decorator:
-    return ('tfc:climate', utils.del_none({
+def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Decorator:
+    if needs_forest:
+        min_forest = 'normal'
+    return ('tfc:climate', {
         'min_temperature': min_temp,
         'max_temperature': max_temp,
         'min_rainfall': min_rain,
         'max_rainfall': max_rain,
-        'max_forest': 'normal' if needs_forest else None,
+        'min_forest': min_forest,
+        'max_forest': max_forest,
         'fuzzy': fuzzy
-    }))
+    })
 
 
 def decorate_chance(chance: int) -> Decorator:
@@ -1101,7 +1101,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % berry for berry in BERRIES]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s_bush' % berry for berry in BERRIES]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % fruit for fruit in FRUITS]
 
     if volcano_features:

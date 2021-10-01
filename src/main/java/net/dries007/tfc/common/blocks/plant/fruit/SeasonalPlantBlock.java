@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -74,23 +75,19 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return distance;
     }
 
-    protected final Supplier<? extends Item> productItem;
-    protected final Lifecycle[] stages;
-
+    private final Supplier<? extends Item> productItem;
+    private final Lifecycle[] lifecycle;
     private final ExtendedProperties properties;
 
-    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle)
     {
         super(properties.properties());
 
-        this.properties = properties;
-        this.stages = stages;
-        this.productItem = productItem;
+        Preconditions.checkArgument(lifecycle.length == 12, "Lifecycle length must be 12");
 
-        if (stages.length != 12)
-        {
-            throw new IllegalArgumentException("stages array must be of length 12 (number of months per year)");
-        }
+        this.properties = properties;
+        this.lifecycle = lifecycle;
+        this.productItem = productItem;
     }
 
     @Override
@@ -179,7 +176,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
      */
     protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
     {
-        Lifecycle cycle = stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
+        Lifecycle cycle = lifecycle[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
 
         if ((cycle == Lifecycle.HEALTHY || cycle == Lifecycle.FLOWERING) && te.isGrowing())
         {
@@ -211,7 +208,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     protected Lifecycle getLifecycleForMonth(Month month)
     {
-        return stages[month.ordinal()];
+        return lifecycle[month.ordinal()];
     }
 
     @Override

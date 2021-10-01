@@ -59,7 +59,7 @@
                 "max_temperature": 33,
                 "min_rainfall": 100,
                 "max_rainfall": 500,
-                "max_forest": "normal"
+                "min_forest": "normal"
               }
             }
           }

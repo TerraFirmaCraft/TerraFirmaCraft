@@ -42,7 +42,9 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         Codec.BOOL.fieldOf("middle_layer").forGetter(c -> c.middleLayer),
         Codec.BOOL.fieldOf("bottom_layer").forGetter(c -> c.bottomLayer)
     ).apply(instance, RockSettings::new));
+
     private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
+
     public static final Codec<RockSettings> CODEC = Codec.either(
         ResourceLocation.CODEC,
         DIRECT_CODEC

@@ -50,9 +50,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
     private final Supplier<ClimateRange> climateRange; // todo: move this field to SeasonalPlantBlock
 
-    public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
+    public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, stages);
+        super(properties, productItem, lifecycle);
 
         this.climateRange = climateRange;
     }
@@ -66,13 +66,6 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        // todo: remove debug
-        if (player.getMainHandItem().getItem() == Items.ARROW && hand == InteractionHand.MAIN_HAND && !level.isClientSide)
-        {
-            onUpdate(level, pos, state);
-            return InteractionResult.SUCCESS;
-        }
-
         // Flowering bushes can be cut to create trimmings. This is how one moves or creates new bushes.
         // The larger the bush is (higher stage), the better chance you have of
         // 1. damaging it less (i.e. reducing the stage, or killing it), and
@@ -167,7 +160,6 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 final BlockPos sourcePos = pos.below();
                 final ClimateRange range = climateRange.get();
                 final int hydration = FarmlandBlock.getHydration(level, sourcePos);
-                final float averageTemperature = ChunkData.get(level, sourcePos).getAverageTemp(sourcePos);
 
                 int stagesGrown = 0, monthsSpentDying = 0;
                 do
@@ -236,6 +228,16 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         });
     }
 
+    protected BlockState getNewState(Level level, BlockPos pos)
+    {
+        return defaultBlockState().setValue(STAGE, 0).setValue(LIFECYCLE, Lifecycle.HEALTHY);
+    }
+
+    protected boolean canPlaceNewBushAt(Level level, BlockPos pos, BlockState placementState)
+    {
+        return level.isEmptyBlock(pos) && placementState.canSurvive(level, pos);
+    }
+
     private void propagate(Level level, BlockPos pos, Random random)
     {
         // Conditions:
@@ -256,11 +258,11 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
         // Then, try and pick a random position within the expansion radius, and place a bush there.
         final BlockPos.MutableBlockPos cursor = pos.mutable();
-        final BlockState placementState = defaultBlockState().setValue(STAGE, 0).setValue(LIFECYCLE, Lifecycle.HEALTHY);
         for (int tries = 0; tries < 6; tries++)
         {
             cursor.setWithOffset(pos, Helpers.triangle(random, 3), Helpers.triangle(random, 2), Helpers.triangle(random, 3));
-            if (level.isEmptyBlock(cursor) && placementState.canSurvive(level, cursor))
+            final BlockState placementState = getNewState(level, cursor);
+            if (canPlaceNewBushAt(level, pos, placementState))
             {
                 level.setBlockAndUpdate(cursor, placementState);
                 return;

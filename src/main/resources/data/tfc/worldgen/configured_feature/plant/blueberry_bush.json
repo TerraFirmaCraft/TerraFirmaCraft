@@ -14,7 +14,7 @@
                 "feature": {
                   "type": "tfc:berry_bushes",
                   "config": {
-                    "state": "tfc:plant/cloudberry_bush"
+                    "state": "tfc:plant/blueberry_bush"
                   }
                 },
                 "decorator": {
@@ -28,13 +28,12 @@
             "decorator": {
               "type": "tfc:climate",
               "config": {
-                "min_temperature": 3,
-                "max_temperature": 17,
-                "min_rainfall": 80,
-                "max_rainfall": 370,
-                "min_forest": "normal",
-                "max_forest": "old_growth",
-                "fuzzy": false
+                "min_temperature": 7,
+                "max_temperature": 25,
+                "min_rainfall": 100,
+                "max_rainfall": 400,
+                "min_forest": "edge",
+                "max_forest": "edge"
               }
             }
           }

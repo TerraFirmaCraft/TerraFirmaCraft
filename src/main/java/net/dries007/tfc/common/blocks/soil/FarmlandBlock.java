@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -98,7 +99,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final ChunkData data = ChunkData.get(level, pos);
         final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return (int) (60 * rainfall / ClimateModel.MAXIMUM_RAINFALL) + 20 * (5 - waterCost);
+        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAXIMUM_RAINFALL) + 20 * (5 - waterCost), 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)

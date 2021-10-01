@@ -472,7 +472,7 @@ def generate(rm: ResourceManager):
     # Climate Ranges
 
     for berry, data in BERRIES.items():
-        climate_range(rm, 'plant/%s_bush' % berry, hydration=(40, 100, 0), temperature=(data.min_temp, data.max_temp, 0))
+        climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
 
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
@@ -538,6 +538,10 @@ def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hyd
     if temperature is not None:
         data.update({'min_temperature': temperature[0], 'max_temperature': temperature[1], 'temperature_wiggle_range': temperature[2]})
     rm.data(('tfc', 'climate_ranges', name_parts), data)
+
+
+def hydration_from_rainfall(rainfall: int) -> int:
+    return rainfall * 60 // 500
 
 
 def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):
