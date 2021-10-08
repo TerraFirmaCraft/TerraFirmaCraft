@@ -21,6 +21,7 @@ public class TFCEntities
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MOD_ID);
 
     public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>of(TFCFallingBlockEntity::new, MobCategory.MISC).sized(0.98f, 0.98f));
+    public static final RegistryObject<EntityType<TFCBoat>> BOAT = register("boat", EntityType.Builder.<TFCBoat>of(TFCBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {

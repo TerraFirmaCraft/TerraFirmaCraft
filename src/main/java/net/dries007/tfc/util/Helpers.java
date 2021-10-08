@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -88,6 +89,19 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
+    }
+
+    /**
+     * Creates {@link ModelLayerLocation} in the default manner
+     */
+    public static ModelLayerLocation modelIdentifier(String name, String part)
+    {
+        return new ModelLayerLocation(new ResourceLocation(MOD_ID, name), part);
+    }
+
+    public static ModelLayerLocation modelIdentifier(String name)
+    {
+        return modelIdentifier(name, "main");
     }
 
     /**
