@@ -2,7 +2,6 @@ package net.dries007.tfc.common.blocks.crop;
 
 import java.util.function.Supplier;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -59,14 +58,14 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(getFluidProperty()));
-    }
-
-    @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
         return state.getFluidState().getType() == Fluids.EMPTY ? 0 : CropHelpers.GROWTH_LIMIT;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 }

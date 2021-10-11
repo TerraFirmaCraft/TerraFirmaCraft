@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public interface ICropBlock
@@ -16,6 +15,7 @@ public interface ICropBlock
     /**
      * Get any artificial growth limit imposed by the current environment.
      * This applies to, i.e. two tall crops that have a non-air block occupying their second position.
+     *
      * @return A value between [0, 1].
      */
     default float getGrowthLimit(Level level, BlockPos pos, BlockState state)

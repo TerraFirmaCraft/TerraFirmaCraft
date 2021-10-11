@@ -66,6 +66,12 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
     }
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(STICK));
+    }
+
+    @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
         final BlockState stateAbove = level.getBlockState(pos.above());
@@ -87,11 +93,5 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
             level.destroyBlock(posAbove, false);
         }
         level.setBlockAndUpdate(pos, deadState.setValue(DoubleDeadCropBlock.PART, Part.BOTTOM));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(STICK));
     }
 }

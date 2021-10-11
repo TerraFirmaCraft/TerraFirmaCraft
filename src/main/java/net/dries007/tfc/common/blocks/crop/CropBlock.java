@@ -4,23 +4,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -41,7 +37,6 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
@@ -96,6 +91,12 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         tick(state, level, pos, random);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        return !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : state;
     }
 
     @Override
@@ -209,15 +210,15 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     }
 
     @Override
-    public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
-    {
-        return primaryNutrient;
-    }
-
-    @Override
     public ClimateRange getClimateRange()
     {
         return climateRange.get();
+    }
+
+    @Override
+    public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
+    {
+        return primaryNutrient;
     }
 
     protected abstract void postGrowthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);

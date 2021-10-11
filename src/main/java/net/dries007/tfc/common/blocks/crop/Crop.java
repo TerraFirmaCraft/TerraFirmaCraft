@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -15,9 +14,6 @@ import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.climate.ClimateRanges;
 
 public enum Crop implements StringRepresentable
 {
@@ -40,6 +36,7 @@ public enum Crop implements StringRepresentable
     SQUASH(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 8, self), self -> new DeadCropBlock(dead())), // Default , 8
     SUGARCANE(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DoubleDeadCropBlock(dead())), // Double, 4 -> 4
     TOMATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new ClimbingDeadCropBlock(dead())), // Double, Stick, Pickable, 4 -> 4
+    // todo: figure out what to do with bell peppers
     //BELL_PEPPER(), // Default, Pickable, Multiple Grown Stages, ???
     JUTE(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 2, 4, self), self -> new DoubleDeadCropBlock(dead())); // Double, 2 -> 4
 

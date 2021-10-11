@@ -3,7 +3,6 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -105,12 +104,18 @@ public abstract class DoubleCropBlock extends CropBlock
     }
 
     @Override
+    public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
+    {
+        return isSameOrAir(level.getBlockState(pos.above())) ? CropHelpers.GROWTH_LIMIT : maxSingleGrowth;
+    }
+
+    @Override
     public void die(Level level, BlockPos pos, BlockState state, boolean fullyGrown)
     {
         final BlockPos posAbove = pos.above();
         final BlockState stateAbove = level.getBlockState(posAbove);
         final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown);
-        if (fullyGrown && (stateAbove.getBlock() == this || stateAbove.isAir()))
+        if (fullyGrown && isSameOrAir(stateAbove))
         {
             level.setBlock(posAbove, deadState.setValue(DoubleDeadCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }
@@ -121,11 +126,9 @@ public abstract class DoubleCropBlock extends CropBlock
         level.setBlockAndUpdate(pos, deadState.setValue(DoubleDeadCropBlock.PART, Part.BOTTOM));
     }
 
-    @Override
-    public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
+    protected boolean isSameOrAir(BlockState state)
     {
-        final BlockState stateAbove = level.getBlockState(pos.above());
-        return stateAbove.isAir() || stateAbove.getBlock() == this ? CropHelpers.GROWTH_LIMIT : maxSingleGrowth;
+        return state.isAir() || state.getBlock() == this;
     }
 
     public enum Part implements StringRepresentable
