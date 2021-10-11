@@ -36,19 +36,19 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextInt(15) == 0 && world.isEmptyBlock(pos.above()))
+        if (random.nextInt(15) == 0 && level.isEmptyBlock(pos.above()))
         {
-            TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
+            TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
             if (te != null)
             {
                 if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
                 {
-                    if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+                    if (!level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
                     {
                         te.setRemoved();
-                        world.destroyBlock(pos, true);
+                        level.destroyBlock(pos, true);
                     }
                 }
             }
@@ -56,7 +56,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         return InteractionResult.FAIL;
     }

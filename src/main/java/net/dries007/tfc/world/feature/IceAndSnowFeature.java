@@ -6,36 +6,32 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
-
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SnowyDirtBlock;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.material.FluidState;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -76,7 +72,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
                 mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
                 final float noise = temperatureNoise.noise(x, z);
-                final float temperature = Climate.calculateTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), Calendars.SERVER);
+                final float temperature = OverworldClimateModel.getTemperature(mutablePos, chunkData, Calendars.SERVER);
                 final Biome biome = level.getBiome(mutablePos);
 
                 BlockState stateAt = level.getBlockState(mutablePos);
@@ -115,7 +111,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
                 else if (fluidAt.getType() == TFCFluids.SALT_WATER.getSource())
                 {
                     final float threshold = seaIceNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
-                    if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
+                    if (temperature < OverworldClimateModel.SEA_ICE_FREEZE_TEMPERATURE && threshold < -0.4f)
                     {
                         level.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
                     }

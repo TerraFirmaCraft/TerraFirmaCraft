@@ -15,6 +15,8 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,9 +27,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.config.TFCConfig;
 
 @SuppressWarnings("deprecation")
 public class ConnectedGrassBlock extends Block implements IGrassBlock
@@ -43,23 +48,19 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     private static final Map<Direction, BooleanProperty> PROPERTIES = ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.WEST, WEST, Direction.SOUTH, SOUTH);
 
     private final Supplier<? extends Block> dirt;
-    @Nullable
-    private final Supplier<? extends Block> grassPath;
-    @Nullable
-    private final Supplier<? extends Block> farmland;
+    @Nullable private final Supplier<? extends Block> path;
 
     public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant soilType)
     {
-        this(properties, TFCBlocks.SOIL.get(dirtType).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(soilType));
+        this(properties, TFCBlocks.SOIL.get(dirtType).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soilType));
     }
 
-    public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)
+    public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> path)
     {
         super(properties.hasPostProcess(TFCBlocks::always));
 
         this.dirt = dirt;
-        this.grassPath = grassPath;
-        this.farmland = farmland;
+        this.path = path;
 
         registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false).setValue(SNOWY, false));
     }
@@ -79,9 +80,9 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        worldIn.getBlockTicks().scheduleTick(pos, this, 0);
+        level.getBlockTicks().scheduleTick(pos, this, 0);
     }
 
     @Override
@@ -164,23 +165,16 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         return dirt.get().defaultBlockState();
     }
 
-    /*
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolType toolType)
+    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
     {
-        if (toolType == ToolType.HOE && TFCConfig.SERVER.enableFarmlandCreation.get() && farmland != null)
+        if (stack.canPerformAction(action) && action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
         {
-            return farmland.get().defaultBlockState();
-        }
-        else if (toolType == ToolType.SHOVEL && TFCConfig.SERVER.enableGrassPathCreation.get() && grassPath != null)
-        {
-            return grassPath.get().defaultBlockState();
+            return path.get().defaultBlockState();
         }
         return state;
-    }*/
-
-    // todo: tool actions
+    }
 
     /**
      * When a grass block changes (is placed or added), this is called to send updates to all diagonal neighbors to update their state from this one

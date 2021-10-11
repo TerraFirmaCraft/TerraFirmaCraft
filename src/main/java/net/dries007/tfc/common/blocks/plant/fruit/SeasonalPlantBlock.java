@@ -10,10 +10,11 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,9 +37,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -46,8 +49,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.util.calendar.Month;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -74,21 +76,18 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     private final Supplier<? extends Item> productItem;
-    private final Lifecycle[] stages;
+    private final Lifecycle[] lifecycle;
     private final ExtendedProperties properties;
 
-    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle)
     {
         super(properties.properties());
 
-        this.properties = properties;
-        this.stages = stages;
-        this.productItem = productItem;
+        Preconditions.checkArgument(lifecycle.length == 12, "Lifecycle length must be 12");
 
-        if (stages.length != 12)
-        {
-            throw new IllegalArgumentException("stages array must be of length 12 (number of months per year)");
-        }
+        this.properties = properties;
+        this.lifecycle = lifecycle;
+        this.productItem = productItem;
     }
 
     @Override
@@ -99,28 +98,21 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!worldIn.isClientSide() && handIn == InteractionHand.MAIN_HAND && state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
+        if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
-            BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
-            if (te != null)
+            level.playSound(player, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.PLAYERS, 1.0f, level.getRandom().nextFloat() + 0.7f + 0.3f);
+            if (!level.isClientSide())
             {
-                te.use();
-                if (te.willStopUsing())
-                {
-                    Helpers.spawnItem(worldIn, pos, getProductItem());
-                    te.setHarvested(true);
-                    te.stopUsing();
-                    worldIn.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
-                    return InteractionResult.CONSUME;
-                }
-                if (worldIn.getGameTime() % 3 == 0)
-                    Helpers.playSound(worldIn, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES);
-                return InteractionResult.SUCCESS;
+                level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
+                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem());
+                    level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                });
             }
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -132,80 +124,33 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
-    {
-        BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
-        if (te == null) return;
-
-        ChunkData chunkData = ChunkData.get(world, pos);
-
-        // todo: improve temperature and rainfall checks. temperature should be actual, rainfall should be player-useful hydration
-        /*
-        if (!bush.isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
-        {
-            te.setGrowing(false);
-        }
-
-         */
-
-        /*Lifecycle old = state.getValue(LIFECYCLE);
-        if (old != Lifecycle.HEALTHY)
-        {
-            te.resetCounter(); // todo Prevent long calendar changes from causing runaway growth. Needs improvement.
-        }*/
-
-        Lifecycle lifecycle = updateLifecycle(te);
-        world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, lifecycle));
-
-        int stage = state.getValue(STAGE);
-        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-
-        if (days >= 1)
-        {
-            int cycles = (int) days * 2;
-            for (int i = cycles; i > 0; i--)
-            {
-                this.cycle(te, world, pos, state, stage, lifecycle, random);
-            }
-            te.resetCounter();
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
-            Helpers.slowEntityInBlock(entityIn, 0.2f, 5);
+            Helpers.slowEntityInBlock(entity, 0.2f, 5);
         }
-        if (!(entityIn.getType() == EntityType.ITEM))
+        // todo: move this to bushes
+        if (entity.getType() != EntityType.ITEM && TFCTags.Blocks.THORNY_BUSHES.contains(this))
         {
-            entityIn.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
+            entity.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
         }
     }
 
     /**
      * A means of performing X amount of random ticks to catch up with the calendar.
      */
+    @Deprecated
     public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
 
-    }
-
-    @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
-    {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
     }
 
     @Override
@@ -231,7 +176,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
      */
     protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
     {
-        Lifecycle cycle = stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
+        Lifecycle cycle = lifecycle[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
 
         if ((cycle == Lifecycle.HEALTHY || cycle == Lifecycle.FLOWERING) && te.isGrowing())
         {
@@ -256,4 +201,26 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return new ItemStack(productItem.get());
     }
 
+    protected Lifecycle getLifecycleForCurrentMonth()
+    {
+        return getLifecycleForMonth(Calendars.SERVER.getCalendarMonthOfYear());
+    }
+
+    protected Lifecycle getLifecycleForMonth(Month month)
+    {
+        return lifecycle[month.ordinal()];
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return level.getBlockState(pos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        final BlockPos belowPos = pos.below();
+        return mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+    }
 }

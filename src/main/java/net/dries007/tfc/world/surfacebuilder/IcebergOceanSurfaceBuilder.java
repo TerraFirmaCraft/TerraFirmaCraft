@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.material.Material;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 
 /**
  * Modified from {@link net.minecraft.world.level.levelgen.surfacebuilders.FrozenOceanSurfaceBuilder}
@@ -48,7 +48,7 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         double icebergMinY = 0.0D;
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(x, startHeight, z);
-        final float maxAnnualTemperature = Climate.calculateMonthlyAverageTemperature(z, seaLevel, context.getChunkData().getAverageTemp(mutablePos), 1);
+        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(z, seaLevel, context.getChunkData().getAverageTemp(mutablePos), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;

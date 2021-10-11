@@ -1,7 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "tfc:block/berry_bush/snowberry_bush"
-  }
+  "parent": "tfc:block/plant/snowberry_bush_2"
 }

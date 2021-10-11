@@ -145,6 +145,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
+    rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
 
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
@@ -190,6 +191,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('charcoal_cover_whitelist', 'tfc:log_pile', 'tfc:charcoal_pile', 'tfc:burning_log_pile')
     rm.block_tag('forge_invisible_whitelist', 'tfc:crucible')
     rm.block_tag('any_spreading_bush', '#tfc:spreading_bush')
+    rm.block_tag('thorny_bushes', 'tfc:plant/blackberry_bush', 'tfc:plant/raspberry_bush')
     rm.block_tag('logs_that_log', '#minecraft:logs')
     rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.block_tag('forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag
@@ -342,7 +344,8 @@ def generate(rm: ResourceManager):
     # ==========
 
     rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water')
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
+    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -464,7 +467,12 @@ def generate(rm: ResourceManager):
     # Drinkables
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
-    drinkable(rm, 'salt_water', 'tfc:fluid/salt_water', thirst=-1)
+    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
+
+    # Climate Ranges
+
+    for berry, data in BERRIES.items():
+        climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
 
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
@@ -521,6 +529,19 @@ def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'duration': duration,
         'temperature': temperature
     })
+
+
+def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hydration: Tuple[int, int, int] = None, temperature: Tuple[float, float, float] = None):
+    data = {}
+    if hydration is not None:
+        data.update({'min_hydration': hydration[0], 'max_hydration': hydration[1], 'hydration_wiggle_range': hydration[2]})
+    if temperature is not None:
+        data.update({'min_temperature': temperature[0], 'max_temperature': temperature[1], 'temperature_wiggle_range': temperature[2]})
+    rm.data(('tfc', 'climate_ranges', name_parts), data)
+
+
+def hydration_from_rainfall(rainfall: int) -> int:
+    return rainfall * 60 // 500
 
 
 def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):

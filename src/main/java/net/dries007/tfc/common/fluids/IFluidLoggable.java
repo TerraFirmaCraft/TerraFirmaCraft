@@ -75,6 +75,7 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
     /**
      * Default implementation of {@link net.minecraft.world.level.block.state.BlockBehaviour#getFluidState(BlockState)} which allows arbitrary fluids based on the contained property.
      */
+    @SuppressWarnings("deprecation")
     default FluidState getFluidState(BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();

@@ -16,9 +16,9 @@ public class CalendarWorldData extends SavedData
 {
     private static final String NAME = MOD_ID + "_calendar";
 
-    public static CalendarWorldData get(ServerLevel world)
+    public static CalendarWorldData get(ServerLevel level)
     {
-        return world.getDataStorage().computeIfAbsent(CalendarWorldData::load, CalendarWorldData::new, NAME);
+        return level.getDataStorage().computeIfAbsent(CalendarWorldData::load, CalendarWorldData::new, NAME);
     }
 
     private static CalendarWorldData load(CompoundTag nbt)

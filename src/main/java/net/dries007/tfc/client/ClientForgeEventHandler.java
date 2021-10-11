@@ -38,9 +38,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -51,7 +53,6 @@ import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -70,6 +71,7 @@ public class ClientForgeEventHandler
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
+        bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
@@ -96,15 +98,17 @@ public class ClientForgeEventHandler
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {
-                    list.add(String.format("Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+                    list.add(String.format("[Debug] Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
                 }
+
+                // Always add climate data
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getAverageTemperature())));
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getTemperature())));
+                list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getRainfall())));
 
                 ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus() == ChunkData.Status.CLIENT)
                 {
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", Climate.calculateTemperature(pos, data.getAverageTemp(pos), Calendars.CLIENT))));
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_type") + WHITE + I18n.get(Helpers.getEnumTranslationKey(data.getForestType())));
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_properties",
                         WHITE + String.format("%.1f%%", 100 * data.getForestDensity()) + GRAY,
@@ -114,6 +118,23 @@ public class ClientForgeEventHandler
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
                 }
+            }
+        }
+    }
+
+    /**
+     * Render overlays for looking at particular block / item combinations
+     */
+    public static void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
+    {
+        final PoseStack stack = event.getMatrixStack();
+        final Minecraft minecraft = Minecraft.getInstance();
+        final Player player = minecraft.player;
+        if (player != null)
+        {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (TFCTags.Items.HOES.contains(player.getMainHandItem().getItem())) || TFCTags.Items.HOES.contains(player.getOffhandItem().getItem()) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            {
+                HoeOverlays.render(minecraft, event.getWindow(), stack);
             }
         }
     }

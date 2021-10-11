@@ -21,7 +21,7 @@ import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.KoppenClimateClassification;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

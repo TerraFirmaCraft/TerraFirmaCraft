@@ -14,17 +14,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.CommonLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 public final class TFCColors
 {
@@ -196,10 +195,14 @@ public final class TFCColors
      */
     private static int getClimateColor(int[] colorCache, BlockPos pos)
     {
-        ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
-        float temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
-        float rainfall = data.getRainfall(pos);
-        return getClimateColor(colorCache, temperature, rainfall);
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
+            final float temperature = Climate.getTemperature(level, pos);
+            final float rainfall = Climate.getRainfall(level, pos);
+            return getClimateColor(colorCache, temperature, rainfall);
+        }
+        return 0;
     }
 
     /**

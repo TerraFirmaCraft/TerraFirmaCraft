@@ -6,17 +6,26 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
+import java.util.function.IntFunction;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+
 public class FarmlandBlockEntity extends TFCBlockEntity
 {
-    // NPK Nutrients
-    private float nitrogen;
-    private float phosphorous;
-    private float potassium;
+    private float nitrogen, phosphorous, potassium;
+    @Nullable private Integer hydration; // Cached, not generally valid. Only used for non-critical situations (like hoe overlays)
 
     public FarmlandBlockEntity(BlockPos pos, BlockState state)
     {
@@ -28,53 +37,49 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         super(type, pos, state);
 
         nitrogen = phosphorous = potassium = 0;
+        hydration = null;
     }
 
     @Override
     public void load(CompoundTag nbt)
     {
-        nitrogen = nbt.getFloat("nitrogen");
-        phosphorous = nbt.getFloat("phosphorous");
-        potassium = nbt.getFloat("potassium");
+        nitrogen = nbt.getFloat("n");
+        phosphorous = nbt.getFloat("p");
+        potassium = nbt.getFloat("k");
         super.load(nbt);
     }
 
     @Override
     public CompoundTag save(CompoundTag nbt)
     {
-        nbt.putFloat("nitrogen", nitrogen);
-        nbt.putFloat("phosphorous", phosphorous);
-        nbt.putFloat("potassium", potassium);
+        nbt.putFloat("n", nitrogen);
+        nbt.putFloat("p", phosphorous);
+        nbt.putFloat("k", potassium);
         return super.save(nbt);
     }
 
-    public float getNitrogen()
+    public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, @Nullable IntFunction<Component> hydrationValidity, boolean includeNutrients)
     {
-        return nitrogen;
+        final int value = getCachedHydration(level, pos);
+        final MutableComponent hydration = new TranslatableComponent("tfc.tooltip.farmland.hydration", value);
+        if (hydrationValidity != null)
+        {
+            hydration.append(hydrationValidity.apply(value));
+        }
+
+        text.add(hydration);
+        if (includeNutrients)
+        {
+            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", nitrogen, phosphorous, potassium));
+        }
     }
 
-    public void setNitrogen(float nitrogen)
+    private int getCachedHydration(LevelAccessor level, BlockPos pos)
     {
-        this.nitrogen = nitrogen;
-    }
-
-    public float getPhosphorous()
-    {
-        return phosphorous;
-    }
-
-    public void setPhosphorous(float phosphorous)
-    {
-        this.phosphorous = phosphorous;
-    }
-
-    public float getPotassium()
-    {
-        return potassium;
-    }
-
-    public void setPotassium(float potassium)
-    {
-        this.potassium = potassium;
+        if (hydration == null)
+        {
+            hydration = FarmlandBlock.getHydration(level, pos);
+        }
+        return hydration;
     }
 }

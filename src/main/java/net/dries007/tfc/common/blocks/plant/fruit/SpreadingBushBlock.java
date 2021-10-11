@@ -93,10 +93,10 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+        BlockState belowState = level.getBlockState(belowPos);
+        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
     }
 }

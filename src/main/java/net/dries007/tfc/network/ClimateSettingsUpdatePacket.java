@@ -1,9 +1,17 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.settings.ClimateSettings;
 
 public class ClimateSettingsUpdatePacket
@@ -39,6 +47,12 @@ public class ClimateSettingsUpdatePacket
 
     void handle(NetworkEvent.Context context)
     {
-        context.enqueueWork(() -> Climate.setOverworldTemperatureSettings(settings));
+        context.enqueueWork(() -> {
+            final Level level = ClientHelpers.getLevel();
+            if (level != null)
+            {
+                Climate.onWorldLoad(level, settings);
+            }
+        });
     }
 }

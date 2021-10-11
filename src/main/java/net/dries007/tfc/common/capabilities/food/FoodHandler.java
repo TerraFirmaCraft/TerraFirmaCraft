@@ -69,6 +69,10 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         {
             return UNKNOWN_CREATION_DATE;
         }
+        if (creationDate == UNKNOWN_CREATION_DATE)
+        {
+            this.creationDate = FoodCapability.getRoundedCreationDate();
+        }
         if (calculateRottenDate(creationDate) < Calendars.get(isClientSide).getTicks())
         {
             this.creationDate = ROTTEN_DATE;
@@ -89,6 +93,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         {
             return NEVER_DECAY_DATE;
         }
+        long creationDate = getCreationDate(isClientSide);
         if (creationDate == ROTTEN_DATE)
         {
             return ROTTEN_DATE;
@@ -175,7 +180,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
                 foodTraits.add(trait);
             }
         }
-        creationDate = nbt.contains("creationDate") ? nbt.getLong("creationDate") : FoodCapability.getRoundedCreationDate();
+        creationDate = nbt.contains("creationDate") ? nbt.getLong("creationDate") : UNKNOWN_CREATION_DATE;
     }
 
     /**

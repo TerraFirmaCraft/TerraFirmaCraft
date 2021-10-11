@@ -9,29 +9,29 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirtPathBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-public class TFCDirtPathBlock extends DirtPathBlock implements ISoilBlock
+public class PathBlock extends DirtPathBlock implements ISoilBlock
 {
-    private final Supplier<Block> dirtBlock;
+    private final Supplier<Block> dirt;
 
-    public TFCDirtPathBlock(Properties builder, SoilBlockType soil, SoilBlockType.Variant variant)
+    public PathBlock(Properties properties, SoilBlockType soil, SoilBlockType.Variant variant)
     {
-        this(builder, TFCBlocks.SOIL.get(soil).get(variant));
+        this(properties, TFCBlocks.SOIL.get(soil).get(variant));
     }
 
-    protected TFCDirtPathBlock(Properties builder, Supplier<Block> dirtBlock)
+    public PathBlock(Properties builder, Supplier<Block> dirt)
     {
         super(builder);
 
-        this.dirtBlock = dirtBlock;
+        this.dirt = dirt;
     }
 
     @Override
@@ -46,14 +46,14 @@ public class TFCDirtPathBlock extends DirtPathBlock implements ISoilBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        worldIn.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), worldIn, pos));
+        level.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), level, pos));
     }
 
     @Override
     public BlockState getDirt()
     {
-        return dirtBlock.get().defaultBlockState();
+        return dirt.get().defaultBlockState();
     }
 }

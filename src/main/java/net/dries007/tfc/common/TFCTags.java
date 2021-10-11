@@ -37,6 +37,7 @@ public class TFCTags
         public static final Tag.Named<Block> CORALS = create("corals");
         public static final Tag.Named<Block> SPREADING_BUSH = create("spreading_bush");
         public static final Tag.Named<Block> ANY_SPREADING_BUSH = create("any_spreading_bush");
+        public static final Tag.Named<Block> THORNY_BUSHES = create("thorny_bushes"); // Bushes that damage entities walking through them
         public static final Tag.Named<Block> FRUIT_TREE_BRANCH = create("fruit_tree_branch");
         public static final Tag.Named<Block> FRUIT_TREE_LEAVES = create("fruit_tree_leaves");
         public static final Tag.Named<Block> FRUIT_TREE_SAPLING = create("fruit_tree_sapling");
@@ -77,6 +78,7 @@ public class TFCTags
     public static class Fluids
     {
         public static final Tag.Named<Fluid> MIXABLE = create("mixable");
+        public static final Tag.Named<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final Tag.Named<Fluid> USABLE_IN_JUG = create("usable_in_jug");
 
@@ -104,12 +106,13 @@ public class TFCTags
         public static final Tag.Named<Item> HANDSTONE = create("handstone");
         public static final Tag.Named<Item> SCRAPABLE = create("scrapable");
         public static final Tag.Named<Item> KNIVES = create("knives");
+        public static final Tag.Named<Item> HOES = create("hoes");
         public static final Tag.Named<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final Tag.Named<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final Tag.Named<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
         public static final Tag.Named<Item> LEATHER_KNAPPING = create("leather_knapping");
-        public static final Tag.Named<Item> KNAPPING_ANY = create("knapping_any");
         public static final Tag.Named<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
+        public static final Tag.Named<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
 
         private static Tag.Named<Item> create(String id)
         {

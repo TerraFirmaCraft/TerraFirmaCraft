@@ -92,6 +92,8 @@ import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -374,9 +376,9 @@ public final class ForgeEventHandler
         // All other resource reload listeners can be inserted after recipes.
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
-
         event.addListener(Support.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
+        event.addListener(ClimateRange.MANAGER);
 
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
@@ -503,8 +505,9 @@ public final class ForgeEventHandler
             {
                 // Update climate settings
                 final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
-                Climate.setOverworldTemperatureSettings(settings);
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings));
+
+                Climate.onWorldLoad(level, settings); // Server
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings)); // Client
             }
         }
     }

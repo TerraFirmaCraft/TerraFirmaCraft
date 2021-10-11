@@ -8,25 +8,23 @@ package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -49,7 +47,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         for (int i = 0; i < 72; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -3, rand.nextInt(15) - rand.nextInt(15));
-            float maxTemperature = Climate.calculateMonthlyAverageTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
+            float maxTemperature = OverworldClimateModel.getAverageMonthlyTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
             if (maxTemperature > -4)
             {
                 return false;

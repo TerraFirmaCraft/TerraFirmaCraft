@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -68,6 +69,11 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
     public Collection<Fluid> getPossibleFluids()
     {
         return fluids.get();
+    }
+
+    public FluidKey keyForOrEmpty(Fluid fluid)
+    {
+        return canContain(fluid) ? keyFor(fluid) : keyFor(Fluids.EMPTY);
     }
 
     public FluidKey keyFor(Fluid fluid)

@@ -12,9 +12,28 @@
               "type": "minecraft:decorated",
               "config": {
                 "feature": {
-                  "type": "tfc:berry_bushes",
+                  "type": "tfc:random_patch",
                   "config": {
-                    "state": "tfc:plant/elderberry_bush"
+                    "state_provider": {
+                      "type": "minecraft:simple_state_provider",
+                      "state": {
+                        "Name": "tfc:plant/cranberry_bush",
+                        "Properties": {
+                          "lifecycle": "healthy",
+                          "stage": "0",
+                          "fluid": "empty"
+                        }
+                      }
+                    },
+                    "block_placer": {
+                      "type": "minecraft:simple_block_placer"
+                    },
+                    "whitelist": [],
+                    "blacklist": [],
+                    "yspread": 1,
+                    "xspread": 4,
+                    "zspread": 4,
+                    "tries": 8
                   }
                 },
                 "decorator": {
@@ -28,13 +47,12 @@
             "decorator": {
               "type": "tfc:climate",
               "config": {
-                "min_temperature": 10,
-                "max_temperature": 29,
-                "min_rainfall": 100,
-                "max_rainfall": 400,
+                "min_temperature": -5,
+                "max_temperature": 17,
+                "min_rainfall": 250,
+                "max_rainfall": 500,
                 "min_forest": "edge",
-                "max_forest": "edge",
-                "fuzzy": false
+                "max_forest": "old_growth"
               }
             }
           }

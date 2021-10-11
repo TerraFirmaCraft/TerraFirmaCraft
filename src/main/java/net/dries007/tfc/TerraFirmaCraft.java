@@ -25,6 +25,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.forge.IForging;
@@ -119,6 +120,7 @@ public final class TerraFirmaCraft
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
+        FarmlandBlock.registerTillables();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 

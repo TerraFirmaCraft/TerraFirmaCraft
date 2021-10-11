@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.settings;
 
 import java.util.Map;
@@ -36,7 +42,9 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         Codec.BOOL.fieldOf("middle_layer").forGetter(c -> c.middleLayer),
         Codec.BOOL.fieldOf("bottom_layer").forGetter(c -> c.bottomLayer)
     ).apply(instance, RockSettings::new));
+
     private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
+
     public static final Codec<RockSettings> CODEC = Codec.either(
         ResourceLocation.CODEC,
         DIRECT_CODEC

@@ -6,15 +6,13 @@
 
 package net.dries007.tfc.client;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 /**
@@ -35,18 +33,17 @@ public enum ClimateRenderCache
      */
     public void onClientTick()
     {
-        Level world = Minecraft.getInstance().level;
-        Player player = Minecraft.getInstance().player;
-        if (world != null && player != null)
+        final Level level = ClientHelpers.getLevel();
+        final Player player = ClientHelpers.getPlayer();
+        if (level != null && player != null)
         {
-            BlockPos pos = player.blockPosition();
-            ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
+            final BlockPos pos = player.blockPosition();
 
             ticks = Calendars.CLIENT.getTicks();
-            averageTemperature = data.getAverageTemp(pos);
-            temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
-            rainfall = data.getRainfall(pos);
-            plateTectonicsInfo = data.getPlateTectonicsInfo();
+            averageTemperature = Climate.getAverageTemperature(level, pos);
+            temperature = Climate.getTemperature(level, pos);
+            rainfall = Climate.getRainfall(level, pos);
+            plateTectonicsInfo = ChunkData.get(level, pos).getPlateTectonicsInfo();
         }
     }
 

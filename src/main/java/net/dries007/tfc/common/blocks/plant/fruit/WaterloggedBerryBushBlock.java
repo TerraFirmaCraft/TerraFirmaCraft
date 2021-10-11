@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -36,79 +37,25 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
-    public static final BooleanProperty WILD = TFCBlockStateProperties.WILD;
 
-    public WaterloggedBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, int deathChance)
+    public WaterloggedBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, stages, deathChance);
-    }
-
-    @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
-    {
-        if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
-        {
-            return InteractionResult.FAIL; // pick berries by flooding
-        }
-        return super.use(state, worldIn, pos, player, handIn, hit);
-    }
-
-    @Override
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
-    {
-        if (state.getValue(WILD)) return; // prevent wild blocks from spreading
-        if (lifecycle == Lifecycle.HEALTHY && state.getFluidState().getType().is(FluidTags.WATER))
-        {
-            super.cycle(te, world, pos, state, stage, Lifecycle.FLOWERING, random); // cannot grow if its waterlogged so we pretend it flowers so we cant grow (without actually disabling growth forever)
-            return;
-        }
-        super.cycle(te, world, pos, state, stage, lifecycle, random);
-    }
-
-    @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
-    {
-        super.randomTick(state, world, pos, random);
-        BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
-        if (te == null) return;
-
-        Lifecycle lifecycle = state.getValue(LIFECYCLE);
-        Fluid fluid = state.getFluidState().getType();
-        if (lifecycle == Lifecycle.DORMANT && !fluid.is(FluidTags.WATER))
-        {
-            te.setGrowing(false); // need to be waterlogged over the winter
-        }
-        else if (lifecycle == Lifecycle.FLOWERING && fluid.is(FluidTags.WATER))
-        {
-            te.setGrowing(false); // if we're flowering and STILL waterlogged, just kill it!
-        }
-        else if (lifecycle == Lifecycle.FRUITING && fluid.is(FluidTags.WATER))
-        {
-            Helpers.spawnItem(world, pos, getProductItem());
-            te.setHarvested(true);
-            world.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
-        }
-    }
-
-    @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
-    {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || this.mayPlaceOn(worldIn.getBlockState(belowPos), worldIn, belowPos);
+        super(properties, productItem, lifecycle, climateRange);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LIFECYCLE, STAGE, getFluidProperty(), WILD);
+        super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 
     @Override
@@ -129,13 +76,10 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         }
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        boolean flag = fluidstate.getType() == Fluids.WATER.getSource();
-        return defaultBlockState().setValue(getFluidProperty(), flag ? getFluidProperty().keyFor(Fluids.WATER.getSource()) : getFluidProperty().keyFor(Fluids.EMPTY));
+        return defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(context.getLevel().getFluidState(context.getClickedPos()).getType()));
     }
 
     @Override
@@ -149,5 +93,23 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return super.mayPlaceOn(state, level, pos) || level.getBlockState(pos.below()).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+    }
+
+    @Override
+    protected BlockState getNewState(Level level, BlockPos pos)
+    {
+        return super.getNewState(level, pos).setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(level.getFluidState(pos).getType()));
+    }
+
+    @Override
+    protected boolean canPlaceNewBushAt(Level level, BlockPos pos, BlockState placementState)
+    {
+        return placementState.canSurvive(level, pos) && (FluidHelpers.isAirOrEmptyFluid(level.getBlockState(pos)) && getFluidProperty().canContain(level.getFluidState(pos).getType()));
     }
 }

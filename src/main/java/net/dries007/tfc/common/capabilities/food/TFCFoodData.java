@@ -22,13 +22,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
+import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.TFCDamageSources;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 /**

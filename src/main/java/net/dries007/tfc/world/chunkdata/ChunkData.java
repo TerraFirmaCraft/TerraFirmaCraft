@@ -14,7 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
@@ -32,7 +32,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
 
-    public static ChunkData get(LevelAccessor world, BlockPos pos)
+    public static ChunkData get(LevelReader world, BlockPos pos)
     {
         return get(world, new ChunkPos(pos));
     }
@@ -40,7 +40,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     /**
      * Called to get chunk data when a world context is available.
      */
-    public static ChunkData get(LevelAccessor world, ChunkPos pos)
+    @SuppressWarnings("deprecation")
+    public static ChunkData get(LevelReader world, ChunkPos pos)
     {
         // Query cache first, picking the correct cache for the current logical side
         ChunkData data = ChunkDataCache.get(world).get(pos);

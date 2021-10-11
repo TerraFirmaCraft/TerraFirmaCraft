@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.util;
 
 import java.util.Locale;
@@ -39,7 +45,7 @@ public final class JsonHelpers extends GsonHelper
     {
         final ResourceLocation res = new ResourceLocation(key);
         final T obj = registry.getValue(res);
-        if (obj == null)
+        if (obj == null || !registry.containsKey(res))
         {
             throw new JsonParseException("Unknown entry from " + registry.getRegistryName().getPath() + ": " + key);
         }

@@ -5,6 +5,7 @@ from typing import Dict, List, NamedTuple, Sequence, Optional, Literal, Tuple
 
 Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
 RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
+BerryBushType = Literal['stationary', 'spreading', 'waterlogged']
 Rock = NamedTuple('Rock', category=RockCategory, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float, melt_metal=Optional[str])
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool)
@@ -13,7 +14,7 @@ OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int])
 Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 Wood = NamedTuple('Wood', temp=float, duration=int)
-Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str, min_forest=str, max_forest=str)
+Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=BerryBushType, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
 
 # Melting Temps
@@ -559,6 +560,14 @@ DEFAULT_LANG = {
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of ',
     'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
+    'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
+    'tfc.tooltip.farmland.hydration_too_low': ' - §4Too low! §r(>%s%%)',
+    'tfc.tooltip.farmland.hydration_too_high': ' - §4Too high! §r(<%s%%)',
+    'tfc.tooltip.farmland.temperature': '§4Temperature: §r%s\u00b0C',
+    'tfc.tooltip.farmland.temperature_too_low': ' - §4Too low! §r(>%s\u00b0C)',
+    'tfc.tooltip.farmland.temperature_too_high': ' - §4Too high! §r(<%s\u00b0C)',
+    'tfc.tooltip.farmland.just_right': ' - §2Good§r',
+    'tfc.tooltip.farmland.nutrients': '§b(N) Nitrogen: §r%s%%, §6(P) Phosphorous: §r%s%%, §d(K) Potassium: §r%s%%',
 
     # Commands
 

@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Locale;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.core.Direction;
@@ -15,7 +17,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -115,16 +116,16 @@ public enum Wood implements StringRepresentable
 
     public enum BlockType
     {
-        LOG(wood -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), false),
-        STRIPPED_LOG(wood -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), false),
-        WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), false),
-        STRIPPED_WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), false),
+        LOG((self, wood) -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops(), TFCBlocks.WOODS.get(wood).get(self.stripped())), false),
+        STRIPPED_LOG(wood -> new LogBlock(BlockBehaviour.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops(), null), false),
+        WOOD((self, wood) -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops(), TFCBlocks.WOODS.get(wood).get(self.stripped())), false),
+        STRIPPED_WOOD(wood -> new LogBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops(), null), false),
         LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), wood.getMaxDecayDistance()), false),
         PLANKS(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), ExtendedProperties.of(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER), wood.getDaysToGrow()), false),
         BOOKSHELF(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        DOOR(wood -> new DoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
-        TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        DOOR(wood -> new DoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()), true),
+        TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()), true),
         FENCE(wood -> new FenceBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         LOG_FENCE(wood -> new FenceBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         FENCE_GATE(wood -> new FenceGateBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
@@ -132,7 +133,7 @@ public enum Wood implements StringRepresentable
         PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, wood.getMainColor()).noCollission().strength(0.5F).sound(SoundType.WOOD)), true),
         SLAB(wood -> new SlabBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         STAIRS(wood -> new StairBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()), true),
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
         VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(ExtendedProperties.of(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(1.0F).noOcclusion().sound(SoundType.WOOD)).flammable(60, 60)), false),
@@ -146,10 +147,15 @@ public enum Wood implements StringRepresentable
             return i >= 0 && i < VALUES.length ? VALUES[i] : LOG;
         }
 
-        private final NonNullFunction<Wood, Block> blockFactory;
+        private final BiFunction<BlockType, Wood, Block> blockFactory;
         private final boolean isPlanksVariant;
 
-        BlockType(NonNullFunction<Wood, Block> blockFactory, boolean isPlanksVariant)
+        BlockType(Function<Wood, Block> blockFactory, boolean isPlanksVariant)
+        {
+            this((self, wood) -> blockFactory.apply(wood), isPlanksVariant);
+        }
+
+        BlockType(BiFunction<BlockType, Wood, Block> blockFactory, boolean isPlanksVariant)
         {
             this.blockFactory = blockFactory;
             this.isPlanksVariant = isPlanksVariant;
@@ -157,7 +163,7 @@ public enum Wood implements StringRepresentable
 
         public Supplier<Block> create(Wood wood)
         {
-            return () -> blockFactory.apply(wood);
+            return () -> blockFactory.apply(this, wood);
         }
 
         public String nameFor(Wood wood)
@@ -168,6 +174,16 @@ public enum Wood implements StringRepresentable
         public boolean needsItem()
         {
             return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT;
+        }
+
+        private BlockType stripped()
+        {
+            return switch (this)
+                {
+                    case LOG -> STRIPPED_LOG;
+                    case WOOD -> STRIPPED_WOOD;
+                    default -> throw new IllegalStateException("Block type " + name() + " does not have a stripped variant");
+                };
         }
     }
 }

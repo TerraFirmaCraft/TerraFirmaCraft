@@ -73,7 +73,7 @@ public class ChunkWatchPacket
         context.enqueueWork(() -> {
             ChunkPos pos = new ChunkPos(chunkX, chunkZ);
             // Update client-side chunk data capability
-            Level world = ClientHelpers.getWorld();
+            Level world = ClientHelpers.getLevel();
             if (world != null)
             {
                 // First, synchronize the chunk data in the capability and cache.

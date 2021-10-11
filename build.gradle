@@ -167,7 +167,7 @@ idea {
 license {
     header = project.file('HEADER.txt')
 
-    include '** /*.java'
+    include '**/*.java'
 
     exclude 'net/dries007/tfc/world/noise/FastNoiseLite.java' // Fast Noise
 }

@@ -53,8 +53,6 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration>
             if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON)) continue;
             mutablePos.move(Direction.UP);
 
-            if (bushState.hasProperty(WaterloggedBerryBushBlock.WILD))
-                bushState = bushState.setValue(WaterloggedBerryBushBlock.WILD, true);
             world.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);
 
             BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);

@@ -23,7 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class ClientHelpers
 {
     @Nullable
-    public static Level getWorld()
+    public static Level getLevel()
     {
         return Minecraft.getInstance().level;
     }
@@ -32,6 +32,17 @@ public final class ClientHelpers
     public static Player getPlayer()
     {
         return Minecraft.getInstance().player;
+    }
+
+    @Nullable
+    public static BlockPos getTargetedPos()
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null && mc.hitResult instanceof BlockHitResult block)
+        {
+            return block.getBlockPos();
+        }
+        return null;
     }
 
     public static boolean hasShiftDown()

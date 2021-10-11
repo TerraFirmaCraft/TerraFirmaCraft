@@ -26,6 +26,8 @@ import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 
 /**
  * This is a helper class which handles environment effects
@@ -39,59 +41,58 @@ public final class EnvironmentHelpers
      * - Convert possible blocks to snow piles
      * - Freeze sea water into sea ice
      */
-    public static void onEnvironmentTick(ServerLevel world, LevelChunk chunkIn)
+    public static void onEnvironmentTick(ServerLevel level, LevelChunk chunkIn)
     {
-        Random random = world.getRandom();
+        Random random = level.getRandom();
         ChunkPos chunkPos = chunkIn.getPos();
         if (random.nextInt(16) == 0)
         {
-            BlockPos pos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, world.getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15));
-            if (world.isAreaLoaded(pos, 2))
+            BlockPos pos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, level.getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15));
+            if (level.isAreaLoaded(pos, 2))
             {
-                float temperature = Climate.getTemperature(world, pos);
-                if (world.isRaining() && temperature < Climate.SNOW_STACKING_TEMPERATURE)
+                float temperature = Climate.getTemperature(level, pos);
+                if (level.isRaining() && temperature < OverworldClimateModel.SNOW_STACKING_TEMPERATURE)
                 {
                     // Try and place snow both at the current location, and one below
                     // Snow needs to be placed at the current location if it's an air block (placing new snow) and one lower if it's a pile or existing snow block.
                     // If the current block is snow, check adjacent locations and pick a lower one if found
                     // This has the effect of smoothing out snow placement a bit, resulting in less awkward snow cover
-                    BlockPos targetPos = findOptimalSnowLocation(world, pos, random);
-                    BlockState targetState = world.getBlockState(targetPos);
-                    if (!tryStackSnow(world, targetPos, targetState))
+                    BlockPos targetPos = findOptimalSnowLocation(level, pos, random);
+                    BlockState targetState = level.getBlockState(targetPos);
+                    if (!tryStackSnow(level, targetPos, targetState))
                     {
-                        targetPos = findOptimalSnowLocation(world, pos.below(), random);
-                        targetState = world.getBlockState(targetPos);
-                        tryStackSnow(world, targetPos, targetState);
+                        targetPos = findOptimalSnowLocation(level, pos.below(), random);
+                        targetState = level.getBlockState(targetPos);
+                        tryStackSnow(level, targetPos, targetState);
                     }
                 }
 
-                if (world.isRaining() && temperature < Climate.MAX_ICICLE_TEMPERATURE && temperature > Climate.MIN_ICICLE_TEMPERATURE)
+                if (level.isRaining() && temperature < OverworldClimateModel.MAX_ICICLE_TEMPERATURE && temperature > OverworldClimateModel.MIN_ICICLE_TEMPERATURE)
                 {
                     // Place icicles under overhangs
                     // This uses the original position as it is not concerned with smooth snow covering
-                    final BlockPos iciclePos = findIcicleLocation(world, pos, random);
+                    final BlockPos iciclePos = findIcicleLocation(level, pos, random);
                     if (iciclePos != null)
                     {
                         BlockPos posAbove = iciclePos.above();
-                        BlockState stateAbove = world.getBlockState(posAbove);
+                        BlockState stateAbove = level.getBlockState(posAbove);
                         if (stateAbove.is(TFCBlocks.ICICLE.get()))
                         {
-                            world.setBlock(posAbove, stateAbove.setValue(ThinSpikeBlock.TIP, false), 3 | 16);
+                            level.setBlock(posAbove, stateAbove.setValue(ThinSpikeBlock.TIP, false), 3 | 16);
                         }
-                        world.setBlock(iciclePos, TFCBlocks.ICICLE.get().defaultBlockState().setValue(ThinSpikeBlock.TIP, true), 3);
+                        level.setBlock(iciclePos, TFCBlocks.ICICLE.get().defaultBlockState().setValue(ThinSpikeBlock.TIP, true), 3);
                     }
                 }
 
-                if (temperature < Climate.SEA_ICE_FREEZE_TEMPERATURE)
+                if (temperature < OverworldClimateModel.SEA_ICE_FREEZE_TEMPERATURE)
                 {
                     // Freeze salt water into sea ice
-                    tryFreezeSeaIce(world, pos.below());
+                    tryFreezeSeaIce(level, pos.below());
                 }
             }
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean tryStackSnow(LevelAccessor world, BlockPos pos, BlockState state)
     {
         if ((state.is(Blocks.SNOW) || state.is(TFCBlocks.SNOW_PILE.get())) && state.getValue(SnowLayerBlock.LAYERS) < 7)
@@ -121,26 +122,25 @@ public final class EnvironmentHelpers
     /**
      * Logic is borrowed from {@link net.minecraft.world.level.biome.Biome#shouldFreeze(LevelReader, BlockPos)} but with the water fluid swapped out, and the temperature check changed (in the original code it's redirected by mixin)
      */
-    private static void tryFreezeSeaIce(LevelAccessor worldIn, BlockPos pos)
+    private static void tryFreezeSeaIce(Level level, BlockPos pos)
     {
-        if (Climate.getTemperature(worldIn, pos) < Climate.SEA_ICE_FREEZE_TEMPERATURE)
+        if (Climate.getTemperature(level, pos) < OverworldClimateModel.SEA_ICE_FREEZE_TEMPERATURE)
         {
-            if (pos.getY() >= 0 && pos.getY() < 256 && worldIn.getBrightness(LightLayer.BLOCK, pos) < 10)
+            if (pos.getY() >= 0 && pos.getY() < 256 && level.getBrightness(LightLayer.BLOCK, pos) < 10)
             {
-                BlockState state = worldIn.getBlockState(pos);
-                FluidState fluid = worldIn.getFluidState(pos);
+                BlockState state = level.getBlockState(pos);
+                FluidState fluid = level.getFluidState(pos);
                 if (fluid.getType() == TFCFluids.SALT_WATER.getSource() && state.getBlock() instanceof LiquidBlock)
                 {
-                    if (!worldIn.isWaterAt(pos.west()) || !worldIn.isWaterAt(pos.east()) || !worldIn.isWaterAt(pos.north()) || !worldIn.isWaterAt(pos.south()))
+                    if (!level.isWaterAt(pos.west()) || !level.isWaterAt(pos.east()) || !level.isWaterAt(pos.north()) || !level.isWaterAt(pos.south()))
                     {
-                        worldIn.setBlock(pos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 3);
+                        level.setBlock(pos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 3);
                     }
                 }
             }
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static BlockPos findOptimalSnowLocation(LevelAccessor world, BlockPos pos, Random random)
     {
         BlockState state = world.getBlockState(pos);
@@ -170,7 +170,6 @@ public final class EnvironmentHelpers
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     private static BlockPos findIcicleLocation(Level world, BlockPos pos, Random random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);

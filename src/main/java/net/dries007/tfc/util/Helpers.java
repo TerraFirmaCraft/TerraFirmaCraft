@@ -28,6 +28,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -39,9 +40,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -70,6 +73,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -173,6 +177,21 @@ public final class Helpers
     public static boolean isClientSide(LevelReader world)
     {
         return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
+    }
+
+    @Nullable
+    @SuppressWarnings("deprecation")
+    public static Level getUnsafeLevel(Object maybeLevel)
+    {
+        if (maybeLevel instanceof Level level)
+        {
+            return level; // Most obvious case, if we can directly cast up to level.
+        }
+        if (maybeLevel instanceof WorldGenRegion)
+        {
+            return ((WorldGenRegion) maybeLevel).getLevel(); // Special case for world gen, when we can access the level unsafely
+        }
+        return null; // A modder has done a strange ass thing
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
@@ -512,6 +531,11 @@ public final class Helpers
         return FluidStack.EMPTY;
     }
 
+    public static void addTillable(Block block, Predicate<UseOnContext> condition, Consumer<UseOnContext> action)
+    {
+        HoeItemProtectedAccessor.TILLABLES_VIEW.put(block, Pair.of(condition, action));
+    }
+
     public static <T> Tag<T> decodeTag(FriendlyByteBuf buffer, TagCollection<T> tags)
     {
         final ResourceLocation id = buffer.readResourceLocation();
@@ -752,13 +776,21 @@ public final class Helpers
     /**
      * @return A random float, distributed around [-1, 1] in a triangle distribution X ~ pdf(t) = 1 - |t|.
      */
-    public static double triangle(Random random)
+    public static float triangle(Random random)
     {
         return random.nextFloat() - random.nextFloat() * 0.5f;
     }
 
     /**
-     * @return A random float, distributed around [-delta, delta] in a triangle distribution X ~ pdf(t) = (1 - |t|) / (2 * delta).
+     * @return A random integer, distributed around (-range, range) in a triangle distribution X ~ pmf(t) ~= (1 - |t|)
+     */
+    public static int triangle(Random random, int range)
+    {
+        return random.nextInt(range) - random.nextInt(range);
+    }
+
+    /**
+     * @return A random float, distributed around [-delta, delta] in a triangle distribution X ~ pdf(t) ~= (1 - |t|)
      */
     public static float triangle(Random random, float delta)
     {
@@ -849,14 +881,23 @@ public final class Helpers
         throw (E) exception;
     }
 
-    static class ItemProtectedAccessor extends Item
+    static abstract class ItemProtectedAccessor extends Item
     {
-        public static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
+        static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
         {
             return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
         }
 
-        private ItemProtectedAccessor(Properties properties) { super(properties); }
+        @SuppressWarnings("ConstantConditions")
+        private ItemProtectedAccessor() { super(null); } // Never called
+    }
+
+    static abstract class HoeItemProtectedAccessor extends HoeItem
+    {
+        static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES_VIEW = TILLABLES;
+
+        @SuppressWarnings("ConstantConditions")
+        private HoeItemProtectedAccessor() { super(null, 0, 0, null); }  // Never called
     }
 
     interface ThrowingRunnable

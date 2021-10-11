@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "minecraft:water",
-    "tfc:salt_water"
+    "tfc:salt_water",
+    "tfc:river_water"
   ]
 }
