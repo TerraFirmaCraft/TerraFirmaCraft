@@ -2,6 +2,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
@@ -9,6 +10,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
@@ -20,21 +22,24 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.TFCBoat;
 
 public class TFCBoatItem extends BoatItem
 {
     private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 
-    private final Wood wood;
+    private final Supplier<? extends EntityType<TFCBoat>> boat;
 
-    public TFCBoatItem(Wood wood, Properties properties)
+    public TFCBoatItem(Supplier<? extends EntityType<TFCBoat>> boat, Properties properties)
     {
         super(Boat.Type.OAK, properties);
-        this.wood = wood;
+        this.boat = boat;
     }
 
+    /**
+     * Copy of BoatItem#use (superclass)
+     */
+    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -46,7 +51,6 @@ public class TFCBoatItem extends BoatItem
         else
         {
             Vec3 vec3 = player.getViewVector(1.0F);
-            double d0 = 5.0D;
             List<Entity> list = level.getEntities(player, player.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
             if (!list.isEmpty())
             {
@@ -65,8 +69,15 @@ public class TFCBoatItem extends BoatItem
             if (hitresult.getType() == HitResult.Type.BLOCK)
             {
                 // tfc start
-                TFCBoat boat = new TFCBoat(level, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
-                boat.setWood(wood);
+                TFCBoat boat = this.boat.get().create(level);
+                if (boat != null)
+                {
+                    boat.setPos(hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
+                }
+                else
+                {
+                    return InteractionResultHolder.fail(itemstack);
+                }
                 // tfc end
                 boat.setYRot(player.getYRot());
                 if (!level.noCollision(boat, boat.getBoundingBox().inflate(-0.1D)))

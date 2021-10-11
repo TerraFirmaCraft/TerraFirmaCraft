@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -27,11 +28,14 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,6 +64,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.entities.TFCBoat;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
@@ -184,7 +189,10 @@ public final class ClientEventHandler
     {
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BOAT.get(), TFCBoatRenderer::new);
+        for (Wood wood : Wood.VALUES)
+        {
+            event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.name().toLowerCase(Locale.ROOT)));
+        }
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -200,7 +208,7 @@ public final class ClientEventHandler
         LayerDefinition model = BoatModel.createBodyModel();
         for (Wood wood : Wood.VALUES)
         {
-            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood), () -> model);
+            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.name().toLowerCase(Locale.ROOT)), () -> model);
         }
     }
 
