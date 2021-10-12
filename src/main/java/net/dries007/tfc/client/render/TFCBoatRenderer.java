@@ -14,8 +14,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.client.ClientHelpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCBoatRenderer extends BoatRenderer
 {
@@ -29,7 +28,7 @@ public class TFCBoatRenderer extends BoatRenderer
     public TFCBoatRenderer(EntityRendererProvider.Context context, String name)
     {
         super(context);
-        this.location = Pair.of(new ResourceLocation(MOD_ID, "textures/entity/boat/" + name + ".png"), new BoatModel(context.bakeLayer(boatName(name))));
+        this.location = Pair.of(Helpers.identifier("textures/entity/boat/" + name + ".png"), new BoatModel(context.bakeLayer(boatName(name))));
     }
 
     @Override

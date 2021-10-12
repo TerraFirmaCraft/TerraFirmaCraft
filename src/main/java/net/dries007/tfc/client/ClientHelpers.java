@@ -17,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.util.Helpers;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
@@ -57,7 +59,7 @@ public final class ClientHelpers
      */
     public static ModelLayerLocation modelIdentifier(String name, String part)
     {
-        return new ModelLayerLocation(new ResourceLocation(MOD_ID, name), part);
+        return new ModelLayerLocation(Helpers.identifier(name), part);
     }
 
     public static ModelLayerLocation modelIdentifier(String name)

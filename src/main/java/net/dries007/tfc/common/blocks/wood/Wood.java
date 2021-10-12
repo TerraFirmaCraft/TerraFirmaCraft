@@ -71,8 +71,6 @@ public enum Wood implements StringRepresentable
         this.daysToGrow = daysToGrow;
     }
 
-    public static Wood[] VALUES = values();
-
     @Override
     public String getSerializedName()
     {

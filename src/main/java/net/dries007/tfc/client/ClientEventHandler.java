@@ -189,9 +189,9 @@ public final class ClientEventHandler
     {
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
-        for (Wood wood : Wood.VALUES)
+        for (Wood wood : Wood.values())
         {
-            event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.name().toLowerCase(Locale.ROOT)));
+            event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
         }
 
         // BEs
@@ -206,9 +206,9 @@ public final class ClientEventHandler
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
         LayerDefinition model = BoatModel.createBodyModel();
-        for (Wood wood : Wood.VALUES)
+        for (Wood wood : Wood.values())
         {
-            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.name().toLowerCase(Locale.ROOT)), () -> model);
+            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> model);
         }
     }
 
