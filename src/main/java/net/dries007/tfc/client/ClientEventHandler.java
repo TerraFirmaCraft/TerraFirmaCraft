@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,27 +22,27 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
+import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -50,6 +51,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import ca.weblite.objc.Client;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
@@ -62,6 +64,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.entities.TFCBoat;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
@@ -84,6 +87,8 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerColorHandlerItems);
         bus.addListener(ClientEventHandler::registerParticleFactories);
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
+        bus.addListener(ClientEventHandler::registerEntityRenderers);
+        bus.addListener(ClientEventHandler::registerLayerDefinitions);
     }
 
     public static void clientSetup(FMLClientSetupEvent event)
@@ -174,22 +179,37 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), translucent);
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.RIVER_WATER.get(), translucent);
 
-        // Entity Rendering
-        EntityRenderers.register(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
-
-        // TE Rendering
-
-        BlockEntityRenderers.register(TFCBlockEntities.POT.get(), context -> new PotBlockEntityRenderer());
-        BlockEntityRenderers.register(TFCBlockEntities.GRILL.get(), context -> new GrillBlockEntityRenderer());
-        BlockEntityRenderers.register(TFCBlockEntities.PLACED_ITEM.get(), context -> new PlacedItemBlockEntityRenderer());
-        BlockEntityRenderers.register(TFCBlockEntities.PIT_KILN.get(), context -> new PitKilnBlockEntityRenderer());
-        BlockEntityRenderers.register(TFCBlockEntities.QUERN.get(), context -> new QuernBlockEntityRenderer());
-        BlockEntityRenderers.register(TFCBlockEntities.SCRAPING.get(), context -> new ScrapingBlockEntityRenderer());
-
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
 
         IngameOverlays.reloadOverlays();
+    }
+
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
+    {
+        // Entities
+        event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+        for (Wood wood : Wood.VALUES)
+        {
+            event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.name().toLowerCase(Locale.ROOT)));
+        }
+
+        // BEs
+        event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.GRILL.get(), ctx -> new GrillBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
+    }
+
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
+    {
+        LayerDefinition model = BoatModel.createBodyModel();
+        for (Wood wood : Wood.VALUES)
+        {
+            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.name().toLowerCase(Locale.ROOT)), () -> model);
+        }
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

@@ -691,6 +691,7 @@ def generate(rm: ResourceManager):
             if variant == 'log':
                 block.with_tag('minecraft:logs')
         rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
+        rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
