@@ -48,18 +48,6 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url "https://repo.spongepowered.org/repository/maven-public/"
-        content { includeGroup "org.spongepowered" }
-    }
-    maven {
-        name 'Jitpack'
-        url 'https://jitpack.io'
-    }
-    flatDir {
-        dirs 'libs'
-    }
-    /*
-    maven {
         // JEI
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
@@ -68,7 +56,14 @@ repositories {
         // Mirror for JEI
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
-    }*/
+    }
+    maven {
+        name 'Jitpack'
+        url 'https://jitpack.io'
+    }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 minecraft {
@@ -125,14 +120,13 @@ minecraft.runs.all {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}") { transitive = false }
+    runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}-${minecraft_version}") { transitive = false }
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
 
     // JEI
-    // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    library "org.spongepowered:mixin:${mixin_version}"
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }

@@ -8,14 +8,13 @@ package net.dries007.tfc.util.tracker;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import net.dries007.tfc.util.Helpers;
 
 public class WorldTrackerCapability
 {
-    @CapabilityInject(IWorldTracker.class)
-    public static final Capability<IWorldTracker> CAPABILITY = Helpers.notNull();
+    public static final Capability<IWorldTracker> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("world_tracker");
 }

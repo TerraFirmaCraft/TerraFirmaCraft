@@ -8,13 +8,13 @@ package net.dries007.tfc.common.capabilities.player;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import net.dries007.tfc.util.Helpers;
 
 public final class PlayerDataCapability
 {
-    @CapabilityInject(PlayerData.class)
-    public static final Capability<PlayerData> CAPABILITY = Helpers.notNull();
+    public static final Capability<PlayerData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("player_data");
 }

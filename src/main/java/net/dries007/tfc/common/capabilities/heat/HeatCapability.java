@@ -13,6 +13,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -26,13 +28,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class HeatCapability
 {
     // For heat defined on item stacks
-    @CapabilityInject(IHeat.class)
-    public static final Capability<IHeat> CAPABILITY = Helpers.notNull();
+    public static final Capability<IHeat> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
 
     // For heat providers and consumers defined on blocks
-    @CapabilityInject(IHeatBlock.class)
-    public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.notNull();
+    public static final Capability<IHeatBlock> BLOCK_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);

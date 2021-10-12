@@ -8,15 +8,13 @@ package net.dries007.tfc.common.capabilities.forge;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public class ForgingCapability
 {
-    @CapabilityInject(IForging.class)
-    public static final Capability<IForging> CAPABILITY = Helpers.notNull();
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "forging");
+    public static final Capability<IForging> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final ResourceLocation KEY = Helpers.identifier("forging");
 }
