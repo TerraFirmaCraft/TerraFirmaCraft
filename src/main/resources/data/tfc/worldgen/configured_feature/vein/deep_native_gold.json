@@ -13,10 +13,10 @@
     "density": 0.7,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/andesite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/andesite"
@@ -32,10 +32,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/basalt"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/basalt"
@@ -51,10 +51,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/dacite"
@@ -70,10 +70,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/rhyolite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/rhyolite"
@@ -89,10 +89,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/diorite"
@@ -108,10 +108,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gabbro"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/gabbro"
@@ -127,10 +127,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/granite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 10,
             "block": "tfc:ore/poor_native_gold/granite"

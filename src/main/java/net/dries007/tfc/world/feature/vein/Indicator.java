@@ -18,7 +18,7 @@ import net.dries007.tfc.world.Codecs;
 public record Indicator(int depth, int spread, int rarity, IWeighted<BlockState> states)
 {
     public static final Codec<Indicator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.intRange(0, 256).optionalFieldOf("depth", 35).forGetter(c -> c.depth),
+        Codecs.POSITIVE_INT.optionalFieldOf("depth", 35).forGetter(c -> c.depth),
         Codec.intRange(0, 15).optionalFieldOf("spread", 15).forGetter(c -> c.spread),
         Codecs.POSITIVE_INT.optionalFieldOf("rarity", 10).forGetter(c -> c.rarity),
         Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("blocks").forGetter(c -> c.states)

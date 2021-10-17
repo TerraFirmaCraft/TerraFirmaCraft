@@ -14,200 +14,200 @@
     "density": 0.98,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chalk"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/chalk"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chert"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/chert"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/claystone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/claystone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/conglomerate"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/conglomerate"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dolomite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/dolomite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/limestone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/shale"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/shale"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gneiss"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/gneiss"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/marble"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/marble"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/phyllite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/phyllite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/quartzite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/quartzite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/schist"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/schist"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/slate"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/slate"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/diorite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gabbro"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/gabbro"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/granite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/granite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/andesite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/andesite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/basalt"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/basalt"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/dacite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/rhyolite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:rock/gravel/rhyolite"
           }

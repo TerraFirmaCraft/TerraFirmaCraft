@@ -18,9 +18,10 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 
 /**
- * A cleaned up version of {@link SpringFeature}
+ * A cleaned up version of {@link net.minecraft.world.level.levelgen.feature.SpringFeature}
  */
 public class SpringFeature extends Feature<SpringConfiguration>
 {
@@ -48,7 +49,7 @@ public class SpringFeature extends Feature<SpringConfiguration>
                 if (stateAt.isAir() || config.validBlocks.contains(stateAt.getBlock()))
                 {
                     int rockCount = 0, holeCount = 0;
-                    for (Direction direction : Direction.values())
+                    for (Direction direction : Helpers.DIRECTIONS)
                     {
                         mutablePos.set(pos).move(direction);
                         final BlockState stateAdjacent = world.getBlockState(mutablePos);

@@ -13,40 +13,40 @@
     "density": 0.6,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/andesite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/sulfur/andesite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/basalt"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/sulfur/basalt"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/sulfur/dacite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/rhyolite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/sulfur/rhyolite"
           }

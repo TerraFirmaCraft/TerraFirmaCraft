@@ -13,10 +13,10 @@
     "density": 0.4,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/granite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/granite"
@@ -32,10 +32,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gneiss"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/gneiss"
@@ -51,10 +51,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/marble"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/marble"
@@ -70,10 +70,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/phyllite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/phyllite"
@@ -89,10 +89,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/quartzite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/quartzite"
@@ -108,10 +108,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/schist"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/schist"
@@ -127,10 +127,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/slate"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_native_silver/slate"

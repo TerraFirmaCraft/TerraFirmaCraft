@@ -15,130 +15,130 @@
             "decoration": {
               "blocks": [
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/andesite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/andesite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/basalt"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/basalt"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/dacite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/dacite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/rhyolite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/rhyolite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/diorite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/diorite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/gabbro"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/gabbro"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/granite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/granite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/gneiss"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/gneiss"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/marble"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/marble"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/phyllite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/phyllite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/quartzite"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/quartzite"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/schist"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/schist"
                     }
                   ]
                 },
                 {
-                  "stone": [
+                  "replace": [
                     "tfc:rock/raw/slate"
                   ],
-                  "ore": [
+                  "with": [
                     {
                       "block": "tfc:ore/topaz/slate"
                     }

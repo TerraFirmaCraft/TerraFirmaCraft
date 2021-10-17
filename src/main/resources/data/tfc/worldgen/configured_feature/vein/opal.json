@@ -13,110 +13,110 @@
     "density": 0.2,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chalk"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/chalk"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chert"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/chert"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/claystone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/claystone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/conglomerate"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/conglomerate"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dolomite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/dolomite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/limestone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/shale"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/shale"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/andesite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/andesite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/basalt"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/basalt"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/dacite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/rhyolite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/opal/rhyolite"
           }

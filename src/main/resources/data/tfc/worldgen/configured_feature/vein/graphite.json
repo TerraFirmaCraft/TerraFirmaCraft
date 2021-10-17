@@ -13,40 +13,40 @@
     "density": 0.6,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gneiss"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/graphite/gneiss"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/marble"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/graphite/marble"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/quartzite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/graphite/quartzite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/schist"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/graphite/schist"
           }

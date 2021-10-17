@@ -13,70 +13,70 @@
     "density": 0.6,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chalk"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/chalk"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chert"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/chert"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/claystone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/claystone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/conglomerate"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/conglomerate"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dolomite"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/dolomite"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/limestone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/shale"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/kaolinite/shale"
           }

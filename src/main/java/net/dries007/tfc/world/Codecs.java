@@ -10,16 +10,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryFileCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
@@ -37,12 +41,17 @@ public final class Codecs
 {
     public static final Codec<Integer> POSITIVE_INT = Codec.intRange(1, Integer.MAX_VALUE);
     public static final Codec<Integer> NONNEGATIVE_INT = Codec.intRange(0, Integer.MAX_VALUE);
-    public static final Codec<Float> NONNEGATIVE_FLOAT = Codec.floatRange(0, Float.MAX_VALUE);
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
-    public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.xmap(BiomeDictionary.Type::getType, BiomeDictionary.Type::getName);
+    // todo: remove after https://github.com/MinecraftForge/MinecraftForge/pull/8157
+    private static final Map<String, BiomeDictionary.Type> biomeDictionaryByName = Helpers.uncheck(() -> Helpers.findUnobfField(BiomeDictionary.Type.class, "byName").get(null));
+    public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.comapFlatMap(
+        t -> biomeDictionaryByName.containsKey(t) ? DataResult.success(BiomeDictionary.Type.getType(t)) : DataResult.error("No biome dictionary type: " + t),
+        BiomeDictionary.Type::getName
+    );
 
     @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(Registry.BLOCK);
+    @SuppressWarnings("deprecation") public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(Registry.FLUID);
 
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.
@@ -53,6 +62,15 @@ public final class Codecs
         BLOCK.xmap(Block::defaultBlockState, BlockState::getBlock),
         BlockState.CODEC
     ).xmap(Helpers::resolveEither, Either::right);
+
+    /**
+     * A codec for a mapping from blocks -> {weighted block states}.
+     * Represented as an internal codec of replace, with, and block keys
+     */
+    public static final Codec<Map<Block, IWeighted<BlockState>>> BLOCK_TO_WEIGHTED_BLOCKSTATE = Codecs.mapKeyListCodec(Codec.mapPair(
+        BLOCK.listOf().fieldOf("replace"),
+        Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("with")
+    ).codec());
 
     /**
      * Additional codecs for existing configs.

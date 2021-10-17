@@ -13,10 +13,10 @@
     "density": 0.6,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 20,
             "block": "tfc:ore/poor_cassiterite/diorite"
@@ -32,10 +32,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gabbro"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 20,
             "block": "tfc:ore/poor_cassiterite/gabbro"
@@ -51,10 +51,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/granite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 20,
             "block": "tfc:ore/poor_cassiterite/granite"

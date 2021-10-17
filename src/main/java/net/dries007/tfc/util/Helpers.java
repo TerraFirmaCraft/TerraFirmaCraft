@@ -671,7 +671,6 @@ public final class Helpers
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
-    @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T uncheck(Callable<?> action)
     {

@@ -31,16 +31,12 @@ import net.dries007.tfc.world.Codecs;
 
 public class VeinConfig implements FeatureConfiguration
 {
-    @SuppressWarnings("deprecation")
     public static final MapCodec<VeinConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        Codecs.mapKeyListCodec(Codec.mapPair(
-            Registry.BLOCK.listOf().fieldOf("stone"),
-            Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("ore")
-        ).codec()).fieldOf("blocks").forGetter(c -> c.states),
+        Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.states),
         Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> Optional.ofNullable(c.indicator)),
         Codecs.POSITIVE_INT.optionalFieldOf("rarity", 60).forGetter(VeinConfig::getRarity),
         Codecs.POSITIVE_INT.optionalFieldOf("size", 8).forGetter(VeinConfig::getSize),
-        Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
+        Codecs.UNIT_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
         VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
         VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
         Codec.LONG.fieldOf("salt").forGetter(c -> c.salt),
@@ -49,6 +45,7 @@ public class VeinConfig implements FeatureConfiguration
             Codecs.BIOME_DICTIONARY.fieldOf("biome_dictionary").codec()
         ).listOf().optionalFieldOf("biomes", new ArrayList<>()).forGetter(c -> c.biomeFilter)
     ).apply(instance, VeinConfig::new));
+
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
     private final Map<Block, IWeighted<BlockState>> states;

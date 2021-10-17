@@ -13,10 +13,10 @@
     "density": 0.5,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/diorite"
@@ -32,10 +32,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/gabbro"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/gabbro"
@@ -51,10 +51,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/granite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/granite"
@@ -70,10 +70,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chalk"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/chalk"
@@ -89,10 +89,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chert"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/chert"
@@ -108,10 +108,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/claystone"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/claystone"
@@ -127,10 +127,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/conglomerate"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/conglomerate"
@@ -146,10 +146,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dolomite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/dolomite"
@@ -165,10 +165,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/limestone"
@@ -184,10 +184,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/shale"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 60,
             "block": "tfc:ore/poor_bismuthinite/shale"

@@ -23,10 +23,9 @@ import net.dries007.tfc.world.Codecs;
 
 public class FloodFillLakeConfig implements FeatureConfiguration
 {
-    @SuppressWarnings("deprecation")
     public static final Codec<FloodFillLakeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(FloodFillLakeConfig::getState),
-        Codecs.nonDefaultedRegistryCodec(Registry.FLUID).listOf().fieldOf("replace_fluids").forGetter(c -> new ArrayList<>(c.replaceFluids)),
+        Codecs.FLUID.listOf().fieldOf("replace_fluids").forGetter(c -> new ArrayList<>(c.replaceFluids)),
         Codec.BOOL.optionalFieldOf("overfill", false).forGetter(FloodFillLakeConfig::shouldOverfill)
     ).apply(instance, FloodFillLakeConfig::new));
 

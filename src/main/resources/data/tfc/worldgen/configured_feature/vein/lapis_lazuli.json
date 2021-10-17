@@ -13,20 +13,20 @@
     "density": 0.6,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/lapis_lazuli/limestone"
           }
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/marble"
         ],
-        "ore": [
+        "with": [
           {
             "block": "tfc:ore/lapis_lazuli/marble"
           }

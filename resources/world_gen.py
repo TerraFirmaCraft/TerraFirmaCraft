@@ -196,7 +196,6 @@ def generate(rm: ResourceManager):
         rm.feature('iceberg_%s' % block, wg.configure_decorated(wg.configure('tfc:iceberg', {'state': wg.block_state('minecraft:%s_ice' % block)}), decorate_chance(14), 'minecraft:square', decorate_climate(max_temp=-23)))
         rm.feature('iceberg_%s_rare' % block, wg.configure_decorated(wg.configure('tfc:iceberg', {'state': wg.block_state('minecraft:%s_ice' % block)}), decorate_chance(30), 'minecraft:square', decorate_climate(max_temp=-18)))
 
-    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), decorate_heightmap('world_surface_wg'), 'minecraft:square'))
     rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
         'state': 'minecraft:water',
         'replace_fluids': [],
@@ -306,8 +305,8 @@ def generate(rm: ResourceManager):
             'radius': 6,
             'decoration': {
                 'blocks': [{
-                    'stone': ['tfc:rock/raw/%s' % rock],
-                    'ore': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
+                    'replace': ['tfc:rock/raw/%s' % rock],
+                    'with': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
                 } for rock in rocks],
                 'radius': 3,
                 'count': 6,
@@ -323,8 +322,8 @@ def generate(rm: ResourceManager):
                 'radius': 14,
                 'decoration': {
                     'blocks': [{
-                        'stone': ['tfc:rock/raw/%s' % rock],
-                        'ore': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
+                        'replace': ['tfc:rock/raw/%s' % rock],
+                        'with': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
                     } for rock in rocks],
                     'radius': 5,
                     'count': count,
@@ -420,8 +419,8 @@ def generate(rm: ResourceManager):
                 'size': vein.size,
                 'density': vein_density(vein.density),
                 'blocks': [{
-                    'stone': ['tfc:rock/raw/%s' % rock],
-                    'ore': vein_ore_blocks(vein, rock)
+                    'replace': ['tfc:rock/raw/%s' % rock],
+                    'with': vein_ore_blocks(vein, rock)
                 } for rock in rocks],
                 'indicator': {
                     'rarity': 12,
@@ -440,8 +439,8 @@ def generate(rm: ResourceManager):
                 'size': vein.size,
                 'density': vein_density(vein.density),
                 'blocks': [{
-                    'stone': ['tfc:rock/raw/%s' % rock],
-                    'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+                    'replace': ['tfc:rock/raw/%s' % rock],
+                    'with': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
                 } for rock in rocks],
                 'salt': vein_salt(vein_name),
                 'biomes': vein_biome_filter(vein.biomes)
@@ -461,8 +460,8 @@ def generate(rm: ResourceManager):
         'height': 2,
         'density': 0.98,
         'blocks': [{
-            'stone': ['tfc:rock/raw/%s' % rock],
-            'ore': [{'block': 'tfc:rock/gravel/%s' % rock}]
+            'replace': ['tfc:rock/raw/%s' % rock],
+            'with': [{'block': 'tfc:rock/gravel/%s' % rock}]
         } for rock in ROCKS.keys()],
         'salt': vein_salt('gravel')
     }))
@@ -470,16 +469,16 @@ def generate(rm: ResourceManager):
     for rock, data in ROCKS.items():
         if data.category == 'igneous_intrusive':
             dike_block_config = [{
-                'stone': ['tfc:rock/raw/%s' % rock_in],
-                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+                'replace': ['tfc:rock/raw/%s' % rock_in],
+                'with': [{'block': 'tfc:rock/raw/%s' % rock}]
             } for rock_in in ROCKS.keys()]
             dike_block_config.extend([{
-                'stone': ['tfc:rock/gravel/%s' % rock_in],
-                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+                'replace': ['tfc:rock/gravel/%s' % rock_in],
+                'with': [{'block': 'tfc:rock/raw/%s' % rock}]
             } for rock_in in ROCKS.keys()])
             dike_block_config.extend([{
-                'stone': ['tfc:rock/hardened/%s' % rock_in],
-                'ore': [{'block': 'tfc:rock/raw/%s' % rock}]
+                'replace': ['tfc:rock/hardened/%s' % rock_in],
+                'with': [{'block': 'tfc:rock/raw/%s' % rock}]
             } for rock_in in ROCKS.keys()])
 
             rm.feature(('vein', '%s_dike' % rock), wg.configure('tfc:pipe_vein', {
@@ -499,9 +498,11 @@ def generate(rm: ResourceManager):
 
     rm.feature('cave_vegetation', wg.configure_decorated(wg.configure('tfc:cave_vegetation', {
         'blocks': [{
-            'stone': ['tfc:rock/raw/%s' % rock],
-            'ore': [{'block': 'tfc:rock/mossy_cobble/%s' % rock, 'weight': 8},
-                    {'block': 'tfc:rock/cobble/%s' % rock, 'weight': 2}]
+            'replace': ['tfc:rock/raw/%s' % rock],
+            'with': [
+                {'block': 'tfc:rock/mossy_cobble/%s' % rock, 'weight': 8},
+                {'block': 'tfc:rock/cobble/%s' % rock, 'weight': 2}
+            ]
         } for rock in ROCKS.keys()]
     }), decorate_climate(16, 32, 150, 470, fuzzy=True), decorate_carving_mask(0.01, 15, 100)))
 
@@ -1114,7 +1115,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             features[Decoration.SURFACE_STRUCTURES].append('tfc:random_active_hot_spring')
 
     if lake_features:
-        features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
+        features[Decoration.LAKES] += ['tfc:flood_fill_lake']
 
     features[Decoration.TOP_LAYER_MODIFICATION].append('tfc:ice_and_snow')  # This must go last
 

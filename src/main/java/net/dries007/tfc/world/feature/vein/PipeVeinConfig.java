@@ -19,7 +19,7 @@ public class PipeVeinConfig extends VeinConfig
         Codecs.POSITIVE_INT.optionalFieldOf("max_skew", 0).forGetter(PipeVeinConfig::getMaxSkew),
         Codecs.POSITIVE_INT.optionalFieldOf("min_slant", 0).forGetter(PipeVeinConfig::getMinSlant),
         Codecs.POSITIVE_INT.optionalFieldOf("max_slant", 0).forGetter(PipeVeinConfig::getMaxSlant),
-        Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("sign", 0.5F).forGetter(PipeVeinConfig::getSign)
+        Codecs.UNIT_FLOAT.optionalFieldOf("sign", 0.5F).forGetter(PipeVeinConfig::getSign)
     ).apply(instance, PipeVeinConfig::new));
 
     private final int radius;

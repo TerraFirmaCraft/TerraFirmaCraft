@@ -28,8 +28,7 @@
     ],
     [
       "tfc:underground_flood_fill_lake",
-      "tfc:flood_fill_lake",
-      "tfc:lake"
+      "tfc:flood_fill_lake"
     ],
     [
       "tfc:clay_disc_with_indicator",

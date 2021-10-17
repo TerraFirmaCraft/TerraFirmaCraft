@@ -22,12 +22,7 @@ import net.dries007.tfc.world.Codecs;
 
 public record CaveVegetationConfig(Map<Block, IWeighted<BlockState>> states) implements FeatureConfiguration
 {
-    public static final Codec<CaveVegetationConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.mapKeyListCodec(Codec.mapPair(
-            Codecs.BLOCK.listOf().fieldOf("stone"),
-            Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("ore")
-        ).codec()).fieldOf("blocks").forGetter(c -> c.states)
-    ).apply(instance, CaveVegetationConfig::new));
+    public static final Codec<CaveVegetationConfig> CODEC = Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").codec().xmap(CaveVegetationConfig::new, c -> c.states);
 
     @Nullable
     public BlockState getStateToGenerate(BlockState stoneState, Random random)

@@ -13,10 +13,10 @@
     "density": 0.4,
     "blocks": [
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/marble"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_malachite/marble"
@@ -32,10 +32,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/limestone"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_malachite/limestone"
@@ -55,10 +55,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/phyllite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_malachite/phyllite"
@@ -74,10 +74,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/chalk"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_malachite/chalk"
@@ -93,10 +93,10 @@
         ]
       },
       {
-        "stone": [
+        "replace": [
           "tfc:rock/raw/dolomite"
         ],
-        "ore": [
+        "with": [
           {
             "weight": 40,
             "block": "tfc:ore/poor_malachite/dolomite"

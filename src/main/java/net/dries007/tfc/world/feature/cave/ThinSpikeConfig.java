@@ -23,8 +23,8 @@ public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHe
         Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(c -> c.state),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
         Codecs.POSITIVE_INT.fieldOf("tries").forGetter(c -> c.tries),
-        Codec.intRange(1, 256).fieldOf("min_height").forGetter(c -> c.minHeight),
-        Codec.intRange(1, 256).fieldOf("max_height").forGetter(c -> c.maxHeight)
+        Codecs.POSITIVE_INT.fieldOf("min_height").forGetter(c -> c.minHeight),
+        Codecs.POSITIVE_INT.fieldOf("max_height").forGetter(c -> c.maxHeight)
     ).apply(instance, ThinSpikeConfig::new)).comapFlatMap(c -> {
         if (c.maxHeight < c.minHeight)
         {

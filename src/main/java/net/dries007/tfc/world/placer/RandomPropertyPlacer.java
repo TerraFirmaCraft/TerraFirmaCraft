@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,34 +18,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
 import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 public class RandomPropertyPlacer extends BlockPlacer
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-    @SuppressWarnings("deprecation")
     public static final Codec<RandomPropertyPlacer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.nonDefaultedRegistryCodec(Registry.BLOCK).fieldOf("block").forGetter(c -> c.block),
+        Codecs.BLOCK.fieldOf("block").forGetter(c -> c.block),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
-    ).apply(instance, RandomPropertyPlacer::create));
+    ).apply(instance, RandomPropertyPlacer::new)); // Cannot call .comapFlatMap as for some reason the dispatch code blows up horribly
 
-    private static RandomPropertyPlacer create(Block block, String propertyName)
-    {
-        final Property<?> property = block.getStateDefinition().getProperty(propertyName);
-        if (property == null)
-        {
-            LOGGER.error("No property: " + propertyName + " found on block: " + block.getRegistryName() + " At 'tfc:random_property' block placer.");
-            return new RandomPropertyPlacer(block, propertyName, (state, random) -> state);
-        }
-        return new RandomPropertyPlacer(block, propertyName, createPropertySetter(property));
-    }
+    private static final Logger LOGGER = LogManager.getLogger(RandomPropertyPlacer.class);
 
     /**
      * Extracted into a method to it can be generic on the property type
@@ -59,17 +49,27 @@ public class RandomPropertyPlacer extends BlockPlacer
     private final String propertyName;
     private final BiFunction<BlockState, Random, BlockState> propertySetter;
 
-    public RandomPropertyPlacer(Block block, String propertyName, BiFunction<BlockState, Random, BlockState> propertySetter)
+    public RandomPropertyPlacer(Block block, String propertyName)
     {
         this.block = block;
         this.propertyName = propertyName;
-        this.propertySetter = propertySetter;
+
+        final Property<?> property = block.getStateDefinition().getProperty(propertyName);
+        if (property == null)
+        {
+            LOGGER.error("No property: " + propertyName + " found on block: " + block.getRegistryName(), this);
+            this.propertySetter = (state, random) -> state;
+        }
+        else
+        {
+            propertySetter = createPropertySetter(property);
+        }
     }
 
     @Override
-    public void place(LevelAccessor worldIn, BlockPos pos, BlockState state, Random random)
+    public void place(LevelAccessor level, BlockPos pos, BlockState state, Random random)
     {
-        worldIn.setBlock(pos, propertySetter.apply(state, random), 2);
+        level.setBlock(pos, propertySetter.apply(state, random), 2);
     }
 
     @Override

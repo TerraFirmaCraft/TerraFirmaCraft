@@ -10,10 +10,10 @@
           "config": {
             "blocks": [
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/chalk"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/chalk",
                     "weight": 8
@@ -25,10 +25,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/chert"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/chert",
                     "weight": 8
@@ -40,10 +40,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/claystone"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/claystone",
                     "weight": 8
@@ -55,10 +55,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/conglomerate"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/conglomerate",
                     "weight": 8
@@ -70,10 +70,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/dolomite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/dolomite",
                     "weight": 8
@@ -85,10 +85,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/limestone"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/limestone",
                     "weight": 8
@@ -100,10 +100,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/shale"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/shale",
                     "weight": 8
@@ -115,10 +115,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/gneiss"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/gneiss",
                     "weight": 8
@@ -130,10 +130,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/marble"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/marble",
                     "weight": 8
@@ -145,10 +145,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/phyllite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/phyllite",
                     "weight": 8
@@ -160,10 +160,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/quartzite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/quartzite",
                     "weight": 8
@@ -175,10 +175,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/schist"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/schist",
                     "weight": 8
@@ -190,10 +190,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/slate"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/slate",
                     "weight": 8
@@ -205,10 +205,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/diorite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/diorite",
                     "weight": 8
@@ -220,10 +220,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/gabbro"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/gabbro",
                     "weight": 8
@@ -235,10 +235,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/granite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/granite",
                     "weight": 8
@@ -250,10 +250,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/andesite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/andesite",
                     "weight": 8
@@ -265,10 +265,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/basalt"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/basalt",
                     "weight": 8
@@ -280,10 +280,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/dacite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/dacite",
                     "weight": 8
@@ -295,10 +295,10 @@
                 ]
               },
               {
-                "stone": [
+                "replace": [
                   "tfc:rock/raw/rhyolite"
                 ],
-                "ore": [
+                "with": [
                   {
                     "block": "tfc:rock/mossy_cobble/rhyolite",
                     "weight": 8
