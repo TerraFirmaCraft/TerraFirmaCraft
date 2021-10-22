@@ -7,7 +7,6 @@
 package net.dries007.tfc.client;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -28,14 +27,11 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -51,8 +47,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import ca.weblite.objc.Client;
+import net.dries007.tfc.client.model.BluegillModel;
 import net.dries007.tfc.client.model.ContainedFluidModel;
+import net.dries007.tfc.client.model.JellyfishModel;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -64,7 +61,6 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
-import net.dries007.tfc.common.entities.TFCBoat;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
@@ -193,6 +189,12 @@ public final class ClientEventHandler
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
         }
+        event.registerEntityRenderer(TFCEntities.COD.get(), CodRenderer::new);
+        event.registerEntityRenderer(TFCEntities.SALMON.get(), SalmonRenderer::new);
+        event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
+        event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
+        event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -210,6 +212,8 @@ public final class ClientEventHandler
         {
             event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> model);
         }
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

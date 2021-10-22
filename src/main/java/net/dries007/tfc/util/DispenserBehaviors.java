@@ -51,6 +51,13 @@ public class DispenserBehaviors
         // Bucket emptying
         DispenserBlock.registerBehavior(TFCItems.SALT_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
         DispenserBlock.registerBehavior(TFCItems.SPRING_WATER_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.BLUEGILL_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.COD_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.JELLYFISH_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.SALMON_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.TROPICAL_FISH_BUCKET.get(), BUCKET_BEHAVIOR);
+        DispenserBlock.registerBehavior(TFCItems.PUFFERFISH_BUCKET.get(), BUCKET_BEHAVIOR);
+
 
         TFCItems.METAL_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), BUCKET_BEHAVIOR));
     }

@@ -825,6 +825,12 @@ def generate(rm: ResourceManager):
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
+    # Entity Stuff
+    for creature in SPAWN_EGG_ENTITIES:
+        rm.item_model('spawn_egg/%s' % creature, parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('%s Spawn Egg', creature))
+    for creature in BUCKETABLE_FISH:
+        rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
+
     # Fluids
 
     water_based_fluid(rm, 'salt_water')

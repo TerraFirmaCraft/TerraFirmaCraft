@@ -79,6 +79,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::setup);
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
+        bus.addListener(TFCEntities::onEntityAttributeCreation);
 
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);

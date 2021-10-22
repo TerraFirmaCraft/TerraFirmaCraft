@@ -10,7 +10,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -189,6 +194,15 @@ public final class TFCItems
         register("ceramic/" + type.name() + "_mold", () -> new MoldItem(type, new Item.Properties().tab(MISC).stacksTo(1)))
     );
 
+    // Spawn Eggs
+
+    public static final RegistryObject<Item> COD_EGG = egg(TFCEntities.COD, 12691306, 15058059);
+    public static final RegistryObject<Item> PUFFERFISH_EGG = egg(TFCEntities.PUFFERFISH, 16167425, 3654642);
+    public static final RegistryObject<Item> TROPICAL_FISH_EGG = egg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
+    public static final RegistryObject<Item> JELLYFISH_EGG = egg(TFCEntities.JELLYFISH, 0xE83D0E, 0x11F2F2);
+    public static final RegistryObject<Item> SALMON_EGG = egg(TFCEntities.SALMON, 10489616, 951412);
+    public static final RegistryObject<Item> BLUEGILL_EGG = egg(TFCEntities.BLUEGILL, 0x00658A, 0xE3E184);
+
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
@@ -198,6 +212,19 @@ public final class TFCItems
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
     public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
 
+    public static final RegistryObject<MobBucketItem> COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.getSecond(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<MobBucketItem> PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.getSecond(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<MobBucketItem> JELLYFISH_BUCKET = register("bucket/jellyfish", () -> new MobBucketItem(TFCEntities.JELLYFISH, TFCFluids.SALT_WATER.getSecond(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<MobBucketItem> TROPICAL_FISH_BUCKET = register("bucket/tropical_fish", () -> new MobBucketItem(TFCEntities.TROPICAL_FISH, TFCFluids.SALT_WATER.getSecond(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+
+    public static final RegistryObject<MobBucketItem> BLUEGILL_BUCKET = register("bucket/bluegill", () -> new MobBucketItem(TFCEntities.BLUEGILL, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+    public static final RegistryObject<MobBucketItem> SALMON_BUCKET = register("bucket/salmon", () -> new MobBucketItem(TFCEntities.SALMON, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
+
+
+    private static <T extends EntityType<? extends Mob>> RegistryObject<Item> egg(RegistryObject<T> entity, int color1, int color2)
+    {
+        return register("spawn_egg/" + entity.getId().getPath(), () -> new ForgeSpawnEggItem(entity, color1, color2, new Item.Properties().tab(MISC)));
+    }
 
     private static RegistryObject<Item> register(String name, CreativeModeTab group)
     {

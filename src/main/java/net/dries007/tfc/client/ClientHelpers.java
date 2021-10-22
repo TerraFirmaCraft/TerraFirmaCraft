@@ -66,4 +66,9 @@ public final class ClientHelpers
     {
         return modelIdentifier(name, "main");
     }
+
+    public static ResourceLocation animalTexture(String name)
+    {
+        return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
 }

@@ -446,6 +446,9 @@ GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg')
 
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab']
+BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -586,6 +589,22 @@ DEFAULT_LANG = {
     'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data.',
     'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
     'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
+
+    # Entities
+    'entity.tfc.cod': 'Cod',
+    'entity.tfc.pufferfish': 'Pufferfish',
+    'entity.tfc.tropical_fish': 'Tropical Fish',
+    'entity.tfc.salmon': 'Salmon',
+    'entity.tfc.bluegill': 'Bluegill',
+    'entity.tfc.jellyfish': 'Jellyfish',
+    'entity.tfc.manatee': 'Manatee',
+    'entity.tfc.orca': 'Orca',
+    'entity.tfc.dolphin': 'Dolphin',
+    'entity.tfc.isopod': 'Isopod',
+    'entity.tfc.lobster': 'Lobster',
+    'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
+    'entity.tfc.penguin': 'Penguin',
+    'entity.tfc.turtle': 'Turtle',
 
     # Enums
 

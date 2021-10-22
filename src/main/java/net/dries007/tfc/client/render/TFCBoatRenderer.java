@@ -6,11 +6,6 @@
 
 package net.dries007.tfc.client.render;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.BoatRenderer;
