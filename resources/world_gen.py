@@ -1032,6 +1032,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     else:
         rain_type = 'rain'
 
+    spawners = {}
+
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
         ocean_features = True
@@ -1087,6 +1089,13 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         if temp.id in ('cold', 'frozen'):
             features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']
+        spawners.update({
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()]
+        })
+    if category == 'river':
+        spawners.update({
+            'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
+        })
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LOCAL_MODIFICATIONS].append('tfc:coral_reef')
@@ -1137,6 +1146,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             'water_color': temp.water_color,
             'water_fog_color': temp.water_fog_color
         },
+        spawners=spawners,
         surface_builder=surface_builder,
         air_carvers=air_carvers,
         water_carvers=water_carvers,

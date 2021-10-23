@@ -113,7 +113,22 @@
     ]
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "water_ambient": [
+      {
+        "type": "tfc:salmon",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:bluegill",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ]
+  },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

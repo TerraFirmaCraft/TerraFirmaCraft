@@ -474,6 +474,44 @@ def generate(rm: ResourceManager):
     for berry, data in BERRIES.items():
         climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
 
+    # Entities
+    #rm.data(('tfc', 'fauna', 'isopod'), fauna('tfc:isopod', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=14)))
+    #rm.data(('tfc', 'fauna', 'lobster'), fauna('tfc:lobster', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(max_temp=21)))
+    #rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna('tfc:horseshoe_crab', fluid='tfc:salt_water', distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
+    rm.data(('tfc', 'fauna', 'cod'), fauna('tfc:cod', fluid='tfc:salt_water', climate=climate_config(max_temp=18), distance_below_sea_level=5))
+    rm.data(('tfc', 'fauna', 'pufferfish'), fauna('tfc:pufferfish', fluid='tfc:salt_water', climate=climate_config(min_temp=10), distance_below_sea_level=3))
+    rm.data(('tfc', 'fauna', 'tropical_fish'), fauna('tfc:tropical_fish', fluid='tfc:salt_water', climate=climate_config(min_temp=18), distance_below_sea_level=3))
+    rm.data(('tfc', 'fauna', 'jellyfish'), fauna('tfc:jellyfish', fluid='tfc:salt_water', climate=climate_config(min_temp=18), distance_below_sea_level=3))
+    #rm.data(('tfc', 'fauna', 'orca'), fauna('tfc:orca', fluid='tfc:salt_water', distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
+    #rm.data(('tfc', 'fauna', 'dolphin'), fauna('tfc:dolphin', fluid='tfc:salt_water', distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
+    #rm.data(('tfc', 'fauna', 'manatee'), fauna('tfc:manatee', fluid='minecraft:water', distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
+    rm.data(('tfc', 'fauna', 'salmon'), fauna('tfc:salmon', fluid='minecraft:water', climate=climate_config(min_temp=-5)))
+    rm.data(('tfc', 'fauna', 'bluegill'), fauna('tfc:bluegill', fluid='minecraft:water', climate=climate_config(min_temp=-10, max_temp=26)))
+    #rm.data(('tfc', 'fauna', 'penguin'), fauna('tfc:penguin', climate=climate_config(max_temp=-14, min_rain=75)))
+    #rm.data(('tfc', 'fauna', 'turtle'), fauna('tfc:turtle', climate=climate_config(min_temp=21, min_rain=250)))
+
+
+def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'min_temperature': min_temp,
+        'max_temperature': max_temp,
+        'min_rainfall': min_rain,
+        'max_rainfall': max_rain,
+        'max_forest': 'normal' if needs_forest else None,
+        'fuzzy': fuzzy
+    })
+
+
+def fauna(entity: str, fluid: str = None, chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
+    return utils.del_none({
+        'entity': entity,
+        'fluid': fluid,
+        'chance': chance,
+        'distance_below_sea_level': distance_below_sea_level,
+        'climate': climate,
+        'solid_ground': solid_ground
+    })
+
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
     rm.data(('tfc', 'food_items', name_parts), {

@@ -22,6 +22,7 @@
     "accessor.ProtoChunkAccessor",
     "accessor.RecipeManagerAccessor",
     "accessor.SimpleReloadableResourceManagerAccessor",
+    "accessor.SpawnPlacementsAccessor",
     "accessor.StructureTemplateAccessor"
   ],
   "client": [

@@ -80,6 +80,8 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.FaunaManager;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -379,6 +381,7 @@ public final class ForgeEventHandler
         event.addListener(Support.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
+        event.addListener(FaunaManager.MANAGER);
 
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);

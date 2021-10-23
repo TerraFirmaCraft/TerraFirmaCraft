@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, NamedTuple, Sequence, Optional, Literal, Tuple
+from typing import Dict, List, NamedTuple, Sequence, Optional, Literal, Tuple, Any
 
 Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
 RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
@@ -448,6 +448,45 @@ VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
+
+
+def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
+    return {
+        'type': entity,
+        'weight': weight,
+        'minCount': min_count,
+        'maxCount': max_count
+    }
+
+
+OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
+    #'isopod': spawner('tfc:isopod'),
+    #'lobster': spawner('tfc:lobster'),
+    #'horseshoe_crab': spawner('tfc:horseshoe_crab'),
+    'cod': spawner('tfc:cod', weight=10),
+    'pufferfish': spawner('tfc:pufferfish', max_count=2),
+    'tropical_fish': spawner('tfc:tropical_fish', weight=10, max_count=6),
+    'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
+}
+
+"""OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
+    'orca': spawner('tfc:orca', min_count=1, max_count=3),
+    'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3)
+}"""
+
+LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),
+    'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10)
+}
+
+"""LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
+}
+
+SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
+    'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
+}"""
 
 
 # This is here because it's used all over, and it's easier to import with all constants
