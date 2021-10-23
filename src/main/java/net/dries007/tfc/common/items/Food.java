@@ -95,6 +95,10 @@ public enum Food
     CHEVON(true, false),
     GRAN_FELINE(true, false),
     CAMELIDAE(true, false),
+    COD(true, false),
+    SALMON(true, false),
+    BLUEGILL(true, false),
+    TROPICAL_FISH(true, false),
     // Cooked Meats
     COOKED_BEEF(true, false),
     COOKED_PORK(true, false),
@@ -110,7 +114,11 @@ public enum Food
     COOKED_DUCK(true, false),
     COOKED_CHEVON(true, false),
     COOKED_CAMELIDAE(true, false),
-    COOKED_GRAN_FELINE(true, false);
+    COOKED_GRAN_FELINE(true, false),
+    COOKED_COD(true, false),
+    COOKED_SALMON(true, false),
+    COOKED_BLUEGILL(true, false),
+    COOKED_TROPICAL_FISH(true, false);
 
     private final boolean meat, fast;
 

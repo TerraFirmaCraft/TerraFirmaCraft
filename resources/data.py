@@ -146,6 +146,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
+    rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
 
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
@@ -431,8 +432,10 @@ def generate(rm: ResourceManager):
     food_item(rm, 'pork', 'tfc:food/pork', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'chicken', 'tfc:food/chicken', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'mutton', 'tfc:food/mutton', Category.meat, 4, 0, 0, 3, protein=1.5)
-    # todo: different fish types?
-    # food_item(rm, 'fish', 'tfc:food/fish', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'bluegill', 'tfc:food/bluegill', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'cod', 'tfc:food/cod', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'salmon', 'tfc:food/salmon', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'tropical_fish', 'tfc:food/tropical_fish', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'bear', 'tfc:food/bear', Category.meat, 4, 0, 0, 2, protein=1.5)
     # food_item(rm, 'calamari', 'tfc:food/calamari', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'horse_meat', 'tfc:food/horse_meat', Category.meat, 4, 0, 0, 2, protein=1.5)
@@ -449,8 +452,10 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_pork', 'tfc:food/cooked_pork', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_chicken', 'tfc:food/cooked_chicken', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_mutton', 'tfc:food/cooked_mutton', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
-    # todo: see fish note above
-    # food_item(rm, 'cooked_fish', 'tfc:food/cooked_fish', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_cod', 'tfc:food/cooked_cod', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_tropical_fish', 'tfc:food/cooked_tropical_fish', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
+    food_item(rm, 'cooked_salmon', 'tfc:food/cooked_salmon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_bluegill', 'tfc:food/cooked_bluegill', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_bear', 'tfc:food/cooked_bear', Category.cooked_meat, 4, 1, 0, 1.5, protein=2.5)
     # food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_horse_meat', 'tfc:food/cooked_horse_meat', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
@@ -489,6 +494,20 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'bluegill'), fauna('tfc:bluegill', fluid='minecraft:water', climate=climate_config(min_temp=-10, max_temp=26)))
     #rm.data(('tfc', 'fauna', 'penguin'), fauna('tfc:penguin', climate=climate_config(max_temp=-14, min_rain=75)))
     #rm.data(('tfc', 'fauna', 'turtle'), fauna('tfc:turtle', climate=climate_config(min_temp=21, min_rain=250)))
+
+    mob_loot(rm, 'cod', 'tfc:food/cod')
+    mob_loot(rm, 'bluegill', 'tfc:food/bluegill')
+    mob_loot(rm, 'tropical_fish', 'tfc:food/tropical_fish')
+    mob_loot(rm, 'salmon', 'tfc:food/salmon')
+    mob_loot(rm, 'pufferfish', 'minecraft:food/pufferfish')
+
+
+def mob_loot(rm: ResourceManager, name_parts: utils.ResourceIdentifier, loot_pools: utils.Json):
+    res = utils.resource_location(rm.domain, name_parts)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'loot_tables', 'entities', res.path), {
+        'type': 'minecraft:entity',
+        'pools': utils.loot_pool_list(loot_pools, 'entity')
+    })
 
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:

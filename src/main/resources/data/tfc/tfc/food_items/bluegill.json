@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/bluegill"
+  },
+  "category": "meat",
+  "hunger": 4,
+  "saturation": 0,
+  "decay": 3,
+  "protein": 1
+}
