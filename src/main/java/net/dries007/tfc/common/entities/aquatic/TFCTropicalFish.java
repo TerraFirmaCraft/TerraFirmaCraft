@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -30,6 +31,7 @@ public class TFCTropicalFish extends TropicalFish
     protected void registerGoals()
     {
         super.registerGoals();
+        goalSelector.addGoal(1, new GetHookedGoal(this));
         Helpers.insertTFCAvoidGoal(this, goalSelector, 2);
     }
 

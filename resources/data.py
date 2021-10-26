@@ -62,6 +62,8 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
 
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
+                if 'tool' in metal_data.types and item == 'fishing_rod':
+                    rm.item_tag('forge:fishing_rods', 'tfc:metal/%s/%s' % (item, metal))
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -499,7 +501,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'bluegill', 'tfc:food/bluegill')
     mob_loot(rm, 'tropical_fish', 'tfc:food/tropical_fish')
     mob_loot(rm, 'salmon', 'tfc:food/salmon')
-    mob_loot(rm, 'pufferfish', 'minecraft:food/pufferfish')
+    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
 
 
 def mob_loot(rm: ResourceManager, name_parts: utils.ResourceIdentifier, loot_pools: utils.Json):

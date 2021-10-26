@@ -28,11 +28,14 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -63,8 +66,10 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -109,6 +114,32 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
             MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+        });
+
+        event.enqueueWork(() -> {
+            for (Metal.Default metal : Metal.Default.values())
+            {
+                if (metal.hasTools())
+                {
+                    Item rod = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.FISHING_ROD).get();
+                    ItemProperties.register(rod, Helpers.identifier("cast"), (stack, level, entity, unused) -> {
+                        if (entity == null)
+                        {
+                            return 0.0F;
+                        }
+                        else
+                        {
+                            boolean main = entity.getMainHandItem() == stack;
+                            boolean off = entity.getOffhandItem() == stack;
+                            if (entity.getMainHandItem().getItem() instanceof FishingRodItem)
+                            {
+                                off = false;
+                            }
+                            return (main || off) && entity instanceof Player && ((Player) entity).fishing != null ? 1.0F : 0.0F;
+                        }
+                    });
+                }
+            }
         });
 
         // Keybindings
@@ -185,6 +216,7 @@ public final class ClientEventHandler
     {
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+        event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), FishingHookRenderer::new);
         for (Wood wood : Wood.values())
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));

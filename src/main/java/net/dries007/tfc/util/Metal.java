@@ -321,6 +321,8 @@ public class Metal
         DOUBLE_SHEET(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         ROD(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
+        FISH_HOOK(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
+        FISHING_ROD(Type.TOOL, metal -> new TFCFishingRodItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getTier().getUses()))),
 
         // Tools and Tool Heads
         PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.getTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75F, metal.getTier()), -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),
