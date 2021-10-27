@@ -533,8 +533,19 @@ def generate(rm: ResourceManager):
                 'name': 'tfc:straw',
                 'conditions': [match_tag('tfc:knives')]
             }]))
+        elif plant in SEAWEED:
+            rm.block_loot(p, one_pool_alternatives([
+                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:knives'), chance(0.3)]},
+                {'name': p, 'conditions': [match_tag('forge:shears')]}
+            ]))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
-            rm.block_loot(p, one_pool({'name': p, 'conditions': [match_tag('tfc:knives'), lower_only]}))
+            if plant == 'cattail':
+                rm.block_loot(p, one_pool_alternatives([
+                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:knives'), chance(0.3), lower_only]},
+                    {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
+                ]))
+            else:
+                rm.block_loot(p, one_pool({'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}))
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:
@@ -995,6 +1006,13 @@ def fortune_table(chances: List[float]) -> Dict[str, Any]:
         'condition': 'minecraft:table_bonus',
         'enchantment': 'minecraft:fortune',
         'chances': chances
+    }
+
+
+def chance(chance: float) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:random_chance',
+        'chance': chance
     }
 
 

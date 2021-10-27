@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/cattail_root"
+  },
+  "category": "vegetable",
+  "hunger": 2,
+  "saturation": 1,
+  "decay": 2.5,
+  "grain": 0.5
+}

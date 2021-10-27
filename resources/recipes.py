@@ -217,6 +217,10 @@ def generate(rm: ResourceManager):
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
         quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
 
+    for plant in SEAWEED:
+        heat_recipe(rm, plant, 'tfc:plant/%s' % plant, 200, 'tfc:food/dried_seaweed')
+    heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, 'tfc:food/dried_kelp')
+
     for ore in ['hematite', 'limonite', 'malachite']:
         for grade, data in ORE_GRADES.items():
             quern_recipe(rm, '%s_%s' % (grade, ore), 'tfc:ore/%s_%s' % (grade, ore), 'tfc:powder/%s' % ore, count=data.grind_amount)

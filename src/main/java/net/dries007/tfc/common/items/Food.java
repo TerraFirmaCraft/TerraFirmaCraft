@@ -79,6 +79,9 @@ public enum Food
     YELLOW_BELL_PEPPER,
     CHEESE,
     COOKED_EGG,
+    DRIED_SEAWEED,
+    CATTAIL_ROOT,
+    DRIED_KELP,
     // Meats
     BEEF(true, false),
     PORK(true, false),

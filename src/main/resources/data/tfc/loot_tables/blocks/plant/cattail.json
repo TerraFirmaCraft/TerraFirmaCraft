@@ -7,23 +7,51 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
-          "conditions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "tag": "tfc:knives"
-              }
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "tfc:knives"
+                  }
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.3
+                },
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/cattail",
+                  "properties": {
+                    "part": "lower"
+                  }
+                }
+              ],
+              "name": "tfc:food/cattail_root"
             },
             {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/cattail",
-              "properties": {
-                "part": "lower"
-              }
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "forge:shears"
+                  }
+                },
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/cattail",
+                  "properties": {
+                    "part": "lower"
+                  }
+                }
+              ],
+              "name": "tfc:plant/cattail"
             }
-          ],
-          "name": "tfc:plant/cattail"
+          ]
         }
       ],
       "conditions": [

@@ -7,16 +7,37 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
-          "conditions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "tag": "tfc:knives"
-              }
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "tfc:knives"
+                  }
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.3
+                }
+              ],
+              "name": "tfc:groundcover/seaweed"
+            },
+            {
+              "type": "item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "forge:shears"
+                  }
+                }
+              ],
+              "name": "tfc:plant/sago"
             }
-          ],
-          "name": "tfc:plant/sago"
+          ]
         }
       ],
       "conditions": [

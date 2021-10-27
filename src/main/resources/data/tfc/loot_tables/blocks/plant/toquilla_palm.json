@@ -12,7 +12,7 @@
             {
               "condition": "minecraft:match_tool",
               "predicate": {
-                "tag": "tfc:knives"
+                "tag": "forge:shears"
               }
             },
             {
