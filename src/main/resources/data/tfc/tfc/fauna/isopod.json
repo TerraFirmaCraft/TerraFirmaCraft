@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "entity": "tfc:isopod",
+  "distance_below_sea_level": 20,
+  "climate": {
+    "max_temperature": 14
+  }
+}

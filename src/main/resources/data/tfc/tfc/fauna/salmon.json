@@ -1,7 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "entity": "tfc:salmon",
-  "fluid": "minecraft:water",
   "climate": {
     "min_temperature": -5
   }

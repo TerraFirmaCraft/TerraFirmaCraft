@@ -50,9 +50,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.client.model.BluegillModel;
-import net.dries007.tfc.client.model.ContainedFluidModel;
-import net.dries007.tfc.client.model.JellyfishModel;
+import net.dries007.tfc.client.model.*;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -227,6 +225,9 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
         event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
         event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
+        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
+        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
+        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -246,6 +247,9 @@ public final class ClientEventHandler
         }
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

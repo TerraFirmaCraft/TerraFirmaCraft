@@ -31,6 +31,10 @@ public class Faunas
     public static final Supplier<Fauna> BLUEGILL = register("bluegill");
     public static final Supplier<Fauna> PUFFERFISH = register("pufferfish");
     public static final Supplier<Fauna> SALMON = register("salmon");
+    public static final Supplier<Fauna> LOBSTER = register("lobster");
+    public static final Supplier<Fauna> ISOPOD = register("isopod");
+    public static final Supplier<Fauna> HORSESHOE_CRAB = register("horseshoe_crab");
+
 
     public static void registerSpawnPlacements()
     {
@@ -40,6 +44,9 @@ public class Faunas
         SpawnPlacements.register(TFCEntities.TROPICAL_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(TROPICAL_FISH));
         SpawnPlacements.register(TFCEntities.PUFFERFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(PUFFERFISH));
         SpawnPlacements.register(TFCEntities.SALMON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(SALMON));
+        SpawnPlacements.register(TFCEntities.LOBSTER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(LOBSTER));
+        SpawnPlacements.register(TFCEntities.ISOPOD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(ISOPOD));
+        SpawnPlacements.register(TFCEntities.HORSESHOE_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(HORSESHOE_CRAB));
     }
 
     private static RegisteredDataManager.Entry<Fauna> register(String name)
@@ -64,7 +71,7 @@ public class Faunas
             }
 
             final int seaLevel = level.getLevel().getChunkSource().generator.getSeaLevel();
-            if (fauna.getDistanceBelowSeaLevel() != -1 && pos.getY() > seaLevel - fauna.getDistanceBelowSeaLevel())
+            if (fauna.getDistanceBelowSeaLevel() != -1 && pos.getY() > (seaLevel - fauna.getDistanceBelowSeaLevel()))
             {
                 return false;
             }
