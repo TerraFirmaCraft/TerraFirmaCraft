@@ -27,14 +27,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class Jellyfish extends AbstractSchoolingFish
+public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
 {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Jellyfish.class, EntityDataSerializers.INT);
 
@@ -156,5 +159,11 @@ public class Jellyfish extends AbstractSchoolingFish
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    @Override
+    public boolean canSpawnIn(Fluid fluid)
+    {
+        return fluid.isSame(TFCFluids.SALT_WATER.getSource());
     }
 }

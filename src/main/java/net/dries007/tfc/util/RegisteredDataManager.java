@@ -51,7 +51,7 @@ public class RegisteredDataManager<T> extends SimpleJsonResourceReloadListener
         this.typeName = typeName;
     }
 
-    public Entry<T> register(ResourceLocation id)
+    public synchronized Entry<T> register(ResourceLocation id)
     {
         return types.computeIfAbsent(id, key -> new Entry<>());
     }

@@ -13,13 +13,16 @@ import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 
+import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCPufferfish extends Pufferfish
+public class TFCPufferfish extends Pufferfish implements AquaticMob
 {
     public TFCPufferfish(EntityType<? extends Pufferfish> type, Level level)
     {
@@ -45,5 +48,11 @@ public class TFCPufferfish extends Pufferfish
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    @Override
+    public boolean canSpawnIn(Fluid fluid)
+    {
+        return fluid.isSame(TFCFluids.SALT_WATER.getSource());
     }
 }

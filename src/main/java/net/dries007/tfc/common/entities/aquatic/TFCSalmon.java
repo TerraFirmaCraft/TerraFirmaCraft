@@ -13,13 +13,16 @@ import net.minecraft.world.entity.animal.Salmon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCSalmon extends Salmon
+public class TFCSalmon extends Salmon implements AquaticMob
 {
     public TFCSalmon(EntityType<? extends Salmon> type, Level level)
     {
@@ -45,5 +48,11 @@ public class TFCSalmon extends Salmon
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    @Override
+    public boolean canSpawnIn(Fluid fluid)
+    {
+        return fluid.isSame(Fluids.WATER);
     }
 }

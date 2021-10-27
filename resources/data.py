@@ -523,7 +523,7 @@ def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] =
     })
 
 
-def fauna(entity: str, fluid: str = None, chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
+def fauna(entity: str, fluid: str = 'minecraft:empty', chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
     return utils.del_none({
         'entity': entity,
         'fluid': fluid,

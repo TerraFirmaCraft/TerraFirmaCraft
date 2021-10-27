@@ -28,6 +28,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 
 public final class JsonHelpers extends GsonHelper
 {
@@ -138,5 +140,15 @@ public final class JsonHelpers extends GsonHelper
         {
             throw new JsonParseException(e.getMessage());
         }
+    }
+
+    public static <T> T decodeCodec(JsonObject json, Codec<T> codec, String key)
+    {
+        T result = codec.decode(JsonOps.INSTANCE, json.get(key)).getOrThrow(false, e -> {}).getFirst();
+        if (result == null)
+        {
+            throw new JsonParseException("Unable to parse fauna json: " + json);
+        }
+        return result;
     }
 }
