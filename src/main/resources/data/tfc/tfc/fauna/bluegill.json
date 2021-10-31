@@ -1,6 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "entity": "tfc:bluegill",
   "climate": {
     "min_temperature": -10,
     "max_temperature": 26

@@ -6,71 +6,70 @@
 
 package net.dries007.tfc.common.entities;
 
-import java.util.Locale;
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.RegisteredDataManager;
+import net.dries007.tfc.common.entities.aquatic.*;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
 {
-    public static final Supplier<Fauna> COD = register("cod");
-    public static final Supplier<Fauna> JELLYFISH = register("jellyfish");
-    public static final Supplier<Fauna> TROPICAL_FISH = register("tropical_fish");
-    public static final Supplier<Fauna> BLUEGILL = register("bluegill");
-    public static final Supplier<Fauna> PUFFERFISH = register("pufferfish");
-    public static final Supplier<Fauna> SALMON = register("salmon");
-    public static final Supplier<Fauna> LOBSTER = register("lobster");
-    public static final Supplier<Fauna> ISOPOD = register("isopod");
-    public static final Supplier<Fauna> HORSESHOE_CRAB = register("horseshoe_crab");
-
+    public static final FaunaType<TFCCod> COD = registerFish(TFCEntities.COD);
+    public static final FaunaType<Jellyfish> JELLYFISH = registerFish(TFCEntities.JELLYFISH);
+    public static final FaunaType<TFCTropicalFish> TROPICAL_FISH = registerFish(TFCEntities.TROPICAL_FISH);
+    public static final FaunaType<Bluegill> BLUEGILL = registerFish(TFCEntities.BLUEGILL);
+    public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
+    public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
+    public static final FaunaType<AquaticCritterEntity> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final FaunaType<AquaticCritterEntity> ISOPOD = registerFish(TFCEntities.ISOPOD);
+    public static final FaunaType<AquaticCritterEntity> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
 
     public static void registerSpawnPlacements()
     {
-        SpawnPlacements.register(TFCEntities.COD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(COD));
-        SpawnPlacements.register(TFCEntities.JELLYFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(JELLYFISH));
-        SpawnPlacements.register(TFCEntities.BLUEGILL.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(BLUEGILL));
-        SpawnPlacements.register(TFCEntities.TROPICAL_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(TROPICAL_FISH));
-        SpawnPlacements.register(TFCEntities.PUFFERFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(PUFFERFISH));
-        SpawnPlacements.register(TFCEntities.SALMON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(SALMON));
-        SpawnPlacements.register(TFCEntities.LOBSTER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(LOBSTER));
-        SpawnPlacements.register(TFCEntities.ISOPOD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(ISOPOD));
-        SpawnPlacements.register(TFCEntities.HORSESHOE_CRAB.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new FaunaSpawnPredicate<>(HORSESHOE_CRAB));
+        registerSpawnPlacement(COD);
+        registerSpawnPlacement(JELLYFISH);
+        registerSpawnPlacement(TROPICAL_FISH);
+        registerSpawnPlacement(BLUEGILL);
+        registerSpawnPlacement(PUFFERFISH);
+        registerSpawnPlacement(SALMON);
+        registerSpawnPlacement(LOBSTER);
+        registerSpawnPlacement(ISOPOD);
+        registerSpawnPlacement(HORSESHOE_CRAB);
     }
 
-    private static RegisteredDataManager.Entry<Fauna> register(String name)
+    private static <E extends Mob> FaunaType<E> registerFish(RegistryObject<EntityType<E>> entity)
     {
-        return Fauna.MANAGER.register(Helpers.identifier(name.toLowerCase(Locale.ROOT)));
+        return register(entity, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    record FaunaSpawnPredicate<T extends Mob>(Supplier<Fauna> faunaSupplier) implements SpawnPlacements.SpawnPredicate<T>
+    private static <E extends Mob> FaunaType<E> register(RegistryObject<EntityType<E>> entity, SpawnPlacements.Type spawnPlacement, Heightmap.Types heightmapType)
     {
-        @Override
-        public boolean test(EntityType<T> mob, ServerLevelAccessor level, MobSpawnType type, BlockPos pos, Random rand)
-        {
-            Fauna fauna = faunaSupplier.get();
-            if (rand.nextInt(fauna.getChance()) != 0) return false;
+        final Supplier<Fauna> fauna = Fauna.MANAGER.register(entity.getId());
+        return new FaunaType<>(entity, fauna, spawnPlacement, heightmapType);
+    }
 
-            if (mob instanceof AquaticMob aquaticMob)
+    private static <E extends Mob> void registerSpawnPlacement(FaunaType<E> type)
+    {
+        SpawnPlacements.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
+            final Fauna fauna = type.fauna().get();
+            if (rand.nextInt(fauna.getChance()) != 0)
             {
-                if (!aquaticMob.canSpawnIn(level.getFluidState(pos).getType()))
-                {
-                    return false;
-                }
+                return false;
             }
 
-            final int seaLevel = level.getLevel().getChunkSource().generator.getSeaLevel();
+            if (mob instanceof AquaticMob aquaticMob && !aquaticMob.canSpawnIn(level.getFluidState(pos).getType()))
+            {
+                return false;
+            }
+
+            final int seaLevel = level.getLevel().getChunkSource().getGenerator().getSeaLevel();
             if (fauna.getDistanceBelowSeaLevel() != -1 && pos.getY() > (seaLevel - fauna.getDistanceBelowSeaLevel()))
             {
                 return false;
@@ -83,11 +82,9 @@ public class Faunas
             }
 
             final BlockPos below = pos.below();
-            if (fauna.isSolidGround() && !level.getBlockState(below).is(BlockTags.VALID_SPAWN))
-            {
-                return false;
-            }
-            return true;
-        }
+            return !fauna.isSolidGround() || level.getBlockState(below).is(BlockTags.VALID_SPAWN);
+        });
     }
+
+    record FaunaType<E extends Mob>(Supplier<EntityType<E>> entity, Supplier<Fauna> fauna, SpawnPlacements.Type spawnPlacementType, Heightmap.Types heightmapType) {}
 }

@@ -1,6 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "entity": "tfc:lobster",
   "distance_below_sea_level": 20,
   "climate": {
     "max_temperature": 21

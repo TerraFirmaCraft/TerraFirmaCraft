@@ -154,6 +154,13 @@ public final class TFCItems
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill", MISC);
 
+    public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);
+    public static final RegistryObject<Item> PUFFERFISH_EGG = registerSpawnEgg(TFCEntities.PUFFERFISH, 16167425, 3654642);
+    public static final RegistryObject<Item> TROPICAL_FISH_EGG = registerSpawnEgg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
+    public static final RegistryObject<Item> JELLYFISH_EGG = registerSpawnEgg(TFCEntities.JELLYFISH, 0xE83D0E, 0x11F2F2);
+    public static final RegistryObject<Item> SALMON_EGG = registerSpawnEgg(TFCEntities.SALMON, 10489616, 951412);
+    public static final RegistryObject<Item> BLUEGILL_EGG = registerSpawnEgg(TFCEntities.BLUEGILL, 0x00658A, 0xE3E184);
+
     // Pottery
 
     public static final RegistryObject<Item> UNFIRED_BRICK = register("ceramic/unfired_brick", MISC);
@@ -194,15 +201,6 @@ public final class TFCItems
         register("ceramic/" + type.name() + "_mold", () -> new MoldItem(type, new Item.Properties().tab(MISC).stacksTo(1)))
     );
 
-    // Spawn Eggs
-
-    public static final RegistryObject<Item> COD_EGG = egg(TFCEntities.COD, 12691306, 15058059);
-    public static final RegistryObject<Item> PUFFERFISH_EGG = egg(TFCEntities.PUFFERFISH, 16167425, 3654642);
-    public static final RegistryObject<Item> TROPICAL_FISH_EGG = egg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
-    public static final RegistryObject<Item> JELLYFISH_EGG = egg(TFCEntities.JELLYFISH, 0xE83D0E, 0x11F2F2);
-    public static final RegistryObject<Item> SALMON_EGG = egg(TFCEntities.SALMON, 10489616, 951412);
-    public static final RegistryObject<Item> BLUEGILL_EGG = egg(TFCEntities.BLUEGILL, 0x00658A, 0xE3E184);
-
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
@@ -221,7 +219,7 @@ public final class TFCItems
     public static final RegistryObject<MobBucketItem> SALMON_BUCKET = register("bucket/salmon", () -> new TFCMobBucketItem(TFCEntities.SALMON, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
 
 
-    private static <T extends EntityType<? extends Mob>> RegistryObject<Item> egg(RegistryObject<T> entity, int color1, int color2)
+    private static <T extends EntityType<? extends Mob>> RegistryObject<Item> registerSpawnEgg(RegistryObject<T> entity, int color1, int color2)
     {
         return register("spawn_egg/" + entity.getId().getPath(), () -> new ForgeSpawnEggItem(entity, color1, color2, new Item.Properties().tab(MISC)));
     }
