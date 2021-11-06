@@ -57,9 +57,9 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
      * @return The current temperature
      */
     @Override
-    public float getTemperature()
+    public float getTemperature(boolean isClientSide)
     {
-        return HeatCapability.adjustTemp(temperature, heatCapacity, Calendars.SERVER.getTicks() - lastUpdateTick);
+        return HeatCapability.adjustTemp(temperature, heatCapacity, Calendars.get(isClientSide).getTicks() - lastUpdateTick);
     }
 
     /**

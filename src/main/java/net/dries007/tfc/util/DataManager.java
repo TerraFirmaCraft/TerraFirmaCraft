@@ -29,6 +29,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.DataManagerSyncPacket;
@@ -82,6 +83,11 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public T get(ResourceLocation id)
     {
         return types.get(id);
+    }
+
+    public Supplier<T> getLazyOrThrow(ResourceLocation id)
+    {
+        return Lazy.of(() -> getOrThrow(id));
     }
 
     public T getOrThrow(ResourceLocation id)

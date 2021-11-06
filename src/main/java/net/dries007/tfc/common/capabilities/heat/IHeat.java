@@ -27,7 +27,12 @@ public interface IHeat
      *
      * @return the temperature.
      */
-    float getTemperature();
+    default float getTemperature()
+    {
+        return getTemperature(false);
+    }
+
+    float getTemperature(boolean isClientSide);
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
@@ -84,16 +89,17 @@ public interface IHeat
      */
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        final float temperature = getTemperature();
+        final float temperature = getTemperature(true);
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
-            if (getWeldingTemperature() > 0 && getWeldingTemperature() <= temperature)
+            final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getForgingTemperature();
+            if (weldingTemperature > 0 && weldingTemperature <= temperature)
             {
                 tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.welding"));
             }
-            else if (getForgingTemperature() > 0 && getForgingTemperature() <= temperature)
+            else if (forgingTemperature > 0 && forgingTemperature <= temperature)
             {
                 tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.forging"));
             }
