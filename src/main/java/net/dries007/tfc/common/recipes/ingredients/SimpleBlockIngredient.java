@@ -47,11 +47,13 @@ public class SimpleBlockIngredient implements BlockIngredient
     @Override
     public BlockIngredient.Serializer<?> getSerializer()
     {
-        return BlockIngredient.BLOCK;
+        return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements BlockIngredient.Serializer<SimpleBlockIngredient>
+    public enum Serializer implements BlockIngredient.Serializer<SimpleBlockIngredient>
     {
+        INSTANCE;
+
         @Override
         public SimpleBlockIngredient fromJson(JsonObject json)
         {

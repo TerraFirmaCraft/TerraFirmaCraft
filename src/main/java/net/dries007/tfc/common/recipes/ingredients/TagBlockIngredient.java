@@ -41,11 +41,13 @@ public class TagBlockIngredient implements BlockIngredient
     @Override
     public BlockIngredient.Serializer<?> getSerializer()
     {
-        return BlockIngredient.TAG;
+        return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements BlockIngredient.Serializer<TagBlockIngredient>
+    public enum Serializer implements BlockIngredient.Serializer<TagBlockIngredient>
     {
+        INSTANCE;
+
         @Override
         public TagBlockIngredient fromJson(JsonObject json)
         {
