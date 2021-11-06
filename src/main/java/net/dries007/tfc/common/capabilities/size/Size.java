@@ -16,6 +16,13 @@ public enum Size
     VERY_LARGE("very_large"), // Pit kilns can only hold one
     HUGE("huge"); // Counts towards overburdened, fits in nothing
 
+    private static final Size[] VALUES = values();
+
+    public static Size valueOf(int i)
+    {
+        return i >= 0 && i < VALUES.length ? VALUES[i] : NORMAL;
+    }
+
     public final String name;
 
     Size(String name)

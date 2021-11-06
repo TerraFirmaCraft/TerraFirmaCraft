@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.util;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -19,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -27,28 +31,49 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 
 /**
  * An implementation of a typical json reload manager.
  */
-public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
+public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Gson GSON = new Gson();
+    private static final Map<Class<?>, DataManager<?>> NETWORK_TYPES = new HashMap<>();
 
-    protected final Gson gson;
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
 
-    protected DataManager(String domain, String typeName)
+    protected final BiFunction<ResourceLocation, JsonObject, T> factory;
+    @Nullable protected final BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory;
+    @Nullable protected final BiConsumer<T, FriendlyByteBuf> networkEncoder;
+    @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
+
+    public DataManager(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName)
     {
-        this(new Gson(), domain, typeName);
+        this(factory, null, null, null, domain, typeName);
     }
 
-    protected DataManager(Gson gson, String domain, String typeName)
+    public DataManager(BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory, String domain, String typeName)
     {
-        super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
+        super(GSON, TerraFirmaCraft.MOD_ID + "/" + domain);
 
-        this.gson = gson;
+        if (Helpers.detectAssertionsEnabled() && networkPacketFactory != null)
+        {
+            final Class<?> packetType = networkPacketFactory.get().getClass();
+            final DataManager<?> old = NETWORK_TYPES.put(packetType, this);
+            if (old != null)
+            {
+                throw new IllegalStateException("Packet class " + packetType.getSimpleName() + " registered for managers for " + old.typeName + " and " + typeName);
+            }
+        }
+
+        this.factory = factory;
+        this.networkFactory = networkFactory;
+        this.networkEncoder = networkEncoder;
+        this.networkPacketFactory = networkPacketFactory;
+
         this.types = HashBiMap.create();
         this.typeName = typeName;
     }
@@ -78,6 +103,37 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
     public Set<T> getValues()
     {
         return types.values();
+    }
+
+    public DataManagerSyncPacket<T> getSyncPacket()
+    {
+        assert networkPacketFactory != null;
+        final DataManagerSyncPacket<T> packet = networkPacketFactory.get();
+        packet.setElements(types);
+        return packet;
+    }
+
+    public T read(ResourceLocation id, JsonObject obj)
+    {
+        return factory.apply(id, obj);
+    }
+
+    public void encode(FriendlyByteBuf buffer, T element)
+    {
+        assert networkEncoder != null;
+        networkEncoder.accept(element, buffer);
+    }
+
+    public T decode(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        assert networkFactory != null;
+        return networkFactory.apply(id, buffer);
+    }
+
+    public void onSync(Map<ResourceLocation, T> elements)
+    {
+        types.clear();
+        types.putAll(elements);
     }
 
     @Override
@@ -110,27 +166,8 @@ public abstract class DataManager<T> extends SimpleJsonResourceReloadListener
         postProcess();
     }
 
-    protected abstract T read(ResourceLocation id, JsonObject obj);
-
     /**
      * Here for subclasses to override
      */
     protected void postProcess() {}
-
-    public static class Instance<T> extends DataManager<T>
-    {
-        private final BiFunction<ResourceLocation, JsonObject, T> factory;
-
-        public Instance(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName)
-        {
-            super(domain, typeName);
-            this.factory = factory;
-        }
-
-        @Override
-        protected T read(ResourceLocation id, JsonObject json)
-        {
-            return factory.apply(id, json);
-        }
-    }
 }

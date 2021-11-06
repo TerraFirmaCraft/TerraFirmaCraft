@@ -22,7 +22,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Fuel
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager.Instance<>(Fuel::new, "fuels", "fuel");
+    public static final DataManager<Fuel> MANAGER = new DataManager<>(Fuel::new, "fuels", "fuel");
     public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
     @Nullable

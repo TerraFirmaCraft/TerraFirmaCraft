@@ -12,15 +12,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -36,7 +35,7 @@ public final class HeatCapability
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager.Instance<>(HeatDefinition::new, "item_heats", "item heat");
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, DataManagerSyncPacket.THeatDefinition::new, "item_heats", "item heat");
 
     @Nullable
     public static HeatDefinition get(ItemStack stack)

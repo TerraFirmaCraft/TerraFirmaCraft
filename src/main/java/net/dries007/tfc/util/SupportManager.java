@@ -8,19 +8,16 @@ package net.dries007.tfc.util;
 
 import java.util.Optional;
 
-import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SupportManager extends DataManager<Support>
 {
-
     private int maxSupportUp, maxSupportDown, maxSupportHorizontal;
 
     SupportManager()
     {
-        super("supports", "support");
+        super(Support::new, "supports", "support");
     }
 
     public Optional<Support> get(BlockState state)
@@ -31,12 +28,6 @@ public class SupportManager extends DataManager<Support>
     public Iterable<BlockPos> getMaximumSupportedAreaAround(BlockPos minPoint, BlockPos maxPoint)
     {
         return BlockPos.betweenClosed(minPoint.offset(-maxSupportHorizontal, -maxSupportDown, -maxSupportHorizontal), maxPoint.offset(maxSupportHorizontal, maxSupportUp, maxSupportHorizontal));
-    }
-
-    @Override
-    protected Support read(ResourceLocation id, JsonObject obj)
-    {
-        return new Support(id, obj);
     }
 
     @Override

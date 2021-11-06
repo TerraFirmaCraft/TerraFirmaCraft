@@ -14,6 +14,13 @@ public enum Weight
     HEAVY("heavy", 4),
     VERY_HEAVY("very_heavy", 1);
 
+    private static final Weight[] VALUES = values();
+
+    public static Weight valueOf(int i)
+    {
+        return i >= 0 && i < VALUES.length ? VALUES[i] : MEDIUM;
+    }
+
     public final int stackSize;
     public final String name;
 

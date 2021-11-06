@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -28,7 +29,7 @@ public final class FoodCapability
     public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = new IndirectHashCollection<>(FoodDefinition::getValidItems);
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager.Instance<>(FoodDefinition::new, "food_items", "foods");
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, DataManagerSyncPacket.TFoodDefinition::new, "food_items", "foods");
 
     @Nullable
     public static FoodDefinition get(ItemStack stack)

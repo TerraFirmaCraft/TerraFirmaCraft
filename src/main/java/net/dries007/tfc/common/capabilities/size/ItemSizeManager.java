@@ -16,6 +16,7 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -23,7 +24,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public final class ItemSizeManager
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager.Instance<>(ItemSizeDefinition::new, "item_sizes", "item size");
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(ItemSizeDefinition::new, ItemSizeDefinition::new, ItemSizeDefinition::encode, DataManagerSyncPacket.TItemSizeDefinition::new, "item_sizes", "item size");
 
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 

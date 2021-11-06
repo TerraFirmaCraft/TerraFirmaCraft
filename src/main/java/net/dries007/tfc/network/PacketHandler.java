@@ -18,9 +18,14 @@ import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
-public class PacketHandler
+public final class PacketHandler
 {
     private static final String VERSION = Integer.toString(1);
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
@@ -42,12 +47,31 @@ public class PacketHandler
         register(PlayerDataUpdatePacket.class, PlayerDataUpdatePacket::encode, PlayerDataUpdatePacket::new, PlayerDataUpdatePacket::handle);
         register(ProspectedPacket.class, ProspectedPacket::encode, ProspectedPacket::new, ProspectedPacket::handle);
         register(ClimateSettingsUpdatePacket.class, ClimateSettingsUpdatePacket::encode, ClimateSettingsUpdatePacket::new, ClimateSettingsUpdatePacket::handle);
+        registerDataManager(DataManagerSyncPacket.TMetal.class, Metal.MANAGER, DataManagerSyncPacket.TMetal::new);
+        registerDataManager(DataManagerSyncPacket.TFoodDefinition.class, FoodCapability.MANAGER, DataManagerSyncPacket.TFoodDefinition::new);
+        registerDataManager(DataManagerSyncPacket.THeatDefinition.class, HeatCapability.MANAGER, DataManagerSyncPacket.THeatDefinition::new);
+        registerDataManager(DataManagerSyncPacket.TItemSizeDefinition.class, ItemSizeManager.MANAGER, DataManagerSyncPacket.TItemSizeDefinition::new);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
         register(PlaceBlockSpecialPacket.class, PlaceBlockSpecialPacket::new, PlaceBlockSpecialPacket::handle);
         register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
         register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
+    }
+
+    private static <T extends DataManagerSyncPacket<E>, E> void registerDataManager(Class<T> cls, DataManager<E> manager, Supplier<T> factory)
+    {
+        CHANNEL.registerMessage(ID.getAndIncrement(), cls,
+            (packet, buffer) -> packet.encode(manager::encode, buffer),
+            buffer -> {
+                final T packet = factory.get();
+                packet.decode(manager::decode, buffer);
+                return packet;
+            },
+            (packet, context) -> {
+                context.get().setPacketHandled(true);
+                packet.handle(manager::onSync, context.get());
+            });
     }
 
     private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, NetworkEvent.Context> handler)

@@ -150,6 +150,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
+        bus.addListener(ForgeEventHandler::onDataPackSync);
     }
 
     /**
@@ -734,6 +735,18 @@ public final class ForgeEventHandler
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
             }
         }
+    }
+
+    public static void onDataPackSync(OnDatapackSyncEvent event)
+    {
+        // Sync managers
+        final ServerPlayer player = event.getPlayer();
+        final PacketDistributor.PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
+
+        PacketHandler.send(target, Metal.MANAGER.getSyncPacket());
+        PacketHandler.send(target, HeatCapability.MANAGER.getSyncPacket());
+        PacketHandler.send(target, FoodCapability.MANAGER.getSyncPacket());
+        PacketHandler.send(target, ItemSizeManager.MANAGER.getSyncPacket());
     }
 
     public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)

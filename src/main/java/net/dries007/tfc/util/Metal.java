@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -60,6 +61,25 @@ public class Metal
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
         this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
+    }
+
+    public Metal(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        this.id = id;
+        this.tier = Tier.valueOf(buffer.readByte());
+        this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+        this.meltTemperature = buffer.readFloat();
+        this.heatCapacity = buffer.readFloat();
+        this.translationKey = buffer.readUtf();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeByte(tier.ordinal());
+        buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
+        buffer.writeFloat(meltTemperature);
+        buffer.writeFloat(heatCapacity);
+        buffer.writeUtf(translationKey);
     }
 
     public ResourceLocation getId()

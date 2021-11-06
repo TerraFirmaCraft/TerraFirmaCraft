@@ -13,13 +13,15 @@ import javax.annotation.Nullable;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-public class MetalManager extends DataManager.Instance<Metal>
+import net.dries007.tfc.network.DataManagerSyncPacket;
+
+public class MetalManager extends DataManager<Metal>
 {
     private final Map<Fluid, Metal> metalsFromFluids;
 
     MetalManager()
     {
-        super(Metal::new, "metals", "metal");
+        super(Metal::new, Metal::new, Metal::encode, DataManagerSyncPacket.TMetal::new, "metals", "metal");
 
         this.metalsFromFluids = new HashMap<>();
     }
