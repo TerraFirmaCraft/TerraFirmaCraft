@@ -21,11 +21,13 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
+import net.dries007.tfc.common.capabilities.sync.ISyncable;
+import net.dries007.tfc.common.capabilities.sync.SyncableCapability;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
+public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood, ISyncable.Serializable
 {
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
@@ -141,7 +143,11 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return cap == FoodCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
+        if (cap == FoodCapability.CAPABILITY || cap == SyncableCapability.CAPABILITY)
+        {
+            return capability.cast();
+        }
+        return LazyOptional.empty();
     }
 
     @Override

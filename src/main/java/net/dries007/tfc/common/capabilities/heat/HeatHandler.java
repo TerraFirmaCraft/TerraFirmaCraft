@@ -15,9 +15,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
+import net.dries007.tfc.common.capabilities.sync.ISyncable;
+import net.dries007.tfc.common.capabilities.sync.SyncableCapability;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
+public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat, ISyncable.Serializable
 {
     private final LazyOptional<IHeat> capability = LazyOptional.of(() -> this);
 
@@ -96,7 +98,11 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return HeatCapability.CAPABILITY.orEmpty(cap, capability);
+        if (cap == HeatCapability.CAPABILITY || cap == SyncableCapability.CAPABILITY)
+        {
+            return capability.cast();
+        }
+        return LazyOptional.empty();
     }
 
     @Override

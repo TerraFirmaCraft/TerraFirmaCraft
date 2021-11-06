@@ -334,13 +334,13 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
         {
-            return Metal.MANAGER.getMetal(stack.getFluid()) != null;
+            return Metal.get(stack.getFluid()) != null;
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action)
         {
-            final Metal metal = Metal.MANAGER.getMetal(resource.getFluid());
+            final Metal metal = Metal.get(resource.getFluid());
             if (metal != null)
             {
                 return alloy.add(metal, resource.getAmount(), action.simulate());

@@ -14,13 +14,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 /**
  * This is a manager for various cache invalidations, either on resource reload or server start/stop
@@ -42,15 +38,6 @@ public enum CacheInvalidationListener implements SyncReloadListener
             ScrapingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.SCRAPING));
             CastingRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.CASTING));
 
-            HeatCapability.CACHE.reload(HeatCapability.MANAGER.getValues());
-            FoodCapability.CACHE.reload(FoodCapability.MANAGER.getValues());
-
-            ItemSizeManager.CACHE.reload(ItemSizeManager.MANAGER.getValues());
-
-            Fuel.CACHE.reload(Fuel.MANAGER.getValues());
-            Drinkable.CACHE.reload(Drinkable.MANAGER.getValues());
-
-            ItemSizeManager.resetItemSizes();
             InteractionManager.reload();
         }
 

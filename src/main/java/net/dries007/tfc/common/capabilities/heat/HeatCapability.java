@@ -35,7 +35,7 @@ public final class HeatCapability
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = new IndirectHashCollection<>(HeatDefinition::getValidItems);
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, DataManagerSyncPacket.THeatDefinition::new, "item_heats", "item heat");
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatCapability::reload, HeatDefinition::new, HeatDefinition::encode, DataManagerSyncPacket.THeatDefinition::new);
 
     @Nullable
     public static HeatDefinition get(ItemStack stack)
@@ -203,6 +203,11 @@ public final class HeatCapability
             }
         }
         return new Remainder(burnTicks, burnTemperature, ticks);
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
     }
 
     public record Remainder(int burnTicks, float burnTemperature, long ticks) {}

@@ -6,16 +6,17 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.Util;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A fixed, immutable, cached implementation of {@link ItemSize}
  */
-public final class ItemSize implements IItemSize
+public record ItemSize(Size size, Weight weight) implements IItemSize
 {
     private static final int SIZES = Size.values().length;
     private static final int WEIGHTS = Weight.values().length;
+
     private static final ItemSize[] CACHE = Util.make(new ItemSize[SIZES * WEIGHTS], array -> {
         for (Size size : Size.values())
         {
@@ -33,15 +34,6 @@ public final class ItemSize implements IItemSize
     public static ItemSize of(Size size, Weight weight)
     {
         return CACHE[size.ordinal() + SIZES * weight.ordinal()];
-    }
-
-    private final Size size;
-    private final Weight weight;
-
-    private ItemSize(Size size, Weight weight)
-    {
-        this.size = size;
-        this.weight = weight;
     }
 
     @Override

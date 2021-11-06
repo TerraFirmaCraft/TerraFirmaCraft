@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -16,13 +13,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class Fuel
+public final class Fuel extends ItemDefinition
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager<>(Fuel::new, "fuels", "fuel");
+    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::reload);
     public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
     @Nullable
@@ -30,7 +26,7 @@ public class Fuel
     {
         for (Fuel def : CACHE.getAll(stack.getItem()))
         {
-            if (def.isValid(stack))
+            if (def.matches(stack))
             {
                 return def;
             }
@@ -38,32 +34,20 @@ public class Fuel
         return null;
     }
 
-    private final ResourceLocation id;
-    private final Ingredient ingredient;
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
+    }
+
     private final int duration;
     private final float temperature;
 
     public Fuel(ResourceLocation id, JsonObject json)
     {
-        this.id = id;
-        this.ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+        super(id, json);
+
         this.duration = GsonHelper.getAsInt(json, "duration");
         this.temperature = GsonHelper.getAsFloat(json, "temperature");
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public boolean isValid(ItemStack stack)
-    {
-        return ingredient.test(stack);
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     public int getDuration()

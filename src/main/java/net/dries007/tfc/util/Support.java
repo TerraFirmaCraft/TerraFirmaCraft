@@ -8,6 +8,7 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -15,14 +16,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class Support
+public final class Support
 {
-    public static final SupportManager MANAGER = new SupportManager();
+    public static final DataManager<Support> MANAGER = new DataManager<>("supports", "support", Support::new, Support::reload);
+    public static final IndirectHashCollection<Block, Support> CACHE = new IndirectHashCollection<>(s -> s.ingredient.getValidBlocks());
+
+    /**
+     * The maximum range of all supports, used for support radius checks.
+     */
+    private static SupportRange RANGE = new SupportRange(0, 0, 0);
 
     /**
      * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link Support#isSupported(BlockGetter, BlockPos)}
@@ -37,20 +46,22 @@ public class Support
         int maxY = Math.max(from.getY(), to.getY());
         int minZ = Math.min(from.getZ(), to.getZ());
         int maxZ = Math.max(from.getZ(), to.getZ());
-        for (BlockPos searchingPoint : MANAGER.getMaximumSupportedAreaAround(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ)))
+        for (BlockPos searchingPoint : getMaximumSupportedAreaAround(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ)))
         {
             if (!listSupported.contains(searchingPoint))
             {
                 listUnsupported.add(searchingPoint.immutable()); // Adding blocks that wasn't found supported
             }
-            BlockState supportState = worldIn.getBlockState(searchingPoint);
-            MANAGER.get(supportState).ifPresent(support -> {
+            final BlockState supportState = worldIn.getBlockState(searchingPoint);
+            final Support support = get(supportState);
+            if (support != null)
+            {
                 for (BlockPos supported : support.getSupportedArea(searchingPoint))
                 {
                     listSupported.add(supported.immutable()); // Adding all supported blocks by this support
                     listUnsupported.remove(supported); // Remove if this block was added earlier
                 }
-            });
+            }
         }
         // Searching point wasn't from points between from <-> to but
         // Time to remove the outsides that were added for convenience
@@ -60,10 +71,11 @@ public class Support
 
     public static boolean isSupported(BlockGetter world, BlockPos pos)
     {
-        for (BlockPos supportPos : MANAGER.getMaximumSupportedAreaAround(pos, pos))
+        for (BlockPos supportPos : getMaximumSupportedAreaAround(pos, pos))
         {
-            BlockState supportState = world.getBlockState(supportPos);
-            if (MANAGER.get(supportState).map(support -> support.canSupport(supportPos, pos)).orElse(false))
+            final BlockState supportState = world.getBlockState(supportPos);
+            final Support support = get(supportState);
+            if (support != null && support.canSupport(supportPos, pos))
             {
                 return true;
             }
@@ -71,9 +83,43 @@ public class Support
         return false;
     }
 
+    public static Iterable<BlockPos> getMaximumSupportedAreaAround(BlockPos minPoint, BlockPos maxPoint)
+    {
+        return BlockPos.betweenClosed(minPoint.offset(-RANGE.horizontal(), -RANGE.down(), -RANGE.horizontal()), maxPoint.offset(RANGE.horizontal(), RANGE.up(), RANGE.horizontal()));
+    }
+
+    @Nullable
+    public static Support get(BlockState state)
+    {
+        for (Support support : CACHE.getAll(state.getBlock()))
+        {
+            if (support.matches(state))
+            {
+                return support;
+            }
+        }
+        return null;
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
+
+        // Re-calculate maximum support range
+        int up = 0, down = 0, horizontal = 0;
+        for (Support support : MANAGER.getValues())
+        {
+            up = Math.max(support.getSupportUp(), up);
+            down = Math.max(support.getSupportDown(), down);
+            horizontal = Math.max(support.getSupportHorizontal(), horizontal);
+        }
+
+        RANGE = new SupportRange(up, down, horizontal);
+    }
+
     private final ResourceLocation id;
-    private final int supportUp, supportDown, supportHorizontal;
     private final BlockIngredient ingredient;
+    private final int supportUp, supportDown, supportHorizontal;
 
     public Support(ResourceLocation id, JsonObject json)
     {
@@ -125,4 +171,6 @@ public class Support
     {
         return BlockPos.betweenClosed(center.offset(-supportHorizontal, -supportDown, -supportHorizontal), center.offset(supportHorizontal, supportUp, supportHorizontal));
     }
+
+    public record SupportRange(int up, int down, int horizontal) {}
 }

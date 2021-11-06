@@ -47,16 +47,27 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     protected final String typeName;
 
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;
+    @Nullable protected final Runnable postReloadCallback;
     @Nullable protected final BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory;
     @Nullable protected final BiConsumer<T, FriendlyByteBuf> networkEncoder;
     @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
 
-    public DataManager(BiFunction<ResourceLocation, JsonObject, T> factory, String domain, String typeName)
+    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
-        this(factory, null, null, null, domain, typeName);
+        this(domain, typeName, factory, null, null, null, null);
     }
 
-    public DataManager(BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory, String domain, String typeName)
+    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, Runnable postReloadCallback)
+    {
+        this(domain, typeName, factory, postReloadCallback, null, null, null);
+    }
+
+    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
+    {
+        this(domain, typeName, factory, null, networkFactory, networkEncoder, networkPacketFactory);
+    }
+
+    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable Runnable postReloadCallback, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
         super(GSON, TerraFirmaCraft.MOD_ID + "/" + domain);
 
@@ -71,6 +82,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         }
 
         this.factory = factory;
+        this.postReloadCallback = postReloadCallback;
         this.networkFactory = networkFactory;
         this.networkEncoder = networkEncoder;
         this.networkPacketFactory = networkPacketFactory;
@@ -140,6 +152,11 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     {
         types.clear();
         types.putAll(elements);
+        if (postReloadCallback != null)
+        {
+            postReloadCallback.run();
+        }
+        LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
     }
 
     @Override
@@ -167,13 +184,10 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
                 LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
             }
         }
-
+        if (postReloadCallback != null)
+        {
+            postReloadCallback.run();
+        }
         LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
-        postProcess();
     }
-
-    /**
-     * Here for subclasses to override
-     */
-    protected void postProcess() {}
 }

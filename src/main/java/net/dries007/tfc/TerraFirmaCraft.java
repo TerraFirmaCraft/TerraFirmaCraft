@@ -33,6 +33,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.sync.ISyncable;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -152,6 +153,7 @@ public final class TerraFirmaCraft
         event.register(IWorldTracker.class);
         event.register(IFood.class);
         event.register(PlayerData.class);
+        event.register(ISyncable.class);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

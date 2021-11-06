@@ -29,7 +29,7 @@ public final class FoodCapability
     public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = new IndirectHashCollection<>(FoodDefinition::getValidItems);
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, DataManagerSyncPacket.TFoodDefinition::new, "food_items", "foods");
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>("food_items", "food", FoodDefinition::new, FoodCapability::reload, FoodDefinition::new, FoodDefinition::encode, DataManagerSyncPacket.TFoodDefinition::new);
 
     @Nullable
     public static FoodDefinition get(ItemStack stack)
@@ -218,5 +218,10 @@ public final class FoodCapability
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.SERVER.getTicks() + p * ci);
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
     }
 }

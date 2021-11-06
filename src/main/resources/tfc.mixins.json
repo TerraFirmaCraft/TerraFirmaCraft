@@ -4,9 +4,11 @@
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "AbstractContainerMenuMixin",
     "BiomeMixin",
     "FallingBlockMixin",
     "FlowingFluidMixin",
+    "FriendlyByteBufMixin",
     "IceBlockMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
