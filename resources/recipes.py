@@ -1,8 +1,6 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Any
-
 from mcresources import ResourceManager, utils
 from mcresources.recipe_context import RecipeContext
 
@@ -184,7 +182,7 @@ def generate(rm: ResourceManager):
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
-        if tool == 'ingot':
+        if tool_data.mold:
             heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_MELT, 'tfc:ceramic/%s_mold' % tool)
 
     for pottery in SIMPLE_POTTERY:
