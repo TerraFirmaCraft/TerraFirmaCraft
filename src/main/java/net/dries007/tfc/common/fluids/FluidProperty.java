@@ -46,29 +46,33 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         }));
     }
 
-    private final Map<String, FluidKey> valuesById;
-    private final Map<Fluid, FluidKey> cachedValues;
-    private final Set<FluidKey> values;
+    private final Map<String, FluidKey> keysById;
+    private final Map<Fluid, FluidKey> keysByFluid;
+    private final List<FluidKey> keysByIndex;
     private final Lazy<Set<Fluid>> fluids;
 
     protected FluidProperty(String name, Stream<ResourceLocation> fluids)
     {
         super(name, FluidKey.class);
 
-        this.valuesById = fluids.collect(Collectors.toMap(ResourceLocation::getPath, FluidKey::new));
-        this.cachedValues = new HashMap<>();
-        this.values = new HashSet<>(this.valuesById.values());
-        this.fluids = Lazy.of(() -> this.values.stream().map(FluidKey::getFluid).collect(Collectors.toSet()));
+        this.keysByFluid = new HashMap<>();
+        this.keysById = new HashMap<>();
+        this.keysByIndex = new ArrayList<>(); // Needs to be deterministically ordered
+
+        fluids.sorted().forEach(id -> {
+            assert !keysById.containsKey(id.getPath()) : "Duplicate fluid key: " + id.getPath();
+            final FluidKey key = new FluidKey(id);
+
+            keysById.put(id.getPath(), key);
+            keysByIndex.add(key);
+        });
+
+        this.fluids = Lazy.of(() -> this.keysByIndex.stream().map(FluidKey::getFluid).collect(Collectors.toSet()));
     }
 
     public boolean canContain(Fluid fluid)
     {
         return fluids.get().contains(fluid);
-    }
-
-    public Collection<Fluid> getPossibleFluids()
-    {
-        return fluids.get();
     }
 
     public FluidKey keyForOrEmpty(Fluid fluid)
@@ -78,24 +82,24 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
 
     public FluidKey keyFor(Fluid fluid)
     {
-        FluidKey key = cachedValues.get(fluid);
+        FluidKey key = keysByFluid.get(fluid);
         if (key != null)
         {
             return key;
         }
-        key = valuesById.get(Objects.requireNonNull(fluid.getRegistryName()).getPath());
+        key = keysById.get(Objects.requireNonNull(fluid.getRegistryName()).getPath());
         if (key == null)
         {
             throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + fluid.getRegistryName() + "] which was not present in property " + getName() + " / " + getPossibleValues());
         }
-        cachedValues.put(fluid, key);
+        keysByFluid.put(fluid, key);
         return key;
     }
 
     @Override
     public Collection<FluidKey> getPossibleValues()
     {
-        return values;
+        return keysByIndex;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
     @Override
     public Optional<FluidKey> getValue(String value)
     {
-        return Optional.ofNullable(valuesById.get(value));
+        return Optional.ofNullable(keysById.get(value));
     }
 
     public static class FluidKey implements Comparable<FluidKey>

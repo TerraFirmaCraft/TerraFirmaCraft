@@ -34,26 +34,26 @@ import net.minecraftforge.fluids.FluidUtil;
 public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockContainer, BucketPickup
 {
     @Override
-    default boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    default boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid == Fluids.EMPTY)
         {
-            return getFluidProperty().getPossibleFluids().contains(fluidIn);
+            return getFluidProperty().canContain(fluid);
         }
         return false;
     }
 
     @Override
-    default boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    default boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
-        if (containedFluid == Fluids.EMPTY && getFluidProperty().getPossibleFluids().contains(fluidStateIn.getType()))
+        if (containedFluid == Fluids.EMPTY && getFluidProperty().canContain(fluidStateIn.getType()))
         {
-            if (!worldIn.isClientSide())
+            if (!level.isClientSide())
             {
-                worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidStateIn.getType())), 3);
-                worldIn.getLiquidTicks().scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(worldIn));
+                level.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidStateIn.getType())), 3);
+                level.getLiquidTicks().scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(level));
             }
             return true;
         }
