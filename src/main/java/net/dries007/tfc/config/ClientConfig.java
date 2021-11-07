@@ -29,6 +29,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
+    public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
     public final ForgeConfigSpec.EnumValue<HeatTooltipStyle> heatTooltipStyle;
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
@@ -69,6 +70,7 @@ public class ClientConfig
             "TIME_LEFT - e.g. 'Expires in about 3 day(s)",
             "BOTH - Shows both of the above, e.g. Expires on June 3, 05:00 (in about 3 day(s))."
         ).defineEnum("foodExpiryTooltipStyle", FoodExpiryTooltipStyle.BOTH);
+        foodExpiryOverlayColor = builder.apply("foodExpiryOverlayColor").comment("The overlay color to indicate rotten foods. Default = 0x88CC33").defineInRange("foodExpiryOverlayColor", 0x88CC33, 0, 0xFFFFFF);
 
         heatTooltipStyle = builder.apply("heatTooltipStyle").comment(
             "The style to display all heat tooltips in.",

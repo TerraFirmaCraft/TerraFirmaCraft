@@ -29,6 +29,7 @@
   "client": [
     "client.ClientLevelMixin",
     "client.FogRendererMixin",
+    "client.ItemColorsMixin",
     "client.LevelRendererMixin",
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
