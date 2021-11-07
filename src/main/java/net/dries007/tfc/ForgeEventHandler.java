@@ -743,10 +743,11 @@ public final class ForgeEventHandler
         final ServerPlayer player = event.getPlayer();
         final PacketDistributor.PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
 
-        PacketHandler.send(target, Metal.MANAGER.getSyncPacket());
-        PacketHandler.send(target, HeatCapability.MANAGER.getSyncPacket());
-        PacketHandler.send(target, FoodCapability.MANAGER.getSyncPacket());
-        PacketHandler.send(target, ItemSizeManager.MANAGER.getSyncPacket());
+        PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
+        PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
+        PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
     }
 
     public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)

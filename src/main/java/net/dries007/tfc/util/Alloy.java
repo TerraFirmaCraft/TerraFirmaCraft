@@ -26,16 +26,21 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
     /**
      * This is the maximum safe value for an alloy.
      * If an alloy is larger than this, due to epsilon based comparisons, the following duplication glitch can be observed:
-     * Add {@code SAFE_MAX_ALLOY} amount of metal A
+     * Add {@code MAX_ALLOY} amount of metal A
      * Add 1 unit of metal B
-     * Then {@code 1 / (1 + SAFE_MAX_ALLOY) < EPSILON}, so you can extract {@code (1 + SAFE_MAX_ALLOY)} units of metal A, effectively transmuting metal B into A.
+     * Then {@code 1 / (1 + MAX_ALLOY) < EPSILON}, so you can extract {@code (1 + MAX_ALLOY)} units of metal A, effectively transmuting metal B into A.
      */
-    public static final int MAX_ALLOY = Integer.MAX_VALUE;
+    public static final int MAX_ALLOY = Integer.MAX_VALUE - 2;
 
     /**
      * This is the epsilon that alloy ratios are compared against.
      */
-    public static final double EPSILON = 1d / MAX_ALLOY;
+    public static final double EPSILON = 1d / (2 + MAX_ALLOY);
+
+    static
+    {
+        assert 1d / (1 + MAX_ALLOY) >= EPSILON;
+    }
 
     private final Object2DoubleMap<Metal> metalMap, sanitizedMetalMap;
     private int totalUnits;

@@ -9,16 +9,19 @@ package net.dries007.tfc.util;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public final class Fuel extends ItemDefinition
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::reload);
+    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::reload, Fuel::new, Fuel::encode, DataManagerSyncPacket.TFuel::new);
     public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
 
     @Nullable
@@ -48,6 +51,22 @@ public final class Fuel extends ItemDefinition
 
         this.duration = GsonHelper.getAsInt(json, "duration");
         this.temperature = GsonHelper.getAsFloat(json, "temperature");
+    }
+
+    public Fuel(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        super(id, Ingredient.fromNetwork(buffer));
+
+        this.duration = buffer.readVarInt();
+        this.temperature = buffer.readFloat();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        ingredient.toNetwork(buffer);
+
+        buffer.writeVarInt(duration);
+        buffer.writeFloat(temperature);
     }
 
     public int getDuration()

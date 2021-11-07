@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
@@ -35,14 +36,11 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
  *
  * @see net.minecraft.world.item.BlockItem#updateCustomBlockEntityTag(Level, Player, BlockPos, ItemStack)
  */
-public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBlockExtension
+public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    private final ExtendedProperties properties;
-
     public DeviceBlock(ExtendedProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
+        super(properties);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBl
     public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         final ItemStack stack = super.getPickBlock(state, target, world, pos, player);
-        if (properties.getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.SAVE)
+        if (getExtendedProperties().getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.SAVE)
         {
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
@@ -82,15 +80,9 @@ public class DeviceBlock extends Block implements IForgeBlockExtension, EntityBl
         return stack;
     }
 
-    @Override
-    public ExtendedProperties getExtendedProperties()
-    {
-        return properties;
-    }
-
     protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
-        if (properties.getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.DUMP)
+        if (getExtendedProperties().getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.DUMP)
         {
             entity.ejectInventory();
         }

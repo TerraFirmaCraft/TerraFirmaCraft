@@ -127,9 +127,10 @@ public final class FoodCapability
         return stack;
     }
 
-    public static void setStackNonDecaying(ItemStack stack)
+    public static ItemStack setStackNonDecaying(ItemStack stack)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(IFood::setNonDecaying);
+        return stack;
     }
 
     /**

@@ -43,11 +43,7 @@ public final class TFCItemGroup extends CreativeModeTab
     private TFCItemGroup(String label, Supplier<ItemStack> iconSupplier)
     {
         super(MOD_ID + "." + label);
-        this.iconStack = Lazy.of(() -> {
-            final ItemStack stack = iconSupplier.get();
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(IFood::setNonDecaying);
-            return stack;
-        });
+        this.iconStack = Lazy.of(() -> FoodCapability.setStackNonDecaying(iconSupplier.get()));
     }
 
     @Override

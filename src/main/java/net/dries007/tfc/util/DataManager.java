@@ -62,11 +62,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         this(domain, typeName, factory, postReloadCallback, null, null, null);
     }
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
-    {
-        this(domain, typeName, factory, null, networkFactory, networkEncoder, networkPacketFactory);
-    }
-
     public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable Runnable postReloadCallback, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
         super(GSON, TerraFirmaCraft.MOD_ID + "/" + domain);
@@ -123,12 +118,15 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return types.values();
     }
 
-    public DataManagerSyncPacket<T> getSyncPacket()
+    public DataManagerSyncPacket<T> createSyncPacket()
+    {
+        return createEmptyPacket().with(types);
+    }
+
+    public DataManagerSyncPacket<T> createEmptyPacket()
     {
         assert networkPacketFactory != null;
-        final DataManagerSyncPacket<T> packet = networkPacketFactory.get();
-        packet.setElements(types);
-        return packet;
+        return networkPacketFactory.get();
     }
 
     public T read(ResourceLocation id, JsonObject obj)
