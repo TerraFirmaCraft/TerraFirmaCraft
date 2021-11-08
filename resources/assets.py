@@ -535,13 +535,13 @@ def generate(rm: ResourceManager):
             }]))
         elif plant in SEAWEED:
             rm.block_loot(p, one_pool_alternatives([
-                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:knives'), chance(0.3)]},
+                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3)]},
                 {'name': p, 'conditions': [match_tag('forge:shears')]}
             ]))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
             if plant == 'cattail':
                 rm.block_loot(p, one_pool_alternatives([
-                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:knives'), chance(0.3), lower_only]},
+                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3), lower_only]},
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ]))
             else:
@@ -731,10 +731,26 @@ def generate(rm: ResourceManager):
         block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
         block.with_tag('minecraft:leaves')
+        block.with_block_loot([one_pool_alternatives({
+            'name': 'tfc:wood/leaves/%s' % wood,
+            'conditions': [condition_alternatives(match_tag('forge:shears'), silk_touch())]
+        }, {
+            'name': 'tfc:wood/sapling/%s' % wood,
+            'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
+        }), one_pool_alternatives({
+            'name': 'minecraft:stick',
+            'conditions': [match_tag('tfc:knives'), condition_chance(0.1)],
+            'functions': [loot_tables.set_count(1, 2)]
+        }, {
+            'name': 'minecraft:stick',
+            'conditions': [condition_chance(0.02)],
+            'functions': [loot_tables.set_count(1, 2)]
+        })])
 
         # Sapling
         block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
         block.with_block_model({'cross': 'tfc:block/wood/sapling/%s' % wood}, 'block/cross')
+        block.with_block_loot('tfc:wood/sapling/%s' % wood)
         rm.item_model(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
 
         # Planks and variant blocks
@@ -982,6 +998,20 @@ def explosion_decay() -> Dict[str, Any]:
     }
 
 
+def condition_alternatives(*terms) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:alternative',
+        'terms': utils.loot_condition_list(terms)
+    }
+
+
+def condition_inverted(term) -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:alternative',
+        'term': utils.loot_condition_list(term)[0]
+    }
+
+
 def silk_touch() -> Dict[str, Any]:
     return {
         'condition': 'minecraft:match_tool',
@@ -1009,7 +1039,7 @@ def fortune_table(chances: List[float]) -> Dict[str, Any]:
     }
 
 
-def chance(chance: float) -> Dict[str, Any]:
+def condition_chance(chance: float) -> Dict[str, Any]:
     return {
         'condition': 'minecraft:random_chance',
         'chance': chance
