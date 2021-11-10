@@ -22,6 +22,7 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -51,10 +52,12 @@ import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
+import net.dries007.tfc.client.model.entity.*;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.*;
+import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -228,6 +231,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
         event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
         event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        event.registerEntityRenderer(TFCEntities.PIG.get(), TFCPigRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -250,6 +254,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

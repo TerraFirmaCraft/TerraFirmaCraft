@@ -9,6 +9,7 @@ package net.dries007.tfc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.Registry;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -34,6 +35,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -104,6 +106,7 @@ public final class TerraFirmaCraft
         PacketHandler.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
+        EntityDataSerializers.registerSerializer(EntityHelpers.LONG_ENTITY_SERIALIZER);
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {

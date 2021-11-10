@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;

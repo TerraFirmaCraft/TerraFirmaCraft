@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -29,7 +28,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -37,18 +35,15 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
@@ -80,7 +75,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -235,41 +229,6 @@ public final class Helpers
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
         }
         entity.fallDistance = 0;
-    }
-
-    public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
-    {
-        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
-        selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
-    }
-
-    /**
-     * Fluid Sensitive version of Bucketable#bucketMobPickup
-     */
-    public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity)
-    {
-        ItemStack held = player.getItemInHand(hand);
-        ItemStack bucketItem = entity.getBucketItemStack();
-        if (bucketItem.getItem() instanceof MobBucketItem mobBucket && held.getItem() instanceof BucketItem heldBucket)
-        {
-            // Verify that the one you're holding and the corresponding mob bucket contain the same fluid
-            if (mobBucket.getFluid().isSame(heldBucket.getFluid()) && entity.isAlive())
-            {
-                entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
-                entity.saveToBucketTag(bucketItem);
-                ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
-                player.setItemInHand(hand, itemstack2);
-                Level level = entity.level;
-                if (!level.isClientSide)
-                {
-                    CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
-                }
-
-                entity.discard();
-                return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
-            }
-        }
-        return Optional.empty();
     }
 
     /**
