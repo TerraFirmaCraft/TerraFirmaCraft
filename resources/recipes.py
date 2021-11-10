@@ -1,15 +1,12 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Any
-
 from mcresources import ResourceManager, utils
 from mcresources.recipe_context import RecipeContext
 
 from constants import *
 
 
-# Crafting recipes
 def generate(rm: ResourceManager):
     # Rock Things
     for rock in ROCKS.keys():
@@ -155,6 +152,84 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': 'tag!forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('tag!forge:sheets/steel')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': 'tag!forge:rods/wooden', 'S': 'tag!forge:rods/steel'}, (16, 'minecraft:rail')).with_advancement('tag!forge:rods/steel')
 
+    # ============================
+    # Collapse / Landslide Recipes
+    # ============================
+
+    for rock in ROCKS:
+        raw = 'tfc:rock/raw/%s' % rock
+        cobble = 'tfc:rock/cobble/%s' % rock
+        mossy_cobble = 'tfc:rock/mossy_cobble/%s' % rock
+        gravel = 'tfc:rock/gravel/%s' % rock
+        spike = 'tfc:rock/spike/%s' % rock
+
+        # Raw rock can TRIGGER and START, and FALL into cobble
+        # Ores can FALL into cobble
+        rm.block_tag('can_trigger_collapse', raw)
+        rm.block_tag('can_start_collapse', raw)
+        rm.block_tag('can_collapse', raw)
+
+        collapse_recipe(rm, '%s_cobble' % rock, [
+            raw,
+            *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded],
+            *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
+            *['tfc:ore/normal_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
+            *['tfc:ore/rich_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded]
+        ], cobble)
+
+        for ore, ore_data in ORES.items():
+            if ore_data.graded:
+                for grade in ORE_GRADES.keys():
+                    rm.block_tag('can_start_collapse', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+                    rm.block_tag('can_collapse', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+            else:
+                rm.block_tag('can_start_collapse', 'tfc:ore/%s/%s' % (ore, rock))
+                rm.block_tag('can_collapse', 'tfc:ore/%s/%s' % (ore, rock))
+
+        # Gravel and cobblestone have landslide recipes
+        rm.block_tag('can_landslide', cobble, gravel, mossy_cobble)
+
+        landslide_recipe(rm, '%s_cobble' % rock, cobble, cobble)
+        landslide_recipe(rm, '%s_mossy_cobble' % rock, mossy_cobble, mossy_cobble)
+        landslide_recipe(rm, '%s_gravel' % rock, gravel, gravel)
+
+        # Spikes can collapse, but produce nothing
+        rm.block_tag('can_collapse', spike)
+        collapse_recipe(rm, '%s_spike' % rock, spike, copy_input=True)
+
+    # Soil Blocks
+    for variant in SOIL_BLOCK_VARIANTS:
+        for block_type in SOIL_BLOCK_TYPES:
+            rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
+
+        # Blocks that create normal dirt
+        landslide_recipe(rm, '%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path', 'farmland')], 'tfc:dirt/%s' % variant)
+        landslide_recipe(rm, '%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:clay/%s' % variant)
+
+    # Sand
+    for variant in SAND_BLOCK_TYPES:
+        rm.block_tag('can_landslide', 'tfc:sand/%s' % variant)
+        landslide_recipe(rm, '%s_sand' % variant, 'tfc:sand/%s' % variant, 'tfc:sand/%s' % variant)
+
+    # Vanilla landslide blocks
+    for block in ('sand', 'red_sand', 'gravel', 'cobblestone', 'mossy_cobblestone'):
+        rm.block_tag('can_landslide', 'minecraft:%s' % block)
+        landslide_recipe(rm, 'vanilla_%s' % block, 'minecraft:%s' % block, 'minecraft:%s' % block)
+
+    vanilla_dirt_landslides = ('grass_block', 'dirt', 'coarse_dirt', 'podzol')
+    for block in vanilla_dirt_landslides:
+        rm.block_tag('can_landslide', 'minecraft:%s' % block)
+    landslide_recipe(rm, 'vanilla_dirt', ['minecraft:%s' % block for block in vanilla_dirt_landslides], 'minecraft:dirt')
+
+    # Vanilla collapsible blocks
+    for rock in ('stone', 'andesite', 'granite', 'diorite'):
+        block = 'minecraft:%s' % rock
+        rm.block_tag('can_trigger_collapse', block)
+        rm.block_tag('can_start_collapse', block)
+        rm.block_tag('can_collapse', block)
+
+        collapse_recipe(rm, 'vanilla_%s' % rock, block, block if rock != 'stone' else 'minecraft:cobblestone')
+
     # ============
     # Heat Recipes
     # ============
@@ -184,7 +259,7 @@ def generate(rm: ResourceManager):
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
-        if tool == 'ingot':
+        if tool_data.mold:
             heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_MELT, 'tfc:ceramic/%s_mold' % tool)
 
     for pottery in SIMPLE_POTTERY:
@@ -328,6 +403,22 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
 
+def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
+    assert result is not None or copy_input
+    rm.recipe(('collapse', name_parts), 'tfc:collapse', {
+        'ingredient': ingredient,
+        'result': result,
+        'copy_input': copy_input
+    })
+
+
+def landslide_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, result: utils.Json):
+    rm.recipe(('landslide', name_parts), 'tfc:landslide', {
+        'ingredient': ingredient,
+        'result': result
+    })
+
+
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {
         'ingredient': utils.ingredient(item),
@@ -436,11 +527,11 @@ def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
     }
 
 
-def fluid_stack_ingredient(fluid: str, amount: int = None) -> Dict[str, Any]:
-    if fluid.startswith('#'):
-        return {'tag': fluid[1:], 'amount': amount}
-    else:
-        return {'fluid': fluid, 'amount': amount}
+def fluid_stack_ingredient(fluid: utils.Json, amount: int) -> Dict[str, Any]:
+    return {
+        'fluid': fluid_ingredient(fluid),
+        'amount': amount
+    }
 
 
 def fluid_ingredient(data_in: utils.Json) -> utils.Json:
@@ -450,9 +541,12 @@ def fluid_ingredient(data_in: utils.Json) -> utils.Json:
         elif data_in[0] == '#':
             return {'tag': data_in[1:]}
         else:
-            return {'fluid': data_in}
+            return data_in  # raw strings are accepted as fluids
     elif isinstance(data_in, Sequence):
         return [*utils.flatten_list([fluid_ingredient(e) for e in data_in])]
     elif isinstance(data_in, dict):
-        assert ('tag' in data_in) != ('fluid' in data_in), 'Fluid ingredient must have either fluid or tag entries'
-        return data_in
+        if 'tag' in data_in:
+            return {'tag': data_in['tag']}
+        if 'fluid' in data_in:
+            return data_in['fluid']
+        raise ValueError('fluid_ingredient must have fluid or tag entries.')

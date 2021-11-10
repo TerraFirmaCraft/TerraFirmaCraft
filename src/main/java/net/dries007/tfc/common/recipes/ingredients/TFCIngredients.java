@@ -14,7 +14,10 @@ import net.dries007.tfc.util.Helpers;
 
 public final class TFCIngredients
 {
-    public static final IIngredientSerializer<NotRottenIngredient> NOT_ROTTEN = register("not_rotten", new NotRottenIngredient.Serializer());
+    public static void registerIngredientTypes()
+    {
+        register("not_rotten", NotRottenIngredient.Serializer.INSTANCE);
+    }
 
     private static <T extends Ingredient> IIngredientSerializer<T> register(String name, IIngredientSerializer<T> serializer)
     {

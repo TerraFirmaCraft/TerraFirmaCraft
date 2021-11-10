@@ -33,7 +33,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
         if (mold != null)
         {
             final FluidStack fluid = mold.getFluidInTank(0);
-            final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+            final Metal metal = Metal.get(fluid.getFluid());
             if (metal != null)
             {
                 drawCenteredLine(stack, I18n.get(metal.getTranslationKey()), 14);

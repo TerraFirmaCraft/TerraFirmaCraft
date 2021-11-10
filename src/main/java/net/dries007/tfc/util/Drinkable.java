@@ -28,7 +28,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Drinkable extends FluidDefinition
 {
-    public static final DataManager<Drinkable> MANAGER = new DataManager.Instance<>(Drinkable::new, "drinkables", "drinkable");
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new, Drinkable::reload);
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = new IndirectHashCollection<>(Drinkable::getFluids);
 
     @Nullable
@@ -42,6 +42,11 @@ public class Drinkable extends FluidDefinition
             }
         }
         return null;
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
     }
 
     private final float consumeChance;

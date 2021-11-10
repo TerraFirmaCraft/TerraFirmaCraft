@@ -6,6 +6,16 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
+import java.util.function.Supplier;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
+
+import net.dries007.tfc.common.blocks.ExtendedBlock;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+
 /**
  * Default ores used for block registration calls
  */
@@ -55,6 +65,16 @@ public enum Ore
     public boolean isGraded()
     {
         return graded;
+    }
+
+    public Block create()
+    {
+        final BlockBehaviour.Properties properties = Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(3, 10).requiresCorrectToolForDrops();
+        if (this == LIGNITE || this == BITUMINOUS_COAL)
+        {
+            return new ExtendedBlock(ExtendedProperties.of(properties).flammable(5, 120));
+        }
+        return new Block(properties);
     }
 
     public enum Grade

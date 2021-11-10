@@ -158,7 +158,7 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.getOutputFluid(wrapper);
                 if (!fluid.isEmpty())
                 {
-                    final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+                    final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
                         final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))

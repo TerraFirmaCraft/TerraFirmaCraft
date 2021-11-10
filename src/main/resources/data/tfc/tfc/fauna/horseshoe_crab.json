@@ -1,6 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "entity": "tfc:horseshoe_crab",
   "distance_below_sea_level": 10,
   "climate": {
     "min_temperature": 10,

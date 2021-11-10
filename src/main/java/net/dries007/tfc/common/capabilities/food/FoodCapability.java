@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -28,7 +29,7 @@ public final class FoodCapability
     public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = new IndirectHashCollection<>(FoodDefinition::getValidItems);
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager.Instance<>(FoodDefinition::new, "food_items", "foods");
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>("food_items", "food", FoodDefinition::new, FoodCapability::reload, FoodDefinition::new, FoodDefinition::encode, DataManagerSyncPacket.TFoodDefinition::new);
 
     @Nullable
     public static FoodDefinition get(ItemStack stack)
@@ -126,9 +127,10 @@ public final class FoodCapability
         return stack;
     }
 
-    public static void setStackNonDecaying(ItemStack stack)
+    public static ItemStack setStackNonDecaying(ItemStack stack)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(IFood::setNonDecaying);
+        return stack;
     }
 
     /**
@@ -217,5 +219,10 @@ public final class FoodCapability
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.SERVER.getTicks() + p * ci);
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
     }
 }

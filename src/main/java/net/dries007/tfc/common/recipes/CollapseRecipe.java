@@ -28,7 +28,6 @@ import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Support;
-import net.dries007.tfc.util.SupportManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.tracker.Collapse;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -37,7 +36,6 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  * This handles logic relating to block collapses.
  * The recipe itself only handles *transformations*, not actually if a block can or cannot collapse. Those are handled by tags.
  *
- * @see SupportManager
  * @see TFCFallingBlockEntity
  */
 public class CollapseRecipe extends SimpleBlockRecipe

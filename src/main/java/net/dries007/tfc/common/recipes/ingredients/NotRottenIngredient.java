@@ -36,11 +36,13 @@ public class NotRottenIngredient extends DelegateIngredient
     @Override
     public IIngredientSerializer<? extends Ingredient> getSerializer()
     {
-        return TFCIngredients.NOT_ROTTEN;
+        return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements IIngredientSerializer<NotRottenIngredient>
+    public enum Serializer implements IIngredientSerializer<NotRottenIngredient>
     {
+        INSTANCE;
+
         @Override
         public NotRottenIngredient parse(JsonObject json)
         {

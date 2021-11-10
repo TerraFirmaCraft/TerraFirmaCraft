@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import java.util.function.Supplier;
-
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.util.ItemDefinition;
@@ -20,24 +20,39 @@ import net.dries007.tfc.util.ItemDefinition;
  */
 public class HeatDefinition extends ItemDefinition
 {
-    private final Supplier<ICapabilityProvider> capability;
+    private final float heatCapacity;
+    private final float forgingTemp;
+    private final float weldingTemp;
 
     public HeatDefinition(ResourceLocation id, JsonObject json)
     {
         super(id, json);
 
-        float heatCapacity = GsonHelper.getAsFloat(json, "heat_capacity");
-        float forgingTemp = GsonHelper.getAsFloat(json, "forging_temperature", 0);
-        float weldingTemp = GsonHelper.getAsFloat(json, "welding_temperature", 0);
-
-        this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
+        heatCapacity = GsonHelper.getAsFloat(json, "heat_capacity");
+        forgingTemp = GsonHelper.getAsFloat(json, "forging_temperature", 0);
+        weldingTemp = GsonHelper.getAsFloat(json, "welding_temperature", 0);
     }
 
-    /**
-     * Creates a new instance of the capability defined by this object.
-     */
+    public HeatDefinition(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        super(id, Ingredient.fromNetwork(buffer));
+
+        heatCapacity = buffer.readFloat();
+        forgingTemp = buffer.readFloat();
+        weldingTemp = buffer.readFloat();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        ingredient.toNetwork(buffer);
+
+        buffer.writeFloat(heatCapacity);
+        buffer.writeFloat(forgingTemp);
+        buffer.writeFloat(weldingTemp);
+    }
+
     public ICapabilityProvider create()
     {
-        return capability.get();
+        return new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
     }
 }

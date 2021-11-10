@@ -14,17 +14,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.util.Helpers;
-
 /**
  * This is a simple predicate wrapper for block states.
  * It can compare a single or multiple blocks, or a tag.
  */
 public interface BlockIngredient extends Predicate<BlockState>
 {
-    SimpleBlockIngredient.Serializer BLOCK = BlockIngredients.register(Helpers.identifier("block"), new SimpleBlockIngredient.Serializer());
-    TagBlockIngredient.Serializer TAG = BlockIngredients.register(Helpers.identifier("tag"), new TagBlockIngredient.Serializer());
-
     /**
      * Test if the specified block state is accepted by the ingredient
      */

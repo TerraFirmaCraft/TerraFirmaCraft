@@ -34,6 +34,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.sync.ISyncable;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Faunas;
@@ -42,6 +43,8 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
+import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.DispenserBehaviors;
@@ -126,6 +129,8 @@ public final class TerraFirmaCraft
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
         FarmlandBlock.registerTillables();
+        TFCIngredients.registerIngredientTypes();
+        BlockIngredients.registerBlockIngredientTypes();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
@@ -151,6 +156,7 @@ public final class TerraFirmaCraft
         event.register(IWorldTracker.class);
         event.register(IFood.class);
         event.register(PlayerData.class);
+        event.register(ISyncable.class);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

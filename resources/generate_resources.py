@@ -8,7 +8,6 @@ import argparse
 from mcresources import ResourceManager, clean_generated_resources
 
 import assets
-import collapse_recipes
 import data
 import recipes
 import world_gen
@@ -55,7 +54,6 @@ def generate_all(rm: ResourceManager):
     data.generate(rm)
     world_gen.generate(rm)
     recipes.generate(rm)
-    collapse_recipes.generate(rm)
 
     rm.flush()
 

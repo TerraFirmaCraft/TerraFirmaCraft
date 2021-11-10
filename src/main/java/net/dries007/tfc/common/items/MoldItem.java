@@ -150,7 +150,7 @@ public class MoldItem extends Item
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity, fluid -> Metal.MANAGER.getMetal(fluid.getFluid()) != null); // Must be a metal
+            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
         }
 
         @Override
@@ -167,7 +167,7 @@ public class MoldItem extends Item
             final FluidStack fluid = tank.getFluid();
             if (!fluid.isEmpty())
             {
-                final Metal metal = Metal.MANAGER.getMetal(fluid.getFluid());
+                final Metal metal = Metal.get(fluid.getFluid());
                 if (metal != null)
                 {
                     text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
@@ -296,7 +296,7 @@ public class MoldItem extends Item
         @Nullable
         private Metal getContainedMetal()
         {
-            return Metal.MANAGER.getMetal(tank.getFluid().getFluid());
+            return Metal.get(tank.getFluid().getFluid());
         }
 
         private void updateHeatCapacity()

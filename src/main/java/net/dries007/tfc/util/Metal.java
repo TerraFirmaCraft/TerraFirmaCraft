@@ -6,13 +6,16 @@
 
 package net.dries007.tfc.util;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -33,15 +36,47 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.items.*;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 
-public class Metal
+public final class Metal
 {
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
-    public static final MetalManager MANAGER = new MetalManager();
+    public static final DataManager<Metal> MANAGER = new DataManager<>("metals", "metal", Metal::new, Metal::reload, Metal::new, Metal::encode, DataManagerSyncPacket.TMetal::new);
 
+    private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
+
+    /**
+     * Reverse lookup for metals attached to fluids.
+     * For the other direction, see {@link Metal#getFluid()}.
+     *
+     * @param fluid The fluid, can be empty.
+     * @return A metal if it exists, and null if it doesn't.
+     */
+    @Nullable
+    public static Metal get(Fluid fluid)
+    {
+        return METAL_FLUIDS.get(fluid);
+    }
+
+    /**
+     * Get the 'unknown' metal. This is the only metal that any assurances are made that it exists.
+     */
     public static Metal unknown()
     {
-        return Objects.requireNonNull(MANAGER.get(UNKNOWN_ID));
+        return MANAGER.getOrThrow(UNKNOWN_ID);
+    }
+
+    private static void reload()
+    {
+        // Ensure 'unknown' metal exists
+        MANAGER.getOrThrow(UNKNOWN_ID);
+
+        // Reload fluid -> metal map
+        METAL_FLUIDS.clear();
+        for (Metal metal : MANAGER.getValues())
+        {
+            METAL_FLUIDS.put(metal.getFluid(), metal);
+        }
     }
 
     private final Tier tier;
@@ -60,6 +95,25 @@ public class Metal
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
         this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
+    }
+
+    public Metal(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        this.id = id;
+        this.tier = Tier.valueOf(buffer.readByte());
+        this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+        this.meltTemperature = buffer.readFloat();
+        this.heatCapacity = buffer.readFloat();
+        this.translationKey = buffer.readUtf();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeByte(tier.ordinal());
+        buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
+        buffer.writeFloat(meltTemperature);
+        buffer.writeFloat(heatCapacity);
+        buffer.writeUtf(translationKey);
     }
 
     public ResourceLocation getId()

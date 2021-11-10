@@ -28,14 +28,12 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Support;
-import net.dries007.tfc.util.SupportManager;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
  * This handles all logic for land slides (sideways gravity affected blocks)
  * The recipe only handles landslide *transformations*, not if a block is affected by landslides. That is determined by tag.
  *
- * @see SupportManager
  * @see TFCFallingBlockEntity
  */
 public class LandslideRecipe extends SimpleBlockRecipe

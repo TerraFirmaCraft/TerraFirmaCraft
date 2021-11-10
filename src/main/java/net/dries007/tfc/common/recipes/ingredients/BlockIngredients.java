@@ -21,11 +21,18 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class BlockIngredients
 {
     private static final BiMap<ResourceLocation, BlockIngredient.Serializer<?>> REGISTRY = HashBiMap.create();
+
+    public static void registerBlockIngredientTypes()
+    {
+        register(Helpers.identifier("block"), SimpleBlockIngredient.Serializer.INSTANCE);
+        register(Helpers.identifier("tag"), TagBlockIngredient.Serializer.INSTANCE);
+    }
 
     /**
      * Registers a block ingredient serializer
@@ -65,11 +72,11 @@ public class BlockIngredients
         }
         else if (obj.has("block"))
         {
-            serializer = BlockIngredient.BLOCK;
+            serializer = SimpleBlockIngredient.Serializer.INSTANCE;
         }
         else if (obj.has("tag"))
         {
-            serializer = BlockIngredient.TAG;
+            serializer = TagBlockIngredient.Serializer.INSTANCE;
         }
         else
         {
