@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -134,36 +136,35 @@ public final class FoodCapability
     }
 
     /**
-     * @param stackToMergeInto the stack that will grow.
-     * @param stackToMerge     the stack that will shrink. Will be modified.
-     * @return the result of stackToMergeInto.
+     * Merges two item stacks with different creation dates, taking the earlier of the two.
+     * @param stackToMergeInto the stack to merge into. Not modified.
+     * @param stackToMerge     the stack to merge, which will be left with the remainder after merging. Will be modified.
+     * @return The merged stack.
      */
-    public static ItemStack mergeItemStacksIgnoreCreationDate(ItemStack stackToMergeInto, ItemStack stackToMerge)
+    public static ItemStack mergeItemStacks(ItemStack stackToMergeInto, ItemStack stackToMerge)
     {
-        if (!stackToMerge.isEmpty())
+        if (stackToMerge.isEmpty())
         {
-            if (!stackToMergeInto.isEmpty())
+            return stackToMergeInto;
+        }
+        else if (stackToMergeInto.isEmpty())
+        {
+            final ItemStack merged = stackToMerge.copy();
+            stackToMerge.setCount(0);
+            return merged;
+        }
+        else if (FoodCapability.areStacksStackableExceptCreationDate(stackToMergeInto, stackToMerge))
+        {
+            final IFood mergeIntoFood = stackToMergeInto.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final IFood mergeFood = stackToMerge.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            if (mergeIntoFood != null && mergeFood != null)
             {
-                if (FoodCapability.areStacksStackableExceptCreationDate(stackToMergeInto, stackToMerge))
-                {
-                    stackToMergeInto.getCapability(FoodCapability.CAPABILITY).ifPresent(mergeIntoFood ->
-                        stackToMerge.getCapability(FoodCapability.CAPABILITY).ifPresent(mergeFood -> {
-                            int mergeAmount = Math.min(stackToMerge.getCount(), stackToMergeInto.getMaxStackSize() - stackToMergeInto.getCount());
-                            if (mergeAmount > 0)
-                            {
-                                mergeIntoFood.setCreationDate(Math.min(mergeIntoFood.getCreationDate(), mergeFood.getCreationDate()));
-                                stackToMerge.shrink(mergeAmount);
-                                stackToMergeInto.grow(mergeAmount);
-                            }
-                        }));
-                }
+                mergeIntoFood.setCreationDate(Math.min(mergeIntoFood.getCreationDate(), mergeFood.getCreationDate()));
             }
-            else
-            {
-                ItemStack stackToMergeCopy = stackToMerge.copy();
-                stackToMerge.setCount(0);
-                return stackToMergeCopy;
-            }
+
+            final int mergeAmount = Math.min(stackToMerge.getCount(), stackToMergeInto.getMaxStackSize() - stackToMergeInto.getCount());
+            stackToMerge.shrink(mergeAmount);
+            stackToMergeInto.grow(mergeAmount);
         }
         return stackToMergeInto;
     }
@@ -179,9 +180,10 @@ public final class FoodCapability
         // This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
         // This will also not stack stacks which have different traits, which is intended
         final ItemStack stack1Copy = stack1.copy(), stack2Copy = stack2.copy();
-        stack1Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(0));
-        stack2Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(0));
-        return ItemHandlerHelper.canItemStacksStackRelaxed(stack1Copy, stack2Copy);
+        final long date = Calendars.SERVER.getTicks();
+        stack1Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
+        stack2Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
+        return ItemHandlerHelper.canItemStacksStack(stack1Copy, stack2Copy);
     }
 
     /**

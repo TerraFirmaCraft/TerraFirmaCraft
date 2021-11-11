@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -42,11 +41,11 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             quern.rotationTimer--;
             if (quern.rotationTimer == 0)
             {
-                quern.grindItem();
+                quern.finishGrinding();
                 Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
                 Helpers.damageItem(quern.inventory.getStackInSlot(SLOT_HANDSTONE), 1);
 
-                if (quern.inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty())
+                if (!quern.hasHandstone())
                 {
                     Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
                     Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
@@ -60,16 +59,27 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         if (quern.rotationTimer > 0)
         {
+            final ItemStack inputStack = quern.inventory.getStackInSlot(SLOT_INPUT);
+            if (!inputStack.isEmpty())
+            {
+                addParticle(level, pos, inputStack);
+            }
+
             quern.rotationTimer--;
-            addParticle(level, pos, quern.inventory.getStackInSlot(SLOT_INPUT));
             if (quern.rotationTimer == 0)
             {
-                Helpers.damageItem(quern.inventory.getStackInSlot(SLOT_HANDSTONE), 1);
-                if (quern.inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty())
+                // Simulate the damage on client side, to see if it would break. If it does, we create particle shower to indicate the handstone breaking.
+                final ItemStack undamagedHandstoneStack = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
+                if (!undamagedHandstoneStack.isEmpty())
                 {
-                    for (int i = 0; i < 15; i++)
+                    final ItemStack handstoneStack = undamagedHandstoneStack.copy();
+                    Helpers.damageItem(handstoneStack, 1);
+                    if (handstoneStack.isEmpty())
                     {
-                        addParticle(level, pos, new ItemStack(TFCItems.HANDSTONE.get()));
+                        for (int i = 0; i < 15; i++)
+                        {
+                            addParticle(level, pos, undamagedHandstoneStack);
+                        }
                     }
                 }
             }
@@ -82,7 +92,6 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     }
 
     private int rotationTimer;
-    private boolean hasHandstone;
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
@@ -99,28 +108,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        switch (slot)
-        {
-            case SLOT_HANDSTONE:
-                return TFCTags.Items.HANDSTONE.contains(stack.getItem()); // needs to be handstone
-            case SLOT_INPUT:
-                assert level != null;
-                return QuernRecipe.getRecipe(level, new ItemStackInventory(stack)) != null; // recipe must exist + weird item swap glitch workaround
-            case SLOT_OUTPUT:
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void setAndUpdateSlots(int slot)
-    {
-        markForBlockUpdate();
-        if (slot == SLOT_HANDSTONE)
-        {
-            hasHandstone = TFCTags.Items.HANDSTONE.contains(inventory.getStackInSlot(SLOT_HANDSTONE).getItem());
-        }
-        super.setAndUpdateSlots(slot);
+        return slot != SLOT_HANDSTONE || TFCTags.Items.HANDSTONE.contains(stack.getItem());
     }
 
     @Override
@@ -128,7 +116,6 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         rotationTimer = nbt.getInt("rotationTimer");
         super.load(nbt);
-        hasHandstone = TFCTags.Items.HANDSTONE.contains(inventory.getStackInSlot(SLOT_HANDSTONE).getItem());
     }
 
     @Override
@@ -156,42 +143,55 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public boolean hasHandstone()
     {
-        return hasHandstone;
+        return !inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty();
     }
 
-    public void grind()
-    {
-        this.rotationTimer = 90;
-        markForBlockUpdate();
-    }
-
-    private void addParticleSafely(ItemStack item)
+    /**
+     * Attempts to start grinding. Returns {@code true} if it did.
+     */
+    public boolean startGrinding()
     {
         assert level != null;
-        if (level.isClientSide && !item.isEmpty())
+        if (!level.isClientSide)
         {
-            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), worldPosition.getX() + 0.5D, worldPosition.getY() + 0.875D, worldPosition.getZ() + 0.5D, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D);
-        }
-    }
+            final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
 
-    private void grindItem()
-    {
-        assert level != null;
-        ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
-        if (!level.isClientSide && !inputStack.isEmpty())
-        {
-            ItemStackInventory wrapper = new ItemStackInventory(inputStack);
-            QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
-            if (recipe != null)
+            if (!inputStack.isEmpty())
             {
-                inputStack.shrink(1);
-                ItemStack outputStack = recipe.assemble(wrapper);
-                outputStack = inventory.insertItem(SLOT_OUTPUT, outputStack, false);
-                //todo: mergeItemStacksIgnoreCreationDate
-                if (!outputStack.isEmpty())
+                final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
+                final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
+                if (recipe != null && recipe.matches(wrapper, level))
                 {
-                    // Still having leftover items, dumping in world
-                    Helpers.spawnItem(level, worldPosition, outputStack);
+                    rotationTimer = 90;
+                    markForSync();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void finishGrinding()
+    {
+        assert level != null;
+        if (!level.isClientSide)
+        {
+            final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
+            if (!inputStack.isEmpty())
+            {
+                final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
+                final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
+                if (recipe != null && recipe.matches(wrapper, level))
+                {
+                    inputStack.shrink(1);
+
+                    ItemStack outputStack = recipe.assemble(wrapper);
+                    outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
+                    if (!outputStack.isEmpty())
+                    {
+                        Helpers.spawnItem(level, worldPosition, outputStack);
+                    }
+                    markForSync();
                 }
             }
         }

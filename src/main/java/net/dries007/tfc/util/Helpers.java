@@ -79,6 +79,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 
@@ -400,6 +401,28 @@ public final class Helpers
                 return endOfData();
             }
         };
+    }
+
+    /**
+     * Remove and return a stack in {@code slot}, replacing it with empty.
+     */
+    public static ItemStack removeStack(IItemHandler inventory, int slot)
+    {
+        return inventory.extractItem(slot, Integer.MAX_VALUE, false);
+    }
+
+    /**
+     * Inserts {@code stack} into the inventory ignoring any difference in creation date.
+     * @param stack The stack to insert. Will be modified (and returned).
+     * @return The remainder of {@code stack} after inserting.
+     */
+    public static ItemStack mergeInsertStack(IItemHandler inventory, int slot, ItemStack stack)
+    {
+        final ItemStack existing = removeStack(inventory, slot);
+        final ItemStack remainder = stack.copy();
+        final ItemStack merged = FoodCapability.mergeItemStacks(existing, remainder); // stack is now remainder
+        inventory.insertItem(slot, merged, false); // Should be no remainder because we removed it all to start with
+        return remainder;
     }
 
     /**
@@ -869,7 +892,7 @@ public final class Helpers
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant
      */
-    public static boolean perfectMatchDet(boolean[][] matrices, int size)
+    private static boolean perfectMatchDet(boolean[][] matrices, int size)
     {
         // matrix true = nonzero = matches
         final boolean[] matrix = matrices[size - 1];
@@ -901,7 +924,7 @@ public final class Helpers
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes the symbolic minor of a matrix by removing an arbitrary column.
      */
-    public static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
     {
         final int subSize = size - 1;
         final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
