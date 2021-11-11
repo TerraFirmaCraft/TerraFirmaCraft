@@ -38,9 +38,18 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
  */
 public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, EntityBlockExtension
 {
+    private final InventoryRemoveBehavior removeBehavior;
+
     public DeviceBlock(ExtendedProperties properties)
     {
+        this(properties, InventoryRemoveBehavior.NOOP);
+    }
+
+    public DeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior)
+    {
         super(properties);
+
+        this.removeBehavior = removeBehavior;
     }
 
     @Override
@@ -69,7 +78,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
     public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         final ItemStack stack = super.getPickBlock(state, target, world, pos, player);
-        if (getExtendedProperties().getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.SAVE)
+        if (removeBehavior == InventoryRemoveBehavior.SAVE)
         {
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
@@ -82,10 +91,16 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
 
     protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
-        if (getExtendedProperties().getDeviceInventoryRemoveMode() == ExtendedProperties.Mode.DUMP)
+        // todo: remove debug
+        if (removeBehavior == InventoryRemoveBehavior.DROP || (this instanceof QuernBlock) || (this instanceof FirepitBlock) || (this instanceof CharcoalForgeBlock))
         {
             entity.ejectInventory();
         }
         entity.invalidateCapabilities();
+    }
+
+    protected enum InventoryRemoveBehavior
+    {
+        NOOP, DROP, SAVE
     }
 }

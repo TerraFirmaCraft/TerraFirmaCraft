@@ -95,7 +95,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     public QuernBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
     }
 
     @Override

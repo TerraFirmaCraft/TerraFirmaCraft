@@ -1,7 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/firepit_pot",
-  "textures": {
-    "layer0": "tfc:item/pot"
-  }
+  "parent": "tfc:block/firepit_pot"
 }

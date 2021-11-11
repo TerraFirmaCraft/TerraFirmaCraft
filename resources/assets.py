@@ -288,9 +288,9 @@ def generate(rm: ResourceManager):
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
     ]).with_lang(lang('Pot')).with_block_loot([counted_item('tfc:powder/wood_ash', 1, 4), 'tfc:ceramic/pot'])
-    rm.item_model('pot', parent='tfc:block/firepit_pot')
+    rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
-    rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern'))
+    rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
     rm.blockstate('placed_item', 'tfc:block/empty')
     rm.blockstate('scraping', 'tfc:block/empty')

@@ -34,6 +34,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.config.TFCConfig;
@@ -109,13 +110,13 @@ public class FirestarterItem extends Item
 
                             final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
                             world.setBlock(abovePos, state, 3);
-                            AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, abovePos, AbstractFirepitBlockEntity.class);
-                            if (firepit != null)
-                            {
-                                firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                    .ifPresent(cap -> ((IItemHandlerModifiable) cap).setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog));
+                            world.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                                if (cap instanceof IItemHandlerModifiable modifiableInventory)
+                                {
+                                    modifiableInventory.setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog);
+                                }
                                 firepit.light(state);
-                            }
+                            }));
                         }
                         return;
                     }

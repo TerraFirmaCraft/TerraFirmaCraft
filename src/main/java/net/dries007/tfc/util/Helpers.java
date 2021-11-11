@@ -507,8 +507,11 @@ public final class Helpers
      */
     public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
     {
-        tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
-            .append(fluid.getDisplayName()));
+        if (!fluid.isEmpty())
+        {
+            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+                .append(fluid.getDisplayName()));
+        }
     }
 
     /**

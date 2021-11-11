@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -59,6 +60,12 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.charcoal_forge");
     private static final int MAX_AIR_TICKS = 600;
 
+    public static void createFromCharcoalPile(Level level, BlockPos pos)
+    {
+        level.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(CharcoalForgeBlock.HEAT, 2));
+        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(CharcoalForgeBlockEntity::onFirstCreation);
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, CharcoalForgeBlockEntity forge)
     {
         forge.checkForLastTickSync();
@@ -83,32 +90,15 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 level.setBlockAndUpdate(pos, state.setValue(CharcoalForgeBlock.HEAT, heatLevel));
                 forge.markForSync();
             }
+
             // Update fuel
             if (forge.burnTicks > 0)
             {
-                // Double fuel consumption if using bellows
                 forge.burnTicks -= forge.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
             }
-            if (forge.burnTicks <= 0)
+            if (forge.burnTicks <= 0 && !forge.consumeFuel())
             {
-                // Consume fuel
-                ItemStack stack = forge.inventory.getStackInSlot(SLOT_FUEL_MIN);
-                if (stack.isEmpty())
-                {
-                    forge.extinguish(state);
-                }
-                else
-                {
-                    forge.inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
-                    forge.needsSlotUpdate = true;
-                    Fuel fuel = Fuel.get(stack);
-                    if (fuel != null)
-                    {
-                        forge.burnTicks = fuel.getDuration();
-                        forge.burnTemperature = fuel.getTemperature();
-                    }
-                    forge.markForSync();
-                }
+                forge.extinguish(state);
             }
         }
         else if (forge.burnTemperature > 0)
@@ -156,6 +146,28 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.cascadeFuelSlots();
         }
+    }
+
+    /**
+     * Attempts to consume one piece of fuel. Returns if the fire pit consumed any fuel (and so, ended up lit)
+     */
+    protected boolean consumeFuel()
+    {
+        final ItemStack fuelStack = inventory.getStackInSlot(SLOT_FUEL_MIN);
+        if (!fuelStack.isEmpty())
+        {
+            // Try and consume a piece of fuel
+            inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
+            needsSlotUpdate = true;
+            Fuel fuel = Fuel.get(fuelStack);
+            if (fuel != null)
+            {
+                burnTicks += fuel.getDuration();
+                burnTemperature = fuel.getTemperature();
+            }
+            markForSync();
+        }
+        return burnTicks > 0;
     }
 
     protected final ContainerData syncableData;
@@ -234,10 +246,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         return syncableData;
     }
 
-    public void onCreate()
+    public void onFirstCreation()
     {
         burnTicks = 200;
         burnTemperature = 500;
+        markForSync();
     }
 
     @Nullable

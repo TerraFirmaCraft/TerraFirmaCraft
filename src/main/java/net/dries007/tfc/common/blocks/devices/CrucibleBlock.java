@@ -52,7 +52,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
 
     public CrucibleBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.SAVE);
     }
 
     @Override
@@ -99,8 +99,6 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
         final CompoundTag tag = stack.getTagElement(BlockItem.BLOCK_ENTITY_TAG);
         if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))
         {
-            tooltip.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-
             // Decode the contents of the crucible
             final CompoundTag inventoryTag = tag.getCompound("inventory");
             final Alloy alloy = new Alloy();
@@ -109,6 +107,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             alloy.deserializeNBT(inventoryTag.getCompound("alloy"));
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
+            tooltip.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
             Helpers.addInventoryTooltipInfo(inventory, tooltip);
             Helpers.addFluidStackTooltipInfo(alloy.getResultAsFluidStack(), tooltip);
         }

@@ -33,9 +33,6 @@ public class ExtendedProperties
     @Nullable private BlockEntityTicker<?> serverTicker;
     @Nullable private BlockEntityTicker<?> clientTicker;
 
-    // For devices
-    private Mode deviceInventoryRemoveMode = Mode.NOOP;
-
     // Forge methods
     private int flammability;
     private int fireSpreadSpeed;
@@ -83,18 +80,10 @@ public class ExtendedProperties
         return this;
     }
 
-    public ExtendedProperties dropInventoryOnRemove()
-    {
-        deviceInventoryRemoveMode = Mode.DUMP;
-        return this;
-    }
-
-    public ExtendedProperties saveInventoryOnRemove()
-    {
-        deviceInventoryRemoveMode = Mode.SAVE;
-        return this;
-    }
-
+    /**
+     * @param flammability A measure of how fast this block burns. Higher values = shorter lifetime.
+     * @param fireSpreadSpeed A measure of how much fire tends to spread from this block. Higher values = more spreading.
+     */
     public ExtendedProperties flammable(int flammability, int fireSpreadSpeed)
     {
         this.flammability = flammability;
@@ -110,11 +99,6 @@ public class ExtendedProperties
     public boolean hasBlockEntity()
     {
         return blockEntityType != null;
-    }
-
-    public Mode getDeviceInventoryRemoveMode()
-    {
-        return deviceInventoryRemoveMode;
     }
 
     // Internal methods
@@ -145,12 +129,5 @@ public class ExtendedProperties
     int getFireSpreadSpeed()
     {
         return fireSpreadSpeed;
-    }
-
-    public enum Mode
-    {
-        NOOP,
-        SAVE,
-        DUMP
     }
 }

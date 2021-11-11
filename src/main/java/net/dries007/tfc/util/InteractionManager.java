@@ -99,6 +99,7 @@ public final class InteractionManager
             final BlockPos pos = context.getClickedPos();
             if (player != null && StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
             {
+                world.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
                 if (!player.isCreative())
                 {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));

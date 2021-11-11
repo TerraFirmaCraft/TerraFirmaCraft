@@ -22,6 +22,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -42,6 +43,7 @@ import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.items.FirestarterItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 
@@ -76,7 +78,7 @@ public class CharcoalForgeBlock extends DeviceBlock
 
     public CharcoalForgeBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(HEAT, 0));
     }
 
@@ -137,6 +139,12 @@ public class CharcoalForgeBlock extends DeviceBlock
         CharcoalForgeBlockEntity te = Helpers.getBlockEntity(world, pos, CharcoalForgeBlockEntity.class);
         if (te != null)
         {
+            // Special case: when using a firestarter on an unlit firepit, assume we want to start a fire and don't open the gui
+            final ItemStack stack = player.getItemInHand(hand);
+            if ((stack.getItem() instanceof FirestarterItem || (hand == InteractionHand.OFF_HAND && player.getMainHandItem().getItem() instanceof FirestarterItem)) && state.getValue(HEAT) == 0)
+            {
+                return InteractionResult.PASS;
+            }
             if (player instanceof ServerPlayer serverPlayer)
             {
                 NetworkHooks.openGui(serverPlayer, te, pos);

@@ -40,7 +40,7 @@ import net.dries007.tfc.util.Helpers;
  */
 public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TFCBlockEntity implements ISlotCallback, MenuProvider, Clearable
 {
-    public static <C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> InventoryFactory<ItemStackHandler> defaultInventory(int slots)
+    public static InventoryFactory<ItemStackHandler> defaultInventory(int slots)
     {
         return self -> new InventoryItemHandler(self, slots);
     }
@@ -122,9 +122,12 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     public void ejectInventory()
     {
         assert level != null;
-        for (int i = 0; i < inventory.getSlots(); i++)
+        for (ItemStack stack : Helpers.iterate(inventory))
         {
-            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i));
+            if (!stack.isEmpty())
+            {
+                Helpers.spawnItem(level, worldPosition, stack);
+            }
         }
     }
 

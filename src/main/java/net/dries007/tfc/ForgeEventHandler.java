@@ -550,46 +550,45 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block == (TFCBlocks.FIREPIT.get()) || block == (TFCBlocks.POT.get()) || block == (TFCBlocks.GRILL.get()))
+        if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
         {
             final BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof AbstractFirepitBlockEntity<?> firepit)
+            if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
             {
-                firepit.light(state);
+                event.setCanceled(true);
             }
-            event.setCanceled(true);
         }
         else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
             world.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == (TFCBlocks.DEAD_TORCH.get()))
+        else if (block == TFCBlocks.DEAD_TORCH.get())
         {
             world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
             event.setCanceled(true);
         }
-        else if (block == (TFCBlocks.DEAD_WALL_TORCH.get()))
+        else if (block == TFCBlocks.DEAD_WALL_TORCH.get())
         {
             Direction direction = state.getValue(DeadWallTorchBlock.FACING);
             world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
             event.setCanceled(true);
         }
-        else if (block == (TFCBlocks.LOG_PILE.get()))
+        else if (block == TFCBlocks.LOG_PILE.get())
         {
             BurningLogPileBlock.tryLightLogPile(world, pos);
             event.setCanceled(true);
         }
-        else if (block == (TFCBlocks.PIT_KILN.get()) && state.getValue(PitKilnBlock.STAGE) == 15)
+        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
             world.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
         }
-        else if (block == (TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
         {
-            world.setBlockAndUpdate(pos, TFCBlocks.CHARCOAL_FORGE.get().defaultBlockState().setValue(HEAT, 2));
-            world.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(CharcoalForgeBlockEntity::onCreate);
+            CharcoalForgeBlockEntity.createFromCharcoalPile(world, pos);
+            event.setCanceled(true);
         }
-        else if (block == (TFCBlocks.CHARCOAL_FORGE.get()) && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(world, pos))
         {
             world.setBlockAndUpdate(pos, state.setValue(HEAT, 2));
         }

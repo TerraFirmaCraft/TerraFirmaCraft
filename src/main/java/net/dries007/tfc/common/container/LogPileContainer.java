@@ -35,7 +35,7 @@ public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
+        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
             addSlot(new CallbackSlot(blockEntity, handler, 0, 71, 23));
             addSlot(new CallbackSlot(blockEntity, handler, 1, 89, 23));
             addSlot(new CallbackSlot(blockEntity, handler, 2, 71, 41));

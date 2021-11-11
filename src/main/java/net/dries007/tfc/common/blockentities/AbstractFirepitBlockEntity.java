@@ -42,7 +42,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     public static void convertTo(LevelAccessor world, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
-        // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryTileEntity
+        // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryBlockEntity
         // So, we need to first copy the inventory into a temporary storage, clear it, then switch blocks, and copy back later
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
@@ -70,12 +70,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             {
                 firepit.burnTicks -= firepit.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
             }
-            if (firepit.burnTicks <= 0)
+            if (firepit.burnTicks <= 0 && !firepit.consumeFuel())
             {
-                if (!firepit.consumeFuel())
-                {
-                    firepit.extinguish(state);
-                }
+                firepit.extinguish(state);
             }
         }
         if (firepit.airTicks > 0)
@@ -184,25 +181,28 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         if (state.getValue(FirepitBlock.LIT))
         {
             Helpers.playSound(level, worldPosition, SoundEvents.FIRE_EXTINGUISH);
+            level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.LIT, false));
+            burnTicks = 0;
+            airTicks = 0;
+            burnTemperature = 0;
         }
-        level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.LIT, false));
-        burnTicks = 0;
-        airTicks = 0;
-        burnTemperature = 0;
     }
 
     /**
      * Attempts to light the firepit. Use over just setting the block state to LIT = true, as if there is no fuel, that will light the firepit for one tick which looks strange
      *
      * @param state The current firepit block state
+     * @return {@code true} if the firepit was lit.
      */
-    public void light(BlockState state)
+    public boolean light(BlockState state)
     {
         assert level != null;
         if (consumeFuel())
         {
             level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.LIT, true));
+            return true;
         }
+        return false;
     }
 
     public void ejectMainInventory()
@@ -269,6 +269,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
                 burnTicks += fuel.getDuration();
                 burnTemperature = fuel.getTemperature();
             }
+            markForSync();
         }
         return burnTicks > 0;
     }

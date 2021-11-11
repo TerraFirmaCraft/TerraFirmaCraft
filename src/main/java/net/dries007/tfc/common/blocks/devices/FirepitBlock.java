@@ -84,7 +84,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     public FirepitBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
 
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
@@ -160,7 +160,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
+            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()) && state.getValue(LIT))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;
