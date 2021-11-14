@@ -9,41 +9,30 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:decorated",
+              "type": "tfc:random_patch",
               "config": {
-                "feature": {
-                  "type": "tfc:random_patch",
-                  "config": {
-                    "state_provider": {
-                      "type": "minecraft:simple_state_provider",
-                      "state": {
-                        "Name": "tfc:plant/pistia",
-                        "Properties": {
-                          "age": "1",
-                          "stage": "1"
-                        }
-                      }
-                    },
-                    "block_placer": {
-                      "type": "tfc:random_property",
-                      "block": "tfc:plant/pistia",
-                      "property": "age"
-                    },
-                    "whitelist": [],
-                    "blacklist": [],
-                    "yspread": 1,
-                    "xspread": 7,
-                    "zspread": 7,
-                    "tries": 100,
-                    "use_density": true
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/pistia",
+                    "Properties": {
+                      "age": "1",
+                      "stage": "1"
+                    }
                   }
                 },
-                "decorator": {
-                  "type": "tfc:near_water",
-                  "config": {
-                    "radius": 9
-                  }
-                }
+                "block_placer": {
+                  "type": "tfc:random_property",
+                  "block": "tfc:plant/pistia",
+                  "property": "age"
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 7,
+                "zspread": 7,
+                "tries": 100,
+                "use_density": true
               }
             },
             "decorator": {

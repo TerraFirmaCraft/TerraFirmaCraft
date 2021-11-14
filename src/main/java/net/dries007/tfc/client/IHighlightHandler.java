@@ -6,15 +6,17 @@
 
 package net.dries007.tfc.client;
 
-import java.util.logging.Level;
-
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.Vec3;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.mixin.client.accessor.LevelRendererAccessor;
 
 // todo: literally everything
 public interface IHighlightHandler
@@ -33,8 +35,7 @@ public interface IHighlightHandler
      */
     static void drawBox(PoseStack stack, VoxelShape shape, MultiBufferSource buffers, BlockPos pos, Vec3 renderPos, float red, float green, float blue, float alpha)
     {
-        // todo
-        // WorldRendererAccessor.invoke$renderShape(stack, buffers.getBuffer(RenderType.lines()), shape, pos.getX() - renderPos.x, pos.getY() - renderPos.y, pos.getZ() - renderPos.z, red, green, blue, alpha);
+        LevelRendererAccessor.invoke$renderShape(stack, buffers.getBuffer(RenderType.lines()), shape, pos.getX() - renderPos.x, pos.getY() - renderPos.y, pos.getZ() - renderPos.z, red, green, blue, alpha);
     }
 
     /**
@@ -43,11 +44,11 @@ public interface IHighlightHandler
      * @param world        the client's world obj
      * @param pos          the blockpos player is looking at
      * @param player       the player that is looking at this block
-     * @param rayTrace     the RayTraceResult, got from DrawBlockHighlightEvent
-     * @param matrixStack  current Matrix Stack
+     * @param rayTrace     the HitResult, got from DrawBlockHighlightEvent
+     * @param stack        current Pose Stack
      * @param buffers      render buffer
      * @param rendererPosition where the renderer is right now (essentially partial ticks)
      * @return true if you wish to cancel drawing the block's bounding box outline
      */
-    // boolean drawHighlight(Level world, BlockPos pos, Player player, BlockRayTraceResult rayTrace, MatrixStack matrixStack, IRenderTypeBuffer buffers, Vector3d rendererPosition);
+    boolean drawHighlight(Level world, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack stack, MultiBufferSource buffers, Vec3 rendererPosition);
 }

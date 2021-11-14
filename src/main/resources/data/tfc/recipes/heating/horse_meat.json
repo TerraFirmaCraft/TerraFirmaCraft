@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:food/horse_meat"
+  },
+  "result_item": {
+    "item": "tfc:food/cooked_horse_meat"
+  },
+  "temperature": 200
+}

@@ -105,13 +105,14 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         final int age = random.nextInt(4);
         final Fluid fluidBottom = world.getFluidState(pos).getType();
         final Fluid fluidTop = world.getFluidState(posAbove).getType();
-        if (fluidBottom == fluidTop && fluidBottom != Fluids.EMPTY)
+        if (fluidBottom != Fluids.EMPTY)
         {
-            final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age), fluidBottom);
-            if (state != null)
+            final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.LOWER), fluidBottom);
+            final BlockState stateUp = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.UPPER), fluidTop);
+            if (state != null && stateUp != null)
             {
-                world.setBlock(pos, state.setValue(PART, Part.LOWER), flags);
-                world.setBlock(posAbove, state.setValue(PART, Part.UPPER), flags);
+                world.setBlock(pos, state, flags);
+                world.setBlock(posAbove, stateUp, flags);
             }
         }
     }

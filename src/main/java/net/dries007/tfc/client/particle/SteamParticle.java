@@ -15,7 +15,7 @@ public class SteamParticle extends TextureSheetParticle
     private SteamParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
     {
         super(worldIn, x, y, z, motionX, motionY, motionZ);
-        setAlpha(0.05F);
+        setAlpha(0.2F);
         setLifetime((int) (12.0F / (random.nextFloat() * 0.9F + 0.1F)));
     }
 

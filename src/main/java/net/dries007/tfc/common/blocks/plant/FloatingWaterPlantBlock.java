@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -21,8 +20,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
@@ -49,10 +46,9 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        return (belowState.getFluidState() != Fluids.EMPTY.defaultFluidState() && isValidFluid(belowState.getFluidState().getType()));
+        return level.getFluidState(pos.below()).getType().isSame(fluid.get());
     }
 
     /**
@@ -60,23 +56,19 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
      */
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
     {
-        super.entityInside(state, worldIn, pos, entityIn);
-        if (worldIn instanceof ServerLevel && entityIn instanceof Boat)
+        super.entityInside(state, level, pos, entityIn);
+        if (level instanceof ServerLevel && entityIn instanceof Boat)
         {
-            worldIn.destroyBlock(new BlockPos(pos), true, entityIn);
+            level.destroyBlock(new BlockPos(pos), true, entityIn);
         }
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
 
-    private boolean isValidFluid(Fluid fluidIn)
-    {
-        return fluidIn.isSame(fluid.get());
-    }
 }

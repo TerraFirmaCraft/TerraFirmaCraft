@@ -29,6 +29,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -594,30 +597,15 @@ public final class ForgeEventHandler
 
     public static void onProjectileImpact(ProjectileImpactEvent event)
     {
-        // todo: find a way to use this event generically for both arrows and fireballs
-        /*
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
-        AbstractArrow arrow = event.getArrow();
+        Projectile projectile = event.getProjectile();
         HitResult result = event.getRayTraceResult();
-        if (result.getType() == HitResult.Type.BLOCK && arrow.isOnFire())
+        if (result.getType() == HitResult.Type.BLOCK && projectile.isOnFire())
         {
             BlockHitResult blockResult = (BlockHitResult) result;
             BlockPos pos = blockResult.getBlockPos();
-            Level world = arrow.level;
-            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+            StartFireEvent.startFire(projectile.level, pos, projectile.level.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
-
-        if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
-        AbstractHurtingProjectile fireball = event.getFireball();
-        HitResult result = event.getRayTraceResult();
-        if (result.getType() == HitResult.Type.BLOCK)
-        {
-            BlockHitResult blockResult = (BlockHitResult) result;
-            BlockPos pos = blockResult.getBlockPos();
-            Level world = fireball.level;
-            StartFireEvent.startFire(world, pos, world.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
-        }
-         */
     }
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)

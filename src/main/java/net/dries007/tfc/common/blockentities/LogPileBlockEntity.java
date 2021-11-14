@@ -110,6 +110,6 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
     {
-        return new LogPileContainer(this, inv, windowID);
+        return LogPileContainer.create(this, inv, windowID);
     }
 }

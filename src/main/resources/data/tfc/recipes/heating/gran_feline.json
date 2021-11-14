@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:food/gran_feline"
+  },
+  "result_item": {
+    "item": "tfc:food/cooked_gran_feline"
+  },
+  "temperature": 200
+}

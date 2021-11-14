@@ -137,9 +137,9 @@ public class CharcoalForgeBlock extends DeviceBlock
         CharcoalForgeBlockEntity te = Helpers.getBlockEntity(world, pos, CharcoalForgeBlockEntity.class);
         if (te != null)
         {
-            if (player instanceof ServerPlayer)
+            if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui((ServerPlayer) player, te, pos);
+                NetworkHooks.openGui(serverPlayer, te, pos);
             }
             return InteractionResult.SUCCESS;
         }

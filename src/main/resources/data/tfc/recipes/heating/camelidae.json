@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:food/camelidae"
+  },
+  "result_item": {
+    "item": "tfc:food/cooked_camelidae"
+  },
+  "temperature": 200
+}

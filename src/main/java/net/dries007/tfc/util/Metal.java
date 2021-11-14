@@ -323,8 +323,8 @@ public final class Metal
 
     public enum BlockType
     {
-        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10).requiresCorrectToolForDrops())),
-        LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(4, 10)));
+        ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(4, 10).requiresCorrectToolForDrops())),
+        LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(4, 10)));
 
         public static final Metal.BlockType[] VALUES = values();
 

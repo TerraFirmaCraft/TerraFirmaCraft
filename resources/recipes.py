@@ -292,6 +292,9 @@ def generate(rm: ResourceManager):
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
         quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
 
+    for meat in MEATS:
+        heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item='tfc:food/cooked_%s' % meat)
+
     for plant in SEAWEED:
         heat_recipe(rm, plant, 'tfc:plant/%s' % plant, 200, 'tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, 'tfc:food/dried_kelp')

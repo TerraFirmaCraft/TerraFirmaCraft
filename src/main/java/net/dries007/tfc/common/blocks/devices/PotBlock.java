@@ -125,9 +125,9 @@ public class PotBlock extends FirepitBlock
                     return interactResult;
                 }
 
-                if (player instanceof ServerPlayer)
+                if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui((ServerPlayer) player, firepit, pos);
+                    NetworkHooks.openGui(serverPlayer, firepit, pos);
                 }
                 return InteractionResult.SUCCESS;
             }

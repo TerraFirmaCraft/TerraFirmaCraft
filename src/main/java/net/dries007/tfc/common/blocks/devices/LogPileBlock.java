@@ -20,6 +20,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -31,6 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -79,33 +81,35 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         if (!player.isShiftKeyDown())
         {
             final ItemStack stack = player.getItemInHand(hand);
-            final LogPileBlockEntity te = Helpers.getBlockEntity(world, pos, LogPileBlockEntity.class);
-            if (TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem()))
-            {
-                return Helpers.getCapability(te, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
-                    ItemStack insertStack = stack.copy();
-                    insertStack.setCount(1);
-                    insertStack = Helpers.insertAllSlots(cap, insertStack);
-                    if (insertStack.isEmpty())
-                    {
-                        if (!world.isClientSide)
-                        {
-                            Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
-                            stack.shrink(1);
-                        }
-                        return InteractionResult.SUCCESS;
-                    }
-                    return InteractionResult.FAIL;
-                }).orElse(InteractionResult.PASS);
-            }
-            else
-            {
-                if (player instanceof ServerPlayer)
+            world.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).map(be -> {
+                if (TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem()))
                 {
-                    NetworkHooks.openGui((ServerPlayer) player, te, pos);
+                    return Helpers.getCapability(be, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                        ItemStack insertStack = stack.copy();
+                        insertStack.setCount(1);
+                        insertStack = Helpers.insertAllSlots(cap, insertStack);
+                        if (insertStack.isEmpty())
+                        {
+                            if (!world.isClientSide)
+                            {
+                                Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
+                                stack.shrink(1);
+                            }
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.FAIL;
+                    }).orElse(InteractionResult.PASS);
                 }
-                return InteractionResult.SUCCESS;
-            }
+                else
+                {
+                    if (player instanceof ServerPlayer serverPlayer)
+                    {
+                        NetworkHooks.openGui(serverPlayer, be, pos);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            });
+
         }
         return InteractionResult.PASS;
     }
@@ -113,23 +117,19 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
-        LogPileBlockEntity te = Helpers.getBlockEntity(world, pos, LogPileBlockEntity.class);
-        if (te != null)
-        {
-            return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .map(cap -> {
-                    for (int i = 0; i < cap.getSlots(); i++)
+        world.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get())
+            .ifPresent(pile -> pile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            .map(cap -> {
+                for (int i = 0; i < cap.getSlots(); i++)
+                {
+                    final ItemStack stack = cap.getStackInSlot(i);
+                    if (!stack.isEmpty())
                     {
-                        final ItemStack stack = cap.getStackInSlot(i);
-                        if (!stack.isEmpty())
-                        {
-                            return stack.copy();
-                        }
+                        return stack.copy();
                     }
-                    return ItemStack.EMPTY;
-                })
-                .orElse(ItemStack.EMPTY);
-        }
+                }
+                return ItemStack.EMPTY;
+            }));
         return ItemStack.EMPTY;
     }
 }

@@ -117,7 +117,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         {
             if (!player.level.isClientSide())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
+                player.getInventory().placeItemBackInInventory(stack);
                 consumeIngredientStackAfterComplete();
             }
         }

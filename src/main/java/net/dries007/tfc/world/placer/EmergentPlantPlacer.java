@@ -13,6 +13,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
 import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
@@ -22,9 +24,13 @@ public class EmergentPlantPlacer extends BlockPlacer
     public static final Codec<EmergentPlantPlacer> CODEC = Codec.unit(new EmergentPlantPlacer());
 
     @Override
-    public void place(LevelAccessor worldIn, BlockPos pos, BlockState state, Random random)
+    public void place(LevelAccessor world, BlockPos pos, BlockState state, Random random)
     {
-        ((TallWaterPlantBlock) state.getBlock()).placeTwoHalves(worldIn, pos, 2, random);
+        final Fluid fluidTop = world.getFluidState(pos.above()).getType();
+        if (fluidTop.isSame(Fluids.EMPTY))
+        {
+            ((TallWaterPlantBlock) state.getBlock()).placeTwoHalves(world, pos, 2, random);
+        }
     }
 
     protected BlockPlacerType<?> type()

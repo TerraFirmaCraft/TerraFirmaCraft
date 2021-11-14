@@ -35,7 +35,8 @@
     "client.MinecraftMixin",
     "client.MultiPlayerGameModeMixin",
     "client.accessor.BiomeColorsAccessor",
-    "client.accessor.ClientLevelAccessor"
+    "client.accessor.ClientLevelAccessor",
+    "client.accessor.LevelRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

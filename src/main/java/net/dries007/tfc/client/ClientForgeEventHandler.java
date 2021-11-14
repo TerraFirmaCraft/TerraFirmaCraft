@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -23,10 +24,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -77,7 +82,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
-        // bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
+        bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -261,33 +266,30 @@ public class ClientForgeEventHandler
     /**
      * Handles custom bounding boxes drawing
      * eg: Chisel, Quern handle
-     * todo: where?
      */
-    public static void onHighlightBlockEvent(){}/*DrawHighlightEvent.HighlightBlock event)
+    public static void onHighlightBlockEvent(DrawSelectionEvent.HighlightBlock event)
     {
-        final ActiveRenderInfo info = event.getInfo();
-        final MatrixStack mStack = event.getMatrix();
+        final Camera info = event.getInfo();
+        final PoseStack mStack = event.getMatrix();
         final Entity entity = info.getEntity();
-        final World world = entity.level;
-        final BlockRayTraceResult traceResult = event.getTarget();
+        final Level level = entity.level;
+        final BlockHitResult traceResult = event.getTarget();
         final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
 
         //noinspection ConstantConditions
-        if (lookingAt != null && entity instanceof PlayerEntity)
+        if (lookingAt != null && entity instanceof Player player)
         {
-            PlayerEntity player = (PlayerEntity) entity;
-            Block blockAt = world.getBlockState(lookingAt).getBlock();
+            Block blockAt = level.getBlockState(lookingAt).getBlock();
             //todo: chisel
-            if (blockAt instanceof IHighlightHandler) //todo: java 16
+            if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
-                IHighlightHandler handler = (IHighlightHandler) blockAt;
-                if (handler.drawHighlight(world, lookingAt, player, traceResult, mStack, event.getBuffers(), info.getPosition()))
+                if (handler.drawHighlight(level, lookingAt, player, traceResult, mStack, event.getBuffers(), info.getPosition()))
                 {
                     // Cancel drawing this block's bounding box
                     event.setCanceled(true);
                 }
             }
         }
-    }*/
+    }
 }
