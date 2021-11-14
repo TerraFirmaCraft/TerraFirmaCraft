@@ -78,7 +78,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     {
                         for (int i = 0; i < 15; i++)
                         {
-                            addParticle(level, pos, handstoneStack);
+                            addParticle(level, pos, undamagedHandstoneStack);
                         }
                     }
                 }

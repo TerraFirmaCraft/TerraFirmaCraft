@@ -20,6 +20,6 @@ public interface LevelRendererAccessor
     @Invoker("renderShape")
     static void invoke$renderShape(PoseStack stack, VertexConsumer consumer, VoxelShape shape, double x, double y, double z, float r, float g, float b, float a)
     {
-
+        throw new AssertionError();
     }
 }
