@@ -109,7 +109,7 @@ public final class TerraFirmaCraft
         PacketHandler.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
-        EntityDataSerializers.registerSerializer(EntityHelpers.LONG_ENTITY_SERIALIZER);
+        EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {

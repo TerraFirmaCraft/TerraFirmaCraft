@@ -26,8 +26,8 @@ public class TFCPigRenderer extends MobRenderer<TFCPig, TFCPigModel>
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TFCPig pEntity)
+    public ResourceLocation getTextureLocation(TFCPig pig)
     {
-        return ClientHelpers.getTextureForAge(pEntity, YOUNG, OLD);
+        return ClientHelpers.getTextureForAge(pig, YOUNG, OLD);
     }
 }

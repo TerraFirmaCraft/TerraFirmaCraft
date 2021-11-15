@@ -149,6 +149,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
+    rm.item_tag('tfc:pig_food', '#tfc:foods')
 
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
@@ -536,8 +537,7 @@ def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dic
 
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
-    if type(ingredient) != utils.Json:
-        rm.item_tag('tfc:pig_food', ingredient)
+    rm.item_tag('tfc:foods', ingredient)
     rm.data(('tfc', 'food_items', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'category': category.name,

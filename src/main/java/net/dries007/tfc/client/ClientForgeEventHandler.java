@@ -23,6 +23,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -46,6 +49,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -290,4 +294,48 @@ public class ClientForgeEventHandler
             }
         }
     }*/
+
+    public static void renderFamiliarity(RenderLivingEvent.Post<?, ?> event)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        Player player = mc.player;
+
+        if (player.isShiftKeyDown() && mc.gui instanceof ForgeIngameGui gui && IngameOverlays.setup(gui, mc))
+        {
+            Entity entity = mc.crosshairPickEntity;
+            if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0)
+            {
+                if (player.closerThan(entity, 5.0F))
+                {
+                    PoseStack stack = event.getMatrixStack();
+                    stack.pushPose();
+                    stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
+
+                    final float scale = 0.0266666688F;
+                    stack.scale(-scale, -scale, -scale);
+                    stack.translate(0F, 0.25F / scale, 0.0F);
+                    stack.scale(0.5F, 0.5F, 0.5F); // manipulate this to change the size of the heart
+                    stack.mulPose(mc.getEntityRenderDispatcher().cameraOrientation());
+
+                    float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
+                    int u = 92;
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
+                    {
+                        u = 132; // Render a red-ish outline for adults that cannot be familiarized more
+                    }
+                    else if (familiarity >= 0.3F)
+                    {
+                        u = 112; // Render a white outline for the when the familiarity stopped decaying
+                    }
+                    gui.blit(stack, -8, 0, u, 40, 16, 16);
+
+                    stack.translate(0F, 0F,-0.001F);
+                    gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+
+                    stack.popPose();
+                }
+            }
+        }
+    }
 }

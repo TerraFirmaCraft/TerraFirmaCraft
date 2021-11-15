@@ -114,6 +114,7 @@ public class TFCTags
         public static final Tag.Named<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final Tag.Named<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final Tag.Named<Item> ANIMAL_TEMPTATIONS = create("animal_temptations");
+        public static final Tag.Named<Item> FOODS = create("foods");
         public static final Tag.Named<Item> PIG_FOOD = create("pig_food");
 
         private static Tag.Named<Item> create(String id)

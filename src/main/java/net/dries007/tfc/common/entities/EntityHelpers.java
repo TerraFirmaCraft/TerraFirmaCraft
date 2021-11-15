@@ -30,34 +30,34 @@ import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class EntityHelpers
+public final class EntityHelpers
 {
-    public static final EntityDataSerializer<Long> LONG_ENTITY_SERIALIZER = new EntityDataSerializer<>()
+    public static final EntityDataSerializer<Long> LONG_SERIALIZER = new EntityDataSerializer<>()
     {
         @Override
-        public void write(FriendlyByteBuf pBuffer, Long pValue)
+        public void write(FriendlyByteBuf buf, Long value)
         {
-            pBuffer.writeVarLong(pValue);
+            buf.writeVarLong(value);
         }
         @Override
-        public Long read(FriendlyByteBuf pBuffer)
+        public Long read(FriendlyByteBuf buf)
         {
-            return pBuffer.readVarLong();
+            return buf.readVarLong();
         }
         @Override
-        public Long copy(Long pValue)
+        public Long copy(Long value)
         {
-            return pValue;
+            return value;
         }
     };
 
-    public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
+    public static void replaceAvoidEntityGoal(PathfinderMob mob, GoalSelector selector, int priority)
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 
-    public static void insertCommonPreyAI(TFCAnimal animal, GoalSelector goalSelector)
+    public static void addCommonPreyGoals(TFCAnimal animal, GoalSelector goalSelector)
     {
         goalSelector.addGoal(0, new FloatGoal(animal));
         goalSelector.addGoal(1, new PanicGoal(animal, 1.25D));

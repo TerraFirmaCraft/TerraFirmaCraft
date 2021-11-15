@@ -26,7 +26,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class Mammal extends TFCAnimal
 {
-    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_ENTITY_SERIALIZER);
+    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_SERIALIZER);
 
     public Mammal(EntityType<? extends Animal> animal, Level level)
     {
@@ -45,9 +45,9 @@ public abstract class Mammal extends TFCAnimal
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
-        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        data = super.finalizeSpawn(level, difficulty, reason, data, tag);
         setPregnantTime(-1L);
         return data;
     }
