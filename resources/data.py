@@ -154,8 +154,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
     for wood in WOODS.keys():
-        rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood)
-        rm.item_tag('minecraft:logs', 'tfc:wood/wood/%s' % wood)
+        rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood, 'tfc:wood/stripped_log/%s' % wood, 'tfc:wood/stripped_wood/%s' % wood)
         rm.item_tag('twigs', 'tfc:wood/twig/%s' % wood)
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
 

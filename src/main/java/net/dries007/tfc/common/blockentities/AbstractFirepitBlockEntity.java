@@ -210,7 +210,11 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         assert level != null;
         for (int i = FirepitBlockEntity.SLOT_ITEM_INPUT; i < inventory.getSlots(); i++)
         {
-            Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(i), 0.7D);
+            final ItemStack stack = Helpers.removeStack(inventory, i);
+            if (!stack.isEmpty())
+            {
+                Helpers.spawnItem(level, worldPosition, stack, 0.7D);
+            }
         }
     }
 

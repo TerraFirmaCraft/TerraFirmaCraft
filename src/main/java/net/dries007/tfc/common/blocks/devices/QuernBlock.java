@@ -31,6 +31,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
@@ -53,39 +54,32 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static SelectionPlace getPlayerSelection(BlockGetter world, BlockPos pos, Player player, BlockHitResult result)
     {
-        QuernBlockEntity te = Helpers.getBlockEntity(world, pos, QuernBlockEntity.class);
-        if (te != null)
-        {
-            return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> {
-                ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
-                Vec3 hit = result.getLocation();
-                if (te.hasHandstone())
-                {
-                    if (!te.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
+        return world.getBlockEntity(pos, TFCBlockEntities.QUERN.get())
+            .flatMap(quern -> quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .map(inventory -> {
+                    final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
+                    final Vec3 hit = result.getLocation();
+                    if (quern.hasHandstone())
                     {
-                        return SelectionPlace.HANDLE;
+                        if (!quern.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
+                        {
+                            return SelectionPlace.HANDLE;
+                        }
+                        else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(QuernBlockEntity.SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
+                        {
+                            return SelectionPlace.INPUT_SLOT;
+                        }
                     }
-                    else if (!te.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(QuernBlockEntity.SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
+                    if ((quern.hasHandstone() || quern.isItemValid(QuernBlockEntity.SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
                     {
-                        return SelectionPlace.INPUT_SLOT;
+                        return SelectionPlace.HANDSTONE;
                     }
-                }
-                if ((te.hasHandstone() || te.isItemValid(QuernBlockEntity.SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
-                {
-                    return SelectionPlace.HANDSTONE;
-                }
-                return SelectionPlace.BASE;
-            }).orElse(SelectionPlace.BASE);
-        }
-        return SelectionPlace.BASE;
+                    return SelectionPlace.BASE;
+                }))
+            .orElse(SelectionPlace.BASE);
     }
 
-    public QuernBlock(ExtendedProperties properties)
-    {
-        super(properties);
-    }
-
-    private static InteractionResult insertOrExtract(Level level, QuernBlockEntity teQuern, IItemHandler inventory, Player player, ItemStack stack, int slot)
+    private static InteractionResult insertOrExtract(Level level, QuernBlockEntity quern, IItemHandler inventory, Player player, ItemStack stack, int slot)
     {
         if (!stack.isEmpty())
         {
@@ -95,43 +89,39 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
         }
-        teQuern.setAndUpdateSlots(slot);
+        quern.setAndUpdateSlots(slot);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    public QuernBlock(ExtendedProperties properties)
+    {
+        super(properties);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (hand == InteractionHand.MAIN_HAND)
+        final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
+        if (quern != null && !quern.isGrinding())
         {
-            QuernBlockEntity teQuern = Helpers.getBlockEntity(level, pos, QuernBlockEntity.class);
-            if (teQuern != null && !teQuern.isGrinding())
-            {
-                ItemStack heldStack = player.getItemInHand(hand);
-                SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
-                return teQuern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> {
-                    if (selection == SelectionPlace.HANDLE)
-                    {
-                        teQuern.grind();
-                        level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                        return InteractionResult.sidedSuccess(level.isClientSide);
+            final ItemStack heldStack = player.getItemInHand(hand);
+            final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
+            return quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> switch (selection)
+                {
+                    case HANDLE -> {
+                        if (quern.startGrinding())
+                        {
+                            level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+                            yield InteractionResult.SUCCESS;
+                        }
+                        yield InteractionResult.FAIL;
                     }
-                    else if (selection == SelectionPlace.INPUT_SLOT)
-                    {
-                        return insertOrExtract(level, teQuern, inventory, player, heldStack, SLOT_INPUT);
-                    }
-                    else if (selection == SelectionPlace.HANDSTONE && inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty())
-                    {
-                        return insertOrExtract(level, teQuern, inventory, player, heldStack, SLOT_HANDSTONE);
-                    }
-                    else if (selection == SelectionPlace.BASE && !inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
-                    {
-                        return insertOrExtract(level, teQuern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
-                    }
-                    return InteractionResult.FAIL;
-                }).orElse(InteractionResult.PASS);
-            }
+                    case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
+                    case HANDSTONE -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE);
+                    case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
+                })
+                .orElse(InteractionResult.PASS);
         }
         return InteractionResult.PASS;
     }
@@ -168,7 +158,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         INPUT_SLOT(INPUT_SLOT_SHAPE),
         BASE(BASE_SHAPE);
 
-        public final VoxelShape shape;
+        final VoxelShape shape;
 
         SelectionPlace(VoxelShape shape)
         {
