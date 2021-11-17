@@ -647,6 +647,8 @@ DEFAULT_LANG = {
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.pig.male': 'Pig',
+    'entity.tfc.pig.female': 'Sow',
 
     # Enums
 

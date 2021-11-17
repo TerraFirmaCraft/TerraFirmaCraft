@@ -55,7 +55,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<AquaticCritterEntity>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritterEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
 
     // Creatures
-    public static final RegistryObject<EntityType<TFCPig>> PIG = register("pig", EntityType.Builder.<TFCPig>of(TFCPig::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<TFCPig>> PIG = register("pig", EntityType.Builder.of(TFCPig::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {

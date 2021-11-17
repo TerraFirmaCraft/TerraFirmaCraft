@@ -51,6 +51,6 @@ public class TFCPigModel extends PigModel<TFCPig>
     public void setupAnim(TFCPig entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        tusk1.visible = tusk2.visible = entity.getGender() != TFCAnimalProperties.Gender.FEMALE;
+        tusk1.visible = tusk2.visible = !entity.isBaby() && entity.getGender() == TFCAnimalProperties.Gender.MALE;
     }
 }

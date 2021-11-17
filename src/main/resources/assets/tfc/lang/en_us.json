@@ -135,6 +135,8 @@
   "entity.tfc.horseshoe_crab": "Horseshoe Crab",
   "entity.tfc.penguin": "Penguin",
   "entity.tfc.turtle": "Turtle",
+  "entity.tfc.pig.male": "Pig",
+  "entity.tfc.pig.female": "Sow",
   "tfc.enum.tier.tier_0": "Tier 0",
   "tfc.enum.tier.tier_i": "Tier I",
   "tfc.enum.tier.tier_ii": "Tier Ii",

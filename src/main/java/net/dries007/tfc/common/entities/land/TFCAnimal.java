@@ -6,22 +6,28 @@
 
 package net.dries007.tfc.common.entities.land;
 
+import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -33,6 +39,8 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -54,12 +62,28 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private final Supplier<? extends SoundEvent> ambient;
+    private final Supplier<? extends SoundEvent> hurt;
+    private final Supplier<? extends SoundEvent> death;
+    private final Supplier<? extends SoundEvent> step;
+    private final ForgeConfigSpec.DoubleValue adultFamiliarityCap;
+    private final ForgeConfigSpec.IntValue daysToAdulthood;
+    private final ForgeConfigSpec.IntValue usesToElderly;
+    private final ForgeConfigSpec.BooleanValue eatsRottenFood;
 
-    public TFCAnimal(EntityType<? extends Animal> type, Level level)
+    public TFCAnimal(EntityType<? extends Animal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
+        this.ambient = ambient;
+        this.hurt = hurt;
+        this.death = death;
+        this.step = step;
+        this.adultFamiliarityCap = adultFamiliarityCap;
+        this.daysToAdulthood = daysToAdulthood;
+        this.usesToElderly = usesToElderly;
+        this.eatsRottenFood = eatsRottenFood;
     }
 
     @Override
@@ -116,9 +140,9 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     }
 
     @Override
-    public void setUses(int uses)
+    public void addUses(int uses)
     {
-        entityData.set(USES, uses);
+        entityData.set(USES, getUses() + uses);
     }
 
     @Override
@@ -131,6 +155,30 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void setFertilized(boolean fertilized)
     {
         entityData.set(FERTILIZED, fertilized);
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return adultFamiliarityCap.get().floatValue();
+    }
+
+    @Override
+    public int getDaysToAdulthood()
+    {
+        return daysToAdulthood.get();
+    }
+
+    @Override
+    public int getUsesToElderly()
+    {
+        return usesToElderly.get();
+    }
+
+    @Override
+    public boolean eatsRottenFood()
+    {
+        return eatsRottenFood.get();
     }
 
     @Override
@@ -174,7 +222,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         this.matingTime = nbt.getLong("mating");
         this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.setUses(nbt.getInt("uses"));
+        this.addUses(nbt.getInt("uses"));
     }
 
     @Override
@@ -354,5 +402,35 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected boolean isLivestock()
     {
         return true; // todo this replaces ICreatureTFC, not sure what to do with it right now
+    }
+
+    @Override
+    public Component getTypeName()
+    {
+        return new TranslatableComponent(getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return ambient.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource src)
+    {
+        return hurt.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return death.get();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock)
+    {
+        this.playSound(step.get(), 0.15F, 1.0F);
     }
 }
