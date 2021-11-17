@@ -94,6 +94,15 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
 
+    // Animals
+    // Pig
+    public final ForgeConfigSpec.DoubleValue pigFamiliarityCap;
+    public final ForgeConfigSpec.IntValue pigAdulthoodDays;
+    public final ForgeConfigSpec.IntValue pigUses;
+    public final ForgeConfigSpec.BooleanValue pigEatsRottenFood;
+    public final ForgeConfigSpec.IntValue pigGestationDays;
+    public final ForgeConfigSpec.IntValue pigChildCount;
+
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
@@ -222,6 +231,17 @@ public class ServerConfig
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
         foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+
+        innerBuilder.pop().push("animals").push("pig");
+
+        pigAdulthoodDays = builder.apply("pigAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("pigAdulthoodDays", 80, 0, Integer.MAX_VALUE);
+        pigChildCount = builder.apply("pigChildCount").comment("Number of children born").defineInRange("pigChildCount", 10, 0, 100);
+        pigEatsRottenFood = builder.apply("pigEatsRottenFood").comment("Does the animal eat rotten food?").define("pigEatsRottenFood", true);
+        pigFamiliarityCap = builder.apply("pigFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("pigFamiliarityCap", 0.35, 0, 1);
+        pigUses = builder.apply("pigUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("pigUses", 5, 0, Integer.MAX_VALUE);
+        pigGestationDays = builder.apply("pigGestationDays").comment("Length of pregnancy in days").defineInRange("pigGestationDays", 19, 0, Integer.MAX_VALUE);
+
+        innerBuilder.pop();
 
         innerBuilder.pop().pop();
     }

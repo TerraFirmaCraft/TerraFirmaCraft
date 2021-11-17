@@ -59,16 +59,6 @@ public interface TFCAnimalProperties
     void setBirthDay(int value);
 
     /**
-     * What is the maximum familiarity obtainable for adults of this animal?
-     *
-     * @return 0 if not familiarizable at all, [0, 1] for a cap
-     */
-    default float getAdultFamiliarityCap()
-    {
-        return 0;
-    }
-
-    /**
      * Returns the familiarity of this animal
      *
      * @return float value between 0-1.
@@ -87,7 +77,7 @@ public interface TFCAnimalProperties
      *
      * @param uses integer
      */
-    void setUses(int uses);
+    void addUses(int uses);
 
     /**
      * Get the uses this animal has
@@ -117,7 +107,7 @@ public interface TFCAnimalProperties
     }
 
     /**
-     * Used by model renderer to scale the size of the animal
+     * //todo IMPLEMENT??? MIGHT NEED HACKS??? Used by model renderer to scale the size of the animal
      *
      * @return double value between 0(birthday) to 1(full grown adult)
      */
@@ -152,6 +142,13 @@ public interface TFCAnimalProperties
     }
 
     /**
+     * What is the maximum familiarity obtainable for adults of this animal?
+     *
+     * @return 0 if not familiarizable at all, [0, 1] for a cap
+     */
+    float getAdultFamiliarityCap();
+
+    /**
      * Get the number of days needed for this animal to be adult
      *
      * @return number of days
@@ -164,6 +161,13 @@ public interface TFCAnimalProperties
      * @return number of uses, 0 to disable
      */
     int getUsesToElderly();
+
+    /**
+     * Default tag checked by isFood (edible items)
+     */
+    Tag<Item> getFoodTag();
+
+    boolean eatsRottenFood();
 
     /**
      * Check if this animal is ready to mate
@@ -238,13 +242,6 @@ public interface TFCAnimalProperties
     {
         return 0;
     }
-
-    /**
-     * Default tag checked by isFood (edible items)
-     */
-    Tag.Named<Item> getFoodTag();
-
-    boolean eatsRottenFood();
 
     enum Age
     {

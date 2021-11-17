@@ -6,20 +6,23 @@
 
 package net.dries007.tfc.common.entities.land;
 
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -27,10 +30,14 @@ import net.dries007.tfc.util.calendar.Calendars;
 public abstract class Mammal extends TFCAnimal
 {
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_SERIALIZER);
+    private final ForgeConfigSpec.IntValue childCount;
+    private final ForgeConfigSpec.IntValue gestationDays;
 
-    public Mammal(EntityType<? extends Animal> animal, Level level)
+    public Mammal(EntityType<? extends TFCAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays)
     {
-        super(animal, level);
+        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood);
+        this.childCount = childCount;
+        this.gestationDays = gestationDays;
     }
 
     public long getPregnantTime()
@@ -92,16 +99,19 @@ public abstract class Mammal extends TFCAnimal
         super.tick();
         if (!level.isClientSide)
         {
-            if (isFertilized() && Calendars.SERVER.getTotalDays() >= getPregnantTime() + gestationDays())
+            if (isFertilized() && Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays())
             {
                 birthChildren();
+                setFertilized(false);
+                setPregnantTime(-1L);
+                addUses(1);
             }
         }
     }
 
     public void birthChildren()
     {
-        for (int i = 0; i < childCount(); i++)
+        for (int i = 0; i < getChildCount(); i++)
         {
             AgeableMob offspring = getBreedOffspring((ServerLevel) level, this);
             if (offspring == null) continue;
@@ -114,15 +124,18 @@ public abstract class Mammal extends TFCAnimal
         }
     }
 
-    /**
-     * Spawns children of this animal
-     */
-    public abstract int childCount();
+    public int getChildCount()
+    {
+        return childCount.get();
+    }
 
     /**
      * Return the number of days for a full gestation
      *
      * @return long value in days
      */
-    public abstract long gestationDays();
+    public long getGestationDays()
+    {
+        return gestationDays.get();
+    }
 }

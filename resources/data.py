@@ -175,9 +175,6 @@ def generate(rm: ResourceManager):
     for color in SAND_BLOCK_TYPES:
         block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
 
-    for grain in GRAINS:
-        rm.item_tag('tfc:animal_temptations', 'tfc:food/%s_grain' % grain)
-
     # ==========
     # BLOCK TAGS
     # ==========
