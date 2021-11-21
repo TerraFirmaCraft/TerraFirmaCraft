@@ -139,12 +139,6 @@ public class CharcoalForgeBlock extends DeviceBlock
         CharcoalForgeBlockEntity te = Helpers.getBlockEntity(world, pos, CharcoalForgeBlockEntity.class);
         if (te != null)
         {
-            // Special case: when using a firestarter on an unlit firepit, assume we want to start a fire and don't open the gui
-            final ItemStack stack = player.getItemInHand(hand);
-            if ((stack.getItem() instanceof FirestarterItem || (hand == InteractionHand.OFF_HAND && player.getMainHandItem().getItem() instanceof FirestarterItem)) && state.getValue(HEAT) == 0)
-            {
-                return InteractionResult.PASS;
-            }
             if (player instanceof ServerPlayer serverPlayer)
             {
                 NetworkHooks.openGui(serverPlayer, te, pos);

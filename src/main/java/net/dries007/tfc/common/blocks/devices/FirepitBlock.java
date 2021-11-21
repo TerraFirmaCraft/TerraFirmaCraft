@@ -167,11 +167,6 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
             }
             else
             {
-                // Special case: when using a firestarter on an unlit firepit, assume we want to start a fire and don't open the gui
-                if ((stack.getItem() instanceof FirestarterItem || (hand == InteractionHand.OFF_HAND && player.getMainHandItem().getItem() instanceof FirestarterItem)) && !state.getValue(LIT))
-                {
-                    return InteractionResult.PASS;
-                }
                 if (player instanceof ServerPlayer serverPlayer)
                 {
                     NetworkHooks.openGui(serverPlayer, firepit, pos);

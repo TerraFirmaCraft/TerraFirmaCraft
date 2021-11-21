@@ -590,7 +590,11 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(world, pos))
         {
-            world.setBlockAndUpdate(pos, state.setValue(HEAT, 2));
+            final BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
+            {
+                event.setCanceled(true);
+            }
         }
     }
 

@@ -148,28 +148,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         }
     }
 
-    /**
-     * Attempts to consume one piece of fuel. Returns if the fire pit consumed any fuel (and so, ended up lit)
-     */
-    protected boolean consumeFuel()
-    {
-        final ItemStack fuelStack = inventory.getStackInSlot(SLOT_FUEL_MIN);
-        if (!fuelStack.isEmpty())
-        {
-            // Try and consume a piece of fuel
-            inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
-            needsSlotUpdate = true;
-            Fuel fuel = Fuel.get(fuelStack);
-            if (fuel != null)
-            {
-                burnTicks += fuel.getDuration();
-                burnTemperature = fuel.getTemperature();
-            }
-            markForSync();
-        }
-        return burnTicks > 0;
-    }
-
     protected final ContainerData syncableData;
     private final HeatingRecipe[] cachedRecipes = new HeatingRecipe[5];
     private boolean needsSlotUpdate = false;
@@ -272,7 +250,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
-    @Nonnull
     public CompoundTag save(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
@@ -312,6 +289,45 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
         }
+    }
+
+    /**
+     * Attempts to light the forge. Use over just setting the block state HEAT, as if there is no fuel, that will light the forge for one tick which looks strange
+     *
+     * @param state The current firepit block state
+     * @return {@code true} if the firepit was lit.
+     */
+    public boolean light(BlockState state)
+    {
+        assert level != null;
+        if (consumeFuel())
+        {
+            level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, 2));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Attempts to consume one piece of fuel. Returns if the fire pit consumed any fuel (and so, ended up lit)
+     */
+    private boolean consumeFuel()
+    {
+        final ItemStack fuelStack = inventory.getStackInSlot(SLOT_FUEL_MIN);
+        if (!fuelStack.isEmpty())
+        {
+            // Try and consume a piece of fuel
+            inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
+            needsSlotUpdate = true;
+            Fuel fuel = Fuel.get(fuelStack);
+            if (fuel != null)
+            {
+                burnTicks += fuel.getDuration();
+                burnTemperature = fuel.getTemperature();
+            }
+            markForSync();
+        }
+        return burnTicks > 0;
     }
 
     private void extinguish(BlockState state)
