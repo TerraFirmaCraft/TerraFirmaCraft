@@ -3,8 +3,8 @@
 
 from enum import Enum, auto
 
-from mcresources import ResourceManager, utils
-from mcresources.utils import item_stack
+from mcresources import ResourceManager
+from lib import utils
 
 from constants import *
 from recipes import fluid_ingredient
@@ -57,9 +57,9 @@ def generate(rm: ResourceManager):
             if item_data.type in metal_data.types or item_data.type == 'all':
                 if item_data.tag is not None:
                     rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
-                    ingredient = item_stack('tag!%s/%s' % (item_data.tag, metal))
+                    ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
                 else:
-                    ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
+                    ingredient = utils.item_stack('tfc:metal/%s/%s' % (item, metal))
 
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
                 if 'tool' in metal_data.types and item == 'fishing_rod':
@@ -73,10 +73,10 @@ def generate(rm: ResourceManager):
     # Item Heats
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
-    item_heat(rm, 'stick', 'tag!forge:rods/wooden', 0.3)
+    item_heat(rm, 'stick', '#forge:rods/wooden', 0.3)
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 1)
-    item_heat(rm, 'sand', 'tag!forge:sand', 0.8)
+    item_heat(rm, 'sand', '#forge:sand', 0.8)
     item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
@@ -357,7 +357,7 @@ def generate(rm: ResourceManager):
     # Item Sizes
 
     # todo: specific item size definitions for a whole bunch of items that aren't naturally assigned
-    item_size(rm, 'logs', 'tag!minecraft:logs', Size.very_large, Weight.medium)
+    item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
 
     # Food
 
@@ -499,19 +499,11 @@ def generate(rm: ResourceManager):
     # rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     # rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
 
-    mob_loot(rm, 'cod', 'tfc:food/cod')
-    mob_loot(rm, 'bluegill', 'tfc:food/bluegill')
-    mob_loot(rm, 'tropical_fish', 'tfc:food/tropical_fish')
-    mob_loot(rm, 'salmon', 'tfc:food/salmon')
-    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
-
-
-def mob_loot(rm: ResourceManager, name_parts: utils.ResourceIdentifier, loot_pools: utils.Json):
-    res = utils.resource_location(rm.domain, name_parts)
-    rm.write((*rm.resource_dir, 'data', res.domain, 'loot_tables', 'entities', res.path), {
-        'type': 'minecraft:entity',
-        'pools': utils.loot_pool_list(loot_pools, 'entity')
-    })
+    rm.entity_loot('cod', 'tfc:food/cod')
+    rm.entity_loot('bluegill', 'tfc:food/bluegill')
+    rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
+    rm.entity_loot('salmon', 'tfc:food/salmon')
+    rm.entity_loot('pufferfish', 'minecraft:pufferfish')
 
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:

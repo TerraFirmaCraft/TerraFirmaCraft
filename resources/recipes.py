@@ -1,7 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from mcresources import ResourceManager, utils
+from mcresources import ResourceManager
+from lib import utils
 from mcresources.recipe_context import RecipeContext
 
 from constants import *
@@ -40,16 +41,16 @@ def generate(rm: ResourceManager):
             stone_cutting(rm, 'rock/%s_%s_wall' % (rock, block_type), block, block + '_wall', 1).with_advancement(block)
 
         # Other variants
-        damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, 'tag!tfc:chisels'), smooth).with_advancement(raw)
-        damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, 'tag!tfc:chisels'), brick).with_advancement(loose)
-        damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (smooth, 'tag!tfc:chisels'), chiseled).with_advancement(smooth)
-        damage_shapeless(rm, 'crafting/rock/%s_button' % rock, ('tag!tfc:chisels', brick), 'tfc:rock/button/%s' % rock).with_advancement(brick)
-        damage_shapeless(rm, 'crafting/rock/%s_pressure_plate' % rock, ('tag!tfc:chisels', brick, brick), 'tfc:rock/pressure_plate/%s' % rock).with_advancement(brick)
+        damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, '#tfc:chisels'), smooth).with_advancement(raw)
+        damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, '#tfc:chisels'), brick).with_advancement(loose)
+        damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (smooth, '#tfc:chisels'), chiseled).with_advancement(smooth)
+        damage_shapeless(rm, 'crafting/rock/%s_button' % rock, ('#tfc:chisels', brick), 'tfc:rock/button/%s' % rock).with_advancement(brick)
+        damage_shapeless(rm, 'crafting/rock/%s_pressure_plate' % rock, ('#tfc:chisels', brick, brick), 'tfc:rock/pressure_plate/%s' % rock).with_advancement(brick)
 
-        rm.crafting_shaped('crafting/rock/%s_hardened' % rock, ['XMX', 'MXM', 'XMX'], {'X': raw, 'M': 'tag!tfc:mortar'}, (2, hardened)).with_advancement(raw)
-        rm.crafting_shaped('crafting/rock/%s_bricks' % rock, ['XMX', 'MXM', 'XMX'], {'X': brick, 'M': 'tag!tfc:mortar'}, (4, bricks)).with_advancement(brick)
+        rm.crafting_shaped('crafting/rock/%s_hardened' % rock, ['XMX', 'MXM', 'XMX'], {'X': raw, 'M': '#tfc:mortar'}, (2, hardened)).with_advancement(raw)
+        rm.crafting_shaped('crafting/rock/%s_bricks' % rock, ['XMX', 'MXM', 'XMX'], {'X': brick, 'M': '#tfc:mortar'}, (4, bricks)).with_advancement(brick)
 
-        damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, 'tag!tfc:hammers'), cracked_bricks).with_advancement(bricks)
+        damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, '#tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
@@ -57,7 +58,7 @@ def generate(rm: ResourceManager):
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
-                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': 'tag!forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
+                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
     rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
 
@@ -75,8 +76,8 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_fence' % wood, ['XYX', 'XYX'], {'X': item('planks'), 'Y': item('lumber')}, (8, plank('fence'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_log_fence' % wood, ['XYX', 'XYX'], {'X': item('log'), 'Y': item('lumber')}, (8, plank('log_fence'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_fence_gate' % wood, ['YXY', 'YXY'], {'X': item('planks'), 'Y': item('lumber')}, (2, plank('fence_gate'))).with_advancement(item('lumber'))
-        damage_shapeless(rm, 'crafting/wood/%s_lumber_log' % wood, (item('log'), 'tag!tfc:saws'), (8, item('lumber'))).with_advancement(item('log'))
-        damage_shapeless(rm, 'crafting/wood/%s_lumber_planks' % wood, (item('planks'), 'tag!tfc:saws'), (4, item('lumber'))).with_advancement(item('planks'))
+        damage_shapeless(rm, 'crafting/wood/%s_lumber_log' % wood, (item('log'), '#tfc:saws'), (8, item('lumber'))).with_advancement(item('log'))
+        damage_shapeless(rm, 'crafting/wood/%s_lumber_planks' % wood, (item('planks'), '#tfc:saws'), (4, item('lumber'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_stairs' % wood, ['X  ', 'XX ', 'XXX'], {'X': item('planks')}, (8, plank('stairs'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_slab' % wood, ['XXX'], {'X': item('planks')}, (6, plank('slab'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_planks' % wood, ['XX', 'XX'], {'X': item('lumber')}, item('planks')).with_advancement(item('lumber'))
@@ -87,70 +88,70 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_boat' % wood, ['X X', 'XXX'], {'X': item('planks')}, item('boat')).with_advancement(item('planks'))
         # todo: support, chests
 
-    rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': 'tag!forge:sand', 'Y': 'tag!forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('tag!forge:sand')
-    damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', 'tag!tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
-    rm.crafting_shaped('crafting/alabaster_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:alabaster_brick', 'Y': 'tag!tfc:mortar'}, (4, 'tfc:alabaster/raw/alabaster_bricks')).with_advancement('tfc:alabaster_brick')
-    rm.crafting_shaped('crafting/bricks', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:brick', 'Y': 'tag!tfc:mortar'}, (2, 'minecraft:bricks')).with_advancement('minecraft:brick')
-    rm.crafting_shaped('crafting/fire_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:ceramic/fire_brick', 'Y': 'tag!tfc:mortar'}, (2, 'tfc:fire_bricks')).with_advancement('minecraft:brick')
+    rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': '#forge:sand', 'Y': '#forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('#forge:sand')
+    damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', '#tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
+    rm.crafting_shaped('crafting/alabaster_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:alabaster_brick', 'Y': '#tfc:mortar'}, (4, 'tfc:alabaster/raw/alabaster_bricks')).with_advancement('tfc:alabaster_brick')
+    rm.crafting_shaped('crafting/bricks', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:brick', 'Y': '#tfc:mortar'}, (2, 'minecraft:bricks')).with_advancement('minecraft:brick')
+    rm.crafting_shaped('crafting/fire_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:ceramic/fire_brick', 'Y': '#tfc:mortar'}, (2, 'tfc:fire_bricks')).with_advancement('minecraft:brick')
     rm.crafting_shaped('crafting/fire_clay', ['XYX', 'YZY', 'XYX'], {'X': 'tfc:powder/kaolinite', 'Y': 'tfc:powder/graphite', 'Z': 'minecraft:clay_ball'}, 'tfc:fire_clay').with_advancement('tfc:powder/kaolinite')
     rm.crafting_shaped('crafting/fire_clay_block', ['XX', 'XX'], {'X': 'tfc:fire_clay'}, 'tfc:fire_clay_block').with_advancement('tfc:fire_clay')
-    rm.crafting_shaped('crafting/firestarter', [' X', 'X '], {'X': 'tag!forge:rods/wooden'}, 'tfc:firestarter').with_advancement('tag!forge:rods/wooden')
-    damage_shapeless(rm, 'crafting/flux', ('tag!tfc:fluxstone', 'tag!tfc:hammers'), (2, 'tfc:powder/flux')).with_advancement('tag!tfc:fluxstone')
+    rm.crafting_shaped('crafting/firestarter', [' X', 'X '], {'X': '#forge:rods/wooden'}, 'tfc:firestarter').with_advancement('#forge:rods/wooden')
+    damage_shapeless(rm, 'crafting/flux', ('#tfc:fluxstone', '#tfc:hammers'), (2, 'tfc:powder/flux')).with_advancement('#tfc:fluxstone')
     rm.crafting_shapeless('crafting/gunpowder', ('tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/sulfur', 'tfc:powder/charcoal'), (4, 'minecraft:gunpowder')).with_advancement('tfc:powder/sulfur')
     rm.crafting_shapeless('crafting/gunpowder_graphite', ('tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/sulfur', 'tfc:powder/sulfur', 'tfc:powder/charcoal', 'tfc:powder/charcoal', 'tfc:powder/graphite'), (12, 'minecraft:gunpowder')).with_advancement('tfc:powder/graphite')
     rm.crafting_shaped('crafting/halter', ['XYX', 'X X'], {'X': 'minecraft:leather', 'Y': 'minecraft:lead'}, 'tfc:halter').with_advancement('minecraft:lead')
-    rm.crafting_shaped('crafting/handstone', ['Y  ', 'XXX'], {'X': 'tag!forge:stone', 'Y': 'tag!forge:rods/wooden'}, 'tfc:handstone').with_advancement('tag!forge:stone')
+    rm.crafting_shaped('crafting/handstone', ['Y  ', 'XXX'], {'X': '#forge:stone', 'Y': '#forge:rods/wooden'}, 'tfc:handstone').with_advancement('#forge:stone')
     rm.crafting_shaped('crafting/jute_disc', [' X ', 'XXX', ' X '], {'X': 'tfc:jute_fiber'}, 'tfc:jute_disc').with_advancement('tfc:jute_fiber')
     rm.crafting_shaped('crafting/jute_net', ['X X', ' X ', 'X X'], {'X': 'tfc:jute_fiber'}, 'tfc:jute_net').with_advancement('tfc:jute_fiber')
     rm.crafting_shaped('crafting/lead', [' XX', ' XX', 'X  '], {'X': 'tfc:jute_fiber'}, 'minecraft:lead').with_advancement('tfc:jute_fiber')
     rm.crafting_shapeless('crafting/olive_jute_disc', ('tfc:jute_disc', 'tfc:olive_paste'), 'tfc:olive_jute_disc').with_advancement('tfc:jute_disc')
-    rm.crafting_shaped('crafting/quern', ['XXX', 'YYY'], {'X': 'tag!forge:smooth_stone', 'Y': 'tag!forge:stone'}, 'tfc:quern').with_advancement('tag!forge:smooth_stone')
-    rm.crafting_shaped('crafting/spindle', ['X', 'Y'], {'X': 'tfc:ceramic/spindle_head', 'Y': 'tag!forge:rods/wooden'}, 'tfc:spindle').with_advancement('tfc:ceramic/spindle_head')
+    rm.crafting_shaped('crafting/quern', ['XXX', 'YYY'], {'X': '#forge:smooth_stone', 'Y': '#forge:stone'}, 'tfc:quern').with_advancement('#forge:smooth_stone')
+    rm.crafting_shaped('crafting/spindle', ['X', 'Y'], {'X': 'tfc:ceramic/spindle_head', 'Y': '#forge:rods/wooden'}, 'tfc:spindle').with_advancement('tfc:ceramic/spindle_head')
     rm.crafting_shapeless('crafting/stick_from_bunch', 'tfc:stick_bunch', (9, 'minecraft:stick')).with_advancement('tfc:stick_bunch')
     rm.crafting_shapeless('crafting/stick_from_bundle', 'tfc:stick_bundle', (18, 'minecraft:stick')).with_advancement('tfc:stick_bundle')
-    rm.crafting_shaped('crafting/stick_bunch', ['XXX', 'XXX', 'XXX'], {'X': 'tag!forge:rods/wooden'}, 'tfc:stick_bunch').with_advancement('tag!forge:rods/wooden')
+    rm.crafting_shaped('crafting/stick_bunch', ['XXX', 'XXX', 'XXX'], {'X': '#forge:rods/wooden'}, 'tfc:stick_bunch').with_advancement('#forge:rods/wooden')
     rm.crafting_shaped('crafting/stick_bundle', ['X', 'X'], {'X': 'tfc:stick_bunch'}, 'tfc:stick_bundle').with_advancement('tfc:stick_bunch')
     rm.crafting_shapeless('crafting/straw', 'tfc:thatch', (4, 'tfc:straw')).with_advancement('tfc:thatch')
     rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
     rm.crafting_shapeless('crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
     # todo: bellows, bf, bloomery, goldpan, nestbox, paper, pkeg, salting, food combining, wooden bucket
 
-    rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': 'tag!minecraft:planks', 'Y': 'tag!forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('tag!forge:smooth_stone_slab')
-    rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': 'tag!forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('tag!forge:smooth_stone_slab')
-    rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!tfc:lumber'}, 'minecraft:white_bed').with_advancement('tag!tfc:high_quality_cloth')
-    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': 'tag!forge:ingots/wrought_iron', 'R': 'tfc:bucket/metal/red_steel', 'B': 'tfc:bucket/metal/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:bucket/metal/red_steel')
-    rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': 'tag!forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('tag!forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/compass', [' X ', 'XYX', ' X '], {'X': 'tag!forge:sheets/wrought_iron', 'Y': 'tag!forge:dusts/redstone'}, 'minecraft:compass').with_advancement('tag!forge:sheets/wrought_iron')
-    rm.crafting_shapeless('crafting/vanilla/fire_charge', ('minecraft:gunpowder', 'tfc:firestarter', 'tag!minecraft:coals'), (3, 'minecraft:fire_charge')).with_advancement('minecraft:gunpowder')
-    rm.crafting_shaped('crafting/vanilla/flint_and_steel', ['X ', ' Y'], {'X': 'tag!forge:ingots/steel', 'Y': 'minecraft:flint'}, 'minecraft:flint_and_steel').with_advancement('tag!forge:ingots/steel')
+    rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
+    rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
+    rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
+    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:bucket/metal/red_steel', 'B': 'tfc:bucket/metal/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:bucket/metal/red_steel')
+    rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/compass', [' X ', 'XYX', ' X '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:dusts/redstone'}, 'minecraft:compass').with_advancement('#forge:sheets/wrought_iron')
+    rm.crafting_shapeless('crafting/vanilla/fire_charge', ('minecraft:gunpowder', 'tfc:firestarter', '#minecraft:coals'), (3, 'minecraft:fire_charge')).with_advancement('minecraft:gunpowder')
+    rm.crafting_shaped('crafting/vanilla/flint_and_steel', ['X ', ' Y'], {'X': '#forge:ingots/steel', 'Y': 'minecraft:flint'}, 'minecraft:flint_and_steel').with_advancement('#forge:ingots/steel')
     rm.crafting_shapeless('crafting/vanilla/hay', 'minecraft:hay_block', (9, 'tfc:straw')).with_advancement('minecraft:hay_block')
     rm.crafting_shaped('crafting/vanilla/hay_bale', ['XXX', 'XXX', 'XXX'], {'X': 'tfc:straw'}, 'minecraft:hay_block').with_advancement('tfc:straw')
-    rm.crafting_shaped('crafting/vanilla/item_frame', ['XXX', 'XYX', 'XXX'], {'X': 'tag!tfc:lumber', 'Y': 'minecraft:leather'}, (4, 'minecraft:item_frame')).with_advancement('minecraft:leather')
-    rm.crafting_shaped('crafting/vanilla/ladder', ['X X', 'X X', 'X X'], {'X': 'tag!tfc:lumber'}, (16, 'minecraft:ladder')).with_advancement('tag!tfc:lumber')
+    rm.crafting_shaped('crafting/vanilla/item_frame', ['XXX', 'XYX', 'XXX'], {'X': '#tfc:lumber', 'Y': 'minecraft:leather'}, (4, 'minecraft:item_frame')).with_advancement('minecraft:leather')
+    rm.crafting_shaped('crafting/vanilla/ladder', ['X X', 'X X', 'X X'], {'X': '#tfc:lumber'}, (16, 'minecraft:ladder')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/lapis_block', ['XXX', 'XXX', 'XXX'], {'X': 'tfc:gem/lapis_lazuli'}, 'minecraft:lapis_block').with_advancement('tfc:gem/lapis_lazuli')
     rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': 'minecraft:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
-    rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!forge:rods/wooden'}, 'minecraft:painting').with_advancement('tag!tfc:high_quality_cloth')
+    rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'X': '#tfc:high_quality_cloth', 'Y': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/tnt', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:gunpowder', 'Y': 'minecraft:sand'}, 'minecraft:tnt').with_advancement('minecraft:gunpowder')
 
     # todo: daylight sensor, redstone lamp,
-    rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': 'tag!forge:sheets/wrought_iron', 'Y': 'tag!forge:chests/wooden'}, 'minecraft:hopper').with_advancement('tag!forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/redstone/observer', ['CCC', 'RRB', 'CCC'], {'C': 'tag!forge:cobblestone', 'R': 'tag!forge:dusts/redstone', 'B': 'tfc:brass_mechanisms'}, 'minecraft:observer').with_advancement('tfc:brass_mechanisms')
-    rm.crafting_shaped('crafting/vanilla/redstone/piston', ['WWW', 'SXS', 'SBS'], {'X': 'tag!forge:rods/wrought_iron', 'S': 'tag!forge:cobblestone', 'W': 'tag!tfc:lumber', 'B': 'tfc:brass_mechanisms'}, 'minecraft:piston').with_advancement('tfc:brass_mechanisms')
-    rm.crafting_shaped('crafting/vanilla/redstone/comparator', [' T ', 'TRT', 'SSS'], {'R': 'tag!forge:dusts/redstone', 'T': 'minecraft:redstone_torch', 'S': 'tag!forge:smooth_stone'}, 'minecraft:comparator').with_advancement('minecraft:redstone_torch')
-    rm.crafting_shaped('crafting/vanilla/redstone/repeater', ['TRT', 'SSS'], {'T': 'minecraft:redstone_torch', 'R': 'tag!forge:dusts/redstone', 'S': 'tag!forge:smooth_stone'}, 'minecraft:repeater').with_advancement('minecraft:redstone_torch')
-    rm.crafting_shaped('crafting/vanilla/redstone/steel_hopper', ['X X', ' Y '], {'X': 'tag!forge:sheets/steel', 'Y': 'tag!forge:chests/wooden'}, (2, 'minecraft:hopper')).with_advancement('tag!forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/redstone/heavy_weighted_pressure_plate', ['XX'], {'X': 'tag!forge:ingots/wrought_iron'}, 'minecraft:heavy_weighted_pressure_plate').with_advancement('tag!forge:ingots/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:chests/wooden'}, 'minecraft:hopper').with_advancement('#forge:sheets/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/observer', ['CCC', 'RRB', 'CCC'], {'C': '#forge:cobblestone', 'R': '#forge:dusts/redstone', 'B': 'tfc:brass_mechanisms'}, 'minecraft:observer').with_advancement('tfc:brass_mechanisms')
+    rm.crafting_shaped('crafting/vanilla/redstone/piston', ['WWW', 'SXS', 'SBS'], {'X': '#forge:rods/wrought_iron', 'S': '#forge:cobblestone', 'W': '#tfc:lumber', 'B': 'tfc:brass_mechanisms'}, 'minecraft:piston').with_advancement('tfc:brass_mechanisms')
+    rm.crafting_shaped('crafting/vanilla/redstone/comparator', [' T ', 'TRT', 'SSS'], {'R': '#forge:dusts/redstone', 'T': 'minecraft:redstone_torch', 'S': '#forge:smooth_stone'}, 'minecraft:comparator').with_advancement('minecraft:redstone_torch')
+    rm.crafting_shaped('crafting/vanilla/redstone/repeater', ['TRT', 'SSS'], {'T': 'minecraft:redstone_torch', 'R': '#forge:dusts/redstone', 'S': '#forge:smooth_stone'}, 'minecraft:repeater').with_advancement('minecraft:redstone_torch')
+    rm.crafting_shaped('crafting/vanilla/redstone/steel_hopper', ['X X', ' Y '], {'X': '#forge:sheets/steel', 'Y': '#forge:chests/wooden'}, (2, 'minecraft:hopper')).with_advancement('#forge:sheets/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/heavy_weighted_pressure_plate', ['XX'], {'X': '#forge:ingots/wrought_iron'}, 'minecraft:heavy_weighted_pressure_plate').with_advancement('#forge:ingots/wrought_iron')
 
-    rm.crafting_shaped('crafting/vanilla/redstone/activator_rail', ['SRS', 'SWS', 'SRS'], {'S': 'tag!forge:rods/wrought_iron', 'W': 'minecraft:redstone_torch', 'R': 'tag!forge:rods/wooden'}, (4, 'minecraft:activator_rail')).with_advancement('tag!forge:rods/gold')
-    rm.crafting_shaped('crafting/vanilla/redstone/detector_rail', ['S S', 'SWS', 'SRS'], {'S': 'tag!forge:rods/wrought_iron', 'W': 'tag!minecraft:stone_pressure_plates', 'R': 'tag!forge:dusts/redstone'}, (4, 'minecraft:detector_rail')).with_advancement('tag!forge:rods/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/redstone/minecart', ['X X', 'XXX'], {'X': 'tag!forge:sheets/wrought_iron'}, 'minecraft:minecart').with_advancement('tag!forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/redstone/powered_rail', ['SWS', 'SRS', 'SWS'], {'S': 'tag!forge:rods/gold', 'W': 'tag!forge:rods/wooden', 'R': 'tag!forge:dusts/redstone'}, (8, 'minecraft:powered_rail')).with_advancement('tag!forge:rods/gold')
-    rm.crafting_shaped('crafting/vanilla/redstone/rail', ['S S', 'SWS', 'S S'], {'W': 'tag!forge:rods/wooden', 'S': 'tag!forge:rods/wrought_iron'}, (8, 'minecraft:rail')).with_advancement('tag!forge:rods/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/activator_rail', ['SRS', 'SWS', 'SRS'], {'S': '#forge:rods/wrought_iron', 'W': 'minecraft:redstone_torch', 'R': '#forge:rods/wooden'}, (4, 'minecraft:activator_rail')).with_advancement('#forge:rods/gold')
+    rm.crafting_shaped('crafting/vanilla/redstone/detector_rail', ['S S', 'SWS', 'SRS'], {'S': '#forge:rods/wrought_iron', 'W': '#minecraft:stone_pressure_plates', 'R': '#forge:dusts/redstone'}, (4, 'minecraft:detector_rail')).with_advancement('#forge:rods/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/minecart', ['X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:minecart').with_advancement('#forge:sheets/wrought_iron')
+    rm.crafting_shaped('crafting/vanilla/redstone/powered_rail', ['SWS', 'SRS', 'SWS'], {'S': '#forge:rods/gold', 'W': '#forge:rods/wooden', 'R': '#forge:dusts/redstone'}, (8, 'minecraft:powered_rail')).with_advancement('#forge:rods/gold')
+    rm.crafting_shaped('crafting/vanilla/redstone/rail', ['S S', 'SWS', 'S S'], {'W': '#forge:rods/wooden', 'S': '#forge:rods/wrought_iron'}, (8, 'minecraft:rail')).with_advancement('#forge:rods/wrought_iron')
 
-    rm.crafting_shaped('crafting/vanilla/redstone/steel_activator_rail', ['SRS', 'SWS', 'SRS'], {'S': 'tag!forge:rods/steel', 'W': 'minecraft:redstone_torch', 'R': 'tag!forge:rods/wooden'}, (8, 'minecraft:activator_rail')).with_advancement('tag!forge:rods/steel')
-    rm.crafting_shaped('crafting/vanilla/redstone/steel_detector_rail', ['S S', 'SWS', 'SRS'], {'S': 'tag!forge:rods/steel', 'W': 'tag!minecraft:stone_pressure_plates', 'R': 'tag!forge:rods/wooden'}, (8, 'minecraft:detector_rail')).with_advancement('tag!forge:rods/steel')
-    rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': 'tag!forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('tag!forge:sheets/steel')
-    rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': 'tag!forge:rods/wooden', 'S': 'tag!forge:rods/steel'}, (16, 'minecraft:rail')).with_advancement('tag!forge:rods/steel')
+    rm.crafting_shaped('crafting/vanilla/redstone/steel_activator_rail', ['SRS', 'SWS', 'SRS'], {'S': '#forge:rods/steel', 'W': 'minecraft:redstone_torch', 'R': '#forge:rods/wooden'}, (8, 'minecraft:activator_rail')).with_advancement('#forge:rods/steel')
+    rm.crafting_shaped('crafting/vanilla/redstone/steel_detector_rail', ['S S', 'SWS', 'SRS'], {'S': '#forge:rods/steel', 'W': '#minecraft:stone_pressure_plates', 'R': '#forge:rods/wooden'}, (8, 'minecraft:detector_rail')).with_advancement('#forge:rods/steel')
+    rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': '#forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('#forge:sheets/steel')
+    rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': '#forge:rods/wooden', 'S': '#forge:rods/steel'}, (16, 'minecraft:rail')).with_advancement('#forge:rods/steel')
 
     # ============================
     # Collapse / Landslide Recipes
@@ -234,10 +235,10 @@ def generate(rm: ResourceManager):
     # Heat Recipes
     # ============
 
-    heat_recipe(rm, 'torch_from_stick', 'tag!forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
+    heat_recipe(rm, 'torch_from_stick', '#forge:rods/wooden', 60, result_item=(2, 'tfc:torch'))
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
-    heat_recipe(rm, 'glass_from_sand', 'tag!forge:sand', 180, result_item='minecraft:glass')
+    heat_recipe(rm, 'glass_from_sand', '#forge:sand', 180, result_item='minecraft:glass')
     heat_recipe(rm, 'brick', 'tfc:ceramic/unfired_brick', 1500, result_item='minecraft:brick')
     heat_recipe(rm, 'flower_pot', 'tfc:ceramic/unfired_flower_pot', 1500, result_item='minecraft:flower_pot')
     heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', 1500, result_item='tfc:ceramic/jug')
@@ -271,13 +272,13 @@ def generate(rm: ResourceManager):
 
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_vessel'), 'tfc:ceramic/%s_unfired_vessel' % color).with_advancement('minecraft:%s_dye' % color)
         if color != 'white':
-            rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': 'tag!tfc:high_quality_cloth', 'Y': 'tag!tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('tag!tfc:high_quality_cloth')
+            rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
 
     # Quern
     quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
     quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
-    quern_recipe(rm, 'fluxstone', 'tag!tfc:fluxstone', 'tfc:powder/flux', count=2)
+    quern_recipe(rm, 'fluxstone', '#tfc:fluxstone', 'tfc:powder/flux', count=2)
     quern_recipe(rm, 'cinnabar', 'tfc:ore/cinnabar', 'minecraft:redstone', count=8)
     quern_recipe(rm, 'cryolite', 'tfc:ore/cryolite', 'minecraft:redstone', count=8)
     quern_recipe(rm, 'bone', 'minecraft:bone', 'minecraft:bone_meal', count=3)
@@ -315,7 +316,7 @@ def generate(rm: ResourceManager):
 
     for i, size in enumerate(('small', 'medium', 'large')):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
-        damage_shapeless(rm, 'crafting/%s_sheepskin' % size, ('tfc:%s_sheepskin_hide' % size, 'tag!tfc:knives'), (i + 1, 'tfc:wool')).with_advancement('tfc:%s_sheepskin_hide' % size)
+        damage_shapeless(rm, 'crafting/%s_sheepskin' % size, ('tfc:%s_sheepskin_hide' % size, '#tfc:knives'), (i + 1, 'tfc:wool')).with_advancement('tfc:%s_sheepskin_hide' % size)
 
     # todo: actual pot recipes
     rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
@@ -368,7 +369,7 @@ def generate(rm: ResourceManager):
     # todo: quiver
 
     for category in ROCK_CATEGORIES:
-        predicate = 'tag!tfc:%s_rock' % category
+        predicate = '#tfc:%s_rock' % category
         rock_knapping(rm, 'axe_head_%s' % category, [' X   ', 'XXXX ', 'XXXXX', 'XXXX ', ' X   '], 'tfc:stone/axe_head/%s' % category, predicate)
         rock_knapping(rm, 'shovel_head_%s' % category, ['XXX', 'XXX', 'XXX', 'XXX', ' X '], 'tfc:stone/shovel_head/%s' % category, predicate)
         rock_knapping(rm, 'hoe_head_%s' % category, ['XXXXX', '   XX'], 'tfc:stone/hoe_head/%s' % category, predicate)
@@ -383,7 +384,7 @@ def generate(rm: ResourceManager):
         rock_knapping(rm, 'hammer_head_%s' % category, ['XXXXX', 'XXXXX', '  X  '], 'tfc:stone/hammer_head/%s' % category, predicate)
 
         for tool in ROCK_CATEGORY_ITEMS:
-            rm.crafting_shaped('crafting/stone/%s_%s' % (tool, category), ['X', 'Y'], {'X': 'tfc:stone/%s_head/%s' % (tool, category), 'Y': 'tag!forge:rods/wooden'}, 'tfc:stone/%s/%s' % (tool, category)).with_advancement('tfc:stone/%s_head/%s' % (tool, category))
+            rm.crafting_shaped('crafting/stone/%s_%s' % (tool, category), ['X', 'Y'], {'X': 'tfc:stone/%s_head/%s' % (tool, category), 'Y': '#forge:rods/wooden'}, 'tfc:stone/%s/%s' % (tool, category)).with_advancement('tfc:stone/%s_head/%s' % (tool, category))
 
     # Casting Recipes
 
@@ -540,7 +541,7 @@ def fluid_stack_ingredient(fluid: utils.Json, amount: int) -> Dict[str, Any]:
 
 def fluid_ingredient(data_in: utils.Json) -> utils.Json:
     if isinstance(data_in, str):
-        if data_in[0:4] == 'tag!':
+        if data_in[0:4] == '#':
             return {'tag': data_in[4:]}
         elif data_in[0] == '#':
             return {'tag': data_in[1:]}
