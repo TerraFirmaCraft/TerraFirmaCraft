@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
@@ -46,7 +47,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -161,11 +161,11 @@ public final class ForgeEventHandler
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
-            final BiomeSourceExtension biomeProvider = extension.getBiomeSource();
+            final BiomeSourceExtension biomeSourceExtension = extension.getBiomeSource();
             final Random random = new Random(world.getSeed());
-            final int spawnDistance = biomeProvider.getSpawnDistance();
+            final int spawnDistance = biomeSourceExtension.getSpawnDistance();
 
-            BlockPos pos = biomeProvider.findBiomeIgnoreClimate(biomeProvider.getSpawnCenterX(), generator.getSeaLevel(), biomeProvider.getSpawnCenterZ(), spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
+            BlockPos pos = null; // todo: need to randomly choose a spawn position, that's near a decent biome.
             ChunkPos chunkPos;
             if (pos == null)
             {
@@ -356,7 +356,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Constants.NBT.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
             generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
         }

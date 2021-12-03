@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.world;
 
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.world.ForgeWorldType;
+import net.minecraftforge.common.world.ForgeWorldPreset;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,9 +22,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCWorldType
 {
-    public static final DeferredRegister<ForgeWorldType> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.WORLD_TYPES, MOD_ID);
+    public static final DeferredRegister<ForgeWorldPreset> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.WORLD_TYPES, MOD_ID);
 
-    public static final RegistryObject<ForgeWorldType> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldType((biomeRegistry, noiseGeneratorSettingsRegistry, seed) -> TFCChunkGenerator.defaultChunkGenerator(() -> noiseGeneratorSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD), biomeRegistry, seed)));
+    public static final RegistryObject<ForgeWorldPreset> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldPreset((registries, seed, settings) -> {
+        final Registry<NoiseGeneratorSettings> noiseGeneratorSettings = registries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
+        final Registry<Biome> biomes = registries.registryOrThrow(Registry.BIOME_REGISTRY);
+
+        return TFCChunkGenerator.defaultChunkGenerator(() -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD), biomes, seed);
+    }));
 
     /**
      * Override the default world type, in a safe, mixin free, and API providing manner :D

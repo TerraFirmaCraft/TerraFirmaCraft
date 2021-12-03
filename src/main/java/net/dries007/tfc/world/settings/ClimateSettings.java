@@ -18,17 +18,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record ClimateSettings(float firstMax, float secondMax, float thirdMax, float fourthMax, int scale, boolean endlessPoles)
+public record ClimateSettings(float lowThreshold, float highThreshold, int scale, boolean endlessPoles)
 {
     public static final Codec<ClimateSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.FLOAT.fieldOf("first_max").forGetter(c -> c.firstMax),
-        Codec.FLOAT.fieldOf("second_max").forGetter(c -> c.secondMax),
-        Codec.FLOAT.fieldOf("third_max").forGetter(c -> c.thirdMax),
-        Codec.FLOAT.fieldOf("fourth_max").forGetter(c -> c.fourthMax),
+        Codec.FLOAT.fieldOf("low_threshold").forGetter(c -> c.lowThreshold),
+        Codec.FLOAT.fieldOf("high_threshold").forGetter(c -> c.highThreshold),
         Codec.INT.fieldOf("scale").forGetter(c -> c.scale),
         Codec.BOOL.fieldOf("endless_poles").forGetter(c -> c.endlessPoles)
     ).apply(instance, ClimateSettings::new));
+
     private static final Map<ResourceLocation, ClimateSettings> PRESETS = new ConcurrentHashMap<>();
+
     public static final Codec<ClimateSettings> CODEC = Codec.either(
         ResourceLocation.CODEC,
         DIRECT_CODEC
@@ -40,8 +40,8 @@ public record ClimateSettings(float firstMax, float secondMax, float thirdMax, f
         Either::right
     );
 
-    public static final ClimateSettings DEFAULT_TEMPERATURE = register("default_temperature", new ClimateSettings(-17.25f, -3.75f, 9.75f, 23.25f, 20_000, false));
-    public static final ClimateSettings DEFAULT_RAINFALL = register("default_rainfall", new ClimateSettings(125, 200, 300, 375, 20_000, false));
+    public static final ClimateSettings DEFAULT_TEMPERATURE = register("default_temperature", new ClimateSettings(-10.5f, 16.5f, 20_000, false));
+    public static final ClimateSettings DEFAULT_RAINFALL = register("default_rainfall", new ClimateSettings(175, 325, 20_000, false));
 
     /**
      * Register a climate settings preset. Used for both temperature and rainfall.

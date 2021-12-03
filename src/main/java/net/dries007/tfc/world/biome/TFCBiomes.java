@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.data.worldgen.biome.VanillaBiomes;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.CommonLevelAccessor;
@@ -171,7 +171,7 @@ public final class TFCBiomes
 
                 EXTENSIONS.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);
-                TFCBiomes.BIOMES.register(name, VanillaBiomes::theVoidBiome);
+                TFCBiomes.BIOMES.register(name, OverworldBiomes::theVoid);
 
                 registerDefaultBiomeDictionaryTypes(key, temp, rain);
                 builder.registerTypes(key);

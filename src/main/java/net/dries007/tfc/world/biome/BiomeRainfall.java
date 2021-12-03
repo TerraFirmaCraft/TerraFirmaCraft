@@ -7,13 +7,11 @@
 package net.dries007.tfc.world.biome;
 
 /**
- * These are biome rainfall levels. We apply them to all biomes based on their rainfall threshold.
+ * Discrete rainfall variants
  */
 public enum BiomeRainfall
 {
-    ARID,
     DRY,
     NORMAL,
-    DAMP,
     WET
 }

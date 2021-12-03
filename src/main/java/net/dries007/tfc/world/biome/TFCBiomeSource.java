@@ -17,6 +17,7 @@ import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -134,42 +135,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         return spawnCenterZ;
     }
 
-    /**
-     * A version of {@link BiomeSource#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
-     * - It does not query the climate layers - requiring less chunk data generation and is faster.
-     * - It's slightly optimized for finding a random biome, and using mutable positions.
-     */
-    @Nullable
     @Override
-    public BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> biomesIn, Random rand)
+    public Biome getNoiseBiome(int quartX, int quartY, int quartZ, @Nullable Climate.Sampler sampler)
     {
-        final int centerBiomeX = x >> 2;
-        final int centerBiomeZ = z >> 2;
-        final int biomeRadius = radius >> 2;
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        int found = 0;
-
-        for (int stepZ = -biomeRadius; stepZ <= biomeRadius; stepZ += increment)
-        {
-            for (int stepX = -biomeRadius; stepX <= biomeRadius; stepX += increment)
-            {
-                int biomeX = centerBiomeX + stepX;
-                int biomeZ = centerBiomeZ + stepZ;
-                if (biomesIn.test(getNoiseBiomeIgnoreClimate(biomeX, biomeZ)))
-                {
-                    if (found == 0 || rand.nextInt(found + 1) == 0)
-                    {
-                        mutablePos.set(biomeX << 2, y, biomeZ << 2);
-                    }
-                    found++;
-                }
-            }
-        }
-        return mutablePos.immutable();
+        return getNoiseBiome(quartX, quartZ);
     }
 
-    @Override
-    public Biome getNoiseBiome(int quartX, int quartY, int quartZ)
+    public Biome getNoiseBiome(int quartX, int quartZ)
     {
         final ChunkPos chunkPos = new ChunkPos(quartX >> 2, quartZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
@@ -190,34 +162,10 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
-    public BiomeRainfall calculateRainfall(float rainfall)
-    {
-        if (rainfall < rainfallSettings.firstMax())
-        {
-            return BiomeRainfall.ARID;
-        }
-        else if (rainfall < rainfallSettings.secondMax())
-        {
-            return BiomeRainfall.DRY;
-        }
-        else if (rainfall < rainfallSettings.thirdMax())
-        {
-            return BiomeRainfall.NORMAL;
-        }
-        else if (rainfall < rainfallSettings.fourthMax())
-        {
-            return BiomeRainfall.DAMP;
-        }
-        else
-        {
-            return BiomeRainfall.WET;
-        }
-    }
-
     @Override
-    public TFCBiomeSource withSeed(long seedIn)
+    public TFCBiomeSource withSeed(long seed)
     {
-        return new TFCBiomeSource(seedIn, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, temperatureSettings, rainfallSettings, biomeRegistry);
+        return new TFCBiomeSource(seed, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, temperatureSettings, rainfallSettings, biomeRegistry);
     }
 
     @Override
@@ -226,27 +174,29 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
         return CODEC;
     }
 
+    private BiomeRainfall calculateRainfall(float rainfall)
+    {
+        if (rainfall < rainfallSettings.lowThreshold())
+        {
+            return BiomeRainfall.DRY;
+        }
+        else if (rainfall > rainfallSettings.highThreshold())
+        {
+            return BiomeRainfall.WET;
+        }
+        return BiomeRainfall.NORMAL;
+    }
+
     private BiomeTemperature calculateTemperature(float averageTemperature)
     {
-        if (averageTemperature < temperatureSettings.firstMax())
-        {
-            return BiomeTemperature.FROZEN;
-        }
-        else if (averageTemperature < temperatureSettings.secondMax())
+        if (averageTemperature < temperatureSettings.lowThreshold())
         {
             return BiomeTemperature.COLD;
         }
-        else if (averageTemperature < temperatureSettings.thirdMax())
-        {
-            return BiomeTemperature.NORMAL;
-        }
-        else if (averageTemperature < temperatureSettings.fourthMax())
-        {
-            return BiomeTemperature.LUKEWARM;
-        }
-        else
+        else if (averageTemperature > temperatureSettings.highThreshold())
         {
             return BiomeTemperature.WARM;
         }
+        return BiomeTemperature.NORMAL;
     }
 }

@@ -27,18 +27,18 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
-import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
@@ -53,7 +53,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
 import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.ColumnBiomeContainer;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.CarverHelpers;
@@ -80,7 +79,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     /**
      * Positions used by the derivative sampling map. This represents a 7x7 grid of 4x4 sub chunks / biome positions, where 0, 0 = -1, -1 relative to the target chunk.
-     * Each two pairs of integers is a position, wrapping around the entire outside of the chunk (not including the 4x4 of positions in the interior
+     * Each two pairs of integers is a position, wrapping around the entire outside the chunk (not including the 4x4 of positions in the interior
      */
     public static final int[] EXTERIOR_POINTS = Util.make(new int[2 * (7 * 7 - 4 * 4)], array -> {
         int index = 0;
@@ -305,12 +304,27 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public void createBiomes(Registry<Biome> biomeIdRegistry, ChunkAccess chunk)
+    public Climate.Sampler climateSampler()
     {
-        // Before we sample biomes, we need to generate chunk data for this chunk.
-        // As when the biome source queries the chunk data provider, it only has the chunk position, therefore the chunk data needs to be generated and present within the provider before we query biomes in order to accurately place temperature.
-        chunkDataProvider.get(chunk);
-        ((ProtoChunk) chunk).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunk, chunk.getPos(), customBiomeSource));
+        return NoopClimateSampler.INSTANCE;
+    }
+
+    @Override
+    public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomeRegistry, Executor executor, Blender legacyTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
+    {
+        return CompletableFuture.supplyAsync(() -> {
+            // Before we sample biomes, we need to generate chunk data for this chunk.
+            // As when the biome source queries the chunk data provider, it only has the chunk position, therefore the chunk data needs to be generated and present within the provider before we query biomes in order to accurately place temperature.
+            chunkDataProvider.get(chunk);
+            chunk.fillBiomesFromNoise(runtimeBiomeSource, climateSampler());
+            return chunk;
+        }, Util.backgroundExecutor());
+    }
+
+    @Override
+    public void applyCarvers(WorldGenRegion level, long seed, BiomeManager biomeManager, StructureFeatureManager structureFeatureManager, ChunkAccess chunk, GenerationStep.Carving step)
+    {
+
     }
 
     /**

@@ -7,13 +7,11 @@
 package net.dries007.tfc.world.biome;
 
 /**
- * These are biome temperatures. They mimic the vanilla ocean variants, except we apply them to all biomes, based on our temperature layer generation.
+ * Discrete temperature variants
  */
 public enum BiomeTemperature
 {
-    FROZEN,
     COLD,
     NORMAL,
-    LUKEWARM,
     WARM
 }

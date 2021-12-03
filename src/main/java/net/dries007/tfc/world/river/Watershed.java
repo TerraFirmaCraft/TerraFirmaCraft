@@ -13,7 +13,6 @@ import java.util.Set;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.SimpleRandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
