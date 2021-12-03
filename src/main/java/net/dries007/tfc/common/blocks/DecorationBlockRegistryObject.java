@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * A triple of {@link RegistryObject}s for slabs, stairs, and walls

@@ -19,8 +19,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.config.TFCConfig;
@@ -46,7 +46,7 @@ public class CalendarEventHandler
         bus.addListener(CalendarEventHandler::onPlayerLoggedIn);
     }
 
-    public static void onServerStart(FMLServerStartingEvent event)
+    public static void onServerStart(ServerStartingEvent event)
     {
         Calendars.SERVER.onServerStart(event.getServer());
     }

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;

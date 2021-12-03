@@ -29,8 +29,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -56,10 +54,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
-import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -108,8 +106,6 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
-
-import static net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock.HEAT;
 
 public final class ForgeEventHandler
 {
@@ -393,12 +389,12 @@ public final class ForgeEventHandler
         event.addListener(CacheInvalidationListener.INSTANCE);
     }
 
-    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    public static void beforeServerStart(ServerAboutToStartEvent event)
     {
         CacheInvalidationListener.INSTANCE.reloadSync();
     }
 
-    public static void onServerStopped(FMLServerStoppedEvent event)
+    public static void onServerStopped(ServerStoppedEvent event)
     {
         CacheInvalidationListener.INSTANCE.reloadSync();
     }

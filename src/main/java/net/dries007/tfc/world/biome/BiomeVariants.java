@@ -10,7 +10,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.LongFunction;
 
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
 

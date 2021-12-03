@@ -9,8 +9,8 @@ package net.dries007.tfc.util.calendar;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.mixin.accessor.GameRulesAccessor;
 import net.dries007.tfc.mixin.accessor.GameRulesTypeAccessor;

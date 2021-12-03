@@ -7,20 +7,17 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Sided cache of chunk data instances, for when a world context is unavailable.

@@ -16,11 +16,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Handling logic for containers that are opened via item stacks.
  * This represents a factory of {@link MenuProvider}s, which are created on demand for an individual {@link ItemStack}.
- * One piece of extra data is written, via the {@link net.minecraftforge.fmllegacy.network.NetworkHooks#openGui(ServerPlayer, MenuProvider, Consumer)} call, which contains the hand that this was opened from.
+ * One piece of extra data is written, via the {@link NetworkHooks#openGui(ServerPlayer, MenuProvider, Consumer)} call, which contains the hand that this was opened from.
  */
 public class ItemStackContainerProvider
 {

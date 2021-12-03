@@ -15,11 +15,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.network.chat.TextComponent;
 
 
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
