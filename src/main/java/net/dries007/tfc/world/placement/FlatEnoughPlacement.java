@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.decorator;
+package net.dries007.tfc.world.placement;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -20,19 +20,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class FlatEnoughDecorator extends PlacementModifier
+public class FlatEnoughPlacement extends PlacementModifier
 {
-    public static final Codec<FlatEnoughDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<FlatEnoughPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.floatRange(0, 1).optionalFieldOf("flatness", 0.5f).forGetter(c -> c.flatness),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
         Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 4).forGetter(c -> c.maxDepth)
-    ).apply(instance, FlatEnoughDecorator::new));
+    ).apply(instance, FlatEnoughPlacement::new));
 
     private final float flatness;
     private final int radius;
     private final int maxDepth;
 
-    public FlatEnoughDecorator(float flatness, int radius, int maxDepth)
+    public FlatEnoughPlacement(float flatness, int radius, int maxDepth)
     {
         this.flatness = flatness;
         this.radius = radius;
@@ -42,7 +42,7 @@ public class FlatEnoughDecorator extends PlacementModifier
     @Override
     public PlacementModifierType<?> type()
     {
-        return TFCDecorators.FLAT_ENOUGH.get();
+        return TFCPlacements.FLAT_ENOUGH.get();
     }
 
     @Override

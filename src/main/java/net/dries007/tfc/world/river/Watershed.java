@@ -14,6 +14,7 @@ import java.util.Set;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.SimpleRandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
@@ -77,7 +78,7 @@ public abstract class Watershed
         }
 
         // Seed and generate a new rivers instance
-        RandomSource random = new SimpleRandomSource(seed ^ root.hashCode());
+        RandomSource random = new XoroshiroRandomSource(seed ^ root.hashCode());
         return new Rivers(root, interior, sources, random, sourceChance, length, depth, feather);
     }
 

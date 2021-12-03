@@ -31,10 +31,10 @@ public record ForestConfig(List<Entry> entries) implements FeatureConfiguration
             Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
             Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
             Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
-            Codecs.LENIENT_BLOCKSTATE.fieldOf("log").forGetter(c -> c.log),
-            Codecs.LENIENT_BLOCKSTATE.fieldOf("leaves").forGetter(c -> c.leaves),
-            Codecs.LENIENT_BLOCKSTATE.fieldOf("twig").forGetter(c -> c.twig),
-            Codecs.LENIENT_BLOCKSTATE.fieldOf("fallen_leaves").forGetter(c -> c.fallenLeaves),
+            Codecs.BLOCK_STATE.fieldOf("log").forGetter(c -> c.log),
+            Codecs.BLOCK_STATE.fieldOf("leaves").forGetter(c -> c.leaves),
+            Codecs.BLOCK_STATE.fieldOf("twig").forGetter(c -> c.twig),
+            Codecs.BLOCK_STATE.fieldOf("fallen_leaves").forGetter(c -> c.fallenLeaves),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));

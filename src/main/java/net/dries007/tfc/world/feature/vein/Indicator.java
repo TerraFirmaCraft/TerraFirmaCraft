@@ -21,7 +21,7 @@ public record Indicator(int depth, int spread, int rarity, IWeighted<BlockState>
         Codecs.POSITIVE_INT.optionalFieldOf("depth", 35).forGetter(c -> c.depth),
         Codec.intRange(0, 15).optionalFieldOf("spread", 15).forGetter(c -> c.spread),
         Codecs.POSITIVE_INT.optionalFieldOf("rarity", 10).forGetter(c -> c.rarity),
-        Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("blocks").forGetter(c -> c.states)
+        Codecs.weightedCodec(Codecs.BLOCK_STATE, "block").fieldOf("blocks").forGetter(c -> c.states)
     ).apply(instance, Indicator::new));
 
     public BlockState getStateToGenerate(Random random)

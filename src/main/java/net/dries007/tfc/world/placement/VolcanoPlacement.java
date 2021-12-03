@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.decorator;
+package net.dries007.tfc.world.placement;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -12,32 +12,31 @@ import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.placement.DecorationContext;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
 
-public class VolcanoDecorator extends PlacementModifier
+public class VolcanoPlacement extends PlacementModifier
 {
-    public static final Codec<VolcanoDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<VolcanoPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
-        Codec.floatRange(0, 1).optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
-    ).apply(instance, VolcanoDecorator::new));
+        Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
+    ).apply(instance, VolcanoPlacement::new));
 
     private final boolean center;
     private final float distance;
 
     private final ThreadLocal<LocalContext> localContext;
-    private Cellular2D cellNoise;
 
-    public VolcanoDecorator(boolean center, float distance)
+    public VolcanoPlacement(boolean center, float distance)
     {
         this.center = center;
         this.distance = distance;
@@ -47,13 +46,7 @@ public class VolcanoDecorator extends PlacementModifier
     @Override
     public PlacementModifierType<?> type()
     {
-        return TFCDecorators.VOLCANO.get();
-    }
-
-    @Override
-    protected void initSeed(long seed)
-    {
-        cellNoise = VolcanoNoise.cellNoise(seed);
+        return TFCPlacements.VOLCANO.get();
     }
 
     @Override
@@ -74,13 +67,13 @@ public class VolcanoDecorator extends PlacementModifier
         if (variants.isVolcanic())
         {
             // Sample volcano noise
-            final float value = cellNoise.noise(pos.getX(), pos.getZ());
-            final float distance = cellNoise.f1();
+            final float value = local.cellNoise.noise(pos.getX(), pos.getZ());
+            final float distance = local.cellNoise.f1();
             if (value < variants.getVolcanoChance())
             {
                 if (center)
                 {
-                    final BlockPos centerPos = new BlockPos((int) cellNoise.centerX(), pos.getY(), (int) cellNoise.centerZ());
+                    final BlockPos centerPos = new BlockPos((int) local.cellNoise.centerX(), pos.getY(), (int) local.cellNoise.centerZ());
                     if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
                     {
                         return Stream.of(centerPos);

@@ -20,7 +20,7 @@ import net.dries007.tfc.world.Codecs;
 public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight) implements FeatureConfiguration
 {
     public static final Codec<ThinSpikeConfig> CODEC = RecordCodecBuilder.<ThinSpikeConfig>create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(c -> c.state),
+        Codecs.BLOCK_STATE.fieldOf("state").forGetter(c -> c.state),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
         Codecs.POSITIVE_INT.fieldOf("tries").forGetter(c -> c.tries),
         Codecs.POSITIVE_INT.fieldOf("min_height").forGetter(c -> c.minHeight),

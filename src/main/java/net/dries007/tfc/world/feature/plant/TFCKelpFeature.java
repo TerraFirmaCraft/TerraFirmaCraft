@@ -24,19 +24,19 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class TFCKelpFeature extends Feature<TallPlantConfig>
+public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 {
-    public TFCKelpFeature(Codec<TallPlantConfig> codec)
+    public TFCKelpFeature(Codec<ColumnPlantConfig> codec)
     {
         super(codec);
     }
 
-    public boolean place(FeaturePlaceContext<TallPlantConfig> context)
+    public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
-        final TallPlantConfig config = context.config();
+        final ColumnPlantConfig config = context.config();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int radius = config.radius();

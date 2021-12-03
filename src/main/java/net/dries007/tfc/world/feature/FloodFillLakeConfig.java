@@ -14,7 +14,6 @@ import java.util.Set;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -24,7 +23,7 @@ import net.dries007.tfc.world.Codecs;
 public class FloodFillLakeConfig implements FeatureConfiguration
 {
     public static final Codec<FloodFillLakeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(FloodFillLakeConfig::getState),
+        Codecs.BLOCK_STATE.fieldOf("state").forGetter(FloodFillLakeConfig::getState),
         Codecs.FLUID.listOf().fieldOf("replace_fluids").forGetter(c -> new ArrayList<>(c.replaceFluids)),
         Codec.BOOL.optionalFieldOf("overfill", false).forGetter(FloodFillLakeConfig::shouldOverfill)
     ).apply(instance, FloodFillLakeConfig::new));

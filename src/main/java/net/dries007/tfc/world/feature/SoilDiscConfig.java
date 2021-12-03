@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import com.mojang.serialization.Codec;
@@ -26,7 +25,7 @@ public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int m
     public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.<SoilDiscConfig>create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
             Codecs.BLOCK, "replace",
-            Codecs.LENIENT_BLOCKSTATE, "with"
+            Codecs.BLOCK_STATE, "with"
         )).fieldOf("states").forGetter(c -> c.states),
         Codecs.POSITIVE_INT.fieldOf("min_radius").forGetter(c -> c.minRadius),
         Codecs.POSITIVE_INT.fieldOf("max_radius").forGetter(c -> c.maxRadius),

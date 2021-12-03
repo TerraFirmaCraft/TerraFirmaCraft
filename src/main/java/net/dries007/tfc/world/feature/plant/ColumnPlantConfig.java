@@ -13,15 +13,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public record TallPlantConfig(BlockState bodyState, BlockState headState, int tries, int radius, int minHeight, int maxHeight) implements FeatureConfiguration
+public record ColumnPlantConfig(BlockState bodyState, BlockState headState, int tries, int radius, int minHeight, int maxHeight) implements FeatureConfiguration
 {
-    public static final Codec<TallPlantConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("body").forGetter(c -> c.bodyState),
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("head").forGetter(c -> c.bodyState),
+    public static final Codec<ColumnPlantConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.BLOCK_STATE.fieldOf("body").forGetter(c -> c.bodyState),
+        Codecs.BLOCK_STATE.fieldOf("head").forGetter(c -> c.bodyState),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
         Codec.intRange(1, 100).fieldOf("minHeight").forGetter(c -> c.minHeight),
         Codec.intRange(1, 100).fieldOf("maxHeight").forGetter(c -> c.maxHeight)
-    ).apply(instance, TallPlantConfig::new));
+    ).apply(instance, ColumnPlantConfig::new));
 
 }

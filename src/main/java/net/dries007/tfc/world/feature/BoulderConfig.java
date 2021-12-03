@@ -22,7 +22,7 @@ public record BoulderConfig(Map<Block, List<BlockState>> states) implements Feat
     public static final Codec<BoulderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
             Codecs.BLOCK, "rock",
-            Codecs.LENIENT_BLOCKSTATE.listOf(), "blocks"
+            Codecs.BLOCK_STATE.listOf(), "blocks"
         )).fieldOf("states").forGetter(c -> c.states)
     ).apply(instance, BoulderConfig::new));
 }

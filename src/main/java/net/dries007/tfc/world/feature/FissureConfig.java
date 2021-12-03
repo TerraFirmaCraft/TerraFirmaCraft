@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
@@ -25,8 +24,8 @@ import net.dries007.tfc.world.Codecs;
 public record FissureConfig(Optional<BlockState> wallState, BlockState fluidState, int count, int radius, VerticalAnchor minDepth, int minPieces, int maxPieces, int maxPieceLength, Optional<Decoration> decoration) implements FeatureConfiguration
 {
     public static final Codec<FissureConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
+        Codecs.BLOCK_STATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
+        Codecs.BLOCK_STATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
         Codecs.POSITIVE_INT.optionalFieldOf("count", 5).forGetter(c -> c.count),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 12).forGetter(c -> c.radius),
         VerticalAnchor.CODEC.optionalFieldOf("min_depth", VerticalAnchor.aboveBottom(16)).forGetter(c -> c.minDepth),

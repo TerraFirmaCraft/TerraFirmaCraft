@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.decorator;
+package net.dries007.tfc.world.placement;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -20,15 +20,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class NearWaterDecorator extends PlacementModifier
+public class NearWaterPlacement extends PlacementModifier
 {
-    public static final Codec<NearWaterDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<NearWaterPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius)
-    ).apply(instance, NearWaterDecorator::new));
+    ).apply(instance, NearWaterPlacement::new));
 
     private final int radius;
 
-    public NearWaterDecorator(int radius)
+    public NearWaterPlacement(int radius)
     {
         this.radius = radius;
     }
@@ -36,7 +36,7 @@ public class NearWaterDecorator extends PlacementModifier
     @Override
     public PlacementModifierType<?> type()
     {
-        return TFCDecorators.NEAR_WATER.get();
+        return TFCPlacements.NEAR_WATER.get();
     }
 
     @Override

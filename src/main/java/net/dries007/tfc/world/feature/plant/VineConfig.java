@@ -16,7 +16,7 @@ import net.dries007.tfc.world.Codecs;
 public record VineConfig(BlockState state, int tries, int radius, int minHeight, int maxHeight) implements FeatureConfiguration
 {
     public static final Codec<VineConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("state").forGetter(vineConfig -> vineConfig.state),
+        Codecs.BLOCK_STATE.fieldOf("state").forGetter(vineConfig -> vineConfig.state),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
         Codec.INT.fieldOf("minHeight").forGetter(c -> c.minHeight), // todo: min_height and max_height in json, find and fix references

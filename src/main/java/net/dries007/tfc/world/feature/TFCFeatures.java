@@ -38,7 +38,7 @@ public class TFCFeatures
     public static final RegistryObject<CaveSpikesFeature> CAVE_SPIKE = register("cave_spike", CaveSpikesFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKE = register("large_cave_spike", LargeCaveSpikesFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<ThinSpikeFeature> THIN_SPIKE = register("thin_spike", ThinSpikeFeature::new, ThinSpikeConfig.CODEC);
-    public static final RegistryObject<RivuletFeature> RIVULET = register("rivulet", RivuletFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
+    public static final RegistryObject<RivuletFeature> RIVULET = register("rivulet", RivuletFeature::new, Codecs.BLOCK_STATE_CONFIG);
     public static final RegistryObject<FissureFeature> FISSURE = register("fissure", FissureFeature::new, FissureConfig.CODEC);
     public static final RegistryObject<HotSpringFeature> HOT_SPRING = register("hot_spring", HotSpringFeature::new, HotSpringConfig.CODEC);
 
@@ -51,9 +51,13 @@ public class TFCFeatures
 
     public static final RegistryObject<TFCRandomPatchFeature> RANDOM_PATCH = register("random_patch", TFCRandomPatchFeature::new, TFCRandomPatchConfig.CODEC);
 
-    public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, TallPlantConfig.CODEC);
-    public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, TallPlantConfig.CODEC);
-    public static final RegistryObject<TFCKelpFeature> KELP = register("kelp", TFCKelpFeature::new, TallPlantConfig.CODEC);
+    public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
+    public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, ColumnPlantConfig.CODEC);
+    public static final RegistryObject<TFCKelpFeature> KELP = register("kelp", TFCKelpFeature::new, ColumnPlantConfig.CODEC);
+    public static final RegistryObject<KelpTreeFeature> KELP_TREE = register("kelp_tree", KelpTreeFeature::new, KelpTreeFeature.CODEC);
+    public static final RegistryObject<EmergentPlantFeature> EMERGENT_PLANT = register("emergent_plant", EmergentPlantFeature::new, EmergentPlantFeature.CODEC);
+    public static final RegistryObject<TallPlantFeature> TALL_PLANT = register("tall_plant", TallPlantFeature::new, TallPlantFeature.CODEC);
+    public static final RegistryObject<RandomPropertyFeature> RANDOM_PROPERTY = register("random_property", RandomPropertyFeature::new, RandomPropertyConfig.CODEC);
 
     public static final RegistryObject<TFCCoralClawFeature> CORAL_CLAW = register("coral_claw", TFCCoralClawFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<TFCCoralMushroomFeature> CORAL_MUSHROOM = register("coral_mushroom", TFCCoralMushroomFeature::new, NoneFeatureConfiguration.CODEC);
@@ -62,9 +66,9 @@ public class TFCFeatures
     public static final RegistryObject<CaveVegetationFeature> CAVE_VEGETATION = register("cave_vegetation", CaveVegetationFeature::new, CaveVegetationConfig.CODEC);
     public static final RegistryObject<TFCVinesFeature> VINES = register("vines", TFCVinesFeature::new, VineConfig.CODEC);
     public static final RegistryObject<IceCaveFeature> ICE_CAVE = register("ice_cave", IceCaveFeature::new, NoneFeatureConfiguration.CODEC);
-    public static final RegistryObject<BerryBushFeature> BERRY_BUSHES = register("berry_bushes", BerryBushFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
-    public static final RegistryObject<FruitTreeFeature> FRUIT_TREES = register("fruit_trees", FruitTreeFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
-    public static final RegistryObject<BananaFeature> BANANAS = register("bananas", BananaFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
+    public static final RegistryObject<BerryBushFeature> BERRY_BUSHES = register("berry_bushes", BerryBushFeature::new, Codecs.BLOCK_STATE_CONFIG);
+    public static final RegistryObject<FruitTreeFeature> FRUIT_TREES = register("fruit_trees", FruitTreeFeature::new, Codecs.BLOCK_STATE_CONFIG);
+    public static final RegistryObject<BananaFeature> BANANAS = register("bananas", BananaFeature::new, Codecs.BLOCK_STATE_CONFIG);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);

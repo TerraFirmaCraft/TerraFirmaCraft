@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.decorator;
+package net.dries007.tfc.world.placement;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -20,9 +20,9 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
-public class ClimateDecorator extends PlacementModifier
+public class ClimatePlacement extends PlacementModifier
 {
-    public static final Codec<ClimateDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<ClimatePlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.FLOAT.optionalFieldOf("min_temperature", -Float.MAX_VALUE).forGetter(c -> c.minTemp),
         Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
         Codec.FLOAT.optionalFieldOf("min_rainfall", -Float.MAX_VALUE).forGetter(c -> c.minRainfall),
@@ -30,7 +30,7 @@ public class ClimateDecorator extends PlacementModifier
         ForestType.CODEC.optionalFieldOf("min_forest", ForestType.NONE).forGetter(c -> c.minForest),
         ForestType.CODEC.optionalFieldOf("max_forest", ForestType.OLD_GROWTH).forGetter(c -> c.maxForest),
         Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy)
-    ).apply(instance, ClimateDecorator::new));
+    ).apply(instance, ClimatePlacement::new));
 
     private final float minTemp;
     private final float maxTemp;
@@ -42,7 +42,7 @@ public class ClimateDecorator extends PlacementModifier
     private final ForestType maxForest;
     private final boolean fuzzy;
 
-    public ClimateDecorator(float minTemp, float maxTemp, float minRainfall, float maxRainfall, ForestType minForest, ForestType maxForest, boolean fuzzy)
+    public ClimatePlacement(float minTemp, float maxTemp, float minRainfall, float maxRainfall, ForestType minForest, ForestType maxForest, boolean fuzzy)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;

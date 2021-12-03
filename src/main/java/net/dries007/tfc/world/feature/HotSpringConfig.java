@@ -18,8 +18,8 @@ import net.dries007.tfc.world.Codecs;
 public record HotSpringConfig(Optional<BlockState> wallState, BlockState fluidState, int radius, Optional<FissureConfig.Decoration> decoration) implements FeatureConfiguration
 {
     public static final Codec<HotSpringConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.LENIENT_BLOCKSTATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
-        Codecs.LENIENT_BLOCKSTATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
+        Codecs.BLOCK_STATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
+        Codecs.BLOCK_STATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
         Codec.intRange(1, 16).optionalFieldOf("radius", 14).forGetter(c -> c.radius),
         FissureConfig.Decoration.CODEC.optionalFieldOf("decoration").forGetter(c -> c.decoration)
     ).apply(instance, HotSpringConfig::new));

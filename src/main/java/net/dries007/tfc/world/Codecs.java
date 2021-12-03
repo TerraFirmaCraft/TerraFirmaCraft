@@ -10,20 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryFileCodec;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -44,10 +41,8 @@ public final class Codecs
     public static final Codec<Integer> NONNEGATIVE_INT = ExtraCodecs.NON_NEGATIVE_INT;
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
-    // todo: remove after https://github.com/MinecraftForge/MinecraftForge/pull/8157
-    private static final Map<String, BiomeDictionary.Type> biomeDictionaryByName = Helpers.uncheck(() -> Helpers.findUnobfField(BiomeDictionary.Type.class, "byName").get(null));
     public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.comapFlatMap(
-        t -> biomeDictionaryByName.containsKey(t) ? DataResult.success(BiomeDictionary.Type.getType(t)) : DataResult.error("No biome dictionary type: " + t),
+        t -> BiomeDictionary.Type.hasType(t) ? DataResult.success(BiomeDictionary.Type.getType(t)) : DataResult.error("No biome dictionary type: " + t),
         BiomeDictionary.Type::getName
     );
 
@@ -59,7 +54,7 @@ public final class Codecs
      * In the former case, the default state will be used.
      * When serializing, this will always use the right side, which serializes to the state based codec.
      */
-    public static final Codec<BlockState> LENIENT_BLOCKSTATE = Codec.either(
+    public static final Codec<BlockState> BLOCK_STATE = Codec.either(
         BLOCK.xmap(Block::defaultBlockState, BlockState::getBlock),
         BlockState.CODEC
     ).xmap(Helpers::resolveEither, Either::right);
@@ -70,16 +65,10 @@ public final class Codecs
      */
     public static final Codec<Map<Block, IWeighted<BlockState>>> BLOCK_TO_WEIGHTED_BLOCKSTATE = Codecs.mapKeyListCodec(Codec.mapPair(
         BLOCK.listOf().fieldOf("replace"),
-        Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("with")
+        Codecs.weightedCodec(Codecs.BLOCK_STATE, "block").fieldOf("with")
     ).codec());
 
-    /**
-     * Additional codecs for existing configs.
-     */
-    public static final Codec<SurfaceBuilderBaseConfiguration> NOOP_SURFACE_BUILDER_CONFIG = Codec.unit(SurfaceBuilder.CONFIG_STONE);
-
-    public static final Codec<BlockStateConfiguration> LENIENT_BLOCK_STATE_FEATURE_CONFIG = LENIENT_BLOCKSTATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
-
+    public static final Codec<BlockStateConfiguration> BLOCK_STATE_CONFIG = BLOCK_STATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
 
     /**
      * Creates a codec for a given registry which does not default
@@ -90,6 +79,23 @@ public final class Codecs
             id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error("Unknown registry entry: " + id + " for registry: " + registry.key())),
             value -> DataResult.success(registry.getKey(value))
         );
+    }
+
+    public static Codec<BlockStateConfiguration> blockStateConfigCodec(Predicate<Block> predicate, String onError)
+    {
+        return blockStateCodec(predicate, onError).fieldOf("state")
+            .xmap(BlockStateConfiguration::new, c -> c.state).codec();
+    }
+
+    public static Codec<BlockState> blockStateCodec(Predicate<Block> predicate, String onError)
+    {
+        return BLOCK_STATE.comapFlatMap(state -> {
+            if (predicate.test(state.getBlock()))
+            {
+                return DataResult.success(state);
+            }
+            return DataResult.error(onError + ": " + state.getBlock().getRegistryName());
+        }, Function.identity());
     }
 
     /**

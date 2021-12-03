@@ -23,7 +23,7 @@ import net.dries007.tfc.common.TFCTags;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
+public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
 {
     public static void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
@@ -42,17 +42,17 @@ public class TFCTwistingVinesFeature extends Feature<TallPlantConfig>
         }
     }
 
-    public TFCTwistingVinesFeature(Codec<TallPlantConfig> codec)
+    public TFCTwistingVinesFeature(Codec<ColumnPlantConfig> codec)
     {
         super(codec);
     }
 
-    public boolean place(FeaturePlaceContext<TallPlantConfig> context)
+    public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
-        final TallPlantConfig config = context.config();
+        final ColumnPlantConfig config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean placedAny = false;

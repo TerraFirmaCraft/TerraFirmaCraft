@@ -30,8 +30,8 @@ public class TFCRandomPatchConfig implements FeatureConfiguration
 {
     public static final Codec<TFCRandomPatchConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         PlacedFeature.CODEC.fieldOf("feature").forGetter(C -> c.feature),
-        Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
-        Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
+        Codecs.BLOCK_STATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
+        Codecs.BLOCK_STATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
         Codecs.NONNEGATIVE_INT.optionalFieldOf("tries", 64).forGetter(c -> c.tries),
         Codec.BOOL.optionalFieldOf("use_density", false).forGetter(c -> c.useDensity),
         Codec.INT.optionalFieldOf("xz_spread", 7).forGetter(c -> c.xSpread),

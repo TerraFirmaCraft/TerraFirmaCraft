@@ -6,14 +6,13 @@
 
 package net.dries007.tfc.world.carver;
 
-import java.util.BitSet;
-import java.util.Random;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
@@ -30,7 +29,7 @@ public class TFCCaveCarver extends CaveWorldCarver
     }
 
     @Override
-    protected boolean carveBlock(CarvingContext context, CaveCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Biome> biomeAccessor, BitSet carvingMask, Random random, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
+    protected boolean carveBlock(CarvingContext context, CaveCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Biome> biomeAccessor, CarvingMask carvingMask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
     {
         return CarverHelpers.carveBlock(context, config, chunk, pos, checkPos, aquifer, reachedSurface);
     }

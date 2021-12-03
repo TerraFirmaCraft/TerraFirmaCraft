@@ -58,9 +58,8 @@ import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.decorator.TFCDecorators;
+import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.placer.TFCBlockPlacers;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
@@ -97,10 +96,9 @@ public final class TerraFirmaCraft
 
         TFCBiomes.BIOMES.register(bus);
         TFCFeatures.FEATURES.register(bus);
-        TFCDecorators.PLACEMENT_MODIFIERS.register(bus);
+        // TFCDecorators.PLACEMENT_MODIFIERS.register(bus); // todo: Forge converts this to a registry
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         TFCCarvers.CARVERS.register(bus);
-        TFCBlockPlacers.BLOCK_PLACERS.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
 
         TFCConfig.init();
@@ -138,6 +136,7 @@ public final class TerraFirmaCraft
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();
             Faunas.registerSpawnPlacements();
+            TFCPlacements.registerPlacements();
 
             Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
