@@ -32,9 +32,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.DrawSelectionEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -217,27 +217,27 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
+    public static void onInitGuiPost(ScreenEvent.InitScreenEvent.Post event)
     {
         Player player = Minecraft.getInstance().player;
-        if (event.getGui() instanceof InventoryScreen screen && player != null && !player.isCreative())
+        if (event.getScreen() instanceof InventoryScreen screen && player != null && !player.isCreative())
         {
             int guiLeft = screen.getGuiLeft();
             int guiTop = screen.getGuiTop();
 
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 4, 20 + 3, 22, 128 + 20, 0, 1, 3, 0, 0, button -> {}).setRecipeBookCallback(screen));
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR).setRecipeBookCallback(screen));
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION).setRecipeBookCallback(screen));
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 4, 20 + 3, 22, 128 + 20, 0, 1, 3, 0, 0, button -> {}).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE).setRecipeBookCallback(screen));
         }
     }
 
     public static void onClientWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof final ClientLevel world)
+        if (event.getWorld() instanceof final ClientLevel level)
         {
             // Add our custom tints to the color resolver caches
-            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) world).accessor$getTintCaches();
+            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) level).accessor$getTintCaches();
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache());
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache());
@@ -269,9 +269,9 @@ public class ClientForgeEventHandler
      */
     public static void onHighlightBlockEvent(DrawSelectionEvent.HighlightBlock event)
     {
-        final Camera info = event.getInfo();
-        final PoseStack mStack = event.getMatrix();
-        final Entity entity = info.getEntity();
+        final Camera camera = event.getCamera();
+        final PoseStack poseStack = event.getPoseStack();
+        final Entity entity = camera.getEntity();
         final Level level = entity.level;
         final BlockHitResult traceResult = event.getTarget();
         final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
@@ -284,7 +284,7 @@ public class ClientForgeEventHandler
             if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
-                if (handler.drawHighlight(level, lookingAt, player, traceResult, mStack, event.getBuffers(), info.getPosition()))
+                if (handler.drawHighlight(level, lookingAt, player, traceResult, poseStack, event.getMultiBufferSource(), camera.getPosition()))
                 {
                     // Cancel drawing this block's bounding box
                     event.setCanceled(true);

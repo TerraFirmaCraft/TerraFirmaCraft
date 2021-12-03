@@ -16,9 +16,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.capabilities.sync.ISyncable;
@@ -177,7 +177,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood,
         {
             data = new FoodRecord(nbt.getCompound("foodData"));
         }
-        ListTag traitList = nbt.getList("traits", Constants.NBT.TAG_STRING);
+        ListTag traitList = nbt.getList("traits", Tag.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
         {
             final FoodTrait trait = FoodTrait.getTrait(traitList.getString(i));

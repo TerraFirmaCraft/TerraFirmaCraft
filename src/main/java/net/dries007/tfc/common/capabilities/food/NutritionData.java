@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -98,7 +98,7 @@ public class NutritionData implements INBTSerializable<CompoundTag>
     public void deserializeNBT(CompoundTag nbt)
     {
         records.clear();
-        ListTag recordsNbt = nbt.getList("records", Constants.NBT.TAG_COMPOUND);
+        ListTag recordsNbt = nbt.getList("records", Tag.TAG_COMPOUND);
         for (int i = 0; i < recordsNbt.size(); i++)
         {
             records.add(new FoodRecord(recordsNbt.getCompound(i)));

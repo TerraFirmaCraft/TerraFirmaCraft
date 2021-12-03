@@ -10,6 +10,7 @@ import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -185,7 +185,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             collapsesInProgress.clear();
             isolatedPositions.clear();
 
-            ListTag landslideNbt = nbt.getList("landslideTicks", Constants.NBT.TAG_COMPOUND);
+            ListTag landslideNbt = nbt.getList("landslideTicks", Tag.TAG_COMPOUND);
             for (int i = 0; i < landslideNbt.size(); i++)
             {
                 landslideTicks.add(new TickEntry(landslideNbt.getCompound(i)));
@@ -194,7 +194,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             long[] isolatedNbt = nbt.getLongArray("isolatedPositions");
             Arrays.stream(isolatedNbt).mapToObj(BlockPos::of).forEach(isolatedPositions::add);
 
-            ListTag collapseNbt = nbt.getList("collapsesInProgress", Constants.NBT.TAG_COMPOUND);
+            ListTag collapseNbt = nbt.getList("collapsesInProgress", Tag.TAG_COMPOUND);
             for (int i = 0; i < collapseNbt.size(); i++)
             {
                 collapsesInProgress.add(new Collapse(collapseNbt.getCompound(i)));

@@ -8,7 +8,9 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.entities.AquaticMob;
@@ -98,7 +99,7 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance diff, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
         data = super.finalizeSpawn(level, diff, type, data, tag);
-        if (tag != null && tag.contains("BucketVariantTag", Constants.NBT.TAG_INT))
+        if (tag != null && tag.contains("BucketVariantTag", Tag.TAG_INT))
         {
             setVariant(tag.getInt("BucketVariantTag"));
         }

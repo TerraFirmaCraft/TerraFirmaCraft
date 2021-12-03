@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -72,6 +72,6 @@ public final class TFCContainerTypes
 
     private static <C extends AbstractContainerMenu> RegistryObject<MenuType<C>> register(String name, IContainerFactory<C> factory)
     {
-        return CONTAINERS.register(name, () -> IForgeContainerType.create(factory));
+        return CONTAINERS.register(name, () -> IForgeMenuType.create(factory));
     }
 }
