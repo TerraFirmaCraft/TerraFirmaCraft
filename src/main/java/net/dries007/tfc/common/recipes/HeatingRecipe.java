@@ -70,7 +70,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     @Override
     public boolean matches(ItemStackInventory inv, @Nullable Level worldIn)
     {
-        return ingredient.test(inv.getStack());
+        return getIngredient().test(inv.getStack());
     }
 
     @Override
@@ -110,7 +110,12 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 
     public FluidStack getOutputFluid(ItemStackInventory inventory)
     {
-        return outputFluid.copy();
+        return outputFluid.copy(); //todo remove inventory param?
+    }
+
+    public FluidStack getDisplayOutputFluid()
+    {
+        return outputFluid.copy(); //todo see above, maybe remove
     }
 
     public float getTemperature()
@@ -125,7 +130,12 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 
     public Collection<Item> getValidItems()
     {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+        return Arrays.stream(this.getIngredient().getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+    }
+
+    public Ingredient getIngredient()
+    {
+        return ingredient;
     }
 
     public static class Serializer extends RecipeSerializerImpl<HeatingRecipe>
@@ -154,7 +164,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         @Override
         public void toNetwork(FriendlyByteBuf buffer, HeatingRecipe recipe)
         {
-            recipe.ingredient.toNetwork(buffer);
+            recipe.getIngredient().toNetwork(buffer);
             buffer.writeItem(recipe.outputItem);
             buffer.writeFluidStack(recipe.outputFluid);
             buffer.writeFloat(recipe.temperature);

@@ -108,6 +108,11 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         return TFCRecipeTypes.POT;
     }
 
+    public FluidStackIngredient getFluidIngredient()
+    {
+        return fluidIngredient;
+    }
+
     /**
      * @return true if the temperature is hot enough to boil
      */

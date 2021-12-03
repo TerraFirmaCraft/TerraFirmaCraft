@@ -1,0 +1,85 @@
+package net.dries007.tfc.compat.jei.category;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.dries007.tfc.TerraFirmaCraft;
+
+public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
+{
+    protected static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
+
+    protected static List<ItemStack> collapse(List<List<ItemStack>> list) //todo: this sucks. We think of ingredients much differently than JEI does, so this has to do
+    {
+        List<ItemStack> returnList = new ArrayList<>(7);
+        for (List<ItemStack> usuallySingletonList : list)
+        {
+            returnList.addAll(usuallySingletonList);
+        }
+        return returnList;
+    }
+
+    protected final IDrawableStatic slot;
+    protected final IDrawableStatic fire;
+    protected final IDrawableAnimated fireAnimated;
+
+
+    private final ResourceLocation uId;
+    private final Component title;
+    private final IDrawable background;
+    private final IDrawable icon;
+    private final Class<? extends T> recipeClass;
+
+    public BaseRecipeCategory(ResourceLocation uId, IGuiHelper helper, IDrawable background, ItemStack icon, Class<? extends T> recipeClass)
+    {
+        this.uId = uId;
+        this.title = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".jei." + uId.getPath());
+        this.background = background;
+        this.icon = helper.createDrawableIngredient(icon);
+        this.recipeClass = recipeClass;
+        this.slot = helper.getSlotDrawable();
+        this.fire = helper.createDrawable(ICONS, 0, 0, 14, 14);
+        IDrawableStatic arrowAnimated = helper.createDrawable(ICONS, 14, 0, 14, 14);
+        this.fireAnimated = helper.createAnimatedDrawable(arrowAnimated, 160, IDrawableAnimated.StartDirection.TOP, true);
+    }
+
+    @Override
+    public ResourceLocation getUid()
+    {
+        return uId;
+    }
+
+    @Override
+    public Class<? extends T> getRecipeClass()
+    {
+        return recipeClass;
+    }
+
+    @Override
+    public Component getTitle()
+    {
+        return title;
+    }
+
+    @Override
+    public IDrawable getBackground()
+    {
+        return background;
+    }
+
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
+    }
+}
