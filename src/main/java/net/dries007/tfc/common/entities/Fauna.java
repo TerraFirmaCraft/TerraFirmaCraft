@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
 import net.dries007.tfc.world.chunkdata.ForestType;
-import net.dries007.tfc.world.decorator.ClimateConfig;
 
 /**
  * A data driven way to make spawning conditions for animals player configurable.

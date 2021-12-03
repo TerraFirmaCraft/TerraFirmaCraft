@@ -57,13 +57,9 @@ public final class CoralHelpers
                     }
                 }
             }
-
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private static BlockState salty(BlockState state)

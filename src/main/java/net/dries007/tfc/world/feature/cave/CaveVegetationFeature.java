@@ -70,7 +70,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                     if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(worldIn, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
-                        worldIn.getLiquidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
+                        worldIn.scheduleTick(mutablePos, Fluids.WATER, 0);
                     }
                 }
             }

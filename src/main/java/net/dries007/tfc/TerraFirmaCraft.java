@@ -97,7 +97,7 @@ public final class TerraFirmaCraft
 
         TFCBiomes.BIOMES.register(bus);
         TFCFeatures.FEATURES.register(bus);
-        TFCDecorators.DECORATORS.register(bus);
+        TFCDecorators.PLACEMENT_MODIFIERS.register(bus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         TFCCarvers.CARVERS.register(bus);
         TFCBlockPlacers.BLOCK_PLACERS.register(bus);

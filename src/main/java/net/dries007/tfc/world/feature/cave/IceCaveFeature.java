@@ -92,7 +92,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
                     if (world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(world, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
-                        world.getLiquidTicks().scheduleTick(mutablePos, Fluids.WATER, 0);
+                        world.scheduleTick(mutablePos, Fluids.WATER, 0);
                     }
                 }
             }

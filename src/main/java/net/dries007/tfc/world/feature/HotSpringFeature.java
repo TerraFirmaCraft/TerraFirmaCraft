@@ -117,7 +117,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     setBlock(world, mutablePos, config.fluidState());
                     if (fluid != Fluids.EMPTY)
                     {
-                        world.getLiquidTicks().scheduleTick(mutablePos, fluid, 0);
+                        world.scheduleTick(mutablePos, fluid, 0);
                     }
                     if (useFilledEmptyCheck)
                     {

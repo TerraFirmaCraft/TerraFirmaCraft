@@ -13,10 +13,16 @@ import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.CarvingMask;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.DecorationContext;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.carver.CarverHelpers;
 
 /**
@@ -24,28 +30,40 @@ import net.dries007.tfc.world.carver.CarverHelpers;
  * - It does not properly handle extended y values
  * - It does not allow y bounds at all
  */
-public class TFCCarvingMaskDecorator extends FeatureDecorator<TFCCarvingMaskConfig>
+public class TFCCarvingMaskDecorator extends PlacementModifier
 {
-    public TFCCarvingMaskDecorator(Codec<TFCCarvingMaskConfig> codec)
+    public static final Codec<TFCCarvingMaskDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        VerticalAnchor.CODEC.optionalFieldOf("min_y", VerticalAnchor.bottom()).forGetter(c -> c.minY),
+        VerticalAnchor.CODEC.optionalFieldOf("max_y", VerticalAnchor.top()).forGetter(c -> c.maxY),
+        GenerationStep.Carving.CODEC.fieldOf("step").forGetter(c -> c.step)
+    ).apply(instance, TFCCarvingMaskDecorator::new));
+
+    private final VerticalAnchor minY;
+    private final VerticalAnchor maxY;
+    private final GenerationStep.Carving step;
+
+    public TFCCarvingMaskDecorator(VerticalAnchor minY, VerticalAnchor maxY, GenerationStep.Carving step)
     {
-        super(codec);
+        this.minY = minY;
+        this.maxY = maxY;
+        this.step = step;
     }
 
     @Override
-    public Stream<BlockPos> getPositions(DecorationContext context, Random rand, TFCCarvingMaskConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final BitSet carvingMask = context.getCarvingMask(chunkPos, config.step());
+        final CarvingMask carvingMask = context.getCarvingMask(chunkPos, step);
         final int minY = context.getLevel().dimensionType().minY();
 
-        final int configMinY = config.minY().resolveY(context);
-        final int configMaxY = config.maxY().resolveY(context);
+        final int configMinY = this.minY.resolveY(context);
+        final int configMaxY = this.maxY.resolveY(context);
 
         final int minIndex = CarverHelpers.maskIndex(0, configMinY, 0, minY);
         final int maxIndex = CarverHelpers.maskIndex(0, 1 + configMaxY, 0, minY);
 
         return IntStream.range(minIndex, Math.min(maxIndex, carvingMask.length()))
-            .filter(index -> carvingMask.get(index) && rand.nextFloat() < config.probability())
+            .filter(index -> carvingMask.get(index))
             .mapToObj(index -> {
                 final int x = index & 15;
                 final int z = index >> 4 & 15;

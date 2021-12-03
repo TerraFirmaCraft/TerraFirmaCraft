@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.feature;
 
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -38,8 +40,8 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
     private long cachedSeed;
     private boolean initialized;
 
-    private Noise2D temperatureNoise;
-    private Noise2D seaIceNoise;
+    @Nullable private Noise2D temperatureNoise;
+    @Nullable private Noise2D seaIceNoise;
 
     public IceAndSnowFeature(Codec<NoneFeatureConfiguration> codec)
     {

@@ -12,23 +12,37 @@ import java.util.stream.Stream;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.placement.DecorationContext;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 
-public class NearWaterDecorator extends FeatureDecorator<NearWaterConfig>
+public class NearWaterDecorator extends PlacementModifier
 {
-    public NearWaterDecorator(Codec<NearWaterConfig> codec)
+    public static final Codec<NearWaterDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius)
+    ).apply(instance, NearWaterDecorator::new));
+
+    private final int radius;
+
+    public NearWaterDecorator(int radius)
     {
-        super(codec);
+        this.radius = radius;
     }
 
     @Override
-    public Stream<BlockPos> getPositions(DecorationContext helper, Random random, NearWaterConfig config, BlockPos pos)
+    public PlacementModifierType<?> type()
+    {
+        return TFCDecorators.NEAR_WATER.get();
+    }
+
+    @Override
+    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final int radius = config.radius();
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)
@@ -37,7 +51,7 @@ public class NearWaterDecorator extends FeatureDecorator<NearWaterConfig>
                 {
                     mutablePos.set(pos).move(x, y, z);
 
-                    final BlockState state = helper.getBlockState(mutablePos);
+                    final BlockState state = context.getBlockState(mutablePos);
                     if (state.getFluidState().is(FluidTags.WATER))
                     {
                         return Stream.of(pos);

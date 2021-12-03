@@ -15,9 +15,9 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -29,15 +29,13 @@ import net.dries007.tfc.world.Codecs;
 public class TFCRandomPatchConfig implements FeatureConfiguration
 {
     public static final Codec<TFCRandomPatchConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(c -> c.stateProvider),
-        BlockPlacer.CODEC.fieldOf("block_placer").forGetter(c -> c.blockPlacer),
+        PlacedFeature.CODEC.fieldOf("feature").forGetter(C -> c.feature),
         Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
         Codecs.LENIENT_BLOCKSTATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
-        Codec.INT.optionalFieldOf("tries", 64).forGetter(c -> c.tries),
+        Codecs.NONNEGATIVE_INT.optionalFieldOf("tries", 64).forGetter(c -> c.tries),
         Codec.BOOL.optionalFieldOf("use_density", false).forGetter(c -> c.useDensity),
-        Codec.INT.optionalFieldOf("xspread", 7).forGetter(c -> c.xSpread),
-        Codec.INT.optionalFieldOf("yspread", 3).forGetter(c -> c.ySpread),
-        Codec.INT.optionalFieldOf("zspread", 7).forGetter(c -> c.zSpread),
+        Codec.INT.optionalFieldOf("xz_spread", 7).forGetter(c -> c.xSpread),
+        Codec.INT.optionalFieldOf("y_spread", 3).forGetter(c -> c.ySpread),
         Codec.BOOL.optionalFieldOf("can_replace_air", true).forGetter(c -> c.canReplaceAir),
         Codec.BOOL.optionalFieldOf("can_replace_water", false).forGetter(c -> c.canReplaceWater),
         Codec.BOOL.optionalFieldOf("can_replace_surface_water", false).forGetter(c -> c.canReplaceSurfaceWater),

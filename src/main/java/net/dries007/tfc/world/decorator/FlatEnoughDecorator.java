@@ -10,27 +10,48 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.placement.DecorationContext;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 
-public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
+public class FlatEnoughDecorator extends PlacementModifier
 {
-    public FlatEnoughDecorator(Codec<FlatEnoughConfig> codec)
+    public static final Codec<FlatEnoughDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.floatRange(0, 1).optionalFieldOf("flatness", 0.5f).forGetter(c -> c.flatness),
+        Codecs.POSITIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
+        Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 4).forGetter(c -> c.maxDepth)
+    ).apply(instance, FlatEnoughDecorator::new));
+
+    private final float flatness;
+    private final int radius;
+    private final int maxDepth;
+
+    public FlatEnoughDecorator(float flatness, int radius, int maxDepth)
     {
-        super(codec);
+        this.flatness = flatness;
+        this.radius = radius;
+        this.maxDepth = maxDepth;
     }
 
     @Override
-    public Stream<BlockPos> getPositions(DecorationContext worldIn, Random random, FlatEnoughConfig config, BlockPos pos)
+    public PlacementModifierType<?> type()
+    {
+        return TFCDecorators.FLAT_ENOUGH.get();
+    }
+
+    @Override
+    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int y = 0; y < config.maxDepth(); y++)
+        for (int y = 0; y < maxDepth; y++)
         {
-            if (isFlatEnough(worldIn, pos, -y, mutablePos, config))
+            if (isFlatEnough(context, pos, -y, mutablePos))
             {
                 return Stream.of(pos.offset(0, -y, 0));
             }
@@ -38,21 +59,21 @@ public class FlatEnoughDecorator extends FeatureDecorator<FlatEnoughConfig>
         return Stream.empty();
     }
 
-    private boolean isFlatEnough(DecorationContext worldIn, BlockPos pos, int y, BlockPos.MutableBlockPos mutablePos, FlatEnoughConfig config)
+    private boolean isFlatEnough(PlacementContext level, BlockPos pos, int y, BlockPos.MutableBlockPos mutablePos)
     {
         int flatAmount = 0;
-        for (int x = -config.radius(); x <= config.radius(); x++)
+        for (int x = -radius; x <= radius; x++)
         {
-            for (int z = -config.radius(); z <= config.radius(); z++)
+            for (int z = -radius; z <= radius; z++)
             {
                 mutablePos.set(pos).move(x, y, z);
-                BlockState stateAt = worldIn.getBlockState(mutablePos);
+                BlockState stateAt = level.getBlockState(mutablePos);
                 if (!stateAt.isAir() && stateAt.getFluidState().getType() == Fluids.EMPTY) // No direct access to world, cannot use forge method
                 {
                     flatAmount++;
                 }
             }
         }
-        return flatAmount / ((1f + 2 * config.radius()) * (1f + 2 * config.radius())) > config.flatness();
+        return flatAmount / ((1f + 2 * radius) * (1f + 2 * radius)) > flatness;
     }
 }

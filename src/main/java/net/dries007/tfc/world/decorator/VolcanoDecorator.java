@@ -13,20 +13,41 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.DecorationContext;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
 
-public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
+public class VolcanoDecorator extends PlacementModifier
 {
+    public static final Codec<VolcanoDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
+        Codec.floatRange(0, 1).optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
+    ).apply(instance, VolcanoDecorator::new));
+
+    private final boolean center;
+    private final float distance;
+
+    private final ThreadLocal<LocalContext> localContext;
     private Cellular2D cellNoise;
 
-    public VolcanoDecorator(Codec<VolcanoConfig> codec)
+    public VolcanoDecorator(boolean center, float distance)
     {
-        super(codec);
+        this.center = center;
+        this.distance = distance;
+        this.localContext = ThreadLocal.withInitial(() -> null);
+    }
+
+    @Override
+    public PlacementModifierType<?> type()
+    {
+        return TFCDecorators.VOLCANO.get();
     }
 
     @Override
@@ -36,11 +57,20 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
     }
 
     @Override
-    protected Stream<BlockPos> getSeededPositions(DecorationContext context, Random rand, VolcanoConfig config, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
     {
-        final WorldGenLevel world = context.getLevel();
-        final Biome biome = world.getBiome(pos);
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
+        final WorldGenLevel level = context.getLevel();
+        final long seed = level.getSeed();
+
+        LocalContext local = localContext.get();
+        if (local == null || local.seed != seed)
+        {
+            local = new LocalContext(seed, VolcanoNoise.cellNoise(seed));
+            localContext.set(local);
+        }
+
+        final Biome biome = level.getBiome(pos);
+        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).getVariants();
         if (variants.isVolcanic())
         {
             // Sample volcano noise
@@ -48,7 +78,7 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
             final float distance = cellNoise.f1();
             if (value < variants.getVolcanoChance())
             {
-                if (config.center())
+                if (center)
                 {
                     final BlockPos centerPos = new BlockPos((int) cellNoise.centerX(), pos.getY(), (int) cellNoise.centerZ());
                     if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
@@ -59,7 +89,7 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
                 else
                 {
                     final float easing = VolcanoNoise.calculateEasing(distance);
-                    if (easing > config.distance())
+                    if (easing > distance)
                     {
                         return Stream.of(pos);
                     }
@@ -68,4 +98,6 @@ public class VolcanoDecorator extends SeededDecorator<VolcanoConfig>
         }
         return Stream.empty();
     }
+
+    record LocalContext(long seed, Cellular2D cellNoise) {}
 }

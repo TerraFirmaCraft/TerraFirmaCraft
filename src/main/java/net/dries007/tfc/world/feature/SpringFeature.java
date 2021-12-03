@@ -66,7 +66,7 @@ public class SpringFeature extends Feature<SpringConfiguration>
                     if (rockCount == config.rockCount && holeCount == config.holeCount)
                     {
                         world.setBlock(pos, config.state.createLegacyBlock(), 2);
-                        world.getLiquidTicks().scheduleTick(pos, config.state.getType(), 0);
+                        world.scheduleTick(pos, config.state.getType(), 0);
                         return true;
                     }
                 }

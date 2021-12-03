@@ -63,7 +63,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
                     BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
                     setBlock(world, mutablePos, branch);
                     world.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
-                    world.getBlockTicks().scheduleTick(mutablePos, branch.getBlock(), 1);
+                    world.scheduleTick(mutablePos, branch.getBlock(), 1);
                     return true;
                 }
             }

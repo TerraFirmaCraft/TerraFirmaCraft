@@ -18,6 +18,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -39,8 +40,8 @@ import net.dries007.tfc.util.collections.Weighted;
  */
 public final class Codecs
 {
-    public static final Codec<Integer> POSITIVE_INT = Codec.intRange(1, Integer.MAX_VALUE);
-    public static final Codec<Integer> NONNEGATIVE_INT = Codec.intRange(0, Integer.MAX_VALUE);
+    public static final Codec<Integer> POSITIVE_INT = ExtraCodecs.POSITIVE_INT;
+    public static final Codec<Integer> NONNEGATIVE_INT = ExtraCodecs.NON_NEGATIVE_INT;
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
     // todo: remove after https://github.com/MinecraftForge/MinecraftForge/pull/8157

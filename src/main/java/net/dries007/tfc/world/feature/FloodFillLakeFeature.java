@@ -70,7 +70,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                 for (BlockPos filledPos : filled)
                 {
                     worldIn.setBlock(filledPos, fill, 2);
-                    worldIn.getLiquidTicks().scheduleTick(filledPos, fluid, 0);
+                    worldIn.scheduleTick(filledPos, fluid, 0);
 
                     // If we're at the bottom
                     mutablePos.set(filledPos).move(0, -1, 0);
