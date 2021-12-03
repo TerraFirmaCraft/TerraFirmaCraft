@@ -42,7 +42,7 @@ archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 // Use version from environment variable, if set
 def envVersion = System.getenv('VERSION')
 version = envVersion == null ? 'indev' : envVersion
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 repositories {
     mavenCentral()
@@ -106,33 +106,22 @@ minecraft {
     }
 }
 
-// Hack to fix a FG bug involving loading non-MC libraries
-configurations {
-    library
-    implementation.extendsFrom library
-}
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}-${minecraft_version}") { transitive = false }
+    // runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}-${minecraft_version}") { transitive = false }
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
 
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    // runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {
