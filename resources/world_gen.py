@@ -2,28 +2,33 @@
 
 import hashlib
 from enum import IntEnum
-from typing import Any, Union
+from typing import Union
 
-from mcresources import ResourceManager, world_gen as wg, utils
-
+from mcresources import ResourceManager, utils
 from constants import *
 
-BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
-BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
+
+class BiomeTemperature(NamedTuple):
+    id: str
+    temperature: float
+    water_color: float
+    water_fog_color: float
+
+
+class BiomeRainfall(NamedTuple):
+    id: str
+    downfall: float
+
 
 TEMPERATURES: Tuple[BiomeTemperature, ...] = (
-    BiomeTemperature('frozen', 0, 3750089, 329011),
-    BiomeTemperature('cold', 0.25, 4020182, 329011),
+    BiomeTemperature('cold', 0, 3750089, 329011),
     BiomeTemperature('normal', 0.5, 4159204, 329011),
-    BiomeTemperature('lukewarm', 0.75, 4566514, 267827),
     BiomeTemperature('warm', 1.0, 4445678, 270131)
 )
 
 RAINFALLS: Tuple[BiomeRainfall, ...] = (
-    BiomeRainfall('arid', 0),
-    BiomeRainfall('dry', 0.2),
-    BiomeRainfall('normal', 0.45),
-    BiomeRainfall('damp', 0.7),
+    BiomeRainfall('dry', 0.1),
+    BiomeRainfall('normal', 0.5),
     BiomeRainfall('wet', 0.9)
 )
 
@@ -45,67 +50,6 @@ class Decoration(IntEnum):
 
 
 def generate(rm: ResourceManager):
-
-    rm.data('minecraft:dimension_type/overworld', {
-        'logical_height': 384,
-        'infiniburn': 'minecraft:infiniburn_overworld',
-        'effects': 'minecraft:overworld',
-        'ambient_light': 0.0,
-        'respawn_anchor_works': False,
-        'has_raids': True,
-        'min_y': -64,
-        'height': 384,
-        'natural': True,
-        'coordinate_scale': 1.0,
-        'piglin_safe': False,
-        'bed_works': True,
-        'has_skylight': True,
-        'has_ceiling': False,
-        'ultrawarm': False
-    })
-
-    # Noise Settings
-    rm.data('minecraft:worldgen/noise_settings/overworld', {
-        'noise_caves_enabled': True,
-        'deepslate_enabled': False,
-        'ore_veins_enabled': False,
-        'noodle_caves_enabled': True,
-        'min_surface_level': 50,
-        'disable_mob_generation': False,
-        'aquifers_enabled': True,
-        'default_fluid': {'Properties': {'level': '0'}, 'Name': 'minecraft:water'},
-        'bedrock_roof_position': -2147483648,
-        'bedrock_floor_position': 0,
-        'sea_level': 63,
-        'structures': {
-            'stronghold': {'distance': 32, 'spread': 3, 'count': 128},
-            'structures': {}
-        },
-        'noise': {
-            'simplex_surface_noise': True,
-            'random_density_offset': True,
-            'size_vertical': 2,
-            'density_factor': 1.0,
-            'density_offset': -0.46875,
-            'top_slide': {'target': -10, 'size': 3, 'offset': 0},
-            'bottom_slide': {'target': 15, 'size': 3, 'offset': 0},
-            'size_horizontal': 1,
-            'min_y': -64,
-            'height': 384,
-            'sampling': {'xz_scale': 0.9999999814507745, 'y_scale': 0.9999999814507745, 'xz_factor': 80.0, 'y_factor': 160.0}
-        },
-        'default_block': {'Name': 'minecraft:stone'}
-    })
-
-    # Surface Builders
-    rm.surface_builder('badlands', wg.configure('tfc:badlands'))
-    rm.surface_builder('volcanic', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:normal'}))
-    rm.surface_builder('normal', wg.configure('tfc:normal'))
-    rm.surface_builder('icebergs', wg.configure('tfc:icebergs'))
-    rm.surface_builder('mountains', wg.configure('tfc:mountains'))
-    rm.surface_builder('volcanic_mountains', wg.configure('tfc:with_volcanoes', {'parent': 'tfc:mountains'}))
-    rm.surface_builder('shore', wg.configure('tfc:shore'))
-
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {
         'probability': 0.3,

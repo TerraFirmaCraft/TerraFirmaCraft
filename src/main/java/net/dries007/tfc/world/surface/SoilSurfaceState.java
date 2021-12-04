@@ -4,14 +4,13 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.surfacebuilder;
+package net.dries007.tfc.world.surface;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
@@ -38,8 +37,11 @@ public class SoilSurfaceState implements SurfaceState
     }
 
     @Override
-    public BlockState state(RockData rockData, int x, int y, int z, float temperature, float rainfall, boolean salty)
+    public BlockState getState(SurfaceBuilderContext context)
     {
+        final BlockPos pos = context.pos();
+        final float rainfall = context.rainfall();
+
         if (rainfall < RAINFALL_SANDY)
         {
             if (rainfall > RAINFALL_SAND_SANDY_MIX)
@@ -50,13 +52,13 @@ public class SoilSurfaceState implements SurfaceState
             else if (rainfall > RAINFALL_SAND)
             {
                 // Sandy - Sand Transition Zone
-                float noise = patchNoise.noise(x, z);
-                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sand(rockData, x, y, z) : soil(SoilBlockType.Variant.SANDY_LOAM);
+                float noise = patchNoise.noise(pos.getX(), pos.getZ());
+                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? context.getRock().sand().defaultBlockState() : soil(SoilBlockType.Variant.SANDY_LOAM);
             }
             else
             {
                 // Sand
-                return sand(rockData, x, y, z);
+                return context.getRock().sand().defaultBlockState();
             }
         }
         else if (rainfall > RAINFALL_SILTY)
@@ -69,7 +71,7 @@ public class SoilSurfaceState implements SurfaceState
             else if (rainfall < RAINFALL_SILT)
             {
                 // Silty / Silt Transition Zone
-                float noise = patchNoise.noise(x, z);
+                float noise = patchNoise.noise(pos.getX(), pos.getZ());
                 return soil(noise > 0 ? SoilBlockType.Variant.SILTY_LOAM : SoilBlockType.Variant.SILT);
             }
             else
@@ -81,29 +83,23 @@ public class SoilSurfaceState implements SurfaceState
         else
         {
             // Sandy / Silty Transition Zone
-            float noise = patchNoise.noise(x, z);
+            float noise = patchNoise.noise(pos.getX(), pos.getZ());
             return soil(noise > 0 ? SoilBlockType.Variant.SILTY_LOAM : SoilBlockType.Variant.SANDY_LOAM);
         }
     }
 
     @Override
-    public void place(SurfaceBuilderContext context, BlockPos pos, int x, int z, RockData rockData, float temperature, float rainfall, boolean salty)
+    public void setState(SurfaceBuilderContext context)
     {
-        SurfaceState.super.place(context, pos, x, z, rockData, temperature, rainfall, salty);
+        context.chunk().setBlockState(context.pos(), getState(context), false);
         if (soil == SoilBlockType.GRASS)
         {
-            context.getChunk().markPosForPostprocessing(pos);
+            context.chunk().markPosForPostprocessing(context.pos());
         }
-    }
-
-    private BlockState sand(RockData rockData, int x, int y, int z)
-    {
-        return rockData.getRock(x, y, z).sand().defaultBlockState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)
     {
         return TFCBlocks.SOIL.get(soil).get(variant).get().defaultBlockState();
     }
-
 }

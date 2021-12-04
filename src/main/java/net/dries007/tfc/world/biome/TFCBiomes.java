@@ -23,6 +23,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
+import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.world.biome.BiomeBuilder.builder;
@@ -40,51 +44,51 @@ public final class TFCBiomes
     private static final Map<ResourceKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
-    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
-    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -30, -16)).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
+    public static final BiomeVariants OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).surface(NormalSurfaceBuilder.INSTANCE).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
+    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(NormalSurfaceBuilder.INSTANCE).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
+    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -30, -16)).surface(NormalSurfaceBuilder.INSTANCE).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).surface(NormalSurfaceBuilder.INSTANCE).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 
     // Low biomes
-    public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
-    public static final BiomeVariants HILLS = register("hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 16)).types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
-    public static final BiomeVariants LOWLANDS = register("lowlands", builder().heightmap(BiomeNoise::lowlands).types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
-    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
+    public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
+    public static final BiomeVariants HILLS = register("hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 16)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
+    public static final BiomeVariants LOWLANDS = register("lowlands", builder().heightmap(BiomeNoise::lowlands).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
+    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
-    public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
-    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
+    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder::new).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
+    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
 
     // High biomes
-    public static final BiomeVariants MOUNTAINS = register("mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
-    public static final BiomeVariants OCEANIC_MOUNTAINS = register("oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).salty().types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
-    public static final BiomeVariants VOLCANIC_MOUNTAINS = register("volcanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).volcanoes(5, 25, 50, 40).types(BiomeDictionary.Type.MOUNTAIN)); // Volcanic mountains - slightly smaller, but with plentiful tall volcanoes
-    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).salty().volcanoes(1, -12, 50, 20).types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
+    public static final BiomeVariants MOUNTAINS = register("mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
+    public static final BiomeVariants OCEANIC_MOUNTAINS = register("oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).salty().types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants VOLCANIC_MOUNTAINS = register("volcanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(5, 25, 50, 40).types(BiomeDictionary.Type.MOUNTAIN)); // Volcanic mountains - slightly smaller, but with plentiful tall volcanoes
+    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(MountainSurfaceBuilder.INSTANCE).salty().volcanoes(1, -12, 50, 20).types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", builder().heightmap(BiomeNoise::shore).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.BEACH)); // Standard shore / beach. Material will vary based on location
+    public static final BiomeVariants SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.INSTANCE).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.BEACH)); // Standard shore / beach. Material will vary based on location
 
     // Water
-    public static final BiomeVariants LAKE = register("lake", builder().heightmap(BiomeNoise::lake).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants RIVER = register("river", builder().noise(BiomeNoise::riverSampler).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants LAKE = register("lake", builder().heightmap(BiomeNoise::lake).surface(NormalSurfaceBuilder.INSTANCE).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants RIVER = register("river", builder().noise(BiomeNoise::riverSampler).surface(NormalSurfaceBuilder.INSTANCE).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.RIVER));
 
     // Mountain Fresh water / carving biomes
-    public static final BiomeVariants MOUNTAIN_RIVER = register("mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants OLD_MOUNTAIN_RIVER = register("old_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants OCEANIC_MOUNTAIN_RIVER = register("oceanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).carving(BiomeNoise::undergroundRivers).salty().group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants VOLCANIC_MOUNTAIN_RIVER = register("volcanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).volcanoes(5, 25, 50, 40).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register("volcanic_oceanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).volcanoes(1, -12, 50, 20).carving(BiomeNoise::undergroundRivers).salty().group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants MOUNTAIN_RIVER = register("mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants OLD_MOUNTAIN_RIVER = register("old_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants OCEANIC_MOUNTAIN_RIVER = register("oceanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundRivers).salty().group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants VOLCANIC_MOUNTAIN_RIVER = register("volcanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(5, 25, 50, 40).carving(BiomeNoise::undergroundRivers).group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register("volcanic_oceanic_mountain_river", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(1, -12, 50, 20).carving(BiomeNoise::undergroundRivers).salty().group(BiomeVariants.Group.RIVER).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
 
-    public static final BiomeVariants MOUNTAIN_LAKE = register("mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants OLD_MOUNTAIN_LAKE = register("old_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants OCEANIC_MOUNTAIN_LAKE = register("oceanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).carving(BiomeNoise::undergroundLakes).salty().group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants VOLCANIC_MOUNTAIN_LAKE = register("volcanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).volcanoes(5, 25, 50, 40).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
-    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register("volcanic_oceanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).volcanoes(1, -12, 50, 20).carving(BiomeNoise::undergroundLakes).salty().group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants MOUNTAIN_LAKE = register("mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants OLD_MOUNTAIN_LAKE = register("old_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants OCEANIC_MOUNTAIN_LAKE = register("oceanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundLakes).salty().group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants VOLCANIC_MOUNTAIN_LAKE = register("volcanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(5, 25, 50, 40).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register("volcanic_oceanic_mountain_lake", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(1, -12, 50, 20).carving(BiomeNoise::undergroundLakes).salty().group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER));
 
-    public static final BiomeVariants PLATEAU_LAKE = register("plateau_lake", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.RIVER));
+    public static final BiomeVariants PLATEAU_LAKE = register("plateau_lake", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundLakes).group(BiomeVariants.Group.LAKE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.RIVER));
 
 
     private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(16); // Faster route from biome -> extension
@@ -190,20 +194,16 @@ public final class TFCBiomes
     private static void registerDefaultBiomeDictionaryTypes(ResourceKey<Biome> key, BiomeTemperature temp, BiomeRainfall rain)
     {
         BiomeDictionary.addTypes(key, BiomeDictionary.Type.OVERWORLD);
-        if (temp == BiomeTemperature.FROZEN)
-        {
-            BiomeDictionary.addTypes(key, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD);
-        }
-        else if (temp == BiomeTemperature.COLD)
+        if (temp == BiomeTemperature.COLD)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.COLD);
         }
-        else if (temp == BiomeTemperature.WARM || temp == BiomeTemperature.LUKEWARM)
+        else if (temp == BiomeTemperature.WARM)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.HOT);
         }
 
-        if (rain == BiomeRainfall.WET || rain == BiomeRainfall.DAMP)
+        if (rain == BiomeRainfall.WET)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.WET);
         }
@@ -211,20 +211,16 @@ public final class TFCBiomes
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.DRY);
         }
-        else if (rain == BiomeRainfall.ARID)
-        {
-            BiomeDictionary.addTypes(key, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SANDY);
-        }
 
         if (rain == BiomeRainfall.WET && temp == BiomeTemperature.WARM)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.JUNGLE);
         }
-        else if (rain == BiomeRainfall.ARID && temp == BiomeTemperature.WARM)
+        else if (rain == BiomeRainfall.DRY && temp == BiomeTemperature.WARM)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.SAVANNA);
         }
-        else if (temp == BiomeTemperature.COLD && rain != BiomeRainfall.ARID)
+        else if (temp == BiomeTemperature.COLD && rain != BiomeRainfall.DRY)
         {
             BiomeDictionary.addTypes(key, BiomeDictionary.Type.CONIFEROUS);
         }

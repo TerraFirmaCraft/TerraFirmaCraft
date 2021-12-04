@@ -4,51 +4,53 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.surfacebuilder;
-
-import java.util.Random;
-import java.util.stream.IntStream;
+package net.dries007.tfc.world.surface.builder;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.material.Material;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
+import net.dries007.tfc.world.surface.SurfaceStates;
 
-/**
- * Modified from {@link net.minecraft.world.level.levelgen.surfacebuilders.FrozenOceanSurfaceBuilder}
- */
-public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderBaseConfiguration>
+public class IcebergOceanSurfaceBuilder implements SurfaceBuilder
 {
-    private PerlinSimplexNoise icebergNoise;
-    private PerlinSimplexNoise icebergRoofNoise;
+    public static final SurfaceBuilderFactory INSTANCE = IcebergOceanSurfaceBuilder::new;
 
-    public IcebergOceanSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> codec)
+    private final PerlinSimplexNoise icebergNoise;
+    private final PerlinSimplexNoise icebergRoofNoise;
+
+    public IcebergOceanSurfaceBuilder(long seed)
     {
-        super(codec);
+        WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(seed));
+
+        this.icebergNoise = new PerlinSimplexNoise(random, ImmutableList.of(-3, -2, -1, 0));
+        this.icebergRoofNoise = new PerlinSimplexNoise(random, ImmutableList.of(0));
     }
 
     @Override
-    public void apply(SurfaceBuilderContext context, Biome biome, int x, int z, int startHeight, int minSurfaceHeight, double noise, double slope, float temperature, float rainfall, boolean saltWater, SurfaceBuilderBaseConfiguration config)
+    public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
+        final int x = context.pos().getX(), z = context.pos().getZ();
+        final double noise = 0; // todo: better noise?
+
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
 
         final int seaLevel = context.getSeaLevel();
-        final Random random = context.getRandom();
+        final RandomSource random = context.getRandom();
 
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;
 
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(x, startHeight, z);
-        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(z, seaLevel, context.getChunkData().getAverageTemp(mutablePos), 1);
+        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(z, seaLevel, context.averageTemperature(), 1);
 
         double thresholdTemperature = -1f;
         double cutoffTemperature = 3f;
@@ -80,9 +82,6 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
             }
         }
 
-        final int localX = x & 15;
-        final int localZ = z & 15;
-
         SurfaceState underState = SurfaceStates.LOW_UNDERWATER;
         int surfaceDepth = -1;
         int currentSnowLayers = 0;
@@ -93,22 +92,19 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
         boolean firstLayer = false;
         SurfaceState surfaceState = SurfaceStates.RAW;
 
-        mutablePos.set(localX, startHeight, localZ);
-        for (int y = Math.max(startHeight, (int) icebergMaxY + 1); y >= 0; --y)
+        for (int y = Math.max(startY, (int) icebergMaxY + 1); y >= 0; --y)
         {
-            mutablePos.setY(y);
-
-            BlockState stateAt = context.getBlockState(mutablePos);
+            BlockState stateAt = context.getBlockState(y);
 
             // Place packed ice, both above and below water
             if (stateAt.isAir() && y < (int) icebergMaxY && random.nextDouble() > 0.01D)
             {
-                context.setBlockState(mutablePos, packedIce);
+                context.setBlockState(y, packedIce);
                 stateAt = packedIce;
             }
             else if (stateAt.getMaterial() == Material.WATER && y > (int) icebergMinY && y < seaLevel && icebergMinY != 0.0D && random.nextDouble() > 0.15D)
             {
-                context.setBlockState(mutablePos, packedIce);
+                context.setBlockState(y, packedIce);
                 stateAt = packedIce;
             }
 
@@ -124,40 +120,32 @@ public class IcebergOceanSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuil
                     // Reached surface. Place top state and switch to subsurface layers
                     surfaceY = y;
                     firstLayer = true;
-                    surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 3, 0.1, 0);
+                    surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 3, 0.1, 0);
                     surfaceState = SurfaceStates.TOP_UNDERWATER;
                     if (surfaceDepth > 0)
                     {
-                        context.setBlockState(mutablePos, surfaceState, temperature, rainfall, saltWater);
+                        context.setBlockState(y, surfaceState);
                     }
                 }
                 else if (surfaceDepth > 0)
                 {
                     // Subsurface layers
                     surfaceDepth--;
-                    context.setBlockState(mutablePos, surfaceState, temperature, rainfall, saltWater);
+                    context.setBlockState(y, surfaceState);
                     if (surfaceDepth == 0 && firstLayer)
                     {
                         // Next subsurface layer
                         firstLayer = false;
-                        surfaceDepth = calculateAltitudeSlopeSurfaceDepth(surfaceY, slope, 7, 0.3, 0);
+                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 7, 0.3, 0);
                         surfaceState = underState;
                     }
                 }
             }
             else if (stateAt.is(Blocks.PACKED_ICE) && currentSnowLayers <= maximumSnowLayers && y > minimumSnowY)
             {
-                context.setBlockState(mutablePos, snowBlock);
+                context.setBlockState(y, snowBlock);
                 ++currentSnowLayers;
             }
         }
-    }
-
-    @Override
-    protected void initSeed(long seed)
-    {
-        WorldgenRandom random = new WorldgenRandom(seed);
-        this.icebergNoise = new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
-        this.icebergRoofNoise = new PerlinSimplexNoise(random, ImmutableList.of(0));
     }
 }

@@ -22,6 +22,8 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
+import net.dries007.tfc.world.surface.builder.VolcanoesSurfaceBuilder;
 
 public class BiomeBuilder
 {
@@ -34,6 +36,7 @@ public class BiomeBuilder
 
     @Nullable private LongFunction<Noise2D> heightNoiseFactory;
     @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
+    @Nullable private SurfaceBuilderFactory surfaceBuilderFactory;
 
     private BiomeVariants.Group group;
     private boolean salty;
@@ -55,6 +58,12 @@ public class BiomeBuilder
     {
         this.heightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+        return this;
+    }
+
+    public BiomeBuilder surface(SurfaceBuilderFactory surfaceBuilderFactory)
+    {
+        this.surfaceBuilderFactory = surfaceBuilderFactory;
         return this;
     }
 
@@ -96,10 +105,15 @@ public class BiomeBuilder
         this.volcanoFrequency = frequency;
         this.volcanoBasaltHeight = TFCChunkGenerator.SEA_LEVEL_Y + volcanoBasaltHeight;
 
-        Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
+        assert heightNoiseFactory != null : "volcanoes must be called after setting a heightmap";
+        assert surfaceBuilderFactory != null : "volcanoes must be called after setting a surface builder";
+
         final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
         this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
         this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+
+        this.surfaceBuilderFactory = VolcanoesSurfaceBuilder.create(surfaceBuilderFactory);
+
         return this;
     }
 
@@ -110,6 +124,6 @@ public class BiomeBuilder
 
     public BiomeVariants build()
     {
-        return new BiomeVariants(Objects.requireNonNull(noiseFactory), group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        return new BiomeVariants(Objects.requireNonNull(noiseFactory), Objects.requireNonNull(surfaceBuilderFactory), group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
     }
 }

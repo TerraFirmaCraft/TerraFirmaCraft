@@ -61,7 +61,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.settings.RockSettings;
-import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -97,7 +96,6 @@ public final class TerraFirmaCraft
         TFCBiomes.BIOMES.register(bus);
         TFCFeatures.FEATURES.register(bus);
         // TFCDecorators.PLACEMENT_MODIFIERS.register(bus); // todo: Forge converts this to a registry
-        TFCSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         TFCCarvers.CARVERS.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
 

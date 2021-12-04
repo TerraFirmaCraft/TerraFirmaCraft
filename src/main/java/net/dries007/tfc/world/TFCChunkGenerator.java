@@ -61,7 +61,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.river.Flow;
-import net.dries007.tfc.world.surfacebuilder.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceManager;
 
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
@@ -97,8 +98,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     });
 
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
-
-    private static final boolean ENABLE_SLOPE_VISUALIZATION = false;
 
     public static Kernel makeKernel(ToDoubleBiFunction<Integer, Integer> func, int radius)
     {
@@ -209,6 +208,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final Cavifier cavifier;
     private final NoodleCavifier noodleCavifier;
 
+    private final SurfaceManager surfaceManager;
+
     private final FastConcurrentCache<AquiferExtension> aquiferCache;
 
     @Nullable private NoiseGeneratorSettings cachedSettings;
@@ -254,6 +255,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         this.cavifier = new Cavifier(random, noiseSettings.minY() / this.cellHeight);
         this.noodleCavifier = new NoodleCavifier(seed);
+
+        this.surfaceManager = new SurfaceManager(seed);
 
         this.aquiferCache = new FastConcurrentCache<>(256);
     }
@@ -425,24 +428,20 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ProtoChunk chunk = (ProtoChunk) chunkIn;
         final LevelAccessor level = (LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
-        final WorldgenRandom random = new WorldgenRandom();
+        final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
 
         final Biome[] localBiomes = new Biome[16 * 16];
         final int[] surfaceHeightMap = new int[16 * 16];
 
-        final ChunkBiomeContainer biomeContainer = chunk.getBiomes();
-        assert biomeContainer != null;
         final Sampler<Biome> biomeSampler = (x, z) -> {
             // Use biomes from the local chunk if possible
             if ((x >> 4) == chunkPos.x && (z >> 4) == chunkPos.z)
             {
-                return biomeContainer.getNoiseBiome(x >> 2, 0, z >> 2);
+                return chunk.getNoiseBiome(x >> 2, 0, z >> 2);
             }
             return customBiomeSource.getNoiseBiomeIgnoreClimate(x >> 2, z >> 2);
         };
-
-        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
         // Set a reference to the surface height map, which the helper will modify later
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
@@ -452,13 +451,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final FillFromNoiseHelper helper = new FillFromNoiseHelper(level, chunk, biomeWeights, surfaceHeightMap, localBiomes);
 
         helper.fillFromNoise();
-        final double[] slopeMap = helper.buildSlopeMap();
 
-        buildSurfaceWithContext(level, chunk, localBiomes, slopeMap, random);
-        if (ENABLE_SLOPE_VISUALIZATION)
-        {
-            slopeVisualization(chunk, slopeMap, chunkX, chunkZ);
-        }
+        surfaceManager.buildSurface(level, chunk, getRockLayerSettings(), chunkDataProvider.get(chunk), localBiomes, helper.buildSlopeMap(), random, getSeaLevel(), minY);
 
         return CompletableFuture.completedFuture(chunk);
     }
@@ -491,28 +485,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public boolean hasStronghold(ChunkPos pos)
     {
         return false;
-    }
-
-    /**
-     * Samples the 'slope' value for a given coordinate within the chunk
-     * Expected values are in [0, 13] but are practically unbounded above
-     */
-    @SuppressWarnings("PointlessArithmeticExpression")
-    protected double sampleSlope(double[] slopeMap, int x, int z)
-    {
-        // compute slope contribution from lerp of corners
-        final int offsetX = x + 2, offsetZ = z + 2;
-        final int cellX = offsetX >> 2, cellZ = offsetZ >> 2;
-        final double deltaX = ((double) offsetX - (cellX << 2)) * 0.25, deltaZ = ((double) offsetZ - (cellZ << 2)) * 0.25;
-
-        double slope = 0;
-        slope += slopeMap[(cellX + 0) + 6 * (cellZ + 0)] * (1 - deltaX) * (1 - deltaZ);
-        slope += slopeMap[(cellX + 1) + 6 * (cellZ + 0)] * (deltaX) * (1 - deltaZ);
-        slope += slopeMap[(cellX + 0) + 6 * (cellZ + 1)] * (1 - deltaX) * (deltaZ);
-        slope += slopeMap[(cellX + 1) + 6 * (cellZ + 1)] * (deltaX) * (deltaZ);
-
-        slope *= 0.8f;
-        return slope;
     }
 
     /**
@@ -626,40 +598,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     /**
-     * Builds the surface, with a couple modifications from vanilla
-     * - Passes additional context to the surface builder (if desired), such as world, and slope data
-     * - Picks the biome from the accurate biomes computed in the noise step, rather than the chunk biome magnifier.
-     */
-    protected void buildSurfaceWithContext(LevelAccessor world, ProtoChunk chunk, Biome[] accurateChunkBiomes, double[] slopeMap, Random random)
-    {
-        final ChunkPos chunkPos = chunk.getPos();
-        final ChunkData chunkData = chunkDataProvider.get(chunk);
-        final NoiseGeneratorSettings settings = noiseGeneratorSettings();
-        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, settings, getRockLayerSettings(), getSeaLevel(), minY);
-        for (int x = 0; x < 16; ++x)
-        {
-            for (int z = 0; z < 16; ++z)
-            {
-                final int posX = chunkPos.getMinBlockX() + x;
-                final int posZ = chunkPos.getMinBlockZ() + z;
-                final int startHeight = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) + 1;
-                final double noise = surfaceDepthNoise.getSurfaceNoiseValue(posX * 0.0625, posZ * 0.0625, 0.0625, 0.0625) * 15;
-                final double slope = sampleSlope(slopeMap, x, z);
-                final Biome biome = accurateChunkBiomes[x + 16 * z];
-                final ConfiguredSurfaceBuilder<?> surfaceBuilder = biome.getGenerationSettings().getSurfaceBuilder().get();
-
-                context.apply(surfaceBuilder, biome, posX, posZ, startHeight, noise, slope);
-            }
-        }
-    }
-
-    /**
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock
      * Writes directly to the bottom chunk section for better efficiency
      */
     protected void makeBedrock(ProtoChunk chunk, Random random)
     {
-        final LevelChunkSection bottomSection = chunk.getOrCreateSection(0);
+        final LevelChunkSection bottomSection = chunk.getSection(0);
         final BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
 
         for (int x = 0; x < 16; x++)
@@ -680,37 +624,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                         }
                     }
                 }
-            }
-        }
-    }
-
-    protected void slopeVisualization(ChunkAccess chunk, double[] slopeMap, int chunkX, int chunkZ)
-    {
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final Block[] meter = new Block[] {
-            Blocks.WHITE_STAINED_GLASS,
-            Blocks.LIGHT_GRAY_STAINED_GLASS,
-            Blocks.LIGHT_BLUE_STAINED_GLASS,
-            Blocks.BLUE_STAINED_GLASS,
-            Blocks.CYAN_STAINED_GLASS,
-            Blocks.GREEN_STAINED_GLASS,
-            Blocks.LIME_STAINED_GLASS,
-            Blocks.YELLOW_STAINED_GLASS,
-            Blocks.ORANGE_STAINED_GLASS,
-            Blocks.RED_STAINED_GLASS,
-            Blocks.MAGENTA_STAINED_GLASS,
-            Blocks.PINK_STAINED_GLASS
-        };
-
-        for (int x = 0; x < 16; x++)
-        {
-            for (int z = 0; z < 16; z++)
-            {
-                int y = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
-                mutablePos.set(chunkX + x, y, chunkZ + z);
-                double slope = sampleSlope(slopeMap, x, z);
-                int slopeIndex = Mth.clamp((int) slope, 0, meter.length - 1);
-                chunk.setBlockState(mutablePos, meter[slopeIndex].defaultBlockState(), false);
             }
         }
     }

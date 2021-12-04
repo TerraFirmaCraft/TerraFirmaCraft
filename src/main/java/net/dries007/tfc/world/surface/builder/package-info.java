@@ -7,8 +7,9 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package net.dries007.tfc.world.surfacebuilder;
+package net.dries007.tfc.world.surface.builder;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

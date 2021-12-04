@@ -4,13 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.surfacebuilder;
+package net.dries007.tfc.world.surface;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.surface.SurfaceState;
 
 public class UnderwaterSurfaceState implements SurfaceState
 {
@@ -25,17 +27,18 @@ public class UnderwaterSurfaceState implements SurfaceState
     }
 
     @Override
-    public BlockState state(RockData rockData, int x, int y, int z, float temperature, float rainfall, boolean salty)
+    public BlockState getState(SurfaceBuilderContext context)
     {
-        final float variantValue = variantNoise.noise(x, z);
+        final BlockPos pos = context.pos();
+        final float variantValue = variantNoise.noise(pos.getX(), pos.getZ());
         if (variantValue > 0)
         {
             if (deep)
             {
-                return rockData.getRock(x, y, z).sandstone().defaultBlockState(); // Sandstone
+                return context.getRock().sandstone().defaultBlockState(); // Sandstone
             }
-            return rockData.getRock(x, y, z).sand().defaultBlockState(); // Sand
+            return context.getRock().sand().defaultBlockState(); // Sand
         }
-        return rockData.getRock(x, y, z).gravel().defaultBlockState(); // Gravel
+        return context.getRock().gravel().defaultBlockState(); // Gravel
     }
 }

@@ -13,6 +13,8 @@ import java.util.function.LongFunction;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
+import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 
 /**
  * This is a version of {@link RegistryObject} for biomes.
@@ -24,15 +26,17 @@ public class BiomeVariants
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, BiomeExtension>> extensions;
     private final LongFunction<BiomeNoiseSampler> noiseFactory;
+    private final SurfaceBuilderFactory surfaceBuilderFactory;
     private final Group group;
     private final boolean salty;
     private final boolean volcanic;
     private final int volcanoFrequency;
     private final int volcanoBasaltHeight;
 
-    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
+        this.surfaceBuilderFactory = surfaceBuilderFactory;
         this.group = group;
         this.salty = salty;
         this.volcanic = volcanic;
@@ -84,6 +88,11 @@ public class BiomeVariants
     public BiomeNoiseSampler createNoiseSampler(long seed)
     {
         return noiseFactory.apply(seed);
+    }
+
+    public SurfaceBuilder createSurfaceBuilder(long seed)
+    {
+        return surfaceBuilderFactory.apply(seed);
     }
 
     public void put(BiomeTemperature temperature, BiomeRainfall rainfall, BiomeExtension extension)
