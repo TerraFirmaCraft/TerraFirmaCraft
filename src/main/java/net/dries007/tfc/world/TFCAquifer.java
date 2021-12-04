@@ -25,7 +25,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
  * - Some of the constants have been unpicked, parameters mapped, commented, etc.
  * - It stores the chunk position it was sourced from.
  */
-public class TFCAquifer implements AquiferExtension
+public class TFCAquifer
 {
     private static final int X_RANGE = 10;
     private static final int Y_RANGE = 9;

@@ -16,7 +16,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.RockData;
 
-public class DefaultBaseBlockSource implements BaseBlockSource
+public class ChunkBaseBlockSource
 {
     private static int index(int x, int z)
     {
@@ -31,7 +31,7 @@ public class DefaultBaseBlockSource implements BaseBlockSource
 
     private final BlockState freshWater = Blocks.WATER.defaultBlockState(), saltWater = TFCBlocks.SALT_WATER.get().defaultBlockState();
 
-    public DefaultBaseBlockSource(LevelAccessor level, ChunkPos pos, RockData rockData, Sampler<Biome> biomeSampler)
+    public ChunkBaseBlockSource(LevelAccessor level, ChunkPos pos, RockData rockData, Sampler<Biome> biomeSampler)
     {
         this.level = level;
         this.chunkX = pos.getMinBlockX();
@@ -41,13 +41,11 @@ public class DefaultBaseBlockSource implements BaseBlockSource
         this.cachedFluidStates = new BlockState[16 * 16];
     }
 
-    @Override
     public BlockState getBaseBlock(int x, int y, int z)
     {
         return rockData.getRock(chunkX | (x & 15), y, chunkZ | (z & 15)).raw().defaultBlockState();
     }
 
-    @Override
     public BlockState modifyFluid(BlockState fluidOrAir, int x, int z)
     {
         if (fluidOrAir == freshWater)

@@ -11,7 +11,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Aquifer;
 
-import net.dries007.tfc.world.BaseBlockSource;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -33,16 +32,10 @@ public interface ChunkGeneratorExtension
         return getBiomeSource().getRockLayerSettings();
     }
 
-    Aquifer getAquifer(ChunkAccess chunk);
-
-    BaseBlockSource createBaseStoneSource(LevelAccessor level, ChunkAccess chunk);
-
-    /**
-     * Override in {@link ChunkGenerator} to return a narrower type
-     *
-     * @return The biome provider / source for this generator
-     */
-    BiomeSourceExtension getBiomeSource();
+    default BiomeSourceExtension getBiomeSource()
+    {
+        return (BiomeSourceExtension) self().getBiomeSource();
+    }
 
     default ChunkGenerator self()
     {

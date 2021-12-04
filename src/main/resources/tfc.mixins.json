@@ -14,7 +14,6 @@
     "ServerPlayerGameModeMixin",
     "SnowLayerBlockMixin",
     "WorldgenRandomMixin",
-    "accessor.ChunkGeneratorAccessor",
     "accessor.FlowingFluidAccessor",
     "accessor.GameRulesAccessor",
     "accessor.GameRulesTypeAccessor",

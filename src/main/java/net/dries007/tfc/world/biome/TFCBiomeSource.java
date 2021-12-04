@@ -33,7 +33,7 @@ import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
-public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension
+public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension, RiverSource
 {
     public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),

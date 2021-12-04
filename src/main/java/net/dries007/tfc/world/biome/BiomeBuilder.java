@@ -124,6 +124,9 @@ public class BiomeBuilder
 
     public BiomeVariants build()
     {
-        return new BiomeVariants(Objects.requireNonNull(noiseFactory), Objects.requireNonNull(surfaceBuilderFactory), group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        assert noiseFactory != null : "missing noise / heightmap";
+        assert surfaceBuilderFactory != null : "missing surface builder";
+
+        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
     }
 }
