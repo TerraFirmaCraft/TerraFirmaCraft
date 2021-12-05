@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
 import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.placement.ClimatePlacement;
 
 /**
  * A data driven way to make spawning conditions for animals player configurable.
@@ -20,10 +21,12 @@ public class Fauna
 {
     public static final RegisteredDataManager<Fauna> MANAGER = new RegisteredDataManager<>(Fauna::new, Fauna::new, "fauna", "fauna");
 
+    private static final ClimatePlacement DEFAULT_CLIMATE = new ClimatePlacement(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, ForestType.NONE, ForestType.OLD_GROWTH, false);
+
     private final ResourceLocation id;
     private final int chance;
     private final int distanceBelowSeaLevel;
-    private final ClimateConfig climateConfig;
+    private final ClimatePlacement climate;
     private final boolean solidGround;
 
     public Fauna(ResourceLocation id)
@@ -31,7 +34,7 @@ public class Fauna
         this.id = id;
         this.chance = 1;
         this.distanceBelowSeaLevel = -1;
-        this.climateConfig = new ClimateConfig(0, 0, 0, 0, ForestType.NONE, ForestType.NONE, false);
+        this.climate = DEFAULT_CLIMATE;
         this.solidGround = false;
     }
 
@@ -40,7 +43,7 @@ public class Fauna
         this.id = id;
         this.chance = JsonHelpers.getAsInt(json, "chance", 1);
         this.distanceBelowSeaLevel = JsonHelpers.getAsInt(json, "distance_below_sea_level", -1);
-        this.climateConfig = JsonHelpers.decodeCodec(json, ClimateConfig.CODEC, "climate");
+        this.climate = JsonHelpers.decodeCodec(json, ClimatePlacement.CODEC, "climate");
         this.solidGround = JsonHelpers.getAsBoolean(json, "solid_ground", false);
     }
 
@@ -59,9 +62,9 @@ public class Fauna
         return distanceBelowSeaLevel;
     }
 
-    public ClimateConfig getClimateConfig()
+    public ClimatePlacement getClimate()
     {
-        return climateConfig;
+        return climate;
     }
 
     public boolean isSolidGround()

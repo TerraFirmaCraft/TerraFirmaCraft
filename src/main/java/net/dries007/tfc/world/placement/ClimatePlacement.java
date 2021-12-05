@@ -58,10 +58,10 @@ public class ClimatePlacement extends PlacementModifier
     @Override
     public PlacementModifierType<?> type()
     {
-        return null;
+        return TFCPlacements.CLIMATE.get();
     }
 
-    private boolean isValid(ChunkData data, BlockPos pos, Random random)
+    public boolean isValid(ChunkData data, BlockPos pos, Random random)
     {
         final float temperature = data.getAverageTemp(pos);
         final float rainfall = data.getRainfall(pos);

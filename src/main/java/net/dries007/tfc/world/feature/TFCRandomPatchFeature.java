@@ -23,9 +23,10 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
+ * todo: is this needed?
  * Various extensions to {@link net.minecraft.world.level.levelgen.feature.RandomPatchFeature}
  */
-public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
+public class TFCRandomPatchFeature {} /* extends Feature<TFCRandomPatchConfig>
 {
     public TFCRandomPatchFeature(Codec<TFCRandomPatchConfig> codec)
     {
@@ -108,4 +109,4 @@ public class TFCRandomPatchFeature extends Feature<TFCRandomPatchConfig>
         }
         return placed > 0;
     }
-}
+}*/

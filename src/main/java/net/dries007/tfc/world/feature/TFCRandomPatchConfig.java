@@ -24,18 +24,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 /**
+ * todo: is this even nessecary anymore? or can we use vanilla random patch with some placed features?
  * Modified from {@link net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration}
  */
-public class TFCRandomPatchConfig implements FeatureConfiguration
+public class TFCRandomPatchConfig {}/* implements FeatureConfiguration
 {
     public static final Codec<TFCRandomPatchConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         PlacedFeature.CODEC.fieldOf("feature").forGetter(C -> c.feature),
-        Codecs.BLOCK_STATE.listOf().fieldOf("whitelist").forGetter(c -> c.whitelist.stream().map(Block::defaultBlockState).collect(Collectors.toList())),
-        Codecs.BLOCK_STATE.listOf().fieldOf("blacklist").forGetter(c -> ImmutableList.copyOf(c.blacklist)),
         Codecs.NONNEGATIVE_INT.optionalFieldOf("tries", 64).forGetter(c -> c.tries),
-        Codec.BOOL.optionalFieldOf("use_density", false).forGetter(c -> c.useDensity),
         Codec.INT.optionalFieldOf("xz_spread", 7).forGetter(c -> c.xSpread),
         Codec.INT.optionalFieldOf("y_spread", 3).forGetter(c -> c.ySpread),
+        Codec.BOOL.optionalFieldOf("use_density", false).forGetter(c -> c.useDensity),
         Codec.BOOL.optionalFieldOf("can_replace_air", true).forGetter(c -> c.canReplaceAir),
         Codec.BOOL.optionalFieldOf("can_replace_water", false).forGetter(c -> c.canReplaceWater),
         Codec.BOOL.optionalFieldOf("can_replace_surface_water", false).forGetter(c -> c.canReplaceSurfaceWater),
@@ -46,14 +45,13 @@ public class TFCRandomPatchConfig implements FeatureConfiguration
     ).apply(instance, TFCRandomPatchConfig::new));
 
     public final BlockStateProvider stateProvider;
-    public final BlockPlacer blockPlacer;
-    public final Set<Block> whitelist;
-    public final Set<BlockState> blacklist;
+    public final PlacedFeature feature;
     public final int tries;
     public final boolean useDensity;
     public final int xSpread;
     public final int ySpread;
     public final int zSpread;
+
     public final boolean canReplaceAir;
     public final boolean canReplaceWater;
     public final boolean canReplaceSurfaceWater;
@@ -82,3 +80,4 @@ public class TFCRandomPatchConfig implements FeatureConfiguration
         this.onlyUnderground = onlyUnderground;
     }
 }
+*/

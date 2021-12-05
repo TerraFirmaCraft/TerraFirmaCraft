@@ -76,7 +76,7 @@ public class Faunas
             }
 
             final ChunkData data = ChunkData.get(level, pos);
-            if (!fauna.getClimateConfig().isValid(data, pos, rand))
+            if (!fauna.getClimate().isValid(data, pos, rand))
             {
                 return false;
             }

@@ -49,7 +49,7 @@ public class TFCFeatures
     public static final RegistryObject<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);
     public static final RegistryObject<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoneFeatureConfiguration.CODEC);
 
-    public static final RegistryObject<TFCRandomPatchFeature> RANDOM_PATCH = register("random_patch", TFCRandomPatchFeature::new, TFCRandomPatchConfig.CODEC);
+    // public static final RegistryObject<TFCRandomPatchFeature> RANDOM_PATCH = register("random_patch", TFCRandomPatchFeature::new, TFCRandomPatchConfig.CODEC);
 
     public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
     public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, ColumnPlantConfig.CODEC);
