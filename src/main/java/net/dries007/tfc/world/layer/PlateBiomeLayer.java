@@ -32,13 +32,13 @@ public enum PlateBiomeLayer implements CenterTransformLayer
                 return DEEP_OCEAN;
             case CONTINENTAL_LOW:
                 // Normal biomes
-                return CONTINENT_LOW_BIOMES[context.nextInt(CONTINENT_LOW_BIOMES.length)];
+                return context.choose(CONTINENT_LOW_BIOMES);
             case CONTINENTAL_MID:
                 // Mid scale height biomes
-                return CONTINENT_MID_BIOMES[context.nextInt(CONTINENT_MID_BIOMES.length)];
+                return context.choose(CONTINENT_MID_BIOMES);
             case CONTINENTAL_HIGH:
                 // High height biomes
-                return CONTINENT_HIGH_BIOMES[context.nextInt(CONTINENT_HIGH_BIOMES.length)];
+                return context.choose(CONTINENT_HIGH_BIOMES);
             case OCEAN_OCEAN_DIVERGING:
                 // Oceanic diverging - new plate being generated
                 // Return a marker that will get replaced with sporadic flooded mountains (non-volcanic) or ocean
@@ -55,13 +55,13 @@ public enum PlateBiomeLayer implements CenterTransformLayer
                 return DEEP_OCEAN_TRENCH;
             case OCEAN_CONTINENT_CONVERGING_UPPER:
                 // Continental subduction biomes. Highly volcanic mountain areas
-                return SUBDUCTION_BIOMES[context.nextInt(SUBDUCTION_BIOMES.length)];
+                return context.choose(SUBDUCTION_BIOMES);
             case CONTINENT_CONTINENT_DIVERGING:
                 // Diverging areas create volcanoes, rifts, and rift valleys. This is a very varied set of biomes with a lot of volcanic activity
-                return RIFT_BIOMES[context.nextInt(RIFT_BIOMES.length)];
+                return context.choose(RIFT_BIOMES);
             case CONTINENT_CONTINENT_CONVERGING:
                 // Non-volcanic mountain building
-                return OROGENY_BIOMES[context.nextInt(OROGENY_BIOMES.length)];
+                return context.choose(OROGENY_BIOMES);
             case CONTINENTAL_SHELF:
                 // Continental shelf, for continental plate area that is still underwater
                 // This is generated as a replacement for ocean-continental diverging boundaries, and helps create better mid-ocean ridges

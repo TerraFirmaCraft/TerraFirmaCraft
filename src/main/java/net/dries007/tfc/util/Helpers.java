@@ -287,11 +287,10 @@ public final class Helpers
             {
                 mutablePos.set(x, 0, z);
 
-                final Biome biome = world.getBiome(mutablePos);
                 final int motionBlockingHeight = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, x & 15, z & 15);
                 final int worldSurfaceHeight = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
                 final int oceanFloorHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR, x & 15, z & 15);
-                if (worldSurfaceHeight >= oceanFloorHeight && biome.getMobSettings().playerSpawnFriendly())
+                if (worldSurfaceHeight >= oceanFloorHeight)
                 {
                     for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
                     {

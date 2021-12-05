@@ -39,7 +39,7 @@ public class ClimateSettingsTests
     @Test
     public void testEncodeDecodeCustom()
     {
-        final ClimateSettings custom = new ClimateSettings(1, 2, 3, 4, 5, false);
+        final ClimateSettings custom = new ClimateSettings(1, 2, 100, false);
         final JsonElement encoded = ClimateSettings.CODEC.encodeStart(JsonOps.INSTANCE, custom).getOrThrow(false, Assertions::fail);
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, encoded).getOrThrow(false, Assertions::fail).getFirst();
 
@@ -60,15 +60,13 @@ public class ClimateSettingsTests
     {
         final JsonObject json = new JsonObject();
 
-        json.addProperty("first_max", 1);
-        json.addProperty("second_max", 2);
-        json.addProperty("third_max", 3);
-        json.addProperty("fourth_max", 4);
-        json.addProperty("scale", 5);
+        json.addProperty("low_threshold", 1);
+        json.addProperty("high_threshold", 2);
+        json.addProperty("scale", 100);
         json.addProperty("endless_poles", false);
 
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, json).getOrThrow(false, Assertions::fail).getFirst();
-        final ClimateSettings expected = new ClimateSettings(1, 2, 3, 4, 5, false);
+        final ClimateSettings expected = new ClimateSettings(1, 2, 100, false);
 
         assertEquals(expected, decoded);
     }

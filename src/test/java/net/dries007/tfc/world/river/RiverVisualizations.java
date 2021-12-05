@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.SimpleRandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
@@ -38,7 +38,7 @@ public class RiverVisualizations
         long seed = seed();
         for (int i = 0; i < 10; i++)
         {
-            RandomSource random = new SimpleRandomSource(seed);
+            RandomSource random = new XoroshiroRandomSource(seed);
             MidpointFractal fractal = new MidpointFractal(random, i, 0, 500, 1000, 500);
             MIDPOINT_FRACTAL.before(TestHelper::background).draw("midpoint_fractal" + i, fractal);
         }
@@ -48,7 +48,7 @@ public class RiverVisualizations
     public void testGrownRiverFractal()
     {
         long seed = seed();
-        RandomSource random = new SimpleRandomSource(seed);
+        RandomSource random = new XoroshiroRandomSource(seed);
         RiverFractal fractal = RiverFractal.build(random, 250, 500, 0, 60, 15, 10);
         RIVER_FRACTAL.before(TestHelper::background).draw("grown_fractal", fractal);
     }
@@ -57,7 +57,7 @@ public class RiverVisualizations
     public void testGrownAndBisectedRiverFractal()
     {
         final long seed = seed();
-        final RandomSource random = new SimpleRandomSource(seed);
+        final RandomSource random = new XoroshiroRandomSource(seed);
         final RiverFractal fractal = RiverFractal.build(random, 250, 500, 0, 80, 15, 10);
         final List<MidpointFractal> fractals = fractal.getEdges().stream().map(e -> e.fractal(random, 4)).collect(Collectors.toList());
         RIVER_FRACTAL.before(TestHelper::background).draw("grown_fractal", fractal);
@@ -68,7 +68,7 @@ public class RiverVisualizations
     public void testMultiGrownRiverFractals()
     {
         final long seed = seed();
-        final RandomSource random = new SimpleRandomSource(seed);
+        final RandomSource random = new XoroshiroRandomSource(seed);
 
         // Rivers grown from both horizontal edges, pointing inwards.
         final RiverFractal.MultiParallelBuilder context = new RiverFractal.MultiParallelBuilder();
@@ -87,7 +87,7 @@ public class RiverVisualizations
     public void testMultiGrownRiverFractalsIsland()
     {
         final long seed = seed();
-        final RandomSource random = new SimpleRandomSource(seed);
+        final RandomSource random = new XoroshiroRandomSource(seed);
 
         final RiverFractal.MultiParallelBuilder context = new RiverFractal.MultiParallelBuilder()
         {
@@ -147,7 +147,7 @@ public class RiverVisualizations
             rivers.forEach(fractal -> draw(fractal, g, s));
         }).draw("rivers");
 
-        final RandomSource random = new SimpleRandomSource(seed);
+        final RandomSource random = new XoroshiroRandomSource(seed);
         final List<MidpointFractal> fractals = rivers.stream()
             .flatMap(r -> r.getEdges().stream().map(e -> e.fractal(random, 4)))
             .collect(Collectors.toList());

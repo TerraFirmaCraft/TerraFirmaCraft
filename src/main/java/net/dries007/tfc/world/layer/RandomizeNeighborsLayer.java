@@ -24,7 +24,7 @@ public class RandomizeNeighborsLayer implements AdjacentTransformLayer
         if (north == center || east == center || south == center || west == center)
         {
             // Pick a different random
-            return context.nextInt(limit);
+            return context.random().nextInt(limit);
         }
         return center;
     }

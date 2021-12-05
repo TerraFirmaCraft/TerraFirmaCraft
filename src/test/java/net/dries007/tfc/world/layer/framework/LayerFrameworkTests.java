@@ -90,7 +90,7 @@ public class LayerFrameworkTests
     {
         final long seed = System.currentTimeMillis();
         final Random random = new Random(seed);
-        final SourceLayer source = (sourceContext, x, z) -> sourceContext.nextInt();
+        final SourceLayer source = (sourceContext, x, z) -> sourceContext.random().nextInt();
         final Area layer = source.apply(seed).get();
 
         int[] values = new int[10_000], coordinates = new int[20_000];
@@ -138,7 +138,7 @@ public class LayerFrameworkTests
             int value = 0;
             for (int i = 0; i < 1000; i++)
             {
-                value += context.nextBoolean() ? 1 : 0;
+                value += context.random().nextBoolean() ? 1 : 0;
             }
             return value;
         }

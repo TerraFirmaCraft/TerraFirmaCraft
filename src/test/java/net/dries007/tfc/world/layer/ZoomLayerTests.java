@@ -63,8 +63,8 @@ public class ZoomLayerTests
 
         final long seed = System.currentTimeMillis();
         final Random random = new Random(seed);
-        final SourceLayer source = (sourceContext, x, z) -> sourceContext.nextInt(5);
-        final TypedSourceLayer<Integer> typedSource = (sourceContext, x, z) -> sourceContext.nextInt(5);
+        final SourceLayer source = (sourceContext, x, z) -> sourceContext.random().nextInt(5);
+        final TypedSourceLayer<Integer> typedSource = (sourceContext, x, z) -> sourceContext.random().nextInt(5);
 
         long contextSeed = random.nextLong();
         AreaFactory layer = source.apply(contextSeed);

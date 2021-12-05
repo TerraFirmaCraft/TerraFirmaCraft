@@ -30,7 +30,7 @@ public enum AddLakesLayer implements CenterTransformLayer
     @Override
     public int apply(AreaContext context, int value)
     {
-        if (value == INLAND_MARKER && context.nextInt(chance) == 0)
+        if (value == INLAND_MARKER && context.random().nextInt(chance) == 0)
         {
             return LAKE_MARKER;
         }

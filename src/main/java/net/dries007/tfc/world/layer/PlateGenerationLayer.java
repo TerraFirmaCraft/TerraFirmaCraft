@@ -32,10 +32,10 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
         float centerX = plateNoise.centerX();
         float centerZ = plateNoise.centerZ();
         context.setSeed((long) centerX, (long) centerZ);
-        boolean oceanic = context.nextFloat() < oceanPercent;
-        float angle = 2 * PI * context.nextFloat();
-        float velocity = context.nextFloat();
-        float elevation = context.nextFloat();
+        boolean oceanic = context.random().nextFloat() < oceanPercent;
+        float angle = 2 * PI * context.random().nextFloat();
+        float velocity = context.random().nextFloat();
+        float elevation = context.random().nextFloat();
         float driftX = Mth.cos(angle) * velocity;
         float driftZ = Mth.sin(angle) * velocity;
         return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);

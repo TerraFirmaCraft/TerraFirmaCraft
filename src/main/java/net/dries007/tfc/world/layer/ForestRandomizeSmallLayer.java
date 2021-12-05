@@ -20,7 +20,7 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
     {
         if (value == FOREST_NORMAL || value == FOREST_OLD)
         {
-            final int random = context.nextInt((value == FOREST_OLD ? 40 : 25));
+            final int random = context.random().nextInt((value == FOREST_OLD ? 40 : 25));
             if (random == 0)
             {
                 return FOREST_NONE;
@@ -32,7 +32,7 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
         }
         else if (value == FOREST_SPARSE || value == FOREST_NONE)
         {
-            final int random = context.nextInt(30);
+            final int random = context.random().nextInt(30);
             if (random == 0)
             {
                 return value == FOREST_SPARSE ? FOREST_NORMAL : FOREST_EDGE;

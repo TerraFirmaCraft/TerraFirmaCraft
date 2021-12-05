@@ -62,17 +62,17 @@ public enum BiasedLandPlateZoomLayer implements TypedTransformLayer<Plate>
             choice = first;
             count++;
         }
-        if (!second.oceanic() && (choice == null || context.nextInt(1 + count) == 0))
+        if (!second.oceanic() && (choice == null || context.random().nextInt(1 + count) == 0))
         {
             choice = second;
             count++;
         }
-        if (!third.oceanic() && (choice == null || context.nextInt(1 + count) == 0))
+        if (!third.oceanic() && (choice == null || context.random().nextInt(1 + count) == 0))
         {
             choice = third;
             count++;
         }
-        if (!fourth.oceanic() && (choice == null || context.nextInt(1 + count) == 0))
+        if (!fourth.oceanic() && (choice == null || context.random().nextInt(1 + count) == 0))
         {
             choice = fourth;
         }

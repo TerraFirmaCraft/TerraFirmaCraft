@@ -20,7 +20,7 @@
     "accessor.ItemAccessor",
     "accessor.LiquidBlockAccessor",
     "accessor.PlayerAccessor",
-    "accessor.ProtoChunkAccessor",
+    "accessor.ChunkAccessAccessor",
     "accessor.RecipeManagerAccessor",
     "accessor.SimpleReloadableResourceManagerAccessor",
     "accessor.StructureTemplateAccessor"

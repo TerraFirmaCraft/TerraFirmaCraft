@@ -21,7 +21,7 @@ public enum SmoothLayer implements AdjacentTransformLayer
         {
             if (equalX)
             {
-                return context.nextInt(2) == 0 ? east : north;
+                return context.choose(east, north);
             }
             return center;
         }

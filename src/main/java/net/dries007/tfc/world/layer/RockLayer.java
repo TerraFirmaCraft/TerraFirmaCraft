@@ -21,6 +21,6 @@ public class RockLayer implements SourceLayer
     @Override
     public int apply(AreaContext context, int x, int z)
     {
-        return context.nextInt(totalRocks);
+        return context.random().nextInt(totalRocks);
     }
 }

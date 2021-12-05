@@ -40,7 +40,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
+import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -408,7 +408,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             }
             return CompletableFuture.supplyAsync(() -> {
                 // Initialization
-                final LevelAccessor actualLevel = (LevelAccessor) ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor();
+                final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
                 final ChunkPos chunkPos = chunk.getPos();
                 final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
 
@@ -429,11 +429,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 chunkDataProvider.get(chunk).getRockData().setSurfaceHeight(surfaceHeightMap);
 
                 final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).getVariants().getGroup());
-                final ChunkNoiseFiller helper = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, biomeNoiseSamplers, noiseSampler, settings);
+                final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, chunkDataProvider.get(chunkPos).getRockData(), biomeSampler); // todo: more accurate biome sampler for sampling ocean biomes?
+                final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, biomeNoiseSamplers, noiseSampler, baseBlockSource, settings, getSeaLevel());
 
-                helper.fillFromNoise();
+                filler.fillFromNoise();
 
-                surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkDataProvider.get(chunk), localBiomes, helper.buildSlopeMap(), random, getSeaLevel(), settings.minY());
+                surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkDataProvider.get(chunk), localBiomes, filler.buildSlopeMap(), random, getSeaLevel(), settings.minY());
 
                 return chunk;
             }, Util.backgroundExecutor()).whenCompleteAsync((result, exception) -> sections.forEach(LevelChunkSection::release), mainExecutor);

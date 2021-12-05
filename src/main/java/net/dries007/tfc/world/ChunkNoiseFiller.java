@@ -1,6 +1,5 @@
 package net.dries007.tfc.world;
 
-import java.util.BitSet;
 import java.util.Map;
 
 import net.minecraft.core.BlockPos;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -42,7 +40,7 @@ public class ChunkNoiseFiller
     private final Heightmap oceanFloor, worldSurface;
     //private final BitSet carvingMask; // We mark the air carving mask for everything
     //private final Aquifer aquifer;
-    //private final ChunkBaseBlockSource stoneSource;
+    private final ChunkBaseBlockSource baseBlockSource;
 
     private final RiverSource riverSource;
     private final FluidState riverWater;
@@ -66,7 +64,7 @@ public class ChunkNoiseFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    ChunkNoiseFiller(LevelAccessor world, ChunkAccess chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, int[] surfaceHeight, Biome[] localBiomes, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, NoiseSampler noiseSampler, ChunkNoiseSamplingSettings settings)
+    public ChunkNoiseFiller(LevelAccessor world, ChunkAccess chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, int[] surfaceHeight, Biome[] localBiomes, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, NoiseSampler noiseSampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         this.world = world;
         this.chunk = chunk;
@@ -76,6 +74,7 @@ public class ChunkNoiseFiller
         this.quartZ = QuartPos.fromBlock(chunkZ);
         this.biomeSamplers = new Object2DoubleOpenHashMap<>();
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
+        this.baseBlockSource = baseBlockSource;
 
         this.flows = buildFlowMap();
 
@@ -92,14 +91,14 @@ public class ChunkNoiseFiller
 
         this.riverSource = riverSource;
         this.biomeNoiseSamplers = biomeNoiseSamplers;
-        this.chunkSampler = new ChunkNoiseSampler(noiseSampler, settings);
+        this.chunkSampler = new ChunkNoiseSampler(chunk.getPos(), noiseSampler, baseBlockSource, settings, seaLevel);
         this.settings = settings;
     }
 
     /**
      * Fills the entire chunk
      */
-    void fillFromNoise()
+    public void fillFromNoise()
     {
         chunkSampler.initializeForFirstCellX();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -138,7 +137,7 @@ public class ChunkNoiseFiller
      * Deprecation for the use of {@link BlockState#getLightEmission()}
      */
     @SuppressWarnings("deprecation")
-    void fillColumn(BlockPos.MutableBlockPos mutablePos, int cellX, int cellZ)
+    private void fillColumn(BlockPos.MutableBlockPos mutablePos, int cellX, int cellZ)
     {
         prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
 
@@ -188,7 +187,7 @@ public class ChunkNoiseFiller
                 chunkSampler.updateForX(cellDeltaX);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                final BlockState state = modifyNoiseAndGetState(null, null, x, y, z, noise); // todo: ????
+                final BlockState state = modifyNoiseAndGetState(x, y, z, noise); // todo: ????
                 final FluidState fluid = state.getFluidState();
 
                 // todo: carving masks
@@ -208,7 +207,7 @@ public class ChunkNoiseFiller
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
                     }
-                    if (false /* aquifer.shouldScheduleFluidUpdate() */ && !fluid.isEmpty()) // todo: aquifers
+                    if (chunkSampler.aquifer().shouldScheduleFluidUpdate() && !fluid.isEmpty()) // todo: aquifers
                     {
                         chunk.markPosForPostprocessing(mutablePos);
                     }
@@ -269,7 +268,7 @@ public class ChunkNoiseFiller
      * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
      */
     @SuppressWarnings("PointlessArithmeticExpression")
-    double[] buildSlopeMap()
+    public double[] buildSlopeMap()
     {
         double[] sampledHeightMap = new double[7 * 7]; // A 7x7, 4x4 resolution map of heights in the chunk, offset by (-1, -1)
 
@@ -314,7 +313,7 @@ public class ChunkNoiseFiller
         return slopeMap;
     }
 
-    Flow[] buildFlowMap()
+    private Flow[] buildFlowMap()
     {
         final Flow[] flowMap = new Flow[5 * 5];
         for (int x = 0; x < 5; x++)
@@ -330,7 +329,7 @@ public class ChunkNoiseFiller
     /**
      * Initializes {@link #biomeWeights1} from the sampled biome weights
      */
-    void prepareColumnBiomeWeights()
+    private void prepareColumnBiomeWeights()
     {
         final int index4X = (localX >> 2) + 1;
         final int index4Z = (localZ >> 2) + 1;
@@ -351,7 +350,7 @@ public class ChunkNoiseFiller
      * @param updateArrays If the local biome and height arrays should be updated, if we are sampling within the chunk
      * @return The maximum height at this location
      */
-    double sampleColumnHeightAndBiome(Object2DoubleMap<Biome> biomeWeights, boolean updateArrays)
+    private double sampleColumnHeightAndBiome(Object2DoubleMap<Biome> biomeWeights, boolean updateArrays)
     {
         biomeSamplers.clear();
 
@@ -487,7 +486,7 @@ public class ChunkNoiseFiller
         return actualHeight;
     }
 
-    double calculateNoiseAtHeight(int y, double heightNoiseValue)
+    private double calculateNoiseAtHeight(int y, double heightNoiseValue)
     {
         double noise = 0;
         for (Object2DoubleMap.Entry<BiomeNoiseSampler> entry : biomeSamplers.object2DoubleEntrySet())
@@ -505,19 +504,16 @@ public class ChunkNoiseFiller
         return Mth.clamp(noise, -1, 1);
     }
 
-    BlockState modifyNoiseAndGetState(Aquifer aquifer, ChunkBaseBlockSource stoneSource, int x, int y, int z, double noise)
+    private BlockState modifyNoiseAndGetState(int x, int y, int z, double noise)
     {
         // todo: what?
         return chunkSampler.sample(x, y, z, noise);
-        //noise = noodleCaveSampler.sample(noise, x, y, z, minY, cellDeltaZ);
-        //noise = Math.min(noise, cavifierSampler.sample(cellDeltaZ));
-        //return aquifer.computeState(stoneSource, x, y, z, noise);
     }
 
     /**
      * Initializes enough to call {@link #sampleColumnHeightAndBiome(Object2DoubleMap, boolean)}
      */
-    void setupColumn(int x, int z)
+    private void setupColumn(int x, int z)
     {
         this.x = x;
         this.z = z;

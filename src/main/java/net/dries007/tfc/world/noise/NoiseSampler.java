@@ -3,10 +3,13 @@ package net.dries007.tfc.world.noise;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.NoiseUtils;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+
+import net.dries007.tfc.world.NoiseBasedAquifer;
 
 public class NoiseSampler
 {
@@ -61,9 +64,18 @@ public class NoiseSampler
         return (x, y, z) -> y <= maxY && y >= minY ? normalNoise.getValue(x * scale, y * scale, z * scale) : outOfBoundsValue;
     }
 
-    protected final NoiseSettings noiseSettings;
+    // Noise Caves
+    public final TrilinearInterpolator.Source noiseCaves;
 
-    public final BlendedNoise blendedNoise;
+    // Noodle Caves
+    public final TrilinearInterpolator.Source noodleToggle;
+    public final TrilinearInterpolator.Source noodleThickness;
+    public final TrilinearInterpolator.Source noodleRidgeA;
+    public final TrilinearInterpolator.Source noodleRidgeB;
+
+    private final PositionalRandomFactory positionalRandomFactory;
+    private final NoiseSettings noiseSettings;
+    private final BlendedNoise blendedNoise;
 
     private final NormalNoise pillarNoiseSource;
     private final NormalNoise pillarRarenessModulator;
@@ -82,50 +94,57 @@ public class NoiseSampler
     private final NormalNoise layerNoiseSource;
     private final NormalNoise cheeseNoiseSource;
 
-    // Noise Caves
-    public final TrilinearInterpolator.Source noiseCaves;
-
-    // Noodle Caves
-    public final TrilinearInterpolator.Source noodleToggle;
-    public final TrilinearInterpolator.Source noodleThickness;
-    public final TrilinearInterpolator.Source noodleRidgeA;
-    public final TrilinearInterpolator.Source noodleRidgeB;
+    // Aquifers
+    private final NormalNoise barrierNoise;
+    private final NormalNoise fluidLevelFloodednessNoise;
+    private final NormalNoise fluidLevelSpreadNoise;
+    private final NormalNoise lavaNoise;
 
     public NoiseSampler(NoiseSettings noiseSettings, long seed, Registry<NormalNoise.NoiseParameters> parameters)
     {
-        final PositionalRandomFactory factory = WorldgenRandom.Algorithm.XOROSHIRO.newInstance(seed).forkPositional();
-
+        this.positionalRandomFactory = new XoroshiroRandomSource(seed).forkPositional();
         this.noiseSettings = noiseSettings;
-        this.blendedNoise = new BlendedNoise(factory.fromHashOf(new ResourceLocation("terrain")), noiseSettings.noiseSamplingSettings(), noiseSettings.getCellWidth(), noiseSettings.getCellHeight());
+        this.blendedNoise = new BlendedNoise(positionalRandomFactory.fromHashOf(new ResourceLocation("terrain")), noiseSettings.noiseSamplingSettings(), noiseSettings.getCellWidth(), noiseSettings.getCellHeight());
 
         // Noise Caves
         this.noiseCaves = this::calculateBaseNoise;
-        this.pillarNoiseSource = Noises.instantiate(parameters, factory, Noises.PILLAR);
-        this.pillarRarenessModulator = Noises.instantiate(parameters, factory, Noises.PILLAR_RARENESS);
-        this.pillarThicknessModulator = Noises.instantiate(parameters, factory, Noises.PILLAR_THICKNESS);
-        this.spaghetti2DNoiseSource = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_2D);
-        this.spaghetti2DElevationModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_2D_ELEVATION);
-        this.spaghetti2DRarityModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_2D_MODULATOR);
-        this.spaghetti2DThicknessModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_2D_THICKNESS);
-        this.spaghetti3DNoiseSource1 = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_3D_1);
-        this.spaghetti3DNoiseSource2 = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_3D_2);
-        this.spaghetti3DRarityModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_3D_RARITY);
-        this.spaghetti3DThicknessModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_3D_THICKNESS);
-        this.spaghettiRoughnessNoise = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_ROUGHNESS);
-        this.spaghettiRoughnessModulator = Noises.instantiate(parameters, factory, Noises.SPAGHETTI_ROUGHNESS_MODULATOR);
-        this.bigEntranceNoiseSource = Noises.instantiate(parameters, factory, Noises.CAVE_ENTRANCE);
-        this.layerNoiseSource = Noises.instantiate(parameters, factory, Noises.CAVE_LAYER);
-        this.cheeseNoiseSource = Noises.instantiate(parameters, factory, Noises.CAVE_CHEESE);
+        this.pillarNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR);
+        this.pillarRarenessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_RARENESS);
+        this.pillarThicknessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_THICKNESS);
+        this.spaghetti2DNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D);
+        this.spaghetti2DElevationModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D_ELEVATION);
+        this.spaghetti2DRarityModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D_MODULATOR);
+        this.spaghetti2DThicknessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D_THICKNESS);
+        this.spaghetti3DNoiseSource1 = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_3D_1);
+        this.spaghetti3DNoiseSource2 = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_3D_2);
+        this.spaghetti3DRarityModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_3D_RARITY);
+        this.spaghetti3DThicknessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_3D_THICKNESS);
+        this.spaghettiRoughnessNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_ROUGHNESS);
+        this.spaghettiRoughnessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_ROUGHNESS_MODULATOR);
+        this.bigEntranceNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.CAVE_ENTRANCE);
+        this.layerNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.CAVE_LAYER);
+        this.cheeseNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.CAVE_CHEESE);
 
         // Noodle Caves
         final int minWorldY = noiseSettings.minY();
         final int minLimitY = minWorldY + 4;
         final int maxLimitY = minWorldY + noiseSettings.height();
 
-        this.noodleToggle = clamped(Noises.instantiate(parameters, factory, Noises.NOODLE), minLimitY, maxLimitY, -1, 1);
-        this.noodleThickness = clamped(Noises.instantiate(parameters, factory, Noises.NOODLE_THICKNESS), minLimitY, maxLimitY, 0, 1);
-        this.noodleRidgeA = clamped(Noises.instantiate(parameters, factory, Noises.NOODLE_RIDGE_A), minLimitY, maxLimitY, 0, 2.6666666666666665);
-        this.noodleRidgeB = clamped(Noises.instantiate(parameters, factory, Noises.NOODLE_RIDGE_B), minLimitY, maxLimitY, 0, 2.6666666666666665);
+        this.noodleToggle = clamped(Noises.instantiate(parameters, positionalRandomFactory, Noises.NOODLE), minLimitY, maxLimitY, -1, 1);
+        this.noodleThickness = clamped(Noises.instantiate(parameters, positionalRandomFactory, Noises.NOODLE_THICKNESS), minLimitY, maxLimitY, 0, 1);
+        this.noodleRidgeA = clamped(Noises.instantiate(parameters, positionalRandomFactory, Noises.NOODLE_RIDGE_A), minLimitY, maxLimitY, 0, 2.6666666666666665);
+        this.noodleRidgeB = clamped(Noises.instantiate(parameters, positionalRandomFactory, Noises.NOODLE_RIDGE_B), minLimitY, maxLimitY, 0, 2.6666666666666665);
+
+        // Aquifer
+        this.barrierNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_BARRIER);
+        this.fluidLevelFloodednessNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS);
+        this.lavaNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_LAVA);
+        this.fluidLevelSpreadNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_SPREAD);
+    }
+
+    public NoiseBasedAquifer createAquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, int seaLevel)
+    {
+        return new NoiseBasedAquifer(settings, chunkPos, barrierNoise, fluidLevelFloodednessNoise, fluidLevelSpreadNoise, lavaNoise, positionalRandomFactory, seaLevel);
     }
 
     private double calculateBaseNoise(int x, int y, int z)

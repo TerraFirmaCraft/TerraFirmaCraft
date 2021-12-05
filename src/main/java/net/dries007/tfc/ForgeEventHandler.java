@@ -85,7 +85,7 @@ import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.ProtoChunkAccessor;
+import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
@@ -356,7 +356,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ProtoChunkAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
             generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
         }

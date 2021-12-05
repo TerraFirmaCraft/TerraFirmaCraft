@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.SimpleRandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
@@ -28,7 +28,7 @@ public class MidpointFractalTests
     public void testIntersectImpliesMaybeIntersect()
     {
         long seed = seed();
-        RandomSource random = new SimpleRandomSource(seed);
+        RandomSource random = new XoroshiroRandomSource(seed);
         float x0 = random.nextFloat(), y0 = random.nextFloat(), x1 = random.nextFloat(), y1 = random.nextFloat();
         MidpointFractal fractal = new MidpointFractal(random, random.nextInt(10), x0, y0, x1, y1);
         for (float x = 0; x < 1; x += 0.01f)
@@ -47,13 +47,13 @@ public class MidpointFractalTests
     public void drawMidpointExample()
     {
         long seed = -7794280502563316471L;
-        RandomSource random = new SimpleRandomSource(seed);
+        RandomSource random = new XoroshiroRandomSource(seed);
         float x0 = random.nextFloat(), y0 = random.nextFloat(), x1 = random.nextFloat(), y1 = random.nextFloat();
         int bisects = random.nextInt(10);
         MidpointFractal fractal = new MidpointFractal(random, bisects, x0, y0, x1, y1);
 
         List<MidpointFractal> prev = IntStream.range(0, bisects).mapToObj(i -> {
-            RandomSource r = new SimpleRandomSource(seed);
+            RandomSource r = new XoroshiroRandomSource(seed);
             for (int j = 0; j < 4; j++) r.nextFloat();
             r.nextInt(4);
             return new MidpointFractal(r, i, x0, y0, x1, y1);

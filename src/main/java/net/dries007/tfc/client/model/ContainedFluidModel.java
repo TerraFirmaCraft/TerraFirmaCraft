@@ -30,8 +30,6 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.*;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.resource.IResourceType;
-import net.minecraftforge.resource.VanillaResourceType;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
@@ -137,12 +135,6 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
         public void onResourceManagerReload(ResourceManager resourceManager) {}
 
         @Override
-        public IResourceType getResourceType()
-        {
-            return VanillaResourceType.MODELS;
-        }
-
-        @Override
         public ContainedFluidModel read(JsonDeserializationContext context, JsonObject json)
         {
             return new ContainedFluidModel(Fluids.EMPTY);
@@ -180,7 +172,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
                     final Fluid fluid = cap.getFluidInTank(0).getFluid();
                     return cache.computeIfAbsent(fluid, key -> {
                         final ContainedFluidModel unbaked = parent.withFluid(key);
-                        return unbaked.bake(owner, bakery, ModelLoader.defaultTextureGetter(), BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
+                        return unbaked.bake(owner, bakery, ForgeModelBakery.defaultTextureGetter(), BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
                     });
                 })
                 .orElse(originalModel);

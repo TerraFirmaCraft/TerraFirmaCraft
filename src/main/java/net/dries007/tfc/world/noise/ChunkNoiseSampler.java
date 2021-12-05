@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.dries007.tfc.world.ChunkBaseBlockSource;
+import net.dries007.tfc.world.NoiseBasedAquifer;
 
 public class ChunkNoiseSampler
 {
@@ -21,12 +25,15 @@ public class ChunkNoiseSampler
     private final TrilinearInterpolator noodleRidgeB;
 
     // Aquifer
-    // todo
+    private final NoiseBasedAquifer aquifer;
 
-    public ChunkNoiseSampler(NoiseSampler sampler, ChunkNoiseSamplingSettings settings)
+    private final ChunkBaseBlockSource baseBlockSource;
+
+    public ChunkNoiseSampler(ChunkPos chunkPos, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         this.settings = settings;
         this.interpolators = new ArrayList<>();
+        this.baseBlockSource = baseBlockSource;
 
         // Noise Caves
         this.noiseCaves = create(sampler.noiseCaves);
@@ -36,6 +43,9 @@ public class ChunkNoiseSampler
         this.noodleThickness = create(sampler.noodleThickness);
         this.noodleRidgeA = create(sampler.noodleRidgeA);
         this.noodleRidgeB = create(sampler.noodleRidgeB);
+
+        // Aquifer
+        this.aquifer = sampler.createAquifer(chunkPos, settings, seaLevel);
     }
 
     public void initializeForFirstCellX()
@@ -75,10 +85,9 @@ public class ChunkNoiseSampler
 
     public BlockState sample(int x, int y, int z, double terrainNoise)
     {
-        // todo: where does terrainNoise come into the equation?
-
         // base world generation and noise caves
-        double value = noiseCaves.sample();
+        double noiseCavesValue = Mth.clamp(noiseCaves.sample() * 0.64, -1, 1);
+        double value = Math.min(terrainNoise, noiseCavesValue);
 
         // noodle caves
         value = Mth.clamp(value * 0.64, -1, 1);
@@ -91,9 +100,17 @@ public class ChunkNoiseSampler
             value = Math.min(value, Math.max(ridgeA, ridgeB));
         }
 
-        // value += filler.calculateNoise(x, y, z); // beardifier
+        final BlockState state = aquifer.computeSubstance(x, y, z, terrainNoise * 64, value);
+        if (state != null)
+        {
+            return state;
+        }
+        return baseBlockSource.getBaseBlock(x, y, z);
+    }
 
-        return noiseChunk.aquifer().computeSubstance(x, y, z, value, value); // aquifer todo: where on earth is this supposed to go reeeeeee
+    public NoiseBasedAquifer aquifer()
+    {
+        return aquifer;
     }
 
     private TrilinearInterpolator create(TrilinearInterpolator.Source source)

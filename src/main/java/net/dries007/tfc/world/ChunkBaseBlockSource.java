@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world;
 
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -23,7 +22,6 @@ public class ChunkBaseBlockSource
         return (x & 15) | ((z & 15) << 4);
     }
 
-    private final int chunkX, chunkZ;
     private final RockData rockData;
     private final Sampler<Biome> biomeSampler;
     private final BlockState[] cachedFluidStates;
@@ -31,11 +29,9 @@ public class ChunkBaseBlockSource
 
     private final BlockState freshWater = Blocks.WATER.defaultBlockState(), saltWater = TFCBlocks.SALT_WATER.get().defaultBlockState();
 
-    public ChunkBaseBlockSource(LevelAccessor level, ChunkPos pos, RockData rockData, Sampler<Biome> biomeSampler)
+    public ChunkBaseBlockSource(LevelAccessor level, RockData rockData, Sampler<Biome> biomeSampler)
     {
         this.level = level;
-        this.chunkX = pos.getMinBlockX();
-        this.chunkZ = pos.getMinBlockZ();
         this.rockData = rockData;
         this.biomeSampler = biomeSampler;
         this.cachedFluidStates = new BlockState[16 * 16];
@@ -43,7 +39,7 @@ public class ChunkBaseBlockSource
 
     public BlockState getBaseBlock(int x, int y, int z)
     {
-        return rockData.getRock(chunkX | (x & 15), y, chunkZ | (z & 15)).raw().defaultBlockState();
+        return rockData.getRock(x & 15, y, z & 15).raw().defaultBlockState();
     }
 
     public BlockState modifyFluid(BlockState fluidOrAir, int x, int z)

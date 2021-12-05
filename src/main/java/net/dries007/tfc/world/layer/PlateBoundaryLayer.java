@@ -48,7 +48,7 @@ public enum PlateBoundaryLayer
         if (!west.equals(center))
         {
             boundaryCount++;
-            if (boundary == null || context.nextInt(boundaryCount) == 0)
+            if (boundary == null || context.random().nextInt(boundaryCount) == 0)
             {
                 boundary = west;
             }
@@ -56,7 +56,7 @@ public enum PlateBoundaryLayer
         if (!south.equals(center))
         {
             boundaryCount++;
-            if (boundary != null || context.nextInt(boundaryCount) == 0)
+            if (boundary != null || context.random().nextInt(boundaryCount) == 0)
             {
                 boundary = south;
             }
@@ -64,7 +64,7 @@ public enum PlateBoundaryLayer
         if (!east.equals(center))
         {
             boundaryCount++;
-            if (boundary != null || context.nextInt(boundaryCount) == 0)
+            if (boundary != null || context.random().nextInt(boundaryCount) == 0)
             {
                 boundary = east;
             }
