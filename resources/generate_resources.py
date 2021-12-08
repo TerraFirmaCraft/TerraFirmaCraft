@@ -5,7 +5,7 @@
 
 import argparse
 
-from mcresources import ResourceManager, clean_generated_resources
+from mcresources import ResourceManager, utils
 
 import assets
 import data
@@ -13,6 +13,21 @@ import recipes
 import world_gen
 
 from constants import *
+
+def configured_placement(data):
+    if utils.is_sequence(data):
+        res, cfg = utils.unordered_pair(data, str, dict)
+        assert 'type' not in cfg, 'Type specified twice for placement'
+        return {'type': utils.resource_location(res).join(), **cfg}
+    elif isinstance(data, dict):
+        assert 'type' in data, 'Missing \'type\' in placement'
+        return data
+    elif isinstance(data, str):
+        return {'type': utils.resource_location(data).join()}
+    else:
+        raise ValueError('Unknown object %s at configured_placement' % str(data))
+
+utils.configured_placement = configured_placement
 
 
 def main():
@@ -27,7 +42,7 @@ def main():
         # Stupid windows file locking errors.
         for tries in range(1, 1 + 3):
             try:
-                clean_generated_resources('/'.join(rm.resource_dir))
+                utils.clean_generated_resources('/'.join(rm.resource_dir))
                 print('Clean Success')
                 return
             except:

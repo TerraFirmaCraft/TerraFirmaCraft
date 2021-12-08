@@ -1,10 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from mcresources import ResourceManager
-from lib import utils
-from mcresources.recipe_context import RecipeContext
-
+from mcresources import ResourceManager, RecipeContext, utils
 from constants import *
 
 

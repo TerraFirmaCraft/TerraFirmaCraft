@@ -3,11 +3,9 @@
 
 from enum import Enum, auto
 
-from mcresources import ResourceManager
-from lib import utils
-
-from constants import *
+from mcresources import ResourceManager, utils
 from recipes import fluid_ingredient
+from constants import *
 
 
 class Size(Enum):

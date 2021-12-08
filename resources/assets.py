@@ -2,14 +2,8 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 import itertools
-from typing import Any
 
-import mcresources.block_states as block_states
-from mcresources import ResourceManager
-from mcresources.item_context import ItemContext
-
-from lib import utils, loot_tables
-
+from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
 from constants import *
 
 
@@ -276,18 +270,18 @@ def generate(rm: ResourceManager):
     }).with_lang(lang('Firepit')).with_block_loot('1-4 tfc:powder/wood_ash')
     rm.item_model('firepit', parent='tfc:block/firepit_unlit')
 
-    rm.blockstate_multipart('grill', [
+    rm.blockstate_multipart('grill',
         ({'model': 'tfc:block/firepit_grill'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
-    ]).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
+    ).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
     rm.item_model('grill', parent='tfc:block/firepit_grill')
 
-    rm.blockstate_multipart('pot', [
+    rm.blockstate_multipart('pot',
         ({'model': 'tfc:block/firepit_pot'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
-    ]).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
+    ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
@@ -360,7 +354,7 @@ def generate(rm: ResourceManager):
         rm.block_model((name, 'bottom'), {'texture': texture}, parent='tfc:block/grass_bottom')
 
     # Peat Grass
-    block = rm.blockstate_multipart('peat_grass', grass_multipart('tfc:block/peat_grass'))
+    block = rm.blockstate_multipart('peat_grass', *grass_multipart('tfc:block/peat_grass'))
     block.with_block_loot('tfc:peat')
     block.with_tag('grass')
     block.with_lang(lang('Peat Grass'))
@@ -369,7 +363,7 @@ def generate(rm: ResourceManager):
     # Grass Blocks
     for soil in SOIL_BLOCK_VARIANTS:
         for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % soil), ('clay_grass', 'tfc:block/clay/%s' % soil)):
-            block = rm.blockstate_multipart((grass_var, soil), grass_multipart('tfc:block/%s/%s' % (grass_var, soil)))
+            block = rm.blockstate_multipart((grass_var, soil), *grass_multipart('tfc:block/%s/%s' % (grass_var, soil)))
             if grass_var == 'grass':
                 block.with_block_loot('tfc:dirt/%s' % soil)
             else:
@@ -621,7 +615,7 @@ def generate(rm: ResourceManager):
     for fruit in FRUITS.keys():
         if fruit != 'banana':
             for prefix in ('', 'growing_'):
-                block = rm.blockstate_multipart('plant/' + fruit + '_' + prefix + 'branch', [
+                block = rm.blockstate_multipart('plant/' + fruit + '_' + prefix + 'branch',
                     ({'model': 'tfc:block/plant/%s_branch_core' % fruit}),
                     ({'down': True}, {'model': 'tfc:block/plant/%s_branch_down' % fruit}),
                     ({'up': True}, {'model': 'tfc:block/plant/%s_branch_up' % fruit}),
@@ -629,7 +623,7 @@ def generate(rm: ResourceManager):
                     ({'south': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 270}),
                     ({'west': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit}),
                     ({'east': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 180})
-                ]).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
+                ).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
                 if prefix == '':
                     block.with_block_loot({
                         'type': 'minecraft:item',
@@ -799,7 +793,7 @@ def generate(rm: ResourceManager):
 
         # Log Fences
         log_fence_namespace = 'tfc:wood/planks/' + wood + '_log_fence'
-        rm.blockstate_multipart(log_fence_namespace, parts=block_states.fence_multipart('tfc:block/wood/planks/' + wood + '_log_fence_post', 'tfc:block/wood/planks/' + wood + '_log_fence_side'))
+        rm.blockstate_multipart(log_fence_namespace, *block_states.fence_multipart('tfc:block/wood/planks/' + wood + '_log_fence_post', 'tfc:block/wood/planks/' + wood + '_log_fence_side'))
         rm.block_model(log_fence_namespace + '_post', textures={'texture': 'tfc:block/wood/log/' + wood}, parent='block/fence_post')
         rm.block_model(log_fence_namespace + '_side', textures={'texture': 'tfc:block/wood/planks/' + wood}, parent='block/fence_side')
         rm.block_model(log_fence_namespace + '_inventory', textures={'log': 'tfc:block/wood/log/' + wood, 'planks': 'tfc:block/wood/planks/' + wood}, parent='tfc:block/log_fence_inventory')
@@ -808,20 +802,20 @@ def generate(rm: ResourceManager):
 
         texture = 'tfc:block/wood/sheet/%s' % wood
         connection = 'tfc:block/wood/support/%s_connection' % wood
-        rm.blockstate_multipart(('wood', 'vertical_support', wood), [
+        rm.blockstate_multipart(('wood', 'vertical_support', wood),
             {'model': 'tfc:block/wood/support/%s_vertical' % wood},
             ({'north': True}, {'model': connection, 'y': 270}),
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ]).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
-        rm.blockstate_multipart(('wood', 'horizontal_support', wood), [
+        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        rm.blockstate_multipart(('wood', 'horizontal_support', wood),
             {'model': 'tfc:block/wood/support/%s_horizontal' % wood},
             ({'north': True}, {'model': connection, 'y': 270}),
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ]).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
 
         rm.block_model('tfc:wood/support/%s_inventory' % wood, textures={'texture': texture}, parent='tfc:block/wood/support/inventory')
         rm.block_model('tfc:wood/support/%s_vertical' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/vertical')
