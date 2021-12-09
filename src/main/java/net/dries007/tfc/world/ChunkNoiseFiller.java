@@ -183,8 +183,10 @@ public class ChunkNoiseFiller
 
                 double cellDeltaY = (double) localCellY / settings.cellHeight();
 
+                // todo: reorder these to go updateForXZ right after selectCellYZ, then updateForY
                 chunkSampler.updateForY(cellDeltaY);
                 chunkSampler.updateForX(cellDeltaX);
+                chunkSampler.updateForZ(cellDeltaZ);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
                 final BlockState state = modifyNoiseAndGetState(x, y, z, noise); // todo: ????
