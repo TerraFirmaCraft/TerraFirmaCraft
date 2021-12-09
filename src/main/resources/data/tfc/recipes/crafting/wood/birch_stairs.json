@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "tfc:wood/planks/birch_stairs"
+    "item": "tfc:wood/planks/birch_stairs",
+    "count": 8
   }
 }

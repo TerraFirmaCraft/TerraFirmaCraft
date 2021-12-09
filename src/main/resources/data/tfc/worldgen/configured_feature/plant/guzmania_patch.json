@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "xz_spread": 5,
+    "y_spread": 6,
+    "feature": "tfc:plant/guzmania"
+  }
+}

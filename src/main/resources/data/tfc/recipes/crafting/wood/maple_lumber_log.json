@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 8,
-      "item": "tfc:wood/lumber/maple"
+      "item": "tfc:wood/lumber/maple",
+      "count": 8
     }
   }
 }

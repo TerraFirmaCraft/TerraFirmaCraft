@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 8,
-      "item": "tfc:wood/lumber/blackwood"
+      "item": "tfc:wood/lumber/blackwood",
+      "count": 8
     }
   }
 }

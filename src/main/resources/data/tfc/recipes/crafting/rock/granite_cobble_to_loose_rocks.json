@@ -7,7 +7,7 @@
     }
   ],
   "result": {
-    "count": 4,
-    "item": "tfc:rock/loose/granite"
+    "item": "tfc:rock/loose/granite",
+    "count": 4
   }
 }

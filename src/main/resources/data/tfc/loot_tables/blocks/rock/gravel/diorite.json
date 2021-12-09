@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:rock/gravel/diorite",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -25,19 +26,14 @@
                     ]
                   }
                 }
-              ],
-              "name": "tfc:rock/gravel/diorite"
+              ]
             },
             {
               "type": "minecraft:alternatives",
-              "conditions": [
-                {
-                  "condition": "minecraft:survives_explosion"
-                }
-              ],
               "children": [
                 {
                   "type": "minecraft:item",
+                  "name": "minecraft:flint",
                   "conditions": [
                     {
                       "condition": "minecraft:table_bonus",
@@ -49,12 +45,16 @@
                         1.0
                       ]
                     }
-                  ],
-                  "name": "minecraft:flint"
+                  ]
                 },
                 {
                   "type": "minecraft:item",
                   "name": "tfc:rock/gravel/diorite"
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:survives_explosion"
                 }
               ]
             }

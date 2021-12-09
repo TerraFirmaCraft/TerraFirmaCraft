@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/rhyolite"
+    "item": "tfc:rock/bricks/rhyolite",
+    "count": 4
   }
 }

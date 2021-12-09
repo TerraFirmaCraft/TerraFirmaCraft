@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 4,
-      "item": "tfc:wood/lumber/aspen"
+      "item": "tfc:wood/lumber/aspen",
+      "count": 4
     }
   }
 }

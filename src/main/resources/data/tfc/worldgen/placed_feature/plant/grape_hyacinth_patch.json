@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/grape_hyacinth_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 5,
+      "max_temperature": 33,
+      "min_rainfall": 150,
+      "max_rainfall": 250
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

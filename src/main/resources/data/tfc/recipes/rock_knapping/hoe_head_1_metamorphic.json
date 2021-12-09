@@ -10,8 +10,8 @@
     "XX   "
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/hoe_head/metamorphic"
+    "item": "tfc:stone/hoe_head/metamorphic",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:metamorphic_rock"

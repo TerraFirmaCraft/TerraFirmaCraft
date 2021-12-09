@@ -1,62 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:random_property",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:random_patch",
-              "config": {
-                "state_provider": {
-                  "type": "minecraft:simple_state_provider",
-                  "state": {
-                    "Name": "tfc:plant/licorice_fern",
-                    "Properties": {
-                      "age": "1",
-                      "stage": "1",
-                      "facing": "north"
-                    }
-                  }
-                },
-                "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:plant/licorice_fern",
-                  "property": "age"
-                },
-                "whitelist": [],
-                "blacklist": [],
-                "yspread": 6,
-                "xspread": 5,
-                "zspread": 5,
-                "use_density": true
-              }
-            },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": -15,
-                "max_temperature": 25,
-                "min_rainfall": 300,
-                "max_rainfall": 400
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
+    "state": {
+      "Name": "tfc:plant/licorice_fern",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "facing": "north"
       }
     },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 5
-      }
-    }
+    "property": "age"
   }
 }

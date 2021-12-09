@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 8,
-      "item": "tfc:wood/lumber/ash"
+      "item": "tfc:wood/lumber/ash",
+      "count": 8
     }
   }
 }

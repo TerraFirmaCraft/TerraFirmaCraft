@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:clam_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 6
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -50,
+      "max_temperature": 22,
+      "min_rainfall": 10,
+      "max_rainfall": 450
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

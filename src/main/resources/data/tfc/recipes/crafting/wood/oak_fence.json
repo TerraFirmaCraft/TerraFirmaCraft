@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "tfc:wood/planks/oak_fence"
+    "item": "tfc:wood/planks/oak_fence",
+    "count": 8
   }
 }

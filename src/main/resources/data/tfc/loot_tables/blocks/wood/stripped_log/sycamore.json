@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_log/sycamore",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -19,8 +20,7 @@
                     "natural": "false"
                   }
                 }
-              ],
-              "name": "tfc:wood/stripped_log/sycamore"
+              ]
             },
             {
               "type": "minecraft:item",

@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:vines",
+  "config": {
+    "state": "tfc:plant/jungle_vines",
+    "tries": 33,
+    "radius": 7,
+    "minHeight": 64,
+    "maxHeight": 160
+  }
+}

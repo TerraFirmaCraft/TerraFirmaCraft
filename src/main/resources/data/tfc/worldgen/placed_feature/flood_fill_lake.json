@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:flood_fill_lake",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "uniform",
+        "min_inclusive": {
+          "absolute": -56
+        },
+        "max_inclusive": {
+          "absolute": 63
+        }
+      }
+    }
+  ]
+}

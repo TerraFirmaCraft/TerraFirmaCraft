@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:wood/planks/spruce_door"
+    "item": "tfc:wood/planks/spruce_door",
+    "count": 2
   }
 }

@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:dead_grass_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 70
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 10,
+      "max_temperature": 20,
+      "min_rainfall": 0,
+      "max_rainfall": 150,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

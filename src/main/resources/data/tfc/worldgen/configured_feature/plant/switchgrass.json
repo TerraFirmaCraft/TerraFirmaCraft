@@ -1,59 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:tall_plant",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:random_patch",
-              "config": {
-                "state_provider": {
-                  "type": "minecraft:simple_state_provider",
-                  "state": {
-                    "Name": "tfc:plant/switchgrass",
-                    "Properties": {
-                      "age": "1",
-                      "stage": "1",
-                      "part": "lower"
-                    }
-                  }
-                },
-                "block_placer": {
-                  "type": "tfc:tall_plant"
-                },
-                "whitelist": [],
-                "blacklist": [],
-                "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "use_density": true
-              }
-            },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": -29,
-                "max_temperature": 29,
-                "min_rainfall": 110,
-                "max_rainfall": 390
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
-      }
-    },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 2
+    "state": {
+      "Name": "tfc:plant/switchgrass",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "part": "lower"
       }
     }
   }

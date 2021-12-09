@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:wood/leaves/rosewood",
               "conditions": [
                 {
                   "condition": "minecraft:alternative",
@@ -36,11 +37,11 @@
                     }
                   ]
                 }
-              ],
-              "name": "tfc:wood/leaves/rosewood"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:wood/sapling/rosewood",
               "conditions": [
                 {
                   "condition": "minecraft:survives_explosion"
@@ -49,8 +50,7 @@
                   "condition": "minecraft:random_chance",
                   "chance": 0.0057
                 }
-              ],
-              "name": "tfc:wood/sapling/rosewood"
+              ]
             }
           ]
         }
@@ -69,7 +69,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "minecraft:stick",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -82,7 +83,6 @@
                   "chance": 0.1
                 }
               ],
-              "name": "minecraft:stick",
               "functions": [
                 {
                   "function": "minecraft:set_count",
@@ -95,14 +95,14 @@
               ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "minecraft:stick",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
                   "chance": 0.02
                 }
               ],
-              "name": "minecraft:stick",
               "functions": [
                 {
                   "function": "minecraft:set_count",

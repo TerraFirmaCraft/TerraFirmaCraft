@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 8,
-      "item": "tfc:wood/lumber/white_cedar"
+      "item": "tfc:wood/lumber/white_cedar",
+      "count": 8
     }
   }
 }

@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:wood/planks/ash_door"
+    "item": "tfc:wood/planks/ash_door",
+    "count": 2
   }
 }

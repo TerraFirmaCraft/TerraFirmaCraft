@@ -10,16 +10,16 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:rock/raw/limestone",
               "conditions": [
                 {
                   "condition": "tfc:is_isolated"
                 }
-              ],
-              "name": "tfc:rock/raw/limestone"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
               "name": "tfc:rock/loose/limestone",
               "functions": [
                 {

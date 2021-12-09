@@ -5,7 +5,7 @@
     "item": "tfc:ore/sulfur"
   },
   "result": {
-    "count": 4,
-    "item": "tfc:powder/sulfur"
+    "item": "tfc:powder/sulfur",
+    "count": 4
   }
 }

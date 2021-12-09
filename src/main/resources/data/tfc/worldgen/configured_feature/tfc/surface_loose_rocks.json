@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:loose_rock",
+  "config": {
+    "type": "minecraft:count",
+    "count": 6
+  }
+}

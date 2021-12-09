@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/chert"
+    "item": "tfc:rock/bricks/chert",
+    "count": 4
   }
 }

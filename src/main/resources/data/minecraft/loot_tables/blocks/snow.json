@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "minecraft:snow",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -25,8 +26,7 @@
                     ]
                   }
                 }
-              ],
-              "name": "minecraft:snow"
+              ]
             },
             {
               "type": "minecraft:item",

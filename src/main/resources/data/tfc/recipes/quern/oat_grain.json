@@ -5,7 +5,7 @@
     "item": "tfc:food/oat_grain"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:food/oat_flour"
+    "item": "tfc:food/oat_flour",
+    "count": 1
   }
 }

@@ -5,7 +5,7 @@
     "item": "tfc:ore/small_limonite"
   },
   "result": {
-    "count": 2,
-    "item": "tfc:powder/limonite"
+    "item": "tfc:powder/limonite",
+    "count": 2
   }
 }

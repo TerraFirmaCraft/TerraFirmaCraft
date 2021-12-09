@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 4,
-      "item": "tfc:wood/lumber/acacia"
+      "item": "tfc:wood/lumber/acacia",
+      "count": 4
     }
   }
 }

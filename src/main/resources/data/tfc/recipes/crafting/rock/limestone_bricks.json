@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/limestone"
+    "item": "tfc:rock/bricks/limestone",
+    "count": 4
   }
 }

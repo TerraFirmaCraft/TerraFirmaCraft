@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 4,
-      "item": "tfc:wood/lumber/pine"
+      "item": "tfc:wood/lumber/pine",
+      "count": 4
     }
   }
 }

@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/granite"
+    "item": "tfc:rock/bricks/granite",
+    "count": 4
   }
 }

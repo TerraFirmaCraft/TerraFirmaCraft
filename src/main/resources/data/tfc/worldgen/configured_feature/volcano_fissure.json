@@ -1,169 +1,147 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:fissure",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "tfc:fissure",
-          "config": {
-            "wall_state": "tfc:rock/raw/basalt",
-            "fluid_state": "minecraft:lava",
-            "count": 3,
-            "radius": 6,
-            "decoration": {
-              "blocks": [
-                {
-                  "replace": [
-                    "tfc:rock/raw/andesite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//andesite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/basalt"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//basalt"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/dacite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//dacite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/rhyolite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//rhyolite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/diorite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//diorite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/gabbro"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//gabbro"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/granite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//granite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/gneiss"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//gneiss"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/marble"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//marble"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/phyllite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//phyllite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/quartzite"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//quartzite"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/schist"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//schist"
-                    }
-                  ]
-                },
-                {
-                  "replace": [
-                    "tfc:rock/raw/slate"
-                  ],
-                  "with": [
-                    {
-                      "block": "tfc:ore//slate"
-                    }
-                  ]
-                }
-              ],
-              "radius": 3,
-              "count": 6,
-              "rarity": 3
+    "wall_state": "tfc:rock/raw/basalt",
+    "fluid_state": "minecraft:lava",
+    "count": 3,
+    "radius": 6,
+    "decoration": {
+      "blocks": [
+        {
+          "replace": [
+            "tfc:rock/raw/andesite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//andesite"
             }
-          }
+          ]
         },
-        "decorator": {
-          "type": "minecraft:heightmap",
-          "config": {
-            "heightmap": "WORLD_SURFACE_WG"
-          }
+        {
+          "replace": [
+            "tfc:rock/raw/basalt"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//basalt"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/dacite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//dacite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/rhyolite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//rhyolite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/diorite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//diorite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/gabbro"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//gabbro"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/granite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//granite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/gneiss"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//gneiss"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/marble"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//marble"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/phyllite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//phyllite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/quartzite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//quartzite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/schist"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//schist"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/slate"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore//slate"
+            }
+          ]
         }
-      }
-    },
-    "decorator": {
-      "type": "tfc:volcano",
-      "config": {
-        "center": true
-      }
+      ],
+      "radius": 3,
+      "count": 6,
+      "rarity": 3
     }
   }
 }

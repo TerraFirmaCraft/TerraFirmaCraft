@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "minecraft:tfc/coral_reef",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 18
+    }
+  ]
+}

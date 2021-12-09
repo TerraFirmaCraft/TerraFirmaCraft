@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:food/cattail_root",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -29,11 +30,11 @@
                     "part": "lower"
                   }
                 }
-              ],
-              "name": "tfc:food/cattail_root"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:plant/cattail",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -48,8 +49,7 @@
                     "part": "lower"
                   }
                 }
-              ],
-              "name": "tfc:plant/cattail"
+              ]
             }
           ]
         }

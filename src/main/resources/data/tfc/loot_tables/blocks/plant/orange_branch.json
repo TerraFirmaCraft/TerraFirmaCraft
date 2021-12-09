@@ -8,6 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "tfc:plant/orange_sapling",
           "conditions": [
             {
               "condition": "alternative",
@@ -46,8 +47,7 @@
                 }
               ]
             }
-          ],
-          "name": "tfc:plant/orange_sapling"
+          ]
         }
       ],
       "conditions": [

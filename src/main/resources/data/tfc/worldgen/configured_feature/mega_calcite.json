@@ -1,50 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:thin_spike",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:thin_spike",
-              "config": {
-                "state": "tfc:calcite",
-                "radius": 12,
-                "tries": 70,
-                "min_height": 3,
-                "max_height": 9
-              }
-            },
-            "decorator": {
-              "type": "minecraft:range",
-              "config": {
-                "height": {
-                  "type": "biased_to_bottom",
-                  "min_inclusive": {
-                    "absolute": -56
-                  },
-                  "max_inclusive": {
-                    "absolute": 30
-                  }
-                }
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
-      }
-    },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 20
-      }
-    }
+    "state": "tfc:calcite",
+    "radius": 12,
+    "tries": 70,
+    "min_height": 3,
+    "max_height": 9
   }
 }

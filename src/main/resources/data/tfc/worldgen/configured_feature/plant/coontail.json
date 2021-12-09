@@ -1,65 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:random_property",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:random_patch",
-              "config": {
-                "state_provider": {
-                  "type": "minecraft:simple_state_provider",
-                  "state": {
-                    "Name": "tfc:plant/coontail",
-                    "Properties": {
-                      "age": "1",
-                      "stage": "1",
-                      "fluid": "empty"
-                    }
-                  }
-                },
-                "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:plant/coontail",
-                  "property": "age"
-                },
-                "whitelist": [],
-                "blacklist": [],
-                "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "tries": 100,
-                "can_replace_air": false,
-                "can_replace_water": true,
-                "project_to_ocean_floor": true
-              }
-            },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": 5,
-                "max_temperature": 50,
-                "min_rainfall": 250,
-                "max_rainfall": 500
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
+    "state": {
+      "Name": "tfc:plant/coontail",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "fluid": "empty"
       }
     },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 2
-      }
-    }
+    "property": "age"
   }
 }

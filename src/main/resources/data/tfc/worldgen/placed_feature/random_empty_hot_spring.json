@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:random_empty_hot_spring",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 70
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

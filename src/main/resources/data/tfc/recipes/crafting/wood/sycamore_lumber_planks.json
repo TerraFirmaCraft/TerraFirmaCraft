@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 4,
-      "item": "tfc:wood/lumber/sycamore"
+      "item": "tfc:wood/lumber/sycamore",
+      "count": 4
     }
   }
 }

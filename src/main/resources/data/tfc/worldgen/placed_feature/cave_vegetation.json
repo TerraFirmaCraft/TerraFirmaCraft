@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:cave_vegetation",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 16,
+      "max_temperature": 32,
+      "min_rainfall": 150,
+      "max_rainfall": 470,
+      "fuzzy": true
+    },
+    {
+      "type": "tfc:carving_mask",
+      "step": "air",
+      "min_y": {
+        "absolute": 15
+      },
+      "max_y": {
+        "absolute": 100
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 0
+    }
+  ]
+}

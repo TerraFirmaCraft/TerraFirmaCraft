@@ -10,8 +10,8 @@
     "XX XX"
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/knife_head/igneous_extrusive"
+    "item": "tfc:stone/knife_head/igneous_extrusive",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:igneous_extrusive_rock"

@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "count": 3,
-    "item": "tfc:wood/planks/chestnut_trapdoor"
+    "item": "tfc:wood/planks/chestnut_trapdoor",
+    "count": 3
   }
 }

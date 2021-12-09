@@ -1,54 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:tall_plant",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "tfc:random_patch",
-          "config": {
-            "state_provider": {
-              "type": "minecraft:simple_state_provider",
-              "state": {
-                "Name": "tfc:plant/rose",
-                "Properties": {
-                  "age": "1",
-                  "stage": "1",
-                  "part": "lower"
-                }
-              }
-            },
-            "block_placer": {
-              "type": "tfc:tall_plant"
-            },
-            "whitelist": [
-              "tfc:clay_grass/silt",
-              "tfc:clay_grass/loam",
-              "tfc:clay_grass/sandy_loam",
-              "tfc:clay_grass/silty_loam"
-            ],
-            "blacklist": [],
-            "yspread": 1,
-            "xspread": 15,
-            "zspread": 15,
-            "tries": 128
-          }
-        },
-        "decorator": {
-          "type": "tfc:climate",
-          "config": {
-            "min_temperature": -5,
-            "max_temperature": 20,
-            "min_rainfall": 150,
-            "max_rainfall": 300
-          }
-        }
+    "state": {
+      "Name": "tfc:plant/rose",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "part": "lower"
       }
-    },
-    "decorator": {
-      "type": "minecraft:square",
-      "config": {}
     }
   }
 }

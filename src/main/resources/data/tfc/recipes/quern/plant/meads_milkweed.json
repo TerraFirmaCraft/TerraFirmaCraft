@@ -5,7 +5,7 @@
     "item": "tfc:plant/meads_milkweed"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:yellow_dye"
+    "item": "minecraft:yellow_dye",
+    "count": 2
   }
 }

@@ -7,7 +7,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:plant/banana_sapling",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -17,7 +18,6 @@
               }
             }
           ],
-          "name": "tfc:plant/banana_sapling",
           "functions": [
             {
               "function": "minecraft:set_count",

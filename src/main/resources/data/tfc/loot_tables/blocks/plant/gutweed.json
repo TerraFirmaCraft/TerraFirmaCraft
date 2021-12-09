@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:groundcover/seaweed",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -22,11 +23,11 @@
                   "condition": "minecraft:random_chance",
                   "chance": 0.3
                 }
-              ],
-              "name": "tfc:groundcover/seaweed"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:plant/gutweed",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -34,8 +35,7 @@
                     "tag": "forge:shears"
                   }
                 }
-              ],
-              "name": "tfc:plant/gutweed"
+              ]
             }
           ]
         }

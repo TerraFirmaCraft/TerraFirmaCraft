@@ -10,8 +10,8 @@
     "XX   "
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/hoe_head/igneous_extrusive"
+    "item": "tfc:stone/hoe_head/igneous_extrusive",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:igneous_extrusive_rock"

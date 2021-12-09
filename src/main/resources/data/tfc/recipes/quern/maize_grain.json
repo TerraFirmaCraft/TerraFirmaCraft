@@ -5,7 +5,7 @@
     "item": "tfc:food/maize_grain"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:food/maize_flour"
+    "item": "tfc:food/maize_flour",
+    "count": 1
   }
 }

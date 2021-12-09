@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:rock/hardened/schist"
+    "item": "tfc:rock/hardened/schist",
+    "count": 2
   }
 }

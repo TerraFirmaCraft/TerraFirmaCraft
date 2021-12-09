@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/dacite"
+    "item": "tfc:rock/bricks/dacite",
+    "count": 4
   }
 }

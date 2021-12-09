@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/phyllite"
+    "item": "tfc:rock/bricks/phyllite",
+    "count": 4
   }
 }

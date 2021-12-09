@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "tfc:wood/planks/hickory_fence"
+    "item": "tfc:wood/planks/hickory_fence",
+    "count": 8
   }
 }

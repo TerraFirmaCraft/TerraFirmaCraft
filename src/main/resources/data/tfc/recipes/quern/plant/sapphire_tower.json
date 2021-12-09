@@ -5,7 +5,7 @@
     "item": "tfc:plant/sapphire_tower"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:light_blue_dye"
+    "item": "minecraft:light_blue_dye",
+    "count": 2
   }
 }

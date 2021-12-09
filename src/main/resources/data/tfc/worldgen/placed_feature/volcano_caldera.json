@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:volcano_caldera",
+  "placement": [
+    {
+      "type": "tfc:volcano",
+      "center": true
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

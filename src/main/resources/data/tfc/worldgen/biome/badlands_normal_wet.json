@@ -2,8 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "precipitation": "rain",
   "category": "mesa",
-  "depth": 0,
-  "scale": 0,
   "temperature": 0.5,
   "temperature_modifier": "none",
   "downfall": 0.9,
@@ -16,12 +14,10 @@
   "carvers": {
     "air": [
       "tfc:cave",
-      "tfc:canyon",
-      "tfc:crevice"
+      "tfc:canyon"
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:badlands",
   "features": [
     [
       "tfc:erosion"

@@ -5,7 +5,7 @@
     "item": "tfc:plant/sacred_datura"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:pink_dye"
+    "item": "minecraft:pink_dye",
+    "count": 2
   }
 }

@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:wood/planks/willow_door"
+    "item": "tfc:wood/planks/willow_door",
+    "count": 2
   }
 }

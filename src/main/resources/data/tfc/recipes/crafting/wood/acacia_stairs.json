@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "tfc:wood/planks/acacia_stairs"
+    "item": "tfc:wood/planks/acacia_stairs",
+    "count": 8
   }
 }

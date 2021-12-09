@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:rock/hardened/granite"
+    "item": "tfc:rock/hardened/granite",
+    "count": 2
   }
 }

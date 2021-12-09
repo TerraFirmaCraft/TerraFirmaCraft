@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:minecart"
+    "item": "minecraft:minecart",
+    "count": 2
   }
 }

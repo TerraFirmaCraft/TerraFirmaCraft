@@ -5,7 +5,7 @@
     "item": "tfc:food/rye_grain"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:food/rye_flour"
+    "item": "tfc:food/rye_flour",
+    "count": 1
   }
 }

@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 16,
-    "item": "minecraft:ladder"
+    "item": "minecraft:ladder",
+    "count": 16
   }
 }

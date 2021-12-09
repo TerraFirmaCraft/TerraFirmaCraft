@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "tfc:wood/planks/sequoia_fence"
+    "item": "tfc:wood/planks/sequoia_fence",
+    "count": 8
   }
 }

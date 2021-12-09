@@ -31,7 +31,7 @@
     }
   ],
   "result": {
-    "count": 8,
-    "item": "minecraft:light_blue_concrete_powder"
+    "item": "minecraft:light_blue_concrete_powder",
+    "count": 8
   }
 }

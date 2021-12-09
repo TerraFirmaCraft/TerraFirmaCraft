@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 6,
-    "item": "tfc:rock/cobble/claystone_stairs"
+    "item": "tfc:rock/cobble/claystone_stairs",
+    "count": 6
   }
 }

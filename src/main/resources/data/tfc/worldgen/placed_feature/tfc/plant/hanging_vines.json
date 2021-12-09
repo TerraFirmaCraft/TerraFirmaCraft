@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "minecraft:tfc/plant/hanging_vines",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 16,
+      "max_temperature": 32,
+      "min_rainfall": 150,
+      "max_rainfall": 470,
+      "min_forest": "normal",
+      "fuzzy": true
+    }
+  ]
+}

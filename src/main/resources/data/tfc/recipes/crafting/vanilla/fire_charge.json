@@ -13,7 +13,7 @@
     }
   ],
   "result": {
-    "count": 3,
-    "item": "minecraft:fire_charge"
+    "item": "minecraft:fire_charge",
+    "count": 3
   }
 }

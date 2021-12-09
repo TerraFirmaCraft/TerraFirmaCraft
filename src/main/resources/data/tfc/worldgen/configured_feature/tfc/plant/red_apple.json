@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:fruit_trees",
+  "config": {
+    "state": "tfc:plant/red_apple_growing_branch"
+  }
+}

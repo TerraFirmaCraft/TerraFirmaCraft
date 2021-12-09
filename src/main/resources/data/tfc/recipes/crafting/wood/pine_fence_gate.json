@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:wood/planks/pine_fence_gate"
+    "item": "tfc:wood/planks/pine_fence_gate",
+    "count": 2
   }
 }

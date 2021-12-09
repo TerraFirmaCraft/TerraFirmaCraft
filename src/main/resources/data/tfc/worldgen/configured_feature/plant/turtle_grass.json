@@ -1,65 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:random_property",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:random_patch",
-              "config": {
-                "state_provider": {
-                  "type": "minecraft:simple_state_provider",
-                  "state": {
-                    "Name": "tfc:plant/turtle_grass",
-                    "Properties": {
-                      "age": "1",
-                      "stage": "1",
-                      "fluid": "empty"
-                    }
-                  }
-                },
-                "block_placer": {
-                  "type": "tfc:random_property",
-                  "block": "tfc:plant/turtle_grass",
-                  "property": "age"
-                },
-                "whitelist": [],
-                "blacklist": [],
-                "yspread": 1,
-                "xspread": 15,
-                "zspread": 15,
-                "tries": 128,
-                "can_replace_air": false,
-                "can_replace_water": true,
-                "project_to_ocean_floor": true
-              }
-            },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "min_temperature": -50,
-                "max_temperature": 25,
-                "min_rainfall": 240,
-                "max_rainfall": 500
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
+    "state": {
+      "Name": "tfc:plant/turtle_grass",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "fluid": "empty"
       }
     },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 1
-      }
-    }
+    "property": "age"
   }
 }

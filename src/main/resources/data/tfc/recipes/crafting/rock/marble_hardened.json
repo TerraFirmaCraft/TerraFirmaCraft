@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:rock/hardened/marble"
+    "item": "tfc:rock/hardened/marble",
+    "count": 2
   }
 }

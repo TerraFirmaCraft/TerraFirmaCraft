@@ -1,0 +1,24 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/giant_kelp_patch",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -18,
+      "max_temperature": 18,
+      "min_rainfall": 0,
+      "max_rainfall": 500,
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

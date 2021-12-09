@@ -5,7 +5,7 @@
     "item": "tfc:medium_soaked_hide"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:medium_scraped_hide"
+    "item": "tfc:medium_scraped_hide",
+    "count": 1
   }
 }

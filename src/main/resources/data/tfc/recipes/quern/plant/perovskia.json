@@ -5,7 +5,7 @@
     "item": "tfc:plant/perovskia"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:purple_dye"
+    "item": "minecraft:purple_dye",
+    "count": 2
   }
 }

@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "count": 6,
-    "item": "tfc:rock/bricks/shale_wall"
+    "item": "tfc:rock/bricks/shale_wall",
+    "count": 6
   }
 }

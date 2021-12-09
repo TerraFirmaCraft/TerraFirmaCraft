@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:kelp",
+  "config": {
+    "body": "tfc:plant/leafy_kelp_plant",
+    "head": "tfc:plant/leafy_kelp",
+    "tries": 64,
+    "radius": 12,
+    "minHeight": 14,
+    "maxHeight": 21
+  }
+}

@@ -1,41 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:iceberg",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:iceberg",
-              "config": {
-                "state": {
-                  "Name": "minecraft:packed_ice",
-                  "Properties": {}
-                }
-              }
-            },
-            "decorator": {
-              "type": "tfc:climate",
-              "config": {
-                "max_temperature": -18
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
-      }
-    },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 30
-      }
+    "state": {
+      "Name": "minecraft:packed_ice",
+      "Properties": {}
     }
   }
 }

@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:rock/hardened/conglomerate"
+    "item": "tfc:rock/hardened/conglomerate",
+    "count": 2
   }
 }

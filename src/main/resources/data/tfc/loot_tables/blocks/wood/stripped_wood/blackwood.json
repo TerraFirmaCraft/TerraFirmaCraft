@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_wood/blackwood",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -19,8 +20,7 @@
                     "natural": "false"
                   }
                 }
-              ],
-              "name": "tfc:wood/stripped_wood/blackwood"
+              ]
             },
             {
               "type": "minecraft:item",

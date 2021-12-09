@@ -10,8 +10,8 @@
     "   XX"
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/hoe_head/igneous_intrusive"
+    "item": "tfc:stone/hoe_head/igneous_intrusive",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:igneous_intrusive_rock"

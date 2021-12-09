@@ -31,7 +31,7 @@
     }
   ],
   "result": {
-    "count": 8,
-    "item": "minecraft:yellow_concrete_powder"
+    "item": "minecraft:yellow_concrete_powder",
+    "count": 8
   }
 }

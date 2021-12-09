@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:vines",
+  "config": {
+    "state": "tfc:plant/ivy",
+    "tries": 15,
+    "radius": 7,
+    "minHeight": 96,
+    "maxHeight": 150
+  }
+}

@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:bricks"
+    "item": "minecraft:bricks",
+    "count": 2
   }
 }

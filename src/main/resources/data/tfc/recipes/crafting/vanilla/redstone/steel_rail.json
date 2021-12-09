@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 16,
-    "item": "minecraft:rail"
+    "item": "minecraft:rail",
+    "count": 16
   }
 }

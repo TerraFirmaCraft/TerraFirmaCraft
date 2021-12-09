@@ -8,22 +8,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/loose/basalt"
+          "name": "tfc:rock/loose/basalt",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "functions": [
-        {
-          "function": "minecraft:set_count",
-          "count": {
-            "min": 1,
-            "max": 4,
-            "type": "minecraft:uniform"
-          }
         }
       ]
     }

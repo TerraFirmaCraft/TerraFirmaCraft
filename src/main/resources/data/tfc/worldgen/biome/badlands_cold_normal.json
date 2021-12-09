@@ -2,26 +2,22 @@
   "__comment__": "This file was automatically created by mcresources",
   "precipitation": "snow",
   "category": "mesa",
-  "depth": 0,
-  "scale": 0,
-  "temperature": 0.25,
+  "temperature": 0,
   "temperature_modifier": "none",
-  "downfall": 0.45,
+  "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
     "sky_color": 8709887,
-    "water_color": 4020182,
+    "water_color": 3750089,
     "water_fog_color": 329011
   },
   "carvers": {
     "air": [
       "tfc:cave",
-      "tfc:canyon",
-      "tfc:crevice"
+      "tfc:canyon"
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:badlands",
   "features": [
     [
       "tfc:erosion"

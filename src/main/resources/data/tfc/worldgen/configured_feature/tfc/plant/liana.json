@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:weeping_vines",
+  "config": {
+    "body": "tfc:plant/liana_plant",
+    "head": "tfc:plant/liana",
+    "tries": 40,
+    "radius": 10,
+    "minHeight": 8,
+    "maxHeight": 16
+  }
+}

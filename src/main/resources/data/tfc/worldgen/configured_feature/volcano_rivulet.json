@@ -1,38 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:rivulet",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:rivulet",
-              "config": {
-                "state": "minecraft:magma_block"
-              }
-            },
-            "decorator": {
-              "type": "tfc:volcano",
-              "config": {
-                "distance": 0.7
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
-      }
-    },
-    "decorator": {
-      "type": "minecraft:count",
-      "config": {
-        "count": 2
-      }
-    }
+    "state": "minecraft:magma_block"
   }
 }

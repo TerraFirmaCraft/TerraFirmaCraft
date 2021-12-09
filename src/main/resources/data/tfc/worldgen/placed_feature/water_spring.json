@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:spring",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 110
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "biased_to_bottom",
+        "min_inclusive": {
+          "absolute": -64
+        },
+        "max_inclusive": {
+          "absolute": 180
+        }
+      }
+    }
+  ]
+}

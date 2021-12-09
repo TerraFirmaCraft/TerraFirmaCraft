@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "count": 6,
-    "item": "tfc:rock/bricks/marble_wall"
+    "item": "tfc:rock/bricks/marble_wall",
+    "count": 6
   }
 }

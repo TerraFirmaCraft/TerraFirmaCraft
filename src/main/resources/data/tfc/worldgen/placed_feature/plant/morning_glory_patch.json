@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/morning_glory_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 15
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -11,
+      "max_temperature": 19,
+      "min_rainfall": 300,
+      "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

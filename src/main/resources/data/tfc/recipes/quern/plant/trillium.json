@@ -5,7 +5,7 @@
     "item": "tfc:plant/trillium"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:white_dye"
+    "item": "minecraft:white_dye",
+    "count": 2
   }
 }

@@ -5,7 +5,7 @@
     "item": "tfc:plant/reindeer_lichen"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:green_dye"
+    "item": "minecraft:green_dye",
+    "count": 2
   }
 }

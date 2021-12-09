@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/blood_lily_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 33,
+      "max_temperature": 45,
+      "min_rainfall": 200,
+      "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

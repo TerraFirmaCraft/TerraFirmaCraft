@@ -5,7 +5,7 @@
     "item": "tfc:ore/halite"
   },
   "result": {
-    "count": 4,
-    "item": "tfc:powder/salt"
+    "item": "tfc:powder/salt",
+    "count": 4
   }
 }

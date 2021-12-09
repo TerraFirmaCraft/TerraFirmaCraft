@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 2,
-    "item": "tfc:rock/hardened/limestone"
+    "item": "tfc:rock/hardened/limestone",
+    "count": 2
   }
 }

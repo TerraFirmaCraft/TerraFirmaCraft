@@ -1,73 +1,34 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:spring",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:spring",
-              "config": {
-                "state": {
-                  "Name": "minecraft:water",
-                  "Properties": {
-                    "falling": "true"
-                  }
-                },
-                "valid_blocks": [
-                  "tfc:rock/raw/chalk",
-                  "tfc:rock/raw/chert",
-                  "tfc:rock/raw/claystone",
-                  "tfc:rock/raw/conglomerate",
-                  "tfc:rock/raw/dolomite",
-                  "tfc:rock/raw/limestone",
-                  "tfc:rock/raw/shale",
-                  "tfc:rock/raw/gneiss",
-                  "tfc:rock/raw/marble",
-                  "tfc:rock/raw/phyllite",
-                  "tfc:rock/raw/quartzite",
-                  "tfc:rock/raw/schist",
-                  "tfc:rock/raw/slate",
-                  "tfc:rock/raw/diorite",
-                  "tfc:rock/raw/gabbro",
-                  "tfc:rock/raw/granite",
-                  "tfc:rock/raw/andesite",
-                  "tfc:rock/raw/basalt",
-                  "tfc:rock/raw/dacite",
-                  "tfc:rock/raw/rhyolite"
-                ]
-              }
-            },
-            "decorator": {
-              "type": "minecraft:range",
-              "config": {
-                "height": {
-                  "type": "biased_to_bottom",
-                  "min_inclusive": {
-                    "absolute": -64
-                  },
-                  "max_inclusive": {
-                    "absolute": 180
-                  }
-                }
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
+    "state": {
+      "Name": "minecraft:water",
+      "Properties": {
+        "falling": "true"
       }
     },
-    "decorator": {
-      "type": "minecraft:count",
-      "config": {
-        "count": 110
-      }
-    }
+    "valid_blocks": [
+      "tfc:rock/raw/chalk",
+      "tfc:rock/raw/chert",
+      "tfc:rock/raw/claystone",
+      "tfc:rock/raw/conglomerate",
+      "tfc:rock/raw/dolomite",
+      "tfc:rock/raw/limestone",
+      "tfc:rock/raw/shale",
+      "tfc:rock/raw/gneiss",
+      "tfc:rock/raw/marble",
+      "tfc:rock/raw/phyllite",
+      "tfc:rock/raw/quartzite",
+      "tfc:rock/raw/schist",
+      "tfc:rock/raw/slate",
+      "tfc:rock/raw/diorite",
+      "tfc:rock/raw/gabbro",
+      "tfc:rock/raw/granite",
+      "tfc:rock/raw/andesite",
+      "tfc:rock/raw/basalt",
+      "tfc:rock/raw/dacite",
+      "tfc:rock/raw/rhyolite"
+    ]
   }
 }

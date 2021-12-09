@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/switchgrass_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -29,
+      "max_temperature": 29,
+      "min_rainfall": 110,
+      "max_rainfall": 390
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

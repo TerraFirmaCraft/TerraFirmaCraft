@@ -10,16 +10,16 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:rock/raw/chalk",
               "conditions": [
                 {
                   "condition": "tfc:is_isolated"
                 }
-              ],
-              "name": "tfc:rock/raw/chalk"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
               "name": "tfc:rock/loose/chalk",
               "functions": [
                 {

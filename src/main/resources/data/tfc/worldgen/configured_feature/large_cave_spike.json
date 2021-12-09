@@ -1,20 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
-  "config": {
-    "feature": {
-      "type": "tfc:large_cave_spike",
-      "config": {}
-    },
-    "decorator": {
-      "type": "tfc:carving_mask",
-      "config": {
-        "step": "air",
-        "probability": 0.006,
-        "min_y": {
-          "above_bottom": 25
-        }
-      }
-    }
-  }
+  "type": "tfc:large_cave_spike",
+  "config": {}
 }

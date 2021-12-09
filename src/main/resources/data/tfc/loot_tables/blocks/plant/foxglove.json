@@ -7,7 +7,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:plant/foxglove",
           "conditions": [
             {
               "condition": "minecraft:match_tool",
@@ -22,8 +23,7 @@
                 "part": "lower"
               }
             }
-          ],
-          "name": "tfc:plant/foxglove"
+          ]
         }
       ],
       "conditions": [

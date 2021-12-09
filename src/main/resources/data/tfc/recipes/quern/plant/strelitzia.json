@@ -5,7 +5,7 @@
     "item": "tfc:plant/strelitzia"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:orange_dye"
+    "item": "minecraft:orange_dye",
+    "count": 2
   }
 }

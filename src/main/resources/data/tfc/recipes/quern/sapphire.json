@@ -5,7 +5,7 @@
     "item": "tfc:ore/sapphire"
   },
   "result": {
-    "count": 4,
-    "item": "tfc:powder/sapphire"
+    "item": "tfc:powder/sapphire",
+    "count": 4
   }
 }

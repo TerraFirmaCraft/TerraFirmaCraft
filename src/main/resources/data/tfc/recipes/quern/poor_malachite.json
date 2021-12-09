@@ -5,7 +5,7 @@
     "item": "tfc:ore/poor_malachite"
   },
   "result": {
-    "count": 3,
-    "item": "tfc:powder/malachite"
+    "item": "tfc:powder/malachite",
+    "count": 3
   }
 }

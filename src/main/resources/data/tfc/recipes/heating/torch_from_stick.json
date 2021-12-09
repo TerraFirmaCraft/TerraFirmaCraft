@@ -5,8 +5,8 @@
     "tag": "forge:rods/wooden"
   },
   "result_item": {
-    "count": 2,
-    "item": "tfc:torch"
+    "item": "tfc:torch",
+    "count": 2
   },
   "temperature": 60
 }

@@ -5,7 +5,7 @@
     "item": "tfc:plant/sargassum"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:brown_dye"
+    "item": "minecraft:brown_dye",
+    "count": 2
   }
 }

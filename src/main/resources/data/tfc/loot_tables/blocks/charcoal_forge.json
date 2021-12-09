@@ -8,18 +8,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:charcoal"
+          "name": "minecraft:charcoal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 7
+            }
+          ]
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "functions": [
-        {
-          "function": "minecraft:set_count",
-          "count": 7
         }
       ]
     }

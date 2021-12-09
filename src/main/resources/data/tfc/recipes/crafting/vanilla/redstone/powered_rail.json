@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "count": 8,
-    "item": "minecraft:powered_rail"
+    "item": "minecraft:powered_rail",
+    "count": 8
   }
 }

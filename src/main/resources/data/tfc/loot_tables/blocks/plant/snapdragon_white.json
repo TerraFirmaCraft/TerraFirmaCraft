@@ -7,7 +7,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:plant/snapdragon_white",
           "conditions": [
             {
               "condition": "minecraft:match_tool",
@@ -15,8 +16,7 @@
                 "tag": "tfc:knives"
               }
             }
-          ],
-          "name": "tfc:plant/snapdragon_white"
+          ]
         }
       ],
       "conditions": [

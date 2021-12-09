@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/sacred_datura_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 18,
+      "max_temperature": 31,
+      "min_rainfall": 75,
+      "max_rainfall": 150
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

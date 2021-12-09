@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:plant/pampas_grass",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -25,11 +26,11 @@
                     "part": "lower"
                   }
                 }
-              ],
-              "name": "tfc:plant/pampas_grass"
+              ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:straw",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -37,8 +38,7 @@
                     "tag": "tfc:knives"
                   }
                 }
-              ],
-              "name": "tfc:straw"
+              ]
             }
           ]
         }

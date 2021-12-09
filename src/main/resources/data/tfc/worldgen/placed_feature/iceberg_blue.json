@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:iceberg_blue",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 14
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "max_temperature": -23
+    }
+  ]
+}

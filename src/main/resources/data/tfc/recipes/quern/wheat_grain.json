@@ -5,7 +5,7 @@
     "item": "tfc:food/wheat_grain"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:food/wheat_flour"
+    "item": "tfc:food/wheat_flour",
+    "count": 1
   }
 }

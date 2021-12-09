@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 2,
-      "item": "tfc:powder/flux"
+      "item": "tfc:powder/flux",
+      "count": 2
     }
   }
 }

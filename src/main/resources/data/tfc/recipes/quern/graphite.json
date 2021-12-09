@@ -5,7 +5,7 @@
     "item": "tfc:ore/graphite"
   },
   "result": {
-    "count": 4,
-    "item": "tfc:powder/graphite"
+    "item": "tfc:powder/graphite",
+    "count": 4
   }
 }

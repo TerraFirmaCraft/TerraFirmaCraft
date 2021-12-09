@@ -31,7 +31,7 @@
     }
   ],
   "result": {
-    "count": 8,
-    "item": "minecraft:orange_concrete_powder"
+    "item": "minecraft:orange_concrete_powder",
+    "count": 8
   }
 }

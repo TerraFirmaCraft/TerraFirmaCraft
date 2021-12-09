@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/basalt"
+    "item": "tfc:rock/bricks/basalt",
+    "count": 4
   }
 }

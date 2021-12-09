@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/dolomite"
+    "item": "tfc:rock/bricks/dolomite",
+    "count": 4
   }
 }

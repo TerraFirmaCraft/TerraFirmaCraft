@@ -5,7 +5,7 @@
     "item": "tfc:rock/raw/limestone"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:ore/gypsum"
+    "item": "tfc:ore/gypsum",
+    "count": 1
   }
 }

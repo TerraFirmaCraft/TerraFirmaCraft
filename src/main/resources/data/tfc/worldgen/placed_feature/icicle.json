@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:icicle",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "biased_to_bottom",
+        "min_inclusive": {
+          "absolute": -32
+        },
+        "max_inclusive": {
+          "absolute": 100
+        }
+      }
+    },
+    {
+      "type": "tfc:climate",
+      "max_temperature": -4
+    }
+  ]
+}

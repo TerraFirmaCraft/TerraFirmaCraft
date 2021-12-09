@@ -5,7 +5,7 @@
     "item": "tfc:food/barley_grain"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:food/barley_flour"
+    "item": "tfc:food/barley_flour",
+    "count": 1
   }
 }

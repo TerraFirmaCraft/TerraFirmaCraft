@@ -7,7 +7,7 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "tfc:rock/mossy_bricks/andesite_slab",
           "functions": [
             {

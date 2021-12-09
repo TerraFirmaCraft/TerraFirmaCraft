@@ -2,11 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "precipitation": "rain",
   "category": "extreme_hills",
-  "depth": 0,
-  "scale": 0,
   "temperature": 0.5,
   "temperature_modifier": "none",
-  "downfall": 0.45,
+  "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
     "sky_color": 8709887,
@@ -16,12 +14,10 @@
   "carvers": {
     "air": [
       "tfc:cave",
-      "tfc:canyon",
-      "tfc:crevice"
+      "tfc:canyon"
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:volcanic_mountains",
   "features": [
     [
       "tfc:erosion"

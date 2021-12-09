@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 20,
+    "xz_spread": 15,
+    "y_spread": 1,
+    "feature": "tfc:sticks_forest"
+  }
+}

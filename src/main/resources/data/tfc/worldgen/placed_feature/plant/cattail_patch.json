@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/cattail_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -10,
+      "max_temperature": 50,
+      "min_rainfall": 150,
+      "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

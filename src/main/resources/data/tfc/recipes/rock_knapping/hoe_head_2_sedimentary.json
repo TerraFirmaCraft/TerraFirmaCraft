@@ -10,8 +10,8 @@
     "   XX"
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/hoe_head/sedimentary"
+    "item": "tfc:stone/hoe_head/sedimentary",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:sedimentary_rock"

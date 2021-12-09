@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/tulip_orange_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -34,
+      "max_temperature": 0,
+      "min_rainfall": 100,
+      "max_rainfall": 200
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

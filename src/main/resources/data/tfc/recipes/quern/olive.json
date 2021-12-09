@@ -5,7 +5,7 @@
     "item": "tfc:food/olive"
   },
   "result": {
-    "count": 1,
-    "item": "tfc:olive_paste"
+    "item": "tfc:olive_paste",
+    "count": 1
   }
 }

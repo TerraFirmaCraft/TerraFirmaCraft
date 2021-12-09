@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "minecraft:activator_rail"
+    "item": "minecraft:activator_rail",
+    "count": 4
   }
 }

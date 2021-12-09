@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "count": 6,
-    "item": "tfc:rock/cobble/dolomite_stairs"
+    "item": "tfc:rock/cobble/dolomite_stairs",
+    "count": 6
   }
 }

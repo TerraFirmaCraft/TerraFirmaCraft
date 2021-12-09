@@ -5,8 +5,8 @@
     "item": "tfc:stick_bunch"
   },
   "result_item": {
-    "count": 18,
-    "item": "tfc:torch"
+    "item": "tfc:torch",
+    "count": 18
   },
   "temperature": 60
 }

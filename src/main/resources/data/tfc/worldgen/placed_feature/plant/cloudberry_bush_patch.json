@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/cloudberry_bush_patch",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 3,
+      "max_temperature": 17,
+      "min_rainfall": 80,
+      "max_rainfall": 370,
+      "min_forest": "normal",
+      "max_forest": "old_growth"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 15
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

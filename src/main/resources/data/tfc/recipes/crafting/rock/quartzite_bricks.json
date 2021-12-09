@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/quartzite"
+    "item": "tfc:rock/bricks/quartzite",
+    "count": 4
   }
 }

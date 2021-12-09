@@ -10,8 +10,8 @@
     "XX XX"
   ],
   "result": {
-    "count": 2,
-    "item": "tfc:stone/knife_head/metamorphic"
+    "item": "tfc:stone/knife_head/metamorphic",
+    "count": 2
   },
   "ingredient": {
     "tag": "tfc:metamorphic_rock"

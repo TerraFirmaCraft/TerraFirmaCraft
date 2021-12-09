@@ -12,8 +12,8 @@
       }
     ],
     "result": {
-      "count": 3,
-      "item": "tfc:wool"
+      "item": "tfc:wool",
+      "count": 3
     }
   }
 }

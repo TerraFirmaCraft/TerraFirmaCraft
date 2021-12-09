@@ -5,7 +5,7 @@
     "item": "tfc:plant/blue_orchid"
   },
   "result": {
-    "count": 2,
-    "item": "minecraft:blue_dye"
+    "item": "minecraft:blue_dye",
+    "count": 2
   }
 }

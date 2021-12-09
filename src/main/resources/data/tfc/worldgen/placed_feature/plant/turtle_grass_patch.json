@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/turtle_grass_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -50,
+      "max_temperature": 25,
+      "min_rainfall": 240,
+      "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:biome_filter"
+    }
+  ]
+}

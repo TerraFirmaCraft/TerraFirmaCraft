@@ -15,7 +15,7 @@
     }
   },
   "result": {
-    "count": 4,
-    "item": "tfc:rock/bricks/andesite"
+    "item": "tfc:rock/bricks/andesite",
+    "count": 4
   }
 }

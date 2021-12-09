@@ -1,39 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:decorated",
+  "type": "tfc:flood_fill_lake",
   "config": {
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "feature": {
-              "type": "tfc:flood_fill_lake",
-              "config": {
-                "state": "minecraft:water",
-                "replace_fluids": []
-              }
-            },
-            "decorator": {
-              "type": "minecraft:heightmap",
-              "config": {
-                "heightmap": "WORLD_SURFACE_WG"
-              }
-            }
-          }
-        },
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        }
-      }
-    },
-    "decorator": {
-      "type": "minecraft:chance",
-      "config": {
-        "chance": 5
-      }
-    }
+    "state": "minecraft:water",
+    "replace_fluids": []
   }
 }

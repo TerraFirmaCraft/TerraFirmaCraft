@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:twisting_vines",
+  "config": {
+    "body": "tfc:plant/tree_fern_plant",
+    "head": "tfc:plant/tree_fern",
+    "tries": 8,
+    "radius": 7,
+    "minHeight": 2,
+    "maxHeight": 6
+  }
+}
