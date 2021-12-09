@@ -50,27 +50,27 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(level, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
         }
         //This is where vanilla assumes (wrongly) that the abstract block has correct waterlogged handling
-        GrowingPlantHeadBlock abstracttopplantblock = this.getHeadBlock();
+        GrowingPlantHeadBlock topBlock = this.getHeadBlock();
         if (facing == this.growthDirection)
         {
             Block block = facingState.getBlock();
-            if (block != this && block != abstracttopplantblock)
+            if (block != this && block != topBlock)
             {
-                return abstracttopplantblock.getStateForPlacement(worldIn).setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+                return topBlock.getStateForPlacement(level).setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
             }
         }
         if (this.scheduleFluidTicks)
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override

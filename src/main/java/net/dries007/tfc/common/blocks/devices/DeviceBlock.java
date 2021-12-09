@@ -75,15 +75,15 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
-        final ItemStack stack = super.getPickBlock(state, target, world, pos, player);
+        final ItemStack stack = super.getCloneItemStack(state, target, world, pos, player);
         if (removeBehavior == InventoryRemoveBehavior.SAVE)
         {
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
-                stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, inv.save(new CompoundTag()));
+                stack.addTagElement("BlockEntityTag" /* BlockItem.BLOCK_ENTITY_TAG */, inv.save(new CompoundTag()));
             }
         }
         return stack;

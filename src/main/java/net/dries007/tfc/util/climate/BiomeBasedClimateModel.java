@@ -21,13 +21,15 @@ public class BiomeBasedClimateModel implements WorldGenClimateModel
     @Override
     public float getTemperature(LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
     {
-        return Climate.toActualTemperature(level.getBiome(pos).getTemperature(pos));
+        // todo
+        return Climate.toActualTemperature(0); // level.getBiome(pos).getTemperature(pos));
     }
 
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return Climate.toActualTemperature(level.getBiome(pos).getTemperature(pos));
+        // todo
+        return Climate.toActualTemperature(0); // level.getBiome(pos).getTemperature(pos));
     }
 
     @Override

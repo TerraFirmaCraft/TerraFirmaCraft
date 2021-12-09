@@ -56,21 +56,21 @@ public class LivingCoralPlantBlock extends TFCCoralPlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            this.tryScheduleDieTick(stateIn, worldIn, currentPos);
+            this.tryScheduleDieTick(stateIn, level, currentPos);
             if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
         }
     }
 }

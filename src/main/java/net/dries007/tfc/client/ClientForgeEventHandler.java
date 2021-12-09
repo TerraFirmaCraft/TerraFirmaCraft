@@ -239,8 +239,8 @@ public class ClientForgeEventHandler
             // Add our custom tints to the color resolver caches
             final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) level).accessor$getTintCaches();
 
-            colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache());
-            colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache());
+            colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache(TFCColors::getWaterColor));
+            colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache(TFCColors::getWaterColor));
 
         }
     }

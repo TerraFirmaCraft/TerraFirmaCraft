@@ -81,18 +81,18 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == growthDirection.getOpposite() && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing == growthDirection.getOpposite() && !stateIn.canSurvive(level, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
         }
         if (facing != growthDirection || !facingState.is(this) && !facingState.is(getBodyBlock()))
         {
             //Not sure if this is necessary
             Fluid fluid = stateIn.getFluidState().getType();
-            worldIn.getLiquidTicks().scheduleTick(currentPos, fluid, fluid.getTickDelay(worldIn));
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            level.scheduleTick(currentPos, fluid, fluid.getTickDelay(level));
+            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {

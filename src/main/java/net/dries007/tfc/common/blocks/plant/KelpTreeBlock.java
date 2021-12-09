@@ -90,17 +90,17 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canSurvive(level, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
-            updateFluid(worldIn, stateIn, currentPos);
+            level.scheduleTick(currentPos, this, 1);
+            updateFluid(level, stateIn, currentPos);
             return stateIn;
         }
         else
         {
-            updateFluid(worldIn, stateIn, currentPos);
+            updateFluid(level, stateIn, currentPos);
             boolean flag = facingState.is(TFCTags.Blocks.KELP_TREE) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
             return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
@@ -148,12 +148,12 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
         }
     }
 
-    private void updateFluid(LevelAccessor world, BlockState state, BlockPos pos)
+    private void updateFluid(LevelAccessor level, BlockState state, BlockPos pos)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            world.getLiquidTicks().scheduleTick(pos, containedFluid, containedFluid.getTickDelay(world));
+            level.scheduleTick(pos, containedFluid, containedFluid.getTickDelay(level));
         }
     }
 }

@@ -55,9 +55,9 @@ public class LivingCoralWallFanBlock extends CoralWallFanBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -65,11 +65,11 @@ public class LivingCoralWallFanBlock extends CoralWallFanBlock
         {
             if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            this.tryScheduleDieTick(stateIn, worldIn, currentPos);
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            this.tryScheduleDieTick(stateIn, level, currentPos);
+            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
         }
     }
 }

@@ -33,8 +33,9 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
             if (!baseStack.isEmpty() && !scrapeStack.isEmpty())
             {
                 ItemModelShaper shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
-                final ResourceLocation base = shaper.getParticleIcon(baseStack).getName();
-                final ResourceLocation scraped = shaper.getParticleIcon(scrapeStack).getName();
+                // todo: is this the right thing to be doing here?
+                final ResourceLocation base = shaper.getItemModel(baseStack).getParticleIcon().getName();
+                final ResourceLocation scraped = shaper.getItemModel(scrapeStack).getParticleIcon().getName();
                 final short positions = te.getScrapedPositions();
                 drawTiles(buffer, matrixStack, base, positions, 0, combinedLight, combinedOverlay);
                 drawTiles(buffer, matrixStack, scraped, positions, 1, combinedLight, combinedOverlay);

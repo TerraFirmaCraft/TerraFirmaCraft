@@ -41,7 +41,7 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
 
@@ -59,7 +59,7 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
     }

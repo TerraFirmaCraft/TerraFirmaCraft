@@ -59,9 +59,9 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!canSurvive(stateIn, worldIn, currentPos))
+        if (!canSurvive(stateIn, level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -70,9 +70,9 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
             final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
             if (containedFluid != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+                level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
             }
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
         }
     }
 

@@ -53,9 +53,9 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        world.getBlockTicks().scheduleTick(pos, this, 1);
+        level.scheduleTick(pos, this, 1);
     }
 
     @Override
@@ -77,18 +77,18 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
         // Check support from above or below
         BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
+        BlockState belowState = level.getBlockState(belowPos);
         if (belowState.getBlock() == this && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
         {
             // Larger spike below. Tick that to ensure it is supported
-            worldIn.getBlockTicks().scheduleTick(belowPos, this, 1);
+            level.scheduleTick(belowPos, this, 1);
             return;
         }
-        else if (belowState.isFaceSturdy(worldIn, belowPos, Direction.UP))
+        else if (belowState.isFaceSturdy(level, belowPos, Direction.UP))
         {
             // Full block below, this is supported
             return;
@@ -96,27 +96,27 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
 
         // No support below, try above
         BlockPos abovePos = pos.above();
-        BlockState aboveState = worldIn.getBlockState(abovePos);
+        BlockState aboveState = level.getBlockState(abovePos);
         if (aboveState.getBlock() == this && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
         {
             // Larger spike above. Tick to ensure that it is supported
-            worldIn.getBlockTicks().scheduleTick(abovePos, this, 1);
+            level.scheduleTick(abovePos, this, 1);
             return;
         }
-        else if (aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN))
+        else if (aboveState.isFaceSturdy(level, abovePos, Direction.DOWN))
         {
             // Full block above, this is supported
             return;
         }
 
         // No support, so either collapse, or break
-        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this) && CollapseRecipe.collapseBlock(worldIn, pos, state))
+        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this) && CollapseRecipe.collapseBlock(level, pos, state))
         {
-            worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 1.0f);
+            level.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 1.0f);
         }
         else
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 

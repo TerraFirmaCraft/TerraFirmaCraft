@@ -112,15 +112,15 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (newState.getBlock() != state.getBlock())
         {
             BlockPos posDown = pos.below();
-            BlockState otherState = worldIn.getBlockState(posDown);
+            BlockState otherState = level.getBlockState(posDown);
             if (otherState.getBlock() == this)
             {
-                worldIn.getBlockTicks().scheduleTick(posDown, this, 0);
+                level.scheduleTick(posDown, this, 0);
             }
         }
     }

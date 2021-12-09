@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
@@ -51,8 +52,9 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 
         final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
         final RockLayerSettings rockSettings = ex.getRockLayerSettings();
-        final Aquifer aquifer = ex.getAquifer(chunk);
-        final BaseBlockSource blockSource = ex.createBaseStoneSource(level, chunk);
+        // todo: everything here was completely nuked and needs to be redone
+        // final Aquifer aquifer = ex.getAquifer(chunk);
+        // final BaseBlockSource blockSource = ex.createBaseStoneSource(level, chunk);
         final Map<Block, Block> hardeningBlocks = rockSettings.getRocks().stream().collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
 
         for (int x = 0; x < 16; x++)
@@ -100,7 +102,8 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                     if (level.getBlockState(mutablePos).isAir())
                                     {
                                         mutablePos.setY(y + 1);
-                                        BlockState airOrLiquidState = aquifer.computeState(blockSource, chunkX + x, y + 1, chunkZ + z, -1);
+                                        // todo
+                                        BlockState airOrLiquidState = Blocks.AIR.defaultBlockState(); // aquifer.computeState(blockSource, chunkX + x, y + 1, chunkZ + z, -1);
                                         level.setBlock(mutablePos, airOrLiquidState, 2);
                                     }
                                     else

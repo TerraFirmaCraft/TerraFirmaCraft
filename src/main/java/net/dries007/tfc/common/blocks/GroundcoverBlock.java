@@ -117,7 +117,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
             final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
             if (containedFluid != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+                worldIn.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
             }
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
@@ -171,8 +171,8 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
-        return pickBlock != null ? new ItemStack(pickBlock.get()) : super.getPickBlock(state, target, world, pos, player);
+        return pickBlock != null ? new ItemStack(pickBlock.get()) : super.getCloneItemStack(state, target, world, pos, player);
     }
 }

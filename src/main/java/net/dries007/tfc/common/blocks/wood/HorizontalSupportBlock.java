@@ -37,14 +37,14 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         Direction d = null;
         for (Direction checkDir : Direction.Plane.HORIZONTAL)
         {
             mutablePos.set(pos).move(checkDir);
-            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM))
+            if (level.getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM))
             {
                 d = checkDir.getOpposite();
                 break;
@@ -52,10 +52,10 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         }
         if (d == null) return;
 
-        int distance = getHorizontalDistance(d, worldIn, pos);
+        int distance = getHorizontalDistance(d, level, pos);
         if (distance == 0 || stack.getCount() < distance)
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
         else if (distance > 0)
         {
@@ -63,11 +63,11 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
             for (int i = 1; i < distance; i++)
             {
                 mutablePos.set(pos).move(d, i);
-                if (worldIn.getBlockState(mutablePos).getMaterial().isReplaceable())
+                if (level.getBlockState(mutablePos).getMaterial().isReplaceable())
                 {
-                    worldIn.setBlock(mutablePos, defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(d), true).setValue(PROPERTY_BY_DIRECTION.get(d.getOpposite()), true), 2);
+                    level.setBlock(mutablePos, defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(d), true).setValue(PROPERTY_BY_DIRECTION.get(d.getOpposite()), true), 2);
                     mutablePos.move(Direction.DOWN);
-                    worldIn.getLiquidTicks().scheduleTick(mutablePos, worldIn.getFluidState(mutablePos).getType(), 3);
+                    level.scheduleTick(mutablePos, level.getFluidState(mutablePos).getType(), 3);
                 }
             }
         }

@@ -70,11 +70,11 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canSurvive(level, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
             return stateIn;
         }
         else

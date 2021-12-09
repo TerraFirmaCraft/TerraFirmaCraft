@@ -53,7 +53,7 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
             if (!level.isClientSide())
             {
                 level.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidStateIn.getType())), 3);
-                level.getLiquidTicks().scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(level));
+                level.scheduleTick(pos, fluidStateIn.getType(), fluidStateIn.getType().getTickDelay(level));
             }
             return true;
         }

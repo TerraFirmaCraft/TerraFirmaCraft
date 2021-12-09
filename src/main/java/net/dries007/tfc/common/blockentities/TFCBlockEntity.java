@@ -34,7 +34,7 @@ public abstract class TFCBlockEntity extends BlockEntity
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, save(new CompoundTag()));
+        return ClientboundBlockEntityDataPacket.create(this, self -> self.save(new CompoundTag()));
     }
 
     @Override

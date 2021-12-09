@@ -165,7 +165,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     {
         if (facing == Direction.UP && !state.canSurvive(level, currentPos))
         {
-            level.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }

@@ -47,17 +47,17 @@ public class ToolRackBlock extends Block implements SimpleWaterloggedBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else if (stateIn.getValue(WATERLOGGED))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override

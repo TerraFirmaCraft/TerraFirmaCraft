@@ -77,12 +77,12 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         int distance = getDistance(facingState) + 1;
         if (distance != 1 || stateIn.getValue(getDistanceProperty()) != distance)
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
         }
         return stateIn;
     }

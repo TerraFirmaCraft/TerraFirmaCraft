@@ -25,22 +25,18 @@ public class ClimateSettingsUpdatePacket
 
     ClimateSettingsUpdatePacket(FriendlyByteBuf buffer)
     {
-        final float f1 = buffer.readFloat();
-        final float f2 = buffer.readFloat();
-        final float f3 = buffer.readFloat();
-        final float f4 = buffer.readFloat();
+        final float lo = buffer.readFloat();
+        final float hi = buffer.readFloat();
         final int scale = buffer.readInt();
         final boolean endless = buffer.readBoolean();
 
-        this.settings = new ClimateSettings(f1, f2, f3, f4, scale, endless);
+        this.settings = new ClimateSettings(lo, hi, scale, endless);
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeFloat(settings.firstMax());
-        buffer.writeFloat(settings.secondMax());
-        buffer.writeFloat(settings.thirdMax());
-        buffer.writeFloat(settings.fourthMax());
+        buffer.writeFloat(settings.lowThreshold());
+        buffer.writeFloat(settings.highThreshold());
         buffer.writeInt(settings.scale());
         buffer.writeBoolean(settings.endlessPoles());
     }

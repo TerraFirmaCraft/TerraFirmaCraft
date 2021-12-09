@@ -30,7 +30,7 @@ public class RiverWaterBlock extends LiquidBlock
     @Override
     public FluidState getFluidState(BlockState state)
     {
-        return fluid.defaultFluidState().setValue(FLOW, state.getValue(FLOW));
+        return getFluid().defaultFluidState().setValue(FLOW, state.getValue(FLOW));
     }
 
     @Override

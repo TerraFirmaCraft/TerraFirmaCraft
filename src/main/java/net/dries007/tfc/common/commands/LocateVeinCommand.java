@@ -27,6 +27,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -89,7 +91,9 @@ public class LocateVeinCommand
         final ConfiguredFeature<?, ? extends VeinFeature<?, ?>> vein = LocateVeinCommand.getVeins().get(veinName);
         final ArrayList<? extends Vein> veins = new ArrayList<>();
         final Random random = new Random();
-        final BiomeManager biomeManager = world.getBiomeManager().withDifferentSource(world.getChunkSource().getGenerator().getBiomeSource());
+        final BiomeSource source = world.getChunkSource().getGenerator().getBiomeSource();
+        final Climate.Sampler sampler = world.getChunkSource().getGenerator().climateSampler();
+        final BiomeManager biomeManager = world.getBiomeManager().withDifferentSource((x, y, z) -> source.getNoiseBiome(x, y, z, sampler));
         final WorldGenerationContext generationContext = new WorldGenerationContext(world.getChunkSource().getGenerator(), world);
         final Function<BlockPos, Biome> biomeQuery = biomeManager::getBiome;
         for (int radius = 0; radius <= 16; radius++)

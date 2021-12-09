@@ -50,7 +50,7 @@ public abstract class SnowLayerBlockMixin extends Block
      * Add behavior to snow blocks - when they are destroyed, they should only destroy one layer.
      */
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
         final int prevLayers = state.getValue(SnowLayerBlock.LAYERS);

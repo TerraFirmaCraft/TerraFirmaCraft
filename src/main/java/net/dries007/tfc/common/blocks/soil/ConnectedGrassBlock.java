@@ -82,26 +82,26 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        level.getBlockTicks().scheduleTick(pos, this, 0);
+        level.scheduleTick(pos, this, 0);
     }
 
     @Override
-    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+            level.scheduleTick(pos.relative(direction).above(), this, 0);
         }
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+            level.scheduleTick(pos.relative(direction).above(), this, 0);
         }
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

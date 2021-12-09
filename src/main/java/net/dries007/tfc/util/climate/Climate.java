@@ -131,7 +131,8 @@ public final class Climate
                 return toVanillaTemperature(model.getTemperature(maybeLevel, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth()));
             }
         }
-        return fallback.getTemperature(pos);
+        // todo
+        return 0; // fallback.getTemperature(pos);
     }
 
     /**

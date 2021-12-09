@@ -81,9 +81,9 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -91,10 +91,10 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         {
             if (stateIn.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+                level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
         }
     }
 

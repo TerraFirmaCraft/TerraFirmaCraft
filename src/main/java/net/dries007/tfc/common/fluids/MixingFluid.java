@@ -150,19 +150,19 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     @Override
-    public void tick(Level worldIn, BlockPos pos, FluidState state)
+    public void tick(Level level, BlockPos pos, FluidState state)
     {
         if (!state.isSource())
         {
             // Flowing fluid ticks
             // Inside this statement, we know we're in a non-waterlogged block, as flowing fluids cannot be waterlogged.
-            FluidState fluidAt = getNewLiquid(worldIn, pos, worldIn.getBlockState(pos));
-            int spreadDelay = getSpreadDelay(worldIn, pos, state, fluidAt);
+            FluidState fluidAt = getNewLiquid(level, pos, level.getBlockState(pos));
+            int spreadDelay = getSpreadDelay(level, pos, state, fluidAt);
             if (fluidAt.isEmpty())
             {
                 // The current state should have no fluid in it - set the block to empty, and then call spread with an empty fluid (mojang why?)
                 state = fluidAt;
-                worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
             }
             else if (!fluidAt.equals(state)) // equals() is not overridden, so this is just a state object equality check
             {
@@ -170,12 +170,12 @@ public abstract class MixingFluid extends ForgeFlowingFluid
                 // In tfc, this may also happen when a fluid with a larger amount replaces this one.
                 state = fluidAt;
                 BlockState blockstate = fluidAt.createLegacyBlock();
-                worldIn.setBlock(pos, blockstate, 2);
-                worldIn.getLiquidTicks().scheduleTick(pos, fluidAt.getType(), spreadDelay);
-                worldIn.updateNeighborsAt(pos, blockstate.getBlock());
+                level.setBlock(pos, blockstate, 2);
+                level.scheduleTick(pos, fluidAt.getType(), spreadDelay);
+                level.updateNeighborsAt(pos, blockstate.getBlock());
             }
         }
-        spread(worldIn, pos, state);
+        spread(level, pos, state);
     }
 
     public static class Flowing extends MixingFluid

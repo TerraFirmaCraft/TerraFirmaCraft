@@ -97,16 +97,16 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
+            level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
         }
-        if (facing != Direction.UP && !stateIn.canSurvive(worldIn, currentPos))
+        if (facing != Direction.UP && !stateIn.canSurvive(level, currentPos))
         {
-            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
             return Blocks.AIR.defaultBlockState();
         }
         return stateIn;

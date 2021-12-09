@@ -26,12 +26,14 @@ public abstract class LevelRendererMixin
 
     /**
      * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
+     * todo: this
      */
+    /*
     @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
     private float renderSnowAndRainRedirectGetTemperature(Biome biome, BlockPos pos)
     {
         return Climate.getVanillaBiomeTemperature(level, pos);
-    }
+    }*/
 
     /**
      * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context
@@ -44,12 +46,14 @@ public abstract class LevelRendererMixin
 
     /**
      * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
+     * todo: this
      */
+    /*
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
     private float tickRainRedirectGetTemperature(Biome biome, BlockPos pos)
     {
         return Climate.getVanillaBiomeTemperature(level, pos);
-    }
+    }*/
 
     /**
      * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context

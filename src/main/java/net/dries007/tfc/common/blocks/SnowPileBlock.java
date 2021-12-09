@@ -64,7 +64,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
      * - Once removed enough, they convert to the underlying block state.
      */
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         playerWillDestroy(world, pos, state, player);
         return world.getBlockEntity(pos, TFCBlockEntities.SNOW_PILE.get()).map(entity -> {
@@ -74,7 +74,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Blocks.SNOW);
     }

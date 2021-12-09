@@ -73,13 +73,13 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(worldIn));
+            level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
         }
-        return facing == Direction.DOWN && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return facing == Direction.DOWN && !this.canSurvive(stateIn, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -120,11 +120,11 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     /**
      * {@link net.minecraft.world.level.block.BaseCoralPlantTypeBlock#tryScheduleDieTick(BlockState, LevelAccessor, BlockPos)}
      */
-    protected void tryScheduleDieTick(BlockState state, LevelAccessor worldIn, BlockPos pos)
+    protected void tryScheduleDieTick(BlockState state, LevelAccessor level, BlockPos pos)
     {
-        if (!scanForWater(state, worldIn, pos))
+        if (!scanForWater(state, level, pos))
         {
-            worldIn.getBlockTicks().scheduleTick(pos, this, 60 + worldIn.getRandom().nextInt(40));
+            level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
         }
     }
 
