@@ -165,6 +165,10 @@ public final class ForgeEventHandler
             final Random random = new Random(world.getSeed());
             final int spawnDistance = biomeSourceExtension.getSpawnDistance();
 
+            event.setCanceled(true);
+            settings.setSpawn(new BlockPos(0, 128, 0), 0);
+            if (true) return;
+
             BlockPos pos = null; // todo: need to randomly choose a spawn position, that's near a decent biome.
             ChunkPos chunkPos;
             if (pos == null)
@@ -448,7 +452,8 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        if (event.getWorld() instanceof final ServerLevel world)
+        // todo: why is this deprecated?
+        if (event.getWorld() instanceof final ServerLevel world && world.isAreaLoaded(event.getPos(), 3))
         {
             for (Direction direction : event.getNotifiedSides())
             {

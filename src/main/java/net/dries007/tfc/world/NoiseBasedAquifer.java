@@ -89,10 +89,10 @@ public class NoiseBasedAquifer
 
         final int maxGridX = gridX(chunkPos.getMaxBlockX()) + 1;
         final int maxGridZ = gridZ(chunkPos.getMaxBlockZ()) + 1;
-        final int maxGridY = gridY(settings.firstCellY() + settings.cellCountY()) + 1;
+        final int maxGridY = gridY((settings.firstCellY() + settings.cellCountY()) * settings.cellHeight()) + 1;
 
         this.minGridX = gridX(chunkPos.getMinBlockX()) - 1;
-        this.minGridY = gridY(settings.firstCellY()) - 1;
+        this.minGridY = gridY(settings.firstCellY() * settings.cellHeight()) - 1;
         this.minGridZ = gridZ(chunkPos.getMinBlockZ()) - 1;
 
         this.gridSizeX = maxGridX - minGridX + 1;

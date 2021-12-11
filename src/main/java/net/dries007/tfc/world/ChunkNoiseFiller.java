@@ -34,13 +34,10 @@ public class ChunkNoiseFiller
     // Initialized from the chunk
     private final LevelAccessor world;
     private final ChunkAccess chunk;
-    private final int chunkX, chunkZ; // Min block positions for the chunk
+    private final int blockX, blockZ; // Min block positions for the chunk
     private final int quartX, quartZ; // Min quart positions for the chunk
     private final Object2DoubleMap<BiomeNoiseSampler> biomeSamplers;
     private final Heightmap oceanFloor, worldSurface;
-    //private final BitSet carvingMask; // We mark the air carving mask for everything
-    //private final Aquifer aquifer;
-    private final ChunkBaseBlockSource baseBlockSource;
 
     private final RiverSource riverSource;
     private final FluidState riverWater;
@@ -68,15 +65,14 @@ public class ChunkNoiseFiller
     {
         this.world = world;
         this.chunk = chunk;
-        this.chunkX = chunk.getPos().getMinBlockX();
-        this.chunkZ = chunk.getPos().getMinBlockZ();
-        this.quartX = QuartPos.fromBlock(chunkX);
-        this.quartZ = QuartPos.fromBlock(chunkZ);
+        this.blockX = chunk.getPos().getMinBlockX();
+        this.blockZ = chunk.getPos().getMinBlockZ();
+        this.quartX = QuartPos.fromBlock(blockX);
+        this.quartZ = QuartPos.fromBlock(blockZ);
         this.biomeSamplers = new Object2DoubleOpenHashMap<>();
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
-        this.baseBlockSource = baseBlockSource;
-
-        this.flows = buildFlowMap();
+        //private final BitSet carvingMask; // We mark the air carving mask for everything
+        //private final Aquifer aquifer;
 
         this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
@@ -90,6 +86,8 @@ public class ChunkNoiseFiller
         this.localBiomes = localBiomes;
 
         this.riverSource = riverSource;
+        this.flows = buildFlowMap();
+
         this.biomeNoiseSamplers = biomeNoiseSamplers;
         this.chunkSampler = new ChunkNoiseSampler(chunk.getPos(), noiseSampler, baseBlockSource, settings, seaLevel);
         this.settings = settings;
@@ -110,14 +108,14 @@ public class ChunkNoiseFiller
                 // skip cell Y
                 for (int localCellX = 0; localCellX < settings.cellWidth(); localCellX++)
                 {
-                    x = chunkX + cellX * settings.cellWidth() + localCellX;
+                    x = blockX + cellX * settings.cellWidth() + localCellX;
                     localX = x & 15;
                     cellDeltaX = (double) localCellX / settings.cellWidth();
 
                     // cannot update for x here because we first need to update for yz. So we do all three each time per cell
                     for (int localCellZ = 0; localCellZ < settings.cellWidth(); localCellZ++)
                     {
-                        z = chunkZ + cellZ * settings.cellWidth() + localCellZ;
+                        z = blockZ + cellZ * settings.cellWidth() + localCellZ;
                         lastCellZ = cellZ; // needed for the noise interpolator
                         localZ = z & 15;
                         cellDeltaZ = (double) localCellZ / settings.cellWidth();
@@ -289,8 +287,8 @@ public class ChunkNoiseFiller
             int x = TFCChunkGenerator.EXTERIOR_POINTS[i << 1];
             int z = TFCChunkGenerator.EXTERIOR_POINTS[(i << 1) | 1];
 
-            int x0 = chunkX + ((x - 1) << 2);
-            int z0 = chunkZ + ((z - 1) << 2);
+            int x0 = blockX + ((x - 1) << 2);
+            int z0 = blockZ + ((z - 1) << 2);
 
             setupColumn(x0, z0);
             sampledHeightMap[x + 7 * z] = sampleColumnHeightAndBiome(sampledBiomeWeights[x + z * 7], false);
