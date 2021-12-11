@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/reindeer_lichen_cover_patch",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": -6,
+      "max_temperature": 2,
+      "min_rainfall": 220,
+      "max_rainfall": 310,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:count",
+      "count": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

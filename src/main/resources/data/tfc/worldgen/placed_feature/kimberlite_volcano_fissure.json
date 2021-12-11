@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "minecraft:kimberlite_volcano_fissure",
+  "feature": "tfc:kimberlite_volcano_fissure",
   "placement": [
     {
       "type": "tfc:volcano",

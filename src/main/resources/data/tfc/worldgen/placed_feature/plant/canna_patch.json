@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/canna_patch",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 30,
+      "max_temperature": 50,
+      "min_rainfall": 270,
+      "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

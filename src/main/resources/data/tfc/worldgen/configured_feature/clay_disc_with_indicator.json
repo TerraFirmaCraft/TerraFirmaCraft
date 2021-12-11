@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:multiple",
+  "config": {
+    "features": [
+      "tfc:clay_disc",
+      "tfc:plant/athyrium_fern_patch",
+      "tfc:plant/canna_patch",
+      "tfc:plant/goldenrod_patch",
+      "tfc:plant/pampas_grass_patch",
+      "tfc:plant/perovskia_patch",
+      "tfc:plant/water_canna_patch"
+    ]
+  }
+}

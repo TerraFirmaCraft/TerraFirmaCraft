@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/perovskia_patch",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": -50,
+      "max_temperature": 20,
+      "min_rainfall": 0,
+      "max_rainfall": 200
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 90,
+    "min_y": {
+      "absolute": 0
+    },
+    "max_y": {
+      "absolute": 210
+    },
+    "size": 10,
+    "density": 0.6,
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/chalk"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chert"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/chert"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/claystone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/conglomerate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/dolomite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/shale"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/shale"
+          }
+        ]
+      }
+    ],
+    "random_name": "bituminous_coal"
+  }
+}

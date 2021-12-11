@@ -23,7 +23,7 @@
       "chance": 15
     },
     {
-      "type": "minecraft:biome_filter"
+      "type": "minecraft:biome"
     }
   ]
 }

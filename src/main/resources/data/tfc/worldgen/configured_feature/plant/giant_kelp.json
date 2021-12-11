@@ -1,5 +1,14 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:kelp_tree",
-  "config": {}
+  "config": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "tfc:plant/giant_kelp_flower",
+      "Properties": {
+        "age": "0",
+        "fluid": "empty"
+      }
+    }
+  }
 }

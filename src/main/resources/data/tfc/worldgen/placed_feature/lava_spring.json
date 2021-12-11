@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:spring",
+  "feature": "tfc:lava_spring",
   "placement": [
     {
       "type": "minecraft:count",

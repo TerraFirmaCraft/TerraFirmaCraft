@@ -40,10 +40,10 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final Random random = context.random();
         final HotSpringConfig config = context.config();
 
-        final Metaballs2D noise = Metaballs2D.simple(rand, config.radius());
+        final Metaballs2D noise = Metaballs2D.simple(Helpers.fork(random), config.radius());
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
@@ -98,10 +98,10 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 // surface depth is deeper near the center of the hot spring
                 // Range: [0.3, 1.0]
                 final float centerFactor = 1 - 0.7f * Mth.clamp(2 * (x * x + z * z) / (float) (config.radius() * config.radius()), 0, 1);
-                final int surfaceDepth = (int) ((8 + rand.nextInt(3)) * centerFactor);
+                final int surfaceDepth = (int) ((8 + random.nextInt(3)) * centerFactor);
                 if (edge)
                 {
-                    final int startY = rand.nextInt(12) == 0 ? -1 : 0; // Creates holes which allow the water to flow, rarely
+                    final int startY = random.nextInt(12) == 0 ? -1 : 0; // Creates holes which allow the water to flow, rarely
                     if (startY == -1)
                     {
                         mutablePos.set(localX, y, localZ);
@@ -144,11 +144,11 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             return false;
         }
 
-        final int fissureStarts = 1 + rand.nextInt(1 + rand.nextInt(Mth.clamp(fissureStartPositions.size(), 1, 7)));
-        final List<BlockPos> selected = Helpers.uniqueRandomSample(fissureStartPositions, fissureStarts, rand);
+        final int fissureStarts = 1 + random.nextInt(1 + random.nextInt(Mth.clamp(fissureStartPositions.size(), 1, 7)));
+        final List<BlockPos> selected = Helpers.uniqueRandomSample(fissureStartPositions, fissureStarts, random);
         for (BlockPos start : selected)
         {
-            FissureFeature.placeFissure(world, start, pos, mutablePos, rand, config.fluidState(), rockState, 10, 22, 6, 16, 12, config.decoration().orElse(null));
+            FissureFeature.placeFissure(world, start, pos, mutablePos, random, config.fluidState(), rockState, 10, 22, 6, 16, 12, config.decoration().orElse(null));
         }
 
         return true;

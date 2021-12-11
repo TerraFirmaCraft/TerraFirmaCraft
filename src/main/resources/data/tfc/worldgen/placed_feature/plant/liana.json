@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/liana",
+  "placement": [
+    {
+      "type": "tfc:carving_mask",
+      "step": "air",
+      "min_y": {
+        "absolute": 30
+      },
+      "max_y": {
+        "absolute": 100
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 333
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 16,
+      "max_temperature": 32,
+      "min_rainfall": 150,
+      "max_rainfall": 470,
+      "min_forest": "normal",
+      "fuzzy": true
+    }
+  ]
+}

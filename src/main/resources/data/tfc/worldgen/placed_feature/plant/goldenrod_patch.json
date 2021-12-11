@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/goldenrod_patch",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 17,
+      "max_temperature": 33,
+      "min_rainfall": 75,
+      "max_rainfall": 310
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

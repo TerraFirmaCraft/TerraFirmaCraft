@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/morning_glory_cover_patch",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 9,
+      "max_temperature": 13,
+      "min_rainfall": 160,
+      "max_rainfall": 230,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:count",
+      "count": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

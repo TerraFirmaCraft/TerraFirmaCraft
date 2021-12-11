@@ -8,18 +8,20 @@ package net.dries007.tfc.world.noise;
 
 import java.util.Random;
 
+import net.minecraft.world.level.levelgen.RandomSource;
+
 import net.dries007.tfc.util.Helpers;
 
 public class Metaballs3D
 {
-    public static Metaballs3D simple(Random random, int size)
+    public static Metaballs3D simple(RandomSource random, int size)
     {
         return new Metaballs3D(random, 5, 7, 0.1f * size, 0.3f * size, 0.5f * size);
     }
 
     private final Ball[] balls;
 
-    public Metaballs3D(Random random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
+    public Metaballs3D(RandomSource random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
     {
         final int ballCount = Helpers.uniform(random, minBalls, maxBalls);
         final int negativeBallCount = minSize < 0 ? (int) (ballCount * (-minSize / (maxSize - minSize))) : 0;

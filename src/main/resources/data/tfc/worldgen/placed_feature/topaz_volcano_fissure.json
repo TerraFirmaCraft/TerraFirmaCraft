@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "minecraft:topaz_volcano_fissure",
+  "feature": "tfc:topaz_volcano_fissure",
   "placement": [
     {
       "type": "tfc:volcano",

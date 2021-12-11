@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_property",
+  "config": {
+    "state": {
+      "Name": "tfc:plant/reindeer_lichen",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "up": "false",
+        "down": "true",
+        "north": "false",
+        "east": "false",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    "property": "age"
+  }
+}

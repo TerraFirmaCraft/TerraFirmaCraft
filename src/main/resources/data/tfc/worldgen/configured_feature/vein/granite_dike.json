@@ -613,7 +613,7 @@
         ]
       }
     ],
-    "salt": 597756037,
+    "random_name": "granite_dike",
     "radius": 4,
     "minSkew": 7,
     "maxSkew": 20,

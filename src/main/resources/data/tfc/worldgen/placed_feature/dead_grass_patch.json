@@ -19,7 +19,7 @@
       "fuzzy": true
     },
     {
-      "type": "minecraft:biome_filter"
+      "type": "minecraft:biome"
     }
   ]
 }

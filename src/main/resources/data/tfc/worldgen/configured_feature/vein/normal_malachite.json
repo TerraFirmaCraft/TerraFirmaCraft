@@ -1,0 +1,68 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 60,
+    "min_y": {
+      "absolute": -32
+    },
+    "max_y": {
+      "absolute": 75
+    },
+    "size": 20,
+    "density": 0.6,
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_malachite/marble"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_malachite/marble"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_malachite/marble"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_malachite/limestone"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_malachite/limestone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_malachite/limestone"
+          },
+          {
+            "weight": 11,
+            "block": "tfc:ore/gypsum/limestone"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_malachite"
+        }
+      ]
+    },
+    "random_name": "normal_malachite"
+  }
+}

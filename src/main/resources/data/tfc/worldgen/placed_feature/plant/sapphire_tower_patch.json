@@ -17,7 +17,7 @@
       "max_rainfall": 200
     },
     {
-      "type": "minecraft:biome_filter"
+      "type": "minecraft:biome"
     }
   ]
 }

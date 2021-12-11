@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 
 
 @SuppressWarnings("unused")
@@ -39,6 +40,6 @@ public final class TFCPlacements
     private static <C extends PlacementModifier> Supplier<PlacementModifierType<C>> register(String name, Codec<C> codec)
     {
         // todo: move to DR if/when forge converts placement modifiers to a registry
-        return Lazy.of(() -> Registry.register(Registry.PLACEMENT_MODIFIERS, name, () -> codec));
+        return Lazy.of(() -> Registry.register(Registry.PLACEMENT_MODIFIERS, Helpers.identifier(name), () -> codec));
     }
 }

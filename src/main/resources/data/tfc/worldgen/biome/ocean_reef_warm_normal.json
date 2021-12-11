@@ -104,9 +104,9 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:mussel",
       "tfc:clam",
       "tfc:mollusk",
+      "tfc:mussel",
       "tfc:ice_and_snow"
     ]
   ],

@@ -60,6 +60,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -816,6 +818,11 @@ public final class Helpers
         return (int) hash;
     }
 
+    public static RandomSource fork(Random random)
+    {
+        return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
+    }
+
     /**
      * A triangle function, with input {@code value} and parameters {@code amplitude, midpoint, frequency}.
      * A period T = 1 / frequency, with a sinusoidal shape. triangle(0) = midpoint, with triangle(+/-1 / (4 * frequency)) = the first peak.
@@ -828,7 +835,7 @@ public final class Helpers
     /**
      * @return A random integer, uniformly distributed in the range [min, max).
      */
-    public static int uniform(Random random, int min, int max)
+    public static int uniform(RandomSource random, int min, int max)
     {
         return min == max ? min : min + random.nextInt(max - min);
     }
@@ -836,7 +843,7 @@ public final class Helpers
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
-    public static float uniform(Random random, float min, float max)
+    public static float uniform(RandomSource random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }
@@ -860,7 +867,7 @@ public final class Helpers
     /**
      * @return A random float, distributed around [-delta, delta] in a triangle distribution X ~ pdf(t) ~= (1 - |t|)
      */
-    public static float triangle(Random random, float delta)
+    public static float triangle(RandomSource random, float delta)
     {
         return (random.nextFloat() - random.nextFloat()) * delta;
     }

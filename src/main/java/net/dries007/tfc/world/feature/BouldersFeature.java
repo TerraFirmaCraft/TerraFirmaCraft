@@ -15,10 +15,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs3D;
@@ -36,22 +38,22 @@ public class BouldersFeature extends Feature<BoulderConfig>
     {
         final WorldGenLevel worldIn = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final Random random = context.random();
         final BoulderConfig config = context.config();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos);
         final List<BlockState> states = config.states().get(rock.raw());
-        place(worldIn, pos, states, rand);
+        place(worldIn, pos, states, random);
         return true;
     }
 
-    private void place(WorldGenLevel worldIn, BlockPos pos, List<BlockState> states, Random rand)
+    private void place(WorldGenLevel level, BlockPos pos, List<BlockState> states, Random random)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final int size = 6 + rand.nextInt(4);
-        final Metaballs3D noise = new Metaballs3D(rand, 6, 8, -0.12f * size, 0.3f * size, 0.3f * size);
+        final int size = 6 + random.nextInt(4);
+        final Metaballs3D noise = new Metaballs3D(Helpers.fork(random), 6, 8, -0.12f * size, 0.3f * size, 0.3f * size);
 
         Supplier<BlockState> state;
         if (states.size() == 1)
@@ -61,7 +63,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         }
         else
         {
-            state = () -> states.get(rand.nextInt(states.size()));
+            state = () -> states.get(random.nextInt(states.size()));
         }
 
         for (int x = -size; x <= size; x++)
@@ -73,7 +75,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
                     if (noise.inside(x, y, z))
                     {
                         mutablePos.setWithOffset(pos, x, y, z);
-                        setBlock(worldIn, mutablePos, state.get());
+                        setBlock(level, mutablePos, state.get());
                     }
                 }
             }

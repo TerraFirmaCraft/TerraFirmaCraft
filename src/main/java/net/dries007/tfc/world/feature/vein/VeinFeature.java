@@ -20,7 +20,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -72,14 +74,10 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
     public final void getVeinsAtChunk(WorldGenLevel level, WorldGenerationContext context, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Biome> biomeQuery)
     {
-        long seed = LinearCongruentialGenerator.next(level.getSeed(), config.getSalt());
-        seed = LinearCongruentialGenerator.next(seed, chunkPosX);
-        seed = LinearCongruentialGenerator.next(seed, chunkPosZ);
-        seed = LinearCongruentialGenerator.next(seed, config.getSalt());
-        random.setSeed(seed);
-        if (random.nextInt(config.getRarity()) == 0)
+        final RandomSource forkedRandom = config.random(level.getSeed(), chunkPosX, chunkPosZ);
+        if (config.random(level.getSeed(), chunkPosX, chunkPosZ).nextInt(config.getRarity()) == 0)
         {
-            final V vein = createVein(context, chunkPosX << 4, chunkPosZ << 4, random, config);
+            final V vein = createVein(context, chunkPosX << 4, chunkPosZ << 4, forkedRandom, config);
             if (config.canSpawnInBiome(() -> biomeQuery.apply(vein.getPos())))
             {
                 veins.add(vein);
@@ -149,17 +147,17 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         return config.getStateToGenerate(stoneState, random);
     }
 
-    protected final BlockPos defaultPos(WorldGenerationContext context, int chunkX, int chunkZ, Random random, C config)
+    protected final BlockPos defaultPos(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, C config)
     {
         return new BlockPos(chunkX + random.nextInt(16), defaultYPos(context, config.getSize(), random, config), chunkZ + random.nextInt(16));
     }
 
-    protected final int defaultYPos(WorldGenerationContext context, int verticalShrinkRange, Random rand, C config)
+    protected final int defaultYPos(WorldGenerationContext context, int verticalShrinkRange, RandomSource random, C config)
     {
         final int actualRange = config.getMaxY(context) - config.getMinY(context) - 2 * verticalShrinkRange;
         if (actualRange > 0)
         {
-            return config.getMinY(context) + verticalShrinkRange + rand.nextInt(actualRange);
+            return config.getMinY(context) + verticalShrinkRange + random.nextInt(actualRange);
         }
         else
         {
@@ -175,7 +173,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     /**
      * Creates a vein at a given location.
      */
-    protected abstract V createVein(WorldGenerationContext context, int chunkX, int chunkZ, Random random, C config);
+    protected abstract V createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, C config);
 
     /**
      * Gets the total bounding box around where the vein can spawn, using relative position to the center of the vein

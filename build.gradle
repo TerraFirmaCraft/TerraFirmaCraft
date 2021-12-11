@@ -109,7 +109,7 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}-${minecraft_version}") { transitive = false }
+    runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}") { transitive = false }
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
 
     // JEI
@@ -120,8 +120,8 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 test {

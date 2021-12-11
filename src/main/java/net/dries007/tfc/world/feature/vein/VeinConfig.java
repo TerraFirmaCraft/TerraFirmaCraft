@@ -14,11 +14,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.WorldGenerationContext;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -39,7 +39,7 @@ public class VeinConfig implements FeatureConfiguration
         Codecs.UNIT_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
         VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
         VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
-        Codec.LONG.fieldOf("salt").forGetter(c -> c.salt),
+        Codec.STRING.fieldOf("random_name").forGetter(c -> c.randomName),
         Codec.either( // Filter can't accept biomes as it ends up resolving the biomes too early (circular reference)
             Biome.BiomeCategory.CODEC.fieldOf("category").codec(),
             Codecs.BIOME_DICTIONARY.fieldOf("biome_dictionary").codec()
@@ -55,16 +55,18 @@ public class VeinConfig implements FeatureConfiguration
     private final float density;
     private final VerticalAnchor minY;
     private final VerticalAnchor maxY;
-    private final long salt;
+    private final String randomName;
     private final List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter;
+
     private final Predicate<Supplier<Biome>> resolvedBiomeFilter;
+    private final PositionalRandomFactory fork;
 
     public VeinConfig(VeinConfig other)
     {
-        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, other.salt, other.biomeFilter);
+        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, other.randomName, other.biomeFilter);
     }
 
-    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, VerticalAnchor minY, VerticalAnchor maxY, long salt, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
+    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, VerticalAnchor minY, VerticalAnchor maxY, String randomName, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
     {
         this.states = states;
         this.indicator = indicator.orElse(null);
@@ -73,9 +75,14 @@ public class VeinConfig implements FeatureConfiguration
         this.density = density;
         this.minY = minY;
         this.maxY = maxY;
-        this.salt = salt;
+        this.randomName = randomName;
         this.biomeFilter = biomeFilter;
+
         this.resolvedBiomeFilter = resolveBiomeFilter();
+        this.fork = new XoroshiroRandomSource(18729341234L, 9182639418231L)
+            .forkPositional()
+            .fromHashOf(randomName)
+            .forkPositional();
     }
 
     public Set<BlockState> getOreStates()
@@ -99,14 +106,9 @@ public class VeinConfig implements FeatureConfiguration
         return resolvedBiomeFilter.test(biome);
     }
 
-    /**
-     * A unique, deterministic value for this vein configuration.
-     * This is used to randomize the vein chunk seeding such that no two veins have the same seed.
-     * If not provided in the codec, a value is computed from the other vein characteristics, but that is likely going to be worse than providing a custom salt.
-     */
-    public long getSalt()
+    public RandomSource random(long levelSeed, int chunkX, int chunkZ)
     {
-        return salt;
+        return fork.at((int) levelSeed, chunkX, chunkZ);
     }
 
     @Nullable
