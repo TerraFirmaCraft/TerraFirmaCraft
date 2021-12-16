@@ -168,6 +168,7 @@ public class ChunkNoiseFiller
         for (int cellY = maxFilledCellY; cellY >= 0; --cellY)
         {
             chunkSampler.selectCellYZ(cellY, lastCellZ);
+            chunkSampler.updateForXZ(cellDeltaX, cellDeltaZ);
 
             for (int localCellY = settings.cellHeight() - 1; localCellY >= 0; --localCellY)
             {
@@ -181,13 +182,10 @@ public class ChunkNoiseFiller
 
                 double cellDeltaY = (double) localCellY / settings.cellHeight();
 
-                // todo: reorder these to go updateForXZ right after selectCellYZ, then updateForY
                 chunkSampler.updateForY(cellDeltaY);
-                chunkSampler.updateForX(cellDeltaX);
-                chunkSampler.updateForZ(cellDeltaZ);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                final BlockState state = modifyNoiseAndGetState(x, y, z, noise); // todo: ????
+                final BlockState state = chunkSampler.sample(x, y, z, noise);
                 final FluidState fluid = state.getFluidState();
 
                 // todo: carving masks
@@ -207,7 +205,7 @@ public class ChunkNoiseFiller
                     {
                         section.setBlockState(localX, localY, localZ, state, false);
                     }
-                    if (chunkSampler.aquifer().shouldScheduleFluidUpdate() && !fluid.isEmpty()) // todo: aquifers
+                    if (chunkSampler.aquifer().shouldScheduleFluidUpdate() && !fluid.isEmpty())
                     {
                         chunk.markPosForPostprocessing(mutablePos);
                     }
@@ -486,28 +484,29 @@ public class ChunkNoiseFiller
         return actualHeight;
     }
 
+    /**
+     * @param y The y position
+     * @param heightNoiseValue The calculated average height noise, from {@link BiomeNoiseSampler#height()}
+     * @return The density noise for the given y position, where positive noise is solid, in the range [0, 1]
+     */
     private double calculateNoiseAtHeight(int y, double heightNoiseValue)
     {
         double noise = 0;
         for (Object2DoubleMap.Entry<BiomeNoiseSampler> entry : biomeSamplers.object2DoubleEntrySet())
         {
+            // Positive values = air
             final BiomeNoiseSampler sampler = entry.getKey();
             noise += sampler.noise(y) * entry.getDoubleValue();
         }
 
-        noise = 0.4f - noise; // > 0 is solid
+        noise = BiomeNoiseSampler.AIR_THRESHOLD - noise; // Positive noise = solid
         if (y > heightNoiseValue)
         {
-            noise -= (y - heightNoiseValue) * 0.2f; // Quickly drop noise down to zero if we're above the expected height
+            // Slide down if we're above the expected height
+            noise -= (y - heightNoiseValue) * 0.2f;
         }
 
         return Mth.clamp(noise, -1, 1);
-    }
-
-    private BlockState modifyNoiseAndGetState(int x, int y, int z, double noise)
-    {
-        // todo: what?
-        return chunkSampler.sample(x, y, z, noise);
     }
 
     /**

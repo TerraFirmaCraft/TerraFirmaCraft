@@ -23,42 +23,6 @@ public class NoiseSampler
         return noise.getValue(x / rarity, y / rarity, z / rarity);
     }
 
-    private static double getDiscreteSpaghettiRarity2D(double value)
-    {
-        if (value < -0.75)
-        {
-            return 0.5;
-        }
-        else if (value < -0.5)
-        {
-            return 0.75;
-        }
-        else if (value < 0.5)
-        {
-            return 1;
-        }
-        else
-        {
-            return value < 0.75 ? 2 : 3;
-        }
-    }
-
-    private static double getDiscreteSpaghettiRarity3D(double value)
-    {
-        if (value < -0.5)
-        {
-            return 0.75;
-        }
-        else if (value < 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return value < 0.5 ? 1.5 : 2;
-        }
-    }
-
     private static TrilinearInterpolator.Source clamped(NormalNoise normalNoise, int minY, int maxY, int outOfBoundsValue, double scale)
     {
         return (x, y, z) -> y <= maxY && y >= minY ? normalNoise.getValue(x * scale, y * scale, z * scale) : outOfBoundsValue;
@@ -107,7 +71,7 @@ public class NoiseSampler
         this.blendedNoise = new BlendedNoise(positionalRandomFactory.fromHashOf(new ResourceLocation("terrain")), noiseSettings.noiseSamplingSettings(), noiseSettings.getCellWidth(), noiseSettings.getCellHeight());
 
         // Noise Caves
-        this.noiseCaves = this::calculateBaseNoise;
+        this.noiseCaves = this::calculateNoiseCaves;
         this.pillarNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR);
         this.pillarRarenessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_RARENESS);
         this.pillarThicknessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_THICKNESS);
@@ -147,75 +111,42 @@ public class NoiseSampler
         return new NoiseBasedAquifer(settings, chunkPos, barrierNoise, fluidLevelFloodednessNoise, fluidLevelSpreadNoise, lavaNoise, positionalRandomFactory, seaLevel);
     }
 
-    private double calculateBaseNoise(int x, int y, int z)
+    /**
+     * @return Noise values in [-64, 64], with negative values indicating air.
+     */
+    private double calculateNoiseCaves(int x, int y, int z)
     {
-        double blendedNoiseValue = blendedNoise.calculateNoise(x, y, z);
-        return this.calculateBaseNoise(x, y, z, blendedNoiseValue);
-    }
+        final double bigEntrances = getBigEntrances(x, y, z);
 
-    private double calculateBaseNoise(int x, int y, int z, double blendedNoiseValue)
-    {
-        double d0 = 0;
-        // todo: in theory this is where the terrain noise gets input, but how?
-        //d0 = d2 * (double) (d2 > 0.0D ? 4 : 1);
+        final double spaghettiRoughness = getSpaghettiRoughness(x, y, z);
+        final double spaghetti2D = getSpaghetti2D(x, y, z);
+        final double spaghetti3D = getSpaghetti3D(x, y, z);
+        final double spaghetti = spaghettiRoughness + Math.min(spaghetti2D, spaghetti3D);
 
-        double d16 = d0 + blendedNoiseValue;
-        double d3;
-        double d4;
-        double d5;
-        if (d16 < -64.0D)
+        final double pillars = getPillars(x, y, z);
+        final double cheese = Mth.clamp(cheeseNoiseSource.getValue(x, y / 1.5, z) + 0.27, -1, 1);
+        final double layerizedCaverns = getLayerizedCaverns(x, y, z);
+
+        final double minNoise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
+
+        double noise = minNoise;
+        if (pillars > 0 && noise < 0)
         {
-            d3 = d16;
-            d4 = 64.0D;
-            d5 = -64.0D;
-        }
-        else
-        {
-            double d6 = d16 - 1.5625D;
-            boolean flag = d6 < 0.0D;
-            double d7 = this.getBigEntrances(x, y, z);
-            double d8 = this.spaghettiRoughness(x, y, z);
-            double d9 = this.getSpaghetti3D(x, y, z);
-            double d10 = Math.min(d7, d9 + d8);
-            if (flag)
-            {
-                d3 = d16;
-                d4 = d10 * 5.0D;
-                d5 = -64.0D;
-            }
-            else
-            {
-                double d11 = this.getLayerizedCaverns(x, y, z);
-                if (d11 > 64.0D)
-                {
-                    d3 = 64.0D;
-                }
-                else
-                {
-                    double d12 = this.cheeseNoiseSource.getValue(x, y / 1.5, z);
-                    double d13 = Mth.clamp(d12 + 0.27D, -1.0D, 1.0D);
-                    double d14 = d6 * 1.28D;
-                    double d15 = d13 + Mth.clampedLerp(0.5D, 0.0D, d14);
-                    d3 = d15 + d11;
-                }
-
-                double d19 = this.getSpaghetti2D(x, y, z);
-                d4 = Math.min(d10, d19 + d8);
-                d5 = this.getPillars(x, y, z);
-            }
+            noise = 0.05;
         }
 
-        double value = Math.max(Math.min(d3, d4), d5);
-        value = this.applySlide(value, y / noiseSettings.getCellHeight());
-        // value = blender.blendDensity(x, y, z, value);
-        return Mth.clamp(value, -64.0D, 64.0D);
+        final double clamped = Mth.clamp(noise, -1, 1);
+        return applySlide(clamped, y);
     }
 
-    protected double applySlide(double value, int cellY)
+    protected double applySlide(double noise, int y)
     {
-        int absoluteCellY = cellY - noiseSettings.getMinCellY();
-        value = noiseSettings.topSlideSettings().applySlide(value, noiseSettings.getCellCountY() - absoluteCellY);
-        return noiseSettings.bottomSlideSettings().applySlide(value, absoluteCellY);
+        if (y >= 35)
+        {
+            double slideFactor = Mth.inverseLerp(y, 35, noiseSettings.minY() + noiseSettings.height()); // [0, 1], 1 = top of world
+            return Mth.lerp(slideFactor, noise, 4);
+        }
+        return noise;
     }
 
     private double getBigEntrances(int x, int y, int z)
@@ -227,12 +158,14 @@ public class NoiseSampler
 
     private double getPillars(int x, int y, int z)
     {
-        double d2 = NoiseUtils.sampleNoiseAndMapToRange(pillarRarenessModulator, x, y, z, 0, 2);
-        double d5 = NoiseUtils.sampleNoiseAndMapToRange(pillarThicknessModulator, x, y, z, 0, 1.1);
-        d5 = Math.pow(d5, 3.0D);
-        double d8 = pillarNoiseSource.getValue(x * 25.0D, y * 0.3D, z * 25);
-        d8 = d5 * (d8 * 2.0D - d2);
-        return d8 > 0.03D ? d8 : Double.NEGATIVE_INFINITY;
+        double rarityMod = NoiseUtils.sampleNoiseAndMapToRange(pillarRarenessModulator, x, y, z, 0, 2);
+        double thicknessMod = NoiseUtils.sampleNoiseAndMapToRange(pillarThicknessModulator, x, y, z, 0, 1.1);
+
+        thicknessMod *= thicknessMod * thicknessMod;
+
+        double pillarNoise = pillarNoiseSource.getValue(x * 25, y * 0.3, z * 25);
+        pillarNoise = thicknessMod * (pillarNoise * 2 - rarityMod);
+        return pillarNoise > 0.03 ? pillarNoise : Double.NEGATIVE_INFINITY;
     }
 
     private double getLayerizedCaverns(int x, int y, int z)
@@ -267,9 +200,45 @@ public class NoiseSampler
         return clampToUnit(Math.max(d9, d7));
     }
 
-    private double spaghettiRoughness(int x, int y, int z)
+    private double getSpaghettiRoughness(int x, int y, int z)
     {
         double value = NoiseUtils.sampleNoiseAndMapToRange(spaghettiRoughnessModulator, x, y, z, 0, 0.1);
         return (0.4 - Math.abs(spaghettiRoughnessNoise.getValue(x, y, z))) * value;
+    }
+
+    private double getDiscreteSpaghettiRarity2D(double value)
+    {
+        if (value < -0.75)
+        {
+            return 0.5;
+        }
+        else if (value < -0.5)
+        {
+            return 0.75;
+        }
+        else if (value < 0.5)
+        {
+            return 1;
+        }
+        else
+        {
+            return value < 0.75 ? 2 : 3;
+        }
+    }
+
+    private double getDiscreteSpaghettiRarity3D(double value)
+    {
+        if (value < -0.5)
+        {
+            return 0.75;
+        }
+        else if (value < 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return value < 0.5 ? 1.5 : 2;
+        }
     }
 }

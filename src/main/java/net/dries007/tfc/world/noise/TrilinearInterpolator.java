@@ -4,7 +4,12 @@ import net.minecraft.util.Mth;
 
 /**
  * An abstraction for trilinear interpolation.
- * Source coordinates are full resolution but only sampled at values that are divisible by the cell width / cell height
+ * Source coordinates are full resolution but only sampled at values that are divisible by the cell width / cell height.
+ * The iteration order here is changed to go:
+ * 1) Sample / swap slices (cell x)
+ * 2) Select slice y/z (cell y, cell z)
+ * 3) Select x/z (local x, local z)
+ * 4) Select y (local y)
  *
  * @see net.minecraft.world.level.levelgen.NoiseChunk.NoiseInterpolator
  */
@@ -16,9 +21,8 @@ public final class TrilinearInterpolator
     private double[][] slice0;
     private double[][] slice1;
     private double noise000, noise001, noise100, noise101, noise010, noise011, noise110, noise111;
-    private double valueXZ00, valueXZ10, valueXZ01, valueXZ11;
-    private double valueZ0, valueZ1;
-    private double value;
+    private double valueX0Z, valueX1Z;
+    private double valueXYZ;
 
     public TrilinearInterpolator(ChunkNoiseSamplingSettings settings, Source source)
     {
@@ -51,28 +55,25 @@ public final class TrilinearInterpolator
         noise111 = slice1[cellZ + 1][cellY + 1];
     }
 
+    public void updateForXZ(double x, double z)
+    {
+        final double valueX00 = Mth.lerp(x, noise000, noise100);
+        final double valueX10 = Mth.lerp(x, noise010, noise110);
+        final double valueX01 = Mth.lerp(x, noise001, noise101);
+        final double valueX11 = Mth.lerp(x, noise011, noise111);
+
+        valueX0Z = Mth.lerp(z, valueX00, valueX01);
+        valueX1Z = Mth.lerp(z, valueX10, valueX11);
+    }
+
     public void updateForY(double y)
     {
-        valueXZ00 = Mth.lerp(y, noise000, noise010);
-        valueXZ10 = Mth.lerp(y, noise100, noise110);
-        valueXZ01 = Mth.lerp(y, noise001, noise011);
-        valueXZ11 = Mth.lerp(y, noise101, noise111);
-    }
-
-    public void updateForX(double x)
-    {
-        valueZ0 = Mth.lerp(x, valueXZ00, valueXZ10);
-        valueZ1 = Mth.lerp(x, valueXZ01, valueXZ11);
-    }
-
-    public void updateForZ(double z)
-    {
-        value = Mth.lerp(z, valueZ0, valueZ1);
+        valueXYZ = Mth.lerp(y, valueX0Z, valueX1Z);
     }
 
     public double sample()
     {
-        return this.value;
+        return this.valueXYZ;
     }
 
     public void swapSlices()
@@ -109,6 +110,7 @@ public final class TrilinearInterpolator
         return slice;
     }
 
+    @FunctionalInterface
     public interface Source
     {
         double sample(int x, int y, int z);

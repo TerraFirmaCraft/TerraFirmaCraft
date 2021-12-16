@@ -112,13 +112,18 @@ public class NoiseBasedAquifer
         this.seaLevelStatus = new FluidStatus(seaLevel, Blocks.WATER.defaultBlockState());
     }
 
+    /**
+     * @param baseNoise The base terrain noise. Negative values indicate air, Values < -1 indicate almost surely air.
+     * @param modifiedNoise The modified terrain noise. Negative values indicate air.
+     * @return The aquifer state (either air, or a fluid) if present, or null if it should be a solid block.
+     */
     @Nullable
     public BlockState computeSubstance(int x, int y, int z, double baseNoise, double modifiedNoise)
     {
         // Noise values < 0 indicate air, > 0 indicate solid blocks.
-        if (baseNoise <= -64)
+        if (baseNoise <= -1)
         {
-            // < -64 implies we must be way above the surface, so we just use the global aquifer.
+            // < -1 implies we must be way above the surface, so we just use the global aquifer.
             return getGlobalFluidStatus(y).at(y);
         }
         else if (modifiedNoise <= 0)

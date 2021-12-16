@@ -103,7 +103,7 @@ public final class BiomeNoise
             {
                 if (y > SEA_LEVEL_Y + 20)
                 {
-                    return FULL;
+                    return SOLID;
                 }
                 else if (y > SEA_LEVEL_Y + 10)
                 {
@@ -119,7 +119,7 @@ public final class BiomeNoise
                     double easing = (y - SEA_LEVEL_Y + 8) / 8d;
                     return easing * cliffNoise.noise(x, y, z);
                 }
-                return FULL;
+                return SOLID;
             }
         };
     }

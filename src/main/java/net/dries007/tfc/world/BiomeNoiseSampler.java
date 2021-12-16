@@ -10,7 +10,11 @@ import net.dries007.tfc.world.noise.Noise2D;
 
 public interface BiomeNoiseSampler
 {
-    double FULL = 0;
+    /**
+     * Outputs of {@link BiomeNoiseSampler} have positive values indicating air, above a certain threshold
+     */
+    double SOLID = 0;
+    double AIR_THRESHOLD = 0.4;
 
     static BiomeNoiseSampler fromHeightNoise(Noise2D heightNoise)
     {
@@ -33,7 +37,7 @@ public interface BiomeNoiseSampler
             @Override
             public double noise(int y)
             {
-                return FULL;
+                return SOLID;
             }
         };
     }
