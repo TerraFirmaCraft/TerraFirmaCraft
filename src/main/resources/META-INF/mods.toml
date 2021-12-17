@@ -1,6 +1,6 @@
 # Loader metadata
 modLoader = "javafml" # mandatory
-loaderVersion = "[38,)" # mandatory
+loaderVersion = "[39,)" # mandatory
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
@@ -26,13 +26,13 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[dependencies.tfc]]
     modId = "forge"
     mandatory = true
-    versionRange = "[38.0.12,)"
+    versionRange = "[39.0.5,)"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.18,)"
+    versionRange = "[1.18.1,)"
     ordering = "AFTER"
     side = "BOTH"
