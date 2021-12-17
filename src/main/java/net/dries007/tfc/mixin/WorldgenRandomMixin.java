@@ -42,11 +42,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(WorldgenRandom.class)
 public abstract class WorldgenRandomMixin extends Random
 {
-    @Inject(method = "setFeatureSeed", at = @At("HEAD"))
+    @Inject(method = "setFeatureSeed", at = @At("HEAD"), cancellable = true)
     private void improveSetFeatureSeed(long baseSeed, int index, int decoration, CallbackInfo ci)
     {
         setSeed(baseSeed);
         final long seed = (index * nextLong() * 203704237L) ^ (decoration * nextLong() * 758031792L) ^ baseSeed;
         setSeed(seed);
+        ci.cancel();
     }
 }

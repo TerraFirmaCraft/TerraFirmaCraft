@@ -149,13 +149,13 @@ def generate(rm: ResourceManager):
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
     # Clay discs have decorators added later, where they're paired with indicator plants
-    rm.configured_feature('clay_disc', 'tfc:soil_disc', {
+    configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
         'height': 3,
         'states': clay
     })
-    rm.configured_feature('water_clay_disc', 'tfc:soil_disc', {
+    configured_placed_feature(rm, 'water_clay_disc', 'tfc:soil_disc', {
         'min_radius': 2,
         'max_radius': 3,
         'height': 2,
@@ -1008,7 +1008,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s' % v for v in FOREST_DECORATORS if not ocean_features]
 
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s_bush' % berry for berry in BERRIES]
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % fruit for fruit in FRUITS]
