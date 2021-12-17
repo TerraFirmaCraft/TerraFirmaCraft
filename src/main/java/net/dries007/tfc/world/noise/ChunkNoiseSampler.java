@@ -101,12 +101,18 @@ public class ChunkNoiseSampler
         final double noiseCavesValue = noiseCaves.sample();
         terrainNoise = Math.min(terrainNoise, noiseCavesValue);
 
-        // todo: improve aquifer placement and general handling. Many things be broken with this impl.
+        if (terrainNoise < 0)
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        // todo: implement aquifers (this is very broken)
+        /*
         final BlockState state = aquifer.computeSubstance(x, y, z, 0, terrainNoise);
         if (state != null)
         {
             return state;
-        }
+        }*/
         return baseBlockSource.getBaseBlock(x, y, z);
     }
 
