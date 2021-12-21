@@ -155,12 +155,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
-    private static Map<BiomeVariants, BiomeNoiseSampler> collectBiomeNoiseSamplers(long seed)
+    private static Map<BiomeVariants, Supplier<BiomeNoiseSampler>> collectBiomeNoiseSamplers(long seed)
     {
-        final ImmutableMap.Builder<BiomeVariants, BiomeNoiseSampler> builder = ImmutableMap.builder();
+        final ImmutableMap.Builder<BiomeVariants, Supplier<BiomeNoiseSampler>> builder = ImmutableMap.builder();
         for (BiomeVariants variant : TFCBiomes.getVariants())
         {
-            builder.put(variant, variant.createNoiseSampler(seed));
+            builder.put(variant, () -> variant.createNoiseSampler(seed));
         }
         return builder.build();
     }
@@ -276,7 +276,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final boolean flatBedrock;
     private final long seed;
 
-    private final Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers;
+    private final Map<BiomeVariants, Supplier<BiomeNoiseSampler>> biomeNoiseSamplers;
     private final ChunkDataProvider chunkDataProvider;
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
@@ -423,7 +423,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).getVariants().getGroup());
         final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, biomeNoiseSamplers, noiseSampler, baseBlockSource, settings, getSeaLevel());
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
         filler.fillFromNoise();
 
@@ -516,5 +516,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final int firstCellZ = Math.floorDiv(chunk.getPos().getMinBlockZ(), cellWidth);
 
         return new ChunkNoiseSamplingSettings(minY, 16 / cellWidth, cellCountY, cellWidth, cellHeight, firstCellX, firstCellY, firstCellZ);
+    }
+
+    private Map<BiomeVariants, BiomeNoiseSampler> createBiomeSamplersForChunk()
+    {
+        final ImmutableMap.Builder<BiomeVariants, BiomeNoiseSampler> builder = ImmutableMap.builder();
+        for (Map.Entry<BiomeVariants, Supplier<BiomeNoiseSampler>> entry : biomeNoiseSamplers.entrySet())
+        {
+            builder.put(entry.getKey(), entry.getValue().get());
+        }
+        return builder.build();
     }
 }

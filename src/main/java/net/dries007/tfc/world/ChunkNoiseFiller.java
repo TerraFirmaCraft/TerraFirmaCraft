@@ -377,7 +377,7 @@ public class ChunkNoiseFiller
                 biomeSamplers.put(sampler, weight);
             }
 
-            double height = weight * sampler.height(x, z);
+            double height = weight * sampler.height();
             totalHeight += height;
 
             // Partition into river / shore / normal for standard biome transformations
