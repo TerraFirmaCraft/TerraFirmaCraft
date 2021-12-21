@@ -16,15 +16,13 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.Util;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -39,13 +37,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.biome.*;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.Kernel;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
@@ -324,21 +321,21 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public ChunkGenerator withSeed(long seedIn)
+    public ChunkGenerator withSeed(long seed)
     {
-        return new TFCChunkGenerator(parameters, customBiomeSource.withSeed(seed), settings, flatBedrock, seedIn);
+        return new TFCChunkGenerator(parameters, customBiomeSource.withSeed(seed), settings, flatBedrock, seed);
     }
 
     @Override
     public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomeRegistry, Executor executor, Blender legacyTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
-        return CompletableFuture.supplyAsync(() -> {
-            // Before we sample biomes, we need to generate chunk data for this chunk.
-            // As when the biome source queries the chunk data provider, it only has the chunk position, therefore the chunk data needs to be generated and present within the provider before we query biomes in order to accurately place temperature.
-            chunkDataProvider.get(chunk);
-            chunk.fillBiomesFromNoise(runtimeBiomeSource, climateSampler());
-            return chunk;
-        }, Util.backgroundExecutor());
+        // todo: async biome loading
+        // This has caused some very weird issue that I don't quite understand
+        // Somehow, if this is allowed to be async, in the same fashion as vanilla, this will actually load biomes incorrectly into the chunk, and/or cause the biome source to be inaccurate later. I have no idea how this happens and am at my limit for debugging this multithreading insanity.
+        // The symptom of this will be chunks that appear to have generated at a different height or noise from surrounding ones.
+        chunkDataProvider.get(chunk);
+        chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> customBiomeSource.getNoiseBiome(quartX, quartZ), climateSampler());
+        return CompletableFuture.completedFuture(chunk);
     }
 
     @Override
@@ -390,6 +387,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
+    public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureFeatureManager structureFeatureManager)
+    {
+        super.applyBiomeDecoration(level, chunk, structureFeatureManager);
+    }
+
+    @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor mainExecutor, Blender oldTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
@@ -402,26 +405,32 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Biome[] localBiomes = new Biome[16 * 16];
         final int[] surfaceHeightMap = new int[16 * 16];
 
-        final Sampler<Biome> biomeSampler = (x, z) -> {
-            // Use biomes from the local chunk if possible
-            if ((x >> 4) == chunkPos.x && (z >> 4) == chunkPos.z)
-            {
-                return chunk.getNoiseBiome(x >> 2, 0, z >> 2);
-            }
-            return customBiomeSource.getNoiseBiomeIgnoreClimate(x >> 2, z >> 2);
-        };
+        final Sampler<Biome> biomeSampler = (x, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(x), QuartPos.fromBlock(z));
+
+        final ChunkData chunkData = chunkDataProvider.get(chunk);
+        final RockData rockData = chunkData.getRockData();
 
         // Set a reference to the surface height map, which the helper will modify later
         // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
-        chunkDataProvider.get(chunk).getRockData().setSurfaceHeight(surfaceHeightMap);
+        rockData.setSurfaceHeight(surfaceHeightMap);
+
+        final Set<LevelChunkSection> sections = new HashSet<>();
+        for (LevelChunkSection section : chunk.getSections())
+        {
+            section.acquire();
+            sections.add(section);
+        }
 
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).getVariants().getGroup());
-        final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, chunkDataProvider.get(chunkPos).getRockData(), biomeSampler); // todo: more accurate biome sampler for sampling ocean biomes?
+        final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
         final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, biomeNoiseSamplers, noiseSampler, baseBlockSource, settings, getSeaLevel());
 
         filler.fillFromNoise();
 
-        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkDataProvider.get(chunk), localBiomes, filler.buildSlopeMap(), random, getSeaLevel(), settings.minY());
+        // Unlock before surfaces are built, as they use locks directly
+        sections.forEach(LevelChunkSection::release);
+
+        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, localBiomes, filler.buildSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
     }

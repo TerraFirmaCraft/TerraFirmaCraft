@@ -199,7 +199,7 @@ public class ChunkNoiseFiller
                     if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= Math.min(TFCChunkGenerator.SEA_LEVEL_Y - 4, heightNoiseValue))
                     {
                         // Place a flowing fluid block according to the river flow at this location
-                        section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock());
+                        section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock(), false);
                     }
                     else
                     {
@@ -377,7 +377,7 @@ public class ChunkNoiseFiller
                 biomeSamplers.put(sampler, weight);
             }
 
-            double height = weight * sampler.height();
+            double height = weight * sampler.height(x, z);
             totalHeight += height;
 
             // Partition into river / shore / normal for standard biome transformations

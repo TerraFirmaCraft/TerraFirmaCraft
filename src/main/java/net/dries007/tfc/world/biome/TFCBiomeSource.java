@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.world.level.ChunkPos;
@@ -143,14 +144,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
 
     public Biome getNoiseBiome(int quartX, int quartZ)
     {
-        final ChunkPos chunkPos = new ChunkPos(quartX >> 2, quartZ >> 2);
-        final BlockPos pos = chunkPos.getWorldPosition();
+        final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
         final ChunkData data = chunkDataProvider.get(chunkPos);
 
-        BiomeVariants variants = biomeLayer.get(quartX, quartZ);
+        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
 
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
+        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
+        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }

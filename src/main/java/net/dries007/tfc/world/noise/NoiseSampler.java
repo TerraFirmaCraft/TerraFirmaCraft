@@ -39,7 +39,6 @@ public class NoiseSampler
 
     private final PositionalRandomFactory positionalRandomFactory;
     private final NoiseSettings noiseSettings;
-    private final BlendedNoise blendedNoise;
 
     private final NormalNoise pillarNoiseSource;
     private final NormalNoise pillarRarenessModulator;
@@ -68,7 +67,6 @@ public class NoiseSampler
     {
         this.positionalRandomFactory = new XoroshiroRandomSource(seed).forkPositional();
         this.noiseSettings = noiseSettings;
-        this.blendedNoise = new BlendedNoise(positionalRandomFactory.fromHashOf(new ResourceLocation("terrain")), noiseSettings.noiseSamplingSettings(), noiseSettings.getCellWidth(), noiseSettings.getCellHeight());
 
         // Noise Caves
         this.noiseCaves = this::calculateNoiseCaves;
