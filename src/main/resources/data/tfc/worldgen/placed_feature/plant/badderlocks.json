@@ -5,6 +5,21 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:plant/badderlocks",
+          "Properties": {
+            "age": "1",
+            "stage": "1",
+            "fluid": "empty",
+            "part": "lower"
+          }
+        }
+      }
     }
   ]
 }

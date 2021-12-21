@@ -701,7 +701,7 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     })
     rm.configured_feature(singular_feature, *feature)
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
-    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap))
+    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), decorate_would_survive(config.block))
 
 
 class PatchConfig(NamedTuple):
@@ -891,6 +891,15 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'min_forest': 'normal' if needs_forest else min_forest,
         'max_forest': max_forest,
         'fuzzy': fuzzy
+    }
+
+def decorate_would_survive(block: str) -> Json:
+    return {
+        'type': 'block_predicate_filter',
+        'predicate': {
+            'type': 'would_survive',
+            'state': utils.block_state(block)
+        }
     }
 
 # Value Providers

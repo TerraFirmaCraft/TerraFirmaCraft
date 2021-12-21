@@ -5,6 +5,19 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:plant/snapdragon_white",
+          "Properties": {
+            "age": "1",
+            "stage": "1"
+          }
+        }
+      }
     }
   ]
 }

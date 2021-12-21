@@ -5,6 +5,25 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:plant/morning_glory",
+          "Properties": {
+            "age": "1",
+            "stage": "1",
+            "up": "false",
+            "down": "true",
+            "north": "false",
+            "east": "false",
+            "west": "false",
+            "south": "false"
+          }
+        }
+      }
     }
   ]
 }
