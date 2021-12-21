@@ -423,7 +423,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).getVariants().getGroup());
         final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
         filler.fillFromNoise();
 

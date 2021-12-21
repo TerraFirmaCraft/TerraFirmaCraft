@@ -80,7 +80,6 @@ public class NoiseBasedAquifer
 
     public NoiseBasedAquifer(ChunkNoiseSamplingSettings settings, ChunkPos chunkPos, NormalNoise barrierNoise, NormalNoise fluidLevelFloodednessNoise, NormalNoise fluidLevelSpreadNoise, NormalNoise lavaNoise, PositionalRandomFactory positionalRandomFactory, int seaLevel)
     {
-
         this.barrierNoise = barrierNoise;
         this.fluidLevelFloodednessNoise = fluidLevelFloodednessNoise;
         this.fluidLevelSpreadNoise = fluidLevelSpreadNoise;
@@ -88,15 +87,15 @@ public class NoiseBasedAquifer
         this.positionalRandomFactory = positionalRandomFactory;
 
         final int maxGridX = gridX(chunkPos.getMaxBlockX()) + 1;
-        final int maxGridZ = gridZ(chunkPos.getMaxBlockZ()) + 1;
         final int maxGridY = gridY((settings.firstCellY() + settings.cellCountY()) * settings.cellHeight()) + 1;
+        final int maxGridZ = gridZ(chunkPos.getMaxBlockZ()) + 1;
 
         this.minGridX = gridX(chunkPos.getMinBlockX()) - 1;
         this.minGridY = gridY(settings.firstCellY() * settings.cellHeight()) - 1;
         this.minGridZ = gridZ(chunkPos.getMinBlockZ()) - 1;
 
         this.gridSizeX = maxGridX - minGridX + 1;
-        int gridSizeY = maxGridY - minGridY + 1;
+        final int gridSizeY = maxGridY - minGridY + 1;
         this.gridSizeZ = maxGridZ - minGridZ + 1;
 
         // Initialize caches

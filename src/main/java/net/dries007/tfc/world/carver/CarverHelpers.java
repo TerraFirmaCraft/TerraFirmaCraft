@@ -30,11 +30,6 @@ public final class CarverHelpers
     public static final FluidState WATER = Fluids.WATER.defaultFluidState();
     public static final FluidState LAVA = Fluids.LAVA.defaultFluidState();
 
-    public static int maskIndex(int x, int y, int z, int minY)
-    {
-        return (x & 15) | ((z & 15) << 4) | ((y - minY) << 8);
-    }
-
     public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
     {
         final BlockState stateAt = chunk.getBlockState(pos);

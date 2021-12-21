@@ -125,9 +125,8 @@ public class NoiseSampler
         final double cheese = Mth.clamp(cheeseNoiseSource.getValue(x, y / 1.5, z) + 0.27, -1, 1);
         final double layerizedCaverns = getLayerizedCaverns(x, y, z);
 
-        final double minNoise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
-
-        double noise = minNoise;
+        // todo: remove pillar noise and replace with a feature that does this but better, without perlerp
+        double noise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
         if (pillars > 0 && noise < 0)
         {
             noise = 0.05;
