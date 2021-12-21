@@ -987,13 +987,13 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
     # Oceans
     if ocean_features:
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay]
 
         if name == 'shore':
-            features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s' % v for v in SHORE_DECORATORS]
+            features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
         else:
-            features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/giant_kelp', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
-            features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:clam', 'tfc:mollusk', 'tfc:mussel']
+            features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
+            features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
         if temp.id in ('cold', 'frozen'):
             features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']

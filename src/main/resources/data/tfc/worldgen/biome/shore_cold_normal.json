@@ -94,22 +94,22 @@
       "tfc:underground_guano"
     ],
     [
-      "tfc:plant/badderlocks",
-      "tfc:plant/gutweed",
-      "tfc:plant/laminaria",
-      "tfc:plant/manatee_grass",
-      "tfc:plant/sargassum",
-      "tfc:plant/star_grass",
-      "tfc:plant/turtle_grass"
+      "tfc:plant/badderlocks_patch",
+      "tfc:plant/gutweed_patch",
+      "tfc:plant/laminaria_patch",
+      "tfc:plant/manatee_grass_patch",
+      "tfc:plant/sargassum_patch",
+      "tfc:plant/star_grass_patch",
+      "tfc:plant/turtle_grass_patch"
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:driftwood",
-      "tfc:clam",
-      "tfc:mollusk",
-      "tfc:mussel",
-      "tfc:seaweed",
-      "tfc:sticks_shore",
+      "tfc:driftwood_patch",
+      "tfc:clam_patch",
+      "tfc:mollusk_patch_patch",
+      "tfc:mussel_patch",
+      "tfc:seaweed_patch",
+      "tfc:sticks_shore_patch",
       "tfc:ice_and_snow"
     ]
   ],
