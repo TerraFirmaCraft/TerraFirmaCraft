@@ -14,34 +14,8 @@ import net.minecraft.world.level.biome.Biome;
  * Some functionality of biomes is also redirected (through mixins) to call this extension where possible.
  * This extension is tracked in {@link TFCBiomes} by registry key.
  */
-public class BiomeExtension
+public record BiomeExtension(ResourceKey<Biome> key, BiomeVariants variants)
 {
     @SuppressWarnings("ConstantConditions")
     public static final BiomeExtension EMPTY = new BiomeExtension(null, null);
-
-    private final ResourceKey<Biome> id;
-    private final BiomeVariants variants;
-
-    public BiomeExtension(ResourceKey<Biome> id, BiomeVariants variants)
-    {
-        this.id = id;
-        this.variants = variants;
-    }
-
-    /**
-     * Gets the variants object held by this extension.
-     * This is responsible for providing noise and grouping parameters, along with access to individual biomes for each climate.
-     * This is used ONLY within TFC's chunk generator.
-     *
-     * @return a variants object, used to get noise and smoothing parameters,
-     */
-    public BiomeVariants getVariants()
-    {
-        return variants;
-    }
-
-    public ResourceKey<Biome> getRegistryKey()
-    {
-        return id;
-    }
 }

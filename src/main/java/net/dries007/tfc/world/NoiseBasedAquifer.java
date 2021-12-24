@@ -335,52 +335,8 @@ public class NoiseBasedAquifer
     {
         final FluidStatus globalStatus = getGlobalFluidStatus(y);
 
-        int minNearbySurfaceLevel = Integer.MAX_VALUE;
-
-        final int maxYRange = y + 12;
-        final int minYRange = y - 12;
-
-        boolean underApproxSeaLevel = false;
-
-        for (int[] offsetXZ : SURFACE_SAMPLING_OFFSETS_IN_CHUNKS)
-        {
-            final int offsetX = x + SectionPos.sectionToBlockCoord(offsetXZ[0]);
-            final int offsetZ = z + SectionPos.sectionToBlockCoord(offsetXZ[1]);
-
-            // This is an estimation of the surface level of the nearby area
-            final int surfaceLevelAtOffset = 70;//this.noiseChunk.preliminarySurfaceLevel(offsetX, offsetZ); // todo: surface level?
-            final int maxSurfaceLevelAtOffset = surfaceLevelAtOffset + 8;
-
-            final boolean atTargetChunk = offsetXZ[0] == 0 && offsetXZ[1] == 0; // When the offsets are zero
-            if (atTargetChunk && minYRange > maxSurfaceLevelAtOffset)
-            {
-                // The y position is high enough above the preliminary surface at the target chunk that we exit here
-                return globalStatus;
-            }
-
-            boolean flag2 = maxYRange > maxSurfaceLevelAtOffset;
-            if (flag2 || atTargetChunk)
-            {
-                final FluidStatus offsetStatus = getGlobalFluidStatus(maxSurfaceLevelAtOffset);
-                if (!offsetStatus.at(maxSurfaceLevelAtOffset).isAir())
-                {
-                    if (atTargetChunk)
-                    {
-                        underApproxSeaLevel = true;
-                    }
-
-                    if (flag2)
-                    {
-                        return offsetStatus;
-                    }
-                }
-            }
-
-            minNearbySurfaceLevel = Math.min(minNearbySurfaceLevel, surfaceLevelAtOffset);
-        }
-
-        int deltaYToNearbySurface = minNearbySurfaceLevel + 8 - y;
-        double d1 = underApproxSeaLevel ? Mth.clampedMap(deltaYToNearbySurface, 0, 64, 1, 0) : 0;
+        int deltaYToNearbySurface = 70 + 8 - y;
+        double d1 = Mth.clampedMap(deltaYToNearbySurface, 0, 64, 1, 0);
         double floodedness = Mth.clamp(fluidLevelFloodednessNoise.getValue(x, y * 0.67, z), -1, 1);
         double d4 = Mth.map(d1, 1, 0, -0.3, 0.8);
         if (floodedness > d4)
@@ -404,14 +360,14 @@ public class NoiseBasedAquifer
                 final double fluidLevelSpreadValue = this.fluidLevelSpreadNoise.getValue(largeGridX, largeGridY / 1.4, largeGridZ) * 10;
                 final int quantizedFluidLevelSpread = Mth.quantize(fluidLevelSpreadValue, 3);
                 final int centerYAndVariance = centerY + quantizedFluidLevelSpread;
-                return new FluidStatus(Math.min(minNearbySurfaceLevel, centerYAndVariance), getFluidType(x, y, z, globalStatus, centerYAndVariance));
+                return new FluidStatus(Math.min(70, centerYAndVariance), getFluidType(x, y, z, globalStatus, centerYAndVariance));
             }
         }
     }
 
-    private BlockState getFluidType(int x, int y, int z, FluidStatus globalStatus, int p_188437_)
+    private BlockState getFluidType(int x, int y, int z, FluidStatus globalStatus, int centerYAndVariance)
     {
-        if (p_188437_ <= -10)
+        if (centerYAndVariance <= -10)
         {
             final int largeCellX = Math.floorDiv(x, 64);
             final int largeCellY = Math.floorDiv(y, 40);

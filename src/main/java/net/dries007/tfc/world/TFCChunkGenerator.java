@@ -15,7 +15,6 @@ import java.util.function.ToIntFunction;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.Util;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -62,27 +61,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     public static final Kernel KERNEL_9x9 = Kernel.create((x, z) -> 0.0211640211641D * (1 - 0.03125D * (z * z + x * x)), 4);
     public static final Kernel KERNEL_5x5 = Kernel.create((x, z) -> 0.08D * (1 - 0.125D * (z * z + x * x)), 2);
-
-    /**
-     * Positions used by the derivative sampling map. This represents a 7x7 grid of 4x4 sub chunks / biome positions, where 0, 0 = -1, -1 relative to the target chunk.
-     * Each two pairs of integers is a position, wrapping around the entire outside the chunk (not including the 4x4 of positions in the interior
-     */
-    public static final int[] EXTERIOR_POINTS = Util.make(new int[2 * (7 * 7 - 4 * 4)], array -> {
-        int index = 0;
-        for (int x = 0; x < 7; x++)
-        {
-            for (int z = 0; z < 7; z++)
-            {
-                if (x < 1 || z < 1 || x > 4 || z > 4)
-                {
-                    array[index++] = x;
-                    array[index++] = z;
-                }
-            }
-        }
-    });
-
-    public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
 
     /**
      * Composes two levels of sampled weights. It takes two maps of two different resolutions, and re-weights the higher resolution one by replacing specific groups of samples with the respective weights from the lower resolution map.
@@ -395,25 +373,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor mainExecutor, Blender oldTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
-        final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
-
         // Initialization
+        final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
         final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
-
-        final Biome[] localBiomes = new Biome[16 * 16];
-        final int[] surfaceHeightMap = new int[16 * 16];
-
         final Sampler<Biome> biomeSampler = (x, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(x), QuartPos.fromBlock(z));
-
         final ChunkData chunkData = chunkDataProvider.get(chunk);
         final RockData rockData = chunkData.getRockData();
 
-        // Set a reference to the surface height map, which the helper will modify later
-        // Since we need surface height to query rock -> each block, it's set before iterating the column in the helper
-        rockData.setSurfaceHeight(surfaceHeightMap);
-
+        // Lock sections
         final Set<LevelChunkSection> sections = new HashSet<>();
         for (LevelChunkSection section : chunk.getSections())
         {
@@ -421,16 +390,18 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             sections.add(section);
         }
 
-        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).getVariants().getGroup());
+        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).variants().getGroup());
         final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, surfaceHeightMap, localBiomes, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
+        filler.setupAquiferSurfaceHeight(biomeSampler);
+        rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
 
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);
 
-        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, localBiomes, filler.buildSlopeMap(), random, getSeaLevel(), settings.minY());
+        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
     }

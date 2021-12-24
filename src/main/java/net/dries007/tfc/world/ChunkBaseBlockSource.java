@@ -50,7 +50,7 @@ public class ChunkBaseBlockSource
             BlockState state = cachedFluidStates[index];
             if (state == null)
             {
-                state = TFCBiomes.getExtensionOrThrow(level, biomeSampler.get(x, z)).getVariants().isSalty() ? saltWater : freshWater;
+                state = TFCBiomes.getExtensionOrThrow(level, biomeSampler.get(x, z)).variants().isSalty() ? saltWater : freshWater;
                 cachedFluidStates[index] = state;
             }
             return state;

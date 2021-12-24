@@ -3,9 +3,12 @@ package net.dries007.tfc.world;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -24,7 +27,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.RiverSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.carver.CarverHelpers;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.TrilinearInterpolator;
@@ -32,10 +34,31 @@ import net.dries007.tfc.world.river.Flow;
 
 public class ChunkNoiseFiller
 {
+    /**
+     * Positions used by the derivative sampling map. This represents a 7x7 grid of 4x4 sub chunks / biome positions, where 0, 0 = -1, -1 relative to the target chunk.
+     * Each two pairs of integers is a position, wrapping around the entire outside the chunk (not including the 4x4 of positions in the interior
+     */
+    public static final int[] EXTERIOR_POINTS = Util.make(new int[2 * (7 * 7 - 4 * 4)], array -> {
+        int index = 0;
+        for (int x = 0; x < 7; x++)
+        {
+            for (int z = 0; z < 7; z++)
+            {
+                if (x < 1 || z < 1 || x > 4 || z > 4)
+                {
+                    array[index++] = x;
+                    array[index++] = z;
+                }
+            }
+        }
+    });
+
+    public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
+
     // Initialized from the chunk
     private final LevelAccessor level;
     private final ProtoChunk chunk;
-    private final int blockX, blockZ; // Min block positions for the chunk
+    private final int chunkMinX, chunkMinZ; // Min block positions for the chunk
     private final int quartX, quartZ; // Min quart positions for the chunk
     private final Heightmap oceanFloor, worldSurface;
     private final CarvingMask airCarvingMask; // Only air carving mask is marked
@@ -59,7 +82,7 @@ public class ChunkNoiseFiller
     private final TrilinearInterpolator noodleRidgeB;
 
     // Aquifer + Noise -> BlockState
-    private final NoiseBasedAquifer aquifer;
+    private final Aquifer aquifer;
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers; // Biome -> Noise Samplers
@@ -68,24 +91,23 @@ public class ChunkNoiseFiller
     private final Object2DoubleMap<Biome>[] sampledBiomeWeights; // 7x7 array of biome weights, at quart pos resolution
     private final Object2DoubleMap<Biome> biomeWeights1; // Local biome weights, for individual column adjustment
 
-    // Result arrays, set for each x/z in the chunk
-    private final int[] surfaceHeight;
-    private final Biome[] localBiomes;
+    private final int[] surfaceHeight; // 16x16, block pos resolution
+    private final Biome[] localBiomes; // 16x16, block pos resolution
 
     // Current local position / context
-    private int x, z; // Absolute x/z positions
+    private int blockX, blockZ; // Absolute x/z positions
     private int localX, localZ; // Chunk-local x/z
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, int[] surfaceHeight, Biome[] localBiomes, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, NoiseSampler noiseSampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
+    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         this.level = level;
         this.chunk = chunk;
-        this.blockX = chunk.getPos().getMinBlockX();
-        this.blockZ = chunk.getPos().getMinBlockZ();
-        this.quartX = QuartPos.fromBlock(blockX);
-        this.quartZ = QuartPos.fromBlock(blockZ);
+        this.chunkMinX = chunk.getPos().getMinBlockX();
+        this.chunkMinZ = chunk.getPos().getMinBlockZ();
+        this.quartX = QuartPos.fromBlock(chunkMinX);
+        this.quartZ = QuartPos.fromBlock(chunkMinZ);
         this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
         this.airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStep.Carving.AIR);
@@ -99,24 +121,131 @@ public class ChunkNoiseFiller
         this.baseBlockSource = baseBlockSource;
 
         // Noise Caves
-        this.noiseCaves = addInterpolator(noiseSampler.noiseCaves);
+        this.noiseCaves = addInterpolator(sampler.noiseCaves);
 
         // Noodle Caves
-        this.noodleToggle = addInterpolator(noiseSampler.noodleToggle);
-        this.noodleThickness = addInterpolator(noiseSampler.noodleThickness);
-        this.noodleRidgeA = addInterpolator(noiseSampler.noodleRidgeA);
-        this.noodleRidgeB = addInterpolator(noiseSampler.noodleRidgeB);
+        this.noodleToggle = addInterpolator(sampler.noodleToggle);
+        this.noodleThickness = addInterpolator(sampler.noodleThickness);
+        this.noodleRidgeA = addInterpolator(sampler.noodleRidgeA);
+        this.noodleRidgeB = addInterpolator(sampler.noodleRidgeB);
 
         // Aquifer
-        this.aquifer = noiseSampler.createAquifer(chunk.getPos(), settings, seaLevel);
+        this.aquifer = new Aquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
 
         this.biomeNoiseSamplers = biomeNoiseSamplers;
         this.columnBiomeNoiseSamplers = new Object2DoubleOpenHashMap<>();
         this.sampledBiomeWeights = sampledBiomeWeights;
         this.biomeWeights1 = new Object2DoubleOpenHashMap<>();
 
-        this.surfaceHeight = surfaceHeight;
-        this.localBiomes = localBiomes;
+        this.surfaceHeight = new int[16 * 16];
+        this.localBiomes = new Biome[16 * 16];
+    }
+
+    /**
+     * Sample biomes and height per chunk
+     * Computes the surface height and local biome arrays
+     * Initializes aquifer positions based on the surface height
+     */
+    public void setupAquiferSurfaceHeight(Sampler<Biome> biomeSampler)
+    {
+        final boolean debugAquiferSurfaceHeight = false;
+
+        // Initialize aquifer with surface height
+        // The aquifer needs a 4x4, chunk pos resolution of the estimated maximum allowable aquifer height
+        // At each position, we sample from a 5x5, at half chunk resolution (so a full chunk's distance away)
+        // This requires sampling, in total, at half chunk resolution, from the (-2, -2) chunk to the (+3, +3) chunk, inclusive.
+        // The total biome array is 11x11
+        final BiomeVariants[] sampledBiomes = new BiomeVariants[11 * 11];
+        final int[] aquiferSurfaceHeights = aquifer.getSurfaceHeights();
+
+        for (int x = 0; x < 11; x++)
+        {
+            for (int z = 0; z < 11; z++)
+            {
+                final int actualX = chunkMinX - 32 + (x << 3);
+                final int actualZ = chunkMinZ - 32 + (z << 3);
+                final Biome biome = biomeSampler.get(actualX, actualZ);
+                sampledBiomes[x + 11 * z] = TFCBiomes.getExtensionOrThrow(level, biome).variants();
+            }
+        }
+
+        // Then, for each region in the 4x4 aquifer surface heights, we populate it based on a 5x5 surrounding area
+        for (int x = 0; x < 4; x++)
+        {
+            for (int z = 0; z < 4; z++)
+            {
+                double minAquiferSurfaceHeight = Double.MAX_VALUE;
+
+                final int xIndex = (1 + x) << 1;
+                final int zIndex = (1 + z) << 1;
+
+                for (int dx = -2; dx <= 2; dx++)
+                {
+                    for (int dz = -2; dz <= 2; dz++)
+                    {
+                        final int actualX = chunkMinX - 16 + SectionPos.sectionToBlockCoord(x) + (dx << 3);
+                        final int actualZ = chunkMinZ - 16 + SectionPos.sectionToBlockCoord(z) + (dz << 3);
+                        double aquiferSurfaceHeight;
+
+                        final BiomeVariants biome = sampledBiomes[(xIndex + dx) + 11 * (zIndex + dz)];
+                        if (biome.isRiver())
+                        {
+                            aquiferSurfaceHeight = TFCChunkGenerator.SEA_LEVEL_Y - 12;
+                        }
+                        else
+                        {
+                            // Typical biomes
+                            final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
+                            sampler.setColumn(actualX, actualZ);
+                            aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
+
+                            // todo: make this a derived property from BiomeVariants
+                            // Biomes with unusually low altitudes
+                            if (biome == TFCBiomes.SHORE || biome == TFCBiomes.LOW_CANYONS || biome == TFCBiomes.LOWLANDS || biome == TFCBiomes.LAKE)
+                            {
+                                aquiferSurfaceHeight -= 8;
+                            }
+                            // Biomes with generally high altitudes
+                            if (biome == TFCBiomes.OLD_MOUNTAINS || biome == TFCBiomes.MOUNTAINS || biome == TFCBiomes.PLATEAU || biome == TFCBiomes.ROLLING_HILLS)
+                            {
+                                aquiferSurfaceHeight += 8;
+                            }
+                            if (biome.isSalty()) // Oceans and adjacent
+                            {
+                                aquiferSurfaceHeight -= 12;
+                            }
+                        }
+
+                        minAquiferSurfaceHeight = Math.min(minAquiferSurfaceHeight, aquiferSurfaceHeight);
+                    }
+                }
+
+                aquiferSurfaceHeights[x + 4 * z] = (int) minAquiferSurfaceHeight;
+            }
+        }
+
+        if (debugAquiferSurfaceHeight)
+        {
+            final int y = aquiferSurfaceHeights[5]; // This chunk, at (1, 1)
+            final LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(y));
+            for (int x = 0; x < 16; x++)
+            {
+                for (int z = 0; z < 16; z++)
+                {
+                    section.setBlockState(x, y & 15, z, Blocks.GREEN_STAINED_GLASS.defaultBlockState(), false);
+                }
+            }
+        }
+    }
+
+    public int[] getSurfaceHeight()
+    {
+        return surfaceHeight;
+    }
+
+    public Biome[] getLocalBiomes()
+    {
+        return localBiomes;
     }
 
     /**
@@ -134,19 +263,19 @@ public class ChunkNoiseFiller
                 // skip cell Y
                 for (int localCellX = 0; localCellX < settings.cellWidth(); localCellX++)
                 {
-                    x = blockX + cellX * settings.cellWidth() + localCellX;
-                    localX = x & 15;
+                    blockX = chunkMinX + cellX * settings.cellWidth() + localCellX;
+                    localX = blockX & 15;
                     cellDeltaX = (double) localCellX / settings.cellWidth();
 
                     // cannot update for x here because we first need to update for yz. So we do all three each time per cell
                     for (int localCellZ = 0; localCellZ < settings.cellWidth(); localCellZ++)
                     {
-                        z = blockZ + cellZ * settings.cellWidth() + localCellZ;
+                        blockZ = chunkMinZ + cellZ * settings.cellWidth() + localCellZ;
                         lastCellZ = cellZ; // needed for the noise interpolator
-                        localZ = z & 15;
+                        localZ = blockZ & 15;
                         cellDeltaZ = (double) localCellZ / settings.cellWidth();
 
-                        mutablePos.set(x, 0, z);
+                        mutablePos.set(blockX, 0, blockZ);
                         fillColumn(mutablePos, cellX, cellZ);
                     }
                 }
@@ -156,31 +285,75 @@ public class ChunkNoiseFiller
     }
 
     /**
+     * Builds a 6x6, 4x4 resolution slope map for a chunk
+     * This is enough to do basic linear interpolation for every point within the chunk.
+     *
+     * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
+     */
+    @SuppressWarnings("PointlessArithmeticExpression")
+    public double[] getSlopeMap()
+    {
+        final int[] quartSurfaceHeight = new int[7 * 7]; // 7x7, quart pos resolution
+
+        // Interior points - record from the existing positions in the chunk
+        for (int x = 0; x < 4; x++)
+        {
+            for (int z = 0; z < 4; z++)
+            {
+                // Copy from surface height, where possible
+                quartSurfaceHeight[(x + 1) + 7 * (z + 1)] = surfaceHeight[(x << 2) + 16 * (z << 2)];
+            }
+        }
+
+        // Exterior points
+        for (int i = 0; i < EXTERIOR_POINTS_COUNT; i++)
+        {
+            int x = EXTERIOR_POINTS[i << 1];
+            int z = EXTERIOR_POINTS[(i << 1) | 1];
+
+            int x0 = chunkMinX + ((x - 1) << 2);
+            int z0 = chunkMinZ + ((z - 1) << 2);
+
+            setupColumn(x0, z0);
+            quartSurfaceHeight[x + 7 * z] = (int) sampleColumnHeightAndBiome(sampledBiomeWeights[x + z * 7], false);
+        }
+
+        double[] slopeMap = new double[6 * 6];
+        for (int x = 0; x < 6; x++)
+        {
+            for (int z = 0; z < 6; z++)
+            {
+                // Math people (including myself) cry at what I'm calling 'the derivative'
+                final double nw = quartSurfaceHeight[(x + 0) + 7 * (z + 0)];
+                final double ne = quartSurfaceHeight[(x + 1) + 7 * (z + 0)];
+                final double sw = quartSurfaceHeight[(x + 0) + 7 * (z + 1)];
+                final double se = quartSurfaceHeight[(x + 1) + 7 * (z + 1)];
+
+                final double center = (nw + ne + sw + se) / 4;
+                final double slope = Math.abs(nw - center) + Math.abs(ne - center) + Math.abs(sw - center) + Math.abs(se - center);
+                slopeMap[x + 6 * z] = slope;
+            }
+        }
+        return slopeMap;
+    }
+
+    /**
      * Fills a single column
      *
      * Deprecation for the use of {@link BlockState#getLightEmission()}
      */
     @SuppressWarnings("deprecation")
-    private void fillColumn(BlockPos.MutableBlockPos mutablePos, int cellX, int cellZ)
+    private void fillColumn(BlockPos.MutableBlockPos cursor, int cellX, int cellZ)
     {
-        prepareColumnBiomeWeights(); // Before iterating y, setup x/z biome sampling
+        final boolean debugFillColumn = false;
 
-        final double heightNoiseValue = sampleColumnHeightAndBiome(biomeWeights1, true); // sample height, using the just-computed biome weights
+        prepareColumnBiomeWeights();
+        sampleColumnHeightAndBiome(biomeWeights1, true);
 
-        // Only calculate flow if we're in a river type biome
-        Flow flow = Flow.NONE;
-        if (TFCBiomes.getExtensionOrThrow(level, localBiomes[localX + 16 * localZ]).getVariants().isRiver())
-        {
-            // Interpolate flow for this column
-            final Flow flow00 = flows[cellX + 5 * cellZ];
-            final Flow flow10 = flows[cellX + 5 * (cellZ + 1)];
-            final Flow flow01 = flows[(cellX + 1) + 5 * cellZ];
-            final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
+        final int heightNoiseValue = surfaceHeight[localX + 16 * localZ]; // sample height, using the just-computed biome weights
+        final Flow flow = calculateFlowAt(cellX, cellZ);
 
-            flow = Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
-        }
-
-        final int maxFilledY = 1 + Math.max((int) heightNoiseValue, TFCChunkGenerator.SEA_LEVEL_Y);
+        final int maxFilledY = 1 + Math.max(heightNoiseValue, TFCChunkGenerator.SEA_LEVEL_Y);
         final int maxFilledCellY = Math.min(settings.cellCountY() - 1, 1 + Math.floorDiv(maxFilledY, settings.cellHeight()) - settings.firstCellY());
         final int maxFilledSectionY = Math.min(chunk.getSectionsCount() - 1, 1 + chunk.getSectionIndex(maxFilledY));
 
@@ -200,10 +373,10 @@ public class ChunkNoiseFiller
             {
                 final int y = (settings.firstCellY() + cellY) * settings.cellHeight() + localCellY;
                 final int localY = y & 15;
-                final int lastSectionIndex = chunk.getSectionIndex(y);
-                if (chunk.getSectionIndex(section.bottomBlockY()) != lastSectionIndex)
+                final int sectionIndex = chunk.getSectionIndex(y);
+                if (chunk.getSectionIndex(section.bottomBlockY()) != sectionIndex)
                 {
-                    section = chunk.getSection(lastSectionIndex);
+                    section = chunk.getSection(sectionIndex);
                 }
 
                 final double cellDeltaY = (double) localCellY / settings.cellHeight();
@@ -211,32 +384,52 @@ public class ChunkNoiseFiller
                 updateForY(cellDeltaY);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                final BlockState state = calculateBlockStateAtNoise(x, y, z, heightNoiseValue, noise);
+                final BlockState state = calculateBlockStateAtNoise(blockX, y, blockZ, noise);
                 final FluidState fluid = state.getFluidState();
 
+                if (debugFillColumn && y < heightNoiseValue && noise < 0)
+                {
+                    // Below surface height, that has been carved out by BiomeNoiseSampler carving (not caves)
+                    section.setBlockState(localX, localY, localZ, Blocks.RED_STAINED_GLASS.defaultBlockState(), false);
+                }
+
                 // Set block
-                mutablePos.setY(y);
+                cursor.setY(y);
                 if (!state.isAir())
                 {
                     // Need to account for underground rivers in this y level check, thus the smaller value between sea level and height noise
                     if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= Math.min(TFCChunkGenerator.SEA_LEVEL_Y - 4, heightNoiseValue))
                     {
                         // Place a flowing fluid block according to the river flow at this location
-                        section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock(), false);
+                        section.setBlockState(localX, localY, localZ, debugFillColumn ? Blocks.BLUE_STAINED_GLASS.defaultBlockState() : riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock(), false);
                     }
                     else
                     {
-                        section.setBlockState(localX, localY, localZ, state, false);
+                        if (debugFillColumn)
+                        {
+                            if (fluid.getType() == Fluids.WATER)
+                            {
+                                section.setBlockState(localX, localY, localZ, Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(), false);
+                            }
+                            else if (fluid.getType() == Fluids.LAVA)
+                            {
+                                section.setBlockState(localX, localY, localZ, Blocks.ORANGE_STAINED_GLASS.defaultBlockState(), false);
+                            }
+                        }
+                        else
+                        {
+                            section.setBlockState(localX, localY, localZ, state, false);
+                        }
                     }
                     if (aquifer.shouldScheduleFluidUpdate() && !fluid.isEmpty())
                     {
-                        chunk.markPosForPostprocessing(mutablePos);
+                        chunk.markPosForPostprocessing(cursor);
                     }
 
                     // Handle lava
                     if (state.getLightEmission() != 0)
                     {
-                        chunk.addLight(mutablePos);
+                        chunk.addLight(cursor);
                     }
                 }
 
@@ -246,8 +439,18 @@ public class ChunkNoiseFiller
                     if (topSolidBlockPlaced)
                     {
                         // Air under solid blocks, so mark as carved, and replace with cave air
-                        airCarvingMask.set(x, y, z);
-                        section.setBlockState(localX, localY, localZ, Blocks.CAVE_AIR.defaultBlockState(), false);
+                        airCarvingMask.set(blockX, y, blockZ);
+                        if (debugFillColumn)
+                        {
+                            if (section.getBlockState(localX, localY, localZ).isAir())
+                            {
+                                section.setBlockState(localX, localY, localZ, Blocks.LIGHT_GRAY_STAINED_GLASS.defaultBlockState(), false);
+                            }
+                        }
+                        else
+                        {
+                            section.setBlockState(localX, localY, localZ, Blocks.CAVE_AIR.defaultBlockState(), false);
+                        }
                     }
                 }
                 else if (!fluid.isEmpty()) // Fluids
@@ -261,7 +464,7 @@ public class ChunkNoiseFiller
                     if (topSolidBlockPlaced)
                     {
                         // Fluids under solid blocks, so mark as carved
-                        airCarvingMask.set(x, y, z);
+                        airCarvingMask.set(blockX, y, blockZ);
                     }
                 }
                 else // Solid rock
@@ -278,60 +481,13 @@ public class ChunkNoiseFiller
                         oceanFloor.update(localX, y, localZ, state);
                     }
                 }
+
+                if (debugFillColumn && y == heightNoiseValue + 1)
+                {
+                    section.setBlockState(localX, localY, localZ, Blocks.BLACK_STAINED_GLASS.defaultBlockState(), false);
+                }
             }
         }
-    }
-
-    /**
-     * Builds a 6x6, 4x4 resolution slope map for a chunk
-     * This is enough to do basic linear interpolation for every point within the chunk.
-     *
-     * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
-     */
-    @SuppressWarnings("PointlessArithmeticExpression")
-    public double[] buildSlopeMap()
-    {
-        double[] sampledHeightMap = new double[7 * 7]; // A 7x7, 4x4 resolution map of heights in the chunk, offset by (-1, -1)
-
-        // Interior points - record from the existing positions in the chunk
-        for (int x = 0; x < 4; x++)
-        {
-            for (int z = 0; z < 4; z++)
-            {
-                sampledHeightMap[(x + 1) + 7 * (z + 1)] = surfaceHeight[(x << 2) + 16 * (z << 2)];
-            }
-        }
-
-        // Exterior points
-        for (int i = 0; i < TFCChunkGenerator.EXTERIOR_POINTS_COUNT; i++)
-        {
-            int x = TFCChunkGenerator.EXTERIOR_POINTS[i << 1];
-            int z = TFCChunkGenerator.EXTERIOR_POINTS[(i << 1) | 1];
-
-            int x0 = blockX + ((x - 1) << 2);
-            int z0 = blockZ + ((z - 1) << 2);
-
-            setupColumn(x0, z0);
-            sampledHeightMap[x + 7 * z] = sampleColumnHeightAndBiome(sampledBiomeWeights[x + z * 7], false);
-        }
-
-        double[] slopeMap = new double[6 * 6];
-        for (int x = 0; x < 6; x++)
-        {
-            for (int z = 0; z < 6; z++)
-            {
-                // Math people (including myself) cry at what I'm calling 'the derivative'
-                final double nw = sampledHeightMap[(x + 0) + 7 * (z + 0)];
-                final double ne = sampledHeightMap[(x + 1) + 7 * (z + 0)];
-                final double sw = sampledHeightMap[(x + 0) + 7 * (z + 1)];
-                final double se = sampledHeightMap[(x + 1) + 7 * (z + 1)];
-
-                final double center = (nw + ne + sw + se) / 4;
-                final double slope = Math.abs(nw - center) + Math.abs(ne - center) + Math.abs(sw - center) + Math.abs(se - center);
-                slopeMap[x + 6 * z] = slope;
-            }
-        }
-        return slopeMap;
     }
 
     private Flow[] buildFlowMap()
@@ -345,6 +501,21 @@ public class ChunkNoiseFiller
             }
         }
         return flowMap;
+    }
+
+    private Flow calculateFlowAt(int cellX, int cellZ)
+    {
+        if (TFCBiomes.getExtensionOrThrow(level, localBiomes[localX + 16 * localZ]).variants().isRiver())
+        {
+            // Interpolate flow for this column
+            final Flow flow00 = flows[cellX + 5 * cellZ];
+            final Flow flow10 = flows[cellX + 5 * (cellZ + 1)];
+            final Flow flow01 = flows[(cellX + 1) + 5 * cellZ];
+            final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
+
+            return Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
+        }
+        return Flow.NONE;
     }
 
     /**
@@ -387,7 +558,7 @@ public class ChunkNoiseFiller
         for (Object2DoubleMap.Entry<Biome> entry : biomeWeights.object2DoubleEntrySet())
         {
             final double weight = entry.getDoubleValue();
-            final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, entry.getKey()).getVariants();
+            final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, entry.getKey()).variants();
             final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
 
             if (columnBiomeNoiseSamplers.containsKey(sampler))
@@ -396,7 +567,7 @@ public class ChunkNoiseFiller
             }
             else
             {
-                sampler.setColumn(x, z);
+                sampler.setColumn(blockX, blockZ);
                 columnBiomeNoiseSamplers.put(sampler, weight);
             }
 
@@ -500,10 +671,7 @@ public class ChunkNoiseFiller
             surfaceHeight[localX + 16 * localZ] = (int) actualHeight;
         }
 
-        if (biomeAt == null)
-        {
-            throw new NullPointerException();
-        }
+        assert biomeAt != null;
         return actualHeight;
     }
 
@@ -533,11 +701,10 @@ public class ChunkNoiseFiller
     }
 
     /**
-     * @param heightNoise The calculated average height noise, from {@link BiomeNoiseSampler#height()}
      * @param terrainNoise The terrain noise for the position. Positive values indicate solid terrain, in the range [-1, 1]
      * @return The block state for the position, including the aquifer, noise and noodle caves, and terrain.
      */
-    public BlockState calculateBlockStateAtNoise(int x, int y, int z, double heightNoise, double terrainNoise)
+    public BlockState calculateBlockStateAtNoise(int x, int y, int z, double terrainNoise)
     {
         double terrainAndCaveNoise = terrainNoise;
         if (noodleToggle.sample() >= 0)
@@ -552,25 +719,9 @@ public class ChunkNoiseFiller
 
         terrainAndCaveNoise = Math.min(terrainAndCaveNoise, noiseCaves.sample());
 
-        final double minimumSurfaceHeight = heightNoise - 5;
-        if (terrainAndCaveNoise < 0 && y > TFCChunkGenerator.SEA_LEVEL_Y)
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        if (terrainAndCaveNoise < 0 && y >= minimumSurfaceHeight)
-        {
-            // Sea-level aquifer, above main surface. Not carved by caves
-            return baseBlockSource.modifyFluid(Blocks.WATER.defaultBlockState(), localX, localZ);
-        }
-        if (terrainAndCaveNoise < 0 && y < minimumSurfaceHeight)
-        {
-            if (y <= -56)
-            {
-                return Blocks.LAVA.defaultBlockState();
-            }
-            return Blocks.AIR.defaultBlockState();
-        }
-        return baseBlockSource.getBaseBlock(x, y, z);
+        final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
+        return Objects.requireNonNullElseGet(aquiferState, () -> baseBlockSource.getBaseBlock(x, y, z));
+
     }
 
     /**
@@ -578,8 +729,8 @@ public class ChunkNoiseFiller
      */
     private void setupColumn(int x, int z)
     {
-        this.x = x;
-        this.z = z;
+        this.blockX = x;
+        this.blockZ = z;
         this.localX = x & 15;
         this.localZ = z & 15;
     }

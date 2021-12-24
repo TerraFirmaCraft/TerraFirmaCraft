@@ -6,12 +6,9 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.Random;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
@@ -152,14 +149,14 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeExtension extension = variants.get(temperature, rainfall);
-        return biomeRegistry.getOrThrow(extension.getRegistryKey());
+        return biomeRegistry.getOrThrow(extension.key());
     }
 
     public Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
     {
         final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
-        return biomeRegistry.getOrThrow(extension.getRegistryKey());
+        return biomeRegistry.getOrThrow(extension.key());
     }
 
     @Override

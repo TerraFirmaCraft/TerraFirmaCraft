@@ -23,8 +23,6 @@ import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 public class SurfaceManager
 {
-    private static final boolean ENABLE_SLOPE_VISUALIZATION = false;
-
     private static Map<BiomeVariants, SurfaceBuilder> collectSurfaceBuilders(long seed)
     {
         final ImmutableMap.Builder<BiomeVariants, SurfaceBuilder> builder = ImmutableMap.builder();
@@ -46,10 +44,12 @@ public class SurfaceManager
 
     public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, Biome[] accurateChunkBiomes, double[] slopeMap, RandomSource random, int seaLevel, int minY)
     {
+        final boolean debugSlope = false;
+
         final ChunkPos chunkPos = chunk.getPos();
         final int blockX = chunkPos.getMinBlockX(), blockZ = chunkPos.getMinBlockZ();
 
-        if (ENABLE_SLOPE_VISUALIZATION)
+        if (debugSlope)
         {
             slopeVisualization(chunk, slopeMap, blockX, blockZ);
         }
@@ -63,7 +63,7 @@ public class SurfaceManager
                 final double slope = sampleSlope(slopeMap, x, z);
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
-                final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
+                final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, biome).variants();
                 final SurfaceBuilder builder = builders.get(variants);
 
                 context.buildSurface(biome, variants, builder, blockX + x, y, blockZ + z, slope);

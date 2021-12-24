@@ -37,7 +37,14 @@ public class NoiseSampler
     public final TrilinearInterpolator.Source noodleRidgeA;
     public final TrilinearInterpolator.Source noodleRidgeB;
 
-    private final PositionalRandomFactory positionalRandomFactory;
+    // Aquifers
+    public final NormalNoise barrierNoise;
+    public final NormalNoise fluidLevelFloodednessNoise;
+    public final NormalNoise fluidLevelSpreadNoise;
+    public final NormalNoise lavaNoise;
+
+    public final PositionalRandomFactory positionalRandomFactory;
+
     private final NoiseSettings noiseSettings;
 
     private final NormalNoise pillarNoiseSource;
@@ -56,12 +63,6 @@ public class NoiseSampler
     private final NormalNoise bigEntranceNoiseSource;
     private final NormalNoise layerNoiseSource;
     private final NormalNoise cheeseNoiseSource;
-
-    // Aquifers
-    private final NormalNoise barrierNoise;
-    private final NormalNoise fluidLevelFloodednessNoise;
-    private final NormalNoise fluidLevelSpreadNoise;
-    private final NormalNoise lavaNoise;
 
     public NoiseSampler(NoiseSettings noiseSettings, long seed, Registry<NormalNoise.NoiseParameters> parameters)
     {
@@ -129,7 +130,7 @@ public class NoiseSampler
         double noise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
         if (pillars > 0 && noise < 0)
         {
-            noise = 0.05;
+            noise = 0.1;
         }
 
         final double clamped = Mth.clamp(noise, -1, 1);
@@ -138,10 +139,10 @@ public class NoiseSampler
 
     protected double applySlide(double noise, int y)
     {
-        if (y >= 35)
+        if (y >= 20)
         {
-            double slideFactor = Mth.inverseLerp(y, 35, noiseSettings.minY() + noiseSettings.height()); // [0, 1], 1 = top of world
-            return Mth.lerp(slideFactor, noise, 4);
+            double slideFactor = Mth.inverseLerp(y, 20, noiseSettings.minY() + noiseSettings.height()); // [0, 1], 1 = top of world
+            return Mth.lerp(slideFactor, noise, 2.5);
         }
         return noise;
     }

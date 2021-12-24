@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.LongFunction;
+import java.util.function.*;
 
 import javax.annotation.Nullable;
 
@@ -38,6 +37,7 @@ public class BiomeBuilder
     @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
     @Nullable private SurfaceBuilderFactory surfaceBuilderFactory;
 
+    private DoubleUnaryOperator aquiferSurfaceHeight;
     private BiomeVariants.Group group;
     private boolean salty;
     private boolean volcanic;
@@ -47,6 +47,7 @@ public class BiomeBuilder
     private BiomeBuilder()
     {
         dictionaryTypes = new ArrayList<>();
+        aquiferSurfaceHeight = height -> height;
         group = BiomeVariants.Group.LAND;
         salty = false;
         volcanic = false;
@@ -72,12 +73,24 @@ public class BiomeBuilder
         Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> carvingNoiseFactory.apply(seed, baseHeightNoiseFactory.apply(seed));
+        this.aquiferSurfaceHeight = height -> TFCChunkGenerator.SEA_LEVEL_Y - 16; // Expect sea level carving to restrict aquifers
         return this;
     }
 
     public BiomeBuilder noise(LongFunction<BiomeNoiseSampler> noiseFactory)
     {
         this.noiseFactory = noiseFactory;
+        return this;
+    }
+
+    public BiomeBuilder aquiferHeightOffset(final double delta)
+    {
+        return aquiferHeight(height -> height + delta);
+    }
+
+    public BiomeBuilder aquiferHeight(DoubleUnaryOperator aquiferSurfaceHeight)
+    {
+        this.aquiferSurfaceHeight = aquiferSurfaceHeight;
         return this;
     }
 
@@ -127,6 +140,6 @@ public class BiomeBuilder
         assert noiseFactory != null : "missing noise / heightmap";
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
     }
 }

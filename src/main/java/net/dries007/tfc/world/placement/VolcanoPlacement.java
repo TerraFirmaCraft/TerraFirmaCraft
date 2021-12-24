@@ -63,7 +63,7 @@ public class VolcanoPlacement extends PlacementModifier
         }
 
         final Biome biome = level.getBiome(pos);
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).getVariants();
+        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).variants();
         if (variants.isVolcanic())
         {
             // Sample volcano noise

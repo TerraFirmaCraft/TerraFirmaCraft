@@ -8,6 +8,7 @@ package net.dries007.tfc.world.biome;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 
 import net.minecraftforge.registries.RegistryObject;
@@ -26,6 +27,7 @@ public class BiomeVariants
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, BiomeExtension>> extensions;
     private final LongFunction<BiomeNoiseSampler> noiseFactory;
+    private final DoubleUnaryOperator aquiferSurfaceHeight;
     private final SurfaceBuilderFactory surfaceBuilderFactory;
     private final Group group;
     private final boolean salty;
@@ -33,10 +35,11 @@ public class BiomeVariants
     private final int volcanoFrequency;
     private final int volcanoBasaltHeight;
 
-    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
     {
         this.noiseFactory = noiseFactory;
         this.surfaceBuilderFactory = surfaceBuilderFactory;
+        this.aquiferSurfaceHeight = aquiferSurfaceHeight;
         this.group = group;
         this.salty = salty;
         this.volcanic = volcanic;
@@ -88,6 +91,11 @@ public class BiomeVariants
     public BiomeNoiseSampler createNoiseSampler(long seed)
     {
         return noiseFactory.apply(seed);
+    }
+
+    public double getAquiferSurfaceHeight(double height)
+    {
+        return aquiferSurfaceHeight.applyAsDouble(height);
     }
 
     public SurfaceBuilder createSurfaceBuilder(long seed)

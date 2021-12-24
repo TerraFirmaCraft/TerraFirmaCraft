@@ -41,7 +41,7 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.level(), context.biome()).getVariants();
+        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.level(), context.biome()).variants();
         if (variants.isVolcanic())
         {
             // Sample volcano noise
