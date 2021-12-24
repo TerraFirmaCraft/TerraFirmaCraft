@@ -17,6 +17,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.PositionalRandomFactory;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 
-public class Aquifer
+public class TFCAquifer implements Aquifer
 {
     private static final int GRID_WIDTH = 16;
     private static final int GRID_HEIGHT = 12;
@@ -59,7 +60,6 @@ public class Aquifer
     private final int minY;
     private final PositionalRandomFactory fork;
 
-    private final int[] surfaceHeights;
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final NormalNoise barrierNoise;
@@ -73,9 +73,10 @@ public class Aquifer
     private final AquiferEntry[] aquifers;
     private final long[] aquiferLocations;
 
+    private int[] surfaceHeights;
     private boolean shouldScheduleFluidUpdate;
 
-    public Aquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, ChunkBaseBlockSource baseBlockSource, int seaLevel, PositionalRandomFactory fork, NormalNoise barrierNoise, NormalNoise fluidLevelFloodednessNoise, NormalNoise fluidLevelSpreadNoise, NormalNoise lavaNoise)
+    public TFCAquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, ChunkBaseBlockSource baseBlockSource, int seaLevel, PositionalRandomFactory fork, NormalNoise barrierNoise, NormalNoise fluidLevelFloodednessNoise, NormalNoise fluidLevelSpreadNoise, NormalNoise lavaNoise)
     {
         final int maxGridX = gridXZ(chunkPos.getMaxBlockX()) + 1;
         final int maxGridY = gridY((settings.firstCellY() + settings.cellCountY()) * settings.cellHeight()) + 1;
@@ -114,6 +115,19 @@ public class Aquifer
     public int[] getSurfaceHeights()
     {
         return surfaceHeights;
+    }
+
+    public void setSurfaceHeights(int[] surfaceHeights)
+    {
+        this.surfaceHeights = surfaceHeights;
+    }
+
+    @Nullable
+    @Override
+    public BlockState computeSubstance(int x, int y, int z, double baseNoise, double modifiedNoise)
+    {
+        // Only used directly by carvers, where it passes in baseNoise = 0, modifiedNoise = 0
+        return sampleState(x, y, z, baseNoise);
     }
 
     /**

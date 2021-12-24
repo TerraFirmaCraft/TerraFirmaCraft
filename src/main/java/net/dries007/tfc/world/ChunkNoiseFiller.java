@@ -88,7 +88,7 @@ public class ChunkNoiseFiller
     private final TrilinearInterpolator noodleRidgeB;
 
     // Aquifer + Noise -> BlockState
-    private final Aquifer aquifer;
+    private final TFCAquifer aquifer;
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers; // Biome -> Noise Samplers
@@ -136,7 +136,7 @@ public class ChunkNoiseFiller
         this.noodleRidgeB = addInterpolator(sampler.noodleRidgeB);
 
         // Aquifer
-        this.aquifer = new Aquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
+        this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
 
         this.biomeNoiseSamplers = biomeNoiseSamplers;
         this.columnBiomeNoiseSamplers = new Object2DoubleOpenHashMap<>();
@@ -145,6 +145,11 @@ public class ChunkNoiseFiller
 
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new Biome[16 * 16];
+    }
+
+    public TFCAquifer aquifer()
+    {
+        return aquifer;
     }
 
     /**
