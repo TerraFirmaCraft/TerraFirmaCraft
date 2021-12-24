@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world;
 
 import java.util.ArrayList;
@@ -185,36 +191,12 @@ public class ChunkNoiseFiller
                     {
                         final int actualX = chunkMinX - 16 + SectionPos.sectionToBlockCoord(x) + (dx << 3);
                         final int actualZ = chunkMinZ - 16 + SectionPos.sectionToBlockCoord(z) + (dz << 3);
-                        double aquiferSurfaceHeight;
 
                         final BiomeVariants biome = sampledBiomes[(xIndex + dx) + 11 * (zIndex + dz)];
-                        if (biome.isRiver())
-                        {
-                            aquiferSurfaceHeight = TFCChunkGenerator.SEA_LEVEL_Y - 12;
-                        }
-                        else
-                        {
-                            // Typical biomes
-                            final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
-                            sampler.setColumn(actualX, actualZ);
-                            aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
+                        final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
-                            // todo: make this a derived property from BiomeVariants
-                            // Biomes with unusually low altitudes
-                            if (biome == TFCBiomes.SHORE || biome == TFCBiomes.LOW_CANYONS || biome == TFCBiomes.LOWLANDS || biome == TFCBiomes.LAKE)
-                            {
-                                aquiferSurfaceHeight -= 8;
-                            }
-                            // Biomes with generally high altitudes
-                            if (biome == TFCBiomes.OLD_MOUNTAINS || biome == TFCBiomes.MOUNTAINS || biome == TFCBiomes.PLATEAU || biome == TFCBiomes.ROLLING_HILLS)
-                            {
-                                aquiferSurfaceHeight += 8;
-                            }
-                            if (biome.isSalty()) // Oceans and adjacent
-                            {
-                                aquiferSurfaceHeight -= 12;
-                            }
-                        }
+                        sampler.setColumn(actualX, actualZ);
+                        final double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
 
                         minAquiferSurfaceHeight = Math.min(minAquiferSurfaceHeight, aquiferSurfaceHeight);
                     }
