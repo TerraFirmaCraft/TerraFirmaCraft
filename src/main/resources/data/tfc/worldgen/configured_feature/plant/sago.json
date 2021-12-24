@@ -1,15 +1,18 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:random_property",
+  "type": "tfc:block_with_fluid",
   "config": {
-    "state": {
-      "Name": "tfc:plant/sago",
-      "Properties": {
-        "age": "1",
-        "stage": "1",
-        "fluid": "empty"
-      }
-    },
-    "property": "age"
+    "to_place": {
+      "type": "tfc:random_property",
+      "state": {
+        "Name": "tfc:plant/sago",
+        "Properties": {
+          "age": "1",
+          "stage": "1",
+          "fluid": "empty"
+        }
+      },
+      "property": "age"
+    }
   }
 }

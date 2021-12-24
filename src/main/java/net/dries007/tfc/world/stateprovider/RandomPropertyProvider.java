@@ -4,54 +4,45 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.feature.plant;
+package net.dries007.tfc.world.stateprovider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
-public class RandomPropertyConfig implements FeatureConfiguration
+public class RandomPropertyProvider extends BlockStateProvider
 {
-    public static final Codec<RandomPropertyConfig> CODEC = RecordCodecBuilder.<RandomPropertyConfig>create(instance -> instance.group(
+    public static final Codec<RandomPropertyProvider> CODEC = RecordCodecBuilder.<RandomPropertyProvider>create(instance -> instance.group(
         Codecs.BLOCK_STATE.fieldOf("state").forGetter(c -> c.state),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
-    ).apply(instance, RandomPropertyConfig::new)).comapFlatMap(RandomPropertyConfig::guardPropertySetter, Function.identity());
+    ).apply(instance, RandomPropertyProvider::new)); // Cannot use .comapFlatMap on dispatch codecs
 
     private final BlockState state;
     private final String propertyName;
     private Function<Random, BlockState> propertySetter;
 
-    public RandomPropertyConfig(BlockState state, String propertyName)
+    public RandomPropertyProvider(BlockState state, String propertyName)
     {
         this.state = state;
         this.propertyName = propertyName;
         this.propertySetter = random -> state;
-    }
 
-    public DataResult<RandomPropertyConfig> guardPropertySetter()
-    {
         final Property<?> property = state.getBlock().getStateDefinition().getProperty(propertyName);
-        if (property == null)
+        if (property != null)
         {
-            return DataResult.error("No property: " + propertyName + " found on block: " + state.getBlock().getRegistryName());
+            propertySetter = createPropertySetter(property);
         }
-        propertySetter = createPropertySetter(property);
-        return DataResult.success(this);
-    }
-
-    public BlockState state(Random random)
-    {
-        return propertySetter.apply(random);
     }
 
     /**
@@ -61,5 +52,17 @@ public class RandomPropertyConfig implements FeatureConfiguration
     {
         final List<T> values = new ArrayList<>(property.getPossibleValues());
         return random -> state.setValue(property, values.get(random.nextInt(values.size())));
+    }
+
+    @Override
+    public BlockState getState(Random random, BlockPos pos)
+    {
+        return propertySetter.apply(random);
+    }
+
+    @Override
+    protected BlockStateProviderType<?> type()
+    {
+        return TFCStateProviders.RANDOM_PROPERTY.get();
     }
 }

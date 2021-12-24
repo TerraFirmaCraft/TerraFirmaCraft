@@ -56,11 +56,13 @@ import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.settings.RockSettings;
+import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -95,9 +97,9 @@ public final class TerraFirmaCraft
 
         TFCBiomes.BIOMES.register(bus);
         TFCFeatures.FEATURES.register(bus);
-        // TFCDecorators.PLACEMENT_MODIFIERS.register(bus); // todo: Forge converts this to a registry
         TFCCarvers.CARVERS.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
+        TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();
@@ -127,14 +129,12 @@ public final class TerraFirmaCraft
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
-        // todo: remove once forge fixes it's damn fluid blocks
-        TFCBlocks.fixForgeBrokenFluidBlocks();
-
         event.enqueueWork(() -> {
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();
             Faunas.registerSpawnPlacements();
             TFCPlacements.registerPlacements();
+            TFCBlockPredicates.registerBlockPredicates();
 
             Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);

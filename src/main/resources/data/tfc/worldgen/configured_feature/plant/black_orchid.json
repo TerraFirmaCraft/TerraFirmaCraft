@@ -1,14 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:random_property",
+  "type": "minecraft:simple_block",
   "config": {
-    "state": {
-      "Name": "tfc:plant/black_orchid",
-      "Properties": {
-        "age": "1",
-        "stage": "1"
-      }
-    },
-    "property": "age"
+    "to_place": {
+      "type": "tfc:random_property",
+      "state": {
+        "Name": "tfc:plant/black_orchid",
+        "Properties": {
+          "age": "1",
+          "stage": "1"
+        }
+      },
+      "property": "age"
+    }
   }
 }
