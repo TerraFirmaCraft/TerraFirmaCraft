@@ -14,6 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -51,7 +52,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         this.uId = uId;
         this.title = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".jei." + uId.getPath());
         this.background = background;
-        this.icon = helper.createDrawableIngredient(icon);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, icon);
         this.recipeClass = recipeClass;
         this.slot = helper.getSlotDrawable();
         this.fire = helper.createDrawable(ICONS, 0, 0, 14, 14);

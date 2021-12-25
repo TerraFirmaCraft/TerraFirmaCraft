@@ -54,6 +54,5 @@ public class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T
         fluidStacks.init(5, true, 45, 45);
 
         NonNullList<Ingredient> list = recipe.getIngredients();
-        itemStacks.set(0, list.get(0).getItems());
     }
 }

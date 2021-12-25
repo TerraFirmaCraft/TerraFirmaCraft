@@ -7,6 +7,7 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -35,7 +36,8 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
     @Override
     public void setIngredients(HeatingRecipe recipe, IIngredients ingredients)
     {
-        ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getIngredient().getItems()));
+        ingredients.setInputIngredients(List.of(recipe.getIngredient()));
+        //ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getIngredient().getItems()));
         if (!recipe.getResultItem().isEmpty())
         {
             ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
