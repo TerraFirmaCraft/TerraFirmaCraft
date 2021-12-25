@@ -197,11 +197,11 @@
     ],
     [
       "tfc:surface_loose_rocks",
-      "tfc:sticks_forest",
-      "tfc:pinecone",
-      "tfc:salt_lick",
-      "tfc:dead_grass",
-      "tfc:podzol",
+      "tfc:sticks_forest_patch",
+      "tfc:pinecone_patch",
+      "tfc:salt_lick_patch",
+      "tfc:dead_grass_patch",
+      "tfc:podzol_patch",
       "tfc:ice_and_snow"
     ]
   ],

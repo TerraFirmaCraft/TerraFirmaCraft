@@ -20,8 +20,8 @@ public record ColumnPlantConfig(BlockState bodyState, BlockState headState, int 
         Codecs.BLOCK_STATE.fieldOf("head").forGetter(c -> c.bodyState),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
-        Codec.intRange(1, 100).fieldOf("minHeight").forGetter(c -> c.minHeight),
-        Codec.intRange(1, 100).fieldOf("maxHeight").forGetter(c -> c.maxHeight)
+        Codec.intRange(1, 100).fieldOf("min_height").forGetter(c -> c.minHeight),
+        Codec.intRange(1, 100).fieldOf("max_height").forGetter(c -> c.maxHeight)
     ).apply(instance, ColumnPlantConfig::new));
 
 }

@@ -468,7 +468,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'coontail'), plant_config('tfc:plant/coontail[age=1,stage=1,fluid=empty]', 1, 15, 100, water_plant=True), decorate_chance(2), decorate_square(), decorate_climate(5, 50, 250, 500))
     configured_plant_patch_feature(rm, ('plant', 'dandelion'), plant_config('tfc:plant/dandelion[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(0, 22, 120, 400))
     configured_plant_patch_feature(rm, ('plant', 'dead_bush'), plant_config('tfc:plant/dead_bush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(10, 50, 0, 120))
-    configured_plant_patch_feature(rm, ('plant', 'duckweed'), plant_config('tfc:plant/duckweed[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_climate(-34, 25, 0, 500))
+    configured_noise_plant_feature(rm, ('plant', 'duckweed'), plant_config('tfc:plant/duckweed[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-34, 25, 0, 500))
     configured_plant_patch_feature(rm, ('plant', 'eel_grass'), plant_config('tfc:plant/eel_grass[age=1,stage=1,fluid=empty]', 1, 15, 100, water_plant=True), decorate_chance(2), decorate_square(), decorate_climate(-10, 25, 200, 500))
     configured_plant_patch_feature(rm, ('plant', 'field_horsetail'), plant_config('tfc:plant/field_horsetail[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(10, 26, 300, 500))
     configured_plant_patch_feature(rm, ('plant', 'foxglove'), plant_config('tfc:plant/foxglove[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(15, 29, 150, 300))
@@ -480,7 +480,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'lady_fern'), plant_config('tfc:plant/lady_fern[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-50, 16, 200, 490))
     configured_plant_patch_feature(rm, ('plant', 'licorice_fern'), plant_config('tfc:plant/licorice_fern[age=1,stage=1,facing=north]', 6, 5), decorate_chance(5), decorate_square(), decorate_climate(-15, 25, 300, 400))
     configured_plant_patch_feature(rm, ('plant', 'laminaria'), plant_config('tfc:plant/laminaria[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(-50, 12, 100, 500))
-    configured_plant_patch_feature(rm, ('plant', 'lotus'), plant_config('tfc:plant/lotus[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_climate(15, 50, 0, 500))
+    configured_noise_plant_feature(rm, ('plant', 'lotus'), plant_config('tfc:plant/lotus[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(15, 50, 0, 500))
     configured_plant_patch_feature(rm, ('plant', 'marigold'), plant_config('tfc:plant/marigold[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(20, 50, 50, 390))
     configured_plant_patch_feature(rm, ('plant', 'meads_milkweed'), plant_config('tfc:plant/meads_milkweed[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 14, 130, 380))
     configured_plant_patch_feature(rm, ('plant', 'milfoil'), plant_config('tfc:plant/milfoil[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(5, 50, 250, 500))
@@ -489,7 +489,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'nasturtium'), plant_config('tfc:plant/nasturtium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-19, 0, 150, 380))
     configured_plant_patch_feature(rm, ('plant', 'ostrich_fern'), plant_config('tfc:plant/ostrich_fern[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(-49, 14, 290, 470))
     configured_plant_patch_feature(rm, ('plant', 'oxeye_daisy'), plant_config('tfc:plant/oxeye_daisy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(10, 40, 120, 300))
-    configured_plant_patch_feature(rm, ('plant', 'pistia'), plant_config('tfc:plant/pistia[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_climate(10, 45, 0, 400))
+    configured_noise_plant_feature(rm, ('plant', 'pistia'), plant_config('tfc:plant/pistia[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(10, 45, 0, 400))
     configured_plant_patch_feature(rm, ('plant', 'poppy'), plant_config('tfc:plant/poppy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-40, 36, 150, 250))
     configured_plant_patch_feature(rm, ('plant', 'primrose'), plant_config('tfc:plant/primrose[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-34, 33, 150, 300))
     configured_plant_patch_feature(rm, ('plant', 'pulsatilla'), plant_config('tfc:plant/pulsatilla[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-50, 30, 50, 200))
@@ -499,7 +499,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'sago'), plant_config('tfc:plant/sago[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(-10, 50, 200, 500))
     configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-34, 50, 0, 120))
     configured_plant_patch_feature(rm, ('plant', 'sapphire_tower'), plant_config('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(16, 39, 75, 200))
-    configured_plant_patch_feature(rm, ('plant', 'sargassum'), plant_config('tfc:plant/sargassum[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_climate(0, 25, 0, 500))
+    configured_noise_plant_feature(rm, ('plant', 'sargassum'), plant_config('tfc:plant/sargassum[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(0, 25, 0, 500))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_pink'), plant_config('tfc:plant/snapdragon_pink[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(24, 36, 150, 300))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_red'), plant_config('tfc:plant/snapdragon_red[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(24, 36, 150, 300))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_white'), plant_config('tfc:plant/snapdragon_white[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(24, 36, 150, 300))
@@ -518,7 +518,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'tulip_white'), plant_config('tfc:plant/tulip_white[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-34, 0, 100, 200))
     configured_plant_patch_feature(rm, ('plant', 'turtle_grass'), plant_config('tfc:plant/turtle_grass[age=1,stage=1,fluid=empty]', 1, 15, 128, water_plant=True), decorate_chance(1), decorate_square(), decorate_climate(-50, 25, 240, 500))
     configured_plant_patch_feature(rm, ('plant', 'vriesea'), plant_config('tfc:plant/vriesea[age=1,stage=1,facing=north]', 6, 5), decorate_chance(5), decorate_square(), decorate_climate(22, 31, 200, 400))
-    configured_plant_patch_feature(rm, ('plant', 'water_lily'), plant_config('tfc:plant/water_lily[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_climate(-5, 38, 0, 500))
+    configured_noise_plant_feature(rm, ('plant', 'water_lily'), plant_config('tfc:plant/water_lily[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-5, 38, 0, 500))
     configured_plant_patch_feature(rm, ('plant', 'yucca'), plant_config('tfc:plant/yucca[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-34, 36, 0, 75))
 
     configured_placed_feature(rm, ('plant', 'hanging_vines'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
@@ -651,8 +651,8 @@ def tall_plant_config(state1: str, state2: str, tries: int, radius: int, min_hei
         'head': state2,
         'tries': tries,
         'radius': radius,
-        'minHeight': min_height,
-        'maxHeight': max_height
+        'min_height': min_height,
+        'max_height': max_height
     }
 
 def vine_config(state: str, tries: int, radius: int, min_height: int, max_height: int) -> Json:
@@ -660,8 +660,8 @@ def vine_config(state: str, tries: int, radius: int, min_height: int, max_height
         'state': state,
         'tries': tries,
         'radius': radius,
-        'minHeight': min_height,
-        'maxHeight': max_height
+        'min_height': min_height,
+        'max_height': max_height
     }
 
 class PlantConfig(NamedTuple):
@@ -753,6 +753,34 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
     rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap))
 
+def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
+    res = utils.resource_location(rm.domain, name_parts)
+    patch_feature = res.join() + '_patch'
+    singular_feature = utils.resource_location(rm.domain, name_parts)
+
+    rm.configured_feature(singular_feature, 'minecraft:simple_block', {
+        'to_place': {
+            'seed': 2345,
+            'noise': normal_noise(-3, 1.0),
+            'scale': 1.0,
+            'states': [utils.block_state(config.block)],
+            'variety': [1, 1],
+            'slow_noise': normal_noise(-10, 1.0),
+            'slow_scale': 1.0,
+            'type': 'minecraft:dual_noise_provider'
+        }
+    })
+    rm.configured_feature(patch_feature, 'minecraft:flower', {
+        'tries': config.tries,
+        'xz_spread': config.xz_spread,
+        'y_spread': config.y_spread,
+        'feature': singular_feature.join()
+    })
+    rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
+    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(config.block), decorate_shallow())
+
+def normal_noise(first_octave: int, amplitude: float):
+    return {'firstOctave': first_octave, 'amplitudes': [amplitude]}
 
 # Vein Helper Functions
 
@@ -872,6 +900,9 @@ def decorate_chance(rarity_or_probability: Union[int, float]) -> Json:
 
 def decorate_count(count: int) -> Json:
     return {'type': 'minecraft:count', 'count': count}
+
+def decorate_shallow(depth: int = 5) -> Json:
+    return {'type': 'tfc:shallow_water', 'max_depth': depth}
 
 def decorate_heightmap(heightmap: Heightmap) -> Json:
     assert heightmap in typing.get_args(Heightmap)
@@ -1036,7 +1067,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         features[Decoration.VEGETAL_DECORATION] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES]
 
-        features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s' % v for v in FOREST_DECORATORS if not ocean_features]
+        features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:%s_patch' % v for v in FOREST_DECORATORS if not ocean_features]
 
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
