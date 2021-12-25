@@ -88,7 +88,7 @@ public class ChunkNoiseFiller
     private final TrilinearInterpolator noodleRidgeB;
 
     // Aquifer + Noise -> BlockState
-    private final Aquifer aquifer;
+    private final TFCAquifer aquifer;
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers; // Biome -> Noise Samplers
@@ -136,7 +136,7 @@ public class ChunkNoiseFiller
         this.noodleRidgeB = addInterpolator(sampler.noodleRidgeB);
 
         // Aquifer
-        this.aquifer = new Aquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
+        this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
 
         this.biomeNoiseSamplers = biomeNoiseSamplers;
         this.columnBiomeNoiseSamplers = new Object2DoubleOpenHashMap<>();
@@ -145,6 +145,11 @@ public class ChunkNoiseFiller
 
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new Biome[16 * 16];
+    }
+
+    public TFCAquifer aquifer()
+    {
+        return aquifer;
     }
 
     /**
@@ -191,36 +196,12 @@ public class ChunkNoiseFiller
                     {
                         final int actualX = chunkMinX - 16 + SectionPos.sectionToBlockCoord(x) + (dx << 3);
                         final int actualZ = chunkMinZ - 16 + SectionPos.sectionToBlockCoord(z) + (dz << 3);
-                        double aquiferSurfaceHeight;
 
                         final BiomeVariants biome = sampledBiomes[(xIndex + dx) + 11 * (zIndex + dz)];
-                        if (biome.isRiver())
-                        {
-                            aquiferSurfaceHeight = TFCChunkGenerator.SEA_LEVEL_Y - 12;
-                        }
-                        else
-                        {
-                            // Typical biomes
-                            final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
-                            sampler.setColumn(actualX, actualZ);
-                            aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
+                        final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
-                            // todo: make this a derived property from BiomeVariants
-                            // Biomes with unusually low altitudes
-                            if (biome == TFCBiomes.SHORE || biome == TFCBiomes.LOW_CANYONS || biome == TFCBiomes.LOWLANDS || biome == TFCBiomes.LAKE)
-                            {
-                                aquiferSurfaceHeight -= 8;
-                            }
-                            // Biomes with generally high altitudes
-                            if (biome == TFCBiomes.OLD_MOUNTAINS || biome == TFCBiomes.MOUNTAINS || biome == TFCBiomes.PLATEAU || biome == TFCBiomes.ROLLING_HILLS)
-                            {
-                                aquiferSurfaceHeight += 8;
-                            }
-                            if (biome.isSalty()) // Oceans and adjacent
-                            {
-                                aquiferSurfaceHeight -= 12;
-                            }
-                        }
+                        sampler.setColumn(actualX, actualZ);
+                        final double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
 
                         minAquiferSurfaceHeight = Math.min(minAquiferSurfaceHeight, aquiferSurfaceHeight);
                     }

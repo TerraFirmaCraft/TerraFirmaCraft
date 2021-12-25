@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 
+import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
@@ -21,15 +22,13 @@ public class BiomeBasedClimateModel implements WorldGenClimateModel
     @Override
     public float getTemperature(LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
     {
-        // todo
-        return Climate.toActualTemperature(0); // level.getBiome(pos).getTemperature(pos));
+        return getAverageTemperature(level, pos);
     }
 
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        // todo
-        return Climate.toActualTemperature(0); // level.getBiome(pos).getTemperature(pos));
+        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos)).invoke$getTemperature(pos));
     }
 
     @Override

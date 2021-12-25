@@ -50,7 +50,6 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.mixin.accessor.LiquidBlockAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -258,19 +257,6 @@ public final class TFCBlocks
     public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
 
     public static final RegistryObject<RiverWaterBlock> RIVER_WATER = register("fluid/river_water", () -> new RiverWaterBlock(BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()));
-
-    public static void fixForgeBrokenFluidBlocks()
-    {
-        fix(SALT_WATER);
-        fix(SPRING_WATER);
-        fix(RIVER_WATER);
-        METAL_FLUIDS.values().forEach(TFCBlocks::fix);
-    }
-
-    private static void fix(RegistryObject<? extends LiquidBlock> reg)
-    {
-        ((LiquidBlockAccessor) reg.get()).setFlowingFluid(reg.get().getFluid());
-    }
 
     public static boolean always(BlockState state, BlockGetter world, BlockPos pos)
     {

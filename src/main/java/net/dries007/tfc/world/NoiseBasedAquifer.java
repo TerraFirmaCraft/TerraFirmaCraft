@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 
+@Deprecated // Replaced with Aquifer, kept here because it's a documented version of the vanilla code until that is completely re-implemented
 public class NoiseBasedAquifer
 {
     private static final int X_RANGE = 10;

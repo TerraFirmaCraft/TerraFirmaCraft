@@ -25,15 +25,14 @@ public abstract class LevelRendererMixin
     @Shadow private ClientLevel level;
 
     /**
-     * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
-     * todo: this
+     * Redirect the call to {@link Biome#warmEnoughToRain(BlockPos)} with one that has a position and world context
      */
-    /*
-    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
-    private float renderSnowAndRainRedirectGetTemperature(Biome biome, BlockPos pos)
+
+    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
+    private boolean renderSnowAndRainRedirectWarmEnoughToRain(Biome biome, BlockPos pos)
     {
-        return Climate.getVanillaBiomeTemperature(level, pos);
-    }*/
+        return Climate.warmEnoughToRain(level, pos);
+    }
 
     /**
      * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context
@@ -45,15 +44,14 @@ public abstract class LevelRendererMixin
     }
 
     /**
-     * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context
-     * todo: this
+     * Redirect the call to {@link Biome#warmEnoughToRain(BlockPos)} with one that has a position and world context
      */
-    /*
-    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getTemperature(Lnet/minecraft/core/BlockPos;)F"))
-    private float tickRainRedirectGetTemperature(Biome biome, BlockPos pos)
+
+    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
+    private boolean tickRainRedirectGetTemperature(Biome biome, BlockPos pos)
     {
-        return Climate.getVanillaBiomeTemperature(level, pos);
-    }*/
+        return Climate.warmEnoughToRain(level, pos);
+    }
 
     /**
      * Redirect the call to {@link Biome#getPrecipitation()} with one that has a position and world context

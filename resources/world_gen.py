@@ -528,7 +528,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(5, 22, 100, 500), ('tfc:near_water', {'radius': 6}))
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True))
-    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, custom_feature='tfc:kelp_tree'), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
+    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, water_agnostic=True, custom_feature='tfc:kelp_tree'), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
 
     configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', vine_config('tfc:plant/ivy', 15, 7, 96, 150), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_chance(5))
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', vine_config('tfc:plant/jungle_vines', 33, 7, 64, 160), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_chance(5))
@@ -579,11 +579,11 @@ def generate(rm: ResourceManager):
     }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     for berry, info in BERRIES.items():
-        decorators = decorate_heightmap('world_surface_wg'), decorate_square(), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_chance(15)
+        decorators = decorate_square(), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_chance(15)
         if info.type == 'stationary':
             configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 8), *decorators)
         elif info.type == 'waterlogged':
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 8), *decorators)
+            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 8, water_agnostic=True), *decorators)
         else:
             # todo: implement spreading bush features
             configured_placed_feature(rm, ('plant', berry + '_bush'), 'no_op', {})
@@ -678,16 +678,24 @@ def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, r
     return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant)
 
 def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
-    feature = 'tfc:random_property', {'state': utils.block_state(config.block), 'property': 'age'}
+    state_provider = {
+        'type': 'tfc:random_property',
+        'state': utils.block_state(config.block), 'property': 'age'
+    }
+    feature = 'simple_block', {'to_place': state_provider}
     heightmap: Heightmap = 'world_surface_wg'
+    would_survive = decorate_would_survive(config.block)
 
+    if config.water_plant or config.emergent_plant:
+        heightmap = 'ocean_floor_wg'
+        would_survive = decorate_would_survive_with_fluid(config.block)
+
+    if config.water_plant:
+        feature = 'tfc:block_with_fluid', feature[1]
     if config.emergent_plant:
         feature = 'tfc:emergent_plant', {'state': utils.block_state(config.block)}
     if config.tall_plant:
         feature = 'tfc:tall_plant', {'state': utils.block_state(config.block)}
-
-    if config.water_plant or config.emergent_plant:
-        heightmap = 'ocean_floor_wg'
 
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
@@ -701,7 +709,7 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     })
     rm.configured_feature(singular_feature, *feature)
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
-    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), decorate_would_survive(config.block))
+    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), decorate_air_or_empty_fluid(), would_survive)
 
 
 class PatchConfig(NamedTuple):
@@ -719,6 +727,8 @@ def patch_config(block: str, y_spread: int, xz_spread: int, tries: int = 64, wat
 def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json):
     feature = 'minecraft:simple_block'
     config = {'to_place': {'type': 'minecraft:simple_state_provider', 'state': utils.block_state(patch.block)}}
+    if patch.water_agnostic:
+        feature = 'tfc:block_with_fluid'
     if patch.custom_feature is not None:
         feature = patch.custom_feature
         config = config['to_place']  # assume that for custom features, it uses just a single state (not state provider)
@@ -894,12 +904,24 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
     }
 
 def decorate_would_survive(block: str) -> Json:
+    return decorate_block_predicate({
+        'type': 'would_survive',
+        'state': utils.block_state(block)
+    })
+
+def decorate_would_survive_with_fluid(block: str) -> Json:
+    return decorate_block_predicate({
+        'type': 'tfc:would_survive_with_fluid',
+        'state': utils.block_state(block)
+    })
+
+def decorate_air_or_empty_fluid() -> Json:
+    return decorate_block_predicate({'type': 'tfc:air_or_empty_fluid'})
+
+def decorate_block_predicate(predicate: Json) -> Json:
     return {
         'type': 'block_predicate_filter',
-        'predicate': {
-            'type': 'would_survive',
-            'state': utils.block_state(block)
-        }
+        'predicate': predicate
     }
 
 # Value Providers

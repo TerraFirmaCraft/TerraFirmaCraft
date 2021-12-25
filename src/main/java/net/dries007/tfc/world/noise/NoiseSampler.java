@@ -7,15 +7,11 @@
 package net.dries007.tfc.world.noise;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.NoiseUtils;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
-import net.dries007.tfc.world.NoiseBasedAquifer;
 
 public class NoiseSampler
 {
@@ -109,11 +105,6 @@ public class NoiseSampler
         this.fluidLevelFloodednessNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS);
         this.lavaNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_LAVA);
         this.fluidLevelSpreadNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_SPREAD);
-    }
-
-    public NoiseBasedAquifer createAquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, int seaLevel)
-    {
-        return new NoiseBasedAquifer(settings, chunkPos, barrierNoise, fluidLevelFloodednessNoise, fluidLevelSpreadNoise, lavaNoise, positionalRandomFactory, seaLevel);
     }
 
     /**

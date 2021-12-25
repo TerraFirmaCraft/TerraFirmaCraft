@@ -27,6 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
@@ -254,10 +256,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final boolean flatBedrock;
     private final long seed;
 
+    private final NoiseBasedChunkGenerator stupidMojangChunkGenerator; // Mojang fix your god awful deprecated carver nonsense
+    private final FastConcurrentCache<TFCAquifer> aquiferCache;
+
     private final Map<BiomeVariants, Supplier<BiomeNoiseSampler>> biomeNoiseSamplers;
     private final ChunkDataProvider chunkDataProvider;
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
+
     @Nullable private NoiseGeneratorSettings cachedSettings;
 
     public TFCChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Supplier<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
@@ -270,6 +276,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.customBiomeSource = biomeSource;
         this.flatBedrock = flatBedrock;
         this.seed = seed;
+
+        this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(parameters, biomeSource, seed, settings);
+        this.aquiferCache = new FastConcurrentCache<>(256);
 
         this.biomeNoiseSamplers = collectBiomeNoiseSamplers(seed);
         this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
@@ -325,7 +334,65 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void applyCarvers(WorldGenRegion level, long seed, BiomeManager biomeManager, StructureFeatureManager structureFeatureManager, ChunkAccess chunk, GenerationStep.Carving step)
     {
-        // todo: all of this, figure out how to integrate aquifers from NoiseBasedChunkGenerator again
+        // Skip water carving, only do air carving, since we use aquifers
+        if (step != GenerationStep.Carving.AIR)
+        {
+            return;
+        }
+
+        final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getNoiseBiome(x, y, z, climateSampler()));
+
+        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
+        final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
+        final Random random = new Random();
+        final ChunkPos chunkPos = chunk.getPos();
+
+        final Sampler<Biome> biomeSampler = (x, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(x), QuartPos.fromBlock(z));
+        final ChunkData chunkData = chunkDataProvider.get(chunk);
+        final RockData rockData = chunkData.getRockData();
+        final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
+        final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
+
+        TFCAquifer aquifer = aquiferCache.getIfPresent(chunkPos.x, chunkPos.z);
+        if (aquifer == null)
+        {
+            aquifer = new TFCAquifer(chunkPos, settings, baseBlockSource, getSeaLevel(), noiseSampler.positionalRandomFactory, noiseSampler.barrierNoise, noiseSampler.fluidLevelFloodednessNoise, noiseSampler.fluidLevelSpreadNoise, noiseSampler.lavaNoise);
+            aquifer.setSurfaceHeights(chunkData.getAquiferSurfaceHeight());
+            aquiferCache.set(chunkPos.x, chunkPos.z, aquifer);
+        }
+
+        @SuppressWarnings("ConstantConditions")
+        final CarvingContext context = new CarvingContext(stupidMojangChunkGenerator, null, chunk.getHeightAccessorForGeneration(), null);
+        final CarvingMask carvingMask = ((ProtoChunk) chunk).getOrCreateCarvingMask(step);
+
+        for (int offsetX = -8; offsetX <= 8; ++offsetX)
+        {
+            for (int offsetZ = -8; offsetZ <= 8; ++offsetZ)
+            {
+                final ChunkPos offsetChunkPos = new ChunkPos(chunkPos.x + offsetX, chunkPos.z + offsetZ);
+                final ChunkAccess offsetChunk = level.getChunk(offsetChunkPos.x, offsetChunkPos.z);
+
+                @SuppressWarnings("deprecation")
+                final List<Supplier<ConfiguredWorldCarver<?>>> carvers = offsetChunk
+                    .carverBiome(() -> customBiomeSource.getNoiseBiome(QuartPos.fromBlock(offsetChunkPos.getMinBlockX()), 0, QuartPos.fromBlock(offsetChunkPos.getMinBlockZ()), climateSampler()))
+                    .getGenerationSettings()
+                    .getCarvers(step);
+                final ListIterator<Supplier<ConfiguredWorldCarver<?>>> iterator = carvers.listIterator();
+
+                while (iterator.hasNext())
+                {
+                    final int index = iterator.nextIndex();
+                    final ConfiguredWorldCarver<?> carver = iterator.next().get();
+                    final long chunkSeed = fork.at(offsetChunkPos.x, index, offsetChunkPos.z).nextLong();
+
+                    random.setSeed(chunkSeed);
+                    if (carver.isStartChunk(random))
+                    {
+                        carver.carve(context, chunk, customBiomeManager::getBiome, random, aquifer, offsetChunkPos, carvingMask);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -395,8 +462,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
         filler.setupAquiferSurfaceHeight(biomeSampler);
+        chunkData.setAquiferSurfaceHeight(filler.getSurfaceHeight());
         rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
+
+        aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
 
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);

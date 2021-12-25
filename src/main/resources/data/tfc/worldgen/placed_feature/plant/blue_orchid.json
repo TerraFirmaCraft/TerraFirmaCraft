@@ -9,6 +9,12 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
+        "type": "tfc:air_or_empty_fluid"
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
         "type": "would_survive",
         "state": {
           "Name": "tfc:plant/blue_orchid",

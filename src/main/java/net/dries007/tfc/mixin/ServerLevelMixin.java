@@ -41,9 +41,9 @@ public abstract class ServerLevelMixin extends Level
      * Could be replaced by https://github.com/MinecraftForge/MinecraftForge/pull/7235
      */
     @Inject(method = "tickChunk", at = @At("RETURN"))
-    private void onEnvironmentTick(LevelChunk chunkIn, int randomTickSpeed, CallbackInfo ci)
+    private void onEnvironmentTick(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci)
     {
-        EnvironmentHelpers.onEnvironmentTick((ServerLevel) (Object) this, chunkIn);
+        EnvironmentHelpers.onEnvironmentTick((ServerLevel) (Object) this, chunk);
     }
 
     /**
@@ -51,10 +51,16 @@ public abstract class ServerLevelMixin extends Level
      * The position is inferred by reverse engineering {@link ServerLevel#getBlockRandomPos(int, int, int, int)}
      */
     @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitation()Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
-    private Biome.Precipitation tickChunkRedirectGetPrecipitation(Biome biome, LevelChunk chunkIn)
+    private Biome.Precipitation tickChunkRedirectGetPrecipitation(Biome biome, LevelChunk chunk)
     {
-        final ChunkPos chunkPos = chunkIn.getPos();
+        final ChunkPos chunkPos = chunk.getPos();
         final BlockPos pos = Helpers.getPreviousRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15, randValue).below();
         return Climate.getPrecipitation(this, pos);
+    }
+
+    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;coldEnoughToSnow(Lnet/minecraft/core/BlockPos;)Z"))
+    private boolean tickChunkRedirectColdEnoughToSnow(Biome biome, BlockPos pos, LevelChunk chunk)
+    {
+        return Climate.coldEnoughToSnow(this, pos);
     }
 }

@@ -3,10 +3,6 @@
   "feature": "tfc:plant/giant_kelp_patch",
   "placement": [
     {
-      "type": "minecraft:heightmap",
-      "heightmap": "OCEAN_FLOOR_WG"
-    },
-    {
       "type": "minecraft:in_square"
     },
     {
