@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/tinted_cross",
+  "parent": "block/tinted_cross",
   "textures": {
     "cross": "tfc:block/plant/ryegrass/ryegrass_short_0b"
   }

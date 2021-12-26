@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/desert_flame_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 0,
+      "max_temperature": 20,
+      "min_rainfall": 40,
+      "max_rainfall": 170,
+      "min_forest": "none",
+      "max_forest": "sparse"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

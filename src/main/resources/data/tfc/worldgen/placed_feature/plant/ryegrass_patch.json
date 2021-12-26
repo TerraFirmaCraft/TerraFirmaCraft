@@ -3,16 +3,12 @@
   "feature": "tfc:plant/ryegrass_patch",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": 2
-    },
-    {
       "type": "minecraft:in_square"
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -10,
-      "max_temperature": 35,
+      "min_temperature": -24,
+      "max_temperature": 40,
       "min_rainfall": 150,
       "max_rainfall": 320
     },

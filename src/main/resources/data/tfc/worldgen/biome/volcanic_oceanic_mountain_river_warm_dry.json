@@ -93,12 +93,12 @@
       "tfc:underground_guano"
     ],
     [
-      "tfc:plant/badderlocks_patch",
-      "tfc:plant/gutweed_patch",
-      "tfc:plant/laminaria_patch",
       "tfc:plant/manatee_grass_patch",
-      "tfc:plant/sargassum_patch",
       "tfc:plant/star_grass_patch",
+      "tfc:plant/badderlocks_patch",
+      "tfc:plant/laminaria_patch",
+      "tfc:plant/gutweed_patch",
+      "tfc:plant/sargassum_patch",
       "tfc:plant/turtle_grass_patch",
       "tfc:plant/giant_kelp_patch",
       "tfc:plant/winged_kelp",
