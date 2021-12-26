@@ -23,6 +23,9 @@
     {
       "type": "tfc:near_water",
       "radius": 6
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }
