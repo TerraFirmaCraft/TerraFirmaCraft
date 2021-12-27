@@ -77,8 +77,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'cyanide.client_self_test', 'net.dries007.tfc.client.ClientEventHandler#selfTest'
-            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {
@@ -94,7 +92,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {

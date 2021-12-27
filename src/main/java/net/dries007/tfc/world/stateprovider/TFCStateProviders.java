@@ -6,12 +6,8 @@
 
 package net.dries007.tfc.world.stateprovider;
 
-import java.util.function.Supplier;
-
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
