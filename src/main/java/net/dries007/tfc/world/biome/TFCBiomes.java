@@ -51,21 +51,21 @@ public final class TFCBiomes
     public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 
     // Low biomes
-    public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
-    public static final BiomeVariants HILLS = register("hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 16)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
-    public static final BiomeVariants LOWLANDS = register("lowlands", builder().heightmap(BiomeNoise::lowlands).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
-    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
+    public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
+    public static final BiomeVariants HILLS = register("hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 16)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.HILLS)); // Small hills, slightly above sea level.
+    public static final BiomeVariants LOWLANDS = register("lowlands", builder().heightmap(BiomeNoise::lowlands).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().types(BiomeDictionary.Type.SWAMP)); // Flat, swamp-like, lots of shallow pools below sea level.
+    public static final BiomeVariants LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.SWAMP)); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder::new).types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
-    public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
-    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
+    public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder::new).spawnable().types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
+    public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).spawnable().types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
 
     // High biomes
-    public static final BiomeVariants MOUNTAINS = register("mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).surface(MountainSurfaceBuilder.INSTANCE).types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
-    public static final BiomeVariants OCEANIC_MOUNTAINS = register("oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).aquiferHeightOffset(-8).salty().types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants MOUNTAINS = register("mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 70)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.MOUNTAIN)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 16, 40)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN)); // Rounded top mountains, very large hills.
+    public static final BiomeVariants OCEANIC_MOUNTAINS = register("oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -16, 60)).surface(MountainSurfaceBuilder.INSTANCE).aquiferHeightOffset(-8).salty().spawnable().types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
     public static final BiomeVariants VOLCANIC_MOUNTAINS = register("volcanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).surface(MountainSurfaceBuilder.INSTANCE).volcanoes(5, 25, 50, 40).types(BiomeDictionary.Type.MOUNTAIN)); // Volcanic mountains - slightly smaller, but with plentiful tall volcanoes
     public static final BiomeVariants VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(MountainSurfaceBuilder.INSTANCE).aquiferHeightOffset(-8).salty().volcanoes(1, -12, 50, 20).types(BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
 
@@ -102,12 +102,6 @@ public final class TFCBiomes
             throw new IllegalStateException("No extension found for biome: " + biome + " (" + biome.getRegistryName() + ")");
         }
         return extension;
-    }
-
-    @Nullable
-    public static BiomeExtension getExtension(Biome biome)
-    {
-        return getExtension(ServerLifecycleHooks.getCurrentServer().registryAccess(), biome);
     }
 
     @Nullable

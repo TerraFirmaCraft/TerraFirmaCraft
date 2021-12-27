@@ -6,9 +6,13 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
@@ -169,6 +173,51 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     protected Codec<TFCBiomeSource> codec()
     {
         return CODEC;
+    }
+
+    @Override
+    @Nullable
+    public BlockPos findBiomeHorizontal(int blockX, int blockY, int blockZ, int maxRadius, int step, Predicate<Biome> biome, Random random, boolean findClosest, @Nullable Climate.Sampler sampler)
+    {
+        final int minQuartX = QuartPos.fromBlock(blockX);
+        final int minQuartZ = QuartPos.fromBlock(blockZ);
+        final int maxQuartRadius = QuartPos.fromBlock(maxRadius);
+
+        BlockPos pos = null;
+        int count = 0;
+        for (int radius = findClosest ? 0 : maxQuartRadius; radius <= maxQuartRadius; radius += step)
+        {
+            for (int dz = -radius; dz <= radius; dz += step)
+            {
+                final boolean atZEdge = Math.abs(dz) == radius;
+                for (int dx = -radius; dx <= radius; dx += step)
+                {
+                    if (findClosest)
+                    {
+                        boolean atXEdge = Math.abs(dx) == radius;
+                        if (!atXEdge && !atZEdge)
+                        {
+                            continue;
+                        }
+                    }
+
+                    final int x = minQuartX + dx, z = minQuartZ + dz;
+                    if (biome.test(getNoiseBiome(x, z)))
+                    {
+                        if (pos == null || random.nextInt(count + 1) == 0)
+                        {
+                            pos = new BlockPos(QuartPos.toBlock(x), blockY, QuartPos.toBlock(z));
+                            if (findClosest)
+                            {
+                                return pos;
+                            }
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+        return pos;
     }
 
     private BiomeRainfall calculateRainfall(float rainfall)

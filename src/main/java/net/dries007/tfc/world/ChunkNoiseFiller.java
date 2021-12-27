@@ -201,11 +201,8 @@ public class ChunkNoiseFiller
                         final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
                         sampler.setColumn(actualX, actualZ);
-                        double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
-                        // todo: debug, remove
-                        if (biome.getAquiferSurfaceHeight(0) == 8) {
-                            aquiferSurfaceHeight -= 8;
-                        }
+
+                        final double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
 
                         minAquiferSurfaceHeight = Math.min(minAquiferSurfaceHeight, aquiferSurfaceHeight);
                     }
