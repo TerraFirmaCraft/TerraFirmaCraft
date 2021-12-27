@@ -8,16 +8,19 @@
         "max_rain": 210,
         "min_temp": 17,
         "max_temp": 40,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/acacia",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/acacia",
-        "twig": "tfc:wood/twig/acacia",
-        "fallen_leaves": "tfc:wood/fallen_leaves/acacia",
+        "bush_leaves": "tfc:wood/leaves/acacia",
+        "fallen_log": "tfc:wood/log/acacia",
+        "groundcover": [
+          "tfc:wood/twig/acacia",
+          "tfc:wood/fallen_leaves/acacia"
+        ],
         "normal_tree": "tfc:tree/acacia",
         "old_growth_tree": "tfc:tree/acacia_large"
       },
@@ -26,16 +29,19 @@
         "max_rain": 240,
         "min_temp": 1,
         "max_temp": 15,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/ash",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/ash",
-        "twig": "tfc:wood/twig/ash",
-        "fallen_leaves": "tfc:wood/fallen_leaves/ash",
+        "bush_leaves": "tfc:wood/leaves/ash",
+        "fallen_log": "tfc:wood/log/ash",
+        "groundcover": [
+          "tfc:wood/twig/ash",
+          "tfc:wood/fallen_leaves/ash"
+        ],
         "normal_tree": "tfc:tree/ash",
         "old_growth_tree": "tfc:tree/ash_large"
       },
@@ -44,16 +50,19 @@
         "max_rain": 500,
         "min_temp": -18,
         "max_temp": 5,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/aspen",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/aspen",
-        "twig": "tfc:wood/twig/aspen",
-        "fallen_leaves": "tfc:wood/fallen_leaves/aspen",
+        "bush_leaves": "tfc:wood/leaves/aspen",
+        "fallen_log": "tfc:wood/log/aspen",
+        "groundcover": [
+          "tfc:wood/twig/aspen",
+          "tfc:wood/fallen_leaves/aspen"
+        ],
         "normal_tree": "tfc:tree/aspen"
       },
       {
@@ -61,16 +70,19 @@
         "max_rain": 310,
         "min_temp": -11,
         "max_temp": 7,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/birch",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/birch",
-        "twig": "tfc:wood/twig/birch",
-        "fallen_leaves": "tfc:wood/fallen_leaves/birch",
+        "bush_leaves": "tfc:wood/leaves/birch",
+        "fallen_log": "tfc:wood/log/birch",
+        "groundcover": [
+          "tfc:wood/twig/birch",
+          "tfc:wood/fallen_leaves/birch"
+        ],
         "normal_tree": "tfc:tree/birch"
       },
       {
@@ -78,16 +90,19 @@
         "max_rain": 180,
         "min_temp": 12,
         "max_temp": 35,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/blackwood",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/blackwood",
-        "twig": "tfc:wood/twig/blackwood",
-        "fallen_leaves": "tfc:wood/fallen_leaves/blackwood",
+        "bush_leaves": "tfc:wood/leaves/blackwood",
+        "fallen_log": "tfc:wood/log/blackwood",
+        "groundcover": [
+          "tfc:wood/twig/blackwood",
+          "tfc:wood/fallen_leaves/blackwood"
+        ],
         "normal_tree": "tfc:tree/blackwood",
         "old_growth_tree": "tfc:tree/blackwood_large"
       },
@@ -96,16 +111,19 @@
         "max_rain": 370,
         "min_temp": -4,
         "max_temp": 17,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/chestnut",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/chestnut",
-        "twig": "tfc:wood/twig/chestnut",
-        "fallen_leaves": "tfc:wood/fallen_leaves/chestnut",
+        "bush_leaves": "tfc:wood/leaves/chestnut",
+        "fallen_log": "tfc:wood/log/chestnut",
+        "groundcover": [
+          "tfc:wood/twig/chestnut",
+          "tfc:wood/fallen_leaves/chestnut"
+        ],
         "normal_tree": "tfc:tree/chestnut"
       },
       {
@@ -113,16 +131,19 @@
         "max_rain": 500,
         "min_temp": -16,
         "max_temp": -1,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/douglas_fir",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/douglas_fir",
-        "twig": "tfc:wood/twig/douglas_fir",
-        "fallen_leaves": "tfc:wood/fallen_leaves/douglas_fir",
+        "bush_leaves": "tfc:wood/leaves/douglas_fir",
+        "fallen_log": "tfc:wood/log/douglas_fir",
+        "groundcover": [
+          "tfc:wood/twig/douglas_fir",
+          "tfc:wood/fallen_leaves/douglas_fir"
+        ],
         "normal_tree": "tfc:tree/douglas_fir",
         "old_growth_tree": "tfc:tree/douglas_fir_large"
       },
@@ -131,16 +152,19 @@
         "max_rain": 400,
         "min_temp": 7,
         "max_temp": 15,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/hickory",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/hickory",
-        "twig": "tfc:wood/twig/hickory",
-        "fallen_leaves": "tfc:wood/fallen_leaves/hickory",
+        "bush_leaves": "tfc:wood/leaves/hickory",
+        "fallen_log": "tfc:wood/log/hickory",
+        "groundcover": [
+          "tfc:wood/twig/hickory",
+          "tfc:wood/fallen_leaves/hickory"
+        ],
         "normal_tree": "tfc:tree/hickory",
         "old_growth_tree": "tfc:tree/hickory_large"
       },
@@ -149,16 +173,19 @@
         "max_rain": 500,
         "min_temp": 17,
         "max_temp": 40,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/kapok",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/kapok",
-        "twig": "tfc:wood/twig/kapok",
-        "fallen_leaves": "tfc:wood/fallen_leaves/kapok",
+        "bush_leaves": "tfc:wood/leaves/kapok",
+        "fallen_log": "tfc:wood/log/kapok",
+        "groundcover": [
+          "tfc:wood/twig/kapok",
+          "tfc:wood/fallen_leaves/kapok"
+        ],
         "normal_tree": "tfc:tree/kapok"
       },
       {
@@ -166,16 +193,19 @@
         "max_rain": 500,
         "min_temp": -1,
         "max_temp": 15,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/maple",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/maple",
-        "twig": "tfc:wood/twig/maple",
-        "fallen_leaves": "tfc:wood/fallen_leaves/maple",
+        "bush_leaves": "tfc:wood/leaves/maple",
+        "fallen_log": "tfc:wood/log/maple",
+        "groundcover": [
+          "tfc:wood/twig/maple",
+          "tfc:wood/fallen_leaves/maple"
+        ],
         "normal_tree": "tfc:tree/maple",
         "old_growth_tree": "tfc:tree/maple_large"
       },
@@ -184,16 +214,19 @@
         "max_rain": 450,
         "min_temp": -9,
         "max_temp": 11,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/oak",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/oak",
-        "twig": "tfc:wood/twig/oak",
-        "fallen_leaves": "tfc:wood/fallen_leaves/oak",
+        "bush_leaves": "tfc:wood/leaves/oak",
+        "fallen_log": "tfc:wood/log/oak",
+        "groundcover": [
+          "tfc:wood/twig/oak",
+          "tfc:wood/fallen_leaves/oak"
+        ],
         "normal_tree": "tfc:tree/oak"
       },
       {
@@ -201,16 +234,19 @@
         "max_rain": 470,
         "min_temp": 20,
         "max_temp": 35,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/palm",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/palm",
-        "twig": "tfc:wood/twig/palm",
-        "fallen_leaves": "tfc:wood/fallen_leaves/palm",
+        "bush_leaves": "tfc:wood/leaves/palm",
+        "fallen_log": "tfc:wood/log/palm",
+        "groundcover": [
+          "tfc:wood/twig/palm",
+          "tfc:wood/fallen_leaves/palm"
+        ],
         "normal_tree": "tfc:tree/palm"
       },
       {
@@ -218,16 +254,19 @@
         "max_rain": 270,
         "min_temp": -18,
         "max_temp": -4,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/pine",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/pine",
-        "twig": "tfc:wood/twig/pine",
-        "fallen_leaves": "tfc:wood/fallen_leaves/pine",
+        "bush_leaves": "tfc:wood/leaves/pine",
+        "fallen_log": "tfc:wood/log/pine",
+        "groundcover": [
+          "tfc:wood/twig/pine",
+          "tfc:wood/fallen_leaves/pine"
+        ],
         "normal_tree": "tfc:tree/pine",
         "old_growth_tree": "tfc:tree/pine_large"
       },
@@ -236,16 +275,19 @@
         "max_rain": 310,
         "min_temp": 8,
         "max_temp": 31,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/rosewood",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/rosewood",
-        "twig": "tfc:wood/twig/rosewood",
-        "fallen_leaves": "tfc:wood/fallen_leaves/rosewood",
+        "bush_leaves": "tfc:wood/leaves/rosewood",
+        "fallen_log": "tfc:wood/log/rosewood",
+        "groundcover": [
+          "tfc:wood/twig/rosewood",
+          "tfc:wood/fallen_leaves/rosewood"
+        ],
         "normal_tree": "tfc:tree/rosewood"
       },
       {
@@ -253,16 +295,19 @@
         "max_rain": 420,
         "min_temp": -14,
         "max_temp": 2,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/sequoia",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/sequoia",
-        "twig": "tfc:wood/twig/sequoia",
-        "fallen_leaves": "tfc:wood/fallen_leaves/sequoia",
+        "bush_leaves": "tfc:wood/leaves/sequoia",
+        "fallen_log": "tfc:wood/log/sequoia",
+        "groundcover": [
+          "tfc:wood/twig/sequoia",
+          "tfc:wood/fallen_leaves/sequoia"
+        ],
         "normal_tree": "tfc:tree/sequoia",
         "old_growth_tree": "tfc:tree/sequoia_large"
       },
@@ -271,16 +316,19 @@
         "max_rain": 320,
         "min_temp": -17,
         "max_temp": 1,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/spruce",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/spruce",
-        "twig": "tfc:wood/twig/spruce",
-        "fallen_leaves": "tfc:wood/fallen_leaves/spruce",
+        "bush_leaves": "tfc:wood/leaves/spruce",
+        "fallen_log": "tfc:wood/log/spruce",
+        "groundcover": [
+          "tfc:wood/twig/spruce",
+          "tfc:wood/fallen_leaves/spruce"
+        ],
         "normal_tree": "tfc:tree/spruce",
         "old_growth_tree": "tfc:tree/spruce_large"
       },
@@ -289,16 +337,19 @@
         "max_rain": 480,
         "min_temp": 15,
         "max_temp": 29,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/sycamore",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/sycamore",
-        "twig": "tfc:wood/twig/sycamore",
-        "fallen_leaves": "tfc:wood/fallen_leaves/sycamore",
+        "bush_leaves": "tfc:wood/leaves/sycamore",
+        "fallen_log": "tfc:wood/log/sycamore",
+        "groundcover": [
+          "tfc:wood/twig/sycamore",
+          "tfc:wood/fallen_leaves/sycamore"
+        ],
         "normal_tree": "tfc:tree/sycamore",
         "old_growth_tree": "tfc:tree/sycamore_large"
       },
@@ -307,16 +358,19 @@
         "max_rain": 220,
         "min_temp": -13,
         "max_temp": 9,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/white_cedar",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/white_cedar",
-        "twig": "tfc:wood/twig/white_cedar",
-        "fallen_leaves": "tfc:wood/fallen_leaves/white_cedar",
+        "bush_leaves": "tfc:wood/leaves/white_cedar",
+        "fallen_log": "tfc:wood/log/white_cedar",
+        "groundcover": [
+          "tfc:wood/twig/white_cedar",
+          "tfc:wood/fallen_leaves/white_cedar"
+        ],
         "normal_tree": "tfc:tree/white_cedar",
         "old_growth_tree": "tfc:tree/white_cedar_large"
       },
@@ -325,16 +379,19 @@
         "max_rain": 500,
         "min_temp": 11,
         "max_temp": 35,
-        "log": {
+        "bush_log": {
           "Name": "tfc:wood/wood/willow",
           "Properties": {
             "natural": "true",
             "axis": "y"
           }
         },
-        "leaves": "tfc:wood/leaves/willow",
-        "twig": "tfc:wood/twig/willow",
-        "fallen_leaves": "tfc:wood/fallen_leaves/willow",
+        "bush_leaves": "tfc:wood/leaves/willow",
+        "fallen_log": "tfc:wood/log/willow",
+        "groundcover": [
+          "tfc:wood/twig/willow",
+          "tfc:wood/fallen_leaves/willow"
+        ],
         "normal_tree": "tfc:tree/willow",
         "old_growth_tree": "tfc:tree/willow_large"
       }

@@ -839,10 +839,13 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'log': utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree),
-        'leaves': 'tfc:wood/leaves/%s' % tree,
-        'twig': 'tfc:wood/twig/%s' % tree,
-        'fallen_leaves': 'tfc:wood/fallen_leaves/%s' % tree,
+        'bush_log': utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree),
+        'bush_leaves': 'tfc:wood/leaves/%s' % tree,
+        'fallen_log': 'tfc:wood/log/%s' % tree,
+        'groundcover': [
+            'tfc:wood/twig/%s' % tree,
+            'tfc:wood/fallen_leaves/%s' % tree
+        ],
         'normal_tree': 'tfc:tree/%s' % tree
     }
     if old_growth:
