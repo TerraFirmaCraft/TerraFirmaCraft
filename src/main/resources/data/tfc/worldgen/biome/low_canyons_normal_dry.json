@@ -30,13 +30,6 @@
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc"
     ],
-    [],
-    [
-      "tfc:raw_boulder",
-      "tfc:cobble_boulder",
-      "tfc:random_empty_hot_spring"
-    ],
-    [],
     [
       "tfc:vein/gravel",
       "tfc:vein/diorite_dike",
@@ -97,14 +90,25 @@
       "tfc:underground_guano"
     ],
     [
+      "tfc:raw_boulder",
+      "tfc:cobble_boulder",
       "tfc:forest",
       "tfc:bamboo",
       "tfc:cave_vegetation",
+      "tfc:random_empty_hot_spring"
+    ],
+    [
+      "tfc:surface_loose_rocks",
       "tfc:plant/hanging_vines",
       "tfc:plant/hanging_vines_cave",
       "tfc:plant/ivy",
       "tfc:plant/jungle_vines",
       "tfc:plant/liana",
+      "tfc:sticks_forest_patch",
+      "tfc:pinecone_patch",
+      "tfc:salt_lick_patch",
+      "tfc:dead_grass_patch",
+      "tfc:podzol_patch",
       "tfc:plant/bluegrass_patch",
       "tfc:plant/bromegrass_patch",
       "tfc:plant/fountain_grass_patch",
@@ -190,17 +194,6 @@
       "tfc:plant/morning_glory_cover",
       "tfc:plant/tree_fern",
       "tfc:plant/arundo",
-      "tfc:plant/blackberry_bush",
-      "tfc:plant/raspberry_bush",
-      "tfc:plant/blueberry_bush",
-      "tfc:plant/elderberry_bush",
-      "tfc:plant/bunchberry_bush",
-      "tfc:plant/gooseberry_bush",
-      "tfc:plant/snowberry_bush",
-      "tfc:plant/cloudberry_bush",
-      "tfc:plant/strawberry_bush",
-      "tfc:plant/wintergreen_berry_bush",
-      "tfc:plant/cranberry_bush",
       "tfc:plant/banana",
       "tfc:plant/cherry",
       "tfc:plant/green_apple",
@@ -212,14 +205,9 @@
       "tfc:plant/red_apple"
     ],
     [
-      "tfc:surface_loose_rocks",
-      "tfc:sticks_forest_patch",
-      "tfc:pinecone_patch",
-      "tfc:salt_lick_patch",
-      "tfc:dead_grass_patch",
-      "tfc:podzol_patch",
       "tfc:ice_and_snow"
-    ]
+    ],
+    []
   ],
   "starts": [],
   "spawners": {},
