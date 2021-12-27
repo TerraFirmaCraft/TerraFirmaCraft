@@ -642,7 +642,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True))
 
     # Loose Rocks - Both Surface + Underground
-    configured_placed_feature(rm, 'surface_loose_rocks', 'tfc:loose_rock', decorate_count(6), decorate_square(), decorate_heightmap('ocean_floor_wg'))
+    configured_placed_feature(rm, 'surface_loose_rocks', 'tfc:loose_rock', decorate_count(8), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
     # Underground decoration
     # todo: underground only filter decorator?
@@ -838,15 +838,16 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'bush_log': utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree),
-        'bush_leaves': 'tfc:wood/leaves/%s' % tree,
-        'fallen_log': 'tfc:wood/log/%s' % tree,
-        'groundcover': [
-            'tfc:wood/twig/%s' % tree,
-            'tfc:wood/fallen_leaves/%s' % tree
-        ],
+        'groundcover': ['tfc:wood/twig/%s' % tree],
         'normal_tree': 'tfc:tree/%s' % tree
     }
+    if tree != 'palm':
+        cfg['groundcover'].append('tfc:wood/fallen_leaves/%s' % tree)
+    if tree not in ('acacia', 'willow'):
+        cfg.update({'fallen_log': 'tfc:wood/log/%s' % tree})
+    if tree not in ('palm', 'rosewood', 'sycamore'):
+        cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree)
+        cfg.update({'bush_leaves': 'tfc:wood/leaves/%s' % tree})
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     return cfg

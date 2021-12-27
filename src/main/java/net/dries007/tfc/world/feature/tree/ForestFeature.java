@@ -234,48 +234,48 @@ public class ForestFeature extends Feature<ForestConfig>
             final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
             if (entry != null)
             {
-                BlockState log = entry.fallenLog();
-                if (log.hasProperty(TFCBlockStateProperties.NATURAL) && log.hasProperty(BlockStateProperties.AXIS))
-                {
-                    final Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                    final Direction dirOpposite = dir.getOpposite();
-                    log = log.setValue(TFCBlockStateProperties.NATURAL, true).setValue(BlockStateProperties.AXIS, dir.getAxis());
-
-                    final int halfLength = Mth.nextInt(random, 2, 5);
-                    for (int i = 0; i < halfLength; i++)
+                entry.fallenLog().ifPresent(log -> {
+                    if (log.hasProperty(TFCBlockStateProperties.NATURAL) && log.hasProperty(BlockStateProperties.AXIS))
                     {
-                        mutablePos.move(dir);
-                        BlockState foundState = level.getBlockState(mutablePos);
-                        if (!(foundState.isAir() || foundState.is(TFCTags.Blocks.PLANT)))
-                        {
-                            mutablePos.move(dirOpposite);
-                            break;
-                        }
-                    }
+                        final Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                        final Direction dirOpposite = dir.getOpposite();
+                        log = log.setValue(TFCBlockStateProperties.NATURAL, true).setValue(BlockStateProperties.AXIS, dir.getAxis());
 
-                    for (int i = 0; i < halfLength * 2; i++)
-                    {
-                        BlockState stateAt = level.getBlockState(mutablePos);
-                        if (stateAt.isAir() || stateAt.is(TFCTags.Blocks.PLANT))
+                        final int halfLength = Mth.nextInt(random, 2, 5);
+                        for (int i = 0; i < halfLength; i++)
                         {
-                            setBlock(level, mutablePos, log);
-                            if (random.nextInt(7) == 0)
+                            mutablePos.move(dir);
+                            BlockState foundState = level.getBlockState(mutablePos);
+                            if (!(foundState.isAir() || foundState.is(TFCTags.Blocks.PLANT)))
                             {
-                                final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                                BlockState offsetLog = log.setValue(BlockStateProperties.AXIS, offset.getAxis());
-                                mutablePos.move(offset);
-                                setBlock(level, mutablePos, offsetLog);
-                                mutablePos.move(offset.getOpposite());
+                                mutablePos.move(dirOpposite);
+                                break;
                             }
-                            mutablePos.move(dirOpposite);
                         }
-                        else
+
+                        for (int i = 0; i < halfLength * 2; i++)
                         {
-                            return;
+                            BlockState stateAt = level.getBlockState(mutablePos);
+                            if (stateAt.isAir() || stateAt.is(TFCTags.Blocks.PLANT))
+                            {
+                                setBlock(level, mutablePos, log);
+                                if (random.nextInt(7) == 0)
+                                {
+                                    final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                                    BlockState offsetLog = log.setValue(BlockStateProperties.AXIS, offset.getAxis());
+                                    mutablePos.move(offset);
+                                    setBlock(level, mutablePos, offsetLog);
+                                    mutablePos.move(offset.getOpposite());
+                                }
+                                mutablePos.move(dirOpposite);
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
                     }
-                }
-
+                });
             }
         }
     }
