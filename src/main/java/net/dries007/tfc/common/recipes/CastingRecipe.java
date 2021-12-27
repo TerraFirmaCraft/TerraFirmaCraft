@@ -89,7 +89,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.CASTING;
+        return TFCRecipeTypes.CASTING.get();
     }
 
     public static class Serializer extends RecipeSerializerImpl<CastingRecipe>

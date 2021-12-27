@@ -50,6 +50,6 @@ public class QuernRecipe extends SimpleItemRecipe
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.QUERN;
+        return TFCRecipeTypes.QUERN.get();
     }
 }

@@ -22,7 +22,6 @@
     "accessor.GameRulesTypeAccessor",
     "accessor.ItemAccessor",
     "accessor.PlayerAccessor",
-    "accessor.RecipeManagerAccessor",
     "accessor.SimpleReloadableResourceManagerAccessor",
     "accessor.StructureTemplateAccessor"
   ],

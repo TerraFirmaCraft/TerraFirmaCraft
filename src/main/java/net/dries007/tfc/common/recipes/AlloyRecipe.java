@@ -78,7 +78,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.ALLOY;
+        return TFCRecipeTypes.ALLOY.get();
     }
 
     public record Range(double min, double max)

@@ -133,7 +133,7 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
                 final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server != null)
                 {
-                    cachedResult = server.getRecipeManager().getRecipeFor(TFCRecipeTypes.ALLOY, getWrapper(), server.overworld())
+                    cachedResult = server.getRecipeManager().getRecipeFor(TFCRecipeTypes.ALLOY.get(), getWrapper(), server.overworld())
                         .map(AlloyRecipe::getResult)
                         .orElseGet(Metal::unknown);
                 }

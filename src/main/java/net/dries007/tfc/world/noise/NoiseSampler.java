@@ -41,9 +41,6 @@ public class NoiseSampler
 
     // Aquifers
     public final NormalNoise barrierNoise;
-    public final NormalNoise fluidLevelFloodednessNoise;
-    public final NormalNoise fluidLevelSpreadNoise;
-    public final NormalNoise lavaNoise;
 
     public final PositionalRandomFactory positionalRandomFactory;
 
@@ -102,9 +99,6 @@ public class NoiseSampler
 
         // Aquifer
         this.barrierNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_BARRIER);
-        this.fluidLevelFloodednessNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS);
-        this.lavaNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_LAVA);
-        this.fluidLevelSpreadNoise = Noises.instantiate(parameters, positionalRandomFactory, Noises.AQUIFER_FLUID_LEVEL_SPREAD);
     }
 
     /**

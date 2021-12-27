@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.world.noise;
 
-public class Cellular2D implements Noise2D
+public class Cellular3D implements Noise3D
 {
     private final FastNoiseLite fnl;
     private float frequency;
 
-    public Cellular2D(long seed)
+    public Cellular3D(long seed)
     {
         this((int) (seed ^ (seed >> 32)));
     }
 
-    public Cellular2D(int seed)
+    public Cellular3D(int seed)
     {
         fnl = new FastNoiseLite(seed);
         fnl.SetFrequency(1);
@@ -27,20 +27,20 @@ public class Cellular2D implements Noise2D
         frequency = 1;
     }
 
-    public Cellular2D type(FastNoiseLite.CellularReturnType type)
+    public Cellular3D type(FastNoiseLite.CellularReturnType type)
     {
         fnl.SetCellularReturnType(type);
         return this;
     }
 
     @Override
-    public float noise(float x, float y)
+    public float noise(float x, float y, float z)
     {
-        return fnl.GetNoise(x, y);
+        return fnl.GetNoise(x, y, z);
     }
 
     @Override
-    public Cellular2D spread(float scaleFactor)
+    public Cellular3D spread(float scaleFactor)
     {
         frequency *= scaleFactor;
         fnl.SetFrequency(frequency);
@@ -55,6 +55,11 @@ public class Cellular2D implements Noise2D
     public float centerY()
     {
         return fnl.lastCenterY;
+    }
+
+    public float centerZ()
+    {
+        return fnl.lastCenterZ;
     }
 
     public float f1()

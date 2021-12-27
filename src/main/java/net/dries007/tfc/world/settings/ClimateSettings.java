@@ -34,7 +34,7 @@ public record ClimateSettings(float lowThreshold, float highThreshold, int scale
         DIRECT_CODEC
     ).comapFlatMap(
         e -> e.map(
-            id -> Codecs.resultFromNullable(PRESETS.get(id), "No climate settings preset for id: " + id),
+            id -> Codecs.requireNonNull(PRESETS.get(id), "No climate settings preset for id: " + id),
             DataResult::success
         ),
         Either::right
