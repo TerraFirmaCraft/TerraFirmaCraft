@@ -34,8 +34,9 @@ public class BiomeVariants
     private final boolean volcanic;
     private final int volcanoFrequency;
     private final int volcanoBasaltHeight;
+    private final boolean spawnable;
 
-    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight, boolean spawnable)
     {
         this.noiseFactory = noiseFactory;
         this.surfaceBuilderFactory = surfaceBuilderFactory;
@@ -45,6 +46,7 @@ public class BiomeVariants
         this.volcanic = volcanic;
         this.volcanoFrequency = volcanoFrequency;
         this.volcanoBasaltHeight = volcanoBasaltHeight;
+        this.spawnable = spawnable;
 
         extensions = new EnumMap<>(BiomeTemperature.class);
         for (BiomeTemperature temperature : BiomeTemperature.values())
@@ -76,6 +78,11 @@ public class BiomeVariants
     public boolean isVolcanic()
     {
         return volcanic;
+    }
+
+    public boolean isSpawnable()
+    {
+        return spawnable;
     }
 
     public float getVolcanoChance()

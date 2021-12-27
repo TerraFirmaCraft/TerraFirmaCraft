@@ -278,46 +278,6 @@ public final class Helpers
         return Optional.empty();
     }
 
-    /**
-     * Copy pasta from {@link net.minecraft.server.level.PlayerRespawnLogic} except one that doesn't require the spawn block be equal to the surface builder config top block
-     */
-    @Nullable
-    public static BlockPos findValidSpawnLocation(ServerLevel world, ChunkPos chunkPos)
-    {
-        final LevelChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); ++x)
-        {
-            for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); ++z)
-            {
-                mutablePos.set(x, 0, z);
-
-                final int motionBlockingHeight = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, x & 15, z & 15);
-                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
-                final int oceanFloorHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR, x & 15, z & 15);
-                if (worldSurfaceHeight >= oceanFloorHeight)
-                {
-                    for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
-                    {
-                        mutablePos.set(x, y, z);
-
-                        final BlockState state = world.getBlockState(mutablePos);
-                        if (!state.getFluidState().isEmpty())
-                        {
-                            break;
-                        }
-
-                        if (BlockTags.VALID_SPAWN.contains(state.getBlock()))
-                        {
-                            return mutablePos.above().immutable();
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
     {
         for (Property<?> property : copyFrom.getProperties())

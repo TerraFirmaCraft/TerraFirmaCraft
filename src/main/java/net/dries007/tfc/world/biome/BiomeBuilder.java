@@ -43,6 +43,7 @@ public class BiomeBuilder
     private boolean volcanic;
     private int volcanoFrequency;
     private int volcanoBasaltHeight;
+    private boolean spawnable;
 
     private BiomeBuilder()
     {
@@ -53,6 +54,7 @@ public class BiomeBuilder
         volcanic = false;
         volcanoFrequency = 0;
         volcanoBasaltHeight = 0;
+        spawnable = false;
     }
 
     public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
@@ -112,6 +114,12 @@ public class BiomeBuilder
         return this;
     }
 
+    public BiomeBuilder spawnable()
+    {
+        this.spawnable = true;
+        return this;
+    }
+
     public BiomeBuilder volcanoes(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight)
     {
         this.volcanic = true;
@@ -140,6 +148,6 @@ public class BiomeBuilder
         assert noiseFactory != null : "missing noise / heightmap";
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight);
+        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable);
     }
 }
