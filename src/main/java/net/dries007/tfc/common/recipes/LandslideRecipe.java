@@ -155,6 +155,6 @@ public class LandslideRecipe extends SimpleBlockRecipe
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.LANDSLIDE;
+        return TFCRecipeTypes.LANDSLIDE.get();
     }
 }

@@ -89,8 +89,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         this.pos = pos;
         this.rockLayerSettings = rockLayerSettings;
         this.capability = LazyOptional.of(() -> this);
-
-        reset();
+        this.status = Status.EMPTY;
+        this.forestType = ForestType.NONE;
+        this.plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
     }
 
     public ChunkPos getPos()
@@ -275,7 +276,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     @Override
     public void deserializeNBT(CompoundTag nbt)
     {
-        reset();
         status = Status.valueOf(nbt.getByte("status"));
         if (status == Status.FULL)
         {
@@ -288,25 +288,23 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
             forestWeirdness = nbt.getFloat("forestWeirdness");
             forestDensity = nbt.getFloat("forestDensity");
         }
+        else
+        {
+            plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
+            rainfallLayer = null;
+            temperatureLayer = null;
+            rockData = null;
+            aquiferSurfaceHeight = null;
+            forestType = ForestType.NONE;
+            forestWeirdness = 0.5f;
+            forestDensity = 0.5f;
+        }
     }
 
     @Override
     public String toString()
     {
         return "ChunkData{pos=" + pos + ", status=" + status + ", hashCode=" + Integer.toHexString(hashCode()) + '}';
-    }
-
-    private void reset()
-    {
-        rockData = null;
-        aquiferSurfaceHeight = null;
-        rainfallLayer = null;
-        temperatureLayer = null;
-        forestWeirdness = 0.5f;
-        forestDensity = 0.5f;
-        forestType = ForestType.NONE;
-        status = Status.EMPTY;
-        plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
     }
 
     public enum Status

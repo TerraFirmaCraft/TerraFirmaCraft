@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world;
 
+import java.awt.*;
 import java.util.Arrays;
 import javax.annotation.Nullable;
 
@@ -23,6 +24,7 @@ import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
+import net.dries007.tfc.world.noise.Cellular3D;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 
 public class TFCAquifer implements Aquifer
@@ -63,9 +65,8 @@ public class TFCAquifer implements Aquifer
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final NormalNoise barrierNoise;
-    private final NormalNoise fluidLevelFloodednessNoise;
-    private final NormalNoise fluidLevelSpreadNoise;
-    private final NormalNoise lavaNoise;
+    private final long fluidCellSeed;
+    private final Cellular3D fluidCellNoise;
 
     private final AquiferEntry lavaLevelAquifer;
     private final AquiferEntry seaLevelAquifer;
@@ -76,7 +77,7 @@ public class TFCAquifer implements Aquifer
     private int[] surfaceHeights;
     private boolean shouldScheduleFluidUpdate;
 
-    public TFCAquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, ChunkBaseBlockSource baseBlockSource, int seaLevel, PositionalRandomFactory fork, NormalNoise barrierNoise, NormalNoise fluidLevelFloodednessNoise, NormalNoise fluidLevelSpreadNoise, NormalNoise lavaNoise)
+    public TFCAquifer(ChunkPos chunkPos, ChunkNoiseSamplingSettings settings, ChunkBaseBlockSource baseBlockSource, int seaLevel, PositionalRandomFactory fork, NormalNoise barrierNoise)
     {
         final int maxGridX = gridXZ(chunkPos.getMaxBlockX()) + 1;
         final int maxGridY = gridY((settings.firstCellY() + settings.cellCountY()) * settings.cellHeight()) + 1;
@@ -99,9 +100,10 @@ public class TFCAquifer implements Aquifer
 
         this.fork = fork;
         this.barrierNoise = barrierNoise;
-        this.fluidLevelFloodednessNoise = fluidLevelFloodednessNoise;
-        this.fluidLevelSpreadNoise = fluidLevelSpreadNoise;
-        this.lavaNoise = lavaNoise;
+
+        final RandomSource fluidCellNoiseFork = fork.fromHashOf("aquifer_fluid_cell_noise");
+        this.fluidCellSeed = fluidCellNoiseFork.nextLong();
+        this.fluidCellNoise =  new Cellular3D(fluidCellNoiseFork.nextLong()).spread(0.015f);
 
         this.lavaLevelAquifer = new AquiferEntry(Blocks.LAVA.defaultBlockState(), minY + 10);
         this.seaLevelAquifer = new AquiferEntry(Blocks.WATER.defaultBlockState(), seaLevel);
@@ -354,18 +356,23 @@ public class TFCAquifer implements Aquifer
         final int surfaceIndex = SectionPos.blockToSectionCoord(dx) + 4 * SectionPos.blockToSectionCoord(dz);
         final int surfaceHeight = surfaceHeights[surfaceIndex];
 
-        if (y < surfaceHeight)
-        {
-            // Create standard aquifer
-            // For now, we're going to create empty ones
-            // todo: creation of non-empty aquifers
-            return new AquiferEntry(Blocks.WATER.defaultBlockState(), minY - 1);
-        }
-        else
+        if (y >= surfaceHeight)
         {
             // Above surface height, all aquifers must be sea level
             return seaLevelAquifer;
         }
+        final float cell = fluidCellNoise.noise(x, y / 0.6f, z);
+        final float cellY = fluidCellNoise.centerY() / (0.015f / 0.6f);
+        if (cell < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cell < 0.5f))
+        {
+            return new AquiferEntry(Blocks.WATER.defaultBlockState(), minY - 1);
+        }
+
+        final RandomSource random = new XoroshiroRandomSource(fluidCellSeed, Float.floatToIntBits(cell));
+        final float aquiferY = Math.min((random.nextFloat() - random.nextFloat() - 2) * 5 + cellY, surfaceHeight);
+
+        final boolean lava = cellY < 40 && (random.nextInt(3) == 0);
+        return new AquiferEntry(lava ? Blocks.LAVA.defaultBlockState() : Blocks.WATER.defaultBlockState(), (int) aquiferY);
     }
 
     private AquiferEntry globalAquifer(int y)

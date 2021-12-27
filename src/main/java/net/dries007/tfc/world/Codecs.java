@@ -173,7 +173,7 @@ public final class Codecs
     /**
      * @return A data result of the given nullable value, with success defined as the result being non-null
      */
-    public static <T> DataResult<T> resultFromNullable(@Nullable T result, String error)
+    public static <T> DataResult<T> requireNonNull(@Nullable T result, String error)
     {
         return result != null ? DataResult.success(result) : DataResult.error(error);
     }

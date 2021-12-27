@@ -136,7 +136,7 @@ public class ChunkNoiseFiller
         this.noodleRidgeB = addInterpolator(sampler.noodleRidgeB);
 
         // Aquifer
-        this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise, sampler.fluidLevelFloodednessNoise, sampler.fluidLevelSpreadNoise, sampler.lavaNoise);
+        this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise);
 
         this.biomeNoiseSamplers = biomeNoiseSamplers;
         this.columnBiomeNoiseSamplers = new Object2DoubleOpenHashMap<>();
@@ -201,7 +201,11 @@ public class ChunkNoiseFiller
                         final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
                         sampler.setColumn(actualX, actualZ);
-                        final double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
+                        double aquiferSurfaceHeight = Math.max(biome.getAquiferSurfaceHeight(sampler.height()), 0);
+                        // todo: debug, remove
+                        if (biome.getAquiferSurfaceHeight(0) == 8) {
+                            aquiferSurfaceHeight -= 8;
+                        }
 
                         minAquiferSurfaceHeight = Math.min(minAquiferSurfaceHeight, aquiferSurfaceHeight);
                     }
