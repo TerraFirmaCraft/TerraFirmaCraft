@@ -11,10 +11,12 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -34,
-      "max_temperature": 0,
-      "min_rainfall": 100,
-      "max_rainfall": 200
+      "min_temperature": 0,
+      "max_temperature": 4,
+      "min_rainfall": 200,
+      "max_rainfall": 400,
+      "min_forest": "none",
+      "max_forest": "edge"
     },
     {
       "type": "minecraft:biome"

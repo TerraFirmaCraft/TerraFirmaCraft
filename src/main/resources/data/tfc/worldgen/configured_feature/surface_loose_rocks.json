@@ -3,6 +3,6 @@
   "type": "tfc:loose_rock",
   "config": {
     "type": "minecraft:count",
-    "count": 6
+    "count": 8
   }
 }

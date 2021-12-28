@@ -41,9 +41,9 @@
         },
         "south": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             8
           ],
           "texture": "#tintedcross",
@@ -86,9 +86,9 @@
         },
         "east": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             8
           ],
           "texture": "#tintedcross",

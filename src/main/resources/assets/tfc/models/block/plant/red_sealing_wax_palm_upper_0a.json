@@ -1,0 +1,89 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/red_sealing_wax_palm/frond_0a",
+		"particle": "tfc:block/plant/red_sealing_wax_palm/frond_0a"
+	},
+	"elements": [
+		{
+			"name": "north0",
+			"from": [-8, 0, 3],
+			"to": [24, 16, 3],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "north1",
+			"from": [-8, 14.9, -3.3],
+			"to": [24, 30.9, -3.3],
+			"rotation": {"angle": -45, "axis": "x", "origin": [0, 15, -3]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "east0",
+			"from": [13, 0, -8],
+			"to": [13, 16, 24],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [13, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 8, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "east1",
+			"from": [19.2, 14.7, -8],
+			"to": [19.2, 30.7, 24],
+			"rotation": {"angle": -45, "axis": "z", "origin": [19, 15, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "south0",
+			"from": [-8, 14.9, 19.2],
+			"to": [24, 30.9, 19.2],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 15, 19]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "south1",
+			"from": [-8, 0, 13],
+			"to": [24, 16, 13],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 0, 13]},
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "west0",
+			"from": [3, 0, -8],
+			"to": [3, 16, 24],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [3, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 8, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "west1",
+			"from": [-3.2, 14.7, -8],
+			"to": [-3.2, 30.7, 24],
+			"rotation": {"angle": 45, "axis": "z", "origin": [-3, 15, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 8], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#0"}
+			}
+		}
+	]
+}

@@ -3,16 +3,12 @@
   "feature": "tfc:plant/water_lily_patch",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 5
-    },
-    {
       "type": "minecraft:in_square"
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -5,
-      "max_temperature": 38,
+      "min_temperature": -12,
+      "max_temperature": 40,
       "min_rainfall": 0,
       "max_rainfall": 500
     },

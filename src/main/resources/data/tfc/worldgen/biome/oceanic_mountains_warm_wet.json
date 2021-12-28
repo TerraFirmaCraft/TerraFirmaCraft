@@ -26,9 +26,6 @@
       "tfc:underground_flood_fill_lake"
     ],
     [],
-    [],
-    [],
-    [],
     [
       "tfc:vein/gravel",
       "tfc:vein/diorite_dike",
@@ -88,25 +85,27 @@
       "tfc:underground_loose_rocks",
       "tfc:underground_guano"
     ],
+    [],
     [
-      "tfc:plant/badderlocks_patch",
-      "tfc:plant/gutweed_patch",
-      "tfc:plant/laminaria_patch",
+      "tfc:surface_loose_rocks",
       "tfc:plant/manatee_grass_patch",
-      "tfc:plant/sargassum_patch",
       "tfc:plant/star_grass_patch",
+      "tfc:plant/badderlocks_patch",
+      "tfc:plant/laminaria_patch",
+      "tfc:plant/gutweed_patch",
+      "tfc:plant/sargassum_patch",
       "tfc:plant/turtle_grass_patch",
       "tfc:plant/giant_kelp_patch",
       "tfc:plant/winged_kelp",
-      "tfc:plant/leafy_kelp"
-    ],
-    [
-      "tfc:surface_loose_rocks",
+      "tfc:plant/leafy_kelp",
       "tfc:clam_patch",
       "tfc:mollusk_patch",
-      "tfc:mussel_patch",
+      "tfc:mussel_patch"
+    ],
+    [
       "tfc:ice_and_snow"
-    ]
+    ],
+    []
   ],
   "starts": [],
   "spawners": {

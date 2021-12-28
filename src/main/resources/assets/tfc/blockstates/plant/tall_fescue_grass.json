@@ -2,17 +2,35 @@
   "multipart": [
     {
       "when": {
-        "part": "upper",
-        "age": "0|1"
+        "part": "lower",
+        "age": "0"
+      },
+      "apply": {
+        "model": "tfc:block/plant/tall_fescue_grass_shortest"
+      }
+    },
+    {
+      "when": {
+        "part": "lower",
+        "age": "1"
+      },
+      "apply": {
+        "model": "tfc:block/plant/tall_fescue_grass_shorter"
+      }
+    },
+	{
+      "when": {
+        "part": "lower",
+        "age": "2"
       },
       "apply": {
         "model": "tfc:block/plant/tall_fescue_grass_short"
       }
     },
-    {
+	{
       "when": {
-        "part": "upper",
-        "age": "2|3"
+        "part": "lower",
+        "age": "3"
       },
       "apply": {
         "model": "tfc:block/plant/tall_fescue_grass"

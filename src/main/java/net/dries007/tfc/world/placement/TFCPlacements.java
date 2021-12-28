@@ -27,6 +27,7 @@ public final class TFCPlacements
     public static final Supplier<PlacementModifierType<NearWaterPlacement>> NEAR_WATER = register("near_water", NearWaterPlacement.CODEC);
     public static final Supplier<PlacementModifierType<BoundedCarvingMaskPlacement>> CARVING_MASK = register("carving_mask", BoundedCarvingMaskPlacement.CODEC);
     public static final Supplier<PlacementModifierType<VolcanoPlacement>> VOLCANO = register("volcano", VolcanoPlacement.CODEC);
+    public static final Supplier<PlacementModifierType<ShallowWaterPlacement>> SHALLOW_WATER = register("shallow_water", ShallowWaterPlacement.CODEC);
 
     public static void registerPlacements()
     {
@@ -35,6 +36,7 @@ public final class TFCPlacements
         NEAR_WATER.get();
         CARVING_MASK.get();
         VOLCANO.get();
+        SHALLOW_WATER.get();
     }
 
     private static <C extends PlacementModifier> Supplier<PlacementModifierType<C>> register(String name, Codec<C> codec)

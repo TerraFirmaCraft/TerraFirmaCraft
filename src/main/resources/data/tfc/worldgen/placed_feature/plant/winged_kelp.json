@@ -20,6 +20,9 @@
       "min_rainfall": 0,
       "max_rainfall": 450,
       "fuzzy": true
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

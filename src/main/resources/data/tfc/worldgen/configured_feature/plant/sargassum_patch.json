@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "minecraft:flower",
   "config": {
     "tries": 100,
     "xz_spread": 7,

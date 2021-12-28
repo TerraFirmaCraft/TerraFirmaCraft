@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/silver_spurflower_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 14,
+      "max_temperature": 24,
+      "min_rainfall": 230,
+      "max_rainfall": 400,
+      "min_forest": "sparse",
+      "max_forest": "edge"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

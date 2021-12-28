@@ -24,6 +24,9 @@
       "max_rainfall": 470,
       "min_forest": "normal",
       "fuzzy": true
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -59,7 +60,7 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
         int radius = config.radius();
         for (int i = 0; i < config.tries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), rand.nextInt(14) - rand.nextInt(6), rand.nextInt(radius) - rand.nextInt(radius));
+            mutablePos.setWithOffset(pos, Helpers.triangle(rand, radius), Helpers.triangle(rand, 4) + 10, Helpers.triangle(rand, radius));
             mutablePos.move(Direction.UP);
             BlockState aboveState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
