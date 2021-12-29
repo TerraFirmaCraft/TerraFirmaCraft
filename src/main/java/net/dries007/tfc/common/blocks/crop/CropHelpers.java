@@ -5,6 +5,8 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
@@ -83,8 +85,8 @@ public final class CropHelpers
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
         float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
-        final float initialGrowth = crop.getGrowth(), initialExpiry = crop.getExpiry(), initialYield = crop.getYield();
-        float growth = initialGrowth, expiry = initialExpiry, yield = initialYield;
+        final float initialGrowth = crop.getGrowth();
+        float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 
         final float growthLimit = cropBlock.getGrowthLimit(level, pos, state);
         if (totalGrowthDelta > 0 && growing && growth < growthLimit)
@@ -116,7 +118,7 @@ public final class CropHelpers
             nutrientSatisfaction = Math.min(1, (totalGrowthDelta / growthDelta) * (nutrientsAvailable / nutrientsRequired));
         }
 
-        yield += growthDelta * Helpers.lerp(nutrientSatisfaction, YIELD_MIN, YIELD_LIMIT);
+        actualYield += growthDelta * Helpers.lerp(nutrientSatisfaction, YIELD_MIN, YIELD_LIMIT);
 
         // Check if the crop should've expired.
         if (expiry >= EXPIRY_LIMIT)
@@ -127,7 +129,7 @@ public final class CropHelpers
         }
 
         crop.setGrowth(growth);
-        crop.setYield(yield);
+        crop.setYield(actualYield);
         crop.setExpiry(expiry);
         crop.setLastUpdateTick(calendar.getTicks());
 

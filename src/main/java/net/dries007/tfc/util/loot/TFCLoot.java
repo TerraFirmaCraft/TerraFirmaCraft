@@ -24,28 +24,27 @@ public class TFCLoot
 {
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
 
-    public static LootItemConditionType IS_ISOLATED;
-    public static LootNumberProviderType CROP_YIELD;
+    public static final Supplier<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
+    public static final Supplier<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
 
-    public static void registerAll()
+    public static void registerLootSerializers()
     {
-        IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
-        CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
+        IS_ISOLATED.get();
+        CROP_YIELD.get();
     }
 
-    private static LootItemConditionType lootCondition(String id, Serializer<? extends LootItemCondition> serializer)
+    private static Supplier<LootItemConditionType> lootCondition(String id, Serializer<? extends LootItemCondition> serializer)
     {
         return register(id, serializer, LootItemConditionType::new, Registry.LOOT_CONDITION_TYPE);
     }
 
-    private static LootNumberProviderType numberProvider(String id, Serializer<? extends NumberProvider> serializer)
+    private static Supplier<LootNumberProviderType> numberProvider(String id, Serializer<? extends NumberProvider> serializer)
     {
-        return Lazy.of(() -> Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), new LootItemConditionType(serializer.get())));
         return register(id, serializer, LootNumberProviderType::new, Registry.LOOT_NUMBER_PROVIDER_TYPE);
     }
 
-    private static <T, S> T register(String id, S serializer, Function<S, T> typeFactory, Registry<T> registry)
+    private static <T, S> Supplier<T> register(String id, S instance, Function<S, T> typeFactory, Registry<T> registry)
     {
-        return Registry.register(registry, Helpers.identifier(id), typeFactory.apply(serializer));
+        return Lazy.of(() -> Registry.register(registry, Helpers.identifier(id), typeFactory.apply(instance)));
     }
 }

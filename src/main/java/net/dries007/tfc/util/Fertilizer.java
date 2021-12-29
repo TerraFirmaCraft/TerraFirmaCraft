@@ -3,16 +3,18 @@ package net.dries007.tfc.util;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Fertilizer extends ItemDefinition
 {
-    public static final DataManager<Fertilizer> MANAGER = new DataManager.Instance<>(Fertilizer::new, "fertilizers", "fertilizer");
+    public static final DataManager<Fertilizer> MANAGER = new DataManager<>("fertilizers", "fertilizer", Fertilizer::new, Fertilizer::reload, Fertilizer::new, Fertilizer::encode, DataManagerSyncPacket.TFertilizer::new);
     public static final IndirectHashCollection<Item, Fertilizer> CACHE = new IndirectHashCollection<>(Fertilizer::getValidItems);
 
     @Nullable
@@ -28,6 +30,11 @@ public class Fertilizer extends ItemDefinition
         return null;
     }
 
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
+    }
+
     private final float nitrogen, phosphorus, potassium;
 
     private Fertilizer(ResourceLocation id, JsonObject json)
@@ -37,6 +44,22 @@ public class Fertilizer extends ItemDefinition
         nitrogen = JsonHelpers.getAsFloat(json, "nitrogen", 0);
         phosphorus = JsonHelpers.getAsFloat(json, "phosphorus", 0);
         potassium = JsonHelpers.getAsFloat(json, "potassium", 0);
+    }
+
+    private Fertilizer(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        super(id, Ingredient.fromNetwork(buffer));
+
+        nitrogen = buffer.readFloat();
+        phosphorus = buffer.readFloat();
+        potassium = buffer.readFloat();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeFloat(nitrogen);
+        buffer.writeFloat(phosphorus);
+        buffer.writeFloat(potassium);
     }
 
     public float getNitrogen()

@@ -800,10 +800,20 @@ public final class Helpers
         return min == max ? min : min + random.nextInt(max - min);
     }
 
+    public static int uniform(Random random, int min, int max)
+    {
+        return min == max ? min : min + random.nextInt(max - min);
+    }
+
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
     public static float uniform(RandomSource random, float min, float max)
+    {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public static float uniform(Random random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }

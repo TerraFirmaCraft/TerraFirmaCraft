@@ -37,7 +37,7 @@ public class CropYieldProvider implements NumberProvider
     @Override
     public LootNumberProviderType getType()
     {
-        return TFCLoot.CROP_YIELD;
+        return TFCLoot.CROP_YIELD.get();
     }
 
     public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CropYieldProvider>

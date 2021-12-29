@@ -23,7 +23,7 @@ public class IsIsolatedCondition implements LootItemCondition
     @Override
     public LootItemConditionType getType()
     {
-        return TFCLoot.IS_ISOLATED;
+        return TFCLoot.IS_ISOLATED.get();
     }
 
     @Override

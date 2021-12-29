@@ -192,11 +192,8 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
 
         // todo: remove debug
-        final CropBlockEntity crop = level.getBlockEntity(pos, TFCBlockEntities.CROP.get()).orElse(null);
-        if (crop != null)
-        {
-            text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
-        }
+        level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
+            .ifPresent(crop -> text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield()))));
     }
 
     @Override
