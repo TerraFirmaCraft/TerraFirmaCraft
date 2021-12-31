@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -49,6 +50,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
@@ -61,7 +63,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * This function is essentially min(blocks to reach the ground, provided distance value)
      */
-    public static int distanceToGround(Level world, BlockPos pos, int distance)
+    protected static int distanceToGround(Level world, BlockPos pos, int distance)
     {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         for (int i = 1; i <= distance; i++)
@@ -75,7 +77,36 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return distance;
     }
 
-    private final Supplier<? extends Item> productItem;
+    /**
+     * Checks if the plant is outside its growing season, and if so sets it to dormant.
+     * @return if the plant is dormant
+     */
+    protected static boolean checkAndSetDormant(Level level, BlockPos pos, BlockState state, Lifecycle current, Lifecycle expected)
+    {
+        if (expected == Lifecycle.DORMANT)
+        {
+            // When we're in dormant time, no matter what conditions, or time since appearance, the bush will be dormant.
+            if (expected != current)
+            {
+                level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected static void randomDestroyTick(ServerLevel level, BlockPos pos, int days)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(be -> {
+            if (be.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * days)
+            {
+                be.setRemoved();
+                level.destroyBlock(pos, true);
+            }
+        });
+    }
+
+    protected final Supplier<? extends Item> productItem;
     private final Lifecycle[] lifecycle;
     private final ExtendedProperties properties;
 
@@ -106,13 +137,18 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
             if (!level.isClientSide())
             {
                 level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
-                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem());
-                    level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
+                    level.setBlockAndUpdate(pos, stateAfterPicking(state));
                 });
             }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public BlockState stateAfterPicking(BlockState state)
+    {
+        return state.setValue(LIFECYCLE, Lifecycle.HEALTHY);
     }
 
     @Override
@@ -196,7 +232,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return cycle;
     }
 
-    protected ItemStack getProductItem()
+    protected ItemStack getProductItem(Random random)
     {
         return new ItemStack(productItem.get());
     }

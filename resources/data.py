@@ -481,6 +481,8 @@ def generate(rm: ResourceManager):
 
     for berry, data in BERRIES.items():
         climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
+    data = FRUITS.get('banana')
+    climate_range(rm, 'plant/banana', hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))

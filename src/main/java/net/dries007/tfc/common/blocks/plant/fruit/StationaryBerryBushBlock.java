@@ -141,15 +141,8 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
-            if (expectedLifecycle == Lifecycle.DORMANT)
-            {
-                // When we're in dormant time, no matter what conditions, or time since appearance, the bush will be dormant.
-                if (expectedLifecycle != currentLifecycle)
-                {
-                    level.setBlock(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT), 3);
-                }
-            }
-            else
+            // if we are not working with a plant that is or should be dormant
+            if (!checkAndSetDormant(level, pos, state, currentLifecycle, expectedLifecycle))
             {
                 // Otherwise, we do a month-by-month evaluation of how the bush should have grown.
                 // We only do this up to a year. Why? Because eventually, it will have become dormant, and any 'progress' during that year would've been lost anyway because it would unconditionally become dormant.

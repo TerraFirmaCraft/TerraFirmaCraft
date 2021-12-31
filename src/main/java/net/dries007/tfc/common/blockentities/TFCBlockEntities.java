@@ -53,7 +53,8 @@ public class TFCBlockEntities
         TFCBlocks.WALL_TORCH,
         TFCBlocks.DEAD_BERRY_BUSH,
         TFCBlocks.DEAD_CANE,
-        TFCBlocks.BANANA_SAPLING
+        TFCBlocks.BANANA_SAPLING,
+        TFCBlocks.DEAD_BANANA_PLANT
         ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
     );
 
