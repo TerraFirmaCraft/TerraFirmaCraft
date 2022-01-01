@@ -32,10 +32,6 @@ public class TFCLoot
 
     private static Lazy<LootItemConditionType> register(String id, Supplier<Serializer<? extends LootItemCondition>> serializer)
     {
-        return Lazy.of(() -> {
-            final LootItemConditionType type = new LootItemConditionType(serializer.get());
-            Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), type);
-            return type;
-        });
+        return Lazy.of(() -> Registry.register(Registry.LOOT_CONDITION_TYPE, Helpers.identifier(id), new LootItemConditionType(serializer.get())));
     }
 }

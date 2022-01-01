@@ -170,8 +170,8 @@ public class TFCFoodData extends FoodData
         {
             if (player.isHurt() && getFoodLevel() >= 4.0f && getThirst() > 20f)
             {
-                final float foodBonus = (float) Mth.inverseLerp(getFoodLevel(), 4, MAX_HUNGER);
-                final float thirstBonus = (float) Mth.inverseLerp(getThirst(), 20, MAX_THIRST);
+                final float foodBonus = Mth.inverseLerp(getFoodLevel(), 4, MAX_HUNGER);
+                final float thirstBonus = Mth.inverseLerp(getThirst(), 20, MAX_THIRST);
                 final float multiplier = 1 + foodBonus + thirstBonus; // Range: [1, 4] depending on total thirst and hunger
 
                 player.heal(multiplier * PASSIVE_HEALING_PER_TEN_TICKS * TFCConfig.SERVER.naturalRegenerationModifier.get().floatValue());
@@ -337,29 +337,5 @@ public class TFCFoodData extends FoodData
     public NutritionData getNutrition()
     {
         return nutritionData;
-    }
-
-    public boolean attemptDrink(float value, boolean simulate)
-    {
-        int ticksPassed = (int) (sourcePlayer.level.getGameTime() - lastDrinkTick);
-        if (ticksPassed >= 12 && thirst < MAX_THIRST)
-        {
-            if (!simulate)
-            {
-                // One drink every so often
-                lastDrinkTick = sourcePlayer.level.getGameTime();
-                addThirst(value);
-
-                // todo: add a generic handler for drinkable fluids that is defined in json
-                // needs to handle (at least) thirst, and application of random potion effects (the potion effect name, level, duration, and a chance number)
-                // Salty drink effect
-                //if (value < 0 && sourcePlayer.getRandom() < TFCConfig.SERVER.saltWaterDrinkThirstChance)
-                //{
-                //    sourcePlayer.addPotionEffect(new PotionEffect(PotionEffectsTFC.THIRST, 600, 0));
-                //}
-            }
-            return true;
-        }
-        return false;
     }
 }

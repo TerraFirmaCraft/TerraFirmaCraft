@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:emergent_plant",
+  "config": {
+    "state": {
+      "Name": "tfc:plant/phragmite",
+      "Properties": {
+        "age": "1",
+        "stage": "1",
+        "fluid": "empty",
+        "part": "lower"
+      }
+    }
+  }
+}

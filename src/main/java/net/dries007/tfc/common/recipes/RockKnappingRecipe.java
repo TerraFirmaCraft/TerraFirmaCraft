@@ -74,7 +74,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         @Override
         public RecipeType<?> getRecipeType()
         {
-            return TFCRecipeTypes.ROCK_KNAPPING;
+            return TFCRecipeTypes.ROCK_KNAPPING.get();
         }
     }
 }

@@ -6,7 +6,7 @@
     "head": "tfc:plant/tree_fern",
     "tries": 8,
     "radius": 7,
-    "minHeight": 2,
-    "maxHeight": 6
+    "min_height": 2,
+    "max_height": 6
   }
 }

@@ -50,6 +50,6 @@ public class ScrapingRecipe extends SimpleItemRecipe
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.SCRAPING;
+        return TFCRecipeTypes.SCRAPING.get();
     }
 }

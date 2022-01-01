@@ -30,7 +30,7 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
     {
         plateNoise.noise(x, z);
         float centerX = plateNoise.centerX();
-        float centerZ = plateNoise.centerZ();
+        float centerZ = plateNoise.centerY();
         context.setSeed((long) centerX, (long) centerZ);
         boolean oceanic = context.random().nextFloat() < oceanPercent;
         float angle = 2 * PI * context.random().nextFloat();

@@ -103,6 +103,13 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return 0.2F;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
     {
         int distance = updateDistance(worldIn, pos);

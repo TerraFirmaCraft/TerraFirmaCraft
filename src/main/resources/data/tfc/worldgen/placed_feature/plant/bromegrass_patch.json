@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/bromegrass_patch",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 4,
+      "max_temperature": 20,
+      "min_rainfall": 140,
+      "max_rainfall": 360
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

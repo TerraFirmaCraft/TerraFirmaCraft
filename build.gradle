@@ -58,8 +58,8 @@ repositories {
         url = "https://modmaven.k-4u.nl"
     }
     maven {
-        name 'Jitpack'
-        url 'https://jitpack.io'
+        // Cyanide
+        url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
     }
     flatDir {
         dirs 'libs'
@@ -77,8 +77,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'cyanide.client_self_test', 'net.dries007.tfc.client.ClientEventHandler#selfTest'
-            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {
@@ -94,7 +92,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'cyanide.enable_dangerous_features', 'true'
             jvmArg '-ea'
 
             mods {
@@ -109,7 +106,7 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // runtimeOnly fg.deobf("com.github.alcatrazEscapee:cyanide:${cyanide_version}") { transitive = false }
+    runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18:2.0.2") { transitive = false }
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
 
     // JEI

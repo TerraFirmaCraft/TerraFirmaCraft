@@ -5,7 +5,7 @@
     "state": "tfc:plant/ivy",
     "tries": 15,
     "radius": 7,
-    "minHeight": 96,
-    "maxHeight": 150
+    "min_height": 96,
+    "max_height": 150
   }
 }

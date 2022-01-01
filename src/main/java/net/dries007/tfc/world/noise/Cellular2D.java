@@ -34,9 +34,9 @@ public class Cellular2D implements Noise2D
     }
 
     @Override
-    public float noise(float x, float z)
+    public float noise(float x, float y)
     {
-        return fnl.GetNoise(x, z);
+        return fnl.GetNoise(x, y);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Cellular2D implements Noise2D
         return fnl.lastCenterX;
     }
 
-    public float centerZ()
+    public float centerY()
     {
         return fnl.lastCenterY;
     }

@@ -172,6 +172,6 @@ public class CollapseRecipe extends SimpleBlockRecipe
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.COLLAPSE;
+        return TFCRecipeTypes.COLLAPSE.get();
     }
 }

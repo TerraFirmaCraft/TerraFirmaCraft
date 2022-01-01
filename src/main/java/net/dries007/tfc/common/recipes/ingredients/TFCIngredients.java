@@ -21,7 +21,6 @@ public final class TFCIngredients
 
     private static <T extends Ingredient> IIngredientSerializer<T> register(String name, IIngredientSerializer<T> serializer)
     {
-        CraftingHelper.register(Helpers.identifier(name), serializer);
-        return serializer;
+        return CraftingHelper.register(Helpers.identifier(name), serializer);
     }
 }

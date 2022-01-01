@@ -24,17 +24,17 @@ public record ForestConfig(List<Entry> entries) implements FeatureConfiguration
         Entry.CODEC.listOf().fieldOf("entries").forGetter(c -> c.entries)
     ).apply(instance, ForestConfig::new));
 
-    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, BlockState twig, BlockState fallenLeaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
+    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<List<BlockState>> groundcover, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
             Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
             Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
             Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
-            Codecs.BLOCK_STATE.fieldOf("log").forGetter(c -> c.log),
-            Codecs.BLOCK_STATE.fieldOf("leaves").forGetter(c -> c.leaves),
-            Codecs.BLOCK_STATE.fieldOf("twig").forGetter(c -> c.twig),
-            Codecs.BLOCK_STATE.fieldOf("fallen_leaves").forGetter(c -> c.fallenLeaves),
+            Codecs.BLOCK_STATE.optionalFieldOf("bush_log").forGetter(c -> c.bushLog),
+            Codecs.BLOCK_STATE.optionalFieldOf("bush_leaves").forGetter(c -> c.bushLeaves),
+            Codecs.BLOCK_STATE.optionalFieldOf("fallen_log").forGetter(c -> c.fallenLog),
+            Codecs.BLOCK_STATE.listOf().optionalFieldOf("groundcover").forGetter(c -> c.groundcover),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));

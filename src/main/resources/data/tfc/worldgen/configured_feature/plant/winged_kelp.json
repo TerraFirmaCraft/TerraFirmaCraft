@@ -6,7 +6,7 @@
     "head": "tfc:plant/winged_kelp",
     "tries": 64,
     "radius": 12,
-    "minHeight": 14,
-    "maxHeight": 21
+    "min_height": 14,
+    "max_height": 21
   }
 }

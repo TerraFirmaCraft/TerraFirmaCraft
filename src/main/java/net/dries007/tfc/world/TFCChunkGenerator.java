@@ -341,25 +341,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
 
         final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getNoiseBiome(x, y, z, climateSampler()));
-
-        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
         final Random random = new Random();
         final ChunkPos chunkPos = chunk.getPos();
 
-        final Sampler<Biome> biomeSampler = (x, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(x), QuartPos.fromBlock(z));
-        final ChunkData chunkData = chunkDataProvider.get(chunk);
-        final RockData rockData = chunkData.getRockData();
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
-        final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
-
-        TFCAquifer aquifer = aquiferCache.getIfPresent(chunkPos.x, chunkPos.z);
-        if (aquifer == null)
-        {
-            aquifer = new TFCAquifer(chunkPos, settings, baseBlockSource, getSeaLevel(), noiseSampler.positionalRandomFactory, noiseSampler.barrierNoise, noiseSampler.fluidLevelFloodednessNoise, noiseSampler.fluidLevelSpreadNoise, noiseSampler.lavaNoise);
-            aquifer.setSurfaceHeights(chunkData.getAquiferSurfaceHeight());
-            aquiferCache.set(chunkPos.x, chunkPos.z, aquifer);
-        }
+        final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
+        final TFCAquifer aquifer = getOrCreateAquifer(chunk, settings, baseBlockSource);
 
         @SuppressWarnings("ConstantConditions")
         final CarvingContext context = new CarvingContext(stupidMojangChunkGenerator, null, chunk.getHeightAccessorForGeneration(), null);
@@ -377,8 +365,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     .carverBiome(() -> customBiomeSource.getNoiseBiome(QuartPos.fromBlock(offsetChunkPos.getMinBlockX()), 0, QuartPos.fromBlock(offsetChunkPos.getMinBlockZ()), climateSampler()))
                     .getGenerationSettings()
                     .getCarvers(step);
-                final ListIterator<Supplier<ConfiguredWorldCarver<?>>> iterator = carvers.listIterator();
 
+                final ListIterator<Supplier<ConfiguredWorldCarver<?>>> iterator = carvers.listIterator();
                 while (iterator.hasNext())
                 {
                     final int index = iterator.nextIndex();
@@ -445,7 +433,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
         final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
-        final Sampler<Biome> biomeSampler = (x, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(x), QuartPos.fromBlock(z));
         final ChunkData chunkData = chunkDataProvider.get(chunk);
         final RockData rockData = chunkData.getRockData();
 
@@ -457,11 +444,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             sections.add(section);
         }
 
-        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, biomeSampler, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).variants().getGroup());
-        final ChunkBaseBlockSource baseBlockSource = new ChunkBaseBlockSource(actualLevel, rockData, biomeSampler);
+        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, this::sampleBiomeIgnoreClimate, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).variants().getGroup());
+        final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
         final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
-        filler.setupAquiferSurfaceHeight(biomeSampler);
+        filler.setupAquiferSurfaceHeight(this::sampleBiomeIgnoreClimate);
         chunkData.setAquiferSurfaceHeight(filler.getSurfaceHeight());
         rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
@@ -539,6 +526,18 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
+    private Biome sampleBiomeIgnoreClimate(int blockX, int blockZ)
+    {
+        return customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
+    }
+
+    private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
+    {
+        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();;
+        final RockData rockData = chunkDataProvider.get(chunk).getRockData();
+        return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeIgnoreClimate);
+    }
+
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)
     {
         final NoiseSettings noiseSettings = getNoiseGeneratorSettings().noiseSettings();
@@ -567,5 +566,22 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             builder.put(entry.getKey(), entry.getValue().get());
         }
         return builder.build();
+    }
+
+    private TFCAquifer getOrCreateAquifer(ChunkAccess chunk, ChunkNoiseSamplingSettings settings, ChunkBaseBlockSource baseBlockSource)
+    {
+        final ChunkPos chunkPos = chunk.getPos();
+
+        TFCAquifer aquifer = aquiferCache.getIfPresent(chunkPos.x, chunkPos.z);
+        if (aquifer == null)
+        {
+            final ChunkData chunkData = chunkDataProvider.get(chunk);
+
+            aquifer = new TFCAquifer(chunkPos, settings, baseBlockSource, getSeaLevel(), noiseSampler.positionalRandomFactory, noiseSampler.barrierNoise);
+            aquifer.setSurfaceHeights(chunkData.getAquiferSurfaceHeight());
+
+            aquiferCache.set(chunkPos.x, chunkPos.z, aquifer);
+        }
+        return aquifer;
     }
 }

@@ -94,7 +94,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.HEATING;
+        return TFCRecipeTypes.HEATING.get();
     }
 
     @Override

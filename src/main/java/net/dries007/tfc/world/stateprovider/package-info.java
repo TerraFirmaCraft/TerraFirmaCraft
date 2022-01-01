@@ -1,4 +1,3 @@
-
 /*
  * Licensed under the EUPL, Version 1.2.
  * You may obtain a copy of the Licence at:

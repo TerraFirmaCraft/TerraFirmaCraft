@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -59,11 +60,10 @@ public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
         int radius = config.radius();
         for (int i = 0; i < config.tries(); i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
-            mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
-                return false;
-            mutablePos.move(Direction.UP);
+            mutablePos.setWithOffset(pos, Helpers.triangle(rand, radius), 0, Helpers.triangle(rand, radius));
+
+            if (!world.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON)) return false;
+
             if (world.isEmptyBlock(mutablePos))
             {
                 placeColumn(world, rand, world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());

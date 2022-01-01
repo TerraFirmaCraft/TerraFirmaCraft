@@ -14,8 +14,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -75,12 +78,12 @@ public class ForestFeature extends Feature<ForestConfig>
         else if (forestType == ForestType.NORMAL)
         {
             treeCount = 5;
-            groundCount = 35;
+            groundCount = 30;
         }
         else if (forestType == ForestType.OLD_GROWTH)
         {
             treeCount = 7;
-            groundCount = 48;
+            groundCount = 40;
         }
         else
         {
@@ -93,7 +96,7 @@ public class ForestFeature extends Feature<ForestConfig>
         {
             placedTrees |= placeTree(level, context.chunkGenerator(), rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
         }
-        int bushCount = (int) (treeCount * 2 * density);
+        int bushCount = (int) (treeCount * density);
         for (int j = 0; j < bushCount; j++)
         {
             placedBushes |= placeBush(level, context.chunkGenerator(), rand, pos, config, data, mutablePos);
@@ -101,17 +104,21 @@ public class ForestFeature extends Feature<ForestConfig>
         if (placedTrees)
         {
             placeGroundcover(level, rand, pos, config, data, mutablePos, groundCount);
+            if (rand.nextInt(14) == 0)
+            {
+                placeFallenTree(level, rand, pos, config, data, mutablePos, groundCount);
+            }
         }
         return placedTrees || placedBushes;
     }
 
-    private boolean placeTree(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, boolean allowOldGrowth)
+    private boolean placeTree(WorldGenLevel level, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, boolean allowOldGrowth)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
@@ -125,62 +132,150 @@ public class ForestFeature extends Feature<ForestConfig>
             {
                 feature = random.nextInt(200) == 0 ? entry.getOldGrowthFeature() : entry.getFeature();
             }
-            return feature.place(worldIn, generator, random, mutablePos);
+            return feature.place(level, generator, random, mutablePos);
         }
         return false;
     }
 
-    private boolean placeBush(WorldGenLevel worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos)
+    private boolean placeBush(WorldGenLevel level, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
-        if (entry != null && worldIn.isEmptyBlock(mutablePos) && worldIn.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (entry != null && level.isEmptyBlock(mutablePos) && level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            setBlock(worldIn, mutablePos, entry.log());
-            for (Direction facing : Helpers.DIRECTIONS)
-            {
-                if (facing != Direction.DOWN)
+            entry.bushLog().ifPresent(log -> entry.bushLeaves().ifPresent(leaves -> {
+                placeBushPart(level, mutablePos, log, leaves, 1.0F, random);
+                for (int i = 0; i < 5; i++)
                 {
-                    BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                    if (worldIn.isEmptyBlock(offsetPos) || worldIn.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT))
-                        setBlock(worldIn, offsetPos, entry.leaves());
+                    if (random.nextInt(4) == 0)
+                    {
+                        mutablePos.move(Direction.Plane.HORIZONTAL.getRandomDirection(random));
+                        placeBushPart(level, mutablePos, leaves, leaves, 0.7F, random);
+                        if (random.nextInt(6) == 0)
+                        {
+                            mutablePos.move(Direction.UP);
+                            placeBushPart(level, mutablePos, leaves, leaves, 0.6F, random);
+                            break;
+                        }
+                    }
                 }
-            }
+
+
+            }));
             return true;
         }
         return false;
     }
 
-    private void placeGroundcover(WorldGenLevel worldIn, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
+    private void placeBushPart(WorldGenLevel level, BlockPos.MutableBlockPos mutablePos, BlockState log, BlockState leaves, float decay, Random rand)
+    {
+        setBlock(level, mutablePos, log);
+        for (Direction facing : Helpers.DIRECTIONS)
+        {
+            if (facing != Direction.DOWN)
+            {
+                BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
+                if (level.isEmptyBlock(offsetPos) || level.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT) && rand.nextFloat() < decay)
+                {
+                    setBlock(level, offsetPos, leaves);
+                }
+            }
+        }
+    }
+
+    private void placeGroundcover(WorldGenLevel level, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(worldIn.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
         {
-            final BlockState leafState = entry.fallenLeaves();
-            final BlockState twigState = entry.twig();
-            for (int j = 0; j < tries; ++j)
-            {
-                BlockState placementState = random.nextInt(2) == 1 ? leafState : twigState;
-
-                mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-                mutablePos.setY(worldIn.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
-
-                placementState = FluidHelpers.fillWithFluid(placementState, worldIn.getFluidState(mutablePos).getType());
-                if (placementState != null && (worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
+            entry.groundcover().ifPresent(groundcover -> {
+                for (int j = 0; j < tries; ++j)
                 {
-                    setBlock(worldIn, mutablePos, placementState);
+                    final int idx = random.nextInt(groundcover.size());
+                    BlockState placementState = groundcover.get(idx);
+
+                    mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+                    mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+
+                    placementState = FluidHelpers.fillWithFluid(placementState, level.getFluidState(mutablePos).getType());
+                    if (placementState != null && (level.isEmptyBlock(mutablePos) || level.isWaterAt(mutablePos)) && level.getBlockState(mutablePos.below()).isFaceSturdy(level, mutablePos, Direction.UP))
+                    {
+                        setBlock(level, mutablePos, placementState);
+                    }
                 }
+            });
+        }
+    }
+
+    private void placeFallenTree(WorldGenLevel level, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
+    {
+        final int chunkX = chunkBlockPos.getX();
+        final int chunkZ = chunkBlockPos.getZ();
+
+        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+
+        mutablePos.move(Direction.DOWN);
+        BlockState downState = level.getBlockState(mutablePos);
+        mutablePos.move(Direction.UP);
+        if (downState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || downState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        {
+            final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+            if (entry != null)
+            {
+                entry.fallenLog().ifPresent(log -> {
+                    if (log.hasProperty(TFCBlockStateProperties.NATURAL) && log.hasProperty(BlockStateProperties.AXIS))
+                    {
+                        final Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                        final Direction dirOpposite = dir.getOpposite();
+                        log = log.setValue(TFCBlockStateProperties.NATURAL, true).setValue(BlockStateProperties.AXIS, dir.getAxis());
+
+                        final int halfLength = Mth.nextInt(random, 2, 5);
+                        for (int i = 0; i < halfLength; i++)
+                        {
+                            mutablePos.move(dir);
+                            BlockState foundState = level.getBlockState(mutablePos);
+                            if (!(foundState.isAir() || foundState.is(TFCTags.Blocks.PLANT)))
+                            {
+                                mutablePos.move(dirOpposite);
+                                break;
+                            }
+                        }
+
+                        for (int i = 0; i < halfLength * 2; i++)
+                        {
+                            BlockState stateAt = level.getBlockState(mutablePos);
+                            if (stateAt.isAir() || stateAt.is(TFCTags.Blocks.PLANT))
+                            {
+                                setBlock(level, mutablePos, log);
+                                if (random.nextInt(7) == 0)
+                                {
+                                    final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                                    BlockState offsetLog = log.setValue(BlockStateProperties.AXIS, offset.getAxis());
+                                    mutablePos.move(offset);
+                                    setBlock(level, mutablePos, offsetLog);
+                                    mutablePos.move(offset.getOpposite());
+                                }
+                                mutablePos.move(dirOpposite);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                });
             }
         }
     }

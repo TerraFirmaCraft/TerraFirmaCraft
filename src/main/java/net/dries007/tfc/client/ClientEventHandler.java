@@ -314,16 +314,16 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
     }
 
-    /**
-     * Invoked reflectively via Cyanide's self test injection mechanism
-     */
-    @SuppressWarnings("unused")
     public static void selfTest()
     {
-        if (ClientEventHandler.validateModelsAndTranslations()
-            | TFCBlockEntities.validateBlockEntities())
+        if (Helpers.detectAssertionsEnabled())
         {
-            throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
+            LOGGER.info("Running Self Test");
+            if (ClientEventHandler.validateModelsAndTranslations()
+                | TFCBlockEntities.validateBlockEntities())
+            {
+                throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
+            }
         }
     }
 

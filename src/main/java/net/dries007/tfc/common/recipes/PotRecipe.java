@@ -105,7 +105,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     @Override
     public RecipeType<?> getType()
     {
-        return TFCRecipeTypes.POT;
+        return TFCRecipeTypes.POT.get();
     }
 
     public FluidStackIngredient getFluidIngredient()

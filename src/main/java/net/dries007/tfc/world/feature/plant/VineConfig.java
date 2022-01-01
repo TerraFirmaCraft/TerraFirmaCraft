@@ -19,7 +19,7 @@ public record VineConfig(BlockState state, int tries, int radius, int minHeight,
         Codecs.BLOCK_STATE.fieldOf("state").forGetter(vineConfig -> vineConfig.state),
         Codec.intRange(1, 128).fieldOf("tries").forGetter(c -> c.tries),
         Codec.intRange(1, 16).fieldOf("radius").forGetter(c -> c.radius),
-        Codec.INT.fieldOf("minHeight").forGetter(c -> c.minHeight), // todo: min_height and max_height in json, find and fix references
-        Codec.INT.fieldOf("maxHeight").forGetter(c -> c.maxHeight)
+        Codec.INT.fieldOf("min_height").forGetter(c -> c.minHeight),
+        Codec.INT.fieldOf("max_height").forGetter(c -> c.maxHeight)
     ).apply(instance, VineConfig::new));
 }

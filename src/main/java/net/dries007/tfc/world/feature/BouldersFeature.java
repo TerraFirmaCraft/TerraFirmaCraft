@@ -36,7 +36,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
     @Override
     public boolean place(FeaturePlaceContext<BoulderConfig> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random random = context.random();
         final BoulderConfig config = context.config();
@@ -45,7 +45,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos);
         final List<BlockState> states = config.states().get(rock.raw());
-        place(worldIn, pos, states, random);
+        place(level, pos, states, random);
         return true;
     }
 

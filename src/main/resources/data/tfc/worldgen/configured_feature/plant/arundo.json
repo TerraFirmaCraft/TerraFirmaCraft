@@ -6,7 +6,7 @@
     "head": "tfc:plant/arundo",
     "tries": 70,
     "radius": 7,
-    "minHeight": 5,
-    "maxHeight": 8
+    "min_height": 5,
+    "max_height": 8
   }
 }

@@ -20,8 +20,7 @@
           "Name": "tfc:plant/star_grass",
           "Properties": {
             "age": "1",
-            "stage": "1",
-            "fluid": "empty"
+            "stage": "1"
           }
         }
       }

@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/king_fern_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 18,
+      "max_temperature": 40,
+      "min_rainfall": 350,
+      "max_rainfall": 500,
+      "min_forest": "normal",
+      "max_forest": "old_growth"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

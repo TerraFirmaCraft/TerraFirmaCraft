@@ -73,7 +73,7 @@ public class VolcanoPlacement extends PlacementModifier
             {
                 if (center)
                 {
-                    final BlockPos centerPos = new BlockPos((int) local.cellNoise.centerX(), pos.getY(), (int) local.cellNoise.centerZ());
+                    final BlockPos centerPos = new BlockPos((int) local.cellNoise.centerX(), pos.getY(), (int) local.cellNoise.centerY());
                     if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
                     {
                         return Stream.of(centerPos);

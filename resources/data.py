@@ -272,6 +272,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:mineable/hoe', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_scythe', '#tfc:mineable_with_sharp_tool')
+    rm.item_tag('tfc:sharp_tools', '#tfc:hoes', '#tfc:knives', '#tfc:scythes')
 
     rm.block_tag('forge:needs_wood_tool')
     rm.block_tag('forge:needs_netherite_tool')

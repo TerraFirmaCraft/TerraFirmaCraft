@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +36,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.biome.FixedBiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -99,7 +101,10 @@ import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
@@ -161,15 +166,10 @@ public final class ForgeEventHandler
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
-            final BiomeSourceExtension biomeSourceExtension = extension.getBiomeSource();
+            final BiomeSourceExtension source = extension.getBiomeSource();
             final Random random = new Random(world.getSeed());
-            final int spawnDistance = biomeSourceExtension.getSpawnDistance();
 
-            event.setCanceled(true);
-            settings.setSpawn(new BlockPos(0, 128, 0), 0);
-            if (true) return;
-
-            BlockPos pos = null; // todo: need to randomly choose a spawn position, that's near a decent biome.
+            BlockPos pos = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(world, biome).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
             ChunkPos chunkPos;
             if (pos == null)
             {
@@ -188,7 +188,7 @@ public final class ForgeEventHandler
             {
                 if (x > -16 && x <= 16 && z > -16 && z <= 16)
                 {
-                    BlockPos spawnPos = Helpers.findValidSpawnLocation(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
+                    final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                     if (spawnPos != null)
                     {
                         settings.setSpawn(spawnPos, 0);
@@ -199,9 +199,9 @@ public final class ForgeEventHandler
 
                 if ((x == z) || (x < 0 && x == -z) || (x > 0 && x == 1 - z))
                 {
-                    int temp = xStep;
+                    final int swap = xStep;
                     xStep = -zStep;
-                    zStep = temp;
+                    zStep = swap;
                 }
 
                 x += xStep;

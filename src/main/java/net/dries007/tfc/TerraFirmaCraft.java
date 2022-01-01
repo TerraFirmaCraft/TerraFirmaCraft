@@ -119,25 +119,28 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
-        TFCLoot.registerLootConditions();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
-        FarmlandBlock.registerTillables();
-        TFCIngredients.registerIngredientTypes();
         BlockIngredients.registerBlockIngredientTypes();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
-            ItemSizeManager.setupItemStackSizeOverrides();
-            DispenserBehaviors.registerAll();
-            Faunas.registerSpawnPlacements();
+            // Vanilla Registries (not thread safe)
+            TFCRecipeTypes.registerRecipeTypes();
+            TFCLoot.registerLootConditions();
             TFCPlacements.registerPlacements();
             TFCBlockPredicates.registerBlockPredicates();
+            TFCIngredients.registerIngredientTypes();
 
             Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
+
+            ItemSizeManager.setupItemStackSizeOverrides();
+            DispenserBehaviors.registerAll();
+            Faunas.registerSpawnPlacements();
+            FarmlandBlock.registerTillables();
         });
     }
 
