@@ -61,7 +61,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 
-import net.dries007.tfc.client.IngameOverlays;
+import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -128,7 +128,7 @@ public final class ForgeEventHandler
         bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
-        bus.addListener(IngameOverlays::renderFamiliarity);
+        bus.addListener(ClientForgeEventHandler::renderFamiliarity);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);

@@ -35,7 +35,7 @@ public class TFCPufferfish extends Pufferfish implements AquaticMob
     {
         super.registerGoals();
         goalSelector.addGoal(1, new GetHookedGoal(this));
-        EntityHelpers.insertTFCAvoidGoal(this, goalSelector, 2);
+        EntityHelpers.replaceAvoidEntityGoal(this, goalSelector, 2);
     }
 
     @Override

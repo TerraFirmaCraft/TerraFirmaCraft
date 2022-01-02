@@ -37,7 +37,7 @@ public class TFCPig extends Mammal
     public void registerGoals()
     {
         super.registerGoals();
-        EntityHelpers.insertCommonPreyAI(this, goalSelector);
+        EntityHelpers.addCommonPreyGoals(this, goalSelector);
     }
 
     @Override
