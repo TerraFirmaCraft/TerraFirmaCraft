@@ -918,6 +918,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
         'fluid': 'tfc:%s' % name
     })
     item.with_lang(lang('%s bucket', name))
+    rm.lang('fluid.tfc.%s' % name, lang('%s', name))
 
 
 def corals(rm: ResourceManager, color: str, dead: bool):

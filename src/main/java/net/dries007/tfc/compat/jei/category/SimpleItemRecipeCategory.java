@@ -17,9 +17,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -27,15 +24,9 @@ import net.dries007.tfc.common.recipes.SimpleItemRecipe;
 
 public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> extends BaseRecipeCategory<T>
 {
-    private final IDrawableStatic arrow;
-    private final IDrawableAnimated arrowAnimated;
-
     public SimpleItemRecipeCategory(ResourceLocation uId, IGuiHelper helper, ItemStack icon, Class<? extends T> recipeClass)
     {
         super(uId, helper, helper.createBlankDrawable(120, 38), icon, recipeClass);
-        this.arrow = helper.createDrawable(ICONS, 0, 14, 22, 16);
-        IDrawableStatic arrowAnimated = helper.createDrawable(ICONS, 22, 14, 22, 16);
-        this.arrowAnimated = helper.createAnimatedDrawable(arrowAnimated, 80, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -55,7 +46,7 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
         itemStacks.init(2, false, 84, 16);
 
         itemStacks.set(0, collapse(ingredients.getInputs(VanillaTypes.ITEM)));
-        itemStacks.set(1, Arrays.asList(Ingredient.of(getToolTag()).getItems()));
+        itemStacks.set(1, collapse(Ingredient.of(getToolTag())));
         itemStacks.set(2, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
     }
 

@@ -113,6 +113,11 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         return fluidIngredient;
     }
 
+    public List<Ingredient> getItemIngredients()
+    {
+        return itemIngredients;
+    }
+
     /**
      * @return true if the temperature is hot enough to boil
      */

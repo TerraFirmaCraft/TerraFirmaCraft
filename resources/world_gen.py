@@ -168,7 +168,7 @@ def generate(rm: ResourceManager):
         'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
+    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(80), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350))
     rm.configured_feature('loam_disc', 'tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
@@ -178,7 +178,6 @@ def generate(rm: ResourceManager):
                   [{'replace': 'tfc:clay/%s' % soil, 'with': 'tfc:clay/loam'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:clay_grass/%s' % soil, 'with': 'tfc:clay_grass/loam'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(120), decorate_square(), decorate_heightmap('world_surface_wg'), ('tfc:climate', {'min_rainfall': 400}))
 
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')

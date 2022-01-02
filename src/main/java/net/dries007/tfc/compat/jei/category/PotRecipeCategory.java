@@ -6,15 +6,12 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
-import net.minecraftforge.fluids.FluidStack;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -22,11 +19,10 @@ import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
-public class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T>
+public abstract class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T>
 {
     public PotRecipeCategory(ResourceLocation uId, IGuiHelper helper, IDrawable background, Class<? extends T> recipeClass)
     {
@@ -36,8 +32,8 @@ public class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T
     @Override
     public void setIngredients(T recipe, IIngredients ingredients)
     {
-        ingredients.setInputIngredients(recipe.getIngredients());
-        ingredients.setInputs(VanillaTypes.FLUID, recipe.getFluidIngredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, 1000)).collect(Collectors.toList()));
+        ingredients.setInputIngredients(recipe.getItemIngredients());
+        ingredients.setInputs(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
     }
 
     @Override
@@ -46,13 +42,38 @@ public class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T
         IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
-        itemStacks.init(0, true, 5, 25);
-        itemStacks.init(1, true, 25, 25);
-        itemStacks.init(2, true, 45, 25);
-        itemStacks.init(3, true, 65, 25);
-        itemStacks.init(4, true, 85, 25);
-        fluidStacks.init(5, true, 45, 45);
+        itemStacks.init(0, true, 25, 25);
+        itemStacks.init(1, true, 45, 25);
+        itemStacks.init(2, true, 65, 25);
+        itemStacks.init(3, true, 85, 25);
+        itemStacks.init(4, true, 105, 25);
+        fluidStacks.init(5, true, 6, 26);
 
-        NonNullList<Ingredient> list = recipe.getIngredients();
+        List<List<ItemStack>> inputs = ingredients.getInputs(VanillaTypes.ITEM);
+        for (int i = 0; i < inputs.size(); i++)
+        {
+            List<ItemStack> ingredientItems = inputs.get(i);
+            if (!ingredientItems.isEmpty())
+            {
+                itemStacks.set(i, inputs.get(i));
+            }
+        }
+        fluidStacks.set(5, collapse(ingredients.getInputs(VanillaTypes.FLUID)));
+    }
+
+    @Override
+    public void draw(T recipe, PoseStack stack, double mouseX, double mouseY)
+    {
+        // Water Input
+        slot.draw(stack, 5, 25);
+        // item slots
+        slot.draw(stack, 25, 25);
+        slot.draw(stack, 45, 25);
+        slot.draw(stack, 65, 25);
+        slot.draw(stack, 85, 25);
+        slot.draw(stack, 105, 25);
+        // fire
+        fire.draw(stack, 127, 27);
+        fireAnimated.draw(stack, 127, 27);
     }
 }
