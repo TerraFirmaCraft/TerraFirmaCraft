@@ -16,11 +16,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.entities.AquaticMob;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 
 public class TFCTropicalFish extends TropicalFish implements AquaticMob
 {
@@ -35,7 +35,7 @@ public class TFCTropicalFish extends TropicalFish implements AquaticMob
     {
         super.registerGoals();
         goalSelector.addGoal(1, new GetHookedGoal(this));
-        Helpers.insertTFCAvoidGoal(this, goalSelector, 2);
+        EntityHelpers.insertTFCAvoidGoal(this, goalSelector, 2);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TFCTropicalFish extends TropicalFish implements AquaticMob
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return EntityHelpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     @Override

@@ -33,10 +33,10 @@ import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.entities.AquaticMob;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 
 public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
 {
@@ -159,7 +159,7 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return EntityHelpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     @Override

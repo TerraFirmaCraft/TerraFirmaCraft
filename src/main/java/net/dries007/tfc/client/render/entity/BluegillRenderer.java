@@ -4,18 +4,17 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Salmon;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.client.model.BluegillModel;
+import net.dries007.tfc.client.model.entity.BluegillModel;
 import net.dries007.tfc.common.entities.aquatic.Bluegill;
 
 public class BluegillRenderer extends MobRenderer<Bluegill, BluegillModel>

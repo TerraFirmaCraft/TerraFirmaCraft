@@ -174,6 +174,9 @@ def generate(rm: ResourceManager):
     for color in SAND_BLOCK_TYPES:
         block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
 
+    for grain in GRAINS:
+        rm.item_tag('tfc:animal_temptations', 'tfc:food/%s_grain' % grain)
+
     # ==========
     # BLOCK TAGS
     # ==========
@@ -526,6 +529,8 @@ def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dic
 
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
+    if type(ingredient) != utils.Json:
+        rm.item_tag('tfc:pig_food', ingredient)
     rm.data(('tfc', 'food_items', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'category': category.name,

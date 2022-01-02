@@ -4,23 +4,23 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.client.model.HorseshoeCrabModel;
+import net.dries007.tfc.client.model.entity.IsopodModel;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
 
-public class HorseshoeCrabRenderer extends MobRenderer<AquaticCritterEntity, HorseshoeCrabModel>
+public class IsopodRenderer extends MobRenderer<AquaticCritterEntity, IsopodModel>
 {
-    private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("horseshoe_crab");
+    private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("isopod");
 
-    public HorseshoeCrabRenderer(EntityRendererProvider.Context ctx)
+    public IsopodRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new HorseshoeCrabModel(ctx.bakeLayer(ClientHelpers.modelIdentifier("horseshoe_crab"))), 0.3F);
+        super(ctx, new IsopodModel(ctx.bakeLayer(ClientHelpers.modelIdentifier("isopod"))), 0.3F);
     }
 
     @Override
@@ -28,4 +28,5 @@ public class HorseshoeCrabRenderer extends MobRenderer<AquaticCritterEntity, Hor
     {
         return LOCATION;
     }
+
 }

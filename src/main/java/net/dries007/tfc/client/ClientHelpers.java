@@ -17,9 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.common.entities.land.TFCAnimal;
+import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Client side methods for proxy use
@@ -70,5 +70,10 @@ public final class ClientHelpers
     public static ResourceLocation animalTexture(String name)
     {
         return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)
+    {
+        return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
     }
 }

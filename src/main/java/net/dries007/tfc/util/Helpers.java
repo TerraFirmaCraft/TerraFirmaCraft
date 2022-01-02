@@ -245,7 +245,7 @@ public final class Helpers
 
     public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
     {
-        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
+        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal<?>);
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 

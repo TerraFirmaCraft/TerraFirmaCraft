@@ -12,14 +12,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -170,9 +173,58 @@ public class IngameOverlays
         gui.left_height += 10;
     }
 
+    public static void renderFamiliarity(RenderLivingEvent.Post<?, ?> event)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        Player player = mc.player;
+
+        if (player.isShiftKeyDown() && mc.gui instanceof ForgeIngameGui gui && setup(gui, mc))
+        {
+            Entity entity = mc.crosshairPickEntity;
+            if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0)
+            {
+                if (player.closerThan(entity, 5.0F))
+                {
+                    PoseStack stack = event.getMatrixStack();
+                    stack.pushPose();
+                    stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
+
+                    final float scale = 0.0266666688F;
+                    stack.scale(-scale, -scale, -scale);
+                    stack.translate(0F, 0.25F / scale, 0.0F);
+                    stack.scale(0.5F, 0.5F, 0.5F); // manipulate this to change the size of the heart
+                    stack.mulPose(mc.getEntityRenderDispatcher().cameraOrientation());
+
+                    float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
+                    int u = 92;
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
+                    {
+                        u = 132; // Render a red-ish outline for adults that cannot be familiarized more
+                    }
+                    else if (familiarity >= 0.3F)
+                    {
+                        u = 112; // Render a white outline for the when the familiarity stopped decaying
+                    }
+                    gui.blit(stack, -8, 0, u, 40, 16, 16);
+
+                    stack.translate(0F, 0F,-0.001F);
+                    gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+
+                    stack.popPose();
+                }
+            }
+        }
+    }
+
     private static boolean setupForSurvival(ForgeIngameGui gui, Minecraft minecraft)
     {
-        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && minecraft.getCameraEntity() instanceof Player)
+        return gui.shouldDrawSurvivalElements() && setup(gui, minecraft);
+    }
+
+    private static boolean setup(ForgeIngameGui gui, Minecraft minecraft)
+    {
+        if (!minecraft.options.hideGui && minecraft.getCameraEntity() instanceof Player)
         {
             gui.setupOverlayRenderState(true, false, TEXTURE);
             return true;
