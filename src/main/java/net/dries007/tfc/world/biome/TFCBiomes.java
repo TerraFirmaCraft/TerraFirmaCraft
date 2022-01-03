@@ -18,7 +18,6 @@ import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -58,7 +57,8 @@ public final class TFCBiomes
 
     // Mid biomes
     public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.HILLS)); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder::new).spawnable().types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariants BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder.NORMAL).spawnable().types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariants INVERTED_BADLANDS = register("inverted_badlands", builder().heightmap(BiomeNoise::bryceCanyon).surface(BadlandsSurfaceBuilder.INVERTED).spawnable().types(BiomeDictionary.Type.HILLS, BiomeDictionary.Type.MESA)); // Inverted badlands: hills with additive ridges, similar to vanilla bryce canyon mesas.
     public static final BiomeVariants PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.PLATEAU)); // Very high area, very flat top.
     public static final BiomeVariants CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).spawnable().types(BiomeDictionary.Type.HILLS)); // Medium height with snake like ridges, minor volcanic activity
 

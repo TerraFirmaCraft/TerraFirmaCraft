@@ -107,6 +107,11 @@ public interface Noise2D
     {
         final float scale = (max - min) / (oldMax - oldMin);
         final float shift = min - oldMin * scale;
+        return affine(scale, shift);
+    }
+
+    default Noise2D affine(float scale, float shift)
+    {
         return (x, y) -> Noise2D.this.noise(x, y) * scale + shift;
     }
 
@@ -136,6 +141,9 @@ public interface Noise2D
         return (x, y) -> Mth.clamp(Noise2D.this.noise(x, y), min, max);
     }
 
+    /**
+     * Sum of two noises.
+     */
     default Noise2D add(Noise2D other)
     {
         return (x, y) -> Noise2D.this.noise(x, y) + other.noise(x, y);

@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.Random;
+
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
@@ -20,16 +22,15 @@ import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
 public final class BiomeNoise
 {
     /**
-     * A flat base, with inverse exponential scaled ridge noise subtracted from it
-     * Relief carving generates twisting canyons similar to vanilla mesas
+     * Generates a flat base with twisting carved canyons using many smaller terraces.
+     * Inspired by imagery of Drumheller, Alberta
      */
     public static Noise2D badlands(long seed)
     {
-        final int seaLevel = SEA_LEVEL_Y;
         return new OpenSimplex2D(seed)
             .octaves(4)
             .spread(0.025f)
-            .scaled(seaLevel + 22, seaLevel + 32)
+            .scaled(SEA_LEVEL_Y + 22, SEA_LEVEL_Y + 32)
             .add(new OpenSimplex2D(seed + 1)
                 .octaves(4)
                 .spread(0.04f)
@@ -39,7 +40,35 @@ public final class BiomeNoise
                 .terraces(15)
                 .scaled(-19.5f, 0)
             )
-            .map(x -> x < seaLevel ? seaLevel - 0.3f * (seaLevel - x) : x);
+            .map(x -> x < SEA_LEVEL_Y ? SEA_LEVEL_Y - 0.3f * (SEA_LEVEL_Y - x) : x);
+    }
+
+    /**
+     * Creates a variant of badlands with stacked pillar like structures, as opposed to relief carved.
+     * Inspired by imagery of Bryce Canyon, Utah.
+     */
+    public static Noise2D bryceCanyon(long seed)
+    {
+        final Random generator = new Random(seed);
+
+        Noise2D noise = new OpenSimplex2D(generator.nextLong()).octaves(4).spread(0.1f).scaled(SEA_LEVEL_Y + 2, SEA_LEVEL_Y + 14);
+        for (int layer = 0; layer < 3; layer++)
+        {
+            final float threshold = 0.25f;
+            final float delta = 0.015f;
+
+            noise = noise.add(new OpenSimplex2D(generator.nextLong())
+                .octaves(3)
+                .spread(0.02f + 0.01f * layer)
+                .abs()
+                .affine(1, -0.05f * layer)
+                .map(t -> Mth.clampedMap(t, threshold, threshold + delta, 0, 1))
+                .lazyProduct(new OpenSimplex2D(generator.nextLong())
+                    .octaves(4)
+                    .spread(0.1f)
+                    .scaled(5, 11)));
+        }
+        return noise;
     }
 
     /**

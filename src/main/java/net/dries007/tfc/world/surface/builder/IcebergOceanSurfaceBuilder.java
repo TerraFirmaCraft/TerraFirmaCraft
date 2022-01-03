@@ -45,7 +45,7 @@ public class IcebergOceanSurfaceBuilder implements SurfaceBuilder
         final BlockState snowBlock = Blocks.SNOW_BLOCK.defaultBlockState();
 
         final int seaLevel = context.getSeaLevel();
-        final RandomSource random = context.getRandom();
+        final RandomSource random = context.random();
 
         double icebergMaxY = 0.0D;
         double icebergMinY = 0.0D;

@@ -167,7 +167,7 @@ public class SurfaceBuilderContext
         return chunkData;
     }
 
-    public RandomSource getRandom()
+    public RandomSource random()
     {
         return random;
     }

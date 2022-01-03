@@ -3,12 +3,6 @@
   "feature": "tfc:plant/snowberry_bush",
   "placement": [
     {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:air_or_empty_fluid"
-      }
-    },
-    {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
     },

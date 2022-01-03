@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -67,8 +69,15 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.surface.SurfaceManager;
+import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 import static net.minecraft.ChatFormatting.*;
 

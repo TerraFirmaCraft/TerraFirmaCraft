@@ -865,7 +865,12 @@ public final class Helpers
 
     public static float easeInOutCubic(float x)
     {
-        return (float) (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+        return x < 0.5f ? 4 * x * x * x : 1 - cube(-2 * x + 2) / 2;
+    }
+
+    public static float cube(float x)
+    {
+        return x * x * x;
     }
 
     /**

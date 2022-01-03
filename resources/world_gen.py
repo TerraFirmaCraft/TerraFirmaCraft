@@ -85,6 +85,7 @@ def generate(rm: ResourceManager):
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
             make_biome(rm, 'badlands', temp, rain, 'mesa', lake_features=False)
+            make_biome(rm, 'inverted_badlands', temp, rain, 'mesa', lake_features=False)
             make_biome(rm, 'canyons', temp, rain, 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
             make_biome(rm, 'low_canyons', temp, rain, 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
             make_biome(rm, 'plains', temp, rain, 'plains')
@@ -1141,7 +1142,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
     # Continental / Land Features
     if land_features:
-        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:loam_disc']
+        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc']
         if temp.id in ('cold', 'frozen'):
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
