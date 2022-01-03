@@ -129,6 +129,9 @@ def generate(rm: ResourceManager):
         rm.placed_feature('iceberg_%s' % block, 'tfc:iceberg_%s' % block, decorate_chance(14), decorate_square(), decorate_climate(max_temp=-23))
         rm.placed_feature('iceberg_%s_rare' % block, 'tfc:iceberg_%s_rare' % block, decorate_chance(30), decorate_square(), decorate_climate(max_temp=-18))
 
+    rm.configured_feature('powder_snow', 'tfc:powder_snow', {'state': utils.block_state('minecraft:powder_snow')})
+    rm.placed_feature('powder_snow', 'tfc:powder_snow', decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(max_temp=-17), 'tfc:flat_enough')
+
     rm.configured_feature('flood_fill_lake', 'tfc:flood_fill_lake', {
         'state': 'minecraft:water',
         'replace_fluids': [],
@@ -168,7 +171,8 @@ def generate(rm: ResourceManager):
         'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
+    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(80), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350), decorate_biome())
+
     rm.configured_feature('loam_disc', 'tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
@@ -178,7 +182,7 @@ def generate(rm: ResourceManager):
                   [{'replace': 'tfc:clay/%s' % soil, 'with': 'tfc:clay/loam'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:clay_grass/%s' % soil, 'with': 'tfc:clay_grass/loam'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(120), decorate_square(), decorate_heightmap('world_surface_wg'), ('tfc:climate', {'min_rainfall': 400}))
+    rm.placed_feature('loam_disc', 'tfc:loam_disc', decorate_chance(200), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=400, min_temp=0), decorate_biome())
 
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')
@@ -454,6 +458,23 @@ def generate(rm: ResourceManager):
     })
     rm.placed_feature('cave_vegetation', 'tfc:cave_vegetation', decorate_climate(16, 32, 150, 470, fuzzy=True), decorate_carving_mask(15, 100), decorate_chance(0.01))
 
+    rm.configured_feature('hanging_roots', 'minecraft:simple_block', {'to_place': simple_state_provider('minecraft:hanging_roots[waterlogged=false]')})
+    rm.placed_feature('hanging_roots', 'tfc:hanging_roots', decorate_air_or_empty_fluid(), decorate_would_survive('minecraft:hanging_roots[waterlogged=false]'))
+    rm.configured_feature('hanging_roots_patch', 'minecraft:vegetation_patch', {
+        'type': 'minecraft:vegetation_patch',
+        'vegetation_chance': 0.08,
+        'xz_radius': uniform_int(4, 7),
+        'extra_edge_column_chance': 0.3,
+        'extra_bottom_block_chance': 0.0,
+        'vertical_range': 5,
+        'vegetation_feature': 'tfc:hanging_roots',
+        'surface': 'ceiling',
+        'depth': uniform_int(1, 2),
+        'replaceable': 'minecraft:base_stone_overworld',
+        'ground_state': simple_state_provider('tfc:rooted_dirt/silt')
+    })
+    rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_rain=300, min_temp=0), decorate_biome())
+
     # Plants
     configured_plant_patch_feature(rm, ('plant', 'allium'), plant_config('tfc:plant/allium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, -2, 150, 400, min_forest='edge', max_forest='normal'))
     configured_plant_patch_feature(rm, ('plant', 'badderlocks'), plant_config('tfc:plant/badderlocks[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(-18, 2, 150, 500))
@@ -483,6 +504,8 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'marigold'), plant_config('tfc:plant/marigold[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(-8, 18, 50, 390))
     configured_plant_patch_feature(rm, ('plant', 'meads_milkweed'), plant_config('tfc:plant/meads_milkweed[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 2, 130, 380))
     configured_plant_patch_feature(rm, ('plant', 'milfoil'), plant_config('tfc:plant/milfoil[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(-14, 22, 250, 500))
+    configured_plant_patch_feature(rm, ('plant', 'morning_glory'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(-11, 19, 300, 500))
+    configured_plant_patch_feature(rm, ('plant', 'moss'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(-7, 30, 250, 450))
     configured_plant_patch_feature(rm, ('plant', 'nasturtium'), plant_config('tfc:plant/nasturtium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(6, 22, 150, 380))
     configured_plant_patch_feature(rm, ('plant', 'ostrich_fern'), plant_config('tfc:plant/ostrich_fern[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(8), decorate_square(), decorate_climate(-14, 6, 290, 470, min_forest='edge', max_forest='old_growth'))
     configured_plant_patch_feature(rm, ('plant', 'oxeye_daisy'), plant_config('tfc:plant/oxeye_daisy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-14, 10, 120, 300, min_forest='none', max_forest='edge'))
@@ -490,6 +513,8 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'poppy'), plant_config('tfc:plant/poppy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-12, 14, 150, 250))
     configured_plant_patch_feature(rm, ('plant', 'primrose'), plant_config('tfc:plant/primrose[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-8, 10, 150, 300, min_forest='edge', max_forest='normal'))
     configured_plant_patch_feature(rm, ('plant', 'pulsatilla'), plant_config('tfc:plant/pulsatilla[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 2, 50, 200))
+    configured_plant_patch_feature(rm, ('plant', 'reindeer_lichen'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(10, 33, 50, 470))
+    configured_plant_patch_feature(rm, ('plant', 'rose'), plant_config('tfc:plant/rose[age=1,stage=1,part=lower]', 1, 15, 128, True, tall_plant=True), decorate_square(), decorate_climate(-5, 20, 150, 300))
     configured_plant_patch_feature(rm, ('plant', 'sacred_datura'), plant_config('tfc:plant/sacred_datura[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(4, 18, 75, 150))
     configured_plant_patch_feature(rm, ('plant', 'sago'), plant_config('tfc:plant/sago[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(-18, 18, 200, 500))
     configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 14, 0, 120))
@@ -556,9 +581,9 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'raddia_grass'), plant_config('tfc:plant/raddia_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_climate(18, 40, 330, 500))
 
     # Covers
-    configured_plant_patch_feature(rm, ('plant', 'moss_cover'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_count(4), decorate_square())
-    configured_plant_patch_feature(rm, ('plant', 'morning_glory_cover'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_count(4), decorate_square())
-    configured_plant_patch_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-6, 2, 220, 310, True, fuzzy=True), decorate_count(4), decorate_square())
+    configured_noise_plant_feature(rm, ('plant', 'moss_cover'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_square(), water=False)
+    configured_noise_plant_feature(rm, ('plant', 'morning_glory_cover'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_square(), water=False)
+    configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-6, 2, 220, 310, True, fuzzy=True), decorate_square(), water=False)
 
     # Clay Indicator Plants
     # These piggy back on the clay disc feature, and so have limited decorators
@@ -765,10 +790,13 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
     rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap))
 
-def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
+def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json, water: bool = True):
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
     singular_feature = utils.resource_location(rm.domain, name_parts)
+    placed_decorators = [decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(config.block)]
+    if water:
+        placed_decorators.append(decorate_shallow())
 
     rm.configured_feature(singular_feature, 'minecraft:simple_block', {
         'to_place': {
@@ -789,10 +817,13 @@ def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIden
         'feature': singular_feature.join()
     })
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
-    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(config.block), decorate_shallow())
+    rm.placed_feature(singular_feature, singular_feature, *placed_decorators)
 
 def normal_noise(first_octave: int, amplitude: float):
     return {'firstOctave': first_octave, 'amplitudes': [amplitude]}
+
+def simple_state_provider(name: str) -> Dict[str, Any]:
+    return {'type': 'minecraft:simple_state_provider', 'state': utils.block_state(name)}
 
 # Vein Helper Functions
 
@@ -950,6 +981,18 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'fuzzy': fuzzy
     }
 
+def decorate_scanner(direction: str, max_steps: int) -> Json:
+    return {
+        'type': 'minecraft:environment_scan',
+        'max_steps': max_steps,
+        'direction_of_search': direction,
+        'target_condition': {'type': 'minecraft:solid'},
+        'allowed_search_condition': {'type': 'minecraft:matching_blocks', 'blocks': ['minecraft:air']}
+    }
+
+def decorate_random_offset(xz: int, y: int) -> Json:
+    return {'xz_spread': xz, 'y_spread': y, 'type': 'minecraft:random_offset'}
+
 def decorate_would_survive(block: str) -> Json:
     return decorate_block_predicate({
         'type': 'would_survive',
@@ -979,6 +1022,15 @@ def uniform_float(min_inclusive: float, max_exclusive: float) -> Dict[str, Any]:
         'value': {
             'min_inclusive': min_inclusive,
             'max_exclusive': max_exclusive
+        }
+    }
+
+def uniform_int(min_inclusive: int, max_inclusive: int) -> Dict[str, Any]:
+    return {
+        'type': 'uniform',
+        'value': {
+            'min_inclusive': min_inclusive,
+            'max_inclusive': max_inclusive
         }
     }
 
@@ -1039,7 +1091,8 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
          'tfc:mega_calcite',
          'tfc:icicle',
          'tfc:underground_loose_rocks',
-         'tfc:underground_guano'],  # underground decoration
+         'tfc:underground_guano',
+         'tfc:hanging_roots_patch'],  # underground decoration
         [],  # large features
         ['tfc:surface_loose_rocks'],  # surface decoration
         [], []  # unused
@@ -1076,7 +1129,9 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
     # Continental / Land Features
     if land_features:
-        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc']
+        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:loam_disc']
+        if temp.id in ('cold', 'frozen'):
+            features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES]
 

@@ -25,7 +25,8 @@ public enum SoilBlockType
     GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
     CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).blockEntity(TFCBlockEntities.FARMLAND), variant));
+    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).blockEntity(TFCBlockEntities.FARMLAND), variant)),
+    ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.ROOTED_DIRT), self.transform(), variant));
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -54,7 +55,7 @@ public enum SoilBlockType
         return switch (this)
             {
                 case DIRT -> GRASS;
-                case GRASS, GRASS_PATH, FARMLAND -> DIRT;
+                case GRASS, GRASS_PATH, FARMLAND, ROOTED_DIRT -> DIRT;
                 case CLAY -> CLAY_GRASS;
                 case CLAY_GRASS -> CLAY;
             };

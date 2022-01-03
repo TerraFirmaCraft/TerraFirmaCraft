@@ -78,6 +78,7 @@ public class TFCFeatures
 
     public static final RegistryObject<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);
     public static final RegistryObject<TFCIcebergFeature> ICEBERG = register("iceberg", TFCIcebergFeature::new, BlockStateConfiguration.CODEC);
+    public static final RegistryObject<PowderSnowFeature> POWDER_SNOW = register("powder_snow", PowderSnowFeature::new, BlockStateConfiguration.CODEC);
 
     public static final RegistryObject<MultipleFeature> MULTIPLE = register("multiple", MultipleFeature::new, MultipleConfig.CODEC);
 

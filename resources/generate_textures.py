@@ -154,6 +154,9 @@ def main():
         overlay_image('texture_templates/mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
         overlay_image('texture_templates/mossy_cobblestone', path + 'block/rock/cobble/%s' % rock, path + 'block/rock/mossy_cobble/%s' % rock)
 
+    for soil in SOIL_BLOCK_VARIANTS:
+        overlay_image('texture_templates/rooted_dirt', 'texture_templates/dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
+
 
 if __name__ == '__main__':
     main()
