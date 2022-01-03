@@ -129,7 +129,7 @@ public final class BiomeNoise
      */
     public static Noise2D lowlands(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL_Y - 8, SEA_LEVEL_Y + 7).flattened(SEA_LEVEL_Y - 6, SEA_LEVEL_Y + 3);
+        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL_Y - 8, SEA_LEVEL_Y + 7).clamped(SEA_LEVEL_Y - 6, SEA_LEVEL_Y + 3);
     }
 
     public static Noise2D mountains(long seed, int baseHeight, int scaleHeight)
@@ -151,17 +151,17 @@ public final class BiomeNoise
         // Cliff noise consists of noise that's been artificially clamped over half the domain, which is then selectively added above a base height level
         // This matches up with the distinction between dirt and stone
         final Noise2D cliffNoise = new OpenSimplex2D(seed + 2).octaves(2).spread(0.01f).scaled(-25, 25).map(x -> x > 0 ? x : 0);
-        final Noise2D cliffHeightNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.01f).scaled(-20, 20);
+        final Noise2D cliffHeightNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.01f).scaled(140 - 20, 140 + 20);
 
         return (x, z) -> {
             float height = baseNoise.noise(x, z);
             if (height > 120) // Only sample each cliff noise layer if the base noise could be influenced by it
             {
-                float cliffHeight = cliffHeightNoise.noise(x, z);
-                if (height > 140 + cliffHeight)
+                final float cliffHeight = cliffHeightNoise.noise(x, z) - height;
+                if (cliffHeight < 0)
                 {
-                    float cliff = cliffNoise.noise(x, z);
-                    return (height + cliff);
+                    final float mappedCliffHeight = Mth.clampedMap(cliffHeight, 0, -1, 0, 1);
+                    height += mappedCliffHeight * cliffNoise.noise(x, z);
                 }
             }
             return height;

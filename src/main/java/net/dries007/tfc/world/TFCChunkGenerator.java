@@ -54,7 +54,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         RegistryLookupCodec.create(Registry.NOISE_REGISTRY).forGetter(c -> c.parameters),
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, Function.identity()).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
-        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
+        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> () -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
@@ -252,7 +252,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     // Properties set from codec
     private final Registry<NormalNoise.NoiseParameters> parameters;
     private final TFCBiomeSource customBiomeSource; // narrowed type from superclass
-    private final Supplier<NoiseGeneratorSettings> settings;
+    private final NoiseGeneratorSettings settings; // Supplier is resolved in constructor
     private final boolean flatBedrock;
     private final long seed;
 
@@ -264,15 +264,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
 
-    @Nullable private NoiseGeneratorSettings cachedSettings;
-
     public TFCChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Supplier<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
     {
         super(biomeSource, settings.get().structureSettings());
 
         this.parameters = parameters;
-        this.settings = settings;
-        this.cachedSettings = null;
+        this.settings = settings.get();
         this.customBiomeSource = biomeSource;
         this.flatBedrock = flatBedrock;
         this.seed = seed;
@@ -292,15 +289,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return chunkDataProvider;
     }
 
-    public NoiseGeneratorSettings getNoiseGeneratorSettings()
-    {
-        if (cachedSettings == null)
-        {
-            cachedSettings = settings.get();
-        }
-        return cachedSettings;
-    }
-
     @Override
     protected Codec<TFCChunkGenerator> codec()
     {
@@ -310,7 +298,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public ChunkGenerator withSeed(long seed)
     {
-        return new TFCChunkGenerator(parameters, customBiomeSource.withSeed(seed), settings, flatBedrock, seed);
+        return new TFCChunkGenerator(parameters, customBiomeSource.withSeed(seed), () -> settings, flatBedrock, seed);
     }
 
     @Override
@@ -472,7 +460,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public int getMinY()
     {
-        return getNoiseGeneratorSettings().noiseSettings().minY();
+        return settings.noiseSettings().minY();
     }
 
     @Override
@@ -533,14 +521,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
     {
-        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();;
+        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final RockData rockData = chunkDataProvider.get(chunk).getRockData();
         return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeIgnoreClimate);
     }
 
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)
     {
-        final NoiseSettings noiseSettings = getNoiseGeneratorSettings().noiseSettings();
+        final NoiseSettings noiseSettings = settings.noiseSettings();
         final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
 
         final int cellWidth = noiseSettings.getCellWidth();
