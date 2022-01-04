@@ -86,7 +86,9 @@
       "tfc:underground_guano",
       "tfc:hanging_roots_patch"
     ],
-    [],
+    [
+      "tfc:geode"
+    ],
     [
       "tfc:surface_loose_rocks",
       "tfc:plant/manatee_grass_patch",

@@ -17,6 +17,12 @@
       "chance": 333
     },
     {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:air_or_empty_fluid"
+      }
+    },
+    {
       "type": "tfc:climate",
       "min_temperature": 16,
       "max_temperature": 32,

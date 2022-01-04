@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"0": "tfc:block/plant/giant_kelp/flower",
 		"1": "tfc:block/plant/giant_kelp/petal",
