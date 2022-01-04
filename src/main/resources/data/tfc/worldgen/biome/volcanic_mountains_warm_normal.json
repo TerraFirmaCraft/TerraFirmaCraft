@@ -29,7 +29,8 @@
     [
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
-      "tfc:peat_disc"
+      "tfc:peat_disc",
+      "tfc:loam_disc"
     ],
     [
       "tfc:vein/gravel",
@@ -88,9 +89,11 @@
       "tfc:mega_calcite",
       "tfc:icicle",
       "tfc:underground_loose_rocks",
-      "tfc:underground_guano"
+      "tfc:underground_guano",
+      "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:forest",
       "tfc:bamboo",
       "tfc:cave_vegetation",

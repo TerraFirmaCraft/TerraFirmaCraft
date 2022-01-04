@@ -83,9 +83,11 @@
       "tfc:mega_calcite",
       "tfc:icicle",
       "tfc:underground_loose_rocks",
-      "tfc:underground_guano"
+      "tfc:underground_guano",
+      "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:iceberg_packed",
       "tfc:iceberg_blue",
       "tfc:iceberg_packed_rare",

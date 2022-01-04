@@ -3,21 +3,41 @@
   "type": "minecraft:simple_block",
   "config": {
     "to_place": {
-      "type": "tfc:random_property",
-      "state": {
-        "Name": "tfc:plant/reindeer_lichen",
-        "Properties": {
-          "age": "1",
-          "stage": "1",
-          "up": "false",
-          "down": "true",
-          "north": "false",
-          "east": "false",
-          "west": "false",
-          "south": "false"
-        }
+      "seed": 2345,
+      "noise": {
+        "firstOctave": -3,
+        "amplitudes": [
+          1.0
+        ]
       },
-      "property": "age"
+      "scale": 1.0,
+      "states": [
+        {
+          "Name": "tfc:plant/reindeer_lichen",
+          "Properties": {
+            "age": "1",
+            "stage": "1",
+            "up": "false",
+            "down": "true",
+            "north": "false",
+            "east": "false",
+            "west": "false",
+            "south": "false"
+          }
+        }
+      ],
+      "variety": [
+        1,
+        1
+      ],
+      "slow_noise": {
+        "firstOctave": -10,
+        "amplitudes": [
+          1.0
+        ]
+      },
+      "slow_scale": 1.0,
+      "type": "minecraft:dual_noise_provider"
     }
   }
 }

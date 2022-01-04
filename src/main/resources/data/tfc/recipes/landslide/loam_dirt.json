@@ -5,7 +5,8 @@
     "tfc:dirt/loam",
     "tfc:grass/loam",
     "tfc:grass_path/loam",
-    "tfc:farmland/loam"
+    "tfc:farmland/loam",
+    "tfc:rooted_dirt/loam"
   ],
   "result": "tfc:dirt/loam"
 }

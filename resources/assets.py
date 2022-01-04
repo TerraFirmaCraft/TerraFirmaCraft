@@ -239,6 +239,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
+    wattle_variants = {}
+    for i in range(0, 3):
+        wattle_variants.update(four_rotations('tfc:block/wattle_%d' % i, (270, 180, None, 90), suffix=',stage=%d' % i))
+    rm.item_model('wattle', parent='tfc:block/wattle_0', no_textures=True)
+    rm.blockstate('wattle', variants=wattle_variants).with_lang(lang('Wattle')).with_block_loot({'name': 'minecraft:stick', 'functions': [loot_tables.set_count(1, 3)]})
+
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
@@ -294,10 +300,8 @@ def generate(rm: ResourceManager):
     for soil in SOIL_BLOCK_VARIANTS:
         # Regular Dirt
         block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
-        block.with_block_model()
-        block.with_item_model()
-        block.with_block_loot('tfc:dirt/%s' % soil)
-        block.with_lang(lang('%s Dirt', soil))
+        block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
+        rm.blockstate(('rooted_dirt', soil)).with_block_model().with_item_model().with_block_loot('tfc:rooted_dirt/%s' % soil).with_lang(lang('Rooted %s', soil))
 
         # Clay Dirt
         block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)

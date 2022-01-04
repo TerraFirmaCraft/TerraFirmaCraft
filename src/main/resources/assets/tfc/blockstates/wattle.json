@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east,stage=0": {
+      "model": "tfc:block/wattle_0",
+      "y": 270
+    },
+    "facing=north,stage=0": {
+      "model": "tfc:block/wattle_0",
+      "y": 180
+    },
+    "facing=south,stage=0": {
+      "model": "tfc:block/wattle_0"
+    },
+    "facing=west,stage=0": {
+      "model": "tfc:block/wattle_0",
+      "y": 90
+    },
+    "facing=east,stage=1": {
+      "model": "tfc:block/wattle_1",
+      "y": 270
+    },
+    "facing=north,stage=1": {
+      "model": "tfc:block/wattle_1",
+      "y": 180
+    },
+    "facing=south,stage=1": {
+      "model": "tfc:block/wattle_1"
+    },
+    "facing=west,stage=1": {
+      "model": "tfc:block/wattle_1",
+      "y": 90
+    },
+    "facing=east,stage=2": {
+      "model": "tfc:block/wattle_2",
+      "y": 270
+    },
+    "facing=north,stage=2": {
+      "model": "tfc:block/wattle_2",
+      "y": 180
+    },
+    "facing=south,stage=2": {
+      "model": "tfc:block/wattle_2"
+    },
+    "facing=west,stage=2": {
+      "model": "tfc:block/wattle_2",
+      "y": 90
+    }
+  }
+}
