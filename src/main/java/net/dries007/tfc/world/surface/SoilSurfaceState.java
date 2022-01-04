@@ -14,6 +14,7 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
+// todo: add loam in the center region, sand - sand/sandy - sandy - [NEW sandy/loam - loam - silty/loam] - silty - silty/silt - silt
 public class SoilSurfaceState implements SurfaceState
 {
     public static final float RAINFALL_SAND = 75;
