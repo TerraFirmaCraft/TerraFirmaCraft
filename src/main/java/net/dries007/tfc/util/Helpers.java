@@ -289,11 +289,12 @@ public final class Helpers
 
     public static <T extends Comparable<T>> BlockState copyProperty(BlockState copyTo, BlockState copyFrom, Property<T> property)
     {
-        if (copyTo.hasProperty(property))
-        {
-            return copyTo.setValue(property, copyFrom.getValue(property));
-        }
-        return copyTo;
+        return copyTo.hasProperty(property) ? copyTo.setValue(property, copyFrom.getValue(property)) : copyTo;
+    }
+
+    public static <T extends Comparable<T>> BlockState setProperty(BlockState state, Property<T> property, T value)
+    {
+        return state.hasProperty(property) ? state.setValue(property, value) : state;
     }
 
     public static void damageCraftingItem(ItemStack stack, int amount)
