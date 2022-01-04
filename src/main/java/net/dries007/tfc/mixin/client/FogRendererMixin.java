@@ -7,9 +7,11 @@
 package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.CubicSampler;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
@@ -56,9 +58,13 @@ public abstract class FogRendererMixin
     private static CubicSampler.Vec3Fetcher setupColorGetFogColorWithColormap(CubicSampler.Vec3Fetcher fetcher)
     {
         return (x, y, z) -> {
-            final Level level = setupColorClientLevel.get();
+            final ClientLevel level = setupColorClientLevel.get();
+            final Minecraft mc = Minecraft.getInstance();
+            final float timeScaled = Mth.clamp(Mth.cos(level.getTimeOfDay(mc.getFrameTime()) * ((float)Math.PI * 2F)) * 2.0F + 0.5F, 0.0F, 1.0F);
+
             final Biome biome = level.getBiomeManager().getNoiseBiomeAtQuart(x, y, z);
-            return Vec3.fromRGB24(TFCColors.getFogColor(level, biome, Helpers.quartToBlock(x, y, z)));
+            final Vec3 color = Vec3.fromRGB24(TFCColors.getFogColor(level, biome, Helpers.quartToBlock(x, y, z)));
+            return level.effects().getBrightnessDependentFogColor(color, timeScaled);
         };
     }
 }

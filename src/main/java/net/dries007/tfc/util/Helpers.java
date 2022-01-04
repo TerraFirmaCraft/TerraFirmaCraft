@@ -33,7 +33,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.util.Mth;
@@ -51,15 +50,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
@@ -241,41 +237,6 @@ public final class Helpers
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
         }
         entity.fallDistance = 0;
-    }
-
-    public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
-    {
-        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal<?>);
-        selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
-    }
-
-    /**
-     * Fluid Sensitive version of Bucketable#bucketMobPickup
-     */
-    public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity)
-    {
-        ItemStack held = player.getItemInHand(hand);
-        ItemStack bucketItem = entity.getBucketItemStack();
-        if (bucketItem.getItem() instanceof MobBucketItem mobBucket && held.getItem() instanceof BucketItem heldBucket)
-        {
-            // Verify that the one you're holding and the corresponding mob bucket contain the same fluid
-            if (mobBucket.getFluid().isSame(heldBucket.getFluid()) && entity.isAlive())
-            {
-                entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
-                entity.saveToBucketTag(bucketItem);
-                ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
-                player.setItemInHand(hand, itemstack2);
-                Level level = entity.level;
-                if (!level.isClientSide)
-                {
-                    CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
-                }
-
-                entity.discard();
-                return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
-            }
-        }
-        return Optional.empty();
     }
 
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
@@ -830,6 +791,11 @@ public final class Helpers
     public static float triangle(RandomSource random, float delta)
     {
         return (random.nextFloat() - random.nextFloat()) * delta;
+    }
+
+    public static float easeInOutCubic(float x)
+    {
+        return (float) (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
     }
 
     /**

@@ -54,6 +54,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
     public static final float DEPTH_LEVEL = -64;
 
+    public static final int FOGGY_DAY_RARITY = 30; // days between foggy days on average
+    public static final float FOGGY_RAINFALL_MINIMUM = 250f;
+
 
     static final OverworldClimateModel INSTANCE = new OverworldClimateModel();
 
@@ -114,6 +117,38 @@ public class OverworldClimateModel implements WorldGenClimateModel
         final ICalendar calendar = Calendars.get(level);
         final float temperature = getTemperature(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
         return temperature < 0 ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
+    }
+
+    @Override
+    public float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        // seed as if we're 2 hours in the future, in order to start the cycle at 4am (2 hours before sunrise)
+        final long day = ICalendar.getTotalDays(calendarTime + (2 * ICalendar.TICKS_IN_HOUR));
+        final Random random = new Random(day);
+        if (random.nextInt(FOGGY_DAY_RARITY) != 0) return 0;
+        if (getRainfall(level, pos) < FOGGY_RAINFALL_MINIMUM) return 0;
+        final float value = random.nextFloat(); // untransformed value of the fog
+
+        final long dayTime = Calendars.get(level).getCalendarDayTime();
+        float scaledTime; // a value between 0 and 1
+        if (dayTime > 22000) // 4am to 6am
+        {
+            scaledTime = Mth.map(dayTime, 22000F, 24000F, 0F, 1F);
+        }
+        else if (dayTime >= 0 && dayTime < 4000) // 6am to 10am
+        {
+            scaledTime = 1;
+        }
+        else if (dayTime >= 4000 && dayTime < 6000) // 10am to 12pm
+        {
+            scaledTime = 1 - Mth.map(dayTime, 4000F, 6000F, 0F, 1F);
+        }
+        else // 12pm to 4am
+        {
+            scaledTime = 0;
+        }
+
+        return Helpers.easeInOutCubic(scaledTime) * value;
     }
 
     @Override

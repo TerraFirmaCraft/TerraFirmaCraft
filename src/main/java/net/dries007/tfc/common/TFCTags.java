@@ -115,6 +115,7 @@ public class TFCTags
         public static final Tag.Named<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final Tag.Named<Item> FOODS = create("foods");
         public static final Tag.Named<Item> PIG_FOOD = create("pig_food");
+        public static final Tag.Named<Item> WATTLE_STICKS = create("wattle_sticks");
 
         private static Tag.Named<Item> create(String id)
         {
