@@ -94,6 +94,7 @@
       "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
       "tfc:forest",

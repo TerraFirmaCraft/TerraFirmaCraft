@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"0": "tfc:block/wattle_frame",
 		"particle": "tfc:block/wattle_frame"

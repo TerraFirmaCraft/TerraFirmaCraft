@@ -93,6 +93,7 @@
       "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:forest",
       "tfc:bamboo",
       "tfc:cave_vegetation"

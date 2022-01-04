@@ -87,6 +87,7 @@
       "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:iceberg_packed",
       "tfc:iceberg_blue",
       "tfc:iceberg_packed_rare",

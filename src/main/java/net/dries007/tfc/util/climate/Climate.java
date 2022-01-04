@@ -91,7 +91,7 @@ public final class Climate
 
     public static float getFogginess(Level level, BlockPos pos)
     {
-        return model(level).getFogginess(level, pos, Calendars.get(level).getCalendarDayTime());
+        return model(level).getFogginess(level, pos, Calendars.get(level).getTicks());
     }
 
     /**
