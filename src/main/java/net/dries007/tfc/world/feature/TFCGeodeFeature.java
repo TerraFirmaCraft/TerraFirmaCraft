@@ -17,42 +17,42 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.FluidState;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.rock.Ore;
-import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCGeodeFeature extends Feature<NoneFeatureConfiguration>
+/**
+ * {@link net.minecraft.world.level.levelgen.feature.GeodeFeature but with less junk}
+ */
+public class TFCGeodeFeature extends Feature<TFCGeodeConfig>
 {
-    public TFCGeodeFeature(Codec<NoneFeatureConfiguration> codec)
+    public TFCGeodeFeature(Codec<TFCGeodeConfig> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
+    public boolean place(FeaturePlaceContext<TFCGeodeConfig> context)
     {
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
-        Random random = context.random();
-        WorldgenRandom worldgenrandom = new WorldgenRandom(new XoroshiroRandomSource(level.getSeed()));
-        NormalNoise normalnoise = NormalNoise.create(worldgenrandom, -4, 1.0D);
+        final WorldGenLevel level = context.level();
+        final BlockPos origin = context.origin();
+        final Random random = context.random();
+        final TFCGeodeConfig config = context.config();
+        final WorldgenRandom worldgenrandom = new WorldgenRandom(new XoroshiroRandomSource(level.getSeed()));
+        final NormalNoise normalnoise = NormalNoise.create(worldgenrandom, -4, 1.0D);
         boolean cracked = (double) random.nextFloat() < 0.95F;
         List<Pair<BlockPos, Integer>> list = Lists.newLinkedList();
         List<BlockPos> crackBlocks = Lists.newLinkedList();
 
-        UniformInt outerWall = UniformInt.of(4, 6);
-        UniformInt pointOffset = UniformInt.of(1, 2);
-        int distributionPoint = UniformInt.of(3, 4).sample(random);
-        double relativeDistributionPoint = (double)distributionPoint / (double)outerWall.getMaxValue();
+        final UniformInt outerWall = UniformInt.of(4, 6);
+        final UniformInt pointOffset = UniformInt.of(1, 2);
+        final int distributionPoint = UniformInt.of(3, 4).sample(random);
+        final double relativeDistributionPoint = (double) distributionPoint / (double) outerWall.getMaxValue();
 
-        double fillLimit = 1.0D / Math.sqrt(1.7);
+        double fillLimit = 1.0D / Math.sqrt(1.7); // mojang magic numbers
         double innerLimit = 1.0D / Math.sqrt(2.2 + relativeDistributionPoint);
         double middleLimit = 1.0D / Math.sqrt(3.2 + relativeDistributionPoint);
         double outerLimit = 1.0D / Math.sqrt(4.2 + relativeDistributionPoint);
@@ -104,7 +104,7 @@ public class TFCGeodeFeature extends Feature<NoneFeatureConfiguration>
             }
         }
 
-        Predicate<BlockState> predicate = isReplaceable(BlockTags.FEATURES_CANNOT_REPLACE.getName());
+        final Predicate<BlockState> predicate = isReplaceable(BlockTags.FEATURES_CANNOT_REPLACE.getName());
 
         for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-16, -16, -16), origin.offset(16, 16, 16)))
         {
@@ -144,16 +144,15 @@ public class TFCGeodeFeature extends Feature<NoneFeatureConfiguration>
                 }
                 else if (pointAt >= innerLimit)
                 {
-                    this.safeSetBlock(level, pos, TFCBlocks.ORES.get(Rock.QUARTZITE).get(Ore.AMETHYST).get().defaultBlockState(), predicate);
-
+                    this.safeSetBlock(level, pos, config.inner().getRandomValue(random).orElseThrow(), predicate);
                 }
                 else if (pointAt >= middleLimit)
                 {
-                    this.safeSetBlock(level, pos, TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get().defaultBlockState(), predicate);
+                    this.safeSetBlock(level, pos, config.middle(), predicate);
                 }
                 else if (pointAt >= outerLimit)
                 {
-                    this.safeSetBlock(level, pos, TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState(), predicate);
+                    this.safeSetBlock(level, pos, config.outer(), predicate);
                 }
             }
         }

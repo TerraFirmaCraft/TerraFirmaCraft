@@ -673,8 +673,10 @@ def generate(rm: ResourceManager):
     # todo: underground only filter decorator?
     configured_placed_feature(rm, 'underground_loose_rocks', 'tfc:loose_rock', decorate_carving_mask(), decorate_chance(0.05))
     configured_patch_feature(rm, 'underground_guano', patch_config('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), decorate_square(), decorate_range(40, 100))
-    rm.configured_feature('geode', 'tfc:geode', {})
-    rm.placed_feature('geode', 'tfc:geode', decorate_chance(80), decorate_square(), decorate_range(6, 30), decorate_biome())
+    rm.configured_feature('geode', 'tfc:geode', {'outer': 'tfc:rock/hardened/basalt', 'middle': 'tfc:rock/raw/quartzite', 'inner': [
+        {'data': 'tfc:ore/amethyst/quartzite', 'weight': 1}, {'data': 'tfc:rock/raw/quartzite', 'weight': 5}
+    ]})
+    rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
     res = utils.resource_location(rm.domain, name_parts)
