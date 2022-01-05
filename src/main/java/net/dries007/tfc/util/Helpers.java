@@ -293,7 +293,7 @@ public final class Helpers
         return state.hasProperty(property) ? state.setValue(property, value) : state;
     }
 
-    public static void damageCraftingItem(ItemStack stack, int amount)
+    public static ItemStack damageCraftingItem(ItemStack stack, int amount)
     {
         Player player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
         if (player != null)
@@ -304,6 +304,7 @@ public final class Helpers
         {
             damageItem(stack, amount);
         }
+        return stack;
     }
 
     /**
@@ -311,16 +312,49 @@ public final class Helpers
      */
     public static void damageItem(ItemStack stack, int amount)
     {
-        if (stack.isDamageableItem())
+        // There's no player here, so we can't safely do anything.
+        //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
+        if (stack.hurt(amount, RANDOM, null))
         {
-            // There's no player here so we can't safely do anything.
-            //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-            if (stack.hurt(amount, RANDOM, null))
-            {
-                stack.shrink(1);
-                stack.setDamageValue(0);
-            }
+            stack.shrink(1);
+            stack.setDamageValue(0);
         }
+    }
+
+    /**
+     * Acts as if the player finished breaking a given block.
+     * {@link net.minecraft.server.level.ServerPlayerGameMode#destroyBlock(BlockPos)}
+     *
+     * The difference: we don't care about break progress. We require the block to be broken
+     */
+    public static void quickHarvest(Level level, ServerPlayer player, BlockPos pos)
+    {
+        final BlockState breakState = level.getBlockState(pos);
+        final int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level, player.gameMode.getGameModeForPlayer(), player, pos);
+        if (exp == -1) return;
+
+        final boolean canHarvest = breakState.canHarvestBlock(level, pos, player);
+        final boolean willHarvest = Helpers.removeBlock(level, player, pos, canHarvest);
+        if (canHarvest && willHarvest) // this drops resources (or it should)
+        {
+            breakState.getBlock().playerDestroy(level, player, pos, breakState, level.getBlockEntity(pos), player.getMainHandItem().copy());
+        }
+        if (willHarvest && exp > 0)
+        {
+            breakState.getBlock().popExperience((ServerLevel) level, pos, exp);
+        }
+    }
+
+    /**
+     * {@link net.minecraft.server.level.ServerPlayerGameMode#removeBlock(BlockPos, boolean)}
+     */
+    public static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest)
+    {
+        BlockState state = level.getBlockState(pos); // ask the state if it's being destroyed
+        boolean removed = state.onDestroyedByPlayer(level, pos, player, canHarvest, level.getFluidState(pos));
+        if (removed) // if it agrees, tell the block it's destroyed
+            state.getBlock().destroy(level, pos, state);
+        return removed;
     }
 
     /**

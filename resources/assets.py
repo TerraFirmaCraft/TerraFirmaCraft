@@ -521,7 +521,7 @@ def generate(rm: ResourceManager):
                 'conditions': [match_tag('forge:shears')],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [match_tag('tfc:knives')]
+                'conditions': [match_tag('tfc:sharp_tools')]
             }))
         elif plant_data.type == 'tall_grass':
             rm.block_loot(p, ({
@@ -529,17 +529,17 @@ def generate(rm: ResourceManager):
                 'conditions': [match_tag('forge:shears'), lower_only],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [match_tag('tfc:knives')]
+                'conditions': [match_tag('tfc:sharp_tools')]
             }))
         elif plant in SEAWEED:
             rm.block_loot(p, (
-                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3)]},
+                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3)]},
                 {'name': p, 'conditions': [match_tag('forge:shears')]}
             ))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
             if plant == 'cattail':
                 rm.block_loot(p, (
-                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3), lower_only]},
+                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3), lower_only]},
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ))
             else:
@@ -547,7 +547,7 @@ def generate(rm: ResourceManager):
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:
-            rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:knives')]})
+            rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools')]})
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
@@ -689,7 +689,10 @@ def generate(rm: ResourceManager):
             block.with_block_loot(({
                 'name': 'tfc:wood/%s/%s' % (variant, wood),
                 'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
-            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)))
+            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood), {
+               'name': 'minecraft:stick',
+               'conditions': [match_tag('tfc:hammers')],
+               'functions': [loot_tables.set_count(1, 4)]}))
 
             if variant != 'log':
                 block.with_item_model()
@@ -738,7 +741,7 @@ def generate(rm: ResourceManager):
             'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
         }), ({
             'name': 'minecraft:stick',
-            'conditions': [match_tag('tfc:knives'), condition_chance(0.1)],
+            'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.1)],
             'functions': [loot_tables.set_count(1, 2)]
         }, {
             'name': 'minecraft:stick',
