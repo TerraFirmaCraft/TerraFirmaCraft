@@ -7,7 +7,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:food/jute",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -18,7 +19,6 @@
               }
             }
           ],
-          "name": "tfc:food/jute",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -46,7 +46,7 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "tfc:seeds/jute"
         }
       ],

@@ -10,7 +10,8 @@
           "type": "minecraft:alternatives",
           "children": [
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:seeds/oat",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -20,7 +21,6 @@
                   }
                 }
               ],
-              "name": "tfc:seeds/oat",
               "functions": [
                 {
                   "function": "minecraft:set_count",
@@ -33,7 +33,8 @@
               ]
             },
             {
-              "type": "item",
+              "type": "minecraft:item",
+              "name": "tfc:seeds/oat",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -42,8 +43,7 @@
                     "mature": "false"
                   }
                 }
-              ],
-              "name": "tfc:seeds/oat"
+              ]
             }
           ]
         }

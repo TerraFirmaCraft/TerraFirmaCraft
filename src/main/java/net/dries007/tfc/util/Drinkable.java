@@ -143,6 +143,11 @@ public class Drinkable extends FluidDefinition
         this.effects = builder.build();
     }
 
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
+    }
+
     public void onDrink(Player player)
     {
         final Random random = player.getRandom();

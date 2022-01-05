@@ -7,7 +7,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:food/tomato",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -18,7 +19,6 @@
               }
             }
           ],
-          "name": "tfc:food/tomato",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -46,7 +46,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "tfc:seeds/tomato",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -55,8 +56,7 @@
                 "part": "bottom"
               }
             }
-          ],
-          "name": "tfc:seeds/tomato"
+          ]
         }
       ],
       "conditions": [
@@ -70,7 +70,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -80,8 +81,7 @@
                 "stick": "true"
               }
             }
-          ],
-          "name": "minecraft:stick"
+          ]
         }
       ],
       "conditions": [

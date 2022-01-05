@@ -518,13 +518,13 @@ def generate(rm: ResourceManager):
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
 
-            block.with_block_loot(simple_pools({
+            block.with_block_loot({
                 'name': 'tfc:food/%s' % crop,
                 'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1}),
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop
-            }))
+            })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=true': {'model': 'tfc:block/dead_crop/%s' % crop},
@@ -534,7 +534,7 @@ def generate(rm: ResourceManager):
             rm.block_model(('dead_crop', crop + '_young'), textures={'crop': 'tfc:block/crop/%s_dead_young' % crop}, parent='block/crop')
             rm.block_model(('dead_crop', crop), textures={'crop': 'tfc:block/crop/%s_dead' % crop}, parent='block/crop')
 
-            block.with_block_loot(one_pool_alternatives({
+            block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
                 'functions': loot_tables.set_count(1, 3)
@@ -558,13 +558,13 @@ def generate(rm: ResourceManager):
                     rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
                     rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
 
-            block.with_block_loot(simple_pools({
+            block.with_block_loot({
                 'name': 'tfc:food/%s' % crop,
                 'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop
-            }))
+            })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
@@ -575,7 +575,7 @@ def generate(rm: ResourceManager):
             for variant in ('young', 'top', 'bottom'):
                 rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
 
-            block.with_block_loot(one_pool_alternatives({
+            block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
                 'functions': loot_tables.set_count(1, 3)
@@ -602,7 +602,7 @@ def generate(rm: ResourceManager):
                     rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
                     rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
 
-            block.with_block_loot(simple_pools({
+            block.with_block_loot({
                 'name': 'tfc:food/%s' % crop,
                 'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
                 'functions': crop_yield(0, (6, 10))
@@ -612,7 +612,7 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'minecraft:stick',
                 'conditions': block_state_property('tfc:crop/%s' % crop, {'part': 'bottom', 'stick': 'true'})
-            }))
+            })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
@@ -625,7 +625,7 @@ def generate(rm: ResourceManager):
             for variant in ('young', 'young_stick', 'top', 'bottom'):
                 rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
 
-            block.with_block_loot(simple_pools(one_pool_alternatives({
+            block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
                 'functions': loot_tables.set_count(1, 3)
@@ -634,7 +634,7 @@ def generate(rm: ResourceManager):
                 'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
             }), {
                 'name': 'tfc:seeds/%s'
-            }))
+            })
 
         rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop))
 
