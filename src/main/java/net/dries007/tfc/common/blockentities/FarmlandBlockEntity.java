@@ -41,21 +41,21 @@ public class FarmlandBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         nitrogen = nbt.getFloat("n");
         phosphorous = nbt.getFloat("p");
         potassium = nbt.getFloat("k");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("n", nitrogen);
         nbt.putFloat("p", phosphorous);
         nbt.putFloat("k", potassium);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, @Nullable IntFunction<Component> hydrationValidity, boolean includeNutrients)

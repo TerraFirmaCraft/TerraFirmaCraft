@@ -78,25 +78,25 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         if (nbt.contains("CustomName"))
         {
             customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
         }
         inventory.deserializeNBT(nbt.getCompound("inventory"));
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         if (customName != null)
         {
             nbt.putString("CustomName", Component.Serializer.toJson(customName));
         }
         nbt.put("inventory", inventory.serializeNBT());
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Nonnull
@@ -139,7 +139,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        markDirtyFast();
+        setChanged();
     }
 
     public boolean canInteractWith(Player player)

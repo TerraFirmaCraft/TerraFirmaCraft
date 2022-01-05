@@ -37,17 +37,17 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         logs = nbt.getInt("logs");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putInt("logs", logs);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public void light(int logs)

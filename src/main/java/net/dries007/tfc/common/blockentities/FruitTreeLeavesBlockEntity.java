@@ -21,17 +21,17 @@ public class FruitTreeLeavesBlockEntity extends BerryBushBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         onYear = nbt.getBoolean("onYear");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putBoolean("onYear", onYear);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public boolean isOnYear()
