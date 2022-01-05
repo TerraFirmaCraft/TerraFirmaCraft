@@ -17,10 +17,12 @@ import net.dries007.tfc.world.settings.ClimateSettings;
 public class ClimateSettingsUpdatePacket
 {
     private final ClimateSettings settings;
+    private final long climateSeed;
 
-    public ClimateSettingsUpdatePacket(ClimateSettings settings)
+    public ClimateSettingsUpdatePacket(ClimateSettings settings, long climateSeed)
     {
         this.settings = settings;
+        this.climateSeed = climateSeed;
     }
 
     ClimateSettingsUpdatePacket(FriendlyByteBuf buffer)
@@ -31,6 +33,7 @@ public class ClimateSettingsUpdatePacket
         final boolean endless = buffer.readBoolean();
 
         this.settings = new ClimateSettings(lo, hi, scale, endless);
+        this.climateSeed = buffer.readLong();
     }
 
     void encode(FriendlyByteBuf buffer)
@@ -39,6 +42,7 @@ public class ClimateSettingsUpdatePacket
         buffer.writeFloat(settings.highThreshold());
         buffer.writeInt(settings.scale());
         buffer.writeBoolean(settings.endlessPoles());
+        buffer.writeLong(climateSeed);
     }
 
     void handle(NetworkEvent.Context context)
@@ -47,7 +51,7 @@ public class ClimateSettingsUpdatePacket
             final Level level = ClientHelpers.getLevel();
             if (level != null)
             {
-                Climate.onWorldLoad(level, settings);
+                Climate.onWorldLoad(level, settings, climateSeed);
             }
         });
     }

@@ -179,9 +179,9 @@ public final class Climate
     /**
      * Update the per-dimension temperature settings when a world loads.
      */
-    public static void onWorldLoad(Level level, ClimateSettings settings)
+    public static void onWorldLoad(Level level, ClimateSettings settings, long climateSeed)
     {
-        model(level).updateCachedTemperatureSettings(settings);
+        model(level).updateCachedTemperatureSettings(settings, climateSeed);
     }
 
     private static ClimateModel model(Level level)
