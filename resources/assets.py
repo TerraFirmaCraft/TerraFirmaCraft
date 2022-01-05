@@ -878,7 +878,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('mixable', '#minecraft:water')
 
     for metal in METALS.keys():
-        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
+        rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
@@ -924,6 +925,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
         'fluid': 'tfc:%s' % name
     })
     item.with_lang(lang('%s bucket', name))
+    rm.lang('fluid.tfc.%s' % name, lang('%s', name))
 
 
 def corals(rm: ResourceManager, color: str, dead: bool):
