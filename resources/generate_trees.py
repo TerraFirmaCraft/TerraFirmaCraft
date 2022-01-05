@@ -82,7 +82,7 @@ def make_tree_structures(tree: Tree, large: bool):
 
 def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
     f = nbt.load('./structure_templates/%s.nbt' % template)
-    for block in f.root['palette']:
+    for block in f['palette']:
         if block['Name'] == 'minecraft:oak_log':
             block['Name'] = StringTag('tfc:wood/log/%s' % wood)
             block['Properties']['natural'] = StringTag('true')
@@ -96,7 +96,7 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
     # Hack the data version, to avoid needing to run DFU on anything
-    f.root['DataVersion'] = IntTag(2730)
+    f['DataVersion'] = IntTag(2865)
 
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     os.makedirs(result_dir, exist_ok=True)
@@ -140,10 +140,10 @@ def count_leaves_in_overlay_tree(base_name: str) -> float:
     overlay = nbt.load('./structure_templates/%s_overlay.nbt' % base_name)
 
     base_leaves = leaf_ids(base)
-    leaves = set(pos_key(block) for block in base.root['blocks'] if block['state'] in base_leaves)
+    leaves = set(pos_key(block) for block in base['blocks'] if block['state'] in base_leaves)
     count = len(leaves)
 
-    for block in overlay.root['blocks']:
+    for block in overlay['blocks']:
         if block['state'] in base_leaves and pos_key(block) not in leaves:
             count += 0.5
         elif pos_key(block) in leaves:
@@ -155,11 +155,11 @@ def count_leaves_in_overlay_tree(base_name: str) -> float:
 def count_leaves_in_structure(file_name: str):
     file = nbt.load('./structure_templates/%s.nbt' % file_name)
     leaves = leaf_ids(file)
-    return sum(block['state'] in leaves for block in file.root['blocks'])
+    return sum(block['state'] in leaves for block in file['blocks'])
 
 
 def leaf_ids(file: nbt.File) -> Set[int]:
-    return {i for i, block in enumerate(file.root['palette']) if block['Name'] == 'minecraft:oak_leaves'}
+    return {i for i, block in enumerate(file['palette']) if block['Name'] == 'minecraft:oak_leaves'}
 
 
 def pos_key(tag: Any) -> Tuple[int, int, int]:

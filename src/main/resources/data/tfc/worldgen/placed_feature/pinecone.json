@@ -5,6 +5,27 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "matching_blocks",
+        "blocks": [
+          "minecraft:air"
+        ]
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:groundcover/pinecone",
+          "Properties": {
+            "fluid": "empty"
+          }
+        }
+      }
     }
   ]
 }

@@ -147,9 +147,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     {
         final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
         final ChunkData data = chunkDataProvider.get(chunkPos);
-
-        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
-
+        final BiomeVariants variants = sampleBiome(quartX, quartZ);
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeExtension extension = variants.get(temperature, rainfall);
@@ -158,7 +156,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
 
     public Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
     {
-        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
+        final BiomeVariants variants = sampleBiome(quartX, quartZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
         return biomeRegistry.getOrThrow(extension.key());
     }
@@ -218,6 +216,11 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
             }
         }
         return pos;
+    }
+
+    private BiomeVariants sampleBiome(int quartX, int quartZ)
+    {
+        return biomeLayer.get(quartX, quartZ);
     }
 
     private BiomeRainfall calculateRainfall(float rainfall)

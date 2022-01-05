@@ -153,6 +153,7 @@ public class TFCLayersVisualizations
         if (id == LOW_CANYONS) return new Color(40, 100, 40);
         if (id == ROLLING_HILLS) return new Color(100, 100, 0);
         if (id == BADLANDS) return new Color(150, 100, 0);
+        if (id == INVERTED_BADLANDS) return new Color(250, 100, 0);
         if (id == PLATEAU) return new Color(200, 100, 0);
         if (id == OLD_MOUNTAINS) return new Color(200, 150, 100);
         if (id == MOUNTAINS) return new Color(200, 200, 200);

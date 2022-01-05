@@ -15,6 +15,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 

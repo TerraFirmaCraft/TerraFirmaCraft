@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:dirt/silt",
-    "tfc:dirt/loam",
-    "tfc:dirt/sandy_loam",
-    "tfc:dirt/silty_loam"
+    "tfc:sea_ice",
+    "tfc:fluid/salt_water",
+    "tfc:fluid/river_water",
+    "tfc:fluid/spring_water"
   ]
 }

@@ -31,6 +31,11 @@ public class FluidPotRecipe extends PotRecipe
         this.outputFluid = outputFluid;
     }
 
+    public FluidStack getDisplayFluid()
+    {
+        return outputFluid;
+    }
+
     @Override
     public Output getOutput(PotBlockEntity.PotInventory inventory)
     {

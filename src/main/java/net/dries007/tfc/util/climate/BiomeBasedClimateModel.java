@@ -42,4 +42,10 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     {
         return level.getBiome(pos).getPrecipitation();
     }
+
+    @Override
+    public float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 0;
+    }
 }

@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "Y",
+    "Y"
+  ],
+  "key": {
+    "Y": {
+      "tag": "forge:sheets/copper"
+    },
+    "X": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "minecraft:spyglass"
+  }
+}

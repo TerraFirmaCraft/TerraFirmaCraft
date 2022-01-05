@@ -30,7 +30,7 @@ import net.dries007.tfc.util.JsonHelpers;
 public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInventory>
 {
     protected final ResourceLocation id;
-    protected final Ingredient ingredient;
+    private final Ingredient ingredient;
     protected final ItemStack result;
 
     public SimpleItemRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
@@ -42,13 +42,13 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
 
     public Collection<Item> getValidItems()
     {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+        return Arrays.stream(this.getIngredient().getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     @Override
     public boolean matches(ItemStackInventory wrapper, Level worldIn)
     {
-        return this.ingredient.test(wrapper.getStack());
+        return this.getIngredient().test(wrapper.getStack());
     }
 
     @Override
@@ -67,6 +67,11 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     public ItemStack assemble(ItemStackInventory wrapper)
     {
         return result.copy();
+    }
+
+    public Ingredient getIngredient()
+    {
+        return ingredient;
     }
 
     public static class Serializer<R extends SimpleItemRecipe> extends RecipeSerializerImpl<R>
@@ -98,7 +103,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
         @Override
         public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
-            recipe.ingredient.toNetwork(buffer);
+            recipe.getIngredient().toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
         }
 

@@ -239,6 +239,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
+    wattle_variants = {}
+    for i in range(0, 3):
+        wattle_variants.update(four_rotations('tfc:block/wattle_%d' % i, (270, 180, None, 90), suffix=',stage=%d' % i))
+    rm.item_model('wattle', parent='tfc:block/wattle_0', no_textures=True)
+    rm.blockstate('wattle', variants=wattle_variants).with_lang(lang('Wattle')).with_block_loot({'name': 'minecraft:stick', 'functions': [loot_tables.set_count(1, 3)]})
+
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
@@ -294,10 +300,8 @@ def generate(rm: ResourceManager):
     for soil in SOIL_BLOCK_VARIANTS:
         # Regular Dirt
         block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
-        block.with_block_model()
-        block.with_item_model()
-        block.with_block_loot('tfc:dirt/%s' % soil)
-        block.with_lang(lang('%s Dirt', soil))
+        block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
+        rm.blockstate(('rooted_dirt', soil)).with_block_model().with_item_model().with_block_loot('tfc:rooted_dirt/%s' % soil).with_lang(lang('Rooted %s', soil))
 
         # Clay Dirt
         block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
@@ -647,7 +651,7 @@ def generate(rm: ResourceManager):
                 'conditions': [match_tag('forge:shears')],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [match_tag('tfc:knives')]
+                'conditions': [match_tag('tfc:sharp_tools')]
             }))
         elif plant_data.type == 'tall_grass':
             rm.block_loot(p, ({
@@ -655,17 +659,17 @@ def generate(rm: ResourceManager):
                 'conditions': [match_tag('forge:shears'), lower_only],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [match_tag('tfc:knives')]
+                'conditions': [match_tag('tfc:sharp_tools')]
             }))
         elif plant in SEAWEED:
             rm.block_loot(p, (
-                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3)]},
+                {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3)]},
                 {'name': p, 'conditions': [match_tag('forge:shears')]}
             ))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
             if plant == 'cattail':
                 rm.block_loot(p, (
-                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:knives'), condition_chance(0.3), lower_only]},
+                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3), lower_only]},
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ))
             else:
@@ -673,7 +677,7 @@ def generate(rm: ResourceManager):
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:
-            rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:knives')]})
+            rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools')]})
     for plant in MISC_PLANT_FEATURES:
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
@@ -815,7 +819,10 @@ def generate(rm: ResourceManager):
             block.with_block_loot(({
                 'name': 'tfc:wood/%s/%s' % (variant, wood),
                 'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
-            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)))
+            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood), {
+               'name': 'minecraft:stick',
+               'conditions': [match_tag('tfc:hammers')],
+               'functions': [loot_tables.set_count(1, 4)]}))
 
             if variant != 'log':
                 block.with_item_model()
@@ -864,7 +871,7 @@ def generate(rm: ResourceManager):
             'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
         }), ({
             'name': 'minecraft:stick',
-            'conditions': [match_tag('tfc:knives'), condition_chance(0.1)],
+            'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.1)],
             'functions': [loot_tables.set_count(1, 2)]
         }, {
             'name': 'minecraft:stick',
@@ -1001,7 +1008,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('mixable', '#minecraft:water')
 
     for metal in METALS.keys():
-        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
+        rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
@@ -1047,6 +1055,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
         'fluid': 'tfc:%s' % name
     })
     item.with_lang(lang('%s bucket', name))
+    rm.lang('fluid.tfc.%s' % name, lang('%s', name))
 
 
 def corals(rm: ResourceManager, color: str, dead: bool):

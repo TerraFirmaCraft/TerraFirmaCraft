@@ -34,7 +34,7 @@ public abstract class DamageInputsCraftingRecipe<R extends Recipe<CraftingContai
             ItemStack stack = inv.getItem(i);
             if (stack.isDamageableItem())
             {
-                Helpers.damageCraftingItem(stack, 1);
+                items.set(i, Helpers.damageCraftingItem(stack, 1).copy());
             }
             else if (stack.hasContainerItem())
             {

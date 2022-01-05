@@ -3,9 +3,12 @@
 
 # Script to run all resource generation
 
+import sys
 import argparse
+import traceback
 
 from mcresources import ResourceManager, utils
+from mcresources.type_definitions import Json
 
 import assets
 import data
@@ -28,6 +31,16 @@ def configured_placement(data):
         raise ValueError('Unknown object %s at configured_placement' % str(data))
 
 utils.configured_placement = configured_placement
+
+class ModificationLoggingResourceManager(ResourceManager):
+
+    def write(self, path_parts: Sequence[str], data_in: Json):
+        m = self.modified_files
+        super(ModificationLoggingResourceManager, self).write(path_parts, data_in)
+        if m != self.modified_files:
+            print('Modified: ' + utils.resource_location(self.domain, path_parts).join(), file=sys.stderr)
+            traceback.print_stack()
+            print('', file=sys.stderr)
 
 
 def main():

@@ -75,6 +75,16 @@ public class KnappingPattern
         this.empty = empty;
     }
 
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
     public void setAll(boolean value)
     {
         data = value ? (1 << (width * height)) - 1 : 0;

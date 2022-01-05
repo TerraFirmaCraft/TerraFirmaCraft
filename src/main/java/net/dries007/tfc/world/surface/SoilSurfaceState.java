@@ -11,9 +11,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
+// todo: add loam in the center region, sand - sand/sandy - sandy - [NEW sandy/loam - loam - silty/loam] - silty - silty/silt - silt
 public class SoilSurfaceState implements SurfaceState
 {
     public static final float RAINFALL_SAND = 75;
@@ -41,6 +44,7 @@ public class SoilSurfaceState implements SurfaceState
     {
         final BlockPos pos = context.pos();
         final float rainfall = context.rainfall();
+        final ChunkData data = context.getChunkData();
 
         if (rainfall < RAINFALL_SANDY)
         {
@@ -53,6 +57,11 @@ public class SoilSurfaceState implements SurfaceState
             {
                 // Sandy - Sand Transition Zone
                 float noise = patchNoise.noise(pos.getX(), pos.getZ());
+                if (noise > 0.2f && data.getAdjustedForestDensity() > 0.5f)
+                {
+                    float noise2 = patchNoise.noise(pos.getX() + 2000, pos.getZ() + 2000);
+                    if (noise2 > 0) return rooted(SoilBlockType.Variant.SANDY_LOAM);
+                }
                 return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? context.getRock().sand().defaultBlockState() : soil(SoilBlockType.Variant.SANDY_LOAM);
             }
             else
@@ -84,6 +93,10 @@ public class SoilSurfaceState implements SurfaceState
         {
             // Sandy / Silty Transition Zone
             float noise = patchNoise.noise(pos.getX(), pos.getZ());
+            if (noise > 0 && data.getAdjustedForestDensity() > 0.5f)
+            {
+                return rooted(SoilBlockType.Variant.SILTY_LOAM);
+            }
             return soil(noise > 0 ? SoilBlockType.Variant.SILTY_LOAM : SoilBlockType.Variant.SANDY_LOAM);
         }
     }
@@ -101,5 +114,10 @@ public class SoilSurfaceState implements SurfaceState
     private BlockState soil(SoilBlockType.Variant variant)
     {
         return TFCBlocks.SOIL.get(soil).get(variant).get().defaultBlockState();
+    }
+
+    private BlockState rooted(SoilBlockType.Variant variant)
+    {
+        return TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(variant).get().defaultBlockState();
     }
 }

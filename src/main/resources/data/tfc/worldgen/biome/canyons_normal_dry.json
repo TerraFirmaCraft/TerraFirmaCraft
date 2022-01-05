@@ -87,9 +87,11 @@
       "tfc:mega_calcite",
       "tfc:icicle",
       "tfc:underground_loose_rocks",
-      "tfc:underground_guano"
+      "tfc:underground_guano",
+      "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
       "tfc:forest",

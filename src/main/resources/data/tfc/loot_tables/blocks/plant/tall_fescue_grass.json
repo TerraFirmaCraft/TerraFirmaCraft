@@ -35,7 +35,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:knives"
+                    "tag": "tfc:sharp_tools"
                   }
                 }
               ]

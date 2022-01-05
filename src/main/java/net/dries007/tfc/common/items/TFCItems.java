@@ -133,6 +133,7 @@ public final class TFCItems
 
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth", MISC);
+    public static final RegistryObject<Item> DAUB = register("daub", MISC);
     public static final RegistryObject<Item> DIRTY_JUTE_NET = register("dirty_jute_net", MISC);
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay", MISC);
     public static final RegistryObject<Item> FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().tab(MISC).defaultDurability(8)));

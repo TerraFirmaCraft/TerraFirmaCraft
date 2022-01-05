@@ -50,6 +50,11 @@ public interface ClimateModel
     float getRainfall(LevelReader level, BlockPos pos);
 
     /**
+     * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance
+     */
+    float getFogginess(LevelReader level, BlockPos pos, long calendarTime);
+
+    /**
      * Provides a {@link ClimateSettings} to models that may use them, when a world loads.
      */
     default void updateCachedTemperatureSettings(ClimateSettings settings) {}

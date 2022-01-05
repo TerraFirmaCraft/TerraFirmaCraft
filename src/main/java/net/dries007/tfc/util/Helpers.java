@@ -33,7 +33,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.util.Mth;
@@ -51,15 +50,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
@@ -289,14 +285,15 @@ public final class Helpers
 
     public static <T extends Comparable<T>> BlockState copyProperty(BlockState copyTo, BlockState copyFrom, Property<T> property)
     {
-        if (copyTo.hasProperty(property))
-        {
-            return copyTo.setValue(property, copyFrom.getValue(property));
-        }
-        return copyTo;
+        return copyTo.hasProperty(property) ? copyTo.setValue(property, copyFrom.getValue(property)) : copyTo;
     }
 
-    public static void damageCraftingItem(ItemStack stack, int amount)
+    public static <T extends Comparable<T>> BlockState setProperty(BlockState state, Property<T> property, T value)
+    {
+        return state.hasProperty(property) ? state.setValue(property, value) : state;
+    }
+
+    public static ItemStack damageCraftingItem(ItemStack stack, int amount)
     {
         Player player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
         if (player != null)
@@ -307,6 +304,7 @@ public final class Helpers
         {
             damageItem(stack, amount);
         }
+        return stack;
     }
 
     /**
@@ -314,16 +312,49 @@ public final class Helpers
      */
     public static void damageItem(ItemStack stack, int amount)
     {
-        if (stack.isDamageableItem())
+        // There's no player here, so we can't safely do anything.
+        //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
+        if (stack.hurt(amount, RANDOM, null))
         {
-            // There's no player here so we can't safely do anything.
-            //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-            if (stack.hurt(amount, RANDOM, null))
-            {
-                stack.shrink(1);
-                stack.setDamageValue(0);
-            }
+            stack.shrink(1);
+            stack.setDamageValue(0);
         }
+    }
+
+    /**
+     * Acts as if the player finished breaking a given block.
+     * {@link net.minecraft.server.level.ServerPlayerGameMode#destroyBlock(BlockPos)}
+     *
+     * The difference: we don't care about break progress. We require the block to be broken
+     */
+    public static void quickHarvest(Level level, ServerPlayer player, BlockPos pos)
+    {
+        final BlockState breakState = level.getBlockState(pos);
+        final int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level, player.gameMode.getGameModeForPlayer(), player, pos);
+        if (exp == -1) return;
+
+        final boolean canHarvest = breakState.canHarvestBlock(level, pos, player);
+        final boolean willHarvest = Helpers.removeBlock(level, player, pos, canHarvest);
+        if (canHarvest && willHarvest) // this drops resources (or it should)
+        {
+            breakState.getBlock().playerDestroy(level, player, pos, breakState, level.getBlockEntity(pos), player.getMainHandItem().copy());
+        }
+        if (willHarvest && exp > 0)
+        {
+            breakState.getBlock().popExperience((ServerLevel) level, pos, exp);
+        }
+    }
+
+    /**
+     * {@link net.minecraft.server.level.ServerPlayerGameMode#removeBlock(BlockPos, boolean)}
+     */
+    public static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest)
+    {
+        BlockState state = level.getBlockState(pos); // ask the state if it's being destroyed
+        boolean removed = state.onDestroyedByPlayer(level, pos, player, canHarvest, level.getFluidState(pos));
+        if (removed) // if it agrees, tell the block it's destroyed
+            state.getBlock().destroy(level, pos, state);
+        return removed;
     }
 
     /**
@@ -840,6 +871,16 @@ public final class Helpers
     public static float triangle(RandomSource random, float delta)
     {
         return (random.nextFloat() - random.nextFloat()) * delta;
+    }
+
+    public static float easeInOutCubic(float x)
+    {
+        return x < 0.5f ? 4 * x * x * x : 1 - cube(-2 * x + 2) / 2;
+    }
+
+    public static float cube(float x)
+    {
+        return x * x * x;
     }
 
     /**

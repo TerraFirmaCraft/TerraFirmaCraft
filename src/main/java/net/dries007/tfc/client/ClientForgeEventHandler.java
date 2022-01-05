@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +26,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,6 +38,7 @@ import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -42,7 +46,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -63,7 +69,15 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.surface.SurfaceManager;
+import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 import static net.minecraft.ChatFormatting.*;
 
@@ -83,6 +97,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
+        bus.addListener(ClientForgeEventHandler::onFogDensity);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -290,6 +305,22 @@ public class ClientForgeEventHandler
                     event.setCanceled(true);
                 }
             }
+        }
+    }
+
+    public static void onFogDensity(EntityViewRenderEvent.RenderFogEvent event)
+    {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null && (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN))
+        {
+            final float fog = Climate.getFogginess(mc.level, event.getCamera().getBlockPosition());
+            if (fog == 0) return;
+            final float renderDistance = mc.gameRenderer.getRenderDistance();
+            final float density = renderDistance * (1 - fog);
+
+            // let's just do this the same way MC does because the FogDensityEvent is crap
+            RenderSystem.setShaderFogStart(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
+            RenderSystem.setShaderFogEnd(density);
         }
     }
 }
