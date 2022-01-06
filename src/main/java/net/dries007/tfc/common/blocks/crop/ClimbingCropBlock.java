@@ -86,12 +86,12 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
         final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
         if (stateAbove.getBlock() == this || (stateAbove.isAir() && state.getValue(STICK)))
         {
-            level.setBlock(posAbove, deadState.setValue(DoubleDeadCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
+            level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }
         else
         {
             level.destroyBlock(posAbove, false);
         }
-        level.setBlockAndUpdate(pos, deadState.setValue(DoubleDeadCropBlock.PART, Part.BOTTOM));
+        level.setBlockAndUpdate(pos, deadState.setValue(DeadDoubleCropBlock.PART, Part.BOTTOM));
     }
 }

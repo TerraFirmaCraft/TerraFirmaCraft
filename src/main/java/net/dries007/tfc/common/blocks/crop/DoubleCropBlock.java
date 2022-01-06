@@ -122,13 +122,13 @@ public abstract class DoubleCropBlock extends CropBlock
         final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown);
         if (fullyGrown && isSameOrAir(stateAbove))
         {
-            level.setBlock(posAbove, deadState.setValue(DoubleDeadCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
+            level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }
         else if (stateAbove.getBlock() == this)
         {
             level.destroyBlock(posAbove, false);
         }
-        level.setBlockAndUpdate(pos, deadState.setValue(DoubleDeadCropBlock.PART, Part.BOTTOM));
+        level.setBlockAndUpdate(pos, deadState.setValue(DeadDoubleCropBlock.PART, Part.BOTTOM));
     }
 
     protected boolean isSameOrAir(BlockState state)

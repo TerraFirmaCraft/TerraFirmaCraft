@@ -34,7 +34,7 @@ public class DeadCropBlock extends TFCBushBlock
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Shapes.block(); // todo
+        return CropBlock.FULL_SHAPE;
     }
 
     @Override
