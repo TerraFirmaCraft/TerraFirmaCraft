@@ -1,8 +1,12 @@
 package net.dries007.tfc.common.blocks.crop;
 
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,9 +22,9 @@ public class DeadDoubleCropBlock extends DeadCropBlock
 {
     public static final EnumProperty<DoubleCropBlock.Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
 
-    public DeadDoubleCropBlock(Properties properties)
+    public DeadDoubleCropBlock(Properties properties, Crop crop)
     {
-        super(properties);
+        super(properties, crop);
         registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM).setValue(MATURE, false));
     }
 
@@ -49,5 +53,11 @@ public class DeadDoubleCropBlock extends DeadCropBlock
         {
             return belowState.is(this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
         }
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        super.addHoeOverlayInfo(level, state.getValue(PART) == DoubleCropBlock.Part.TOP ? pos.below() : pos, state, text, isDebug);
     }
 }

@@ -57,6 +57,7 @@ public class Fertilizer extends ItemDefinition
 
     public void encode(FriendlyByteBuf buffer)
     {
+        ingredient.toNetwork(buffer);
         buffer.writeFloat(nitrogen);
         buffer.writeFloat(phosphorus);
         buffer.writeFloat(potassium);

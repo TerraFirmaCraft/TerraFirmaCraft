@@ -136,7 +136,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
             }
             else
             {
-                final long rottenCalendarTime = rottenDate - Calendars.CLIENT.getTicks() + Calendars.CLIENT.getCalendarTicks(); // Date food rots on.
+                final long rottenCalendarTime = Calendars.CLIENT.ticksToCalendarTicks(rottenDate); // Date food rots on.
                 final long ticksRemaining = rottenDate - Calendars.CLIENT.getTicks(); // Ticks remaining until rotten
 
                 final Component tooltip = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())

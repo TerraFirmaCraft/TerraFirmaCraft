@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:groundcover/guano"
+  },
+  "nitrogen": 0.8,
+  "potassium": 0.5,
+  "phosphorus": 0.1
+}

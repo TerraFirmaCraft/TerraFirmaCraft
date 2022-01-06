@@ -3,6 +3,10 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -12,6 +16,7 @@ import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -57,8 +62,8 @@ public final class CropHelpers
         final ICalendar calendar = Calendars.get(level);
         final BlockPos sourcePos = pos.below();
         final int hydration = FarmlandBlock.getHydration(level, sourcePos);
-        final float startTemperature = Climate.getTemperature(level, pos, calendar, fromTick);
-        final float endTemperature = Climate.getTemperature(level, pos, calendar, toTick);
+        final float startTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.ticksToCalendarTicks(fromTick));
+        final float endTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.ticksToCalendarTicks(toTick));
         final long tickDelta = toTick - fromTick;
 
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();
@@ -139,5 +144,23 @@ public final class CropHelpers
     private static boolean checkClimate(ClimateRange range, int hydration, float firstTemperature, float secondTemperature, boolean allowWiggle)
     {
         return range.checkBoth(hydration, firstTemperature, allowWiggle) && range.checkTemperature(secondTemperature, allowWiggle) == ClimateRange.Result.VALID;
+    }
+
+    public static boolean useFertilizer(Level level, Player player, InteractionHand hand, BlockPos farmlandPos)
+    {
+        if (!level.isClientSide())
+        {
+            ItemStack stack = player.getItemInHand(hand);
+            Fertilizer fertilizer = Fertilizer.get(stack);
+            if (fertilizer != null)
+            {
+                level.getBlockEntity(farmlandPos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> {
+                    farmland.addNutrients(fertilizer);
+                    if (!player.isCreative()) stack.shrink(1);
+                });
+                return true;
+            }
+        }
+        return false;
     }
 }

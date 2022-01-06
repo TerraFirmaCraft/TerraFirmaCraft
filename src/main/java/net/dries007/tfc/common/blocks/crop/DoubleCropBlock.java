@@ -1,9 +1,11 @@
 package net.dries007.tfc.common.blocks.crop;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
@@ -134,6 +136,12 @@ public abstract class DoubleCropBlock extends CropBlock
     protected boolean isSameOrAir(BlockState state)
     {
         return state.isAir() || state.getBlock() == this;
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        super.addHoeOverlayInfo(level, state.getValue(PART) == Part.TOP ? pos.below() : pos, state, text, isDebug);
     }
 
     public enum Part implements StringRepresentable

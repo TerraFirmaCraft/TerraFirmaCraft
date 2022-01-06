@@ -11,9 +11,9 @@ public class DeadClimbingCropBlock extends DeadDoubleCropBlock
 {
     public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
 
-    public DeadClimbingCropBlock(Properties properties)
+    public DeadClimbingCropBlock(Properties properties, Crop crop)
     {
-        super(properties);
+        super(properties, crop);
     }
 
     @Override

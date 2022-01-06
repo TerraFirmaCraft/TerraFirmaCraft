@@ -1,27 +1,46 @@
 package net.dries007.tfc.common.blocks.crop;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
-public class DeadCropBlock extends TFCBushBlock
+public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
 {
     public static final BooleanProperty MATURE = TFCBlockStateProperties.MATURE;
 
-    public DeadCropBlock(Properties properties)
+    private final Supplier<ClimateRange> climateRange;
+
+    public DeadCropBlock(Properties properties, Crop crop)
     {
         super(properties);
+        this.climateRange = ClimateRanges.CROPS.get(crop);
         registerDefaultState(getStateDefinition().any().setValue(MATURE, false));
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final ClimateRange range = climateRange.get();
+        text.add(FarmlandBlock.getHydrationTooltip(level, pos.below(), range, false));
+        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
     }
 
     @Override

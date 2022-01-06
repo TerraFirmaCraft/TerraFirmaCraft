@@ -166,6 +166,14 @@ public interface ICalendar
     int getCalendarDaysInMonth();
 
     /**
+     * @return The corresponding calendar tick of the player tick passed
+     */
+    default long ticksToCalendarTicks(long tick)
+    {
+        return getCalendarTicks() - getTicks() + tick;
+    }
+
+    /**
      * Gets the total amount of hours passed
      */
     default long getTotalHours()

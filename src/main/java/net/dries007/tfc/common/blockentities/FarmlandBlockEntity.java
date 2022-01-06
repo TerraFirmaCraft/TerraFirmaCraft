@@ -71,9 +71,15 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         text.add(hydration);
         if (includeNutrients)
         {
-            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", nitrogen, phosphorous, potassium));
+            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
         }
     }
+
+    private String format(float value)
+    {
+        return String.format("%.2f", value * 100);
+    }
+
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
@@ -112,6 +118,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         nitrogen = Math.min(1, nitrogen + fertilizer.getNitrogen());
         phosphorous = Math.min(1, phosphorous + fertilizer.getPhosphorus());
         potassium = Math.min(1, potassium + fertilizer.getPotassium());
+        markForSync();
     }
 
     public void addNutrient(NutrientType type, float value)
@@ -128,6 +135,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
             case PHOSPHOROUS -> phosphorous = value;
             case POTASSIUM -> potassium = value;
         }
+        markForSync();
     }
 
     public enum NutrientType

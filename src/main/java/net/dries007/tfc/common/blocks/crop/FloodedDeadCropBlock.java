@@ -14,9 +14,9 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
-    public FloodedDeadCropBlock(Properties properties)
+    public FloodedDeadCropBlock(Properties properties, Crop crop)
     {
-        super(properties);
+        super(properties, crop);
     }
 
     @Override

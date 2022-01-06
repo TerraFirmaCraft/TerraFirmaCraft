@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:item/jute",
+          "name": "tfc:jute",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",

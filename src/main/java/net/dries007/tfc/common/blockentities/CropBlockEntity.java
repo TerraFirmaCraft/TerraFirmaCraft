@@ -102,7 +102,7 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
         growth = nbt.getFloat("growth");
         yield = nbt.getFloat("yield");
         expiry = nbt.getFloat("expiry");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
@@ -111,5 +111,6 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
         nbt.putFloat("growth", growth);
         nbt.putFloat("yield", yield);
         nbt.putFloat("expiry", expiry);
+        super.saveAdditional(nbt);
     }
 }

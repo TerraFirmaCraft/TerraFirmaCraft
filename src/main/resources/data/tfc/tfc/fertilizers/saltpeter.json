@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:powder/saltpeter"
+  },
+  "nitrogen": 0.1,
+  "phosphorus": 0.4
+}
