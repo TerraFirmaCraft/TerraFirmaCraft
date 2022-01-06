@@ -97,7 +97,7 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         growth = nbt.getFloat("growth");
         yield = nbt.getFloat("yield");
@@ -106,11 +106,10 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("growth", growth);
         nbt.putFloat("yield", yield);
         nbt.putFloat("expiry", expiry);
-        return super.save(nbt);
     }
 }

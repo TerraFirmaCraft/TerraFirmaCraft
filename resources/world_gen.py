@@ -589,7 +589,7 @@ def generate(rm: ResourceManager):
     for crop, crop_data in CROPS.items():
         tall = crop_data.type == 'double' or crop_data.type == 'double_stick'
         name = 'tfc:wild_crop/%s[part=bottom]' % crop if tall else 'tfc:wild_crop/%s' % crop
-        configured_plant_patch_feature(rm, ('plant', 'wild_crop', crop), plant_config(name, 1, 5, 4, crop=True, tall_plant=tall), decorate_chance(200), decorate_square(), decorate_climate(min_rain=125, min_temp=0))
+        configured_plant_patch_feature(rm, ('plant', 'wild_crop', crop), plant_config(name, 1, 5, 4, crop=True, tall_plant=tall), decorate_chance(200), decorate_square(), decorate_climate(min_rain=125, min_temp=-15))
 
     clay_plant_features = [
         'tfc:plant/athyrium_fern_patch',

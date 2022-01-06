@@ -11,7 +11,7 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": 0,
+      "min_temperature": -15,
       "min_rainfall": 125
     },
     {
