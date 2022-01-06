@@ -6,15 +6,10 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nullable;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,37 +18,79 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class TFCBlockEntity extends BlockEntity
 {
-    protected static final Logger LOGGER = LogManager.getLogger();
-
     protected TFCBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
     }
 
-    @Nullable
+    /**
+     * @return The packet to send to the client upon block update. This is returned in client in {@link #onDataPacket(Connection, ClientboundBlockEntityDataPacket)}
+     */
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        return ClientboundBlockEntityDataPacket.create(this, self -> self.save(new CompoundTag()));
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
-    public CompoundTag getUpdateTag()
-    {
-        return save(super.getUpdateTag());
-    }
-
+    /**
+     * Handle a packet sent from {@link #getUpdatePacket()}. Delegates to {@link #handleUpdateTag(CompoundTag)}.
+     */
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
     {
-        load(packet.getTag());
+        if (packet.getTag() != null)
+        {
+            handleUpdateTag(packet.getTag());
+        }
     }
 
+    /**
+     * Returns the tag containing information needed to send to the client, either on block update or on bulk chunk update. This tag is either returned with the packet in {@link #getUpdatePacket()} or {@link #handleUpdateTag(CompoundTag)} based on where it was called from.
+     * Delegates to {@link #saveWithoutMetadata()} which calls {@link #saveAdditional(CompoundTag)}
+     */
+    @Override
+    public CompoundTag getUpdateTag()
+    {
+        return saveWithoutMetadata();
+    }
+
+    /**
+     * Handles an update tag sent from the server.
+     * Delegates to {@link #load(CompoundTag)} which calls {@link #loadAdditional(CompoundTag)}
+     */
     @Override
     public void handleUpdateTag(CompoundTag tag)
     {
         load(tag);
     }
+
+    /**
+     * In {@link BlockEntity}, this does not call {@link #saveAdditional(CompoundTag)} unlike other save methods.
+     */
+    @Override
+    public final CompoundTag save(CompoundTag tag)
+    {
+        saveAdditional(tag);
+        return super.save(tag);
+    }
+
+    @Override
+    public final void load(CompoundTag tag)
+    {
+        loadAdditional(tag);
+        super.load(tag);
+    }
+
+    /**
+     * Override to save block entity specific data.
+     */
+    @Override
+    protected void saveAdditional(CompoundTag tag) {}
+
+    /**
+     * Override to load block entity specific data.
+     */
+    protected void loadAdditional(CompoundTag tag) {}
 
     /**
      * Syncs the TE data to client via means of a block update
@@ -76,29 +113,16 @@ public abstract class TFCBlockEntity extends BlockEntity
     public void markForSync()
     {
         sendVanillaUpdatePacket();
-        markDirtyFast();
+        setChanged();
     }
 
-    /**
-     * Marks the tile entity dirty without updating comparator output.
-     * Useful when called a lot for TE's that don't have a comparator output
-     */
-    protected void markDirtyFast()
+    public void sendVanillaUpdatePacket()
     {
-        if (level != null)
+        final ClientboundBlockEntityDataPacket packet = getUpdatePacket();
+        final BlockPos pos = getBlockPos();
+        if (packet != null && level instanceof ServerLevel serverLevel)
         {
-            level.blockEntityChanged(worldPosition);
-        }
-    }
-
-    protected void sendVanillaUpdatePacket()
-    {
-        ClientboundBlockEntityDataPacket packet = getUpdatePacket();
-        BlockPos pos = getBlockPos();
-
-        if (packet != null && level instanceof ServerLevel)
-        {
-            ((ServerChunkCache) level.getChunkSource()).chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
+            serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
     }
 }

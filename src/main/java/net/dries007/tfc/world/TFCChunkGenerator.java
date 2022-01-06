@@ -20,6 +20,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Blocks;
@@ -256,6 +257,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final boolean flatBedrock;
     private final long seed;
 
+    private final long climateSeed; // The world specific seed for climate related stuff, is sync'd to client
+
     private final NoiseBasedChunkGenerator stupidMojangChunkGenerator; // Mojang fix your god awful deprecated carver nonsense
     private final FastConcurrentCache<TFCAquifer> aquiferCache;
 
@@ -273,6 +276,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.customBiomeSource = biomeSource;
         this.flatBedrock = flatBedrock;
         this.seed = seed;
+        this.climateSeed = LinearCongruentialGenerator.next(seed, 719283741234L);
 
         this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(parameters, biomeSource, seed, settings);
         this.aquiferCache = new FastConcurrentCache<>(256);
@@ -287,6 +291,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public ChunkDataProvider getChunkDataProvider()
     {
         return chunkDataProvider;
+    }
+
+    @Override
+    public long getClimateSeed()
+    {
+        return climateSeed;
     }
 
     @Override

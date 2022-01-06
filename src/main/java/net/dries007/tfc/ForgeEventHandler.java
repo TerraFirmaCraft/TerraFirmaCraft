@@ -145,6 +145,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
+        bus.addListener(ForgeEventHandler::onPlayerTick);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -513,8 +514,8 @@ public final class ForgeEventHandler
                 // Update climate settings
                 final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
 
-                Climate.onWorldLoad(level, settings); // Server
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings)); // Client
+                Climate.onWorldLoad(level, settings, ex.getClimateSeed()); // Server
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings, ex.getClimateSeed())); // Client
             }
         }
     }
@@ -612,6 +613,18 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        // When facing up in the rain, player slowly recovers thirst.
+        final Player player = event.player;
+        final Level level = player.getLevel();
+        final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+    }
+
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.getPlayer() instanceof ServerPlayer)
@@ -621,7 +634,7 @@ public final class ForgeEventHandler
             final ServerLevel overworld = ServerLifecycleHooks.getCurrentServer().overworld();
             if (overworld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
             {
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings()));
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings(), ex.getClimateSeed()));
             }
         }
     }

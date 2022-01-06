@@ -33,7 +33,7 @@ public class SnowPileBlockEntity extends TFCBlockEntity
     public void setInternalState(BlockState state)
     {
         this.internalState = state;
-        markDirtyFast();
+        setChanged();
     }
 
     public BlockState getDestroyedState(BlockState prevState)
@@ -47,16 +47,16 @@ public class SnowPileBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         internalState = NbtUtils.readBlockState(nbt.getCompound("internalState"));
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.put("internalState", NbtUtils.writeBlockState(internalState));
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 }

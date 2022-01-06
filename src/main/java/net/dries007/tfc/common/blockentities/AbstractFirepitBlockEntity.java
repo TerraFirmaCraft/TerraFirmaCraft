@@ -62,6 +62,12 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.checkForLastTickSync();
         firepit.checkForCalendarUpdate();
 
+        if (firepit.needsRecipeUpdate)
+        {
+            firepit.needsRecipeUpdate = false;
+            firepit.updateCachedRecipe();
+        }
+
         boolean isRaining = level.isRainingAt(pos);
         if (state.getValue(FirepitBlock.LIT))
         {
@@ -91,7 +97,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     protected final ContainerData syncableData;
-    protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
+
+    protected boolean needsSlotUpdate = false; // set when fuel needs to be cascaded
+    protected boolean needsRecipeUpdate = false; // set when the recipe needs to be re-cached on tick
     protected int burnTicks; // ticks remaining for the burning of the fuel item
     protected int airTicks; // ticks remaining for bellows provided air
     protected float burnTemperature; // burn temperature of the current fuel item
@@ -111,7 +119,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -119,21 +127,20 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
 
-        // todo: set a flag that is checked on tick
-        // updateCachedRecipe();
+        needsRecipeUpdate = true;
 
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override

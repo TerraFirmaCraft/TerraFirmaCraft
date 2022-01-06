@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -31,6 +30,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public ScrapingBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.SCRAPING.get(), pos, state, defaultInventory(1), NAME);
+        cachedItem = ItemStack.EMPTY;
         positions = 0;
         setCachedItem(ItemStack.EMPTY);
     }
@@ -74,19 +74,18 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt);
         positions = nbt.getShort("positions");
         updateDisplayCache();
     }
 
     @Override
-    @Nonnull
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putShort("positions", positions);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public ItemStack getCachedItem()

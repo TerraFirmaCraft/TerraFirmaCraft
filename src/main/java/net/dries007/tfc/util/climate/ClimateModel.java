@@ -57,5 +57,5 @@ public interface ClimateModel
     /**
      * Provides a {@link ClimateSettings} to models that may use them, when a world loads.
      */
-    default void updateCachedTemperatureSettings(ClimateSettings settings) {}
+    default void updateCachedTemperatureSettings(ClimateSettings settings, long climateSeed) {}
 }

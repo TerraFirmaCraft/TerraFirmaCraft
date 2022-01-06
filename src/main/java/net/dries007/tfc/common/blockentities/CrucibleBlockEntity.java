@@ -234,22 +234,22 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
         nbt.putBoolean("empty", Helpers.isEmpty(inventory) && readonlyAlloyView.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Nonnull

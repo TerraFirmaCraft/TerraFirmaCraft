@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -154,25 +152,24 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         isLit = nbt.getBoolean("isLit");
         litTick = nbt.getLong("litTick");
         ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
         ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
         updateCache();
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    @Nonnull
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putBoolean("isLit", isLit);
         nbt.putLong("litTick", litTick);
         nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems));
         nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems));
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override

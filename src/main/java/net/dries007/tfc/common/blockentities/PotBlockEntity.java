@@ -71,25 +71,25 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         if (nbt.contains("output"))
         {
             output = PotRecipe.Output.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         if (output != null)
         {
             nbt.put("output", PotRecipe.Output.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override

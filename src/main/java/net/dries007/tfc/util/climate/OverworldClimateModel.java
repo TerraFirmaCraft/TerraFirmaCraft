@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
@@ -78,7 +79,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
         return INSTANCE.getTemperature(null, pos, data, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
+
     private ClimateSettings temperatureSettings = ClimateSettings.DEFAULT_TEMPERATURE;
+    private long climateSeed = 0L;
 
     @Override
     public float getTemperature(@Nullable LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
@@ -125,7 +128,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
     {
         // seed as if we're 2 hours in the future, in order to start the cycle at 4am (2 hours before sunrise)
         final long day = ICalendar.getTotalDays(calendarTime + (2 * ICalendar.TICKS_IN_HOUR));
-        final Random random = new Random(day); // todo: variation per world somehow?
+        final Random random = seededRandom(day, 129341623413L);
         if (random.nextInt(FOGGY_DAY_RARITY) != 0)
         {
             return 0;
@@ -159,9 +162,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
-    public void updateCachedTemperatureSettings(ClimateSettings settings)
+    public void updateCachedTemperatureSettings(ClimateSettings settings, long climateSeed)
     {
-        temperatureSettings = settings;
+        this.temperatureSettings = settings;
+        this.climateSeed = climateSeed;
     }
 
     private float calculateAverageMonthlyTemperature(BlockPos pos, float averageTemperature, float monthTemperatureModifier)
@@ -227,7 +231,14 @@ public class OverworldClimateModel implements WorldGenClimateModel
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
         long day = ICalendar.getTotalDays(calendarTime);
-        final Random random = new Random(day); // avoid thread corruption by using a random local to the method rather than a static instance
+        final Random random = seededRandom(day, 1986239412341L);
         return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
+    }
+
+    private Random seededRandom(long day, long salt)
+    {
+        long seed = LinearCongruentialGenerator.next(climateSeed, day);
+        seed = LinearCongruentialGenerator.next(seed, salt);
+        return new Random(seed);
     }
 }
