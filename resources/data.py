@@ -204,7 +204,9 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('prospectable', '#forge:ores')
-    rm.block_tag('geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
+    rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
+    rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
+    rm.block_tag('plant', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
@@ -331,6 +333,9 @@ def generate(rm: ResourceManager):
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
         *['tfc:plant/%s' % plant for plant in PLANTS.keys()],
         *['tfc:plant/%s' % plant for plant in UNIQUE_PLANTS],
+        *['tfc:wild_crop/%s' % plant for plant in CROPS.keys()],
+        *['tfc:dead_crop/%s' % plant for plant in CROPS.keys()],
+        *['tfc:crop/%s' % plant for plant in CROPS.keys()],
         'tfc:sea_pickle',
         *['tfc:plant/%s_bush' % bush for bush in ('snowberry', 'bunchberry', 'gooseberry', 'cloudberry', 'strawberry', 'wintergreen_berry')],
         *['tfc:plant/%s_bush%s' % (bush, suffix) for bush in ('blackberry', 'raspberry', 'blueberry', 'elderberry') for suffix in ('', '_cane')],
@@ -427,6 +432,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cattail_root', 'tfc:food/cattail_root', Category.vegetable, 2, 1, 0, 2.5, grain=0.5)
     food_item(rm, 'soybean', 'tfc:food/soybean', Category.vegetable, 4, 2, 0, 2.5, veg=0.5, protein=1)
     food_item(rm, 'squash', 'tfc:food/squash', Category.vegetable, 4, 1, 0, 1.67, veg=1.5)
+    food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.vegetable, 4, 0, 0, 0.5)
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)

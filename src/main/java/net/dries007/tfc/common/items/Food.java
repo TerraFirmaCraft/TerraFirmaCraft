@@ -74,6 +74,7 @@ public enum Food
     POTATO,
     RED_BELL_PEPPER,
     SOYBEAN,
+    SUGARCANE,
     SQUASH,
     TOMATO,
     YELLOW_BELL_PEPPER,

@@ -41,7 +41,8 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
 {
-    public static final BooleanProperty WILD = TFCBlockStateProperties.WILD;
+    public static final VoxelShape HALF_SHAPE = box(2, 0, 2, 14, 8, 14);
+    public static final VoxelShape FULL_SHAPE = box(2, 0, 2, 14, 16, 14);
 
     protected final FarmlandBlockEntity.NutrientType primaryNutrient;
     protected final Supplier<? extends Block> dead;
@@ -63,7 +64,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         this.primaryNutrient = primaryNutrient;
         this.climateRange = climateRange;
 
-        registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0).setValue(WILD, false));
+        registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0));
     }
 
     @Override
@@ -75,7 +76,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Shapes.block(); // todo
+        return FULL_SHAPE; // todo
     }
 
     @Override
@@ -102,15 +103,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        final BlockState belowState = level.getBlockState(pos.below());
-        if (state.getValue(WILD))
-        {
-            return belowState.is(TFCTags.Blocks.WILD_CROP_GROWS_ON);
-        }
-        else
-        {
-            return belowState.is(TFCTags.Blocks.FARMLAND);
-        }
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.FARMLAND);
     }
 
     @Override
@@ -140,7 +133,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(getAgeProperty(), WILD);
+        builder.add(getAgeProperty());
     }
 
     @Override
@@ -183,7 +176,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
         final BlockPos sourcePos = pos.below();
@@ -191,9 +184,11 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
 
-        // todo: remove debug
-        level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
-            .ifPresent(crop -> text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield()))));
+        if (isDebug)
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
+                .ifPresent(crop -> text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield()))));
+        }
     }
 
     @Override

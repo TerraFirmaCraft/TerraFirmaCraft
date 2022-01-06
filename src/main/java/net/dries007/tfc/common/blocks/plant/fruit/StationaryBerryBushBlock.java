@@ -20,7 +20,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
@@ -42,7 +41,6 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeOverlayBlock, IBushBlock
 {
@@ -126,7 +124,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         final BlockPos sourcePos = pos.below();
         final ClimateRange range = climateRange.get();

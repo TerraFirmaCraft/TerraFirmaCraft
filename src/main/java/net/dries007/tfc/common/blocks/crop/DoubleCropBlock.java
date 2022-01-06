@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
@@ -61,10 +64,6 @@ public abstract class DoubleCropBlock extends CropBlock
         final BlockState belowState = level.getBlockState(pos.below());
         if (part == Part.BOTTOM)
         {
-            if (state.getValue(WILD))
-            {
-                return TFCTags.Blocks.WILD_CROP_GROWS_ON.contains(belowState.getBlock());
-            }
             return TFCTags.Blocks.FARMLAND.contains(belowState.getBlock());
         }
         else
@@ -77,6 +76,12 @@ public abstract class DoubleCropBlock extends CropBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(PART));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return state.getValue(PART) == Part.BOTTOM ? FULL_SHAPE : HALF_SHAPE;
     }
 
     @Override

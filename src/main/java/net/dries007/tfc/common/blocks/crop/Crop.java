@@ -79,6 +79,11 @@ public enum Crop implements StringRepresentable
         return deadFactory.get();
     }
 
+    public Block createWild()
+    {
+        return deadFactory.get() instanceof DoubleDeadCropBlock ? new WildDoubleCropBlock(dead()) : new WildCropBlock(dead());
+    }
+
     public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
     {
         return primaryNutrient;

@@ -194,11 +194,11 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos))
+        if (!state.canSurvive(level, pos))
         {
-            turnToDirt(state, worldIn, pos);
+            turnToDirt(state, level, pos);
         }
     }
 
@@ -209,7 +209,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         level.getBlockEntity(pos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> farmland.addHoeOverlayInfo(level, pos, text, null, true));
     }
