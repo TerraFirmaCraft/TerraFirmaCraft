@@ -637,11 +637,11 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true', 'part': 'bottom'}),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false', 'part': 'bottom'})
             }), {
                 'name': 'tfc:seeds/%s' % crop
             })

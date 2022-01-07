@@ -586,10 +586,27 @@ def generate(rm: ResourceManager):
     configured_noise_plant_feature(rm, ('plant', 'water_canna'), plant_config('tfc:plant/water_canna[age=1,stage=1]', 1, 10, requires_clay=True), decorate_climate(0, 36, 150, 500))
 
     # Crops
+    crop_features = []
     for crop, crop_data in CROPS.items():
+        name_parts = ('plant', 'wild_crop', crop)
         tall = crop_data.type == 'double' or crop_data.type == 'double_stick'
         name = 'tfc:wild_crop/%s[part=bottom]' % crop if tall else 'tfc:wild_crop/%s' % crop
-        configured_plant_patch_feature(rm, ('plant', 'wild_crop', crop), plant_config(name, 1, 5, 4, crop=True, tall_plant=tall), decorate_chance(200), decorate_square(), decorate_climate(min_rain=125, min_temp=-15))
+
+        feature = 'simple_block', {'to_place': simple_state_provider(name)}
+        if tall:
+            feature = 'tfc:tall_wild_crop', {'state': utils.block_state(name)}
+
+        res = utils.resource_location(rm.domain, name_parts)
+        patch_feature = res.join() + '_patch'
+        singular_feature = utils.resource_location(rm.domain, name_parts)
+        crop_features.append(patch_feature)
+
+        rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 4, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
+        rm.configured_feature(singular_feature, *feature)
+        rm.placed_feature(patch_feature, patch_feature)
+        rm.placed_feature(singular_feature, singular_feature, decorate_air_or_empty_fluid(), decorate_would_survive(name))
+
+    configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': crop_features}, decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=125, min_temp=-15), decorate_biome())
 
     clay_plant_features = [
         'tfc:plant/athyrium_fern_patch',
@@ -716,11 +733,10 @@ class PlantConfig(NamedTuple):
     water_plant: bool
     emergent_plant: bool
     tall_plant: bool
-    crop: bool
 
 
-def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False, crop: bool = False) -> PlantConfig:
-    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant, crop)
+def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False) -> PlantConfig:
+    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant)
 
 
 def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
@@ -728,8 +744,6 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
         'type': 'tfc:random_property',
         'state': utils.block_state(config.block), 'property': 'age'
     }
-    if config.crop:
-        state_provider = simple_state_provider(config.block)
     feature = 'simple_block', {'to_place': state_provider}
     heightmap: Heightmap = 'world_surface_wg'
     would_survive = decorate_would_survive(config.block)
@@ -744,8 +758,6 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
         feature = 'tfc:emergent_plant', {'state': utils.block_state(config.block)}
     if config.tall_plant:
         feature = 'tfc:tall_plant', {'state': utils.block_state(config.block)}
-    if config.crop and config.tall_plant:
-        feature = 'tfc:tall_wild_crop', {'state': utils.block_state(config.block)}
 
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
@@ -1197,7 +1209,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES]
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/wild_crop/%s_patch' % crop for crop in CROPS.keys()]
+        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/wild_crops']
 
         features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in FOREST_DECORATORS if not ocean_features]
 

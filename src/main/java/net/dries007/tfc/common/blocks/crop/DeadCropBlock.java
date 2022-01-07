@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -45,6 +46,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
         final ClimateRange range = climateRange.get();
         text.add(FarmlandBlock.getHydrationTooltip(level, pos.below(), range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        if (state.getValue(MATURE)) text.add(new TranslatableComponent("tfc.tooltip.farmland.mature"));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return CropBlock.FULL_SHAPE;
+        return state.getValue(MATURE) ? CropBlock.FULL_SHAPE : CropBlock.QUARTER_SHAPE;
     }
 
     @Override

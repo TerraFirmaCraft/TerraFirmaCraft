@@ -646,6 +646,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of ',
     'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
+    'tfc.tooltip.farmland.mature': '§aMature',
     'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
     'tfc.tooltip.farmland.hydration_too_low': ' - §4Too low! §r(>%s%%)',
     'tfc.tooltip.farmland.hydration_too_high': ' - §4Too high! §r(<%s%%)',

@@ -98,6 +98,7 @@
   "tfc.tooltip.fluid_units": "%s mB",
   "tfc.tooltip.fluid_units_of": "%s mB of ",
   "tfc.tooltip.less_than_one_fluid_units": "< 1 mB",
+  "tfc.tooltip.farmland.mature": "\u00a7aMature",
   "tfc.tooltip.farmland.hydration": "\u00a71Hydration: \u00a7r%s%%",
   "tfc.tooltip.farmland.hydration_too_low": " - \u00a74Too low! \u00a7r(>%s%%)",
   "tfc.tooltip.farmland.hydration_too_high": " - \u00a74Too high! \u00a7r(<%s%%)",

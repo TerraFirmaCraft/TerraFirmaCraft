@@ -83,7 +83,11 @@ public abstract class DoubleCropBlock extends CropBlock
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return state.getValue(PART) == Part.BOTTOM ? FULL_SHAPE : HALF_SHAPE;
+        if (state.getValue(PART) == Part.TOP) return HALF_SHAPE;
+        float growth = (float) state.getValue(getAgeProperty()) / maxSingleAge;
+        if (growth <= 0.25F) return QUARTER_SHAPE;
+        else if (growth <= 0.5F) return HALF_SHAPE;
+        return FULL_SHAPE;
     }
 
     @Override

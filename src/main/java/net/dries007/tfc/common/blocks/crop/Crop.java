@@ -25,13 +25,13 @@ public enum Crop implements StringRepresentable
     WHEAT(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, self -> DefaultCropBlock.create(crop(), 8, self), self -> new DeadCropBlock(dead(), self)), // Default, 8
     RICE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, self -> FloodedCropBlock.create(crop(), 8, self), self -> new FloodedDeadCropBlock(dead(), self)), // Default, Waterlogged, 8
     // Vegetables
-    BEET(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> RootCropBlock.create(crop(), 6, self), self -> new DeadCropBlock(dead(), self)), // Default, Root, 6
+    BEET(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 6, self), self -> new DeadCropBlock(dead(), self)), // Default, 6
     CABBAGE(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 6, self), self -> new DeadCropBlock(dead(), self)), // Default, 6
-    CARROT(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> RootCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, Root, 5
-    GARLIC(FarmlandBlockEntity.NutrientType.NITROGEN, self -> RootCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, Root, 5
+    CARROT(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, 5
+    GARLIC(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, 5
     GREEN_BEAN(FarmlandBlockEntity.NutrientType.NITROGEN, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadClimbingCropBlock(dead(), self)), // Double, Pickable, Stick, 4 -> 4
-    POTATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> RootCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, Root, 7
-    ONION(FarmlandBlockEntity.NutrientType.NITROGEN, self -> RootCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, Root, 7
+    POTATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
+    ONION(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
     SOYBEAN(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
     SQUASH(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 8, self), self -> new DeadCropBlock(dead(), self)), // Default , 8
     SUGARCANE(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadDoubleCropBlock(dead(), self)), // Double, 4 -> 4

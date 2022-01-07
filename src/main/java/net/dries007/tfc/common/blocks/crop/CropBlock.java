@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,6 +37,7 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
 {
+    public static final VoxelShape QUARTER_SHAPE = box(2, 0, 2, 14, 4, 14);
     public static final VoxelShape HALF_SHAPE = box(2, 0, 2, 14, 8, 14);
     public static final VoxelShape FULL_SHAPE = box(2, 0, 2, 14, 16, 14);
 
@@ -71,7 +73,10 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return FULL_SHAPE; // todo
+        float growth = (float) state.getValue(getAgeProperty()) / getMaxAge();
+        if (growth <= 0.25F) return QUARTER_SHAPE;
+        else if (growth <= 0.5F) return HALF_SHAPE;
+        return FULL_SHAPE;
     }
 
     @Override
@@ -165,11 +170,17 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
 
-        if (isDebug)
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
-                .ifPresent(crop -> text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield()))));
-        }
+        level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
+            .ifPresent(crop -> {
+                if (isDebug)
+                {
+                    text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
+                }
+                if (crop.getGrowth() >= 1)
+                {
+                    text.add(new TranslatableComponent("tfc.tooltip.farmland.mature"));
+                }
+            });
     }
 
 

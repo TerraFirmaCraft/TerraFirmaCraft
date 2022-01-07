@@ -45,6 +45,13 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     }
 
     @Override
+    public void die(Level level, BlockPos pos, BlockState state, boolean fullyGrown)
+    {
+        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(getFluidProperty(), state.getValue(getFluidProperty()));
+        level.setBlockAndUpdate(pos, deadState);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
