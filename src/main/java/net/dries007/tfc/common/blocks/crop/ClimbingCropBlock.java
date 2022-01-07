@@ -45,6 +45,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
     protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {
         super(properties, maxSingleAge, maxAge, dead, seeds, primaryNutrient, climateRange);
+        registerDefaultState(getStateDefinition().any().setValue(STICK, false).setValue(PART, Part.BOTTOM));
     }
 
     @Override
@@ -58,9 +59,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
             {
                 level.setBlock(pos, state.setValue(STICK, true), Block.UPDATE_CLIENTS);
                 level.setBlock(pos.above(), state.setValue(STICK, true).setValue(PART, Part.TOP), Block.UPDATE_ALL);
-                heldStack.shrink(1);
+                if (!player.isCreative()) heldStack.shrink(1);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return super.use(state, level, pos, player, hand, hit);
     }
@@ -83,8 +84,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
     {
         final BlockPos posAbove = pos.above();
         final BlockState stateAbove = level.getBlockState(posAbove);
-        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
-        if (stateAbove.getBlock() == this || (stateAbove.isAir() && state.getValue(STICK)))
+        final boolean hasTop = stateAbove.getBlock() == this;
+        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown || hasTop).setValue(STICK, state.getValue(STICK));
+        if (hasTop || (stateAbove.isAir() && state.getValue(STICK)))
         {
             level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }

@@ -654,9 +654,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.farmland.temperature_too_high': ' - §4Too high! §r(<%s\u00b0C)',
     'tfc.tooltip.farmland.just_right': ' - §2Good§r',
     'tfc.tooltip.farmland.nutrients': '§b(N) Nitrogen: §r%s%%, §6(P) Phosphorus: §r%s%%, §d(K) Potassium: §r%s%%',
-    'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s',
-    'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s',
-    'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s',
+    'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
+    'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
+    'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
 
     # Commands
 

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
@@ -39,7 +40,6 @@ import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -52,6 +52,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.GlintParticleProvider;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.*;
@@ -316,8 +317,11 @@ public final class ClientEventHandler
     public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
     {
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
-        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
-        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
+        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);
+        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Provider::new);
+        particleEngine.register(TFCParticles.NITROGEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.AQUA));
+        particleEngine.register(TFCParticles.PHOSPHORUS.get(), set -> new GlintParticleProvider(set, ChatFormatting.GOLD));
+        particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
     }
 
     public static void selfTest()

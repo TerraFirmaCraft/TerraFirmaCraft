@@ -47,7 +47,7 @@ public enum Crop implements StringRepresentable
 
     private static BlockBehaviour.Properties dead()
     {
-        return BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP);
+        return BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP);
     }
 
     private final String serializedName;

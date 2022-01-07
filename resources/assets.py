@@ -626,8 +626,8 @@ def generate(rm: ResourceManager):
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
-                'mature=false,stick=true,part=top': {'model': 'tfc:block/dead_crop/%s_young_stick' % crop},
-                'mature=false,stick=true,part=bottom': {'model': 'tfc:block/crop/stick'},
+                'mature=false,stick=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=false,stick=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_young_stick' % crop},
                 'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
                 'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
             })

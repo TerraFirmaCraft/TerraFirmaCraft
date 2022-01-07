@@ -213,9 +213,9 @@ public class ClientForgeEventHandler
             if (fertilizer != null)
             {
                 final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
-                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", n * 10));
-                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", p * 10));
-                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", k * 10));
+                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())

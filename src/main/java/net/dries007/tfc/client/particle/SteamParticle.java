@@ -25,18 +25,11 @@ public class SteamParticle extends TextureSheetParticle
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public static class Factory implements ParticleProvider<SimpleParticleType>
+    public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType>
     {
-        private final SpriteSet sprite;
-
-        public Factory(SpriteSet spriteSet)
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
-            sprite = spriteSet;
-        }
-
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
-        {
-            SteamParticle particle = new SteamParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+            SteamParticle particle = new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprite);
             return particle;
         }

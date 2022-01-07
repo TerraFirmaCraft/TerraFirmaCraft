@@ -3,6 +3,7 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -71,12 +73,6 @@ public final class CropHelpers
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 
-        if (!healthy)
-        {
-            cropBlock.die(level, pos, state, false);
-            return false;
-        }
-
         // Nutrients are consumed first, since they are independent of growth or health.
         // As long as the crop exists it consumes nutrients.
         final FarmlandBlockEntity farmland = level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get()).orElse(null);
@@ -126,7 +122,7 @@ public final class CropHelpers
         actualYield += growthDelta * Helpers.lerp(nutrientSatisfaction, YIELD_MIN, YIELD_LIMIT);
 
         // Check if the crop should've expired.
-        if (expiry >= EXPIRY_LIMIT)
+        if (expiry >= EXPIRY_LIMIT || !healthy)
         {
             // Lenient here - instead of assuming it expired at the start of the duration, we assume at the end. Including growth during this period.
             cropBlock.die(level, pos, state, growth >= 1);
@@ -157,10 +153,27 @@ public final class CropHelpers
                 level.getBlockEntity(farmlandPos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> {
                     farmland.addNutrients(fertilizer);
                     if (!player.isCreative()) stack.shrink(1);
+                    addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
                 });
                 return true;
             }
         }
         return false;
+    }
+
+    private static void addNutrientParticles(ServerLevel level, BlockPos pos, Fertilizer fertilizer)
+    {
+        for (int i = 0; i < (int) (fertilizer.getNitrogen() * 10); i++)
+        {
+            level.sendParticles(TFCParticles.NITROGEN.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
+        }
+        for (int i = 0; i < (int) (fertilizer.getPhosphorus() * 10); i++)
+        {
+            level.sendParticles(TFCParticles.PHOSPHORUS.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
+        }
+        for (int i = 0; i < (int) (fertilizer.getPotassium() * 10); i++)
+        {
+            level.sendParticles(TFCParticles.POTASSIUM.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
+        }
     }
 }
