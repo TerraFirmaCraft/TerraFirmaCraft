@@ -132,32 +132,33 @@ public final class InteractionManager
             else
             {
                 final BlockPlaceContext blockContext = new BlockPlaceContext(context);
-                final Level world = context.getLevel();
-                final BlockPos pos = context.getClickedPos();
-                final BlockState stateAt = world.getBlockState(blockContext.getClickedPos());
-                if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                final Level level = blockContext.getLevel();
+                final BlockPos pos = blockContext.getClickedPos();
+                final BlockState stateAt = level.getBlockState(blockContext.getClickedPos());
+                if (SnowPileBlock.canPlaceSnowPile(level, pos, stateAt))
                 {
-                    SnowPileBlock.convertToPile(world, pos, stateAt);
-                    BlockState placedState = world.getBlockState(pos);
-                    SoundType placementSound = placedState.getSoundType(world, pos, player);
-                    world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
+                    SnowPileBlock.placeSnowPile(level, pos, stateAt);
+                    final BlockState placedState = level.getBlockState(pos);
+                    final SoundType placementSound = placedState.getSoundType(level, pos, player);
+                    level.playSound(player, pos, placedState.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
                     if (player == null || !player.getAbilities().instabuild)
                     {
                         stack.shrink(1);
                     }
 
-                    InteractionResult result = InteractionResult.sidedSuccess(world.isClientSide);
+                    InteractionResult result = InteractionResult.sidedSuccess(level.isClientSide);
                     if (player != null && result.consumesAction())
                     {
                         player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
                     }
                     return result;
                 }
+
                 // Default behavior
-                Item snow = Items.SNOW;
-                if (snow instanceof BlockItem)
+                // Handles layering behavior of both snow piles and snow layers via the blocks replacement / getStateForPlacement
+                if (Items.SNOW instanceof BlockItem blockItem)
                 {
-                    return ((BlockItem) snow).place(blockContext);
+                    return blockItem.place(blockContext);
                 }
                 return InteractionResult.FAIL;
             }

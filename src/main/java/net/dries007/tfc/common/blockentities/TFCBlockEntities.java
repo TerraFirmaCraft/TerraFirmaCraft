@@ -40,7 +40,7 @@ public final class TFCBlockEntities
     public static final Collection<RegistryObject<Block>> SAPLING_LIST = TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)).collect(Collectors.toList());
 
     public static final RegistryObject<BlockEntityType<FarmlandBlockEntity>> FARMLAND = register("farmland", FarmlandBlockEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values().stream());
-    public static final RegistryObject<BlockEntityType<SnowPileBlockEntity>> SNOW_PILE = register("snow_pile", SnowPileBlockEntity::new, TFCBlocks.SNOW_PILE);
+    public static final RegistryObject<BlockEntityType<PileBlockEntity>> PILE = register("pile", PileBlockEntity::new, Stream.of(TFCBlocks.ICE_PILE, TFCBlocks.SNOW_PILE));
     public static final RegistryObject<BlockEntityType<FirepitBlockEntity>> FIREPIT = register("firepit", FirepitBlockEntity::new, TFCBlocks.FIREPIT);
     public static final RegistryObject<BlockEntityType<GrillBlockEntity>> GRILL = register("grill", GrillBlockEntity::new, TFCBlocks.GRILL);
     public static final RegistryObject<BlockEntityType<PotBlockEntity>> POT = register("pot", PotBlockEntity::new, TFCBlocks.POT);

@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -50,24 +51,24 @@ public abstract class SnowLayerBlockMixin extends Block
      * Add behavior to snow blocks - when they are destroyed, they should only destroy one layer.
      */
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
-        playerWillDestroy(world, pos, state, player);
+        playerWillDestroy(level, pos, state, player);
         final int prevLayers = state.getValue(SnowLayerBlock.LAYERS);
         if (prevLayers > 1)
         {
-            return world.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+            return level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, prevLayers - 1), level.isClientSide ? 11 : 3);
         }
-        return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+        return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
     }
 
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
-    private void inject$canSurvive(BlockState state, LevelReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
+    private void canSurviveAddIceAndLeavesConditions(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
         if (cir.getReturnValueZ())
         {
-            // Snow should not survive on ice (this adds to the big existing conditional
-            BlockState belowState = worldIn.getBlockState(pos.below());
+            // Snow should not survive on ice (this adds to the big existing conditional)
+            BlockState belowState = level.getBlockState(pos.below());
             if (belowState.is(TFCBlocks.SEA_ICE.get()))
             {
                 cir.setReturnValue(false);
@@ -78,7 +79,7 @@ public abstract class SnowLayerBlockMixin extends Block
             // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
             if (state.getValue(SnowLayerBlock.LAYERS) == 1)
             {
-                BlockState stateDown = worldIn.getBlockState(pos.below());
+                BlockState stateDown = level.getBlockState(pos.below());
                 if (stateDown.getBlock() instanceof ILeavesBlock)
                 {
                     cir.setReturnValue(true);
@@ -88,42 +89,27 @@ public abstract class SnowLayerBlockMixin extends Block
     }
 
     @Inject(method = "updateShape", at = @At(value = "RETURN"), cancellable = true)
-    private void inject$updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos, CallbackInfoReturnable<BlockState> cir)
+    private void updateShapeSurviveOnLeavesWithSingleLayer(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos, CallbackInfoReturnable<BlockState> cir)
     {
         // If we can't survive, see if we can survive with only one layer, to allow the above leaves check to pass instead
         if (cir.getReturnValue().is(Blocks.AIR) && stateIn.getValue(SnowLayerBlock.LAYERS) > 1)
         {
-            BlockState state = stateIn.setValue(SnowLayerBlock.LAYERS, 1);
-            if (state.canSurvive(worldIn, currentPos))
+            final BlockState state = stateIn.setValue(SnowLayerBlock.LAYERS, 1);
+            if (state.canSurvive(level, currentPos))
             {
                 cir.setReturnValue(state);
             }
         }
     }
 
-    @Inject(method = "randomTick", at = @At(value = "RETURN"))
-    private void inject$randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci)
+    @Inject(method = "getStateForPlacement", at = @At(value = "HEAD"), cancellable = true)
+    private void getStateForPlacementOnSnowPile(BlockPlaceContext context, CallbackInfoReturnable<BlockState> cir)
     {
-        if (TFCConfig.SERVER.enableSnowAffectedByTemperature.get())
+        final BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+        if (state.is(TFCBlocks.SNOW_PILE.get()))
         {
-            // Only run this if the default logic hasn't already set the block to air
-            BlockState prevState = level.getBlockState(pos);
-            if (prevState == state && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
-            {
-                int layers = state.getValue(SnowLayerBlock.LAYERS);
-                if (layers != 8 || !level.getBlockState(pos.above()).is(this)) // If the above block is also layers, that should decay first
-                {
-                    if (layers > 1)
-                    {
-                        level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
-                    }
-                    else
-                    {
-                        dropResources(state, level, pos);
-                        level.removeBlock(pos, false);
-                    }
-                }
-            }
+            // Similar to how snow layers modifies their placement state when targeting other snow layers, we do the same for snow piles
+            cir.setReturnValue(state.setValue(SnowLayerBlock.LAYERS, Math.min(8, state.getValue(SnowLayerBlock.LAYERS) + 1)));
         }
     }
 }

@@ -346,6 +346,14 @@ public final class Helpers
     }
 
     /**
+     * {@link Level#removeBlock(BlockPos, boolean)} but with all flags available.
+     */
+    public static void removeBlock(LevelAccessor level, BlockPos pos, int flags)
+    {
+        level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
+    }
+
+    /**
      * {@link net.minecraft.server.level.ServerPlayerGameMode#removeBlock(BlockPos, boolean)}
      */
     public static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest)

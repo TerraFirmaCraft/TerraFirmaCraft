@@ -338,7 +338,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return;
         }
 
-        final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getNoiseBiome(x, y, z, climateSampler()));
+        // N.B. because this ends up sampling biomes way outside of the target chunk range, we cannot guarantee that chunk data will exist for the chunk yet
+        // Since that's not the case, when we query the biome source with climate, it may or may not know what climate of biome to return
+        // Instead of allowing that unreliability, we assume all biomes carvers are identical to the normal/normal one, and like in base noise generation, only query biomes without climate.
+        // This may have strange side effects if people try and mutate carvers on a per-biome basis.
+        final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getNoiseBiomeIgnoreClimate(x, z));
         final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
         final Random random = new Random();
         final ChunkPos chunkPos = chunk.getPos();
@@ -360,7 +364,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
                 @SuppressWarnings("deprecation")
                 final List<Supplier<ConfiguredWorldCarver<?>>> carvers = offsetChunk
-                    .carverBiome(() -> customBiomeSource.getNoiseBiome(QuartPos.fromBlock(offsetChunkPos.getMinBlockX()), 0, QuartPos.fromBlock(offsetChunkPos.getMinBlockZ()), climateSampler()))
+                    .carverBiome(() -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(offsetChunkPos.getMinBlockX()), QuartPos.fromBlock(offsetChunkPos.getMinBlockZ())))
                     .getGenerationSettings()
                     .getCarvers(step);
 

@@ -21,12 +21,10 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
-import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
-import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
-import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.world.biome.BiomeBuilder.builder;
@@ -44,10 +42,10 @@ public final class TFCBiomes
     private static final Map<ResourceKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
-    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
-    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -30, -16)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
+    public static final BiomeVariants OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome found near continents.
+    public static final BiomeVariants OCEAN_REEF = register("ocean_reef", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).salty().group(BiomeVariants.Group.OCEAN).types(BiomeDictionary.Type.OCEAN)); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
+    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -30, -16)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariants DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).group(BiomeVariants.Group.OCEAN).salty().types(BiomeDictionary.Type.OCEAN)); // Deeper ocean with sharp relief carving to create very deep trenches
 
     // Low biomes
     public static final BiomeVariants PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().types(BiomeDictionary.Type.PLAINS)); // Very flat, slightly above sea level.
@@ -163,10 +161,10 @@ public final class TFCBiomes
         {
             for (BiomeRainfall rain : BiomeRainfall.values())
             {
-                String name = (baseName + "_" + temp.name() + "_" + rain.name()).toLowerCase(Locale.ROOT);
-                ResourceLocation id = new ResourceLocation(MOD_ID, name);
-                ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
-                BiomeExtension extension = new BiomeExtension(key, variants);
+                final String name = (baseName + "_" + temp.name() + "_" + rain.name()).toLowerCase(Locale.ROOT);
+                final ResourceLocation id = Helpers.identifier(name);
+                final ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
+                final BiomeExtension extension = variants.createBiomeExtension(key, temp, rain);
 
                 EXTENSIONS.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);
@@ -179,8 +177,6 @@ public final class TFCBiomes
                     BiomeDictionary.addTypes(key, VOLCANIC_TYPE);
                 }
                 BiomeDictionary.addTypes(key, variants.isSalty() ? SALT_WATER_TYPE : FRESH_WATER_TYPE);
-
-                variants.put(temp, rain, extension);
             }
         }
         return variants;

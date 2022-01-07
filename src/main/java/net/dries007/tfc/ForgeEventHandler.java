@@ -36,7 +36,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.FixedBiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -103,7 +102,6 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
@@ -453,23 +451,22 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        // todo: why is this deprecated?
-        if (event.getWorld() instanceof final ServerLevel world && world.isAreaLoaded(event.getPos(), 3))
+        if (event.getWorld() instanceof final ServerLevel level)
         {
             for (Direction direction : event.getNotifiedSides())
             {
                 // Check each notified block for a potential gravity block
                 final BlockPos pos = event.getPos().relative(direction);
-                final BlockState state = world.getBlockState(pos);
+                final BlockState state = level.getBlockState(pos);
 
                 if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
                 {
-                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
                 }
 
                 if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
                 {
-                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
                 }
             }
         }
@@ -514,7 +511,7 @@ public final class ForgeEventHandler
                 // Update climate settings
                 final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
 
-                Climate.onWorldLoad(level, settings, ex.getClimateSeed()); // Server
+                Climate.updateCachedSettings(level, settings, ex.getClimateSeed()); // Server
                 PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings, ex.getClimateSeed())); // Client
             }
         }

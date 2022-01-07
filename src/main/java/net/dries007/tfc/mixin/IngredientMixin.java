@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(Ingredient.class)
 public abstract class IngredientMixin
 {
-    @Shadow @Final @Mutable private static Set<Ingredient> INSTANCES;
+    @Shadow(remap = false) @Final @Mutable private static Set<Ingredient> INSTANCES;
 
     static
     {

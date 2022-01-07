@@ -9,14 +9,15 @@ package net.dries007.tfc.util.climate;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -128,6 +129,11 @@ public final class Climate
         return getVanillaBiomeTemperatureSafely(level, pos, fallback) >= 0.15f;
     }
 
+    public static void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
+    {
+        model(level.getLevel()).onChunkLoad(level, chunk, chunkData);
+    }
+
     /**
      * Calculates the temperature, scaled to vanilla like values.
      * References: 0.15 ~ 0 C (freezing point of water). Vanilla typically ranges from -0.5 to +1 in the overworld.
@@ -179,7 +185,7 @@ public final class Climate
     /**
      * Update the per-dimension temperature settings when a world loads.
      */
-    public static void onWorldLoad(Level level, ClimateSettings settings, long climateSeed)
+    public static void updateCachedSettings(Level level, ClimateSettings settings, long climateSeed)
     {
         model(level).updateCachedTemperatureSettings(settings, climateSeed);
     }

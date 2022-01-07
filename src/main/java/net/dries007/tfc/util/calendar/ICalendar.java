@@ -89,7 +89,8 @@ public interface ICalendar
 
     static Month getMonthOfYear(long time, long daysInMonth)
     {
-        return Month.valueOf((int) ((time / (TICKS_IN_DAY * daysInMonth)) % MONTHS_IN_YEAR));
+        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
+        return Month.valueOf((int) ((time / ticksInMonth) % MONTHS_IN_YEAR));
     }
 
     /* Format Methods */

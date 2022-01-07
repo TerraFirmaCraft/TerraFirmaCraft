@@ -17,12 +17,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 
-import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
@@ -69,7 +69,8 @@ public class SurfaceManager
                 final double slope = sampleSlope(slopeMap, x, z);
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
-                final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(world, biome).variants();
+                final BiomeExtension extension = TFCBiomes.getExtensionOrThrow(world, biome);
+                final BiomeVariants variants = extension.variants();
                 final SurfaceBuilder builder = builders.get(variants);
 
                 context.buildSurface(biome, variants, builder, blockX + x, y, blockZ + z, slope);
