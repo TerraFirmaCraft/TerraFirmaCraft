@@ -84,9 +84,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
     /**
      * Calculates the average monthly temperature for a location and given month.
      */
-    public static float getAverageMonthlyTemperature(BlockPos pos, float averageTemperature, float monthFactor)
+    public static float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
     {
-        return INSTANCE.calculateAverageMonthlyTemperature(pos, averageTemperature, monthFactor);
+        final float monthlyTemperature = INSTANCE.calculateMonthlyTemperature(z, monthFactor);
+        return INSTANCE.adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
     }
 
     /**
@@ -295,11 +296,6 @@ public class OverworldClimateModel implements WorldGenClimateModel
             this.snowPatchNoise = new OpenSimplex2D(climateSeed + 72397489123L).octaves(2).spread(0.3f).scaled(-1, 1);
             this.icePatchNoise = new OpenSimplex2D(climateSeed + 192639412341L).octaves(3).spread(0.6f);
         }
-    }
-
-    private float calculateAverageMonthlyTemperature(BlockPos pos, float averageTemperature, float monthTemperatureModifier)
-    {
-        return adjustTemperatureByElevation(pos.getY(), averageTemperature, calculateMonthlyTemperature(pos.getZ(), monthTemperatureModifier), 0);
     }
 
     /**

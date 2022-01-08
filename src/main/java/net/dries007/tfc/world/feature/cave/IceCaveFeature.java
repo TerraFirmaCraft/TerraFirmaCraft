@@ -47,7 +47,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         for (int i = 0; i < 72; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -3, rand.nextInt(15) - rand.nextInt(15));
-            float maxTemperature = OverworldClimateModel.getAverageMonthlyTemperature(mutablePos, chunkData.getAverageTemp(mutablePos), 1);
+            float maxTemperature = OverworldClimateModel.getAverageMonthlyTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
             if (maxTemperature > -4)
             {
                 return false;

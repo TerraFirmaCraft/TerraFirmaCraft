@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:logs"
+            "tag": "tfc:lumber"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/wattle"
+        "recipe": "tfc:crafting/composter"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/wattle"
+      "tfc:crafting/composter"
     ]
   }
 }
