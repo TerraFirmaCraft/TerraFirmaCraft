@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "parent": "tfc:block/composter/compost_6",
   "textures": {
-    "layer0": "tfc:item/powder/fertilizer"
+    "0": "tfc:block/devices/composter/normal"
   }
 }

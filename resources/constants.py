@@ -445,8 +445,8 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
 }
 
-SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
-                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
+SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
@@ -747,6 +747,9 @@ DEFAULT_LANG = {
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
+    'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
+    'tfc.composter.too_many_greens': 'This composter has enough green items',
+    'tfc.composter.too_many_browns': 'This composter has enough brown items',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 

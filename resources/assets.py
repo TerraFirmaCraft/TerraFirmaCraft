@@ -290,6 +290,14 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
+    states = [({'model': 'tfc:block/composter/composter'})]
+    for i in range(1, 9):
+        for age in ('normal', 'ready', 'rotten'):
+            rm.block_model('tfc:composter/%s_%s' % (age, i), parent='tfc:block/composter/compost_%s' % i, textures={'0': 'tfc:block/devices/composter/%s' % age})
+            states.append(({'type': age, 'stage': i}, {'model': 'tfc:block/composter/%s_%s' % (age, i)}),)
+    rm.blockstate_multipart('composter', *states).with_lang(lang('composter')).with_block_loot('tfc:composter')
+    rm.item_model('composter', parent='tfc:block/composter/composter', no_textures=True)
+
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
     rm.blockstate('placed_item', 'tfc:block/empty')

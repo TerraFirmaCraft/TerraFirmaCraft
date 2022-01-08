@@ -53,6 +53,9 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    // Blocks - Composter
+    public final ForgeConfigSpec.IntValue composterTicks;
+    public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -161,6 +164,10 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("composter");
+        composterTicks = builder.apply("composterTicks").comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").defineInRange("composterTicks", 288000, 20, Integer.MAX_VALUE);
+        composterRainfallCheck = builder.apply("composterRainfallCheck").comment("Should the composter work less efficiently at high or low rainfalls?").define("composterRainfallCheck", true);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

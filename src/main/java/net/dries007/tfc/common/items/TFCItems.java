@@ -133,6 +133,7 @@ public final class TFCItems
 
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth", MISC);
+    public static final RegistryObject<Item> COMPOST = register("compost", MISC);
     public static final RegistryObject<Item> DAUB = register("daub", MISC);
     public static final RegistryObject<Item> DIRTY_JUTE_NET = register("dirty_jute_net", MISC);
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay", MISC);
@@ -148,6 +149,7 @@ public final class TFCItems
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> OLIVE_JUTE_DISC = register("olive_jute_disc", MISC);
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste", MISC);
+    public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);

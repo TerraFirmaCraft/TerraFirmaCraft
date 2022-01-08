@@ -23,4 +23,6 @@ public class TFCParticles
     public static final RegistryObject<SimpleParticleType> NITROGEN = PARTICLE_TYPES.register("nitrogen", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> PHOSPHORUS = PARTICLE_TYPES.register("phosphorus", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> POTASSIUM = PARTICLE_TYPES.register("potassium", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> COMPOST_READY = PARTICLE_TYPES.register("compost_ready", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = PARTICLE_TYPES.register("compost_rotten", () -> new SimpleParticleType(false));
 }

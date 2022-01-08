@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
@@ -69,11 +70,10 @@ public class TFCBlockStateProperties
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
     public static final EnumProperty<Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", Lifecycle.class);
+    public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
-    public static final BooleanProperty GROWING = BooleanProperty.create("growing");
-    public static final BooleanProperty WILD = BooleanProperty.create("wild");
     public static final BooleanProperty STICK = BooleanProperty.create("stick");
     public static final BooleanProperty MATURE = BooleanProperty.create("mature");
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");

@@ -150,6 +150,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
+    rm.item_tag('tfc:compost_greens', '#tfc:plant', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
+    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/podzol', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
+    rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
 
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
@@ -180,7 +183,7 @@ def generate(rm: ResourceManager):
     # ==========
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass')
-    rm.block_tag('supports_landslide', 'minecraft:dirt_path')
+    rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass')
     rm.block_tag('small_spike', 'tfc:calcite')
     rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel')
@@ -212,7 +215,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
 
     for plant, plant_data in PLANTS.items():  # Plants
-        rm.block_tag('plant', 'tfc:plant/%s' % plant)
+        block_and_item_tag(rm, 'plant', 'tfc:plant/%s' % plant)
         if plant_data.type in {'standard', 'short_grass', 'creeping'}:
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
 
@@ -327,7 +330,8 @@ def generate(rm: ResourceManager):
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
         'tfc:plant/banana_plant',
         'tfc:log_pile',
-        'tfc:burning_log_pile'
+        'tfc:burning_log_pile',
+        'tfc:composter'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
@@ -501,9 +505,9 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fertilizers', 'guano'), fertilizer('tfc:groundcover/guano', n=0.8, p=0.5, k=0.1))
     rm.data(('tfc', 'fertilizers', 'saltpeter'), fertilizer('tfc:powder/saltpeter', n=0.1, k=0.4))
     rm.data(('tfc', 'fertilizers', 'bone_meal'), fertilizer('minecraft:bone_meal', p=0.1))
+    rm.data(('tfc', 'fertilizers', 'compost'), fertilizer('tfc:compost', n=0.4, p=0.2, k=0.4))
 
-
-# Entities
+    # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
     rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=21)))
     rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna(distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))

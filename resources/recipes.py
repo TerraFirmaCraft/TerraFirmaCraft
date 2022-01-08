@@ -111,8 +111,9 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/straw', 'tfc:thatch', (4, 'tfc:straw')).with_advancement('tfc:thatch')
     rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
     rm.crafting_shapeless('crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
-    rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('minecraft:logs')
+    rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'tfc:straw', 'tfc:straw', 'minecraft:clay_ball', 'minecraft:clay_ball', 'minecraft:clay_ball', '#minecraft:dirt', '#minecraft:dirt', '#minecraft:dirt'), (6, 'tfc:daub'))
+    rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
     # todo: bellows, bf, bloomery, goldpan, nestbox, paper, pkeg, salting, food combining, wooden bucket
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')

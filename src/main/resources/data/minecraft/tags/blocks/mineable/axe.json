@@ -400,6 +400,7 @@
     "tfc:plant/red_apple_growing_branch",
     "tfc:plant/banana_plant",
     "tfc:log_pile",
-    "tfc:burning_log_pile"
+    "tfc:burning_log_pile",
+    "tfc:composter"
   ]
 }

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -38,6 +37,7 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -263,6 +263,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), MISC);
+    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), MISC);
 
     // Fluids
 

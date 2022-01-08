@@ -604,7 +604,7 @@ def generate(rm: ResourceManager):
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 4, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
         rm.placed_feature(patch_feature, patch_feature)
-        rm.placed_feature(singular_feature, singular_feature, decorate_air_or_empty_fluid(), decorate_would_survive(name))
+        rm.placed_feature(singular_feature, singular_feature, decorate_air_or_empty_fluid(), decorate_would_survive(name), decorate_heightmap('world_surface_wg'))
 
     configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': crop_features}, decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=125, min_temp=-15), decorate_biome())
 

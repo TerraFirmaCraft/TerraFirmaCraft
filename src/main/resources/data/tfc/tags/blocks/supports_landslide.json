@@ -2,6 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "minecraft:dirt_path"
+    "minecraft:dirt_path",
+    "tfc:grass_path/silt",
+    "tfc:grass_path/loam",
+    "tfc:grass_path/sandy_loam",
+    "tfc:grass_path/silty_loam",
+    "tfc:farmland/silt",
+    "tfc:farmland/loam",
+    "tfc:farmland/sandy_loam",
+    "tfc:farmland/silty_loam"
   ]
 }
