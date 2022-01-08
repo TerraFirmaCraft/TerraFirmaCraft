@@ -639,7 +639,13 @@ def generate(rm: ResourceManager):
 
     for coral in ('tree', 'mushroom', 'claw'):
         configured_placed_feature(rm, 'coral_%s' % coral, 'tfc:coral_%s' % coral, {})
-    configured_placed_feature(rm, 'coral_reef', 'minecraft:simple_random_selector', {'features': ['tfc:coral_tree', 'tfc:coral_mushroom', 'tfc:coral_claw']}, decorate_climate(min_temp=18))
+    configured_placed_feature(rm, 'coral_reef', 'minecraft:simple_random_selector', {
+        'features': ['tfc:coral_tree', 'tfc:coral_mushroom', 'tfc:coral_claw']
+    }, ('minecraft:noise_based_count', {
+        'noise_to_count_ratio': 20,
+        'noise_factor': 200,
+        'noise_offset': 1
+    }), decorate_square(), decorate_climate(min_temp=12, max_temp=50, fuzzy=True), decorate_heightmap('ocean_floor_wg'))
 
     # Groundcover
     configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 10, True), decorate_chance(6), decorate_square(), decorate_climate(-10, 50, 200, 500))

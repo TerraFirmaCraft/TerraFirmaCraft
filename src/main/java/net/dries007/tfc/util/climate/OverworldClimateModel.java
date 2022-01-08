@@ -253,10 +253,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
                         // Oceans (or specifically, salt water), freezes at a much lower point, and also is time invariant (meaning it queries the maximum annual temperature and uses that), and also doesn't care about depth (since oceans are deep yo)
                         final float maxAnnualTemperature = getAverageMonthlyTemperature(z, TFCChunkGenerator.SEA_LEVEL_Y, chunkData.getAverageTemp(x, z), 1);
                         waterDepthModifier = 0;
-                        temperatureModifier = Mth.clampedMap(maxAnnualTemperature, -4f, 2f, -0.2f, 1);
+                        temperatureModifier = Mth.clampedMap(maxAnnualTemperature, -4f, 8f, -0.8f, 1);
                     }
 
-                    if (waterDepthModifier + temperatureModifier < threshold)
+                    if (waterDepthModifier + temperatureModifier < threshold && temperatureModifier < 1)
                     {
                         // Sea Ice, Ice, or Ice Pile
                         if (stateAt.is(TFCBlocks.SALT_WATER.get()))
