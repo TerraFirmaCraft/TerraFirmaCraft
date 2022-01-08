@@ -36,7 +36,7 @@ import net.dries007.tfc.util.loot.TFCLoot;
 
 public class WorldTracker implements IWorldTracker, ICapabilitySerializable<CompoundTag>
 {
-    private static final Random RANDOM = new Random();
+    private final Random random = new Random();
 
     private final LazyOptional<IWorldTracker> capability;
     private final BufferedList<TickEntry> landslideTicks;
@@ -81,7 +81,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             {
                 maxRadiusSquared = distSquared;
             }
-            if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
+            if (random.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
             {
                 collapsePositions.add(pos.above()); // Check the above position
             }
@@ -93,7 +93,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     {
         if (!world.isClientSide())
         {
-            if (!collapsesInProgress.isEmpty() && RANDOM.nextInt(10) == 0)
+            if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
             {
                 for (Collapse collapse : collapsesInProgress)
                 {
@@ -102,7 +102,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     {
                         // Check the current position for collapsing
                         BlockState stateAt = world.getBlockState(posAt);
-                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
                             if (CollapseRecipe.collapseBlock(world, posAt, stateAt))
                             {
@@ -177,7 +177,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt)
+    public void deserializeNBT(@Nullable CompoundTag nbt)
     {
         if (nbt != null)
         {

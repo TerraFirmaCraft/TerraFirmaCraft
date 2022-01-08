@@ -403,6 +403,13 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('Snow Pile'))
     rm.item_model('snow_pile', parent='minecraft:block/snow_height2', no_textures=True)
 
+    block = rm.blockstate('ice_pile', 'minecraft:block/ice').with_lang(lang('ice pile')).with_tag('minecraft:ice')
+    block.with_block_loot({
+        'name': 'minecraft:ice',
+        'conditions': [loot_tables.silk_touch()]
+    })
+    rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
+
     # Loot table for snow blocks and snow piles - override the vanilla one to only return one snowball per layer
     def snow_block_loot_table(block: str):
         rm.block_loot(block, loot_tables.pool(loot_tables.alternatives({

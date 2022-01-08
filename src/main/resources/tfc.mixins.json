@@ -9,7 +9,7 @@
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
-    "IceBlockMixin",
+    "IngredientMixin",
     "LevelMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",

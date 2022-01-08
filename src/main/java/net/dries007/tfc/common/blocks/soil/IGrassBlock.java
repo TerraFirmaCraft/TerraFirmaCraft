@@ -10,9 +10,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LayerLightEngine;
+
+import net.dries007.tfc.common.TFCTags;
 
 /**
  * Grass blocks, which MUST
@@ -29,7 +30,7 @@ public interface IGrassBlock extends ISoilBlock
     {
         BlockPos posUp = pos.above();
         BlockState stateUp = world.getBlockState(posUp);
-        if (stateUp.is(Blocks.SNOW))
+        if (stateUp.is(TFCTags.Blocks.SNOW))
         {
             return true;
         }

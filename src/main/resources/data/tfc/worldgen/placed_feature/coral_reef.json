@@ -3,8 +3,23 @@
   "feature": "tfc:coral_reef",
   "placement": [
     {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 20,
+      "noise_factor": 200,
+      "noise_offset": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
       "type": "tfc:climate",
-      "min_temperature": 18
+      "min_temperature": 12,
+      "max_temperature": 50,
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
     }
   ]
 }

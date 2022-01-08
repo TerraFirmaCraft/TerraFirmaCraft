@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.mixin;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
@@ -37,13 +38,19 @@ public abstract class ServerLevelMixin extends Level
     }
 
     /**
-     * Hook into chunk random ticks, allow for snow placement modification.
-     * Could be replaced by https://github.com/MinecraftForge/MinecraftForge/pull/7235
+     * Replace snow and ice generation, and thawing, with specialized versions.
+     * Target the {@link java.util.Random#nextInt(int)} call which guards the snow and ice block.
      */
-    @Inject(method = "tickChunk", at = @At("RETURN"))
-    private void onEnvironmentTick(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci)
+    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
+    private int onEnvironmentTick(Random random, int bound, LevelChunk chunk, int randomTickSpeed)
     {
-        EnvironmentHelpers.onEnvironmentTick((ServerLevel) (Object) this, chunk);
+        // Targeting the random.nextInt(16) only
+        if (bound == 16)
+        {
+            EnvironmentHelpers.tickChunk((ServerLevel) (Object) this, chunk, getProfiler());
+            return 1; // Prevent the normal snow and ice generation from happening
+        }
+        return random.nextInt(bound); // Default behavior
     }
 
     /**

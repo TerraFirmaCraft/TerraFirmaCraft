@@ -23,7 +23,7 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
 {
     public static SurfaceBuilderFactory create(SurfaceBuilderFactory parent)
     {
-        return seed -> new VolcanoesSurfaceBuilder(parent.apply(seed), seed + 71982341L);
+        return (seed) -> new VolcanoesSurfaceBuilder(parent.apply(seed), seed + 71982341L);
     }
 
     private final SurfaceBuilder parent;

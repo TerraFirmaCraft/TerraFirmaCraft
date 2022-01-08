@@ -7,9 +7,14 @@
 package net.dries007.tfc.util.climate;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.settings.ClimateSettings;
 
 /**
@@ -55,7 +60,12 @@ public interface ClimateModel
     float getFogginess(LevelReader level, BlockPos pos, long calendarTime);
 
     /**
-     * Provides a {@link ClimateSettings} to models that may use them, when a world loads.
+     * Update a chunk on load with climate specific modifications, such as melting or freezing blocks.
+     */
+    default void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData) {}
+
+    /**
+     * Provides a {@link ClimateSettings} to models that may use them, when a world loads (or earlier).
      */
     default void updateCachedTemperatureSettings(ClimateSettings settings, long climateSeed) {}
 }

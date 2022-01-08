@@ -662,7 +662,13 @@ def generate(rm: ResourceManager):
 
     for coral in ('tree', 'mushroom', 'claw'):
         configured_placed_feature(rm, 'coral_%s' % coral, 'tfc:coral_%s' % coral, {})
-    configured_placed_feature(rm, 'coral_reef', 'minecraft:simple_random_selector', {'features': ['tfc:coral_tree', 'tfc:coral_mushroom', 'tfc:coral_claw']}, decorate_climate(min_temp=18))
+    configured_placed_feature(rm, 'coral_reef', 'minecraft:simple_random_selector', {
+        'features': ['tfc:coral_tree', 'tfc:coral_mushroom', 'tfc:coral_claw']
+    }, ('minecraft:noise_based_count', {
+        'noise_to_count_ratio': 20,
+        'noise_factor': 200,
+        'noise_offset': 1
+    }), decorate_square(), decorate_climate(min_temp=12, max_temp=50, fuzzy=True), decorate_heightmap('ocean_floor_wg'))
 
     # Groundcover
     configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 10, True), decorate_chance(6), decorate_square(), decorate_climate(-10, 50, 200, 500))
@@ -684,14 +690,11 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, 'surface_loose_rocks', 'tfc:loose_rock', decorate_count(8), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
     # Underground decoration
-    # todo: underground only filter decorator?
     configured_placed_feature(rm, 'underground_loose_rocks', 'tfc:loose_rock', decorate_carving_mask(), decorate_chance(0.05))
-    configured_patch_feature(rm, 'underground_guano', patch_config('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), decorate_square(), decorate_range(40, 100))
-    rm.configured_feature('geode', 'tfc:geode', {
-        'outer': 'tfc:rock/hardened/basalt', 'middle': 'tfc:rock/raw/quartzite', 'inner': [
-            {'data': 'tfc:ore/amethyst/quartzite', 'weight': 1}, {'data': 'tfc:rock/raw/quartzite', 'weight': 5}
-        ]
-    })
+    configured_patch_feature(rm, 'underground_guano', patch_config('tfc:groundcover/guano[fluid=empty]', 5, 5, 60), decorate_chance(3), decorate_square(), decorate_range(40, 100), extra_singular_decorators=[decorate_underground()])
+    rm.configured_feature('geode', 'tfc:geode', {'outer': 'tfc:rock/hardened/basalt', 'middle': 'tfc:rock/raw/quartzite', 'inner': [
+        {'data': 'tfc:ore/amethyst/quartzite', 'weight': 1}, {'data': 'tfc:rock/raw/quartzite', 'weight': 5}
+    ]})
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
 
@@ -788,8 +791,7 @@ class PatchConfig(NamedTuple):
 def patch_config(block: str, y_spread: int, xz_spread: int, tries: int = 64, water: Union[bool, Literal['salt']] = False, custom_feature: Optional[str] = None, custom_config: Json = None) -> PatchConfig:
     return PatchConfig(block, y_spread, xz_spread, tries, water == 'salt' or water == True, water == 'salt', custom_feature, custom_config)
 
-
-def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json):
+def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json, extra_singular_decorators: Optional[List[Json]] = None):
     feature = 'minecraft:simple_block'
     config = {'to_place': {'type': 'minecraft:simple_state_provider', 'state': utils.block_state(patch.block)}}
     singular_decorators = []
@@ -815,6 +817,9 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         singular_decorators.append(decorate_would_survive_with_fluid(patch.block))
     else:
         singular_decorators.append(decorate_would_survive(patch.block))
+
+    if extra_singular_decorators is not None:
+        singular_decorators += extra_singular_decorators
 
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
@@ -1005,6 +1010,8 @@ def decorate_count(count: int) -> Json:
 def decorate_shallow(depth: int = 5) -> Json:
     return {'type': 'tfc:shallow_water', 'max_depth': depth}
 
+def decorate_underground() -> Json:
+    return 'tfc:underground'
 
 def decorate_heightmap(heightmap: Heightmap) -> Json:
     assert heightmap in typing.get_args(Heightmap)
@@ -1166,7 +1173,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
          'tfc:mega_calcite',
          'tfc:icicle',
          'tfc:underground_loose_rocks',
-         'tfc:underground_guano',
+         'tfc:underground_guano_patch',
          'tfc:hanging_roots_patch'],  # underground decoration
         ['tfc:geode'],  # large features
         ['tfc:surface_loose_rocks'],  # surface decoration

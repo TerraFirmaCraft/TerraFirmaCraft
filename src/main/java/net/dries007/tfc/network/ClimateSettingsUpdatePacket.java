@@ -51,7 +51,7 @@ public class ClimateSettingsUpdatePacket
             final Level level = ClientHelpers.getLevel();
             if (level != null)
             {
-                Climate.onWorldLoad(level, settings, climateSeed);
+                Climate.updateCachedSettings(level, settings, climateSeed);
             }
         });
     }

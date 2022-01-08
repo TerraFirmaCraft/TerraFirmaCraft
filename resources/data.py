@@ -216,8 +216,10 @@ def generate(rm: ResourceManager):
 
     for plant, plant_data in PLANTS.items():  # Plants
         block_and_item_tag(rm, 'plant', 'tfc:plant/%s' % plant)
-        if plant_data.type in {'standard', 'short_grass', 'creeping'}:
+        if plant_data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
+        if plant_data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh'):
+            rm.block_tag('can_be_ice_piled', 'tfc:plant/%s' % plant)
 
     # Rocks
     for rock, rock_data in ROCKS.items():
@@ -241,9 +243,6 @@ def generate(rm: ResourceManager):
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
-
-    for plant in PLANTS.keys():
-        rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
 
     # Ore tags
     for ore, data in ORES.items():

@@ -70,15 +70,8 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.biome.BiomeVariants;
-import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.noise.Noise2D;
-import net.dries007.tfc.world.surface.SurfaceManager;
-import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
-import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 import static net.minecraft.ChatFormatting.*;
 

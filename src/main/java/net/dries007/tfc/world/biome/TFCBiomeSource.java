@@ -145,9 +145,18 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
 
     public Biome getNoiseBiome(int quartX, int quartZ)
     {
+        final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
+
         final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
         final ChunkData data = chunkDataProvider.get(chunkPos);
         final BiomeVariants variants = sampleBiome(quartX, quartZ);
+
+        if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
+        {
+            System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);
+            new Exception("Stacktrace").printStackTrace();
+        }
+
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeExtension extension = variants.get(temperature, rainfall);
@@ -177,6 +186,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Nullable
     public BlockPos findBiomeHorizontal(int blockX, int blockY, int blockZ, int maxRadius, int step, Predicate<Biome> biome, Random random, boolean findClosest, @Nullable Climate.Sampler sampler)
     {
+        // todo: can we avoid querying getNoiseBiome and instead query getNoiseBiomeIgnoreClimate ? as it causes a chunk data lookup which we don't have
         final int minQuartX = QuartPos.fromBlock(blockX);
         final int minQuartZ = QuartPos.fromBlock(blockZ);
         final int maxQuartRadius = QuartPos.fromBlock(maxRadius);
