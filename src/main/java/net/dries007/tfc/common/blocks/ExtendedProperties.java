@@ -104,14 +104,16 @@ public class ExtendedProperties
     // Internal methods
 
     @Nullable
-    BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+    @Deprecated
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return blockEntityFactory == null ? null : blockEntityFactory.apply(pos, state);
     }
 
     @Nullable
     @SuppressWarnings("unchecked")
-    <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
+    @Deprecated
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
     {
         assert blockEntityType != null;
         if (givenType == blockEntityType.get())

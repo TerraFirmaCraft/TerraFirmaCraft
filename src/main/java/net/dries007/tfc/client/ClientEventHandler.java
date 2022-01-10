@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -26,9 +27,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
@@ -88,6 +91,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
         bus.addListener(ClientEventHandler::registerEntityRenderers);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
+        bus.addListener(ClientEventHandler::onTextureStitch);
     }
 
     public static void clientSetup(FMLClientSetupEvent event)
@@ -238,6 +242,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -314,6 +320,22 @@ public final class ClientEventHandler
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
         particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
         particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
+    }
+
+    public static void onTextureStitch(TextureStitchEvent.Pre event)
+    {
+        TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(Sheets.CHEST_SHEET))
+        {
+            Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {
+                event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
+            });
+        }
     }
 
     public static void selfTest()
