@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.config.TFCConfig;
 
 public class TFCChestBlockEntity extends ChestBlockEntity
 {
@@ -30,6 +31,6 @@ public class TFCChestBlockEntity extends ChestBlockEntity
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) // should be isItemValid but no access here
     {
-        return ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.VERY_LARGE);
+        return ItemSizeManager.get(stack).getSize(stack).isEqualOrSmallerThan(TFCConfig.SERVER.chestMaximumItemSize.get());
     }
 }

@@ -55,18 +55,16 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return getExtendedProperties().newBlockEntity(pos, state);
+        return EntityBlockExtension.super.newBlockEntity(pos, state);
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
     {
-        return getExtendedProperties().getTicker(level, state, givenType);
+        return EntityBlockExtension.super.getTicker(level, state, givenType);
     }
 }
