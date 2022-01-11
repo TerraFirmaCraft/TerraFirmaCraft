@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blockentities;
 import java.util.List;
 import java.util.function.IntFunction;
 import javax.annotation.Nullable;
-import javax.swing.plaf.metal.MetalTheme;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +17,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 

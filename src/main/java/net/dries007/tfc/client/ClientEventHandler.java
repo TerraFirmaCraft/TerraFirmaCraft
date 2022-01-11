@@ -40,6 +40,7 @@ import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -349,9 +350,13 @@ public final class ClientEventHandler
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
         final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
 
+        final List<Block> missingModelErrors = blocksWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
+        final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
         final List<Item> missingTranslationErrors = itemsWithStackMatching(s -> new TranslatableComponent(s.getDescriptionId()).getString().equals(s.getDescriptionId()));
 
-        return logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId()));
+        return logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId()));
     }
 
     private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)

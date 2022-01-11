@@ -857,14 +857,10 @@ def generate(rm: ResourceManager):
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
 
-            block.with_block_loot(loot_tables.alternatives({
+            block.with_block_loot({
                 'name': 'tfc:wood/%s/%s' % (variant, wood),
                 'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
-            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood), {
-               'name': 'minecraft:stick',
-               'conditions': [match_tag('tfc:hammers')],
-               'functions': [loot_tables.set_count(1, 4)]
-            }))
+            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood))
 
             if variant != 'log':
                 block.with_item_model()

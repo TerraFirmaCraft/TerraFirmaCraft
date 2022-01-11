@@ -22,12 +22,6 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     @Override
     public float getTemperature(LevelReader level, BlockPos pos)
     {
-        return getAverageTemperature(level, pos);
-    }
-
-    @Override
-    public float getAverageTemperature(LevelReader level, BlockPos pos)
-    {
         return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos)).invoke$getTemperature(pos));
     }
 

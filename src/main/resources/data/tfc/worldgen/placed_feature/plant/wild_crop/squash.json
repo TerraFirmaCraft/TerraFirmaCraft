@@ -3,6 +3,10 @@
   "feature": "tfc:plant/wild_crop/squash",
   "placement": [
     {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
       "type": "block_predicate_filter",
       "predicate": {
         "type": "tfc:air_or_empty_fluid"
@@ -17,10 +21,6 @@
           "Properties": {}
         }
       }
-    },
-    {
-      "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
     }
   ]
 }

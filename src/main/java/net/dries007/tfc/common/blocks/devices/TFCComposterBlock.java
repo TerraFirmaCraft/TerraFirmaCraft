@@ -111,6 +111,12 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
         super.setPlacedBy(level, pos, state, placer, stack);
     }
 
+    @Override
+    public boolean isRandomlyTicking(BlockState state)
+    {
+        return state.getValue(TYPE) != CompostType.ROTTEN;
+    }
+
     public enum CompostType implements StringRepresentable
     {
         NORMAL, READY, ROTTEN;

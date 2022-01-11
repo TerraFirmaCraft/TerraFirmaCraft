@@ -20,13 +20,10 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 
 public class ComposterBlockEntity extends TickCounterBlockEntity
 {
-    private static final long TICKS_UNTIL_READY = ICalendar.TICKS_IN_DAY * 12L;
-
     private int green, brown;
 
     public ComposterBlockEntity(BlockPos pos, BlockState state)
@@ -40,7 +37,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             assert level != null;
             final float rainfall = Climate.getRainfall(level, getBlockPos());
-            long readyTicks = TICKS_UNTIL_READY;
+            long readyTicks = TFCConfig.SERVER.composterTicks.get();
             if (TFCConfig.SERVER.composterRainfallCheck.get())
             {
                 if (rainfall < 150f) // inverted trapezoid wave
