@@ -110,7 +110,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/stick_bundle', ['X', 'X'], {'X': 'tfc:stick_bunch'}, 'tfc:stick_bundle').with_advancement('tfc:stick_bunch')
     rm.crafting_shapeless('crafting/straw', 'tfc:thatch', (4, 'tfc:straw')).with_advancement('tfc:thatch')
     rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
-    rm.crafting_shapeless('crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
+    damage_shapeless(rm, 'crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'tfc:straw', 'tfc:straw', 'minecraft:clay_ball', 'minecraft:clay_ball', 'minecraft:clay_ball', '#minecraft:dirt', '#minecraft:dirt', '#minecraft:dirt'), (6, 'tfc:daub'))
     # todo: bellows, bf, bloomery, goldpan, nestbox, paper, pkeg, salting, food combining, wooden bucket
