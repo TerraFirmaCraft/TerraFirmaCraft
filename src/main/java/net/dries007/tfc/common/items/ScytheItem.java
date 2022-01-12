@@ -14,9 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.dries007.tfc.util.Helpers;
 
 public class ScytheItem extends ToolItem
 {
@@ -32,9 +31,12 @@ public class ScytheItem extends ToolItem
         {
             for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-1, -1, -1), origin.offset(1, 1, 1)))
             {
-                if (!pos.equals(origin) && isCorrectToolForDrops(stack, level.getBlockState(pos)))
+                final BlockState stateAt = level.getBlockState(pos);
+                if (!pos.equals(origin) && isCorrectToolForDrops(stack, stateAt))
                 {
-                    Helpers.quickHarvest(level, player, pos);
+                    level.destroyBlock(pos, false, player); // we have to drop resources manually as breaking from the level means the tool is ignored
+
+                    Block.dropResources(stateAt, level, pos, stateAt.hasBlockEntity() ? level.getBlockEntity(pos) : null, player, player.getMainHandItem());
                 }
             }
         }

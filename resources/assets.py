@@ -550,7 +550,7 @@ def generate(rm: ResourceManager):
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ))
             else:
-                rm.block_loot(p, {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]})
+                rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools'), lower_only]})
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:

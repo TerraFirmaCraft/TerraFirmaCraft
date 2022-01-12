@@ -322,47 +322,11 @@ public final class Helpers
     }
 
     /**
-     * Acts as if the player finished breaking a given block.
-     * {@link net.minecraft.server.level.ServerPlayerGameMode#destroyBlock(BlockPos)}
-     *
-     * The difference: we don't care about break progress. We require the block to be broken
-     */
-    public static void quickHarvest(Level level, ServerPlayer player, BlockPos pos)
-    {
-        final BlockState breakState = level.getBlockState(pos);
-        final int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level, player.gameMode.getGameModeForPlayer(), player, pos);
-        if (exp == -1) return;
-
-        final boolean canHarvest = breakState.canHarvestBlock(level, pos, player);
-        final boolean willHarvest = Helpers.removeBlock(level, player, pos, canHarvest);
-        if (canHarvest && willHarvest) // this drops resources (or it should)
-        {
-            breakState.getBlock().playerDestroy(level, player, pos, breakState, level.getBlockEntity(pos), player.getMainHandItem().copy());
-        }
-        if (willHarvest && exp > 0)
-        {
-            breakState.getBlock().popExperience((ServerLevel) level, pos, exp);
-        }
-    }
-
-    /**
      * {@link Level#removeBlock(BlockPos, boolean)} but with all flags available.
      */
     public static void removeBlock(LevelAccessor level, BlockPos pos, int flags)
     {
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
-    }
-
-    /**
-     * {@link net.minecraft.server.level.ServerPlayerGameMode#removeBlock(BlockPos, boolean)}
-     */
-    public static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest)
-    {
-        BlockState state = level.getBlockState(pos); // ask the state if it's being destroyed
-        boolean removed = state.onDestroyedByPlayer(level, pos, player, canHarvest, level.getFluidState(pos));
-        if (removed) // if it agrees, tell the block it's destroyed
-            state.getBlock().destroy(level, pos, state);
-        return removed;
     }
 
     /**
