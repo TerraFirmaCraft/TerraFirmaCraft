@@ -273,6 +273,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:mineable/hoe', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_scythe', '#tfc:mineable_with_sharp_tool')
+    rm.block_tag('tfc:mineable_with_hammer', '#tfc:mineable_with_blunt_tool')
     rm.item_tag('tfc:sharp_tools', '#tfc:hoes', '#tfc:knives', '#tfc:scythes')
 
     rm.block_tag('forge:needs_wood_tool')
@@ -342,6 +343,9 @@ def generate(rm: ResourceManager):
         'tfc:thatch',
         'tfc:thatch_bed'
     ])
+    rm.block_tag('tfc:mineable_with_blunt_tool',
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
+    )
 
     # ==========
     # FLUID TAGS

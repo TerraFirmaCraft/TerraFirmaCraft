@@ -11,23 +11,6 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "tfc:wood/stripped_wood/blackwood",
-              "conditions": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:wood/stripped_wood/blackwood",
-                  "properties": {
-                    "natural": "false"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:item",
-              "name": "tfc:wood/stripped_log/blackwood"
-            },
-            {
-              "type": "minecraft:item",
               "name": "minecraft:stick",
               "conditions": [
                 {
@@ -47,6 +30,23 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_wood/blackwood",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/stripped_wood/blackwood",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_log/blackwood"
             }
           ]
         }

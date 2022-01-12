@@ -175,7 +175,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         {
             return path.get().defaultBlockState();
         }
-        return state;
+        return null;
     }
 
     /**

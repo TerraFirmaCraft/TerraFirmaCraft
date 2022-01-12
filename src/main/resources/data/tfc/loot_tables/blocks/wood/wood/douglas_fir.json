@@ -11,23 +11,6 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "tfc:wood/wood/douglas_fir",
-              "conditions": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:wood/wood/douglas_fir",
-                  "properties": {
-                    "natural": "false"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:item",
-              "name": "tfc:wood/log/douglas_fir"
-            },
-            {
-              "type": "minecraft:item",
               "name": "minecraft:stick",
               "conditions": [
                 {
@@ -47,6 +30,23 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/wood/douglas_fir",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/wood/douglas_fir",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/log/douglas_fir"
             }
           ]
         }

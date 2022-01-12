@@ -11,23 +11,6 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "tfc:wood/stripped_wood/kapok",
-              "conditions": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:wood/stripped_wood/kapok",
-                  "properties": {
-                    "natural": "false"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "minecraft:item",
-              "name": "tfc:wood/stripped_log/kapok"
-            },
-            {
-              "type": "minecraft:item",
               "name": "minecraft:stick",
               "conditions": [
                 {
@@ -47,6 +30,23 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_wood/kapok",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/stripped_wood/kapok",
+                  "properties": {
+                    "natural": "false"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/stripped_log/kapok"
             }
           ]
         }

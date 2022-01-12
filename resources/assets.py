@@ -693,13 +693,25 @@ def generate(rm: ResourceManager):
                 'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
             }, use_default_model=False)
 
-            block.with_block_loot(({
-                'name': 'tfc:wood/%s/%s' % (variant, wood),
-                'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
-            }, 'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood), {
-               'name': 'minecraft:stick',
-               'conditions': [match_tag('tfc:hammers')],
-               'functions': [loot_tables.set_count(1, 4)]}))
+            stick_with_hammer = {
+                'name': 'minecraft:stick',
+                'conditions': [match_tag('tfc:hammers')],
+                'functions': [loot_tables.set_count(1, 4)]
+            }
+            if variant == 'wood' or variant == 'stripped_wood':
+                block.with_block_loot((
+                    stick_with_hammer,
+                    {  # wood blocks will only drop themselves if non-natural
+                        'name': 'tfc:wood/%s/%s' % (variant, wood),
+                        'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
+                    },
+                    'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)
+                ))
+            else:
+                block.with_block_loot((
+                    stick_with_hammer,
+                    'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
+                ))
 
             if variant != 'log':
                 block.with_item_model()
