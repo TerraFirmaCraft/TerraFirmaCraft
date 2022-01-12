@@ -153,6 +153,7 @@ def generate(rm: ResourceManager):
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
+        rm.item_tag('dyes', 'minecraft:%s_dye' % color)
 
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
@@ -382,8 +383,9 @@ def generate(rm: ResourceManager):
     item_size(rm, 'glue', 'tfc:glue', Size.tiny, Weight.light)
     item_size(rm, 'brass_mechanisms', 'tfc:brass_mechanisms', Size.normal, Weight.light)
     item_size(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', Size.large, Weight.heavy)
-
-    # todo: add food sizes (small, very light), add dye sizes (tiny, light), add plants (tiny, very light)
+    item_size(rm, 'dyes', '#tfc:dyes', Size.tiny, Weight.light)
+    item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
+    item_size(rm, 'plants', '#tfc:plant', Size.tiny, Weight.very_light)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
@@ -572,6 +574,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'grain': grain,
         'dairy': dairy
     })
+    rm.item_tag('foods', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
