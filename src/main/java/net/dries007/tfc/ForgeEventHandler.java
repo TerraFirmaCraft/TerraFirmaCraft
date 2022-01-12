@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -26,10 +27,12 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -38,11 +41,14 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -50,7 +56,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.*;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
@@ -78,6 +86,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -146,6 +155,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
+        bus.addListener(ForgeEventHandler::onItemExpire);
+        bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -620,6 +631,118 @@ public final class ForgeEventHandler
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
+    }
+
+    /**
+     * Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
+     */
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHeatablesinLevel.get())
+        {
+            final ItemStack item = entity.getItem();
+            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                if (cap.getTemperature() > 0f)
+                {
+                    entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+                }
+            });
+        }
+    }
+
+    /**
+     * If the item is heated, we check for blocks below and within that would cause it to cool.
+     * Since we don't want the item to actually expire, we set the expiry time to a small number that allows us to revisit the same code soon.
+     *
+     * By cancelling the event, we guarantee that the item will not actually expire.
+     */
+    public static void onItemExpire(ItemExpireEvent event)
+    {
+        if (!TFCConfig.SERVER.coolHeatablesinLevel.get()) return;
+        final ItemEntity entity = event.getEntityItem();
+        final ServerLevel level = (ServerLevel) entity.getLevel();
+        final ItemStack stack = entity.getItem();
+        final BlockPos pos = entity.blockPosition();
+
+        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+            final int lifespan = stack.getItem().getEntityLifespan(stack, level);
+            if (entity.lifespan >= lifespan) return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
+
+            final float itemTemp = heat.getTemperature();
+            if (itemTemp > 0f)
+            {
+                float coolAmount = 0;
+                final BlockState state = level.getBlockState(pos);
+                final FluidState fluid = level.getFluidState(pos);
+                if (fluid.is(FluidTags.WATER))
+                {
+                    coolAmount = 50f;
+                    if (level.random.nextFloat() < 0.001F)
+                    {
+                        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    }
+                }
+                else if (state.is(Blocks.SNOW))
+                {
+                    coolAmount = 70f;
+                    if (level.random.nextFloat() < 0.1F)
+                    {
+                        final int layers = state.getValue(SnowLayerBlock.LAYERS);
+                        if (layers > 1)
+                        {
+                            level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
+                        }
+                        else
+                        {
+                            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                        }
+                    }
+                }
+                else
+                {
+                    final BlockPos belowPos = pos.below();
+                    final BlockState belowState = level.getBlockState(belowPos);
+                    if (belowState.is(Blocks.SNOW_BLOCK))
+                    {
+                        coolAmount = 75f;
+                        if (level.random.nextFloat() < 0.1F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE)
+                    {
+                        coolAmount = 100f;
+                        if (level.random.nextFloat() < 0.01F)
+                        {
+                            level.setBlockAndUpdate(belowPos, belowState.is(TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE_SOLID)
+                    {
+                        coolAmount = 125f;
+                        if (level.random.nextFloat() < 0.005F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                }
+
+                if (coolAmount > 0f)
+                {
+                    heat.setTemperature(Math.max(0f, heat.getTemperature() - coolAmount));
+                    Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                    level.sendParticles(ParticleTypes.SMOKE, entity.getX(), entity.getY(), entity.getZ(), 1, 0D, 0D, 0D, 1f);
+                }
+                event.setExtraLife(heat.getTemperature() == 0f ? lifespan : TFCConfig.SERVER.ticksBeforeItemCool.get());
+                //entity.setNoPickUpDelay();
+            }
+            else
+            {
+                event.setExtraLife(lifespan);
+            }
+            event.setCanceled(true);
+        });
     }
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
