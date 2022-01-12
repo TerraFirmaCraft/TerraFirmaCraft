@@ -17,7 +17,7 @@ def create_chest(wood: str):
     empty = (0, 0, 0, 0)
     frame = log.copy()
     ImageDraw.Draw(frame).rectangle((1, 1, 12, 12), fill=empty)
-    top = sheet.copy()
+    top = sheet.copy().transpose(Image.TRANSVERSE)
     top.paste(frame, (0, 0), frame)
 
     side = top.copy()
