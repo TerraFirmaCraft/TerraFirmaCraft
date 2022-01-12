@@ -208,6 +208,7 @@ def generate(rm: ResourceManager):
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
+        rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
 
     for plant, plant_data in PLANTS.items():  # Plants
         rm.block_tag('plant', 'tfc:plant/%s' % plant)
