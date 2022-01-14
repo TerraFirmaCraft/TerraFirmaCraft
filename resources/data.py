@@ -175,6 +175,12 @@ def generate(rm: ResourceManager):
     # Blocks and Items
     block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
 
+    for wood in WOODS.keys():
+        block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
+
+    for plant in PLANTS.keys():
+        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+
     # Sand
     for color in SAND_BLOCK_TYPES:
         block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
@@ -212,10 +218,8 @@ def generate(rm: ResourceManager):
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
-        rm.block_tag('tool_racks', 'tfc:wood/planks/' + wood + '_tool_rack')
 
     for plant, plant_data in PLANTS.items():  # Plants
-        rm.block_tag('plant', 'tfc:plant/%s' % plant)
         if plant_data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if plant_data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh'):
