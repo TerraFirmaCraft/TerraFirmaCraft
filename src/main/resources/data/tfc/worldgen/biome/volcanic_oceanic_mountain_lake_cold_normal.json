@@ -26,6 +26,10 @@
       "tfc:underground_flood_fill_lake"
     ],
     [
+      "tfc:native_copper_deposit",
+      "tfc:cassiterite_deposit",
+      "tfc:native_silver_deposit",
+      "tfc:native_gold_deposit",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc",
@@ -33,9 +37,9 @@
     ],
     [
       "tfc:vein/gravel",
+      "tfc:vein/granite_dike",
       "tfc:vein/diorite_dike",
       "tfc:vein/gabbro_dike",
-      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",

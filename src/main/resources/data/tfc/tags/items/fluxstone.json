@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:rock/loose/chalk",
-    "tfc:rock/loose/dolomite",
     "tfc:rock/loose/limestone",
+    "tfc:rock/loose/dolomite",
+    "tfc:rock/loose/chalk",
     "tfc:rock/loose/marble"
   ]
 }

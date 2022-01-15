@@ -174,6 +174,14 @@ def generate(rm: ResourceManager):
     })
     rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
 
+    for ore in ORE_DEPOSITS:
+        configured_placed_feature(rm, '%s_deposit' % ore, 'tfc:soil_disc', {
+            'min_radius': 1,
+            'max_radius': 3,
+            'height': 2,
+            'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
+        }, decorate_chance(20), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')
 
@@ -1147,6 +1155,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         spawners.update({
             'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
         })
+        features[Decoration.SOIL_DISKS] += ['tfc:%s_deposit' % ore for ore in ORE_DEPOSITS]
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LARGE_FEATURES].append('tfc:coral_reef')

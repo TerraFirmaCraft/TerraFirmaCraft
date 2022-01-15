@@ -48,6 +48,8 @@ public enum Rock implements StringRepresentable
     GNEISS(RockCategory.METAMORPHIC, SandBlockType.GREEN),
     MARBLE(RockCategory.METAMORPHIC, SandBlockType.WHITE);
 
+    public static final Rock[] VALUES = values();
+
     private final String serializedName;
     private final RockCategory category;
     private final SandBlockType sandType;

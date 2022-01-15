@@ -14,11 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/andesite"
+            "block": "tfc:ore/cinnabar/rhyolite"
           }
         ]
       },
@@ -34,21 +34,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/dacite"
+          "tfc:rock/raw/andesite"
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/dacite"
+            "block": "tfc:ore/cinnabar/andesite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/dacite"
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/rhyolite"
+            "block": "tfc:ore/cinnabar/dacite"
           }
         ]
       },

@@ -239,6 +239,10 @@ def generate(rm: ResourceManager):
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
 
+        for ore in ORE_DEPOSITS:
+            block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_tag('can_be_panned', 'tfc:deposit/%s/%s' % (ore, rock))
+
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
@@ -293,6 +297,7 @@ def generate(rm: ResourceManager):
         *['tfc:sand/%s' % sand for sand in SAND_BLOCK_TYPES],
         'tfc:snow_pile',
         *['tfc:rock/gravel/%s' % rock for rock in ROCKS.keys()],
+        *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()],
         'tfc:aggregate',
         'tfc:fire_clay_block',
         'tfc:charcoal_pile',

@@ -536,34 +536,38 @@ public final class Helpers
      * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
-    public static void destroyBlockAndDropBlocksManually(Level worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void destroyBlockAndDropBlocksManually(Level level, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
-        BlockState state = worldIn.getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
         if (!state.isAir())
         {
-            FluidState fluidstate = worldIn.getFluidState(pos);
+            FluidState fluidstate = level.getFluidState(pos);
             if (!(state.getBlock() instanceof BaseFireBlock))
             {
-                worldIn.levelEvent(2001, pos, Block.getId(state));
+                level.levelEvent(2001, pos, Block.getId(state));
             }
-
-            if (worldIn instanceof ServerLevel)
+            if (level instanceof ServerLevel)
             {
-                BlockEntity tileEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-
-                // Copied from Block.getDrops()
-                LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) worldIn)
-                    .withRandom(worldIn.random)
-                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                    .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
-                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
-                builder.accept(lootContext);
-                state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
-                state.spawnAfterBreak((ServerLevel) worldIn, pos, ItemStack.EMPTY);
+                dropWithContext(level, state, pos, builder);
             }
-            worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+            level.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
+    }
+
+    public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder)
+    {
+        BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+
+        // Copied from Block.getDrops()
+        LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) level)
+            .withRandom(level.random)
+            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+            .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
+            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
+        builder.accept(lootContext);
+        state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(level, pos, stackToSpawn));
+        state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY);
     }
 
     public static void playSound(Level world, BlockPos pos, SoundEvent sound)

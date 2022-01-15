@@ -1,0 +1,1314 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/pan/empty",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:stage": 0.1,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/result"
+    },
+    {
+      "predicate": {
+        "tfc:stage": 0.1,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/result"
+    },
+    {
+      "predicate": {
+        "tfc:stage": 0.1,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/result"
+    },
+    {
+      "predicate": {
+        "tfc:stage": 0.1,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/result"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/granite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/granite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/diorite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/diorite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/gabbro_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/gabbro_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/shale_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/shale_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/claystone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/claystone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/limestone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/limestone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/conglomerate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/conglomerate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/dolomite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/dolomite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/chert_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/chert_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/chalk_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/chalk_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/rhyolite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/rhyolite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/basalt_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/basalt_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/andesite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/andesite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/dacite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/dacite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/quartzite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/quartzite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/slate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/slate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/phyllite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/phyllite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/schist_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/schist_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/gneiss_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/gneiss_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.4,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/marble_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.7,
+        "tfc:ore": 0
+      },
+      "model": "tfc:item/pan/native_copper/marble_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/granite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/granite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/diorite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/diorite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/gabbro_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/gabbro_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/shale_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/shale_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/claystone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/claystone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/limestone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/limestone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/conglomerate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/conglomerate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/dolomite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/dolomite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/chert_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/chert_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/chalk_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/chalk_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/rhyolite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/rhyolite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/basalt_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/basalt_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/andesite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/andesite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/dacite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/dacite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/quartzite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/quartzite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/slate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/slate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/phyllite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/phyllite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/schist_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/schist_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/gneiss_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/gneiss_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.4,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/marble_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.7,
+        "tfc:ore": 1
+      },
+      "model": "tfc:item/pan/native_silver/marble_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/granite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/granite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/diorite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/diorite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/gabbro_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/gabbro_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/shale_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/shale_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/claystone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/claystone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/limestone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/limestone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/conglomerate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/conglomerate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/dolomite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/dolomite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/chert_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/chert_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/chalk_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/chalk_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/rhyolite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/rhyolite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/basalt_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/basalt_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/andesite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/andesite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/dacite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/dacite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/quartzite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/quartzite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/slate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/slate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/phyllite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/phyllite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/schist_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/schist_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/gneiss_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/gneiss_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.4,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/marble_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.7,
+        "tfc:ore": 2
+      },
+      "model": "tfc:item/pan/native_gold/marble_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/granite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 0,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/granite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/diorite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 1,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/diorite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/gabbro_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 2,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/gabbro_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/shale_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 3,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/shale_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/claystone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 4,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/claystone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/limestone_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 5,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/limestone_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/conglomerate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 6,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/conglomerate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/dolomite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 7,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/dolomite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/chert_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 8,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/chert_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/chalk_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 9,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/chalk_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/rhyolite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 10,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/rhyolite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/basalt_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 11,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/basalt_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/andesite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 12,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/andesite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/dacite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 13,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/dacite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/quartzite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 14,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/quartzite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/slate_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 15,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/slate_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/phyllite_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 16,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/phyllite_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/schist_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 17,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/schist_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/gneiss_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 18,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/gneiss_full"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.4,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/marble_half"
+    },
+    {
+      "predicate": {
+        "tfc:rock": 19,
+        "tfc:stage": 0.7,
+        "tfc:ore": 3
+      },
+      "model": "tfc:item/pan/cassiterite/marble_full"
+    }
+  ]
+}

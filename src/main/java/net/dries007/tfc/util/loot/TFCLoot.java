@@ -21,13 +21,16 @@ public class TFCLoot
 {
     // Loot Parameters
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
+    public static final LootContextParam<Boolean> PANNED = new LootContextParam<>(Helpers.identifier("panned"));
 
     // Loot Conditions
     public static final Lazy<LootItemConditionType> IS_ISOLATED = register("is_isolated", IsIsolatedCondition.Serializer::new);
+    public static final Lazy<LootItemConditionType> IS_PANNED = register("is_panned", PannedCondition.Serializer::new);
 
     public static void registerLootConditions()
     {
         IS_ISOLATED.get();
+        IS_PANNED.get();
     }
 
     private static Lazy<LootItemConditionType> register(String id, Supplier<Serializer<? extends LootItemCondition>> serializer)

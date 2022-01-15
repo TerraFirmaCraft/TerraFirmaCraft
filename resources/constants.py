@@ -48,26 +48,26 @@ TOOL_TAGS: Dict[str, str] = {
 }
 
 ROCKS: Dict[str, Rock] = {
-    'chalk': Rock('sedimentary', 'white'),
-    'chert': Rock('sedimentary', 'yellow'),
-    'claystone': Rock('sedimentary', 'brown'),
-    'conglomerate': Rock('sedimentary', 'green'),
-    'dolomite': Rock('sedimentary', 'black'),
-    'limestone': Rock('sedimentary', 'white'),
-    'shale': Rock('sedimentary', 'black'),
-    'gneiss': Rock('metamorphic', 'green'),
-    'marble': Rock('metamorphic', 'yellow'),
-    'phyllite': Rock('metamorphic', 'brown'),
-    'quartzite': Rock('metamorphic', 'white'),
-    'schist': Rock('metamorphic', 'green'),
-    'slate': Rock('metamorphic', 'brown'),
+    'granite': Rock('igneous_intrusive', 'white'),
     'diorite': Rock('igneous_intrusive', 'white'),
     'gabbro': Rock('igneous_intrusive', 'black'),
-    'granite': Rock('igneous_intrusive', 'white'),
-    'andesite': Rock('igneous_extrusive', 'red'),
+    'shale': Rock('sedimentary', 'black'),
+    'claystone': Rock('sedimentary', 'brown'),
+    'limestone': Rock('sedimentary', 'white'),
+    'conglomerate': Rock('sedimentary', 'green'),
+    'dolomite': Rock('sedimentary', 'black'),
+    'chert': Rock('sedimentary', 'yellow'),
+    'chalk': Rock('sedimentary', 'white'),
+    'rhyolite': Rock('igneous_extrusive', 'red'),
     'basalt': Rock('igneous_extrusive', 'red'),
+    'andesite': Rock('igneous_extrusive', 'red'),
     'dacite': Rock('igneous_extrusive', 'red'),
-    'rhyolite': Rock('igneous_extrusive', 'red')
+    'quartzite': Rock('metamorphic', 'white'),
+    'slate': Rock('metamorphic', 'brown'),
+    'phyllite': Rock('metamorphic', 'brown'),
+    'schist': Rock('metamorphic', 'green'),
+    'gneiss': Rock('metamorphic', 'green'),
+    'marble': Rock('metamorphic', 'yellow')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270, None),
@@ -275,6 +275,7 @@ SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
 SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
 SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
+ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 
@@ -596,6 +597,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.propick.found': 'Found',
     'tfc.tooltip.propick.nothing': 'Found nothing.',
     'tfc.tooltip.propick.accuracy': 'Accuracy: %s%%',
+    'tfc.tooltip.pan.contents': '§7Contains ',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',

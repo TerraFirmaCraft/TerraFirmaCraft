@@ -484,6 +484,40 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
+    rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
+
+    stages = [
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 0}, 'model': 'tfc:item/pan/native_copper/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 1}, 'model': 'tfc:item/pan/native_silver/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 2}, 'model': 'tfc:item/pan/native_gold/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 3}, 'model': 'tfc:item/pan/cassiterite/result'}
+    ]
+    for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
+        ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
+        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/' + metal}, parent='tfc:item/pan/result')
+        for rock_id, rock in enumerate(ROCKS.keys()):
+            rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
+            rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
+            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.4, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_half' % (ore, rock)})
+            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.7, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_full' % (ore, rock)})
+            block = rm.blockstate(('deposit', ore, rock)).with_lang(lang('%s %s Deposit', rock, ore)).with_item_model()
+            block.with_block_model({
+                'all': 'tfc:block/rock/gravel/%s' % rock,
+                'particle': 'tfc:block/rock/gravel/%s' % rock,
+                'overlay': 'tfc:block/deposit/%s' % ore
+            }, parent='tfc:block/ore')
+            block.with_block_loot(({
+               'name': 'tfc:ore/small_%s' % ore,
+               'conditions': ['tfc:is_panned', condition_chance(0.5)],
+            }, {
+               'name': 'tfc:rock/loose/%s' % rock,
+               'conditions': ['tfc:is_panned', condition_chance(0.5)],
+            }, {
+               'name': 'tfc:deposit/%s/%s' % (ore, rock),
+               'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
+            }))
+    item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items
         rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
