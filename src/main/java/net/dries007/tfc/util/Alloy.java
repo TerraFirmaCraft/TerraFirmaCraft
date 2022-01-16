@@ -161,8 +161,9 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
         }
         if (removeAmount >= totalUnits)
         {
+            final int total = totalUnits;
             clear();
-            return totalUnits;
+            return total;
         }
         else
         {

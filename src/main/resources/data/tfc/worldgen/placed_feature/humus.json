@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:podzol",
+  "feature": "tfc:humus",
   "placement": [
     {
       "type": "minecraft:heightmap",
@@ -20,7 +20,7 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:groundcover/podzol",
+          "Name": "tfc:groundcover/humus",
           "Properties": {
             "fluid": "empty"
           }

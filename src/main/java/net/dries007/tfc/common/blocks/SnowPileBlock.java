@@ -47,7 +47,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     /**
      * Places a snow pile at the given location, possibly absorbing the block above as well.
      */
-    public static void placeSnowPile(LevelAccessor level, BlockPos pos, BlockState state)
+    public static void placeSnowPile(LevelAccessor level, BlockPos pos, BlockState state, boolean byPlayer)
     {
         // Create a snow pile block, accounting for double piles.
         final BlockPos posAbove = pos.above();
@@ -56,7 +56,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
         final BlockState snowPile = TFCBlocks.SNOW_PILE.get().defaultBlockState();
 
         level.setBlock(pos, snowPile, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-        level.getBlockEntity(pos, TFCBlockEntities.PILE.get()).ifPresent(entity -> entity.setHiddenStates(state, savedAboveState));
+        level.getBlockEntity(pos, TFCBlockEntities.PILE.get()).ifPresent(entity -> entity.setHiddenStates(state, savedAboveState, byPlayer));
 
         if (savedAboveState != null)
         {

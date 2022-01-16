@@ -142,7 +142,7 @@ public final class EnvironmentHelpers
         }
         else if (SnowPileBlock.canPlaceSnowPile(level, pos, state))
         {
-            SnowPileBlock.placeSnowPile(level, pos, state);
+            SnowPileBlock.placeSnowPile(level, pos, state, false);
             return true;
         }
         else if (state.isAir() && Blocks.SNOW.defaultBlockState().canSurvive(level, pos))

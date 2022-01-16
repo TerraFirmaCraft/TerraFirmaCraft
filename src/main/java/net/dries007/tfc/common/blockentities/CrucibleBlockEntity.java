@@ -59,6 +59,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         crucible.checkForLastTickSync();
         crucible.checkForCalendarUpdate();
 
+        if (crucible.needsRecipeUpdate)
+        {
+            crucible.needsRecipeUpdate = false;
+            crucible.updateCaches();
+        }
+
         if (crucible.temperature != crucible.targetTemperature)
         {
             crucible.temperature = HeatCapability.adjustTempTowards(crucible.temperature, crucible.targetTemperature);
@@ -153,6 +159,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     private final HeatingRecipe[] cachedRecipes;
     private float temperature;
     private float targetTemperature;
+    private boolean needsRecipeUpdate;
 
     /**
      * Prevent the target temperature from "hovering" around a particular value.
@@ -167,6 +174,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         super(TFCBlockEntities.CRUCIBLE.get(), pos, state, CrucibleInventory::new, NAME);
 
         cachedRecipes = new HeatingRecipe[9];
+        needsRecipeUpdate = true;
         temperature = targetTemperature = 0;
         lastFillTicks = 0;
         lastUpdateTick = 0;
@@ -212,6 +220,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
+    public int getSlotStackLimit(int slot)
+    {
+        return 1;
+    }
+
+    @Override
     public long getLastUpdateTick()
     {
         return lastUpdateTick;
@@ -236,6 +250,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
+        needsRecipeUpdate = true;
         super.loadAdditional(nbt);
     }
 
@@ -269,6 +284,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         super.setAndUpdateSlots(slot);
         if (slot != SLOT_OUTPUT)
+        {
+            cachedRecipes[slot] = HeatingRecipe.getRecipe(inventory.getStackInSlot(slot));
+        }
+    }
+
+    private void updateCaches()
+    {
+        for (int slot = SLOT_INPUT_START; slot <= SLOT_INPUT_END; slot++)
         {
             cachedRecipes[slot] = HeatingRecipe.getRecipe(inventory.getStackInSlot(slot));
         }

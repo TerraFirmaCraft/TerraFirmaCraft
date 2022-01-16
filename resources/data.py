@@ -208,6 +208,7 @@ def generate(rm: ResourceManager):
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
+        rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
 
     for plant, plant_data in PLANTS.items():  # Plants
         rm.block_tag('plant', 'tfc:plant/%s' % plant)
@@ -316,7 +317,8 @@ def generate(rm: ResourceManager):
         'tfc:alabaster/raw/polished_alabaster',
         *['tfc:alabaster/stained/%s%s' % (color, variant) for color in COLORS for variant in ('_raw_alabaster', '_alabaster_bricks', '_polished_alabaster', '_alabaster_bricks_slab', '_alabaster_bricks_stairs', '_alabaster_bricks_wall', '_polished_alabaster_slab', '_polished_alabaster_stairs', '_polished_alabaster_wall')],
         'tfc:fire_bricks',
-        'tfc:quern'
+        'tfc:quern',
+        'tfc:crucible'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support') for wood in WOODS.keys()],

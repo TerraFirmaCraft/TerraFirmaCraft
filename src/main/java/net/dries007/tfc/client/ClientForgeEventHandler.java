@@ -8,7 +8,6 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +45,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -90,7 +88,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
-        bus.addListener(ClientForgeEventHandler::onFogDensity);
+        bus.addListener(ClientForgeEventHandler::onFogRender);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -301,7 +299,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onFogDensity(EntityViewRenderEvent.RenderFogEvent event)
+    public static void onFogRender(EntityViewRenderEvent.RenderFogEvent event)
     {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN))

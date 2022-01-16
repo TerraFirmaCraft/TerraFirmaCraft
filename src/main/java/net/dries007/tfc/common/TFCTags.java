@@ -69,6 +69,7 @@ public class TFCTags
         public static final Tag.Named<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
         public static final Tag.Named<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
         public static final Tag.Named<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
+        public static final Tag.Named<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
 
         private static Tag.Named<Block> create(String id)
         {

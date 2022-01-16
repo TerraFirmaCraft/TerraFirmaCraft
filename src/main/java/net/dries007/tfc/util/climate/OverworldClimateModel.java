@@ -216,7 +216,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     }
                     else if (SnowPileBlock.canPlaceSnowPile(level, mutablePos, stateAt))
                     {
-                        SnowPileBlock.placeSnowPile(level, mutablePos, stateAt);
+                        SnowPileBlock.placeSnowPile(level, mutablePos, stateAt, false);
                         level.setBlock(mutablePos, Helpers.setProperty(level.getBlockState(mutablePos), SnowyDirtBlock.SNOWY, true), 2);
                     }
                 }

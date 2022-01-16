@@ -8,6 +8,7 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
@@ -23,6 +24,16 @@ public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
     {
         super(TFCContainerTypes.LOG_PILE.get(), windowId, logPile);
         logPile.onOpen(playerInventory.player);
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, LogPileBlockEntity.SLOTS, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
+            };
     }
 
     @Override

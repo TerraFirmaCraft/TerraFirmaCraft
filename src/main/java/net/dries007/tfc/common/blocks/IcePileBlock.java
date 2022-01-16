@@ -46,7 +46,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
                 final BlockState savedSurfaceState = icePileAtSurface ? surfaceState : null;
 
                 level.setBlock(groundPos, TFCBlocks.ICE_PILE.get().defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-                level.getBlockEntity(groundPos, TFCBlockEntities.PILE.get()).ifPresent(pile -> pile.setHiddenStates(savedGroundState, savedSurfaceState));
+                level.getBlockEntity(groundPos, TFCBlockEntities.PILE.get()).ifPresent(pile -> pile.setHiddenStates(savedGroundState, savedSurfaceState, false));
 
                 // Remove the block above, if it's been absorbed into the ice pile
                 if (icePileAtSurface)
