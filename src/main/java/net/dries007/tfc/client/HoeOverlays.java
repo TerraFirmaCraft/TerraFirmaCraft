@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.config.TFCConfig;
 
 public class HoeOverlays
 {
@@ -31,7 +32,7 @@ public class HoeOverlays
             if (targetedState.getBlock() instanceof HoeOverlayBlock overlayBlock)
             {
                 final List<Component> lines = new ArrayList<>();
-                overlayBlock.addHoeOverlayInfo(world, targetedPos, targetedState, lines);
+                overlayBlock.addHoeOverlayInfo(world, targetedPos, targetedState, lines, TFCConfig.CLIENT.enableDebug.get());
                 if (!lines.isEmpty())
                 {
                     int x = window.getGuiScaledWidth() / 2 + 3;

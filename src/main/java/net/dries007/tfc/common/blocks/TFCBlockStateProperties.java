@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
@@ -53,20 +55,28 @@ public class TFCBlockStateProperties
     public static final IntegerProperty STAGE_11 = IntegerProperty.create("stage", 0, 11);
     public static final IntegerProperty STAGE_12 = IntegerProperty.create("stage", 0, 12);
 
+    public static final IntegerProperty AGE_1 = BlockStateProperties.AGE_1;
+    public static final IntegerProperty AGE_2 = BlockStateProperties.AGE_2;
+    public static final IntegerProperty AGE_3 = BlockStateProperties.AGE_3;
+    public static final IntegerProperty AGE_4 = IntegerProperty.create("age", 0, 4);
+    public static final IntegerProperty AGE_5 = BlockStateProperties.AGE_5;
+    public static final IntegerProperty AGE_6 = IntegerProperty.create("age", 0, 6);
+    public static final IntegerProperty AGE_7 = BlockStateProperties.AGE_7;
+    public static final IntegerProperty AGE_8 = IntegerProperty.create("age", 0, 8);
+
     public static final IntegerProperty SAPLINGS = IntegerProperty.create("saplings", 1, 4);
 
-    public static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
-
-    public static final IntegerProperty AGE_3 = IntegerProperty.create("age", 0, 3);
-
+    public static final EnumProperty<DoubleCropBlock.Part> DOUBLE_CROP_PART = EnumProperty.create("part", DoubleCropBlock.Part.class);
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
     public static final EnumProperty<Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", Lifecycle.class);
+    public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
-    public static final BooleanProperty WILD = BooleanProperty.create("wild");
-    public static final BooleanProperty GROWING = BooleanProperty.create("growing");
+    public static final BooleanProperty STICK = BooleanProperty.create("stick");
+    public static final BooleanProperty MATURE = BooleanProperty.create("mature");
+    public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");
@@ -77,7 +87,26 @@ public class TFCBlockStateProperties
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
 
-    public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
-
     public static final EnumProperty<Flow> FLOW = EnumProperty.create("flow", Flow.class);
+
+    private static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
+    private static final IntegerProperty[] AGES = {AGE_1, AGE_2, AGE_3, AGE_4, AGE_5, AGE_6, AGE_7, AGE_8};
+
+    public static IntegerProperty getStageProperty(int maxStage)
+    {
+        if (maxStage > 0 && maxStage <= STAGES.length)
+        {
+            return STAGES[maxStage - 1];
+        }
+        throw new IllegalArgumentException("No stage property for stages [0, " + maxStage + "]");
+    }
+
+    public static IntegerProperty getAgeProperty(int maxAge)
+    {
+        if (maxAge > 0 && maxAge <= AGES.length)
+        {
+            return AGES[maxAge - 1];
+        }
+        throw new IllegalArgumentException("No age property for ages [0, " + maxAge + "]");
+    }
 }

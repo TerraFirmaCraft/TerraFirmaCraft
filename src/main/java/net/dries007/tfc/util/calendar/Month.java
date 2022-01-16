@@ -48,7 +48,7 @@ public enum Month
 
     public Month next()
     {
-        return VALUES[(ordinal() + 1) % VALUES.length];
+        return this == DECEMBER ? JANUARY : VALUES[ordinal() + 1];
     }
 
     public boolean isWithin(Month lowerBoundInclusive, Month upperBoundInclusive)

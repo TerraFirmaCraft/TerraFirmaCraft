@@ -530,20 +530,20 @@ public final class Helpers
         }
     }
 
-    public static void playSound(Level world, BlockPos pos, SoundEvent sound)
+    public static void playSound(Level level, BlockPos pos, SoundEvent sound)
     {
-        Random rand = world.getRandom();
-        world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+        Random rand = level.getRandom();
+        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
-    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack, double yOffset)
+    public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset)
     {
-        return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
+        return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
     }
 
-    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack)
+    public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack)
     {
-        return spawnItem(world, pos, stack, 0.5D);
+        return spawnItem(level, pos, stack, 0.5D);
     }
 
     public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
@@ -803,10 +803,20 @@ public final class Helpers
         return min == max ? min : min + random.nextInt(max - min);
     }
 
+    public static int uniform(Random random, int min, int max)
+    {
+        return min == max ? min : min + random.nextInt(max - min);
+    }
+
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
     public static float uniform(RandomSource random, float min, float max)
+    {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public static float uniform(Random random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }

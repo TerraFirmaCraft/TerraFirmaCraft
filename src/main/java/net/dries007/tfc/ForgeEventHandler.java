@@ -38,7 +38,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -54,14 +57,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -102,7 +106,6 @@ import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
@@ -165,6 +168,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
+        bus.addListener(ForgeEventHandler::onBoneMeal);
     }
 
     /**
@@ -392,6 +396,7 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
         event.addListener(Fauna.MANAGER);
@@ -831,7 +836,7 @@ public final class ForgeEventHandler
     {
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
-            final InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), true);
+            final InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), true);
             if (result != InteractionResult.PASS)
             {
                 event.setCanceled(true);
@@ -854,7 +859,7 @@ public final class ForgeEventHandler
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
             // Cannot be cancelled, only fired on client.
-            InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), false);
+            InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), false);
             if (result == InteractionResult.SUCCESS)
             {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
@@ -870,51 +875,22 @@ public final class ForgeEventHandler
 
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
     }
 
-    public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)
+    /**
+     * Deny all traditional uses of bone meal directly to grow crops.
+     * Fertilizer is used as a replacement.
+     */
+    public static void onBoneMeal(BonemealEvent event)
     {
-        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        if (hit.getType() == HitResult.Type.BLOCK)
+        if (!TFCConfig.SERVER.enableVanillaBonemeal.get())
         {
-            final BlockPos pos = hit.getBlockPos();
-            final BlockState state = level.getBlockState(pos);
-            final Fluid fluid = state.getFluidState().getType();
-            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
-            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
-            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
-            {
-                final Drinkable drinkable = Drinkable.get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
-                {
-                    if (!level.isClientSide && doDrink)
-                    {
-                        doDrink(level, player, state, pos, playerData, drinkable);
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
-    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
-    {
-        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
-        level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
-        drinkable.onDrink(player);
-
-        // Since we're drinking from a source block, we need to apply the consume chance
-        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > player.getRandom().nextFloat())
-        {
-            final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
-            if (emptyState != null)
-            {
-                level.setBlock(pos, emptyState, 3);
-            }
+            event.setResult(Event.Result.DENY);
+            event.setCanceled(true);
         }
     }
 }

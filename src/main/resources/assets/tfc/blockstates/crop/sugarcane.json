@@ -1,0 +1,41 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/crop/sugarcane_age_0"
+    },
+    "age=1": {
+      "model": "tfc:block/crop/sugarcane_age_1"
+    },
+    "age=2": {
+      "model": "tfc:block/crop/sugarcane_age_2"
+    },
+    "age=3": {
+      "model": "tfc:block/crop/sugarcane_age_3"
+    },
+    "age=4,part=bottom": {
+      "model": "tfc:block/crop/sugarcane_age_4_bottom"
+    },
+    "age=5,part=bottom": {
+      "model": "tfc:block/crop/sugarcane_age_5_bottom"
+    },
+    "age=6,part=bottom": {
+      "model": "tfc:block/crop/sugarcane_age_6_bottom"
+    },
+    "age=7,part=bottom": {
+      "model": "tfc:block/crop/sugarcane_age_7_bottom"
+    },
+    "age=4,part=top": {
+      "model": "tfc:block/crop/sugarcane_age_4_top"
+    },
+    "age=5,part=top": {
+      "model": "tfc:block/crop/sugarcane_age_5_top"
+    },
+    "age=6,part=top": {
+      "model": "tfc:block/crop/sugarcane_age_6_top"
+    },
+    "age=7,part=top": {
+      "model": "tfc:block/crop/sugarcane_age_7_top"
+    }
+  }
+}

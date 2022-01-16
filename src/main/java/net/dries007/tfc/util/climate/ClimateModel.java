@@ -22,9 +22,6 @@ import net.dries007.tfc.world.settings.ClimateSettings;
  */
 public interface ClimateModel
 {
-    /**
-     * Magic numbers. These probably mean something
-     */
     float MINIMUM_RAINFALL = 0f;
     float MAXIMUM_RAINFALL = 500f;
 
@@ -43,18 +40,19 @@ public interface ClimateModel
     float getAverageTemperature(LevelReader level, BlockPos pos);
 
     /**
-     * Get the rainfall for a given position, and the current time (Can obtain a timestamp via {@code Calendars.get(level)}).
-     *
-     * @return The average annual rainfall, roughly equivalent to mm/year. Should be in the range [0, 500]
-     */
-    float getRainfall(LevelReader level, BlockPos pos);
-
-    /**
      * Get the precipitation type for a given position, and the current time (Can obtain a timestamp via {@code Calendars.get(level)}).
      *
      * @return A precipitation.
      */
     Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the average annual rainfall for a given position.
+     * Should be <strong>time invariant</strong>.
+     *
+     * @return The average annual rainfall, roughly equivalent to mm/year. Should be in the range [0, 500]
+     */
+    float getRainfall(LevelReader level, BlockPos pos);
 
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance

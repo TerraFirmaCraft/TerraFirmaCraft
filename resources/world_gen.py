@@ -585,6 +585,29 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'perovskia'), plant_config('tfc:plant/perovskia[age=1,stage=1]', 1, 10, requires_clay=True), decorate_climate(-6, 12, 0, 270))
     configured_noise_plant_feature(rm, ('plant', 'water_canna'), plant_config('tfc:plant/water_canna[age=1,stage=1]', 1, 10, requires_clay=True), decorate_climate(0, 36, 150, 500))
 
+    # Crops
+    crop_features = []
+    for crop, crop_data in CROPS.items():
+        name_parts = ('plant', 'wild_crop', crop)
+        tall = crop_data.type == 'double' or crop_data.type == 'double_stick'
+        name = 'tfc:wild_crop/%s[part=bottom]' % crop if tall else 'tfc:wild_crop/%s' % crop
+
+        feature = 'simple_block', {'to_place': simple_state_provider(name)}
+        if tall:
+            feature = 'tfc:tall_wild_crop', {'state': utils.block_state(name)}
+
+        res = utils.resource_location(rm.domain, name_parts)
+        patch_feature = res.join() + '_patch'
+        singular_feature = utils.resource_location(rm.domain, name_parts)
+        crop_features.append(patch_feature)
+
+        rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 4, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
+        rm.configured_feature(singular_feature, *feature)
+        rm.placed_feature(patch_feature, patch_feature)
+        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
+
+    configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': crop_features}, decorate_chance(40), decorate_square(), decorate_climate(min_rain=125, min_temp=-15), decorate_biome())
+
     clay_plant_features = [
         'tfc:plant/athyrium_fern_patch',
         'tfc:plant/canna_patch',
@@ -674,12 +697,14 @@ def generate(rm: ResourceManager):
     ]})
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
+
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
     res = utils.resource_location(rm.domain, name_parts)
     if feature is None:
         feature = res
     rm.configured_feature(res, feature, config)
     rm.placed_feature(res, res, *placements)
+
 
 def tall_plant_config(state1: str, state2: str, tries: int, radius: int, min_height: int, max_height: int) -> Json:
     return {
@@ -691,6 +716,7 @@ def tall_plant_config(state1: str, state2: str, tries: int, radius: int, min_hei
         'max_height': max_height
     }
 
+
 def vine_config(state: str, tries: int, radius: int, min_height: int, max_height: int) -> Json:
     return {
         'state': state,
@@ -699,6 +725,7 @@ def vine_config(state: str, tries: int, radius: int, min_height: int, max_height
         'min_height': min_height,
         'max_height': max_height
     }
+
 
 class PlantConfig(NamedTuple):
     block: str
@@ -710,8 +737,10 @@ class PlantConfig(NamedTuple):
     emergent_plant: bool
     tall_plant: bool
 
+
 def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False) -> PlantConfig:
     return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant)
+
 
 def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
     state_provider = {
@@ -757,6 +786,7 @@ class PatchConfig(NamedTuple):
     salt_water: bool
     custom_feature: str
     custom_config: Json
+
 
 def patch_config(block: str, y_spread: int, xz_spread: int, tries: int = 64, water: Union[bool, Literal['salt']] = False, custom_feature: Optional[str] = None, custom_config: Json = None) -> PatchConfig:
     return PatchConfig(block, y_spread, xz_spread, tries, water == 'salt' or water == True, water == 'salt', custom_feature, custom_config)
@@ -805,6 +835,7 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
     rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), *singular_decorators)
 
+
 def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json, water: bool = True):
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
@@ -834,11 +865,14 @@ def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIden
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
     rm.placed_feature(singular_feature, singular_feature, *placed_decorators)
 
+
 def normal_noise(first_octave: int, amplitude: float):
     return {'firstOctave': first_octave, 'amplitudes': [amplitude]}
 
+
 def simple_state_provider(name: str) -> Dict[str, Any]:
     return {'type': 'minecraft:simple_state_provider', 'state': utils.block_state(name)}
+
 
 # Vein Helper Functions
 
@@ -861,6 +895,7 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
         })
     return ore_blocks
 
+
 def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
     if biome_filter == 'river':
         return [{'category': 'river'}]
@@ -870,6 +905,7 @@ def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]
         raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
     else:
         return None
+
 
 def vein_density(density: int) -> float:
     assert 0 <= density <= 100, 'Invalid density: %s' % str(density)
@@ -898,6 +934,7 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     return cfg
 
+
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
@@ -908,6 +945,7 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
         'trunk': trunk_config(block, min_height, max_height, width),
         'radius': radius
     }
+
 
 def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
@@ -920,6 +958,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, large: bool 
     if trunk is not None:
         cfg['trunk'] = trunk_config(block, *trunk)
     return cfg
+
 
 def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False):
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
@@ -935,6 +974,7 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
         } for i, layer in enumerate(layers)],
         'radius': radius
     }
+
 
 def trunk_config(block: str, min_height: int, max_height: int, width: int):
     return {
@@ -954,14 +994,18 @@ HeightProviderType = Literal['constant', 'uniform', 'biased_to_bottom', 'very_bi
 def decorate_square() -> Json:
     return 'minecraft:in_square'
 
+
 def decorate_biome() -> Json:
     return 'minecraft:biome'
+
 
 def decorate_chance(rarity_or_probability: Union[int, float]) -> Json:
     return {'type': 'minecraft:rarity_filter', 'chance': round(1 / rarity_or_probability) if isinstance(rarity_or_probability, float) else rarity_or_probability}
 
+
 def decorate_count(count: int) -> Json:
     return {'type': 'minecraft:count', 'count': count}
+
 
 def decorate_shallow(depth: int = 5) -> Json:
     return {'type': 'tfc:shallow_water', 'max_depth': depth}
@@ -973,11 +1017,13 @@ def decorate_heightmap(heightmap: Heightmap) -> Json:
     assert heightmap in typing.get_args(Heightmap)
     return 'minecraft:heightmap', {'heightmap': heightmap.upper()}
 
+
 def decorate_range(min_y: VerticalAnchor, max_y: VerticalAnchor, bias: HeightProviderType = 'uniform') -> Json:
     return {
         'type': 'minecraft:height_range',
         'height': height_provider(min_y, max_y, bias)
     }
+
 
 def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optional[VerticalAnchor] = None) -> Json:
     return {
@@ -986,6 +1032,7 @@ def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optiona
         'min_y': utils.as_vertical_anchor(min_y) if min_y is not None else None,
         'max_y': utils.as_vertical_anchor(max_y) if max_y is not None else None
     }
+
 
 def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Json:
     return {
@@ -999,6 +1046,7 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'fuzzy': fuzzy
     }
 
+
 def decorate_scanner(direction: str, max_steps: int) -> Json:
     return {
         'type': 'minecraft:environment_scan',
@@ -1008,8 +1056,10 @@ def decorate_scanner(direction: str, max_steps: int) -> Json:
         'allowed_search_condition': {'type': 'minecraft:matching_blocks', 'blocks': ['minecraft:air']}
     }
 
+
 def decorate_random_offset(xz: int, y: int) -> Json:
     return {'xz_spread': xz, 'y_spread': y, 'type': 'minecraft:random_offset'}
+
 
 def decorate_matching_blocks(*blocks: str) -> Json:
     return decorate_block_predicate({
@@ -1017,11 +1067,13 @@ def decorate_matching_blocks(*blocks: str) -> Json:
         'blocks': list(blocks)
     })
 
+
 def decorate_would_survive(block: str) -> Json:
     return decorate_block_predicate({
         'type': 'would_survive',
         'state': utils.block_state(block)
     })
+
 
 def decorate_would_survive_with_fluid(block: str) -> Json:
     return decorate_block_predicate({
@@ -1029,14 +1081,17 @@ def decorate_would_survive_with_fluid(block: str) -> Json:
         'state': utils.block_state(block)
     })
 
+
 def decorate_air_or_empty_fluid() -> Json:
     return decorate_block_predicate({'type': 'tfc:air_or_empty_fluid'})
+
 
 def decorate_block_predicate(predicate: Json) -> Json:
     return {
         'type': 'block_predicate_filter',
         'predicate': predicate
     }
+
 
 # Value Providers
 
@@ -1049,6 +1104,7 @@ def uniform_float(min_inclusive: float, max_exclusive: float) -> Dict[str, Any]:
         }
     }
 
+
 def uniform_int(min_inclusive: int, max_inclusive: int) -> Dict[str, Any]:
     return {
         'type': 'uniform',
@@ -1057,6 +1113,7 @@ def uniform_int(min_inclusive: int, max_inclusive: int) -> Dict[str, Any]:
             'max_inclusive': max_inclusive
         }
     }
+
 
 def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[str, Any]:
     return {
@@ -1067,6 +1124,7 @@ def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[
             'plateau': plateau
         }
     }
+
 
 def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: HeightProviderType = 'uniform') -> Dict[str, Any]:
     assert height_type in typing.get_args(HeightProviderType)
@@ -1158,13 +1216,14 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES]
+        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/wild_crops']
 
         features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in FOREST_DECORATORS if not ocean_features]
 
         # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
-        #features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_bush' % berry for berry in BERRIES] todo: broken
+        # features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_bush' % berry for berry in BERRIES] todo: broken
         features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % fruit for fruit in FRUITS]
 
     if volcano_features:

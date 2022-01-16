@@ -62,6 +62,7 @@ import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -198,6 +199,14 @@ public class ClientForgeEventHandler
                         .append(new TranslatableComponent("tfc.tooltip.fuel_burns_at_duration"))
                         .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
+            }
+            final Fertilizer fertilizer = Fertilizer.get(stack);
+            if (fertilizer != null)
+            {
+                final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
+                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())

@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "mature=true": {
+      "model": "tfc:block/dead_crop/rice"
+    },
+    "mature=false": {
+      "model": "tfc:block/dead_crop/rice_young"
+    }
+  }
+}

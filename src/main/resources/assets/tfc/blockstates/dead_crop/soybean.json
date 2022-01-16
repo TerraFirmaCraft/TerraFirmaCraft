@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "mature=true": {
+      "model": "tfc:block/dead_crop/soybean"
+    },
+    "mature=false": {
+      "model": "tfc:block/dead_crop/soybean_young"
+    }
+  }
+}
