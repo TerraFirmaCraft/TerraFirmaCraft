@@ -40,6 +40,8 @@ public class ServerConfig
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
+    // Blocks - Chest
+    public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Charcoal Pit
@@ -135,6 +137,9 @@ public class ServerConfig
 
         enableMossyRockSpreading = builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true);
         mossyRockSpreadRate = builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("chest");
+        chestMaximumItemSize = builder.apply("chestMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a chest.").defineEnum("chestMaximumItemSize", Size.LARGE);
 
         innerBuilder.pop().push("torch");
 
