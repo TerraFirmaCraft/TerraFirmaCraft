@@ -48,7 +48,6 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
 
     @Nullable private AlloyInventory wrapper; // Lazy, initialized on demand and cached
     @Nullable private Metal cachedResult;
-    @Nullable private AlloyView readonlyView; // A read-only view of this alloy
 
     /**
      * Constructs a new alloy. It starts with no metal content
@@ -255,15 +254,6 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
         updateCaches();
     }
 
-    public AlloyView unmodifiableView()
-    {
-        if (readonlyView == null)
-        {
-            readonlyView = new View(this);
-        }
-        return readonlyView;
-    }
-
     public boolean matches(AlloyRecipe recipe)
     {
         if (metalMap.containsKey(recipe.getResult()))
@@ -309,7 +299,7 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
 
     private double getExactAmount()
     {
-        return metalMap.values().stream().mapToDouble(x -> x).sum();
+        return metalMap.values().doubleStream().sum();
     }
 
     private AlloyInventory getWrapper()
@@ -325,52 +315,15 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
     {
         // for each metal in the alloy, it needs to satisfy an ingredient
         // for each metal in the recipe, it needs to match with an alloy
-        Map<Metal, Double> metals = getMetals();
+        Object2DoubleMap<Metal> metals = getMetals();
         double actualTotalAmount = getExactAmount();
         for (Metal metal : Sets.union(recipe.getRanges().keySet(), metals.keySet()))
         {
-            if (!metals.containsKey(metal) || !recipe.getRanges().containsKey(metal) || !recipe.getRanges().get(metal).isIn(metals.get(metal) / actualTotalAmount, EPSILON))
+            if (!metals.containsKey(metal) || !recipe.getRanges().containsKey(metal) || !recipe.getRanges().get(metal).isIn(metals.getDouble(metal) / actualTotalAmount, EPSILON))
             {
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * An unmodifiable view of an alloy
-     */
-    private static class View implements AlloyView
-    {
-        private final Alloy alloy;
-
-        private View(Alloy alloy)
-        {
-            this.alloy = alloy;
-        }
-
-        @Override
-        public Metal getResult()
-        {
-            return alloy.getResult();
-        }
-
-        @Override
-        public int getAmount()
-        {
-            return alloy.getAmount();
-        }
-
-        @Override
-        public int getMaxUnits()
-        {
-            return alloy.getMaxUnits();
-        }
-
-        @Override
-        public Object2DoubleMap<Metal> getMetals()
-        {
-            return alloy.getMetals();
-        }
     }
 }

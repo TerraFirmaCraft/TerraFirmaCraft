@@ -101,6 +101,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
             {
                 final JsonObject content = JsonHelpers.convertToJsonObject(element, "entry in 'contents'");
                 final Metal metal = JsonHelpers.getFrom(content, "metal", Metal.MANAGER);
+                final Supplier<Metal> resolvedMetal = () -> Metal.MANAGER.get(metal.getId());
                 final double min = JsonHelpers.getAsDouble(content, "min");
                 final double max = JsonHelpers.getAsDouble(content, "max");
                 builder.put(metal, new Range(min, max));

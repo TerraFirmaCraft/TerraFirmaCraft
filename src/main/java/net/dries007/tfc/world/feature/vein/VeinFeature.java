@@ -17,6 +17,7 @@ import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -133,7 +134,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         if (stateAt.isAir() && state.canSurvive(level, mutablePos))
                         {
                             level.setBlock(mutablePos, state, 3);
-                            //world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            level.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
                         }
                     }
                 }

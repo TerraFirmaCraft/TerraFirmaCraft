@@ -149,7 +149,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     private final SidedHandler.Noop<IHeatBlock> sidedHeat;
     private final IntArrayBuilder syncableData;
-    private final AlloyView readonlyAlloyView;
 
     private final HeatingRecipe[] cachedRecipes;
     private float temperature;
@@ -187,8 +186,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         syncableData = new IntArrayBuilder()
             .add(() -> (int) temperature, value -> temperature = value);
-
-        readonlyAlloyView = inventory.alloy.unmodifiableView();
     }
 
     public ContainerData getSyncableData()
@@ -201,7 +198,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
      */
     public AlloyView getAlloy()
     {
-        return readonlyAlloyView;
+        return inventory.alloy;
     }
 
     @Override
@@ -248,7 +245,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         nbt.putFloat("temperature", temperature);
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
-        nbt.putBoolean("empty", Helpers.isEmpty(inventory) && readonlyAlloyView.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
+        nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
         super.saveAdditional(nbt);
     }
 

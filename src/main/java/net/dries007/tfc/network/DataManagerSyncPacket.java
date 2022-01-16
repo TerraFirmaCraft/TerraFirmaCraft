@@ -22,17 +22,20 @@ import net.dries007.tfc.util.Metal;
 public abstract class DataManagerSyncPacket<T>
 {
     private Map<ResourceLocation, T> elements;
+    private int generation;
 
     public DataManagerSyncPacket() {}
 
-    public DataManagerSyncPacket<T> with(Map<ResourceLocation, T> elements)
+    public DataManagerSyncPacket<T> with(Map<ResourceLocation, T> elements, int generation)
     {
         this.elements = elements;
+        this.generation = generation;
         return this;
     }
 
     void encode(DataManager<T> manager, FriendlyByteBuf buffer)
     {
+        buffer.writeVarInt(generation);
         buffer.writeVarInt(elements.size());
         for (Map.Entry<ResourceLocation, T> entry : elements.entrySet())
         {
@@ -43,6 +46,7 @@ public abstract class DataManagerSyncPacket<T>
 
     void decode(DataManager<T> manager, FriendlyByteBuf buffer)
     {
+        this.generation = buffer.readVarInt();
         this.elements = new HashMap<>();
         final int size = buffer.readVarInt();
         for (int i = 0; i < size; i++)
@@ -55,7 +59,7 @@ public abstract class DataManagerSyncPacket<T>
 
     void handle(DataManager<T> manager)
     {
-        manager.onSync(elements);
+        manager.onSync(elements, generation);
     }
 
     public static class TMetal extends DataManagerSyncPacket<Metal> {}
