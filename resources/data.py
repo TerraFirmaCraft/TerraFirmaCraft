@@ -151,6 +151,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
 
+    for color in COLORS:
+        rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
+        rm.item_tag('dyes', 'minecraft:%s_dye' % color)
+
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
@@ -170,6 +174,12 @@ def generate(rm: ResourceManager):
 
     # Blocks and Items
     block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
+
+    for wood in WOODS.keys():
+        block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
+
+    for plant in PLANTS.keys():
+        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
 
     # Sand
     for color in SAND_BLOCK_TYPES:
@@ -211,7 +221,6 @@ def generate(rm: ResourceManager):
         rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
 
     for plant, plant_data in PLANTS.items():  # Plants
-        rm.block_tag('plant', 'tfc:plant/%s' % plant)
         if plant_data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if plant_data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh'):
@@ -362,8 +371,37 @@ def generate(rm: ResourceManager):
 
     # Item Sizes
 
-    # todo: specific item size definitions for a whole bunch of items that aren't naturally assigned
     item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
+    item_size(rm, 'quern', 'tfc:quern', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
+    item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
+    # todo: add tfc (non-wooden) slabs to minecraft slab tag
+    item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
+    item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
+    item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
+    item_size(rm, 'mortar', '#tfc:mortar', Size.tiny, Weight.very_light)
+    item_size(rm, 'halter', 'tfc:halter', Size.small, Weight.light)
+    item_size(rm, 'stick_bunch', 'tfc:stick_bunch', Size.normal, Weight.light)
+    item_size(rm, 'stick_bundle', 'tfc:stick_bundle', Size.very_large, Weight.medium)
+    item_size(rm, 'jute_fiber', 'tfc:jute_fiber', Size.small, Weight.very_light)
+    item_size(rm, 'burlap_cloth', 'tfc:burlap_cloth', Size.small, Weight.very_light)
+    item_size(rm, 'straw', 'tfc:straw', Size.small, Weight.very_light)
+    item_size(rm, 'wool', 'tfc:wool', Size.small, Weight.light)
+    item_size(rm, 'wool_cloth', 'tfc:wool_cloth', Size.small, Weight.light)
+    item_size(rm, 'silk_cloth', 'tfc:silk_cloth', Size.small, Weight.light)
+    item_size(rm, 'alabaster_brick', 'tfc:alabaster_brick', Size.small, Weight.light)
+    item_size(rm, 'glue', 'tfc:glue', Size.tiny, Weight.light)
+    item_size(rm, 'brass_mechanisms', 'tfc:brass_mechanisms', Size.normal, Weight.light)
+    item_size(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', Size.large, Weight.heavy)
+    item_size(rm, 'dyes', '#tfc:dyes', Size.tiny, Weight.light)
+    item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
+    item_size(rm, 'plants', '#tfc:plant', Size.tiny, Weight.very_light)
+
+    # unimplemented
+    # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
+    # item_size(rm, 'sluice', 'tfc:sluice', Size.very_large, Weight.very_heavy)
+    # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
+    # item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
 
     # Food
 
@@ -546,6 +584,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'grain': grain,
         'dairy': dairy
     })
+    rm.item_tag('foods', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
