@@ -219,14 +219,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('prospectable', '#forge:ores')
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
-    rm.block_tag('plant', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
+    rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
 
     for plant, plant_data in PLANTS.items():  # Plants
-        block_and_item_tag(rm, 'plant', 'tfc:plant/%s' % plant)
         if plant_data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if plant_data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh'):

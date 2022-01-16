@@ -11,6 +11,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.BlockItem;
@@ -179,9 +181,10 @@ public enum Wood implements StringRepresentable
             return () -> blockFactory.apply(this, wood);
         }
 
-        public BlockItem createBlockItem(Block block, Item.Properties properties)
+        @Nullable
+        public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
         {
-            return blockItemFactory.apply(block, properties);
+            return needsItem() ? block -> blockItemFactory.apply(block, properties) : null;
         }
 
         public String nameFor(Wood wood)

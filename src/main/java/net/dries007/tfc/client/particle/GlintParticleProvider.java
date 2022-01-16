@@ -14,6 +14,8 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
+import net.dries007.tfc.mixin.client.accessor.SuspendedTownParticleAccessor;
+
 public class GlintParticleProvider implements ParticleProvider<SimpleParticleType>
 {
     private final SpriteSet sprite;
@@ -23,8 +25,10 @@ public class GlintParticleProvider implements ParticleProvider<SimpleParticleTyp
 
     public GlintParticleProvider(SpriteSet sprite, ChatFormatting format)
     {
-        this.sprite = sprite;
+        assert format.getColor() != null;
         final int color = format.getColor();
+
+        this.sprite = sprite;
         this.red = ((color >> 16) & 0xFF) / 255F;
         this.green = ((color >> 8) & 0xFF) / 255F;
         this.blue = (color & 0xFF) / 255F;
@@ -32,9 +36,9 @@ public class GlintParticleProvider implements ParticleProvider<SimpleParticleTyp
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
-        SuspendedTownParticle suspendedtownparticle = new SuspendedTownParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        suspendedtownparticle.pickSprite(sprite);
-        suspendedtownparticle.setColor(red, green, blue);
-        return suspendedtownparticle;
+        final SuspendedTownParticle particle = SuspendedTownParticleAccessor.invoke$new(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        particle.pickSprite(sprite);
+        particle.setColor(red, green, blue);
+        return particle;
     }
 }

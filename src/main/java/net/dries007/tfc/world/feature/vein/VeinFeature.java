@@ -88,6 +88,8 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
     protected void place(WorldGenLevel level, ChunkGenerator generator, Random random, int blockX, int blockZ, V vein, C config)
     {
+        final boolean debugIndicatorLocations = false;
+
         final WorldGenerationContext context = new WorldGenerationContext(generator, level);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BoundingBox box = getBoundingBox(config, vein);
@@ -134,7 +136,10 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         if (stateAt.isAir() && state.canSurvive(level, mutablePos))
                         {
                             level.setBlock(mutablePos, state, 3);
-                            level.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            if (debugIndicatorLocations)
+                            {
+                                level.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            }
                         }
                     }
                 }

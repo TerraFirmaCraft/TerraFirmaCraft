@@ -28,7 +28,7 @@ public class TFCTags
         public static final Tag.Named<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final Tag.Named<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final Tag.Named<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
-        public static final Tag.Named<Block> PLANT = create("plant"); // for some decoration placement
+        public static final Tag.Named<Block> PLANTS = create("plants"); // for some decoration placement
         public static final Tag.Named<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
         public static final Tag.Named<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
         public static final Tag.Named<Block> KELP_TREE = create("kelp_tree");
