@@ -150,8 +150,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
-    rm.item_tag('tfc:compost_greens', '#tfc:plant', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
-    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/podzol', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
+    rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
+    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
 
     for color in COLORS:
@@ -404,13 +404,13 @@ def generate(rm: ResourceManager):
     item_size(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', Size.large, Weight.heavy)
     item_size(rm, 'dyes', '#tfc:dyes', Size.tiny, Weight.light)
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
-    item_size(rm, 'plants', '#tfc:plant', Size.tiny, Weight.very_light)
+    item_size(rm, 'plants', '#tfc:plants', Size.tiny, Weight.very_light)
+    item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     # item_size(rm, 'sluice', 'tfc:sluice', Size.very_large, Weight.very_heavy)
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
-    # item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
 
     # Food
 

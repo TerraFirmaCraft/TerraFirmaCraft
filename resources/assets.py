@@ -210,11 +210,8 @@ def generate(rm: ResourceManager):
             block.with_block_loot('tfc:groundcover/%s' % misc)
             rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
-    rm.blockstate('peat').with_block_model().with_item_model().with_lang('tfc:peat').with_lang(lang('Peat'))
-    rm.blockstate('aggregate').with_block_model().with_item_model().with_block_loot('tfc:aggregate').with_lang(lang('Aggregate'))
-    rm.blockstate('fire_bricks').with_block_model().with_item_model().with_block_loot('tfc:fire_bricks').with_lang(lang('Fire Bricks'))
-    rm.blockstate('fire_clay_block').with_block_model().with_item_model().with_block_loot('tfc:fire_clay_block').with_lang(lang('Fire Clay Block'))
-    rm.blockstate('thatch').with_block_model().with_item_model().with_block_loot('tfc:thatch').with_lang(lang('Thatch'))
+    for block in SIMPLE_BLOCKS:
+        rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
     rm.blockstate(('alabaster', 'raw', 'alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster').with_lang(lang('Alabaster'))
     rm.blockstate(('alabaster', 'raw', 'alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster_bricks').with_lang(lang('Alabaster Bricks'))
@@ -321,7 +318,7 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 
-        rm.block(('grass_path', soil)).with_lang(lang('%s path'))
+        rm.block(('grass_path', soil)).with_lang(lang('%s path', soil))
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}

@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:damage_inputs_shapeless_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "tfc:wood/log/palm"
+      },
+      {
+        "item": "tfc:wood/log/palm"
+      },
+      {
+        "tag": "tfc:saws"
+      }
+    ],
+    "result": {
+      "item": "tfc:wood/support/palm",
+      "count": 8
+    }
+  }
+}
