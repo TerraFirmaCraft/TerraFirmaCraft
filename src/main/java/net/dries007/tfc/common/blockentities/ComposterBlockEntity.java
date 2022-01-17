@@ -78,9 +78,10 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         assert level != null;
         final boolean rotten = isRotten();
         final BlockPos pos = getBlockPos();
-        if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
+        if (player.blockPosition().equals(pos)) return InteractionResult.FAIL;
+            if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
         {
-            if (brown == 4 && green == 4) Helpers.spawnItem(level, pos.above(), new ItemStack(rotten ? TFCItems.ROTTEN_COMPOST.get() : TFCItems.COMPOST.get()));
+            if (brown == 4 && green == 4 && isReady()) Helpers.spawnItem(level, pos.above(), new ItemStack(rotten ? TFCItems.ROTTEN_COMPOST.get() : TFCItems.COMPOST.get()));
             reset();
             Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
             return finishUse(client);
@@ -163,6 +164,12 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         assert level != null;
         return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.ROTTEN;
+    }
+
+    private boolean isReady()
+    {
+        assert level != null;
+        return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.READY;
     }
 
     private void setState(TFCComposterBlock.CompostType type)

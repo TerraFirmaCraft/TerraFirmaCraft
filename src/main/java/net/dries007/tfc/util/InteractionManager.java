@@ -175,6 +175,7 @@ public final class InteractionManager
                 final Level world = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = world.getBlockState(pos);
+                if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above()))) return InteractionResult.FAIL;
                 if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
                 {
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
