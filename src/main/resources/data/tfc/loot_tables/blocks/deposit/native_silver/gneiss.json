@@ -37,6 +37,19 @@
             },
             {
               "type": "minecraft:item",
+              "name": "tfc:gem/gypsum",
+              "conditions": [
+                {
+                  "condition": "tfc:is_panned"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.01
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
               "name": "tfc:deposit/native_silver/gneiss",
               "conditions": [
                 {

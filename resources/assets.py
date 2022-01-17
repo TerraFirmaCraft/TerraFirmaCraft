@@ -513,6 +513,9 @@ def generate(rm: ResourceManager):
                'name': 'tfc:rock/loose/%s' % rock,
                'conditions': ['tfc:is_panned', condition_chance(0.5)],
             }, {
+               'name': 'tfc:gem/%s' % DEPOSIT_RARES[rock],
+               'conditions': ['tfc:is_panned', condition_chance(0.01)],
+            }, {
                'name': 'tfc:deposit/%s/%s' % (ore, rock),
                'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
             }))

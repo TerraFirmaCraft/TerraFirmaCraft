@@ -28,6 +28,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_native_copper/rhyolite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:deposit/native_copper/rhyolite"
           }
         ]
       },
@@ -47,6 +51,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_native_copper/basalt"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:deposit/native_copper/basalt"
           }
         ]
       },
@@ -66,6 +74,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_native_copper/andesite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:deposit/native_copper/andesite"
           }
         ]
       },
@@ -85,6 +97,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_native_copper/dacite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:deposit/native_copper/dacite"
           }
         ]
       }

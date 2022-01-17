@@ -67,6 +67,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final BooleanProperty WILD = BooleanProperty.create("wild");
     public static final BooleanProperty GROWING = BooleanProperty.create("growing");
+    public static final BooleanProperty UPPER = BooleanProperty.create("upper");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

@@ -867,6 +867,11 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
             'weight': int(100 * p / (1 - p)),
             'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
         })
+    elif vein.deposits:
+        ore_blocks.append({
+            'weight': 10,
+            'block': 'tfc:deposit/%s/%s' % (vein.ore, rock)
+        })
     return ore_blocks
 
 def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:

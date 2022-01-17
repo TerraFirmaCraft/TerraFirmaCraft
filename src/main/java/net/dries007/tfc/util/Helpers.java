@@ -63,6 +63,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -686,6 +687,34 @@ public final class Helpers
     public static BlockPos quartToBlock(int x, int y, int z)
     {
         return new BlockPos(x << 2, y << 2, z << 2);
+    }
+
+    /**
+     * Rotates a VoxelShape 90 degrees. Assumes that the input facing is NORTH.
+     */
+    public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        switch (direction)
+        {
+            case NORTH -> Block.box(x1, y1, z1, x2, y2, z1);
+            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+            case WEST -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case SOUTH -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+        }
+        throw new IllegalArgumentException("Not horizontal!");
+    }
+
+    /**
+     * Follows indexes for Direction#get2DDataValue()
+     */
+    public static VoxelShape[] computeHorizontalShapes(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        return new VoxelShape[] {
+            rotateShape(Direction.SOUTH, x1, y1, x1, x2, y2, z2),
+            rotateShape(Direction.WEST, x1, y1, x1, x2, y2, z2),
+            rotateShape(Direction.NORTH, x1, y1, x1, x2, y2, z2),
+            rotateShape(Direction.EAST, x1, y1, x1, x2, y2, z2)
+        };
     }
 
     /**
