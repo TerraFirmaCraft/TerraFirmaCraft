@@ -611,6 +611,10 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
+        else if (block == TFCBlocks.BLOOMERY.get())
+        {
+            //todo: add other conditions for this to fire (bloomery closed? fuel?) and add ignite call
+        }
     }
 
     public static void onProjectileImpact(ProjectileImpactEvent event)

@@ -405,9 +405,9 @@ def generate(rm: ResourceManager):
     item_size(rm, 'dyes', '#tfc:dyes', Size.tiny, Weight.light)
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
     item_size(rm, 'plants', '#tfc:plant', Size.tiny, Weight.very_light)
+    item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
 
     # unimplemented
-    # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     # item_size(rm, 'sluice', 'tfc:sluice', Size.very_large, Weight.very_heavy)
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
     # item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)

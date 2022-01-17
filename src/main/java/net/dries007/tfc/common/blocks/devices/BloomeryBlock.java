@@ -1,0 +1,243 @@
+package net.dries007.tfc.common.blocks.devices;
+
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+
+import net.dries007.tfc.common.blocks.ExtendedBlock;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.MultiBlock;
+import org.jetbrains.annotations.Nullable;
+
+public class BloomeryBlock extends ExtendedBlock
+{
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
+
+    //todo: AABB nonsense. what does AABB do for this block?
+
+    private static final MultiBlock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
+    private static final MultiBlock[] BLOOMERY_BASE; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
+    private static final MultiBlock GATE_Z, GATE_X; // Determines if the gate can stay in place
+
+    static
+    {
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).getMaterial() == Material.STONE && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
+        Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
+        Predicate<BlockState> center = state -> state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
+        BlockPos origin = BlockPos.ZERO;
+
+        // Bloomery center is the charcoal pile pos
+        BLOOMERY_BASE = new MultiBlock[4];
+        BLOOMERY_BASE[0] = new MultiBlock() // north - i'm not sure you can still get a unique int for each direction?
+            .match(origin, center)
+            .match(origin.below(), stoneMatcher)
+            .match(origin.north(), state -> state.is(TFCBlocks.BLOOMERY.get()))
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.SOUTH, Direction.EAST, Direction.WEST}, 1)
+            .matchEachDirection(origin.north(), stoneMatcher, new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN}, 1)
+            .matchHorizontal(origin.above(), stoneMatcher, 1);
+
+        BLOOMERY_BASE[1] = new MultiBlock() //south
+            .match(origin, center)
+            .match(origin.below(), stoneMatcher)
+            .match(origin.south(), state -> state.is(TFCBlocks.BLOOMERY.get()))
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST}, 1)
+            .matchEachDirection(origin.south(), stoneMatcher, new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN}, 1)
+            .matchHorizontal(origin.above(), stoneMatcher, 1);
+
+        BLOOMERY_BASE[2] = new MultiBlock() //west
+            .match(origin, center)
+            .match(origin.below(), stoneMatcher)
+            .match(origin.west(), state -> state.is(TFCBlocks.BLOOMERY.get()))
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH}, 1)
+            .matchEachDirection(origin.west(), stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN}, 1)
+            .matchHorizontal(origin.above(), stoneMatcher, 1);
+
+        BLOOMERY_BASE[3] = new MultiBlock() //east
+            .match(origin, center)
+            .match(origin.below(), stoneMatcher)
+            .match(origin.east(), state -> state.is(TFCBlocks.BLOOMERY.get()))
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.WEST, Direction.SOUTH}, 1)
+            .matchEachDirection(origin.east(), stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN}, 1)
+            .matchHorizontal(origin.above(), stoneMatcher, 1);
+
+        BLOOMERY_CHIMNEY = new MultiBlock()
+            .match(origin, insideChimney)
+            .matchHorizontal(origin, stoneMatcher, 1);
+
+        // Gate center is the bloomery gate block
+        GATE_Z = new MultiBlock()
+            .match(origin, state -> state.is(TFCBlocks.BLOOMERY.get()) || state.isAir())
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN}, 1);
+
+        GATE_X = new MultiBlock()
+            .match(origin, state -> state.is(TFCBlocks.BLOOMERY.get()) || state.isAir())
+            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN}, 1);
+    }
+
+    public static int getChimneyLevels(Level level, BlockPos centerPos)
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            BlockPos center = centerPos.above(i);
+            if (!BLOOMERY_CHIMNEY.test(level, center))
+            {
+                return i - 1;
+            }
+        }
+        // Maximum levels
+        return 3;
+    }
+
+    public BloomeryBlock(ExtendedProperties properties)
+    {
+        super(properties);
+        /* todo: deal with these from 1.12
+         * setHarvestLevel("pickaxe", 0); -> requiresCorrectToolForDrops + json?
+         * setHardness(20.0F);
+         */
+        registerDefaultState(getStateDefinition().any()
+            .setValue(FACING, Direction.NORTH)
+            .setValue(LIT, false)
+            .setValue(OPEN, false));
+    }
+
+    public boolean canGateStayInPlace(Level level, BlockPos pos, Direction.Axis axis)
+    {
+        if (axis == Direction.Axis.X)
+        {
+            return GATE_X.test(level, pos);
+        }
+        else
+        {
+            return GATE_Z.test(level, pos);
+        }
+    }
+
+    //if Directions don't have int indices any more, then...
+    public boolean isFormed(Level level, BlockPos centerPos, Direction facing)
+    {
+        return switch (facing)
+            {
+                case NORTH -> BLOOMERY_BASE[0].test(level, centerPos);
+                case SOUTH -> BLOOMERY_BASE[1].test(level, centerPos);
+                case WEST -> BLOOMERY_BASE[2].test(level, centerPos);
+                case EAST -> BLOOMERY_BASE[3].test(level, centerPos);
+                default -> false;
+            };
+    }
+
+    /* todo: find out if there's a modern version of following methods
+     * getStateFromMeta, getMetaFromState, isFullCube
+     * getBoundingBox, getBlockFaceShape, getCollisionBoundingBox, isOpaqueCube
+     * collisionRayTrace, canPlaceBlockAt (canSurvive?), hasTileEntity
+     * and does TFC still have:
+     * onBreakBlock
+     */
+
+    //yeeeah this probably isn't right. i don't know what LevelReader is, or if casting is a really bad idea. todo: do it right
+    //also, shouldn't this actually check which way the block is facing at some point?
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        return canGateStayInPlace((Level) level, pos, Direction.Axis.Z) || canGateStayInPlace((Level) level, pos, Direction.Axis.X);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    {
+        if (!level.isClientSide())
+        {
+            if (!state.getValue(LIT))
+            {
+                level.setBlockAndUpdate(pos, state.cycle(OPEN));
+                level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                return InteractionResult.SUCCESS;
+            }
+            //first of all, what the hell is this doing? and second of all, just replace with ForgeEventHandler#onFireStart?
+            /*
+            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
+            if (bloomery != null)
+            {
+                if (!state.getValue(LIT) && bloomery.canIgnite())
+                {
+                    ItemStack stack = player.getItemInHand(hand);
+                    if (ItemFireStarter.onIgnition(held))
+                    {
+                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, state.getBlock()); // Trigger lit block
+                        worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
+                        te.onIgnite();
+                        return true;
+                    }
+                }
+            }
+
+             */
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        Direction placeDirection;
+        Direction[] nearestDirections = context.getNearestLookingDirections();
+        if (canGateStayInPlace(context.getLevel(), context.getClickedPos(), Direction.Axis.X))
+        {
+            for (Direction d : nearestDirections)
+            {
+                if (d == Direction.EAST || d == Direction.WEST)
+                {
+                    placeDirection = d;
+                    break;
+                }
+            }
+        }
+        else if (canGateStayInPlace(context.getLevel(), context.getClickedPos(), Direction.Axis.Z))
+        {
+            for (Direction d : nearestDirections)
+            {
+                if (d == Direction.NORTH || d == Direction.SOUTH)
+                {
+                    placeDirection = d;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            //todo: how to cancel placement?
+        }
+        return this.defaultBlockState().setValue(FACING, placeDirection); //do we need .getOpposite()?
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING).add(LIT).add(OPEN);
+    }
+
+
+}
