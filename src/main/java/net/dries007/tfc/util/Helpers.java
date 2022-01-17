@@ -519,7 +519,6 @@ public final class Helpers
         }
     }
 
-<<<<<<< HEAD
     public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
