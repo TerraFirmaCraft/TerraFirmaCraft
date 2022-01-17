@@ -28,7 +28,7 @@ public class TFCTags
         public static final Tag.Named<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final Tag.Named<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final Tag.Named<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
-        public static final Tag.Named<Block> PLANT = create("plant"); // for some decoration placement
+        public static final Tag.Named<Block> PLANTS = create("plants"); // for some decoration placement
         public static final Tag.Named<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
         public static final Tag.Named<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
         public static final Tag.Named<Block> KELP_TREE = create("kelp_tree");
@@ -70,6 +70,9 @@ public class TFCTags
         public static final Tag.Named<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
         public static final Tag.Named<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
         public static final Tag.Named<Block> CAN_BE_PANNED = create("can_be_panned"); // can be picked up with a pan
+        public static final Tag.Named<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
+        public static final Tag.Named<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
+        public static final Tag.Named<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
 
         private static Tag.Named<Block> create(String id)
         {
@@ -116,6 +119,9 @@ public class TFCTags
         public static final Tag.Named<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final Tag.Named<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final Tag.Named<Item> WATTLE_STICKS = create("wattle_sticks");
+        public static final Tag.Named<Item> COMPOST_GREENS = create("compost_greens");
+        public static final Tag.Named<Item> COMPOST_BROWNS = create("compost_browns");
+        public static final Tag.Named<Item> COMPOST_POISONS = create("compost_poisons");
 
         private static Tag.Named<Item> create(String id)
         {

@@ -5,6 +5,7 @@
     "bloom": "tfc:block/plant/cattail/cattail_2b",
     "particle": "tfc:block/plant/cattail/cattail_2"
   },
+  "parent": "block/block",
   "elements": [
     {
       "from": [

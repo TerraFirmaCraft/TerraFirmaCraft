@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -14,6 +15,7 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
@@ -26,9 +28,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
@@ -53,6 +57,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.GlintParticleProvider;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.render.*;
@@ -91,6 +96,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
         bus.addListener(ClientEventHandler::registerEntityRenderers);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
+        bus.addListener(ClientEventHandler::onTextureStitch);
     }
 
     public static void clientSetup(FMLClientSetupEvent event)
@@ -193,6 +199,10 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SEA_ICE.get(), cutout);
 
         // Plants
+        TFCBlocks.CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.DEAD_CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.WILD_CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+
         TFCBlocks.PLANTS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
         TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
         TFCBlocks.SPREADING_BUSHES.values().forEach(bush -> ItemBlockRenderTypes.setRenderLayer(bush.get(), cutoutMipped));
@@ -213,6 +223,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICE_PILE.get(), translucent);
 
         // Fluids
@@ -254,6 +265,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -293,6 +306,7 @@ public final class ClientEventHandler
 
         TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get()));
         TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+        TFCBlocks.WILD_CROPS.forEach((crop, reg) -> registry.register(grassColor, reg.get()));
 
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get());
         registry.register((state, worldIn, pos, tintIndex) -> 0x5FB5B8, TFCBlocks.SPRING_WATER.get());
@@ -328,8 +342,30 @@ public final class ClientEventHandler
     public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
     {
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
-        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Factory::new);
-        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Factory::new);
+        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);
+        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Provider::new);
+        particleEngine.register(TFCParticles.NITROGEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.AQUA));
+        particleEngine.register(TFCParticles.PHOSPHORUS.get(), set -> new GlintParticleProvider(set, ChatFormatting.GOLD));
+        particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
+        particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
+        particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
+
+    }
+
+    public static void onTextureStitch(TextureStitchEvent.Pre event)
+    {
+        TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(Sheets.CHEST_SHEET))
+        {
+            Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {
+                event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
+                event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
+            });
+        }
     }
 
     public static void selfTest()

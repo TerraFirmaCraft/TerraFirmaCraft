@@ -23,8 +23,8 @@ public class TFCBushBlock extends BushBlock
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return super.mayPlaceOn(state, worldIn, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
+        return super.mayPlaceOn(state, level, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
     }
 }

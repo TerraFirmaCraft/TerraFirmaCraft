@@ -128,7 +128,7 @@ public class WattleBlock extends HorizontalDirectionalBlock implements IForgeBlo
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final BlockState below = context.getLevel().getBlockState(context.getClickedPos().below());
-        return defaultBlockState().setValue(FACING, below.hasProperty(BlockStateProperties.HORIZONTAL_FACING) ? below.getValue(BlockStateProperties.HORIZONTAL_FACING) : context.getHorizontalDirection().getOpposite());
+        return defaultBlockState().setValue(FACING, below.is(TFCBlocks.WATTLE.get()) ? below.getValue(BlockStateProperties.HORIZONTAL_FACING) : context.getHorizontalDirection().getOpposite());
     }
 
     @Override

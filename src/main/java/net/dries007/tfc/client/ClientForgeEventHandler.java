@@ -8,7 +8,6 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +45,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -64,6 +62,7 @@ import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -90,7 +89,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
-        bus.addListener(ClientForgeEventHandler::onFogDensity);
+        bus.addListener(ClientForgeEventHandler::onFogRender);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -201,6 +200,14 @@ public class ClientForgeEventHandler
                         .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
+            final Fertilizer fertilizer = Fertilizer.get(stack);
+            if (fertilizer != null)
+            {
+                final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
+                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+            }
 
             if (TFCConfig.CLIENT.enableDebug.get())
             {
@@ -301,7 +308,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onFogDensity(EntityViewRenderEvent.RenderFogEvent event)
+    public static void onFogRender(EntityViewRenderEvent.RenderFogEvent event)
     {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN))

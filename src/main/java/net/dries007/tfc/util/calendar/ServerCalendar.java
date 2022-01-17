@@ -170,7 +170,7 @@ public class ServerCalendar extends Calendar
             playerTicks++;
         }
         syncCounter++;
-        if (syncCounter % SYNC_INTERVAL == 0)
+        if (syncCounter >= SYNC_INTERVAL)
         {
             sendUpdatePacket();
             syncCounter = 0;

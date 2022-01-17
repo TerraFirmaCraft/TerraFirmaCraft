@@ -1,0 +1,226 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/composter/composter"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 1
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_1"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 1
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_1"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 1
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_1"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 2
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_2"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 2
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_2"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 2
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_2"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 3
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_3"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 3
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_3"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 3
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_3"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 4
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_4"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 4
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_4"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 4
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_4"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 5
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_5"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 5
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_5"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 5
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_5"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 6
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_6"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 6
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_6"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 6
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_6"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 7
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_7"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 7
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_7"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 7
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_7"
+      }
+    },
+    {
+      "when": {
+        "type": "normal",
+        "stage": 8
+      },
+      "apply": {
+        "model": "tfc:block/composter/normal_8"
+      }
+    },
+    {
+      "when": {
+        "type": "ready",
+        "stage": 8
+      },
+      "apply": {
+        "model": "tfc:block/composter/ready_8"
+      }
+    },
+    {
+      "when": {
+        "type": "rotten",
+        "stage": 8
+      },
+      "apply": {
+        "model": "tfc:block/composter/rotten_8"
+      }
+    }
+  ]
+}

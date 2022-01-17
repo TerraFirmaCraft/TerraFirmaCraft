@@ -12,6 +12,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -33,7 +35,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -97,7 +101,7 @@ public final class TFCBlocks
     );
 
     public static final Map<GroundcoverBlockType, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
-        register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), block -> new BlockItem(block, new Item.Properties().tab(EARTH)), type.shouldCreateBlockItem())
+        register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), type.createBlockItem())
     );
 
     public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
@@ -161,19 +165,31 @@ public final class TFCBlocks
 
     public static final Map<Wood, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.class, wood ->
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
-            type.needsItem() ? register(type.nameFor(wood), type.create(wood), WOOD) : register(type.nameFor(wood), type.create(wood))
+            register(type.nameFor(wood), type.create(wood), type.createBlockItem(new Item.Properties().tab(WOOD)))
         )
     );
 
     // Flora
 
     public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
-        register(("plant/" + plant.name()), plant::create, block -> plant.createBlockItem(block, new Item.Properties().tab(FLORA)), plant.needsItem())
+        register(("plant/" + plant.name()), plant::create, plant.createBlockItem(new Item.Properties().tab(FLORA)))
+    );
+
+    public static final Map<Crop, RegistryObject<Block>> CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+        register(("crop/" + crop.name()).toLowerCase(), crop::create)
+    );
+
+    public static final Map<Crop, RegistryObject<Block>> DEAD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+        register("dead_crop/" + crop.name().toLowerCase(), crop::createDead)
+    );
+
+    public static final Map<Crop, RegistryObject<Block>> WILD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+        register("wild_crop/" + crop.name().toLowerCase(), crop::createWild)
     );
 
     public static final Map<Coral, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.class, color ->
         Helpers.mapOfKeys(Coral.BlockType.class, type ->
-            register("coral/" + color.toString() + "_" + type.toString(), type.create(color), type.createBlockItem(new Item.Properties().tab(FLORA)), type.needsItem())
+            register("coral/" + color.toString() + "_" + type.toString(), type.create(color), type.createBlockItem(new Item.Properties().tab(FLORA)))
         )
     );
 
@@ -227,7 +243,7 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> FIRE_BRICKS = register("fire_bricks", () -> new Block(Properties.of(Material.STONE, MaterialColor.COLOR_RED).requiresCorrectToolForDrops().strength(2.0F, 6.0F)), DECORATIONS);
     public static final RegistryObject<Block> FIRE_CLAY_BLOCK = register("fire_clay_block", () -> new Block(Properties.of(Material.CLAY).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
-    public static final RegistryObject<Block> WATTLE = register("wattle", () -> new WattleBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.3F).sound(SoundType.SCAFFOLDING)).flammable(60, 30)), DECORATIONS);
+    public static final RegistryObject<Block> WATTLE = register("wattle", () -> new WattleBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.3F).noOcclusion().sound(SoundType.SCAFFOLDING)).flammable(60, 30)), DECORATIONS);
 
     // Misc
 
@@ -244,7 +260,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> PIT_KILN = register("pit_kiln", () -> new PitKilnBlock(ExtendedProperties.of(Properties.of(Material.GLASS).sound(SoundType.WOOD).strength(0.6f).noOcclusion()).blockEntity(TFCBlockEntities.PIT_KILN).serverTicks(PitKilnBlockEntity::serverTick)));
     public static final RegistryObject<Block> QUERN = register("quern", () -> new QuernBlock(ExtendedProperties.of(Properties.of(Material.STONE).strength(0.5F, 2.0F).sound(SoundType.BASALT).noOcclusion()).blockEntity(TFCBlockEntities.QUERN).ticks(QuernBlockEntity::serverTick, QuernBlockEntity::clientTick)), MISC);
 
-    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL)));
+    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).isViewBlocking((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8).isSuffocating((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8)));
     public static final RegistryObject<Block> CHARCOAL_FORGE = register("charcoal_forge", () -> new CharcoalForgeBlock(ExtendedProperties.of(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2)).blockEntity(TFCBlockEntities.CHARCOAL_FORGE).serverTicks(CharcoalForgeBlockEntity::serverTick)));
 
     public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(ExtendedProperties.of(Properties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD)).blockEntity(TFCBlockEntities.TICK_COUNTER), ParticleTypes.FLAME));
@@ -253,6 +269,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), MISC);
+    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), MISC);
 
     // Fluids
 
@@ -287,24 +304,24 @@ public final class TFCBlocks
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier)
     {
-        return register(name, blockSupplier, block -> null, false);
+        return register(name, blockSupplier, (Function<T, ? extends BlockItem>) null);
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, CreativeModeTab group)
     {
-        return register(name, blockSupplier, block -> new BlockItem(block, new Item.Properties().tab(group)), true);
+        return register(name, blockSupplier, block -> new BlockItem(block, new Item.Properties().tab(group)));
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Item.Properties blockItemProperties)
     {
-        return register(name, blockSupplier, block -> new BlockItem(block, blockItemProperties), true);
+        return register(name, blockSupplier, block -> new BlockItem(block, blockItemProperties));
     }
 
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Function<T, ? extends BlockItem> blockItemFactory, boolean hasItemBlock)
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)
     {
         final String actualName = name.toLowerCase(Locale.ROOT);
         final RegistryObject<T> block = BLOCKS.register(actualName, blockSupplier);
-        if (hasItemBlock)
+        if (blockItemFactory != null)
         {
             TFCItems.ITEMS.register(actualName, () -> blockItemFactory.apply(block.get()));
         }

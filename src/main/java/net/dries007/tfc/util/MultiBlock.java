@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
 {
-    private final List<BiPredicate<LevelAccessor, BlockPos>> conditions;
+    protected final List<BiPredicate<LevelAccessor, BlockPos>> conditions;
 
     public MultiBlock()
     {

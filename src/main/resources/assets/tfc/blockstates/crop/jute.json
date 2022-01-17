@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/crop/jute_age_0"
+    },
+    "age=1": {
+      "model": "tfc:block/crop/jute_age_1"
+    },
+    "age=2": {
+      "model": "tfc:block/crop/jute_age_2"
+    },
+    "age=3,part=bottom": {
+      "model": "tfc:block/crop/jute_age_3_bottom"
+    },
+    "age=4,part=bottom": {
+      "model": "tfc:block/crop/jute_age_4_bottom"
+    },
+    "age=5,part=bottom": {
+      "model": "tfc:block/crop/jute_age_5_bottom"
+    },
+    "age=3,part=top": {
+      "model": "tfc:block/crop/jute_age_3_top"
+    },
+    "age=4,part=top": {
+      "model": "tfc:block/crop/jute_age_4_top"
+    },
+    "age=5,part=top": {
+      "model": "tfc:block/crop/jute_age_5_top"
+    }
+  }
+}

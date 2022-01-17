@@ -49,6 +49,6 @@ public class ToolItem extends DiggerItem
 
     protected boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
     {
-        return TFCTags.Blocks.PLANT.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F;
+        return TFCTags.Blocks.PLANTS.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 }

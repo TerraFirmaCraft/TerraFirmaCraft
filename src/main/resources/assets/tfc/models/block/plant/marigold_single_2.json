@@ -5,6 +5,7 @@
     "bloom": "tfc:block/plant/marigold/marigold_2b",
     "particle": "tfc:block/plant/marigold/marigold_2"
   },
+  "parent": "block/block",
   "elements": [
     {
       "from": [

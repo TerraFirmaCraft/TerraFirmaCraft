@@ -137,7 +137,7 @@ public final class InteractionManager
                 final BlockState stateAt = level.getBlockState(blockContext.getClickedPos());
                 if (SnowPileBlock.canPlaceSnowPile(level, pos, stateAt))
                 {
-                    SnowPileBlock.placeSnowPile(level, pos, stateAt);
+                    SnowPileBlock.placeSnowPile(level, pos, stateAt, true);
                     final BlockState placedState = level.getBlockState(pos);
                     final SoundType placementSound = placedState.getSoundType(level, pos, player);
                     level.playSound(player, pos, placedState.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
@@ -175,6 +175,7 @@ public final class InteractionManager
                 final Level world = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = world.getBlockState(pos);
+                if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above()))) return InteractionResult.FAIL;
                 if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
                 {
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);

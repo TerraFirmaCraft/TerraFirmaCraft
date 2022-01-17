@@ -182,7 +182,7 @@ public class ForestFeature extends Feature<ForestConfig>
             if (facing != Direction.DOWN)
             {
                 BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                if (level.isEmptyBlock(offsetPos) || level.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT) && rand.nextFloat() < decay)
+                if (level.isEmptyBlock(offsetPos) || level.getBlockState(offsetPos).is(TFCTags.Blocks.PLANTS) && rand.nextFloat() < decay)
                 {
                     setBlock(level, offsetPos, leaves);
                 }

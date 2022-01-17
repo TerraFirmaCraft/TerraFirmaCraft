@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/composter/compost_7",
+  "textures": {
+    "0": "tfc:block/devices/composter/normal"
+  }
+}

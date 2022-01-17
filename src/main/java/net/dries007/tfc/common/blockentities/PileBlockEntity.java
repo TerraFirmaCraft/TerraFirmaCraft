@@ -18,6 +18,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+
 public class PileBlockEntity extends TFCBlockEntity
 {
     private BlockState internalState;
@@ -31,11 +35,19 @@ public class PileBlockEntity extends TFCBlockEntity
         aboveState = null;
     }
 
-    public void setHiddenStates(BlockState internalState, @Nullable BlockState aboveState)
+    public void setHiddenStates(BlockState internalState, @Nullable BlockState aboveState, boolean byPlayer)
     {
-        this.internalState = internalState;
+        if (internalState.is(TFCTags.Blocks.CONVERTS_TO_HUMUS) && !byPlayer)
+        {
+            this.internalState = TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS).get().defaultBlockState();
+        }
+        else
+        {
+            this.internalState = internalState;
+        }
         this.aboveState = aboveState;
     }
+
 
     public BlockState getInternalState()
     {

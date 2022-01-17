@@ -16,6 +16,7 @@ Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=
 Wood = NamedTuple('Wood', temp=float, duration=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=BerryBushType, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
+Crop = NamedTuple('Crop', type=str, stages=int)
 
 # Melting Temps
 POTTERY_MELT = 1200 - 1
@@ -302,7 +303,7 @@ ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 
-MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'podzol', 'rotten_flesh', 'salt_lick']
+MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick']
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
@@ -326,6 +327,27 @@ WOODS: Dict[str, Wood] = {
     'sycamore': Wood(653, 1750),
     'white_cedar': Wood(625, 1500),
     'willow': Wood(603, 1000)
+}
+
+CROPS: Dict[str, Crop] = {
+    'barley': Crop('default', 8),
+    'oat': Crop('default', 8),
+    'rye': Crop('default', 8),
+    'maize': Crop('double', 6),
+    'wheat': Crop('default', 8),
+    'rice': Crop('default', 8),
+    'beet': Crop('default', 6),
+    'cabbage': Crop('default', 6),
+    'carrot': Crop('default', 5),
+    'garlic': Crop('default', 5),
+    'green_bean': Crop('double_stick', 8),
+    'potato': Crop('default', 7),
+    'onion': Crop('default', 7),
+    'soybean': Crop('default', 7),
+    'squash': Crop('default', 8),
+    'sugarcane': Crop('double', 8),
+    'tomato': Crop('double_stick', 8),
+    'jute': Crop('double', 6)
 }
 
 PLANTS: Dict[str, Plant] = {
@@ -447,16 +469,17 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
 }
 
-SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
-                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'silk_cloth', 'spindle',
+SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
+SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
-GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite')
-POWDERS = ('fertilizer', 'flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
+GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
+POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore')
-FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol')
+FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana')
 
@@ -490,7 +513,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish')
-VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root')
+VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'sugarcane')
 
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
@@ -649,6 +672,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of ',
     'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
+    'tfc.tooltip.farmland.mature': '§aMature',
     'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
     'tfc.tooltip.farmland.hydration_too_low': ' - §4Too low! §r(>%s%%)',
     'tfc.tooltip.farmland.hydration_too_high': ' - §4Too high! §r(<%s%%)',
@@ -656,7 +680,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.farmland.temperature_too_low': ' - §4Too low! §r(>%s\u00b0C)',
     'tfc.tooltip.farmland.temperature_too_high': ' - §4Too high! §r(<%s\u00b0C)',
     'tfc.tooltip.farmland.just_right': ' - §2Good§r',
-    'tfc.tooltip.farmland.nutrients': '§b(N) Nitrogen: §r%s%%, §6(P) Phosphorous: §r%s%%, §d(K) Potassium: §r%s%%',
+    'tfc.tooltip.farmland.nutrients': '§b(N) Nitrogen: §r%s%%, §6(P) Phosphorus: §r%s%%, §d(K) Potassium: §r%s%%',
+    'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
+    'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
+    'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
 
     # Commands
 
@@ -700,16 +727,20 @@ DEFAULT_LANG = {
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
     **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
-    'tfc.enum.platetectonicsclassification.oceanic': 'Oceanic Plate',
-    'tfc.enum.platetectonicsclassification.continental_low': 'Low Altitude Continental',
-    'tfc.enum.platetectonicsclassification.continental_mid': 'Mid Altitude Continental',
-    'tfc.enum.platetectonicsclassification.continental_high': 'High Altitude Continental',
-    'tfc.enum.platetectonicsclassification.ocean_ocean_diverging': 'Oceanic Rift',
-    'tfc.enum.platetectonicsclassification.ocean_ocean_converging': 'Oceanic Orogeny',
-    'tfc.enum.platetectonicsclassification.ocean_continent_diverging': 'Coastal Rift',
-    'tfc.enum.platetectonicsclassification.ocean_continent_converging': 'Subduction Zone',
-    'tfc.enum.platetectonicsclassification.continent_continent_diverging': 'Continental Rift',
-    'tfc.enum.platetectonicsclassification.continent_continent_converging': 'Orogenic Belt',
+    **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
+        'oceanic': 'Oceanic',
+        'continental_low': 'Low Altitude Continental',
+        'continental_mid': 'Mid Altitude Continental',
+        'continental_high': 'High Altitude Continental',
+        'ocean_ocean_diverging': 'Mid-Ocean Ridge',
+        'ocean_ocean_converging_lower': 'Oceanic Subduction',
+        'ocean_ocean_converging_upper': 'Oceanic Subduction',
+        'ocean_continent_converging_lower': 'Continental Subduction',
+        'ocean_continent_converging_upper': 'Continental Subduction',
+        'continent_continent_diverging': 'Continental Rift',
+        'continent_continent_converging': 'Orogenic Belt',
+        'continental_shelf': 'Continental Shelf'
+    }.items()),
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',
@@ -742,6 +773,9 @@ DEFAULT_LANG = {
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
+    'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
+    'tfc.composter.too_many_greens': 'This composter has enough green items',
+    'tfc.composter.too_many_browns': 'This composter has enough brown items',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 

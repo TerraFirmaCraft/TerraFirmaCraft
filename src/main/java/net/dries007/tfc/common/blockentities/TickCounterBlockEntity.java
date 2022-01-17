@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class TickCounterBlockEntity extends TFCBlockEntity

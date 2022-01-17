@@ -78,7 +78,7 @@ public final class JsonHelpers extends GsonHelper
         {
             try
             {
-                Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
+                return Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
             }
             catch (IllegalArgumentException e)
             {

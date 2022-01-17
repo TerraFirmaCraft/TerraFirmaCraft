@@ -130,7 +130,7 @@ public final class TerraFirmaCraft
         event.enqueueWork(() -> {
             // Vanilla Registries (not thread safe)
             TFCRecipeTypes.registerRecipeTypes();
-            TFCLoot.registerLootConditions();
+            TFCLoot.registerLootSerializers();
             TFCPlacements.registerPlacements();
             TFCBlockPredicates.registerBlockPredicates();
             TFCIngredients.registerIngredientTypes();

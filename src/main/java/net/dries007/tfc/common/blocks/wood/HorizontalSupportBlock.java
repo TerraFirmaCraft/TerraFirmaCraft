@@ -74,17 +74,17 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getAxis().isHorizontal())
         {
             stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), facingState.is(TFCTags.Blocks.SUPPORT_BEAM));
             // if support incomplete, try the other way (E/W vs N/S)
-            if (!facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || !world.getBlockState(currentPos.relative(facing.getOpposite())).is(TFCTags.Blocks.SUPPORT_BEAM))
+            if (!facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || !level.getBlockState(currentPos.relative(facing.getOpposite())).is(TFCTags.Blocks.SUPPORT_BEAM))
             {
                 // if support incomplete here, we definitely can break
-                if (!world.getBlockState(currentPos.relative(facing.getClockWise())).is(TFCTags.Blocks.SUPPORT_BEAM)
-                    || !world.getBlockState(currentPos.relative(facing.getCounterClockWise())).is(TFCTags.Blocks.SUPPORT_BEAM))
+                if (!level.getBlockState(currentPos.relative(facing.getClockWise())).is(TFCTags.Blocks.SUPPORT_BEAM)
+                    || !level.getBlockState(currentPos.relative(facing.getCounterClockWise())).is(TFCTags.Blocks.SUPPORT_BEAM))
                 {
                     return Blocks.AIR.defaultBlockState();
                 }
@@ -98,13 +98,13 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
      * This eliminates cases of placing and then immediately breaking.
      */
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
-            if (getHorizontalDistance(d, worldIn, pos) > 0) // we found a pole it could connect to
+            if (getHorizontalDistance(d, level, pos) > 0) // we found a pole it could connect to
             {
-                if (worldIn.getBlockState(pos.relative(d.getOpposite())).is(TFCTags.Blocks.SUPPORT_BEAM))
+                if (level.getBlockState(pos.relative(d.getOpposite())).is(TFCTags.Blocks.SUPPORT_BEAM))
                 {
                     return true;
                 }
@@ -114,7 +114,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = SHAPE_BY_STATE.get(state);
         if (shape != null) return shape;

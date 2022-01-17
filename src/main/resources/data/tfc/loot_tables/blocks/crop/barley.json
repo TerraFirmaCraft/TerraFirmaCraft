@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:food/barley",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/barley",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "tfc:crop_yield_uniform",
+                "min": 0,
+                "max": {
+                  "type": "minecraft:uniform",
+                  "min": 6,
+                  "max": 10
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:seeds/barley"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

@@ -210,11 +210,8 @@ def generate(rm: ResourceManager):
             block.with_block_loot('tfc:groundcover/%s' % misc)
             rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
-    rm.blockstate('peat').with_block_model().with_item_model().with_lang('tfc:peat').with_lang(lang('Peat'))
-    rm.blockstate('aggregate').with_block_model().with_item_model().with_block_loot('tfc:aggregate').with_lang(lang('Aggregate'))
-    rm.blockstate('fire_bricks').with_block_model().with_item_model().with_block_loot('tfc:fire_bricks').with_lang(lang('Fire Bricks'))
-    rm.blockstate('fire_clay_block').with_block_model().with_item_model().with_block_loot('tfc:fire_clay_block').with_lang(lang('Fire Clay Block'))
-    rm.blockstate('thatch').with_block_model().with_item_model().with_block_loot('tfc:thatch').with_lang(lang('Thatch'))
+    for block in SIMPLE_BLOCKS:
+        rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
     rm.blockstate(('alabaster', 'raw', 'alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster').with_lang(lang('Alabaster'))
     rm.blockstate(('alabaster', 'raw', 'alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster_bricks').with_lang(lang('Alabaster Bricks'))
@@ -290,6 +287,14 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
+    states = [({'model': 'tfc:block/composter/composter'})]
+    for i in range(1, 9):
+        for age in ('normal', 'ready', 'rotten'):
+            rm.block_model('tfc:composter/%s_%s' % (age, i), parent='tfc:block/composter/compost_%s' % i, textures={'0': 'tfc:block/devices/composter/%s' % age})
+            states.append(({'type': age, 'stage': i}, {'model': 'tfc:block/composter/%s_%s' % (age, i)}),)
+    rm.blockstate_multipart('composter', *states).with_lang(lang('composter')).with_block_loot('tfc:composter')
+    rm.item_model('composter', parent='tfc:block/composter/composter', no_textures=True)
+
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
     rm.blockstate('placed_item', 'tfc:block/empty')
@@ -313,7 +318,7 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 
-        rm.block(('grass_path', soil)).with_lang(lang('%s path'))
+        rm.block(('grass_path', soil)).with_lang(lang('%s path', soil))
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
@@ -554,6 +559,162 @@ def generate(rm: ResourceManager):
                 }
             }).with_lang(lang('%s mold', variant))
 
+    # Crops
+    for crop, crop_data in CROPS.items():
+        name = 'tfc:jute' if crop == 'jute' else 'tfc:food/%s' % crop
+        if crop_data.type == 'default':
+            block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+
+            block.with_block_loot({
+                'name': name,
+                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1}),
+                'functions': crop_yield(0, (6, 10))
+            }, {
+                'name': 'tfc:seeds/%s' % crop
+            })
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=true': {'model': 'tfc:block/dead_crop/%s' % crop},
+                'mature=false': {'model': 'tfc:block/dead_crop/%s_young' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            rm.block_model(('dead_crop', crop + '_young'), textures={'crop': 'tfc:block/crop/%s_dead_young' % crop}, parent='block/crop')
+            rm.block_model(('dead_crop', crop), textures={'crop': 'tfc:block/crop/%s_dead' % crop}, parent='block/crop')
+
+            block.with_block_loot(loot_tables.alternatives({
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
+                'functions': loot_tables.set_count(1, 3)
+            }, {
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
+            }))
+
+            block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop))
+            block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
+            block.with_block_loot({
+                'name': name,
+                'functions': loot_tables.set_count(1, 3)
+            }, {
+                'name': 'tfc:seeds/%s' % crop
+            })
+
+        elif crop_data.type == 'double':
+            half = crop_data.stages // 2
+            block = rm.blockstate(('crop', crop), variants={
+                **dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_bottom' % (crop, i)}) for i in range(half, crop_data.stages)),
+                **dict(('age=%d,part=top' % i, {'model': 'tfc:block/crop/%s_age_%d_top' % (crop, i)}) for i in range(half, crop_data.stages))
+            })
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                if i < half:
+                    rm.block_model(('crop', '%s_age_%d' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+                else:
+                    rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
+
+            block.with_block_loot({
+                'name': name,
+                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
+                'functions': crop_yield(0, (6, 10))
+            }, {
+                'name': 'tfc:seeds/%s' % crop
+            })
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
+                'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            for variant in ('young', 'top', 'bottom'):
+                rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
+
+            block.with_block_loot(loot_tables.alternatives({
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
+                'functions': loot_tables.set_count(1, 3)
+            }, {
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
+            }))
+
+        elif crop_data.type == 'double_stick':
+            half = crop_data.stages // 2
+            block = rm.blockstate(('crop', crop), variants={
+                **dict(('age=%d,stick=false' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,stick=true,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_stick' % (crop, i)}) for i in range(half)),
+                **dict(('age=%d,stick=true,part=top' % i, {'model': 'tfc:block/crop/stick'}) for i in range(half)),
+                **dict(('age=%d,part=bottom' % i, {'model': 'tfc:block/crop/%s_age_%d_bottom' % (crop, i)}) for i in range(half, crop_data.stages)),
+                **dict(('age=%d,part=top' % i, {'model': 'tfc:block/crop/%s_age_%d_top' % (crop, i)}) for i in range(half, crop_data.stages))
+            })
+            block.with_lang(lang(crop))
+            for i in range(crop_data.stages):
+                if i < half:
+                    rm.block_model(('crop', '%s_age_%d' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_stick' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_stick' % (crop, i)}, parent='block/crop')
+                else:
+                    rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
+                    rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
+
+            block.with_block_loot({
+                'name': name,
+                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
+                'functions': crop_yield(0, (6, 10))
+            }, {
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:crop/%s' % crop, {'part': 'bottom'})
+            }, {
+                'name': 'minecraft:stick',
+                'conditions': block_state_property('tfc:crop/%s' % crop, {'part': 'bottom', 'stick': 'true'})
+            })
+
+            block = rm.blockstate(('dead_crop', crop), variants={
+                'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
+                'mature=false,stick=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=false,stick=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_young_stick' % crop},
+                'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
+            })
+            block.with_lang(lang('dead %s', crop))
+            for variant in ('young', 'young_stick', 'top', 'bottom'):
+                rm.block_model(('dead_crop', '%s_%s' % (crop, variant)), {'crop': 'tfc:block/crop/%s_dead_%s' % (crop, variant)}, parent='block/crop')
+
+            block.with_block_loot(loot_tables.alternatives({
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true', 'part': 'bottom'}),
+                'functions': loot_tables.set_count(1, 3)
+            }, {
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false', 'part': 'bottom'})
+            }), {
+                'name': 'tfc:seeds/%s' % crop
+            })
+
+        rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop))
+        if crop_data.type == 'double' or crop_data.type == 'double_stick':
+            block = rm.blockstate(('wild_crop', crop), variants={
+                'part=top': {'model': 'tfc:block/wild_crop/%s_top' % crop},
+                'part=bottom': {'model': 'tfc:block/wild_crop/%s_bottom' % crop}
+            })
+            block.with_lang(lang('wild %s', crop))
+            rm.block_model(('wild_crop', '%s_top' % crop), {'crop': 'tfc:block/crop/%s_wild_top' % crop}, parent='block/crop')
+            rm.block_model(('wild_crop', '%s_bottom' % crop), {'crop': 'tfc:block/crop/%s_wild_bottom' % crop}, parent='tfc:block/wild_crop/crop')
+
+            block.with_block_loot({
+                'name': name,
+                'conditions': block_state_property('tfc:wild_crop/%s' % crop, {'part': 'bottom'}),
+                'functions': loot_tables.set_count(1, 3)
+            }, {
+                'name': 'tfc:seeds/%s' % crop
+            })
+
+    rm.block_model(('crop', 'stick'), {'crop': 'tfc:block/crop/stick_top'}, parent='block/crop')
+
     # Plants
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
@@ -587,7 +748,7 @@ def generate(rm: ResourceManager):
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ))
             else:
-                rm.block_loot(p, {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]})
+                rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools'), lower_only]})
         elif plant_data.type == 'cactus':
             rm.block_loot(p, p)
         else:
@@ -887,6 +1048,11 @@ def generate(rm: ResourceManager):
         rm.block_model('tfc:wood/support/%s_horizontal' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/horizontal')
         rm.item_model(('wood', 'support', wood), no_textures=True, parent='tfc:block/wood/support/%s_inventory' % wood).with_lang(lang('%s Support', wood))
 
+        for chest in ('chest', 'trapped_chest'):
+            rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest)).with_tag('minecraft:mineable/axe').with_tag('minecraft:features_cannot_replace').with_tag('forge:chests/wooden').with_tag('minecraft:lava_pool_stone_cannot_replace')
+            rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
+            rm.item_model(('wood', chest, wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent='minecraft:item/chest')
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)
@@ -1028,7 +1194,7 @@ def block_state_property(block: str, properties: Dict[str, str]) -> Dict[str, An
     return {
         'condition': 'minecraft:block_state_property',
         'block': block,
-        'properties': properties
+        'properties': dict((k, str(v)) for k, v in properties.items())
     }
 
 
@@ -1076,4 +1242,19 @@ def condition_chance(chance: float) -> Dict[str, Any]:
     return {
         'condition': 'minecraft:random_chance',
         'chance': chance
+    }
+
+
+def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
+    return {
+        'function': 'minecraft:set_count',
+        'count': {
+            'type': 'tfc:crop_yield_uniform',
+            'min': lo,
+            'max': {
+                'type': 'minecraft:uniform',
+                'min': hi[0],
+                'max': hi[1]
+            }
+        }
     }

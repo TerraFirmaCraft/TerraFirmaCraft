@@ -323,47 +323,11 @@ public final class Helpers
     }
 
     /**
-     * Acts as if the player finished breaking a given block.
-     * {@link net.minecraft.server.level.ServerPlayerGameMode#destroyBlock(BlockPos)}
-     *
-     * The difference: we don't care about break progress. We require the block to be broken
-     */
-    public static void quickHarvest(Level level, ServerPlayer player, BlockPos pos)
-    {
-        final BlockState breakState = level.getBlockState(pos);
-        final int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level, player.gameMode.getGameModeForPlayer(), player, pos);
-        if (exp == -1) return;
-
-        final boolean canHarvest = breakState.canHarvestBlock(level, pos, player);
-        final boolean willHarvest = Helpers.removeBlock(level, player, pos, canHarvest);
-        if (canHarvest && willHarvest) // this drops resources (or it should)
-        {
-            breakState.getBlock().playerDestroy(level, player, pos, breakState, level.getBlockEntity(pos), player.getMainHandItem().copy());
-        }
-        if (willHarvest && exp > 0)
-        {
-            breakState.getBlock().popExperience((ServerLevel) level, pos, exp);
-        }
-    }
-
-    /**
      * {@link Level#removeBlock(BlockPos, boolean)} but with all flags available.
      */
     public static void removeBlock(LevelAccessor level, BlockPos pos, int flags)
     {
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
-    }
-
-    /**
-     * {@link net.minecraft.server.level.ServerPlayerGameMode#removeBlock(BlockPos, boolean)}
-     */
-    public static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest)
-    {
-        BlockState state = level.getBlockState(pos); // ask the state if it's being destroyed
-        boolean removed = state.onDestroyedByPlayer(level, pos, player, canHarvest, level.getFluidState(pos));
-        if (removed) // if it agrees, tell the block it's destroyed
-            state.getBlock().destroy(level, pos, state);
-        return removed;
     }
 
     /**
@@ -555,6 +519,7 @@ public final class Helpers
         }
     }
 
+<<<<<<< HEAD
     public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
@@ -571,20 +536,20 @@ public final class Helpers
         state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY);
     }
 
-    public static void playSound(Level world, BlockPos pos, SoundEvent sound)
+    public static void playSound(Level level, BlockPos pos, SoundEvent sound)
     {
-        Random rand = world.getRandom();
-        world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+        Random rand = level.getRandom();
+        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
-    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack, double yOffset)
+    public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset)
     {
-        return world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
+        return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
     }
 
-    public static boolean spawnItem(Level world, BlockPos pos, ItemStack stack)
+    public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack)
     {
-        return spawnItem(world, pos, stack, 0.5D);
+        return spawnItem(level, pos, stack, 0.5D);
     }
 
     public static FluidStack mergeOutputFluidIntoSlot(IItemHandlerModifiable inventory, FluidStack fluidStack, float temperature, int slot)
@@ -872,10 +837,20 @@ public final class Helpers
         return min == max ? min : min + random.nextInt(max - min);
     }
 
+    public static int uniform(Random random, int min, int max)
+    {
+        return min == max ? min : min + random.nextInt(max - min);
+    }
+
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
     public static float uniform(RandomSource random, float min, float max)
+    {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public static float uniform(Random random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }

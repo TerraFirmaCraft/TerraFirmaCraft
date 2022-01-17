@@ -31,6 +31,18 @@ public interface ICalendar
     /* This needs to be a float, otherwise there are ~62 minutes per hour */
     float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
 
+    /* Delta Calculation Methods */
+
+    static long getCalendarTicksInMonth(int daysInMonth)
+    {
+        return (long) TICKS_IN_DAY * daysInMonth;
+    }
+
+    static long getCalendarTicksInYear(int daysInMonth)
+    {
+        return (long) TICKS_IN_DAY * daysInMonth * MONTHS_IN_YEAR;
+    }
+
     /* Total Calculation Methods */
 
     static float getTotalMinutes(long time)
@@ -155,6 +167,14 @@ public interface ICalendar
     int getCalendarDaysInMonth();
 
     /**
+     * @return The corresponding calendar tick of the player tick passed
+     */
+    default long ticksToCalendarTicks(long tick)
+    {
+        return getCalendarTicks() - getTicks() + tick;
+    }
+
+    /**
      * Gets the total amount of hours passed
      */
     default long getTotalHours()
@@ -274,7 +294,7 @@ public interface ICalendar
      */
     default long getCalendarTicksInMonth()
     {
-        return (long) getCalendarDaysInMonth() * TICKS_IN_DAY;
+        return ICalendar.getCalendarTicksInMonth(getCalendarDaysInMonth());
     }
 
     /**
@@ -282,7 +302,7 @@ public interface ICalendar
      */
     default long getCalendarTicksInYear()
     {
-        return (long) getCalendarDaysInMonth() * MONTHS_IN_YEAR * TICKS_IN_DAY;
+        return ICalendar.getCalendarTicksInYear(getCalendarDaysInMonth());
     }
 
     default MutableComponent getCalendarTimeAndDate()

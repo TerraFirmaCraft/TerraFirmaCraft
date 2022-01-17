@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -26,34 +27,45 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.*;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -78,6 +90,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -93,7 +106,6 @@ import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
@@ -146,6 +158,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
+        bus.addListener(ForgeEventHandler::onItemExpire);
+        bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -154,6 +168,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
+        bus.addListener(ForgeEventHandler::onBoneMeal);
     }
 
     /**
@@ -381,6 +396,7 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
         event.addListener(Fauna.MANAGER);
@@ -622,6 +638,118 @@ public final class ForgeEventHandler
         }
     }
 
+    /**
+     * Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
+     */
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHeatablesinLevel.get())
+        {
+            final ItemStack item = entity.getItem();
+            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                if (cap.getTemperature() > 0f)
+                {
+                    entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+                }
+            });
+        }
+    }
+
+    /**
+     * If the item is heated, we check for blocks below and within that would cause it to cool.
+     * Since we don't want the item to actually expire, we set the expiry time to a small number that allows us to revisit the same code soon.
+     *
+     * By cancelling the event, we guarantee that the item will not actually expire.
+     */
+    public static void onItemExpire(ItemExpireEvent event)
+    {
+        if (!TFCConfig.SERVER.coolHeatablesinLevel.get()) return;
+        final ItemEntity entity = event.getEntityItem();
+        final ServerLevel level = (ServerLevel) entity.getLevel();
+        final ItemStack stack = entity.getItem();
+        final BlockPos pos = entity.blockPosition();
+
+        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+            final int lifespan = stack.getItem().getEntityLifespan(stack, level);
+            if (entity.lifespan >= lifespan) return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
+
+            final float itemTemp = heat.getTemperature();
+            if (itemTemp > 0f)
+            {
+                float coolAmount = 0;
+                final BlockState state = level.getBlockState(pos);
+                final FluidState fluid = level.getFluidState(pos);
+                if (fluid.is(FluidTags.WATER))
+                {
+                    coolAmount = 50f;
+                    if (level.random.nextFloat() < 0.001F)
+                    {
+                        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    }
+                }
+                else if (state.is(Blocks.SNOW))
+                {
+                    coolAmount = 70f;
+                    if (level.random.nextFloat() < 0.1F)
+                    {
+                        final int layers = state.getValue(SnowLayerBlock.LAYERS);
+                        if (layers > 1)
+                        {
+                            level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
+                        }
+                        else
+                        {
+                            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                        }
+                    }
+                }
+                else
+                {
+                    final BlockPos belowPos = pos.below();
+                    final BlockState belowState = level.getBlockState(belowPos);
+                    if (belowState.is(Blocks.SNOW_BLOCK))
+                    {
+                        coolAmount = 75f;
+                        if (level.random.nextFloat() < 0.1F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE)
+                    {
+                        coolAmount = 100f;
+                        if (level.random.nextFloat() < 0.01F)
+                        {
+                            level.setBlockAndUpdate(belowPos, belowState.is(TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE_SOLID)
+                    {
+                        coolAmount = 125f;
+                        if (level.random.nextFloat() < 0.005F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                }
+
+                if (coolAmount > 0f)
+                {
+                    heat.setTemperature(Math.max(0f, heat.getTemperature() - coolAmount));
+                    Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                    level.sendParticles(ParticleTypes.SMOKE, entity.getX(), entity.getY(), entity.getZ(), 1, 0D, 0D, 0D, 1f);
+                }
+                event.setExtraLife(heat.getTemperature() == 0f ? lifespan : TFCConfig.SERVER.ticksBeforeItemCool.get());
+                //entity.setNoPickUpDelay();
+            }
+            else
+            {
+                event.setExtraLife(lifespan);
+            }
+            event.setCanceled(true);
+        });
+    }
+
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.getPlayer() instanceof ServerPlayer)
@@ -708,7 +836,7 @@ public final class ForgeEventHandler
     {
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
-            final InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), true);
+            final InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), true);
             if (result != InteractionResult.PASS)
             {
                 event.setCanceled(true);
@@ -731,7 +859,7 @@ public final class ForgeEventHandler
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
             // Cannot be cancelled, only fired on client.
-            InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), false);
+            InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), false);
             if (result == InteractionResult.SUCCESS)
             {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
@@ -747,51 +875,22 @@ public final class ForgeEventHandler
 
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
     }
 
-    public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)
+    /**
+     * Deny all traditional uses of bone meal directly to grow crops.
+     * Fertilizer is used as a replacement.
+     */
+    public static void onBoneMeal(BonemealEvent event)
     {
-        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        if (hit.getType() == HitResult.Type.BLOCK)
+        if (!TFCConfig.SERVER.enableVanillaBonemeal.get())
         {
-            final BlockPos pos = hit.getBlockPos();
-            final BlockState state = level.getBlockState(pos);
-            final Fluid fluid = state.getFluidState().getType();
-            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
-            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
-            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
-            {
-                final Drinkable drinkable = Drinkable.get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
-                {
-                    if (!level.isClientSide && doDrink)
-                    {
-                        doDrink(level, player, state, pos, playerData, drinkable);
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
-    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
-    {
-        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
-        level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
-        drinkable.onDrink(player);
-
-        // Since we're drinking from a source block, we need to apply the consume chance
-        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > player.getRandom().nextFloat())
-        {
-            final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
-            if (emptyState != null)
-            {
-                level.setBlock(pos, emptyState, 3);
-            }
+            event.setResult(Event.Result.DENY);
+            event.setCanceled(true);
         }
     }
 }

@@ -69,7 +69,7 @@ public final class Metal
     private static void reload()
     {
         // Ensure 'unknown' metal exists
-        MANAGER.getOrThrow(UNKNOWN_ID);
+        unknown();
 
         // Reload fluid -> metal map
         METAL_FLUIDS.clear();

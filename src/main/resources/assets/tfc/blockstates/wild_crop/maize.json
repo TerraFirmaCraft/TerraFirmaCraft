@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "part=top": {
+      "model": "tfc:block/wild_crop/maize_top"
+    },
+    "part=bottom": {
+      "model": "tfc:block/wild_crop/maize_bottom"
+    }
+  }
+}

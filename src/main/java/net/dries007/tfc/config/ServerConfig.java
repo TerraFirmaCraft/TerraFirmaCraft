@@ -40,6 +40,8 @@ public class ServerConfig
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
+    // Blocks - Chest
+    public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Charcoal Pit
@@ -50,6 +52,9 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    // Blocks - Composter
+    public final ForgeConfigSpec.IntValue composterTicks;
+    public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -73,6 +78,8 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
+    public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
+    public final ForgeConfigSpec.BooleanValue coolHeatablesinLevel;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -91,6 +98,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
+    // Mechanics - Vanilla Changes
+    public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -134,6 +143,9 @@ public class ServerConfig
         enableMossyRockSpreading = builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true);
         mossyRockSpreadRate = builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("chest");
+        chestMaximumItemSize = builder.apply("chestMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a chest.").defineEnum("chestMaximumItemSize", Size.LARGE);
+
         innerBuilder.pop().push("torch");
 
         torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 7200, -1, Integer.MAX_VALUE);
@@ -142,7 +154,7 @@ public class ServerConfig
 
         charcoalTicks = builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().push("pit_kiln");
+        innerBuilder.pop().push("pitKiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
         pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
@@ -152,7 +164,11 @@ public class ServerConfig
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().pop().push("items").push("small_vessel");
+        innerBuilder.pop().push("composter");
+        composterTicks = builder.apply("composterTicks").comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").defineInRange("composterTicks", 288000, 20, Integer.MAX_VALUE);
+        composterRainfallCheck = builder.apply("composterRainfallCheck").comment("Should the composter work less efficiently at high or low rainfalls?").define("composterRainfallCheck", true);
+
+        innerBuilder.pop().pop().push("items").push("smallVessel");
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
         smallVesselMaximumItemSize = builder.apply("smallVesselMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a small vessel.").defineEnum("smallVesselMaximumItemSize", Size.SMALL);
@@ -182,6 +198,8 @@ public class ServerConfig
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        coolHeatablesinLevel = builder.apply("coolHeatablesinLevel").comment("Should heatable items cool off when in contact with blocks like water or snow?").define("coolHeatablesinLevel", true);
+        ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("itemHeatingModifier", 10, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 
@@ -216,6 +234,10 @@ public class ServerConfig
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
         foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+
+        innerBuilder.pop().push("vanillaChanges");
+
+        enableVanillaBonemeal = builder.apply("enableVanillaBonemeal").comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
 
         innerBuilder.pop().pop();
     }

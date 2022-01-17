@@ -9,7 +9,6 @@
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
-    "IngredientMixin",
     "LevelMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
@@ -27,6 +26,7 @@
   ],
   "client": [
     "client.ClientLevelMixin",
+    "client.FishingHookRendererMixin",
     "client.FogRendererMixin",
     "client.ItemColorsMixin",
     "client.ItemInHandRendererMixin",
@@ -36,7 +36,8 @@
     "client.MultiPlayerGameModeMixin",
     "client.accessor.BiomeColorsAccessor",
     "client.accessor.ClientLevelAccessor",
-    "client.accessor.LevelRendererAccessor"
+    "client.accessor.LevelRendererAccessor",
+    "client.accessor.SuspendedTownParticleAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
