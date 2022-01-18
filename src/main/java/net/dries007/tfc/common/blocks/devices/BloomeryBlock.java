@@ -11,10 +11,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,7 +24,11 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -35,15 +41,40 @@ public class BloomeryBlock extends ExtendedBlock
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    //todo: AABB nonsense. what does AABB do for this block?
+    //todo: this is a complete guess, test in game
+    public static final VoxelShape[] BASE_SHAPES =
+        {
+            Shapes.or(
+                box(0D, 0D, 0D,16D, 16D, 8D),
+                box(0D, 0D, 0D, 2D, 16D, 8D),
+                box(14D, 0D, 0D, 16D, 16D, 8D)
+            ),
+            Shapes.or(
+                box(8D, 0D, 0D, 16D, 16D, 16D),
+                box(8D, 0D, 0D, 16D, 16D, 2D),
+                box(8D, 0D, 14D, 16D, 16D, 16D)
+            ),
+            Shapes.or(
+                box(0D, 0D, 8D, 16D, 16D, 16D),
+                box(0D, 0D, 8D, 2D, 16D, 16D),
+                box(14D, 0D, 8D, 16D, 16D, 16D)
+            ),
+            Shapes.or(
+                box(0D, 0D, 0D, 8D, 16D, 16D),
+                box(0D, 0D, 0D, 8D, 16D, 2D),
+                box(0D, 0D, 14D, 8D, 16D, 16D)
+            )
+        };
 
     private static final MultiBlock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
     private static final MultiBlock[] BLOOMERY_BASE; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
     private static final MultiBlock GATE_Z, GATE_X; // Determines if the gate can stay in place
+    private static final Direction[] NORTH_SOUTH_DOWN = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN};
+    private static final Direction[] EAST_WEST_DOWN = new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN};
 
     static
     {
-        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).getMaterial() == Material.STONE && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION) && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
         Predicate<BlockState> center = state -> state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
         BlockPos origin = BlockPos.ZERO;
@@ -55,7 +86,7 @@ public class BloomeryBlock extends ExtendedBlock
             .match(origin.below(), stoneMatcher)
             .match(origin.north(), state -> state.is(TFCBlocks.BLOOMERY.get()))
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.SOUTH, Direction.EAST, Direction.WEST}, 1)
-            .matchEachDirection(origin.north(), stoneMatcher, new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN}, 1)
+            .matchEachDirection(origin.north(), stoneMatcher, EAST_WEST_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
         BLOOMERY_BASE[1] = new MultiBlock() //south
@@ -63,7 +94,7 @@ public class BloomeryBlock extends ExtendedBlock
             .match(origin.below(), stoneMatcher)
             .match(origin.south(), state -> state.is(TFCBlocks.BLOOMERY.get()))
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST}, 1)
-            .matchEachDirection(origin.south(), stoneMatcher, new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN}, 1)
+            .matchEachDirection(origin.south(), stoneMatcher, EAST_WEST_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
         BLOOMERY_BASE[2] = new MultiBlock() //west
@@ -71,7 +102,7 @@ public class BloomeryBlock extends ExtendedBlock
             .match(origin.below(), stoneMatcher)
             .match(origin.west(), state -> state.is(TFCBlocks.BLOOMERY.get()))
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH}, 1)
-            .matchEachDirection(origin.west(), stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN}, 1)
+            .matchEachDirection(origin.west(), stoneMatcher, NORTH_SOUTH_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
         BLOOMERY_BASE[3] = new MultiBlock() //east
@@ -79,7 +110,7 @@ public class BloomeryBlock extends ExtendedBlock
             .match(origin.below(), stoneMatcher)
             .match(origin.east(), state -> state.is(TFCBlocks.BLOOMERY.get()))
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.WEST, Direction.SOUTH}, 1)
-            .matchEachDirection(origin.east(), stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN}, 1)
+            .matchEachDirection(origin.east(), stoneMatcher, NORTH_SOUTH_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
         BLOOMERY_CHIMNEY = new MultiBlock()
@@ -149,20 +180,11 @@ public class BloomeryBlock extends ExtendedBlock
     }
 
     /* todo: find out if there's a modern version of following methods
-     * getStateFromMeta, getMetaFromState, isFullCube
-     * getBoundingBox, getBlockFaceShape, getCollisionBoundingBox, isOpaqueCube
-     * collisionRayTrace, canPlaceBlockAt (canSurvive?), hasTileEntity
+     * getBoundingBox, getBlockFaceShape, getCollisionBoundingBox
+     * collisionRayTrace, canPlaceBlockAt (canSurvive?)
      * and does TFC still have:
      * onBreakBlock
      */
-
-    //yeeeah this probably isn't right. i don't know what LevelReader is, or if casting is a really bad idea. todo: do it right
-    //also, shouldn't this actually check which way the block is facing at some point?
-    @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
-    {
-        return canGateStayInPlace((Level) level, pos, Direction.Axis.Z) || canGateStayInPlace((Level) level, pos, Direction.Axis.X);
-    }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
@@ -202,7 +224,7 @@ public class BloomeryBlock extends ExtendedBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        Direction placeDirection;
+        Direction placeDirection = null;
         Direction[] nearestDirections = context.getNearestLookingDirections();
         if (canGateStayInPlace(context.getLevel(), context.getClickedPos(), Direction.Axis.X))
         {
@@ -228,15 +250,29 @@ public class BloomeryBlock extends ExtendedBlock
         }
         else
         {
-            //todo: how to cancel placement?
+            return Blocks.AIR.defaultBlockState();
         }
-        return this.defaultBlockState().setValue(FACING, placeDirection); //do we need .getOpposite()?
+        return this.defaultBlockState().setValue(FACING, placeDirection == null ? Direction.NORTH : placeDirection); //todo: do we need .getOpposite()?
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(FACING).add(LIT).add(OPEN);
+    }
+
+    //todo: revise this to work properly, since this is a total guess (even if by some miracle this is the right idea, check to see if the directions are right)
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context)
+    {
+        return switch (state.getValue(FACING))
+            {
+                case NORTH -> BASE_SHAPES[0];
+                case SOUTH -> BASE_SHAPES[1];
+                case WEST -> BASE_SHAPES[2];
+                case EAST -> BASE_SHAPES[3];
+                default -> Shapes.block();
+            };
     }
 
 

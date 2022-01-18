@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.RegistryObject;
@@ -270,7 +271,7 @@ public final class TFCBlocks
     //todo: litBlockEmission won't work if i'm using vanilla's lit property instead of TFC's. is TFC's lit property going to stay or will it be merged into vanilla's?
     public static final RegistryObject<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15))).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)), MISC);
     //todo: add bloom to pickaxe harvest json (probably bloomery too actually)
-    public static final RegistryObject<Block> BLOOM = register("bloom", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), MISC);
+    public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)).blockEntity(TFCBlockEntities.BLOOM)), MISC);
     //todo: figure out, like, what this block is supposed to do
     public static final RegistryObject<Block> MOLTEN = register("molten", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), MISC);
 
@@ -302,7 +303,7 @@ public final class TFCBlocks
 
     private static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
-        return (state) -> state.getValue(TFCBlockStateProperties.LIT) ? lightValue : 0;
+        return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier)

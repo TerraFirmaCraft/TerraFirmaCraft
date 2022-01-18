@@ -31,6 +31,7 @@ public class TFCRecipeTypes
     public static final Supplier<RecipeType<RockKnappingRecipe>> ROCK_KNAPPING = register("rock_knapping");
     public static final Supplier<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
     public static final Supplier<RecipeType<CastingRecipe>> CASTING = register("casting");
+    public static final Supplier<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
 
     public static void registerRecipeTypes()
     {
@@ -46,6 +47,7 @@ public class TFCRecipeTypes
         ROCK_KNAPPING.get();
         ALLOY.get();
         CASTING.get();
+        BLOOMERY.get();
     }
 
     public static void registerPotRecipeOutputTypes()

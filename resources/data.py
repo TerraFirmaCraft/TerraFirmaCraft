@@ -214,6 +214,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
+    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge_stone_bricks', '#forge:smooth_stone')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('prospectable', '#forge:ores')

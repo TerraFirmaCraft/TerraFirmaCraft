@@ -613,7 +613,12 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.BLOOMERY.get())
         {
-            //todo: add other conditions for this to fire (bloomery closed? fuel?) and add ignite call
+            //todo: revisit this later and determine if this is the right idea
+            final BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
+            {
+                event.setCanceled(true);
+            }
         }
     }
 

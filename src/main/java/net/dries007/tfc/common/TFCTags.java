@@ -53,6 +53,7 @@ public class TFCTags
         public static final Tag.Named<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final Tag.Named<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final Tag.Named<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
+        public static final Tag.Named<Block> BLOOMERY_INSULATION = create("bloomery_insulation"); //valid blocks for bloomery structure
         public static final Tag.Named<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final Tag.Named<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
         public static final Tag.Named<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
