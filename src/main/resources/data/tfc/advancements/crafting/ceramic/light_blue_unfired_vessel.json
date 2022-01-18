@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:light_blue_dye"
+            "items": [
+              "minecraft:light_blue_dye"
+            ]
           }
         ]
       }

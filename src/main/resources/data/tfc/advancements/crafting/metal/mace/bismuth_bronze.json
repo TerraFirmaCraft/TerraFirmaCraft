@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/mace_head/bismuth_bronze"
+            "items": [
+              "tfc:metal/mace_head/bismuth_bronze"
+            ]
           }
         ]
       }

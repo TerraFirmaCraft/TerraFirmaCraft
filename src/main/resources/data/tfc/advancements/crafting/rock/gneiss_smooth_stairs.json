@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/smooth/gneiss"
+            "items": [
+              "tfc:rock/smooth/gneiss"
+            ]
           }
         ]
       }

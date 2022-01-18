@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/cobble/claystone"
+            "items": [
+              "tfc:rock/cobble/claystone"
+            ]
           }
         ]
       }

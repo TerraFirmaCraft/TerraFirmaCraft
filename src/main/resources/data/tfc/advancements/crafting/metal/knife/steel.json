@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/knife_blade/steel"
+            "items": [
+              "tfc:metal/knife_blade/steel"
+            ]
           }
         ]
       }

@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stone/shovel_head/igneous_extrusive"
+            "items": [
+              "tfc:stone/shovel_head/igneous_extrusive"
+            ]
           }
         ]
       }

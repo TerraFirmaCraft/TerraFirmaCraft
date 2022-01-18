@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/scythe_blade/black_steel"
+            "items": [
+              "tfc:metal/scythe_blade/black_steel"
+            ]
           }
         ]
       }

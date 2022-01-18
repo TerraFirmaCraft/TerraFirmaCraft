@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/scythe_blade/copper"
+            "items": [
+              "tfc:metal/scythe_blade/copper"
+            ]
           }
         ]
       }
