@@ -9,10 +9,7 @@ package net.dries007.tfc.util;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -513,13 +510,13 @@ public final class Helpers
             }
             if (level instanceof ServerLevel)
             {
-                dropWithContext(level, state, pos, builder);
+                dropWithContext(level, state, pos, builder, true);
             }
             level.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
     }
 
-    public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder, boolean randomized)
     {
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 
@@ -531,8 +528,27 @@ public final class Helpers
             .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
             .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
         builder.accept(lootContext);
-        state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(level, pos, stackToSpawn));
+        state.getDrops(lootContext).forEach(stackToSpawn -> {
+            if (randomized)
+            {
+                Block.popResource(level, pos, stackToSpawn);
+            }
+            else
+            {
+                popResourceExact(level, pos, stackToSpawn);
+            }
+        });
         state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY);
+    }
+
+    public static void popResourceExact(Level level, BlockPos pos, ItemStack stack)
+    {
+        if (!level.isClientSide && !stack.isEmpty() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && !level.restoringBlockSnapshots)
+        {
+            ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack, 0D, 0D, 0D);
+            entity.setDefaultPickUpDelay();
+            level.addFreshEntity(entity);
+        }
     }
 
     public static void playSound(Level level, BlockPos pos, SoundEvent sound)
@@ -658,27 +674,22 @@ public final class Helpers
      */
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
-        switch (direction)
+        return switch (direction)
         {
-            case NORTH -> Block.box(x1, y1, z1, x2, y2, z1);
+            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
             case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-            case WEST -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-            case SOUTH -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-        }
-        throw new IllegalArgumentException("Not horizontal!");
+            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+            default -> throw new IllegalArgumentException("Not horizontal!");
+        };
     }
 
     /**
      * Follows indexes for Direction#get2DDataValue()
      */
-    public static VoxelShape[] computeHorizontalShapes(double x1, double y1, double z1, double x2, double y2, double z2)
+    public static VoxelShape[] computeHorizontalShapes(Function<Direction, VoxelShape> shapeGetter)
     {
-        return new VoxelShape[] {
-            rotateShape(Direction.SOUTH, x1, y1, x1, x2, y2, z2),
-            rotateShape(Direction.WEST, x1, y1, x1, x2, y2, z2),
-            rotateShape(Direction.NORTH, x1, y1, x1, x2, y2, z2),
-            rotateShape(Direction.EAST, x1, y1, x1, x2, y2, z2)
-        };
+        return new VoxelShape[] {shapeGetter.apply(Direction.SOUTH), shapeGetter.apply(Direction.WEST), shapeGetter.apply(Direction.NORTH), shapeGetter.apply(Direction.EAST)};
     }
 
     /**

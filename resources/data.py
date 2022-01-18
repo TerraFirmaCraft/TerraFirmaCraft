@@ -340,7 +340,7 @@ def generate(rm: ResourceManager):
         'tfc:crucible'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support') for wood in WOODS.keys()],
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],
         *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench') for wood in WOODS.keys()],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
@@ -411,10 +411,10 @@ def generate(rm: ResourceManager):
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
     item_size(rm, 'plants', '#tfc:plants', Size.tiny, Weight.very_light)
     item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
+    item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
-    # item_size(rm, 'sluice', 'tfc:sluice', Size.very_large, Weight.very_heavy)
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
 
     # Food

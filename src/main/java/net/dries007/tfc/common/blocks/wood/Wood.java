@@ -25,10 +25,12 @@ import net.minecraft.world.level.material.MaterialColor;
 
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
@@ -146,7 +148,8 @@ public enum Wood implements StringRepresentable
         HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(ExtendedProperties.of(properties(wood).strength(1.0F).noOcclusion()).flammable(60, 60)), false),
         WORKBENCH(wood -> new TFCCraftingTableBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30)), true),
         CHEST((self, wood) -> new TFCChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
-        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties));
+        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
+        SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false);
 
         public static final BlockType[] VALUES = values();
 

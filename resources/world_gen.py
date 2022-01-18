@@ -180,7 +180,17 @@ def generate(rm: ResourceManager):
             'max_radius': 3,
             'height': 2,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(20), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+        })
+
+        configured_placed_feature(rm, '%s_deep_deposit' % ore, 'tfc:soil_disc', {
+            'min_radius': 3,
+            'max_radius': 10,
+            'height': 3,
+            'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
+        })
+
+    configured_placed_feature(rm, 'surface_ore_deposits', 'minecraft:simple_random_selector', {'features': ['tfc:%s_deposit' % ore for ore in ORE_DEPOSITS]}, decorate_chance(15), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+    configured_placed_feature(rm, 'deep_ore_deposits', 'minecraft:simple_random_selector', {'features': ['tfc:%s_deep_deposit' % ore for ore in ORE_DEPOSITS]}, decorate_chance(15), decorate_square(), decorate_range(40, 63), decorate_biome())
 
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')
@@ -1218,7 +1228,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         spawners.update({
             'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
         })
-        features[Decoration.SOIL_DISKS] += ['tfc:%s_deposit' % ore for ore in ORE_DEPOSITS]
+        features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LARGE_FEATURES].append('tfc:coral_reef')

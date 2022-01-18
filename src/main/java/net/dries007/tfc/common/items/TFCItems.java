@@ -114,6 +114,8 @@ public final class TFCItems
     // Decorations
 
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", DECORATIONS);
+    public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
+    public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
 
     // Misc
 
@@ -155,8 +157,6 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
-    public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
-    public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);

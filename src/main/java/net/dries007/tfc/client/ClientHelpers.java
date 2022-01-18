@@ -81,6 +81,11 @@ public final class ClientHelpers
         return Helpers.identifier("textures/entity/animal/" + name + ".png");
     }
 
+    public static float itemTimeRotation()
+    {
+        return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
+    }
+
     /**
      * This is the map code in {@link net.minecraft.client.renderer.ItemInHandRenderer}
      */

@@ -644,6 +644,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.propick.nothing': 'Found nothing.',
     'tfc.tooltip.propick.accuracy': 'Accuracy: %s%%',
     'tfc.tooltip.pan.contents': '§7Contains ',
+    'tfc.tooltip.pan.water': 'You need to stand in water to be able to pan.',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',

@@ -86,6 +86,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_chest' % wood, ['XXX', 'X X', 'XXX'], {'X': item('lumber')}, item('chest')).with_advancement(item('lumber'))
         rm.crafting_shapeless('crafting/wood/%s_trapped_chest' % wood, (item('chest'), 'minecraft:tripwire_hook'), (1, item('trapped_chest'))).with_advancement(item('chest'))
         damage_shapeless(rm, 'crafting/wood/%s_support' % wood, (item('log'), item('log'), '#tfc:saws'), (8, item('support'))).with_advancement('#tfc:saws')
+        rm.crafting_shaped('crafting/wood/%s_sluice' % wood, ['  X', ' XY', 'XYY'], {'X': '#forge:rods/wooden', 'Y': item('lumber')}, item('sluice')).with_advancement(item('lumber'))
 
     rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': '#forge:sand', 'Y': '#forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('#forge:sand')
     damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', '#tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
@@ -200,6 +201,10 @@ def generate(rm: ResourceManager):
         # Spikes can collapse, but produce nothing
         rm.block_tag('can_collapse', spike)
         collapse_recipe(rm, '%s_spike' % rock, spike, copy_input=True)
+
+        for deposit in ORE_DEPOSITS:
+            rm.block_tag('can_landslide', 'tfc:deposit/%s/%s' % (deposit, rock))
+            landslide_recipe(rm, '%s_%s_deposit' % (deposit, rock), 'tfc:deposit/%s/%s' % (deposit, rock), gravel)
 
     # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:

@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -301,6 +302,18 @@ public final class FluidHelpers
             }
             // Cause the maximum adjacent fluid to flow into this block
             return maxAdjacentFluid.getFlowing(selfFluidAmount, false);
+        }
+    }
+
+    public static void setSourceBlock(Level level, BlockPos pos, Fluid fluid)
+    {
+        if (fluid instanceof FlowingFluid flow)
+        {
+            level.setBlock(pos, flow.getSource().defaultFluidState().createLegacyBlock(), 3);
+        }
+        else
+        {
+            level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock(), 3);
         }
     }
 }

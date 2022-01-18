@@ -37,14 +37,14 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/lignite",
+              "name": "tfc:ore/lignite",
               "conditions": [
                 {
                   "condition": "tfc:is_panned"
                 },
                 {
                   "condition": "minecraft:random_chance",
-                  "chance": 0.01
+                  "chance": 0.04
                 }
               ]
             },

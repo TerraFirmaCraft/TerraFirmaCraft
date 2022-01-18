@@ -1,15 +1,23 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.items;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,6 +48,11 @@ public class PanItem extends Item
         return null;
     }
 
+    public static void dropItems(Level level, BlockState state, BlockPos pos)
+    {
+        Helpers.dropWithContext(level, state, pos, ctx -> ctx.withParameter(TFCLoot.PANNED, true), false);
+    }
+
     public PanItem(Properties properties)
     {
         super(properties);
@@ -54,7 +67,15 @@ public class PanItem extends Item
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
-        return ItemUtils.startUsingInstantly(level, player, hand);
+        if (level.getFluidState(player.blockPosition()).is(FluidTags.WATER))
+        {
+            return ItemUtils.startUsingInstantly(level, player, hand);
+        }
+        if (!level.isClientSide)
+        {
+            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.pan.water"), true);
+        }
+        return super.use(level, player, hand);
     }
 
     @Override
@@ -74,7 +95,7 @@ public class PanItem extends Item
             final BlockState state = readState(stack);
             if (state != null)
             {
-                Helpers.dropWithContext(level, state, entity.blockPosition(), ctx -> ctx.withParameter(TFCLoot.PANNED, true));
+                dropItems(level, state, entity.blockPosition());
                 player.awardStat(Stats.ITEM_USED.get(this));
                 return new ItemStack(TFCItems.EMPTY_PAN.get()); // MC calls setItemInHand to place this in the hand
             }

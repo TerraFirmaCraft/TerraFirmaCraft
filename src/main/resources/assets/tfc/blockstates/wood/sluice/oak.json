@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east,upper=true": {
+      "model": "tfc:block/wood/sluice/oak_upper",
+      "y": 90
+    },
+    "facing=north,upper=true": {
+      "model": "tfc:block/wood/sluice/oak_upper",
+      "y": 0
+    },
+    "facing=south,upper=true": {
+      "model": "tfc:block/wood/sluice/oak_upper",
+      "y": 180
+    },
+    "facing=west,upper=true": {
+      "model": "tfc:block/wood/sluice/oak_upper",
+      "y": 270
+    },
+    "facing=east,upper=false": {
+      "model": "tfc:block/wood/sluice/oak_lower",
+      "y": 90
+    },
+    "facing=north,upper=false": {
+      "model": "tfc:block/wood/sluice/oak_lower",
+      "y": 0
+    },
+    "facing=south,upper=false": {
+      "model": "tfc:block/wood/sluice/oak_lower",
+      "y": 180
+    },
+    "facing=west,upper=false": {
+      "model": "tfc:block/wood/sluice/oak_lower",
+      "y": 270
+    }
+  }
+}
