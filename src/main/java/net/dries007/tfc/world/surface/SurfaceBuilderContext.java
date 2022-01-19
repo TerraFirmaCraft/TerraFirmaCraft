@@ -209,17 +209,11 @@ public class SurfaceBuilderContext
      */
     public int calculateAltitudeSlopeSurfaceDepth(int y, double slope, int maxDepth, double falloff, int minimumReturnValue)
     {
-        final int seaLevel = TFCChunkGenerator.SEA_LEVEL_Y;
-        double slopeFactor = Mth.clamp(slope / 15d, 0, 1); // in [0, 1]
-        double altitudeFactor = Mth.clamp((y - seaLevel) / 100d, 0, 1);
-        if (y < TFCChunkGenerator.SEA_LEVEL_Y)
-        {
-            // Below sea level, slope influence falls off, and levels off at 40% influence
-            slopeFactor *= Mth.clamp(1 - (seaLevel - y) / 15d, 0.4, 1);
-        }
-        double t = (1 - altitudeFactor) * (1 - slopeFactor);
-        t = (t - falloff) / (1 - falloff);
-        t = (t * maxDepth) + 0.3d;
-        return Mth.clamp((int) t, minimumReturnValue, maxDepth);
+        final double slopeFactor = 1 - Mth.clamp(slope / 15d, 0, 1); // Large = low slope
+        final double altitudeFactor = y < seaLevel ?
+            Mth.clampedMap((seaLevel - y) / 15d, 0, 0.4, 1, 1.4) : // Altitudes below sea level have have larger depth
+            Mth.clampedMap((y - seaLevel) / 140d, 0, 0.8, 1, 0.2); // Altitudes above sea level have slightly lower depth
+
+        return Mth.clamp((int) Mth.lerp(slopeFactor * altitudeFactor, minimumReturnValue, maxDepth), minimumReturnValue, maxDepth);
     }
 }

@@ -49,7 +49,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                         if (surfaceDepth == -1)
                         {
                             surfaceDepth = 0;
-                            context.setBlockState(y, SurfaceStates.WATER);
+                            y++; // Re-calculate this layer with the subsurface layer, which will not be skipped even in high slopes.
                         }
                         else
                         {
@@ -64,7 +64,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                         if (surfaceDepth == -1)
                         {
                             surfaceDepth = 0;
-                            context.setBlockState(y, Blocks.AIR.defaultBlockState());
+                            y++; // Re-calculate this layer with the subsurface layer, which will not be skipped even in high slopes.
                         }
                         else
                         {
