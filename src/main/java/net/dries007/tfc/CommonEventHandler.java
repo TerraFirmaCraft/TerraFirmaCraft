@@ -48,6 +48,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
@@ -95,9 +96,12 @@ import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.api.util.FallingBlockManager;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.compat.patchouli.TFCPatchouliPlugin;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.blocks.BlockFluidTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
@@ -266,7 +270,7 @@ public final class CommonEventHandler
 
         // Drop shards from glass
         ItemStack stackAt = new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
-        if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
+        if (!event.isSilkTouching() && OreDictionaryHelper.doesStackMatchOre(stackAt, "blockGlass"))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
@@ -380,12 +384,13 @@ public final class CommonEventHandler
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
 
         if (ConfigTFC.General.OVERRIDES.enableHoeing)
         {
-            if (state.getBlock() instanceof BlockRockVariant)
+            if (block instanceof BlockRockVariant)
             {
-                BlockRockVariant blockRock = (BlockRockVariant) state.getBlock();
+                BlockRockVariant blockRock = (BlockRockVariant) block;
                 if (blockRock.getType() == Rock.Type.GRASS || blockRock.getType() == Rock.Type.DIRT)
                 {
                     if (!world.isRemote)
@@ -396,6 +401,16 @@ public final class CommonEventHandler
                     event.setResult(Event.Result.ALLOW);
                 }
             }
+        }
+        if (block instanceof IGrowingPlant && !world.isRemote)
+        {
+            IGrowingPlant plant = (IGrowingPlant) block;
+            Entity entity = event.getEntity();
+            if (entity instanceof EntityPlayerMP && entity.isSneaking())
+            {
+                TerraFirmaCraft.getNetwork().sendTo(PacketSimpleMessage.translateMessage(MessageCategory.ANIMAL, plant.getGrowingStatus(state, world, pos).toString()), (EntityPlayerMP) entity);
+            }
+
         }
     }
 

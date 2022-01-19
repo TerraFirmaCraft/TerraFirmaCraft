@@ -198,6 +198,15 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
 
     public void onSealed()
     {
+        if (!world.isRemote)
+        {
+            for (int slot : new int[] { SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT })
+            {
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
+                inventory.setStackInSlot(slot, ItemStack.EMPTY);
+            }
+        }
+
         sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());

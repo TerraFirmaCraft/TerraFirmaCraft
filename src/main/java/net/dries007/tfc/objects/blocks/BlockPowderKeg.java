@@ -300,15 +300,19 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
                 }
                 else if (state.getValue(SEALED) && BlockTorchTFC.canLight(heldItem))
                 {
-                    trigger(worldIn, pos, state.withProperty(LIT, true), playerIn);
+                    if (!state.getValue(LIT))
+                    {
 
-                    if (heldItem.getItem().isDamageable())
-                    {
-                        heldItem.damageItem(1, playerIn);
-                    }
-                    else if (!playerIn.capabilities.isCreativeMode)
-                    {
-                        heldItem.shrink(1);
+                        trigger(worldIn, pos, state.withProperty(LIT, true), playerIn);
+
+                        if (heldItem.getItem().isDamageable())
+                        {
+                            heldItem.damageItem(1, playerIn);
+                        }
+                        else if (!playerIn.capabilities.isCreativeMode)
+                        {
+                            heldItem.shrink(1);
+                        }
                     }
                 }
                 else

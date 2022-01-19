@@ -37,6 +37,8 @@ import net.dries007.tfc.network.PacketSimpleMessage;
 import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
+import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
+import net.dries007.tfc.objects.inventory.capability.ItemStackHandlerCallback;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
@@ -49,6 +51,31 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class TEAnvilTFC extends TEInventory
 {
+    private static class AnvilItemHandler extends ItemStackHandlerCallback
+    {
+
+        public AnvilItemHandler(ISlotCallback callback, int slots)
+        {
+            super(callback, slots);
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            ItemStack result = super.extractItem(slot, amount, simulate);
+            if (slot == SLOT_INPUT_1 || slot == SLOT_INPUT_2)
+            {
+                IForgeable cap = result.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+                if (cap != null && cap.getRecipeName() != null && (!cap.getSteps().hasWork() || cap.getWork() == 0))
+                {
+                    cap.reset();
+                }
+
+            }
+            return result;
+        }
+    }
+
     public static final int WORK_MAX = 145;
 
     public static final int SLOT_INPUT_1 = 0;
@@ -63,7 +90,7 @@ public class TEAnvilTFC extends TEInventory
 
     public TEAnvilTFC()
     {
-        super(4);
+        super(AnvilItemHandler::new, 4);
 
         steps = new ForgeSteps();
         recipe = null;
@@ -140,7 +167,7 @@ public class TEAnvilTFC extends TEInventory
     }
 
     /**
-     * Slot updates only happen on server side, so update recipe when change is made
+     * Slot updates only happen on server side, so update when change is made so that items displayed on the anvil are synced up
      *
      * @param slot a slot id, or -1 if triggered by other methods
      */
@@ -150,10 +177,7 @@ public class TEAnvilTFC extends TEInventory
         super.setAndUpdateSlots(slot);
         if (!world.isRemote)
         {
-            if (checkRecipeUpdate())
-            {
-                markForSync();
-            }
+            markForSync();
         }
     }
 
@@ -398,31 +422,6 @@ public class TEAnvilTFC extends TEInventory
         return workingTarget;
     }
 
-    private boolean checkRecipeUpdate()
-    {
-        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
-        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-        boolean shouldSendUpdate = false;
-        if (cap == null && recipe != null)
-        {
-            // Check for item removed / broken
-            shouldSendUpdate = setRecipe(null);
-        }
-        else if (cap != null)
-        {
-            // Check for mismatched recipe
-            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
-            if (capRecipe != recipe)
-            {
-                shouldSendUpdate = setRecipe(capRecipe);
-            }
-            else if (AnvilRecipe.getAllFor(stack).size() == 1)
-            {
-                shouldSendUpdate = setRecipe(AnvilRecipe.getAllFor(stack).get(0));
-            }
-        }
-        return shouldSendUpdate;
-    }
 
     private void resetFields()
     {

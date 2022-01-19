@@ -24,6 +24,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -34,6 +35,7 @@ import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.client.gui.*;
 import net.dries007.tfc.compat.jei.categories.*;
@@ -43,11 +45,13 @@ import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.container.ContainerInventoryCrafting;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
+import net.dries007.tfc.objects.items.ItemAnimalHide.HideType;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.items.rock.ItemRockKnife;
 import net.dries007.tfc.objects.recipes.SaltingRecipe;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
@@ -72,6 +76,7 @@ public final class TFCJEIPlugin implements IModPlugin
     public static final String ROCK_LAYER_UID = TerraFirmaCraft.MOD_ID + ".rock_layer";
     public static final String VEIN_UID = TerraFirmaCraft.MOD_ID + ".vein";
     public static final String WELDING_UID = TerraFirmaCraft.MOD_ID + ".welding";
+    public static final String SCRAPING_UID = TerraFirmaCraft.MOD_ID + ".scraping";
 
     private static IModRegistry REGISTRY;
 
@@ -107,6 +112,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new RockLayerCategory(registry.getJeiHelpers().getGuiHelper(), ROCK_LAYER_UID));
         registry.addRecipeCategories(new VeinCategory(registry.getJeiHelpers().getGuiHelper(), VEIN_UID));
         registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
+        registry.addRecipeCategories(new ScrapingCategory(registry.getJeiHelpers().getGuiHelper(), SCRAPING_UID));
     }
 
     @Override
@@ -317,6 +323,10 @@ public final class TFCJEIPlugin implements IModPlugin
                 registry.addRecipeCatalyst(new ItemStack(ItemMetalTool.get(metal, Metal.ItemType.PROPICK)), ROCK_LAYER_UID);
                 registry.addRecipeCatalyst(new ItemStack(ItemMetalTool.get(metal, Metal.ItemType.PROPICK)), VEIN_UID);
             }
+            if (Metal.ItemType.KNIFE.hasType(metal))
+            {
+                registry.addRecipeCatalyst(new ItemStack(ItemMetalTool.get(metal, Metal.ItemType.KNIFE)), SCRAPING_UID);
+            }
             for (Metal.ItemType type : Metal.ItemType.values())
             {
                 if (type.hasMold(metal))
@@ -351,10 +361,13 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.placed_item").getFormattedText());
         registry.addIngredientInfo(new ItemStack(Items.COAL, 1, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.charcoal_pit").getFormattedText());
 
+        List<ScrapingWrapper> scrapingList = new ArrayList<>();
         for (ItemAnimalHide.HideSize size : ItemAnimalHide.HideSize.values())
         {
-            registry.addIngredientInfo(new ItemStack(ItemAnimalHide.get(ItemAnimalHide.HideType.SCRAPED, size)), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.hide_scraping").getFormattedText());
+            scrapingList.add(new ScrapingWrapper(ItemAnimalHide.get(HideType.SOAKED, size), ItemAnimalHide.get(HideType.SCRAPED, size)));
         }
+        registry.addRecipes(scrapingList, SCRAPING_UID);
+        TFCRegistries.ROCK_CATEGORIES.forEach(category -> registry.addRecipeCatalyst(new ItemStack(ItemRockKnife.get(category)), SCRAPING_UID));
 
         //Custom handlers
         registry.handleRecipes(SaltingRecipe.class, SaltingRecipeWrapper::new, VanillaRecipeCategoryUid.CRAFTING);

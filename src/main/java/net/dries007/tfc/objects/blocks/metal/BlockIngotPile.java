@@ -145,7 +145,7 @@ public class BlockIngotPile extends Block
                     stateTop = worldIn.getBlockState(posTop);
                     if (stateTop.getBlock() != BlocksTFC.INGOT_PILE && te != null)
                     {
-                        return removeIngot(worldIn, pos, playerIn, te);
+                        return removeIngot(worldIn, playerIn, te);
                     }
                     else
                     {
@@ -154,7 +154,7 @@ public class BlockIngotPile extends Block
                         {
                             if (te.getCount() < 64)
                             {
-                                return removeIngot(worldIn, pos, playerIn, te);
+                                return removeIngot(worldIn, playerIn, te);
                             }
                         }
                     }
@@ -201,14 +201,14 @@ public class BlockIngotPile extends Block
         return ItemStack.EMPTY;
     }
 
-    private boolean removeIngot(World worldIn, BlockPos pos, EntityPlayer playerIn, TEIngotPile te)
+    private boolean removeIngot(World worldIn, EntityPlayer playerIn, TEIngotPile te)
     {
         if (!worldIn.isRemote)
         {
             te.setCount(te.getCount() - 1);
             if (te.getCount() <= 0)
             {
-                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                worldIn.setBlockState(te.getPos(), Blocks.AIR.getDefaultState());
             }
             ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
         }

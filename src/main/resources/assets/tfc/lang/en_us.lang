@@ -834,6 +834,9 @@ config.tfc.client.tooltip.anvilWeldOutputToActionBar.tooltip=Should welding outp
 config.tfc.client.tooltip.vesselOutputToActionBar=Vessel Output to Actionbar
 config.tfc.client.tooltip.vesselOutputToActionBar.tooltip=Should vessels output to the actionbar? (the space just above the hotbar)
 
+config.tfc.client.tooltip.animalsOutputToActionBar=Animal Feedback Output to Actionbar
+config.tfc.client.tooltip.animalsOutputToActionBar.tooltip=Should animal feedback output to the actionbar? (the space just above the hotbar)
+
 config.tfc.client.tooltip.oreTooltipMode=Ore Tooltip Mode
 config.tfc.client.tooltip.oreTooltipMode.tooltip=Mode used on ore tooltips.
 
@@ -1173,6 +1176,12 @@ tfc.enum.nutrient.fruit=Fruit
 tfc.enum.nutrient.protein=Protein
 tfc.enum.nutrient.dairy=Dairy
 
+tfc.enum.growstatus.dead=This plant is dead
+tfc.enum.growstatus.not_growing=This plant is not growing
+tfc.enum.growstatus.can_grow=This plant is able to grow
+tfc.enum.growstatus.growing=This plant is growing
+tfc.enum.growstatus.fully_grown=This plant is fully grown
+
 #JEI
 jei.category.tfc.alloy=Alloying recipes
 jei.category.tfc.anvil=Anvil recipes
@@ -1192,6 +1201,7 @@ jei.category.tfc.quern=Quern recipes
 jei.category.tfc.rock_layer=Rock Layer Ores
 jei.category.tfc.vein=Vein Information
 jei.category.tfc.welding=Welding recipes
+jei.category.tfc.scraping=Scraping recipes
 
 ## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Instant
@@ -1202,7 +1212,7 @@ jei.tooltips.tfc.barrel.duration.short=%d Hours
 jei.description.tfc.pit_kiln=Used for firing pottery and melting your first metals. Place up to 4 items (Default Hotkey: V) into a 1x1 hole, then fill (right-click) with 8 straw and 8 logs and light it with a fire starter or drop a torch on top. Recipe is complete after the fire on top goes out.
 jei.description.tfc.placed_item=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
 jei.description.tfc.charcoal_pit=To get Charcoal, use Shift + Rightclick to make log piles. Cover these log piles almost completely with solid blocks, light one on fire, and then finish covering it. After a few hours, you will have charcoal.
-jei.description.tfc.hide_scraping=Place a log horizontally on the ground. Right click with a soaked hide to put it on the log. Then, right click all over it to scrape.
+jei.description.tfc.hide_scraping=Place a log horizontally on the ground. Right click with a soaked hide to put it on the log. Then, right click all over it with a knife to scrape.
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=Category

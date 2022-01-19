@@ -36,6 +36,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.api.util.IGrowingPlant;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -44,7 +45,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockFruitTreeLeaves extends BlockLeaves
+public class BlockFruitTreeLeaves extends BlockLeaves implements IGrowingPlant
 {
     public static final PropertyEnum<EnumLeafState> LEAF_STATE = PropertyEnum.create("state", BlockFruitTreeLeaves.EnumLeafState.class);
     public static final PropertyBool HARVESTABLE = PropertyBool.create("harvestable");
@@ -325,5 +326,18 @@ public class BlockFruitTreeLeaves extends BlockLeaves
         {
             return this.name().toLowerCase();
         }
+    }
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        if (world.getBlockState(pos).getValue(LEAF_STATE) == EnumLeafState.FRUIT)
+        {
+            return GrowthStatus.FULLY_GROWN;
+        }
+        else if (!state.getValue(HARVESTABLE) && tree.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
+        {
+            return GrowthStatus.GROWING;
+        }
+        return GrowthStatus.NOT_GROWING;
     }
 }

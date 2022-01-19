@@ -290,6 +290,8 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                                 soupCreationDate = CapabilityFood.getRoundedCreationDate();
 
                                 cookingPotStage = CookingPotStage.FINISHED;
+
+                                markForSync();
                             }
                             else
                             {
@@ -668,6 +670,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             if (soupServings == 0)
             {
                 cookingPotStage = CookingPotStage.EMPTY;
+                markForSync();
             }
         }
     }

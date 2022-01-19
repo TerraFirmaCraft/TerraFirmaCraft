@@ -991,6 +991,10 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.vesselOutputToActionBar")
             public boolean vesselOutputToActionBar = true;
 
+            @Config.Comment("Should animal feedback output to the actionbar? (the space just above the hotbar)")
+            @Config.LangKey("config." + MOD_ID + ".client.tooltip.animalsOutputToActionBar")
+            public boolean animalsOutputToActionBar = true;
+
             @Config.Comment("Ore tooltip info mode.")
             @Config.LangKey("config." + MOD_ID + ".client.tooltip.oreTooltipMode")
             public OreTooltipMode oreTooltipMode = OreTooltipMode.ALL_INFO;

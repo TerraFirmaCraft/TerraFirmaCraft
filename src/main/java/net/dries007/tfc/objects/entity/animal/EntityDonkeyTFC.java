@@ -45,6 +45,7 @@ import net.minecraft.world.biome.Biome;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -52,12 +53,14 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.api.util.IRidable;
+import net.dries007.tfc.network.PacketSimpleMessage;
+import net.dries007.tfc.network.PacketSimpleMessage.MessageCategory;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -66,7 +69,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivestock
+public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivestock, IRidable
 {
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.BOOLEAN);
@@ -396,34 +399,9 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                 }
                 return true;
             }
-            else if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+            else if (canAcceptHalter(stack))
             {
-                if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
-                {
-                    if (!this.world.isRemote)
-                    {
-                        this.consumeItemFromStack(player, stack);
-                        this.setHalter(true);
-                    }
-                    return true;
-                }
-                else
-                {
-                    // Show tooltips
-                    if (!this.world.isRemote)
-                    {
-                        if (this.getAge() == Age.CHILD)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
-                        }
-                        else
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
-                        }
-
-                    }
-                    return false;
-                }
+                return attemptApplyHalter(this, this.world, player, stack);
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {

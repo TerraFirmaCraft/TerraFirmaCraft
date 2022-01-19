@@ -32,7 +32,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -40,17 +39,15 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.api.util.IRidable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 @ParametersAreNonnullByDefault
-public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
+public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock, IRidable
 {
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> HALTER = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.BOOLEAN);
@@ -171,34 +168,9 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+        if (canAcceptHalter(stack))
         {
-            if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
-            {
-                if (!this.world.isRemote)
-                {
-                    this.consumeItemFromStack(player, stack);
-                    this.setHalter(true);
-                }
-                return true;
-            }
-            else
-            {
-                // Show tooltips
-                if (!this.world.isRemote)
-                {
-                    if (this.getAge() == Age.CHILD)
-                    {
-                        player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
-                    }
-                    else
-                    {
-                        player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
-                    }
-
-                }
-                return false;
-            }
+            return attemptApplyHalter(this, this.world, player, stack);
         }
         return super.processInteract(player, hand);
     }

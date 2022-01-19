@@ -31,6 +31,8 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.api.util.IGrowingPlant;
+import net.dries007.tfc.api.util.IGrowingPlant.GrowthStatus;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -39,7 +41,7 @@ import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public class BlockFruitTreeTrunk extends Block
+public class BlockFruitTreeTrunk extends Block implements IGrowingPlant
 {
     /* Connection sides (used if there's a branch on facing) */
     public static final PropertyBool NORTH = PropertyBool.create("north");
@@ -456,5 +458,18 @@ public class BlockFruitTreeTrunk extends Block
             if (world.getBlockState(pos.down(i)).getBlock() != this) return i;
         }
         return 4;
+    }
+
+    @Override
+    public GrowthStatus getGrowingStatus(IBlockState state, World world, BlockPos pos)
+    {
+        float temp = ClimateTFC.getActualTemp(world, pos);
+        float rainfall = ChunkDataTFC.getRainfall(world, pos);
+        boolean canGrow = tree.isValidForGrowth(temp, rainfall);
+        if (canGrow)
+        {
+            return GrowthStatus.GROWING;
+        }
+        return GrowthStatus.NOT_GROWING;
     }
 }
