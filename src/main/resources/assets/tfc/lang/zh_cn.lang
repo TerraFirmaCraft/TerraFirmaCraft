@@ -518,6 +518,8 @@ config.tfc.general.world.enableLooseOres.tooltip=启用零散矿石的生成。
 config.tfc.general.world.enableLooseSticks=启用零散木棍
 config.tfc.general.world.enableLooseSticks.tooltip=启用零散木棍的生成。
 
+config.tfc.general.world_regen.minRegenTps=最低重生成 TPS
+config.tfc.general.world_regen.minRegenTps.tooltip=触发春季地表杂物重生成，服务端所需最低的 TPS。
 
 config.tfc.general.world.sticksDensityModifier=木棍密度修正值
 config.tfc.general.world.sticksDensityModifier.tooltip=控制区块生成时生成木棍的数目。该区域树木的数目和植物群密度同样影响最终结果。
@@ -534,8 +536,8 @@ config.tfc.general.world.floraDiversitySpreadFactor.tooltip=控制植物群多�
 config.tfc.general.world.floraDensitySpreadFactor=植物群密度分布因子
 config.tfc.general.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更大的值使分布更极端，产生更多的密林。警告：可能导致世界生成非常怪异。
 
-config.tfc.general.world.respawnableCreatures=可重生生物
-config.tfc.general.world.respawnableCreatures.tooltip=控制哪些注册的实体可以在群峦传说的区块中重生。必须使用如 '模组ID:实体 <稀有度> <最小生成组> <最大生成组>' 这样的模式指定。无效的项将被忽略。
+config.tfc.general.world.respawnableCreatures=可重生成生物
+config.tfc.general.world.respawnableCreatures.tooltip=控制哪些注册的实体可以在群峦传说的区块中重生成。必须使用如 '模组ID:实体 <稀有度> <最小生成组> <最大生成组>' 这样的模式指定。无效的项将被忽略。
 
 
 ### World Regen
@@ -804,6 +806,16 @@ config.tfc.devices.gold_pan.cooldownTicks=冷却间隔
 config.tfc.devices.gold_pan.cooldownTicks.tooltip=使用淘金盘后冷却需要的刻数。
 
 
+## Bellows
+config.tfc.devices.bellows=风箱
+
+config.tfc.devices.bellows.maxTicks=最大鼓风加成
+config.tfc.devices.bellows.maxTicks.tooltip=设施升温的最大加成，以刻为单位。（1000 = 游戏内 1 小时 = 50 秒），默认为 600 刻。
+
+config.tfc.devices.bellows.ticks=单个风箱加成
+config.tfc.devices.bellows.ticks.tooltip=单个风箱对目标设施的加成。（1000 = 游戏内 1 小时 = 50 秒），默认为 200 刻。
+
+
 ## Clients
 config.tfc.client=客户端设置
 
@@ -827,6 +839,9 @@ config.tfc.client.tooltip.anvilWeldOutputToActionBar.tooltip=焊接应该输出�
 
 config.tfc.client.tooltip.vesselOutputToActionBar=小缸输出到动作栏
 config.tfc.client.tooltip.vesselOutputToActionBar.tooltip=小缸应该输出到动作栏吗？（快捷栏上方的空间）
+
+config.tfc.client.tooltip.animalsOutputToActionBar=动物反馈输出到动作栏
+config.tfc.client.tooltip.animalsOutputToActionBar.tooltip=与动物互动时，动物的反馈应该输出到动作栏吗？（快捷栏上方的空间）
 
 config.tfc.client.tooltip.oreTooltipMode=矿石信息模式
 config.tfc.client.tooltip.oreTooltipMode.tooltip=矿石提示信息的模式。
@@ -1167,6 +1182,12 @@ tfc.enum.nutrient.fruit=水果
 tfc.enum.nutrient.protein=蛋白质
 tfc.enum.nutrient.dairy=乳制品
 
+tfc.enum.growstatus.dead=植物已死
+tfc.enum.growstatus.not_growing=植物不在生长
+tfc.enum.growstatus.can_grow=植物可以生长
+tfc.enum.growstatus.growing=植物正在生长
+tfc.enum.growstatus.fully_grown=植物已长成
+
 #JEI
 jei.category.tfc.alloy=合金配方
 jei.category.tfc.anvil=砧类配方
@@ -1186,6 +1207,7 @@ jei.category.tfc.quern=手推磨配方
 jei.category.tfc.rock_layer=岩层矿石
 jei.category.tfc.vein=矿脉信息
 jei.category.tfc.welding=焊接配方
+jei.category.tfc.scraping=刮制配方
 
 ## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=立即
@@ -1196,7 +1218,7 @@ jei.tooltips.tfc.barrel.duration.short=%d 小时
 jei.description.tfc.pit_kiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
 jei.description.tfc.placed_item=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
 jei.description.tfc.charcoal_pit=要烧制木炭，Shift + 右键点击以放置原木堆。用实心方块盖住这些原木堆，只留一个小孔，点一把火，之后把孔填上。几个小时后，你就可以去挖木炭了。
-jei.description.tfc.hide_scraping=水平放置一根原木，拿着浸泡过的皮革对准它按下右键，就能把兽皮蒙在上面。之后，在它上面右键点击，就可以进行刮削了。
+jei.description.tfc.hide_scraping=水平放置一根原木，拿着浸泡过的皮革对准它按下右键，就能把兽皮蒙在上面。之后，手持一把刀对它点击右键，就可以进行刮制了。
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=岩石类别
