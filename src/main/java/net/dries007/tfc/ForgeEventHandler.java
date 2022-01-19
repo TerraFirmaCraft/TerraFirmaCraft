@@ -145,7 +145,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::beforeServerStart);
-        bus.addListener(ForgeEventHandler::onServerStopped);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -410,12 +409,7 @@ public final class ForgeEventHandler
 
     public static void beforeServerStart(ServerAboutToStartEvent event)
     {
-        CacheInvalidationListener.INSTANCE.reloadSync();
-    }
-
-    public static void onServerStopped(ServerStoppedEvent event)
-    {
-        CacheInvalidationListener.INSTANCE.reloadSync();
+        CacheInvalidationListener.INSTANCE.invalidateServerCaches(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)

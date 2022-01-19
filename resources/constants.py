@@ -564,7 +564,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
     'itemGroup.tfc.rock': 'TFC Rock Stuffs',
-    'itemGroup.tfc.metal': 'TFC Metal Stuffs',
+    'itemGroup.tfc.metals': 'TFC Metal Stuffs',
     'itemGroup.tfc.wood': 'TFC Wooden Stuffs',
     'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.devices': 'TFC Devices',
@@ -692,6 +692,9 @@ DEFAULT_LANG = {
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.falling_block': 'Falling Block',
+    'entity.tfc.fishing_bobber': 'Fishing Bobber',
+    **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums
 
