@@ -582,7 +582,6 @@ DEFAULT_LANG = {
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
-    'tfc.tooltip.fuel': 'Fuel Duration: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
