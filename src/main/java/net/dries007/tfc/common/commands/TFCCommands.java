@@ -23,6 +23,7 @@ public final class TFCCommands
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
             .then(LocateVeinCommand.create())
+            .then(CountBlockCommand.create())
         );
 
         // For command modifications / replacements, we register directly

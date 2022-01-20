@@ -670,6 +670,7 @@ DEFAULT_LANG = {
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
+    'tfc.commands.countblock.done': 'Found %d %s',
     'tfc.commands.player.query_hunger': 'Hunger is %s / 20',
     'tfc.commands.player.query_saturation': 'Saturation is %s / 20',
     'tfc.commands.player.query_water': 'Water is %s / 100',

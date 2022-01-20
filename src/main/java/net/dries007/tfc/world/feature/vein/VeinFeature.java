@@ -29,6 +29,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.EnvironmentHelpers;
 
 public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends Feature<C>
 {
@@ -133,7 +134,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         mutablePos.set(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = level.getBlockState(mutablePos);
                         final BlockState state = indicator.getStateToGenerate(random);
-                        if (stateAt.isAir() && state.canSurvive(level, mutablePos))
+                        if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) && state.canSurvive(level, mutablePos))
                         {
                             level.setBlock(mutablePos, state, 3);
                             if (debugIndicatorLocations)

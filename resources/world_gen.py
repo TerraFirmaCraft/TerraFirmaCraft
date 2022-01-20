@@ -687,7 +687,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True))
 
     # Loose Rocks - Both Surface + Underground
-    configured_placed_feature(rm, 'surface_loose_rocks', 'tfc:loose_rock', decorate_count(8), decorate_square(), decorate_heightmap('ocean_floor_wg'))
+    configured_placed_feature(rm, 'surface_loose_rocks', 'tfc:loose_rock', decorate_count(16), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
     # Underground decoration
     configured_placed_feature(rm, 'underground_loose_rocks', 'tfc:loose_rock', decorate_carving_mask(), decorate_chance(0.05))
@@ -765,6 +765,7 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
     singular_feature = utils.resource_location(rm.domain, name_parts)
+    predicate = decorate_air_or_empty_fluid() if not config.requires_clay else decorate_replaceable()
 
     rm.configured_feature(patch_feature, 'minecraft:random_patch', {
         'tries': config.tries,
@@ -774,7 +775,7 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     })
     rm.configured_feature(singular_feature, *feature)
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators, decorate_biome())
-    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), decorate_air_or_empty_fluid(), would_survive)
+    rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive)
 
 
 class PatchConfig(NamedTuple):
@@ -817,6 +818,7 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         singular_decorators.append(decorate_would_survive_with_fluid(patch.block))
     else:
         singular_decorators.append(decorate_would_survive(patch.block))
+        singular_decorators.append(decorate_replaceable())
 
     if extra_singular_decorators is not None:
         singular_decorators += extra_singular_decorators
@@ -1081,6 +1083,8 @@ def decorate_would_survive_with_fluid(block: str) -> Json:
         'state': utils.block_state(block)
     })
 
+def decorate_replaceable() -> Json:
+    return decorate_block_predicate({'type': 'tfc:replaceable'})
 
 def decorate_air_or_empty_fluid() -> Json:
     return decorate_block_predicate({'type': 'tfc:air_or_empty_fluid'})

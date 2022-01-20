@@ -28,6 +28,12 @@
       }
     },
     {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:replaceable"
+      }
+    },
+    {
       "type": "tfc:underground"
     }
   ]
