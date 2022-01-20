@@ -366,7 +366,7 @@ public final class InteractionManager
         return Optional.empty();
     }
 
-    public static void reload()
+    public static void reloadCache()
     {
         CACHE.reload(ACTIONS);
     }

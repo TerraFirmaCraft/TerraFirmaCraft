@@ -34,6 +34,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.sync.ISyncable;
+import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -133,6 +134,7 @@ public final class TerraFirmaCraft
             TFCPlacements.registerPlacements();
             TFCBlockPredicates.registerBlockPredicates();
             TFCIngredients.registerIngredientTypes();
+            TFCCommands.registerSuggestionProviders();
 
             Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);

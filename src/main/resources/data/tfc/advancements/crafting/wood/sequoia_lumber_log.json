@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/log/sequoia"
+            "items": [
+              "tfc:wood/log/sequoia"
+            ]
           }
         ]
       }

@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/hammer_head/bronze"
+            "items": [
+              "tfc:metal/hammer_head/bronze"
+            ]
           }
         ]
       }

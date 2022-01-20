@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/mossy_bricks/quartzite"
+            "items": [
+              "tfc:rock/mossy_bricks/quartzite"
+            ]
           }
         ]
       }
