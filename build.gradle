@@ -108,6 +108,7 @@ dependencies {
 
     runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18:2.0.3") { transitive = false }
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
+    runtimeOnly fg.deobf("libs:panorama:1.2.0") // File: libs/panorama-1.2.0.jar
 
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")

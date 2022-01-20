@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "tfc:plants"
+    "item": "tfc:jute"
   },
-  "size": "tiny",
+  "size": "small",
   "weight": "very_light"
 }

@@ -107,7 +107,7 @@ public final class VolcanoNoise
     private Cellular2D.Cell sampleCell(float x, float z, int rarity)
     {
         final Cellular2D.Cell cell = cellNoise.cell(x, z);
-        if (Math.abs(cell.noise()) < 1f / rarity)
+        if (Math.abs(cell.noise()) <= 1f / rarity)
         {
             return cell;
         }
