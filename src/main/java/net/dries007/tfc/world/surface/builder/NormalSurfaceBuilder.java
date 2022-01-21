@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.surface.builder;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;

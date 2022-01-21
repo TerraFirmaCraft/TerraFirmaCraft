@@ -131,7 +131,7 @@ def generate(rm: ResourceManager):
         rm.placed_feature('iceberg_%s_rare' % block, 'tfc:iceberg_%s_rare' % block, decorate_chance(30), decorate_square(), decorate_climate(max_temp=-18))
 
     rm.configured_feature('powder_snow', 'tfc:powder_snow', {'state': utils.block_state('minecraft:powder_snow')})
-    rm.placed_feature('powder_snow', 'tfc:powder_snow', decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(max_temp=-17), 'tfc:flat_enough')
+    rm.placed_feature('powder_snow', 'tfc:powder_snow', decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(max_temp=-17), decorate_flat_enough(flatness=0.6))
 
     rm.configured_feature('flood_fill_lake', 'tfc:flood_fill_lake', {
         'state': 'minecraft:water',
@@ -217,7 +217,7 @@ def generate(rm: ResourceManager):
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
         })
-        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(12), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:flat_enough')
+        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(12), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
 
     rm.configured_feature('volcano_rivulet', 'tfc:rivulet', {'state': 'minecraft:magma_block'})
     rm.configured_feature('volcano_caldera', 'tfc:flood_fill_lake', {
@@ -1020,6 +1020,9 @@ def decorate_count(count: int) -> Json:
 
 def decorate_shallow(depth: int = 5) -> Json:
     return {'type': 'tfc:shallow_water', 'max_depth': depth}
+
+def decorate_flat_enough(flatness: float = None, radius: int = None, max_depth: int = None):
+    return {'type': 'tfc:flat_enough', 'flatness': flatness, 'radius': radius, 'max_depth': max_depth}
 
 def decorate_underground() -> Json:
     return 'tfc:underground'

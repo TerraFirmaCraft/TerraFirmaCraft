@@ -11,7 +11,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -48,68 +47,6 @@ public class BouldersFeature extends Feature<BoulderConfig>
     }
 
     private void place(WorldGenLevel level, BlockPos pos, List<BlockState> states, Random random)
-    {
-        Supplier<BlockState> state;
-        if (states.size() == 1)
-        {
-            final BlockState onlyState = states.get(0);
-            state = () -> onlyState;
-        }
-        else
-        {
-            state = () -> states.get(random.nextInt(states.size()));
-        }
-
-        final int radius = 3;
-        final int diameter = 2 * radius ;
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        Sphere[] spheres = new Sphere[4];
-        for (int i = 0; i < 3; i++)
-        {
-            spheres[i] = new Sphere(pos.getX() + Helpers.triangle(random, diameter),
-                pos.getY() + Helpers.triangle(random, diameter),
-                pos.getZ() + Helpers.triangle(random, diameter),
-                   (int) Math.pow(Mth.nextInt(random, 2, 4), 3));
-        }
-        spheres[3] = new Sphere(pos.getX(), pos.getY(), pos.getZ(), radius * radius * radius); // prevents extremely blocky edges
-
-        for (int x = -radius; x <= radius; x++)
-        {
-            for (int y = -radius; y <= radius; y++)
-            {
-                for (int z = -radius; z <= radius; z++)
-                {
-                    mutablePos.set(pos).move(x, y, z);
-                    boolean place = true;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (!inside(spheres[i], mutablePos))
-                        {
-                            place = false;
-                            break;
-                        }
-                    }
-                    if (place)
-                    {
-                        setBlock(level, mutablePos, state.get());
-                    }
-                }
-            }
-        }
-
-    }
-
-    private boolean inside(Sphere sphere, BlockPos pos)
-    {
-        final int x = pos.getX() - sphere.x;
-        final int y = pos.getY() - sphere.y;
-        final int z = pos.getZ() - sphere.z;
-        return x * x + y * y + z * z < sphere.radiusCubed;
-    }
-
-    private record Sphere(int x, int y, int z, int radiusCubed) {}
-
-    private void placeO(WorldGenLevel level, BlockPos pos, List<BlockState> states, Random random)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int size = 6 + random.nextInt(4);

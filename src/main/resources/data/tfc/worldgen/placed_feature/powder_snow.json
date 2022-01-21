@@ -18,7 +18,8 @@
       "max_temperature": -17
     },
     {
-      "type": "tfc:flat_enough"
+      "type": "tfc:flat_enough",
+      "flatness": 0.6
     }
   ]
 }
