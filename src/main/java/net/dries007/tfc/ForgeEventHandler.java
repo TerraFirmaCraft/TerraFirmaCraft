@@ -352,9 +352,9 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
-            CompoundTag nbt = ex.getChunkDataProvider().savePartial(event.getChunk());
+            CompoundTag nbt = ex.getChunkDataProvider().savePartial(chunk);
             if (nbt != null)
             {
                 event.getData().put("tfc_protochunk_data", nbt);
@@ -369,7 +369,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
-            generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
+            generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 
