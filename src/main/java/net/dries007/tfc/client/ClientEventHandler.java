@@ -150,7 +150,13 @@ public final class ClientEventHandler
                         }
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> entity instanceof Player player ? player.isUsingItem() ? (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME : 1F : 1F);
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
+                        if (entity instanceof Player player && player.isUsingItem())
+                        {
+                            return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
+                        }
+                        return 1F;
+                    });
 
                     ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("rock"), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);

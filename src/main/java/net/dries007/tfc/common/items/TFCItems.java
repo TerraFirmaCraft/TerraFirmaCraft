@@ -177,6 +177,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_BRICK = register("ceramic/unfired_brick", MISC);
     public static final RegistryObject<Item> UNFIRED_CRUCIBLE = register("ceramic/unfired_crucible", MISC);
     public static final RegistryObject<Item> UNFIRED_FLOWER_POT = register("ceramic/unfired_flower_pot", MISC);
+    public static final RegistryObject<Item> UNFIRED_PAN = register("ceramic/unfired_pan", MISC);
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl", MISC);
     public static final RegistryObject<Item> BOWL = register("ceramic/bowl", MISC);
