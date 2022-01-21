@@ -454,7 +454,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
         filler.setupAquiferSurfaceHeight(this::sampleBiomeIgnoreClimate);
-        chunkData.setAquiferSurfaceHeight(filler.getSurfaceHeight());
+        chunkData.setAquiferSurfaceHeight(filler.aquifer().getSurfaceHeights()); // Record this in the chunk data so caves can query it accurately
         rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
 
