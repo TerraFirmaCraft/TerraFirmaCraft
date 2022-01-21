@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:powder/sulfur"
+            "items": [
+              "tfc:powder/sulfur"
+            ]
           }
         ]
       }

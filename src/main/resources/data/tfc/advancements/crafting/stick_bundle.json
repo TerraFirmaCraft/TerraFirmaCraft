@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stick_bunch"
+            "items": [
+              "tfc:stick_bunch"
+            ]
           }
         ]
       }

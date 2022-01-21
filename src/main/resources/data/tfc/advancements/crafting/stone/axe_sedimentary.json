@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stone/axe_head/sedimentary"
+            "items": [
+              "tfc:stone/axe_head/sedimentary"
+            ]
           }
         ]
       }

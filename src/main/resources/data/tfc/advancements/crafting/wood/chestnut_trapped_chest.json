@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/chest/chestnut"
+            "items": [
+              "tfc:wood/chest/chestnut"
+            ]
           }
         ]
       }

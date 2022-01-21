@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:powder/kaolinite"
+            "items": [
+              "tfc:powder/kaolinite"
+            ]
           }
         ]
       }

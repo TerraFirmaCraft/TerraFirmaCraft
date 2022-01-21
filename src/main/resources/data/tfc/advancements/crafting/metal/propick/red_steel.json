@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/propick_head/red_steel"
+            "items": [
+              "tfc:metal/propick_head/red_steel"
+            ]
           }
         ]
       }

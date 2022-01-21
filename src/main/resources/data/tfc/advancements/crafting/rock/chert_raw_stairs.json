@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/raw/chert"
+            "items": [
+              "tfc:rock/raw/chert"
+            ]
           }
         ]
       }

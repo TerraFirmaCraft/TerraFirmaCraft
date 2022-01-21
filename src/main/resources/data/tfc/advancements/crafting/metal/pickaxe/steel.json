@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/pickaxe_head/steel"
+            "items": [
+              "tfc:metal/pickaxe_head/steel"
+            ]
           }
         ]
       }

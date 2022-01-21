@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/log/hickory"
+            "items": [
+              "tfc:wood/log/hickory"
+            ]
           }
         ]
       }

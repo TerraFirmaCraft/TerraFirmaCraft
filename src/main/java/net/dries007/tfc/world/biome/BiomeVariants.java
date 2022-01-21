@@ -12,7 +12,6 @@ import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -33,11 +32,11 @@ public class BiomeVariants
     private final Group group;
     private final boolean salty;
     private final boolean volcanic;
-    private final int volcanoFrequency;
+    private final int volcanoRarity;
     private final int volcanoBasaltHeight;
     private final boolean spawnable;
 
-    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight, boolean spawnable)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable)
     {
         this.noiseFactory = noiseFactory;
         this.surfaceBuilderFactory = surfaceBuilderFactory;
@@ -45,7 +44,7 @@ public class BiomeVariants
         this.group = group;
         this.salty = salty;
         this.volcanic = volcanic;
-        this.volcanoFrequency = volcanoFrequency;
+        this.volcanoRarity = volcanoRarity;
         this.volcanoBasaltHeight = volcanoBasaltHeight;
         this.spawnable = spawnable;
 
@@ -86,9 +85,9 @@ public class BiomeVariants
         return spawnable;
     }
 
-    public float getVolcanoChance()
+    public int getVolcanoRarity()
     {
-        return 1f / volcanoFrequency;
+        return volcanoRarity;
     }
 
     public int getVolcanoBasaltHeight()

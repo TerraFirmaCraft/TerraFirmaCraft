@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/bricks/diorite"
+            "items": [
+              "tfc:rock/bricks/diorite"
+            ]
           }
         ]
       }

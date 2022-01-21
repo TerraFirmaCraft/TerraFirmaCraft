@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/lumber/white_cedar"
+            "items": [
+              "tfc:wood/lumber/white_cedar"
+            ]
           }
         ]
       }

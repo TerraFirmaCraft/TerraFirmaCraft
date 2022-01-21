@@ -26,7 +26,6 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -48,9 +47,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
@@ -70,7 +67,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -90,13 +86,11 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
-import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -145,7 +139,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::beforeServerStart);
-        bus.addListener(ForgeEventHandler::onServerStopped);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -359,9 +352,9 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
-            CompoundTag nbt = ex.getChunkDataProvider().savePartial(event.getChunk());
+            CompoundTag nbt = ex.getChunkDataProvider().savePartial(chunk);
             if (nbt != null)
             {
                 event.getData().put("tfc_protochunk_data", nbt);
@@ -376,7 +369,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
-            generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
+            generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 
@@ -410,18 +403,13 @@ public final class ForgeEventHandler
 
     public static void beforeServerStart(ServerAboutToStartEvent event)
     {
-        CacheInvalidationListener.INSTANCE.reloadSync();
-    }
-
-    public static void onServerStopped(ServerStoppedEvent event)
-    {
-        CacheInvalidationListener.INSTANCE.reloadSync();
+        CacheInvalidationListener.INSTANCE.invalidateServerCaches(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)
     {
         LOGGER.debug("Registering TFC Commands");
-        TFCCommands.register(event.getDispatcher());
+        TFCCommands.registerCommands(event.getDispatcher());
     }
 
     public static void onBlockBroken(BlockEvent.BreakEvent event)

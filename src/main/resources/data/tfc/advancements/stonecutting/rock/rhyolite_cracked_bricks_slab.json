@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/cracked_bricks/rhyolite"
+            "items": [
+              "tfc:rock/cracked_bricks/rhyolite"
+            ]
           }
         ]
       }

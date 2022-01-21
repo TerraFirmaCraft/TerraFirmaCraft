@@ -56,10 +56,11 @@ public class AquiferVisualizations
             y = 256 - y - 64;
             if (y == 63) return new Color(0, 200, 0);
             if (y < -56) return new Color(250, 0, 0);
-            final float cell = aquiferCellNoise.noise(x, y / 0.6f, z);
-            if (cell < 0.25f) return new Color(150, 150, 150);
-            final float cellY = aquiferCellNoise.centerY() / (0.015f / 0.6f);
-            final RandomSource random = new XoroshiroRandomSource(seed, Float.floatToIntBits(cell));
+            final Cellular3D.Cell cell = aquiferCellNoise.cell(x, y / 0.6f, z);
+            final float cellValue = aquiferCellNoise.noise(x, y / 0.6f, z);
+            if (cellValue < 0.25f) return new Color(150, 150, 150);
+            final float cellY = cell.y();
+            final RandomSource random = new XoroshiroRandomSource(seed, Float.floatToIntBits(cellValue));
             final float aquiferY = (random.nextFloat() - random.nextFloat()) * 5 + cellY;
             final boolean lava = cellY < 40 && (random.nextInt(3) == 0);
             final int s = (int) Mth.clamp((cellY + 64) * 250 / 256, 0, 250);
