@@ -408,6 +408,8 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
+    bloomery_recipe(rm, 'raw_iron_bloom', 'raw_iron_bloom', 'tfc:metal/iron', 100, 'minecraft:charcoal', 4, 15000)
+
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
     assert result is not None or copy_input
@@ -525,6 +527,19 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, amount: int, catalyst: str, count: int, time: int):
+    rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
+        'result': utils.item_stack('tfc:%s' % result),
+        'fluid': fluid_stack_ingredient(metal, amount),
+        'catalyst': utils.item_stack((catalyst, count)),
+        'time': time
+    })
+
+def item_stack_ingredient(item: utils.Json, count: int) -> Dict[str, Any]:
+    return {
+        'item': utils.ingredient(item),
+        'count': count
+    }
 
 def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
     return {

@@ -6,28 +6,26 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.fluids.FluidStack;
-
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.util.JsonHelpers;
 
-//todo: ItemStackInventory or something else entirely??
-public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
+public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.BloomeryInventory>
 {
-
+    //this is here so that it compiles :)
     @Nullable
-    public static BloomeryRecipe getRecipe(ItemStack stack)
+    public static BloomeryRecipe getRecipe(ItemStack inputStack)
     {
-        return getRecipe(new ItemStackInventory(stack));
+        return getRecipe(new ItemStackInventory(inputStack));
     }
 
-    //todo
+    //todo - how?
     @Nullable
     public static BloomeryRecipe getRecipe(ItemStackInventory wrapper)
     {
@@ -35,19 +33,38 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     private final ResourceLocation id;
-    private final Ingredient ingredient;
-    private final ItemStack outputItem;
+    private final FluidStackIngredient fluid;
+    private final ItemStackIngredient catalyst;
+    private final ItemStack result;
+    private final int time;
 
-    public BloomeryRecipe(ResourceLocation id, Ingredient ingredient, ItemStack outputItem)
+    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluid, ItemStackIngredient catalyst, ItemStack result, int time)
     {
         this.id = id;
-        this.ingredient = ingredient;
-        this.outputItem = outputItem;
+        this.fluid = fluid;
+        this.catalyst = catalyst;
+        this.result = result;
+        this.time = time;
+    }
+
+    public int getTime()
+    {
+        return time;
+    }
+
+    public ItemStackIngredient getCatalyst()
+    {
+        return catalyst;
+    }
+
+    public FluidStackIngredient getFluidIngredient()
+    {
+        return fluid;
     }
 
     //todo
     @Override
-    public boolean matches(ItemStackInventory inv, Level level)
+    public boolean matches(BloomeryBlockEntity.BloomeryInventory inv, Level level)
     {
         return false;
     }
@@ -55,7 +72,7 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
     @Override
     public ItemStack getResultItem()
     {
-        return outputItem;
+        return result;
     }
 
     @Override
@@ -76,26 +93,48 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
         return TFCRecipeTypes.BLOOMERY.get();
     }
 
+    //todo
+    public boolean isValidInput(ItemStack stack)
+    {
+        return false;
+    }
+
+    //todo
+    public boolean isValidCatalyst(ItemStack stack)
+    {
+        return false;
+    }
+
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
     {
-        //todo: I must determine what a bloomery recipe json looks like before proceeding
         @Override
-        public BloomeryRecipe fromJson(ResourceLocation p_44103_, JsonObject p_44104_)
+        public BloomeryRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            return null;
+            final FluidStackIngredient fluid = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
+            final ItemStackIngredient catalyst = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
+            final ItemStack result = JsonHelpers.getItemStack(json, "result");
+            final int time = JsonHelpers.getAsInt(json, "time");
+            return new BloomeryRecipe(recipeId, fluid, catalyst, result, time);
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
-        public BloomeryRecipe fromNetwork(ResourceLocation p_44105_, FriendlyByteBuf p_44106_)
+        public BloomeryRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            return null;
+            final FluidStackIngredient fluid = FluidStackIngredient.fromNetwork(buffer);
+            final ItemStackIngredient catalyst = ItemStackIngredient.fromNetwork(buffer);
+            final ItemStack result = buffer.readItem();
+            final int time = buffer.readInt();
+            return new BloomeryRecipe(recipeId, fluid, catalyst, result, time);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf p_44101_, BloomeryRecipe p_44102_)
+        public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe)
         {
-
+            FluidStackIngredient.toNetwork(buffer, recipe.fluid);
+            recipe.catalyst.toNetwork(buffer);
+            buffer.writeItem(recipe.result);
+            buffer.writeInt(recipe.time);
         }
     }
 }

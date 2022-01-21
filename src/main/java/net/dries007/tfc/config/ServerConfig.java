@@ -52,8 +52,6 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
-    // Blocks - Bloomery
-    public final ForgeConfigSpec.IntValue bloomeryTicks;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -165,11 +163,6 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
-
-        innerBuilder.pop().push("bloomery");
-
-        //todo: redefine default once functionality is tested and I track down the actual default value
-        bloomeryTicks = builder.apply("bloomeryTicks").comment("Number of ticks required for a bloomery to process ores (1000 = 1 in game hour = 50 seconds), default is 1 hour.").defineInRange("bloomeryTicks", 1000, 20, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("composter");
         composterTicks = builder.apply("composterTicks").comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").defineInRange("composterTicks", 288000, 20, Integer.MAX_VALUE);

@@ -141,20 +141,7 @@ public class BloomeryBlock extends ExtendedBlock
         return 3;
     }
 
-    public BloomeryBlock(ExtendedProperties properties)
-    {
-        super(properties);
-        /* todo: deal with these from 1.12
-         * setHarvestLevel("pickaxe", 0); -> requiresCorrectToolForDrops + json?
-         * setHardness(20.0F);
-         */
-        registerDefaultState(getStateDefinition().any()
-            .setValue(FACING, Direction.NORTH)
-            .setValue(LIT, false)
-            .setValue(OPEN, false));
-    }
-
-    public boolean canGateStayInPlace(Level level, BlockPos pos, Direction.Axis axis)
+    public static boolean canGateStayInPlace(Level level, BlockPos pos, Direction.Axis axis)
     {
         if (axis == Direction.Axis.X)
         {
@@ -167,7 +154,7 @@ public class BloomeryBlock extends ExtendedBlock
     }
 
     //if Directions don't have int indices any more, then...
-    public boolean isFormed(Level level, BlockPos centerPos, Direction facing)
+    public static boolean isFormed(Level level, BlockPos centerPos, Direction facing)
     {
         return switch (facing)
             {
@@ -177,6 +164,19 @@ public class BloomeryBlock extends ExtendedBlock
                 case EAST -> BLOOMERY_BASE[3].test(level, centerPos);
                 default -> false;
             };
+    }
+
+    public BloomeryBlock(ExtendedProperties properties)
+    {
+        super(properties);
+        /* todo: deal with these from 1.12
+         * setHarvestLevel("pickaxe", 0); -> requiresCorrectToolForDrops + json?
+         * setHardness(20.0F);
+         */
+        registerDefaultState(getStateDefinition().any()
+            .setValue(FACING, Direction.NORTH)
+            .setValue(LIT, false)
+            .setValue(OPEN, false));
     }
 
     /* todo: find out if there's a modern version of following methods
