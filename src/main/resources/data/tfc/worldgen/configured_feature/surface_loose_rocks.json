@@ -1,8 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:loose_rock",
+  "type": "minecraft:random_patch",
   "config": {
-    "type": "minecraft:count",
-    "count": 16
+    "tries": 8,
+    "xz_spread": 7,
+    "y_spread": 1,
+    "feature": "tfc:loose_rock"
   }
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.Codecs;
 
 public class EmergentPlantFeature extends Feature<BlockStateConfiguration>
@@ -34,7 +35,7 @@ public class EmergentPlantFeature extends Feature<BlockStateConfiguration>
         final BlockPos pos = context.origin();
 
         final Fluid fluidTop = level.getFluidState(pos.above()).getType();
-        if (fluidTop.isSame(Fluids.EMPTY))
+        if (fluidTop.isSame(Fluids.EMPTY) && EnvironmentHelpers.isWorldgenReplaceable(level, pos))
         {
             ((TallWaterPlantBlock) context.config().state.getBlock()).placeTwoHalves(level, pos, 2, context.random());
         }
