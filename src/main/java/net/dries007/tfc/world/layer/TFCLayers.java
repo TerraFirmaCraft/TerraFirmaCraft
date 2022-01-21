@@ -346,6 +346,14 @@ public class TFCLayers
 
     public static int shoreFor(int value)
     {
+        if (value == MOUNTAINS)
+        {
+            return OCEANIC_MOUNTAINS;
+        }
+        if (value == VOLCANIC_MOUNTAINS)
+        {
+            return VOLCANIC_OCEANIC_MOUNTAINS;
+        }
         return SHORE;
     }
 
