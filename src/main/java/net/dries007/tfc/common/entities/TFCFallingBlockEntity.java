@@ -165,7 +165,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         BlockEntity tileEntity = level.getBlockEntity(posAt);
                                         if (tileEntity != null)
                                         {
-                                            CompoundTag tileEntityData = tileEntity.save(new CompoundTag());
+                                            CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
                                             for (String dataKey : tileEntityData.getAllKeys())
                                             {
                                                 Tag dataElement = tileEntityData.get(dataKey);

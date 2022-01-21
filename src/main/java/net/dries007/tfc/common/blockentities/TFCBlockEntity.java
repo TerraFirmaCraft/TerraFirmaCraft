@@ -64,16 +64,6 @@ public abstract class TFCBlockEntity extends BlockEntity
         load(tag);
     }
 
-    /**
-     * In {@link BlockEntity}, this does not call {@link #saveAdditional(CompoundTag)} unlike other save methods.
-     */
-    @Override
-    public final CompoundTag save(CompoundTag tag)
-    {
-        saveAdditional(tag);
-        return super.save(tag);
-    }
-
     @Override
     public final void load(CompoundTag tag)
     {
