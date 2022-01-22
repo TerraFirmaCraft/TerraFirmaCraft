@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +44,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.sluice");
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
+    public static void serverTick(ServerLevel level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {
         if (!state.getValue(SluiceBlock.UPPER)) return; // only tick the top block
         if (sluice.hasFlow() && --sluice.ticksRemaining <= 0) // consume a single ore block

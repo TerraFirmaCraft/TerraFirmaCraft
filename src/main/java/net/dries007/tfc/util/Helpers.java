@@ -498,7 +498,7 @@ public final class Helpers
      * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
-    public static void destroyBlockAndDropBlocksManually(Level level, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void destroyBlockAndDropBlocksManually(ServerLevel level, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
         BlockState state = level.getBlockState(pos);
         if (!state.isAir())
@@ -508,20 +508,17 @@ public final class Helpers
             {
                 level.levelEvent(2001, pos, Block.getId(state));
             }
-            if (level instanceof ServerLevel)
-            {
-                dropWithContext(level, state, pos, builder, true);
-            }
+            dropWithContext(level, state, pos, builder, true);
             level.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
         }
     }
 
-    public static void dropWithContext(Level level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder, boolean randomized)
+    public static void dropWithContext(ServerLevel level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder, boolean randomized)
     {
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 
         // Copied from Block.getDrops()
-        LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) level)
+        LootContext.Builder lootContext = new LootContext.Builder(level)
             .withRandom(level.random)
             .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
             .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
@@ -535,13 +532,16 @@ public final class Helpers
             }
             else
             {
-                popResourceExact(level, pos, stackToSpawn);
+                spawnDropsAtExactCenter(level, pos, stackToSpawn);
             }
         });
-        state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY);
+        state.spawnAfterBreak(level, pos, ItemStack.EMPTY);
     }
 
-    public static void popResourceExact(Level level, BlockPos pos, ItemStack stack)
+    /**
+     * {@link Block#popResource(Level, BlockPos, ItemStack) but without randomness as to the velocity and position}
+     */
+    public static void spawnDropsAtExactCenter(Level level, BlockPos pos, ItemStack stack)
     {
         if (!level.isClientSide && !stack.isEmpty() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && !level.restoringBlockSnapshots)
         {

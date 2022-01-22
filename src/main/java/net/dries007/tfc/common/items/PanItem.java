@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
@@ -48,7 +49,7 @@ public class PanItem extends Item
         return null;
     }
 
-    public static void dropItems(Level level, BlockState state, BlockPos pos)
+    public static void dropItems(ServerLevel level, BlockState state, BlockPos pos)
     {
         Helpers.dropWithContext(level, state, pos, ctx -> ctx.withParameter(TFCLoot.PANNED, true), false);
     }
@@ -90,12 +91,12 @@ public class PanItem extends Item
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity)
     {
-        if (entity instanceof Player player && !level.isClientSide)
+        if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
             final BlockState state = readState(stack);
             if (state != null)
             {
-                dropItems(level, state, entity.blockPosition());
+                dropItems(serverLevel, state, entity.blockPosition());
                 player.awardStat(Stats.ITEM_USED.get(this));
                 return new ItemStack(TFCItems.EMPTY_PAN.get()); // MC calls setItemInHand to place this in the hand
             }

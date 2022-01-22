@@ -29,7 +29,6 @@
     "client.FishingHookRendererMixin",
     "client.FogRendererMixin",
     "client.ItemColorsMixin",
-    "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
