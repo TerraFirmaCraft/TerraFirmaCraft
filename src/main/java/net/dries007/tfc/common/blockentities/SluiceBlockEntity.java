@@ -44,7 +44,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.sluice");
 
-    public static void serverTick(ServerLevel level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
+    public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {
         if (!state.getValue(SluiceBlock.UPPER)) return; // only tick the top block
         if (sluice.hasFlow() && --sluice.ticksRemaining <= 0) // consume a single ore block
@@ -55,7 +55,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 final Item item = stack.getItem();
                 if (!stack.isEmpty() && item instanceof BlockItem blockItem)
                 {
-                    PanItem.dropItems(level, blockItem.getBlock().defaultBlockState(), sluice.getWaterOutputPos());
+                    PanItem.dropItems((ServerLevel) level, blockItem.getBlock().defaultBlockState(), sluice.getWaterOutputPos());
                     stack.setCount(0);
                     itemUsed = true;
                     break;
