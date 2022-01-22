@@ -154,7 +154,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'shield': MetalItem('tool', 400, 'item/handheld', None, False)
 }
 METAL_ITEMS_AND_BLOCKS = {**METAL_ITEMS, **METAL_BLOCKS}
-METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
+METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True, 'copper', 'copper'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
