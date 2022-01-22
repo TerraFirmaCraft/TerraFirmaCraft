@@ -132,6 +132,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN}, 1);
     }
 
+    //centerPos should be the internal block of the bloomery
     public static int getChimneyLevels(Level level, BlockPos centerPos)
     {
         for (int i = 1; i < 4; i++)
@@ -194,10 +195,15 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (!level.isClientSide())
+        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
             Direction facing = state.getValue(FACING);
-            LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, pos, facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+state.getValue(LIT));
+            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
+            if (bloomery != null)
+            {
+                LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, bloomery.getInternalBlock(), facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+state.getValue(LIT));
+                LOGGER.info("Bloomery inventory has inventory "+bloomery.printInventory());
+            }
             if (!state.getValue(LIT))
             {
                 LOGGER.info("Pre-cycle: "+state);
@@ -207,25 +213,6 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
                 level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
                 return InteractionResult.SUCCESS;
             }
-            //first of all, what the hell is this doing? and second of all, just replace with ForgeEventHandler#onFireStart?
-            /*
-            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
-            if (bloomery != null)
-            {
-                if (!state.getValue(LIT) && bloomery.canIgnite())
-                {
-                    ItemStack stack = player.getItemInHand(hand);
-                    if (ItemFireStarter.onIgnition(held))
-                    {
-                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, state.getBlock()); // Trigger lit block
-                        worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
-                        te.onIgnite();
-                        return true;
-                    }
-                }
-            }
-
-             */
         }
         return InteractionResult.PASS;
     }

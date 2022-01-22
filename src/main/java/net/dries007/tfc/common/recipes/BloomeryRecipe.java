@@ -1,14 +1,13 @@
 package net.dries007.tfc.common.recipes;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -16,17 +15,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-import net.minecraftforge.fluids.FluidStack;
-
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.JsonHelpers;
-import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.BloomeryInventory>
 {
+    public static final Logger LOGGER = LogManager.getLogger();
 
     private final ResourceLocation id;
     private final FluidStackIngredient fluidStack;
@@ -34,8 +31,10 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
     private final ItemStack result;
     private final int time;
 
+    //todo: make catalyst optional? unsure how
     public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStack, ItemStackIngredient catalystStack, ItemStack result, int time)
     {
+        LOGGER.info("constructing a bloomery recipe: "+id+" "+fluidStack+" "+catalystStack+" "+result+" "+time);
         this.id = id;
         this.fluidStack = fluidStack;
         this.catalystStack = catalystStack;
@@ -53,12 +52,11 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         return catalystStack;
     }
 
-    public FluidStackIngredient getFluidIngredient()
+    public FluidStackIngredient getInputFluid()
     {
         return fluidStack;
     }
 
-    //todo
     @Override
     public boolean matches(BloomeryBlockEntity.BloomeryInventory inv, Level level)
     {
@@ -67,6 +65,7 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         {
             return false;
         }
+        LOGGER.info("Trying to match a recipe for "+inputFluid+" against "+fluidStack.getMatchingFluids());
         return fluidStack.getMatchingFluids().contains(inputFluid);
     }
 
@@ -94,16 +93,19 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         return TFCRecipeTypes.BLOOMERY.get();
     }
 
-    //todo
     public boolean isValidInput(ItemStack stack)
     {
+        HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
+        if (heatingRecipe != null)
+        {
+            return this.fluidStack.getMatchingFluids().contains(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid());
+        }
         return false;
     }
 
-    //todo
     public boolean isValidCatalyst(ItemStack stack)
     {
-        return false;
+        return Arrays.asList(this.catalystStack.getItem().getItems()).contains(stack);
     }
 
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>

@@ -64,4 +64,9 @@ public final class FluidStackIngredient implements Predicate<FluidStack>
     {
         return fluid.getMatchingFluids();
     }
+
+    public int getAmount()
+    {
+        return amount;
+    }
 }

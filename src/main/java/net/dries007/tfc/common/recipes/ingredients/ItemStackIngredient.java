@@ -47,4 +47,14 @@ public final class ItemStackIngredient implements Predicate<ItemStack>
         item.toNetwork(buffer);
         buffer.writeVarInt(count);
     }
+
+    public int getCount()
+    {
+        return count;
+    }
+
+    public Ingredient getItem()
+    {
+        return item;
+    }
 }
