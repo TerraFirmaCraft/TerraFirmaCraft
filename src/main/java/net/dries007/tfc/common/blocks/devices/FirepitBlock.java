@@ -39,13 +39,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
+public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, IGhostBlockHandler
 {
     public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
 
@@ -125,6 +127,21 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
         super.stepOn(world, pos, state, entity);
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateToDraw(Level level, Player player, BlockState lookState, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item)
+    {
+        if (item.is(TFCItems.POT.get()))
+        {
+            return TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
+        }
+        else if (item.is(TFCItems.WROUGHT_IRON_GRILL.get()))
+        {
+            return TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
+        }
+        return null;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -133,9 +150,9 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -185,7 +202,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return BASE_SHAPE;
     }
