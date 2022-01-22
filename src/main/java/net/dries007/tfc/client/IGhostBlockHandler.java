@@ -21,6 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -54,12 +55,11 @@ public interface IGhostBlockHandler
         stack.translate(lookPos.getX(), lookPos.getY(), lookPos.getZ());
         if (shouldGrowSlightly())
         {
-            stack.translate(-0.0005F, -0.0005F, -0.0005F);
-            stack.scale(1.001F, 1.001F, 1.001F);
+            stack.translate(-0.005F, -0.005F, -0.005F);
+            stack.scale(1.01F, 1.01F, 1.01F);
         }
         final PoseStack.Pose pose = stack.last();
 
-        //mc.getBlockRenderer().renderBatched(state, lookPos, level, stack, consumer, false, level.random, EmptyModelData.INSTANCE);
         Arrays.stream(ClientHelpers.DIRECTIONS_AND_NULL)
             .flatMap(dir -> model.getQuads(state, dir, level.random, EmptyModelData.INSTANCE).stream())
             .forEach(quad -> consumer.putBulkData(pose, quad, 1.0F, 1.0F, 1.0F, alpha(), LevelRenderer.getLightColor(level, state, lookPos), OverlayTexture.NO_OVERLAY));

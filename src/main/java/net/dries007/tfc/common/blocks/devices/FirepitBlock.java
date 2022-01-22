@@ -143,6 +143,12 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
     }
 
     @Override
+    public float alpha()
+    {
+        return 0.33F;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIT);

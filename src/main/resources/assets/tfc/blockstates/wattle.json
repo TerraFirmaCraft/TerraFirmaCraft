@@ -6,7 +6,7 @@
         "type": "empty"
       },
       "apply": {
-        "model": "tfc:block/wattle/wattle"
+        "model": "tfc:block/wattle/empty_wattle"
       }
     },
     {
@@ -27,7 +27,44 @@
     },
     {
       "when": {
-        "top": true
+        "top": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_top"
+      }
+    },
+    {
+      "when": {
+        "bottom": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_bottom"
+      }
+    },
+    {
+      "when": {
+        "left": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_left"
+      }
+    },
+    {
+      "when": {
+        "right": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_right"
+      }
+    },
+    {
+      "when": {
+        "top": true,
+        "type": "woven"
       },
       "apply": {
         "model": "tfc:block/wattle/top"
@@ -35,7 +72,8 @@
     },
     {
       "when": {
-        "bottom": true
+        "bottom": true,
+        "type": "woven"
       },
       "apply": {
         "model": "tfc:block/wattle/bottom"
@@ -43,7 +81,8 @@
     },
     {
       "when": {
-        "left": true
+        "left": true,
+        "type": "woven"
       },
       "apply": {
         "model": "tfc:block/wattle/left"
@@ -51,7 +90,44 @@
     },
     {
       "when": {
-        "right": true
+        "right": true,
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/right"
+      }
+    },
+    {
+      "when": {
+        "top": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/top"
+      }
+    },
+    {
+      "when": {
+        "bottom": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/bottom"
+      }
+    },
+    {
+      "when": {
+        "left": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/left"
+      }
+    },
+    {
+      "when": {
+        "right": true,
+        "type": "filled"
       },
       "apply": {
         "model": "tfc:block/wattle/right"

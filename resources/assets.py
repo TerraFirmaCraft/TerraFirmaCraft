@@ -236,7 +236,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
 
-    for wattle in ('wattle', 'woven_wattle', 'filled_wattle'):
+    for wattle in ('woven_wattle', 'filled_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
             'all': 'tfc:block/wattle/%s' % wattle if wattle != 'wattle' else 'tfc:block/empty',
             'particle': 'tfc:block/wattle/wattle_sides',
@@ -246,13 +246,21 @@ def generate(rm: ResourceManager):
     for part in ('top', 'bottom', 'left', 'right'):
         rm.block_model('tfc:wattle/%s' % part, {'side': 'tfc:block/wattle/%s' % part, 'end': 'tfc:block/wattle/end'}, parent='minecraft:block/cube_column')
     rm.blockstate_multipart('wattle',
-        ({'type': 'empty'}, {'model': 'tfc:block/wattle/wattle'}),
+        ({'type': 'empty'}, {'model': 'tfc:block/wattle/empty_wattle'}),
         ({'type': 'woven'}, {'model': 'tfc:block/wattle/woven_wattle'}),
         ({'type': 'filled'}, {'model': 'tfc:block/wattle/filled_wattle'}),
-        ({'top': True}, {'model': 'tfc:block/wattle/top'}),
-        ({'bottom': True}, {'model': 'tfc:block/wattle/bottom'}),
-        ({'left': True}, {'model': 'tfc:block/wattle/left'}),
-        ({'right': True}, {'model': 'tfc:block/wattle/right'})
+        ({'top': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_top'}),
+        ({'bottom': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_bottom'}),
+        ({'left': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_left'}),
+        ({'right': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_right'}),
+        ({'top': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/top'}),
+        ({'bottom': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/bottom'}),
+        ({'left': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/left'}),
+        ({'right': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/right'}),
+        ({'top': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/top'}),
+        ({'bottom': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/bottom'}),
+        ({'left': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/left'}),
+        ({'right': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/right'})
     ).with_lang(lang('wattle'))
     rm.block_loot('wattle',
       {'name': 'tfc:wattle'},
@@ -263,7 +271,7 @@ def generate(rm: ResourceManager):
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'left': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'right': 'true'})]}
     )
-    rm.item_model('wattle', parent='tfc:block/wattle/wattle', no_textures=True)
+    rm.item_model('wattle', parent='tfc:block/wattle/empty_wattle', no_textures=True)
 
     for color in COLORS:
         wattle = 'tfc:wattle/%s' % color
