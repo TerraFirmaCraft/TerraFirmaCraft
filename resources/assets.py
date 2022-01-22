@@ -300,6 +300,14 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
+    rm.blockstate('bloom', 'tfc:block/bloom').with_lang(lang('Bloom')).with_block_model()
+    rm.blockstate('molten', 'tfc:block/bloomery/molten_lit').with_lang(lang('Molten'))
+    rm.blockstate('bloomery', 'tfc:block/bloomery/closed_off', variants=dict(
+        ('facing=%s,open=%s' % (d, b), {'model': m, 'y': r})
+        for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
+        for b, m in (('true', 'tfc:block/bloomery/open_off'), ('false', 'tfc:block/bloomery/closed_off'))
+    )).with_lang(lang('Bloomery'))
+
     rm.blockstate('placed_item', 'tfc:block/empty')
     rm.blockstate('scraping', 'tfc:block/empty')
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))

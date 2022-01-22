@@ -1,7 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "all": "tfc:block/devices/bloomery/off"
+    "off": "tfc:block/devices/bloomery/off",
+    "particle": "tfc:block/devices/bloomery/off"
   },
   "elements": [
     {
@@ -23,7 +24,7 @@
             16,
             16
           ],
-          "texture": "#all"
+          "texture": "#off"
         },
         "south": {
           "uv": [
@@ -32,7 +33,7 @@
             16,
             16
           ],
-          "texture": "#all"
+          "texture": "#off"
         }
       }
     }

@@ -3,7 +3,7 @@
   "replace": false,
   "values": [
     "#forge:stone",
-    "tfc:#forge_stone_bricks",
+    "#forge:stone_bricks",
     "#forge:smooth_stone"
   ]
 }

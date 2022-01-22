@@ -17,7 +17,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -25,6 +29,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -45,16 +50,16 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         {
             if (state.getValue(BloomeryBlock.LIT))
             {
+                if (bloomery.cachedRecipe == null && !bloomery.inputStacks.isEmpty())
+                {
+                    bloomery.cachedRecipe = bloomery.getRecipe(bloomery.inputStacks.get(0));
+                    if (bloomery.cachedRecipe == null)
+                    {
+                        bloomery.dumpItems();
+                    }
+                }
                 if (bloomery.getRemainingTicks() <= 0)
                 {
-                    if (bloomery.cachedRecipe == null && !bloomery.inputStacks.isEmpty())
-                    {
-                        bloomery.cachedRecipe = BloomeryRecipe.getRecipe(bloomery.inputStacks.get(0));
-                        if (bloomery.cachedRecipe == null)
-                        {
-                            bloomery.dumpItems();
-                        }
-                    }
                     if (bloomery.cachedRecipe != null)
                     {
                         //todo: mess with bloom layers and all that business
@@ -140,6 +145,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     protected final List<ItemStack> catalystStacks = new ArrayList<>();
 
     private long litTick;
+    @Nullable protected BloomeryInventory inventory;
     @Nullable protected BloomeryRecipe cachedRecipe;
     @Nullable protected BlockPos internalBlock, externalBlock;
 
@@ -218,7 +224,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     protected void dumpItems()
     {
         assert level != null;
-        //todo: clear molten blocks
+        //todo: clear molten blocks and extinguish
         inputStacks.forEach(i -> Helpers.spawnItem(level, worldPosition, i));
         catalystStacks.forEach(i -> Helpers.spawnItem(level, worldPosition, i));
     }
@@ -235,7 +241,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     {
         if (cachedRecipe == null && !inputStacks.isEmpty())
         {
-            cachedRecipe = BloomeryRecipe.getRecipe(inputStacks.get(0));
+            cachedRecipe = getRecipe(inputStacks.get(0));
             if (cachedRecipe == null)
             {
                 dumpItems();
@@ -248,7 +254,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             ItemStack stack = entity.getItem();
             if (cachedRecipe == null)
             {
-                cachedRecipe = BloomeryRecipe.getRecipe(stack);
+                cachedRecipe = getRecipe(stack);
             }
             if (cachedRecipe != null)
             {
@@ -284,7 +290,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                         }
                     }
                 }
-                //Metal.get(HeatingRecipe.getRecipe(stack).getOutputFluid(new ItemStackInventory(stack)).getFluid());
             }
         }
     }
@@ -295,13 +300,41 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     }
 
+    @Nullable
+    private BloomeryRecipe updateRecipe()
+    {
+        assert level != null;
+        return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), inventory, level).orElse(null);
+    }
+
+    @Nullable
+    private BloomeryRecipe getRecipe(ItemStack stack)
+    {
+        assert level != null;
+        return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), new BloomeryInventory(stack), level).orElse(null);
+    }
+
     public class BloomeryInventory implements EmptyInventory
     {
         protected ItemStack inputStack;
+        protected ItemStack catalystStack = ItemStack.EMPTY;
 
         public BloomeryInventory(ItemStack inputStack)
         {
             this.inputStack = inputStack;
+        }
+
+        public Fluid getInputFluid()
+        {
+            HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(inputStack);
+            if (heatingRecipe != null)
+            {
+                return heatingRecipe.getOutputFluid(new ItemStackInventory(inputStack)).getFluid();
+            }
+            else
+            {
+                return Fluids.EMPTY;
+            }
         }
 
     }

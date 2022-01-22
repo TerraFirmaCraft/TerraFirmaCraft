@@ -29,42 +29,47 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 import org.jetbrains.annotations.Nullable;
 
-public class BloomeryBlock extends ExtendedBlock
+public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    //todo: this is a complete guess, test in game
-    public static final VoxelShape[] BASE_SHAPES =
-        {
-            Shapes.or(
-                box(0D, 0D, 0D,16D, 16D, 8D),
-                box(0D, 0D, 0D, 2D, 16D, 8D),
-                box(14D, 0D, 0D, 16D, 16D, 8D)
-            ),
-            Shapes.or(
-                box(8D, 0D, 0D, 16D, 16D, 16D),
-                box(8D, 0D, 0D, 16D, 16D, 2D),
-                box(8D, 0D, 14D, 16D, 16D, 16D)
-            ),
-            Shapes.or(
-                box(0D, 0D, 8D, 16D, 16D, 16D),
-                box(0D, 0D, 8D, 2D, 16D, 16D),
-                box(14D, 0D, 8D, 16D, 16D, 16D)
-            ),
-            Shapes.or(
-                box(0D, 0D, 0D, 8D, 16D, 16D),
-                box(0D, 0D, 0D, 8D, 16D, 2D),
-                box(0D, 0D, 14D, 8D, 16D, 16D)
-            )
-        };
+    //todo: fix open shapes (i think closed are correct)
+    public static final VoxelShape OPEN_NORTH_SHAPE = Shapes.or(
+        box(0D, 0D, 0D,16D, 16D, 8D),
+        box(0D, 0D, 0D, 2D, 16D, 8D),
+        box(14D, 0D, 0D, 16D, 16D, 8D)
+    );
+    public static final VoxelShape OPEN_SOUTH_SHAPE = Shapes.or(
+        box(8D, 0D, 0D, 16D, 16D, 16D),
+        box(8D, 0D, 0D, 16D, 16D, 2D),
+        box(8D, 0D, 14D, 16D, 16D, 16D)
+    );
+    public static final VoxelShape OPEN_WEST_SHAPE = Shapes.or(
+        box(0D, 0D, 8D, 16D, 16D, 16D),
+        box(0D, 0D, 8D, 2D, 16D, 16D),
+        box(14D, 0D, 8D, 16D, 16D, 16D)
+    );
+    public static final VoxelShape OPEN_EAST_SHAPE = Shapes.or(
+        box(0D, 0D, 0D, 8D, 16D, 16D),
+        box(0D, 0D, 0D, 8D, 16D, 2D),
+        box(0D, 0D, 14D, 8D, 16D, 16D)
+    );
+
+    public static final VoxelShape CLOSED_NORTH_SHAPE = box(0D, 0D, 0D, 16D, 16D, 2D);
+    public static final VoxelShape CLOSED_SOUTH_SHAPE = box(0D, 0D, 14D, 16D, 16D, 16D);
+    public static final VoxelShape CLOSED_WEST_SHAPE = box(0D, 0D, 0D, 2D, 16D, 16D);
+    public static final VoxelShape CLOSED_EAST_SHAPE = box(14D, 0D, 0D, 16D, 16D, 16D);
 
     private static final MultiBlock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
     private static final MultiBlock[] BLOOMERY_BASE; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
@@ -74,7 +79,7 @@ public class BloomeryBlock extends ExtendedBlock
 
     static
     {
-        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION) && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION);// && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
         Predicate<BlockState> center = state -> state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
         BlockPos origin = BlockPos.ZERO;
@@ -191,9 +196,14 @@ public class BloomeryBlock extends ExtendedBlock
     {
         if (!level.isClientSide())
         {
+            Direction facing = state.getValue(FACING);
+            LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, pos, facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+state.getValue(LIT));
             if (!state.getValue(LIT))
             {
-                level.setBlockAndUpdate(pos, state.cycle(OPEN));
+                LOGGER.info("Pre-cycle: "+state);
+                state = state.cycle(OPEN);
+                level.setBlockAndUpdate(pos, state);
+                LOGGER.info("Post-cycle: "+state);
                 level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
                 return InteractionResult.SUCCESS;
             }
@@ -252,7 +262,7 @@ public class BloomeryBlock extends ExtendedBlock
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return this.defaultBlockState().setValue(FACING, placeDirection == null ? Direction.NORTH : placeDirection); //todo: do we need .getOpposite()?
+        return this.defaultBlockState().setValue(FACING, placeDirection == null ? Direction.NORTH : placeDirection.getOpposite());
     }
 
     @Override
@@ -261,18 +271,31 @@ public class BloomeryBlock extends ExtendedBlock
         builder.add(FACING).add(LIT).add(OPEN);
     }
 
-    //todo: revise this to work properly, since this is a total guess (even if by some miracle this is the right idea, check to see if the directions are right)
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context)
     {
-        return switch (state.getValue(FACING))
+        if (state.getValue(OPEN))
+        {
+            return switch (state.getValue(FACING))
             {
-                case NORTH -> BASE_SHAPES[0];
-                case SOUTH -> BASE_SHAPES[1];
-                case WEST -> BASE_SHAPES[2];
-                case EAST -> BASE_SHAPES[3];
-                default -> Shapes.block();
+                case NORTH -> OPEN_NORTH_SHAPE;
+                case SOUTH -> OPEN_SOUTH_SHAPE;
+                case WEST -> OPEN_EAST_SHAPE;
+                case EAST -> OPEN_WEST_SHAPE;
+                default -> throw new IllegalArgumentException("Bloomery has no facing direction");
             };
+        }
+        else
+        {
+            return switch (state.getValue(FACING))
+            {
+                case NORTH -> CLOSED_NORTH_SHAPE;
+                case SOUTH -> CLOSED_SOUTH_SHAPE;
+                case WEST -> CLOSED_WEST_SHAPE;
+                case EAST -> CLOSED_EAST_SHAPE;
+                default -> throw new IllegalArgumentException("Bloomery has no facing direction");
+            };
+        }
     }
 
 

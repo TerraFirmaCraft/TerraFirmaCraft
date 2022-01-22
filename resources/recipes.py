@@ -535,12 +535,6 @@ def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, r
         'time': time
     })
 
-def item_stack_ingredient(item: utils.Json, count: int) -> Dict[str, Any]:
-    return {
-        'item': utils.ingredient(item),
-        'count': count
-    }
-
 def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
     return {
         'fluid': fluid,
