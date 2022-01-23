@@ -25,10 +25,15 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -49,6 +54,59 @@ public final class FluidHelpers
             if (filled > 0)
             {
                 return transferExact(from, to, filled);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Simpler version of FluidUtil#interactWithFluidHandler. Returns true if we think a transfer occurred.
+     *
+     * The major motivation:
+     * Vanilla / forge buckets require at least 1000mB to be drained, or else nothing happens, so we have to pretend we are asking for that much if that's the case.
+     *
+     * Stuff like pots that are either always 1000mB or 0mb should not need this.
+     */
+    public static boolean itemInteractsWithFluidHandler(ItemStack stack, BlockEntity blockEntity, int preferredAmount, Player player)
+    {
+        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(itemCap -> {
+            return blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(blockEntityCap -> {
+                if (itemCap.getFluidInTank(0).isEmpty()) // try to fill it from the fluid tank
+                {
+                    return player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
+                        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockEntityCap, inv, preferredAmount, player, true);
+                        if (result.isSuccess())
+                        {
+                            player.setItemInHand(player.getUsedItemHand(), result.getResult());
+                            return true;
+                        }
+                        return false;
+                    }).orElse(false);
+                }
+                else
+                {
+                    final boolean bucketTransfer = itemCap instanceof FluidBucketWrapper && preferredAmount < FluidAttributes.BUCKET_VOLUME; // todo: does this suck?
+                    return tryEmptyItem(player, itemCap, blockEntityCap, bucketTransfer ? FluidAttributes.BUCKET_VOLUME : preferredAmount, !bucketTransfer);
+                }
+            }).orElse(false);
+        }).orElse(false);
+    }
+
+    /**
+     * See javadoc above. Bucket-safe version of tryEmptyContainer and related functions.
+     */
+    public static boolean tryEmptyItem(Player player, IFluidHandlerItem from, IFluidHandler to, int amount, boolean exact)
+    {
+        if (exact) return transferExact(from, to, amount);
+        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        if (drained.getAmount() == amount)
+        {
+            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+            if (filled > 0) // we only need it to be filled *at all* rather than the exact amount
+            {
+                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                if (!player.isCreative()) player.setItemInHand(player.getUsedItemHand(), from.getContainer());
+                return true;
             }
         }
         return false;

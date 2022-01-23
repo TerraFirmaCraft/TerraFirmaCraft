@@ -117,6 +117,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
+                if (boilingTicks == 1) markForSync();
             }
             else
             {
@@ -143,6 +144,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 cachedRecipe = null;
                 boilingTicks = 0;
                 updateCachedRecipe();
+                markForSync();
             }
         }
         else

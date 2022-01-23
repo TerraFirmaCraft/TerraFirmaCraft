@@ -4,6 +4,7 @@
   "values": [
     "minecraft:water",
     "tfc:salt_water",
-    "tfc:spring_water"
+    "tfc:spring_water",
+    "tfc:olive_oil_water"
   ]
 }

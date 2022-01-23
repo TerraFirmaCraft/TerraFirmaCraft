@@ -39,7 +39,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    public static void convertTo(LevelAccessor world, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
+    public static void convertTo(LevelAccessor level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
         // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryBlockEntity
@@ -47,9 +47,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
 
-        world.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
+        level.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
 
-        final BlockEntity newEntity = world.getBlockEntity(pos);
+        final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
         {
             Helpers.insertAllItems(newFirepit.inventory, saved);

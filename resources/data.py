@@ -371,7 +371,7 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', 'tfc:olive_oil_water')
     rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
@@ -406,6 +406,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
     item_size(rm, 'plants', '#tfc:plants', Size.tiny, Weight.very_light)
     item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
+    item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
@@ -566,11 +567,22 @@ def generate(rm: ResourceManager):
     # rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     # rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
 
+    # Lamp Fuel - burn rate = ticks / mB. 8000 ticks ~ 83 days ~ the 1.12 length of olive oil burning
+    rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
+    rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
+
     rm.entity_loot('cod', 'tfc:food/cod')
     rm.entity_loot('bluegill', 'tfc:food/bluegill')
     rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
     rm.entity_loot('salmon', 'tfc:food/salmon')
     rm.entity_loot('pufferfish', 'minecraft:pufferfish')
+
+def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
+    return {
+        'fluid': fluid,
+        'burn_rate': burn_rate,
+        'valid_lamps': {'type': 'tfc:tag', 'tag': valid_lamps.replace('#', '')} if '#' in valid_lamps else valid_lamps
+    }
 
 def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = None):
     return {
