@@ -1,6 +1,5 @@
 package net.dries007.tfc.common.recipes;
 
-import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -34,7 +33,6 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
     //todo: make catalyst optional? unsure how
     public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStack, ItemStackIngredient catalystStack, ItemStack result, int time)
     {
-        LOGGER.info("constructing a bloomery recipe: "+id+" "+fluidStack+" "+catalystStack+" "+result+" "+time);
         this.id = id;
         this.fluidStack = fluidStack;
         this.catalystStack = catalystStack;
@@ -65,7 +63,6 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         {
             return false;
         }
-        LOGGER.info("Trying to match a recipe for "+inputFluid+" against "+fluidStack.getMatchingFluids());
         return fluidStack.getMatchingFluids().contains(inputFluid);
     }
 
@@ -105,7 +102,14 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
 
     public boolean isValidCatalyst(ItemStack stack)
     {
-        return Arrays.asList(this.catalystStack.getItem().getItems()).contains(stack);
+        for (ItemStack checkStack : this.catalystStack.getItem().getItems())
+        {
+            if (checkStack.getItem() == stack.getItem())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>

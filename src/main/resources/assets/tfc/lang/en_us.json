@@ -2483,6 +2483,8 @@
   "block.tfc.bloom": "Bloom",
   "block.tfc.molten": "Molten",
   "block.tfc.bloomery": "Bloomery",
+  "item.tfc.raw_iron_bloom": "Raw Iron Bloom",
+  "item.tfc.refined_iron_bloom": "Refined Iron Bloom",
   "block.tfc.pit_kiln": "Pit Kiln",
   "block.tfc.dirt.silt": "Silt Dirt",
   "block.tfc.rooted_dirt.silt": "Rooted Silt",

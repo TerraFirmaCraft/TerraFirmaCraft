@@ -161,6 +161,9 @@ public final class TFCItems
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill", MISC);
+    public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom", MISC);
+    public static final RegistryObject<Item> REFINED_IRON_BLOOM = register("refined_iron_bloom", MISC);
+
 
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);
     public static final RegistryObject<Item> PUFFERFISH_EGG = registerSpawnEgg(TFCEntities.PUFFERFISH, 16167425, 3654642);

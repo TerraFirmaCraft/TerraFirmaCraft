@@ -10,7 +10,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-//todo: I am not convinced bloom needs a block entity
 public class BloomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.bloom");

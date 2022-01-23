@@ -303,10 +303,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('bloom', 'tfc:block/bloom').with_lang(lang('Bloom')).with_block_model()
     rm.blockstate('molten', 'tfc:block/bloomery/molten_lit').with_lang(lang('Molten'))
     rm.blockstate('bloomery', 'tfc:block/bloomery/closed_off', variants=dict(
-        ('facing=%s,open=%s' % (d, b), {'model': m, 'y': r})
+        ('facing=%s,open=%s,lit=%s' % (d, b, l), {'model': m, 'y': r})
         for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
-        for b, m in (('true', 'tfc:block/bloomery/open_off'), ('false', 'tfc:block/bloomery/closed_off'))
+        for b, l, m in (('true', 'false', 'tfc:block/bloomery/open_off'), ('false', 'false', 'tfc:block/bloomery/closed_off'), ('false', 'true', 'tfc:block/bloomery/closed_on'), ('true', 'true', 'tfc:block/bloomery/open_on'))
     )).with_lang(lang('Bloomery'))
+    rm.item_model('raw_iron_bloom', 'tfc:item/bloom/unrefined').with_lang(lang('Raw Iron Bloom'))
+    rm.item_model('refined_iron_bloom', 'tfc:item/bloom/refined').with_lang(lang('Refined Iron Bloom'))
 
     rm.blockstate('placed_item', 'tfc:block/empty')
     rm.blockstate('scraping', 'tfc:block/empty')

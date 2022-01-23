@@ -10,10 +10,10 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -22,8 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -34,9 +32,7 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -174,6 +170,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     @Override
     public void loadAdditional(CompoundTag nbt)
     {
+        litTick = nbt.getLong("litTick");
         super.loadAdditional(nbt);
     }
 
@@ -181,6 +178,18 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
+
+        ListTag inputList = new ListTag();
+        for (ItemStack input : inputStacks)
+        {
+
+        }
+        nbt.put("inputStacks", inputList);
+        ListTag catalystList = new ListTag();
+
+        nbt.put("catalystStacks", catalystList);
+
+        nbt.putLong("litTick", litTick);
         super.saveAdditional(nbt);
     }
 
@@ -302,6 +311,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 }
                 else if (cachedRecipe.isValidCatalyst(stack))
                 {
+                    LOGGER.info("trying to add catalyst, max size "+maxCatalyst);
                     if (catalystStacks.size() < maxCatalyst)
                     {
                         markForSync(); //markDirty
@@ -362,13 +372,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(inputStack);
             if (heatingRecipe != null)
             {
-                Fluid fluid = heatingRecipe.getOutputFluid(new ItemStackInventory(inputStack)).getFluid();
-                LOGGER.info("got input fluid "+fluid);
-                return fluid;
+                return heatingRecipe.getOutputFluid(new ItemStackInventory(inputStack)).getFluid();
             }
             else
             {
-                LOGGER.info("got input fluid "+Fluids.EMPTY);
                 return Fluids.EMPTY;
             }
         }

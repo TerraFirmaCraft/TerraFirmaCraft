@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -195,6 +196,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
+        final ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
             Direction facing = state.getValue(FACING);
@@ -206,10 +208,8 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             }
             if (!state.getValue(LIT))
             {
-                LOGGER.info("Pre-cycle: "+state);
                 state = state.cycle(OPEN);
                 level.setBlockAndUpdate(pos, state);
-                LOGGER.info("Post-cycle: "+state);
                 level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
                 return InteractionResult.SUCCESS;
             }
