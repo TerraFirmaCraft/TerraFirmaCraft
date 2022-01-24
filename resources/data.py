@@ -215,7 +215,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
-    rm.block_tag('minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
+    block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('prospectable', '#forge:ores')
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
@@ -237,19 +237,17 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
-        rm.block_tag('forge:stone', block('raw'), block('hardened'))
-        rm.block_tag('forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        block_and_item_tag(rm, 'forge:stone', block('raw'))
+        rm.block_tag('forge:stone', block('hardened'))
+        block_and_item_tag(rm, 'forge:cobblestone', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
-        rm.block_tag('forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
-        rm.block_tag('forge:smooth_stone', block('smooth'))
+        block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
-        rm.block_tag('minecraft:stone_pressure_plates', block('pressure_plate'))
-
-        rm.item_tag('forge:smooth_stone', block('smooth'))
-        rm.item_tag('forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
+        block_and_item_tag(rm, 'minecraft:stone_pressure_plates', block('pressure_plate'))
+        block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
         rm.item_tag('tfc:rock_knapping', block('loose'))
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
-        rm.item_tag('minecraft:stone_pressure_plates', block('pressure_plate'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))

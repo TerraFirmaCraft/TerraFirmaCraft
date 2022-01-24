@@ -483,6 +483,7 @@ def generate(rm: ResourceManager):
                         'name': 'tfc:metal/lamp/%s' % metal,
                         'functions': [loot_tables.copy_block_entity_nbt()]
                     }).with_tag('lamps')
+                    rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
                     rm.block_model(('metal', 'chain', metal), {'all': metal_tex + '_chain', 'particle': metal_tex + '_chain'}, parent='minecraft:block/chain')
