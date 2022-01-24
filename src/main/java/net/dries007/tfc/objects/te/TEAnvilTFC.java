@@ -177,6 +177,9 @@ public class TEAnvilTFC extends TEInventory
         super.setAndUpdateSlots(slot);
         if (!world.isRemote)
         {
+            if (slot == SLOT_INPUT_1 || slot == SLOT_INPUT_2) {
+                checkRecipeUpdate();
+            }
             markForSync();
         }
     }
@@ -422,6 +425,29 @@ public class TEAnvilTFC extends TEInventory
         return workingTarget;
     }
 
+    private void checkRecipeUpdate()
+    {
+        ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_1);
+        IForgeable cap = stack.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap == null && recipe != null)
+        {
+            // Check for item removed / broken
+            setRecipe(null);
+        }
+        else if (cap != null)
+        {
+            // Check for mismatched recipe
+            AnvilRecipe capRecipe = TFCRegistries.ANVIL.getValue(cap.getRecipeName());
+            if (capRecipe != recipe)
+            {
+                setRecipe(capRecipe);
+            }
+            else if (AnvilRecipe.getAllFor(stack).size() == 1)
+            {
+                setRecipe(AnvilRecipe.getAllFor(stack).get(0));
+            }
+        }
+    }
 
     private void resetFields()
     {
