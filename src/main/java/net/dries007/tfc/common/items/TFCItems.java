@@ -32,6 +32,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -156,6 +157,7 @@ public final class TFCItems
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
     public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
+    public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new WoodenBucketItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.woodenBucketCapacity::get));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
@@ -181,7 +183,7 @@ public final class TFCItems
     public static final RegistryObject<Item> FIRE_BRICK = register("ceramic/fire_brick", MISC);
 
     public static final RegistryObject<Item> UNFIRED_JUG = register("ceramic/unfired_jug", MISC);
-    public static final RegistryObject<Item> JUG = register("ceramic/jug", () -> new JugItem(new Item.Properties().tab(MISC).stacksTo(1)));
+    public static final RegistryObject<Item> JUG = register("ceramic/jug", () -> new JugItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.jugCapacity::get));
 
     public static final RegistryObject<Item> UNFIRED_POT = register("ceramic/unfired_pot", MISC);
     public static final RegistryObject<Item> POT = register("ceramic/pot", MISC);

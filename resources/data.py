@@ -377,6 +377,7 @@ def generate(rm: ResourceManager):
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
+    rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
 
     # Item Sizes
 

@@ -86,6 +86,7 @@ public class TFCTags
         public static final Tag.Named<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final Tag.Named<Fluid> USABLE_IN_JUG = create("usable_in_jug");
+        public static final Tag.Named<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
 
         private static Tag.Named<Fluid> create(String id)
         {

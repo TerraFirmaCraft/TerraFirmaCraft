@@ -532,6 +532,13 @@ def generate(rm: ResourceManager):
             'fluid': 'tfc:item/ceramic/jug_overlay'
         }
     }).with_lang(lang('Ceramic Jug'))
+    rm.custom_item_model('wooden_bucket', 'tfc:contained_fluid', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'base': 'tfc:item/bucket/wooden_bucket_empty',
+            'fluid': 'tfc:item/bucket/wooden_bucket_overlay'
+        }
+    }).with_lang(lang('Wooden Bucket'))
 
     # Small Ceramic Vessels (colored)
     for color in COLORS:

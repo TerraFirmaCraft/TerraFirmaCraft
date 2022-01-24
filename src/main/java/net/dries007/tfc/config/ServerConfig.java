@@ -78,6 +78,9 @@ public class ServerConfig
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
+    // Items - Wooden Bucket
+    public final ForgeConfigSpec.IntValue woodenBucketCapacity;
+    public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
     public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
@@ -199,6 +202,10 @@ public class ServerConfig
 
         jugCapacity = builder.apply("jugCapacity").comment("Tank capacity of a ceramic jug (in mB).").defineInRange("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
         jugBreakChance = builder.apply("jugBreakChance").comment("The chance a jug will break after drinking.").defineInRange("jugBreakChance", 0.02, 0, 1);
+
+        innerBuilder.pop().push("woodenBucket");
+        woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
+        enableSourcesFromWoodenBucket = builder.apply("enableSourcesFromWoodenBucket").comment("Should the wooden bucket place source blocks?").define("enableSourcesFromWoodenBucket", false);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
