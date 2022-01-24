@@ -64,9 +64,10 @@ public final class FoodCapability
         }
     }
 
-    public static void applyTrait(ItemStack stack, FoodTrait trait)
+    public static ItemStack applyTrait(ItemStack stack, FoodTrait trait)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> applyTrait(food, trait));
+        return stack;
     }
 
     /**

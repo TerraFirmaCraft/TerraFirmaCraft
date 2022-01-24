@@ -130,7 +130,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         public void toNetwork(FriendlyByteBuf buffer, CastingRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
+            recipe.fluidIngredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
             buffer.writeFloat(recipe.breakChance);
         }

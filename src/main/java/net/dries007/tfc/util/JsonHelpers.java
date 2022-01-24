@@ -70,7 +70,6 @@ public final class JsonHelpers extends GsonHelper
         return tag;
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
     {
         final String enumName = GsonHelper.getAsString(obj, key, null);

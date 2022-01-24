@@ -91,8 +91,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
 
     protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
-        // todo: remove debug
-        if (removeBehavior == InventoryRemoveBehavior.DROP || (this instanceof QuernBlock) || (this instanceof FirepitBlock) || (this instanceof CharcoalForgeBlock))
+        if (removeBehavior == InventoryRemoveBehavior.DROP)
         {
             entity.ejectInventory();
         }

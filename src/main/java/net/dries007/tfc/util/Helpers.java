@@ -371,6 +371,21 @@ public final class Helpers
     }
 
     /**
+     * Given a theoretical item stack, of count {@code totalCount}, splits it into optimally sized stacks, up to the stack size limit and feeds these new stacks to {@code consumer}
+     */
+    public static void consumeInStackSizeIncrements(ItemStack stack, int totalCount, Consumer<ItemStack> consumer)
+    {
+        while (totalCount > 0)
+        {
+            final ItemStack splitStack = stack.copy();
+            final int splitCount = Math.min(splitStack.getMaxStackSize(), totalCount);
+            splitStack.setCount(splitCount);
+            totalCount -= splitCount;
+            consumer.accept(splitStack);
+        }
+    }
+
+    /**
      * Remove and return a stack in {@code slot}, replacing it with empty.
      */
     public static ItemStack removeStack(IItemHandler inventory, int slot)

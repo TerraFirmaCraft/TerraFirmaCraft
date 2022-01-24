@@ -2,6 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 from mcresources import ResourceManager, RecipeContext, utils
+from mcresources.type_definitions import Json
 from constants import *
 
 
@@ -528,21 +529,21 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
     })
 
 
-def fluid_stack(fluid: str, amount: int) -> Dict[str, Any]:
+def fluid_stack(fluid: str, amount: int) -> Json:
     return {
         'fluid': fluid,
         'amount': amount
     }
 
 
-def fluid_stack_ingredient(fluid: utils.Json, amount: int) -> Dict[str, Any]:
+def fluid_stack_ingredient(fluid: Json, amount: int) -> Json:
     return {
         'fluid': fluid_ingredient(fluid),
         'amount': amount
     }
 
 
-def fluid_ingredient(data_in: utils.Json) -> utils.Json:
+def fluid_ingredient(data_in: Json) -> Json:
     if isinstance(data_in, str):
         if data_in[0:4] == '#':
             return {'tag': data_in[4:]}
@@ -558,3 +559,20 @@ def fluid_ingredient(data_in: utils.Json) -> utils.Json:
         if 'fluid' in data_in:
             return data_in['fluid']
         raise ValueError('fluid_ingredient must have fluid or tag entries.')
+
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None) -> Json:
+    stack = utils.item_stack(data_in) if data_in is not None else None
+    modifiers = [k for k, v in (
+        ('tfc:copy_input', copy_input),
+        ('tfc:copy_heat', copy_heat),
+        ('tfc:copy_food', copy_food),
+        ('tfc:reset_food', reset_food),
+        ({'type': 'tfc:add_head', 'temperature': add_heat}, add_heat is not None),
+        ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None)
+    ) if v]
+    if modifiers:
+        return {
+            'stack': stack,
+            'apply': modifiers
+        }
+    return stack
