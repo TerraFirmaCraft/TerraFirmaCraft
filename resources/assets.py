@@ -301,8 +301,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
     rm.blockstate('bloom', 'tfc:block/bloom').with_lang(lang('Bloom')).with_block_model()
-    rm.blockstate('molten', 'tfc:block/bloomery/molten_lit').with_lang(lang('Molten'))
-    rm.blockstate('bloomery', 'tfc:block/bloomery/closed_off', variants=dict(
+    rm.blockstate('molten', variants=dict(
+        ('layers=%s,lit=%s' % (i, j), {'model': 'tfc:block/molten/molten%s%s' % (k, l)})
+        for i, l in ((1, '_height4'), (2, '_height8'), (3, '_height12'), (4, '_block'))
+        for j, k in (('true', '_lit'), ('false', ''))
+    )).with_lang(lang('Molten'))
+    rm.blockstate('bloomery', variants=dict(
         ('facing=%s,open=%s,lit=%s' % (d, b, l), {'model': m, 'y': r})
         for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
         for b, l, m in (('true', 'false', 'tfc:block/bloomery/open_off'), ('false', 'false', 'tfc:block/bloomery/closed_off'), ('false', 'true', 'tfc:block/bloomery/closed_on'), ('true', 'true', 'tfc:block/bloomery/open_on'))

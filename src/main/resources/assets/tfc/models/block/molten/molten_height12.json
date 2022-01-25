@@ -1,7 +1,7 @@
 {
   "textures": {
-    "off": "tfc:block/molten_lit",
-    "particle": "tfc:block/molten_lit"
+    "unlit": "tfc:block/molten",
+    "particle": "tfc:block/molten"
   },
   "elements": [
     {
@@ -12,7 +12,7 @@
       ],
       "to": [
         16,
-        4,
+        12,
         16
       ],
       "faces": {
@@ -23,43 +23,43 @@
             16,
             16
           ],
-          "texture": "#all"
+          "texture": "#unlit"
         },
         "north": {
           "uv": [
             0,
             0,
             16,
-            4
+            12
           ],
-          "texture": "#all"
+          "texture": "#unlit"
         },
         "south": {
           "uv": [
             0,
             0,
             16,
-            4
+            12
           ],
-          "texture": "#all"
+          "texture": "#unlit"
         },
         "west": {
           "uv": [
             0,
             0,
             16,
-            4
+            12
           ],
-          "texture": "#all"
+          "texture": "#unlit"
         },
         "east": {
           "uv": [
             0,
             0,
             16,
-            4
+            12
           ],
-          "texture": "#all"
+          "texture": "#unlit"
         }
       }
     }

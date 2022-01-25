@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.recipes;
 
 import javax.annotation.Nullable;
@@ -13,6 +19,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+
+import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -72,6 +80,11 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         return result;
     }
 
+    public ItemStack getResult(FluidStack stack)
+    {
+        return new ItemStack(this.result.getItem(),stack.getAmount() / this.fluidStack.getAmount());
+    }
+
     @Override
     public ResourceLocation getId()
     {
@@ -111,6 +124,8 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         }
         return false;
     }
+
+
 
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
     {

@@ -41,6 +41,7 @@ public class TFCBlockStateProperties
     public static final FluidProperty FRESH_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
+    public static final IntegerProperty LAYERS_4 = IntegerProperty.create("layers", 1, 4);
 
     public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);

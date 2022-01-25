@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.function.BiPredicate;
@@ -15,7 +21,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +28,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -82,7 +86,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     {
         BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION);// && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
-        Predicate<BlockState> center = state -> state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
+        Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
         BlockPos origin = BlockPos.ZERO;
 
         // Bloomery center is the charcoal pile pos
