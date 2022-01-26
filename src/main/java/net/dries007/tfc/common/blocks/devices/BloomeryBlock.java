@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,6 +35,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -51,24 +56,36 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
 
     //todo: fix open shapes (i think closed are correct)
     public static final VoxelShape OPEN_NORTH_SHAPE = Shapes.or(
-        box(0D, 0D, 0D,16D, 16D, 8D),
-        box(0D, 0D, 0D, 2D, 16D, 8D),
-        box(14D, 0D, 0D, 16D, 16D, 8D)
+        box(0D, 15D, 0D,16D, 16D, 2D),
+        box(0D, 0D, 0D, 16D, 1D, 2D),
+        box(0D, 1D, 0D, 1D, 15D, 1D),
+        box(15D, 1D, 0D, 16D, 15D, 1D),
+        box(0D, 1D, 1D, 2D, 15D, 8D),
+        box(14D, 1D, 1D, 16D, 15D, 8D)
     );
     public static final VoxelShape OPEN_SOUTH_SHAPE = Shapes.or(
-        box(8D, 0D, 0D, 16D, 16D, 16D),
-        box(8D, 0D, 0D, 16D, 16D, 2D),
-        box(8D, 0D, 14D, 16D, 16D, 16D)
+        box(0D, 15D, 14D, 16D, 16D, 16D),
+        box(0D, 0D, 14D, 16D, 1D, 16D),
+        box(0D, 1D, 15D, 1D, 15D, 16D),
+        box(15D, 1D, 15D, 16D, 15D, 16D),
+        box(0D, 1D, 8D, 2D, 15D, 15D),
+        box(14D, 1D, 8D, 16D, 15D, 15D)
     );
     public static final VoxelShape OPEN_WEST_SHAPE = Shapes.or(
-        box(0D, 0D, 8D, 16D, 16D, 16D),
-        box(0D, 0D, 8D, 2D, 16D, 16D),
-        box(14D, 0D, 8D, 16D, 16D, 16D)
+        box(0D, 15D, 0D,2D, 16D, 16D),
+        box(0D, 0D, 0D, 2D, 1D, 16D),
+        box(0D, 1D, 0D, 1D, 15D, 1D),
+        box(0D, 1D, 15D, 1D, 15D, 16D),
+        box(1D, 1D, 0D, 8D, 15D, 2D),
+        box(1D, 1D, 14D, 8D, 15D, 16D)
     );
     public static final VoxelShape OPEN_EAST_SHAPE = Shapes.or(
-        box(0D, 0D, 0D, 8D, 16D, 16D),
-        box(0D, 0D, 0D, 8D, 16D, 2D),
-        box(0D, 0D, 14D, 8D, 16D, 16D)
+        box(14D, 15D, 0D, 16D, 16D, 16D),
+        box(14D, 0D, 0D, 16D, 1D, 16D),
+        box(15D, 1D, 0D, 16D, 15D, 1D),
+        box(15D, 1D, 15D, 16D, 15D, 16D),
+        box(8D, 1D, 0D, 15D, 15D, 2D),
+        box(8D, 1D, 14D, 15D, 15D, 16D)
     );
 
     public static final VoxelShape CLOSED_NORTH_SHAPE = box(0D, 0D, 0D, 16D, 16D, 2D);
@@ -84,7 +101,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
 
     static
     {
-        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION);// && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION);// todo: && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
         Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
         BlockPos origin = BlockPos.ZERO;
@@ -190,14 +207,55 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             .setValue(OPEN, false));
     }
 
-    /* todo: find out if there's a modern version of following methods
-     * getBoundingBox, getBlockFaceShape, getCollisionBoundingBox
-     * collisionRayTrace, canPlaceBlockAt (canSurvive?)
-     * and does TFC still have:
-     * onBreakBlock
-     */
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean bool)
+    {
+        if (!newState.is(TFCBlocks.BLOOMERY.get()))
+        {
+            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
+            if (bloomery != null)
+            {
+                bloomery.onRemove();
+            }
+        }
+        super.onRemove(state, level, pos, newState, bool);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
+    {
+        if (!state.getValue(LIT)) return;
+        BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
+        if (bloomery != null)
+        {
+            BlockPos chimneyPos = bloomery.getInternalBlock().above(3);
+            double x = chimneyPos.getX() + 0.5;
+            double y = chimneyPos.getY() + 0.35;
+            double z = chimneyPos.getZ() + 0.5;
+
+//            if (rand.nextInt(5) == 0)
+//            {
+                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+//            }
+            for (int i = 0; i < 1 + rand.nextInt(3); i++)
+            {
+                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            }
+            for (int i = 0; i < rand.nextInt(4); i++)
+            {
+                level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            }
+            if (rand.nextInt(4) == 1)
+            {
+                level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            }
+        }
+    }
 
     @Override
+    @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final ItemStack stack = player.getItemInHand(hand);
@@ -263,6 +321,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context)
     {
         if (state.getValue(OPEN))
@@ -271,8 +330,8 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             {
                 case NORTH -> OPEN_NORTH_SHAPE;
                 case SOUTH -> OPEN_SOUTH_SHAPE;
-                case WEST -> OPEN_EAST_SHAPE;
-                case EAST -> OPEN_WEST_SHAPE;
+                case WEST -> OPEN_WEST_SHAPE;
+                case EAST -> OPEN_EAST_SHAPE;
                 default -> throw new IllegalArgumentException("Bloomery has no facing direction");
             };
         }
@@ -288,6 +347,4 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             };
         }
     }
-
-
 }

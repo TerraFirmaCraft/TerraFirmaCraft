@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -33,17 +34,17 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
     public static final Logger LOGGER = LogManager.getLogger();
 
     private final ResourceLocation id;
-    private final FluidStackIngredient fluidStack;
-    private final ItemStackIngredient catalystStack;
+    private final FluidStackIngredient fluidStackIngredient;
+    private final ItemStackIngredient itemStackIngredient;
     private final ItemStack result;
     private final int time;
 
     //todo: make catalyst optional? unsure how
-    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStack, ItemStackIngredient catalystStack, ItemStack result, int time)
+    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStackIngredient, ItemStackIngredient itemStackIngredient, ItemStack result, int time)
     {
         this.id = id;
-        this.fluidStack = fluidStack;
-        this.catalystStack = catalystStack;
+        this.fluidStackIngredient = fluidStackIngredient;
+        this.itemStackIngredient = itemStackIngredient;
         this.result = result;
         this.time = time;
     }
@@ -55,12 +56,12 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
 
     public ItemStackIngredient getCatalyst()
     {
-        return catalystStack;
+        return itemStackIngredient;
     }
 
     public FluidStackIngredient getInputFluid()
     {
-        return fluidStack;
+        return fluidStackIngredient;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         {
             return false;
         }
-        return fluidStack.getMatchingFluids().contains(inputFluid);
+        return fluidStackIngredient.getMatchingFluids().contains(inputFluid);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
 
     public ItemStack getResult(FluidStack stack)
     {
-        return new ItemStack(this.result.getItem(),stack.getAmount() / this.fluidStack.getAmount());
+        return new ItemStack(this.result.getItem(),stack.getAmount() / this.fluidStackIngredient.getAmount());
     }
 
     @Override
@@ -108,14 +109,14 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
         if (heatingRecipe != null)
         {
-            return this.fluidStack.getMatchingFluids().contains(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid());
+            return this.fluidStackIngredient.getMatchingFluids().contains(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid());
         }
         return false;
     }
 
     public boolean isValidCatalyst(ItemStack stack)
     {
-        for (ItemStack checkStack : this.catalystStack.getItem().getItems())
+        for (ItemStack checkStack : this.itemStackIngredient.getItem().getItems())
         {
             if (checkStack.getItem() == stack.getItem())
             {
@@ -125,7 +126,14 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         return false;
     }
 
-
+    public boolean isValidMixture(FluidStack fluidStack, ItemStack catalystStack)
+    {
+        if (!fluidStackIngredient.getMatchingFluids().contains(fluidStack.getFluid()) || !isValidCatalyst(catalystStack))
+        {
+            return false;
+        }
+        return catalystStack.getCount() >= (fluidStack.getAmount() / fluidStackIngredient.getAmount() * itemStackIngredient.getCount());
+    }
 
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
     {
@@ -153,8 +161,8 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         @Override
         public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe)
         {
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidStack);
-            recipe.catalystStack.toNetwork(buffer);
+            FluidStackIngredient.toNetwork(buffer, recipe.fluidStackIngredient);
+            recipe.itemStackIngredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
             buffer.writeInt(recipe.time);
         }

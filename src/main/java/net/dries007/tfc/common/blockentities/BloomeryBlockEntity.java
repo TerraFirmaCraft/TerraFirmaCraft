@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +33,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
@@ -69,12 +71,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             {
                 if (bloomery.cachedRecipe != null)
                 {
-                    //todo: mess with bloom layers and all that business
-                    level.setBlockAndUpdate(bloomery.getInternalBlock(), TFCBlocks.BLOOM.get().defaultBlockState());
+                    ItemStack result = bloomery.cachedRecipe.getResult(bloomery.getTotalInput());
+                    level.setBlockAndUpdate(bloomery.getInternalBlock(), TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, Math.min(result.getCount(), 8)));
                     BloomBlockEntity bloom = Helpers.getBlockEntity(level, bloomery.getInternalBlock(), BloomBlockEntity.class);
                     if (bloom != null)
                     {
                         bloom.setBloom(bloomery.cachedRecipe.getResult(bloomery.getTotalInput()));
+
                     }
                 }
 
@@ -105,8 +108,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             }
             else
             {
-                float totalInput = bloomery.getTotalInput().getAmount();
-                int maxCatalyst = (int) Math.ceil(totalInput / (bloomery.cachedRecipe.getInputFluid().getAmount()) * (bloomery.cachedRecipe.getCatalyst().getCount()));
+                int maxCatalyst = bloomery.getTotalInput().getAmount() / bloomery.cachedRecipe.getInputFluid().getAmount() * bloomery.cachedRecipe.getCatalyst().getCount();
                 bloomery.maxCatalyst = Math.min(maxCatalyst, 128);
             }
 
@@ -140,6 +142,8 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 level.destroyBlock(pos, true);
                 return;
             }
+
+//            if (!BloomeryBlock.isFormed(level, bloomery.getInternalBlock(), state.getValue(BloomeryBlock.FACING)) || )
 //            if (!bloomery.isInternalBlockComplete() && !bloomery.catalystStacks.isEmpty())
 //            {
 //                bloomery.dumpItems();
@@ -250,17 +254,24 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         return externalBlock;
     }
 
-    //todo - add conditions and other effects
     public boolean light(BlockState state)
     {
         assert level != null;
-        litTick = Calendars.SERVER.getTicks();
-        state = state.setValue(BloomeryBlock.LIT, true).setValue(BloomeryBlock.OPEN, false);
-        level.setBlockAndUpdate(worldPosition, state);
-        return true;
+        if (level.getBlockState(getInternalBlock()).is(TFCBlocks.MOLTEN.get()) && cachedRecipe != null && cachedRecipe.isValidMixture(getTotalInput(), getTotalCatalyst()))
+        {
+            litTick = Calendars.SERVER.getTicks();
+            state = state.setValue(BloomeryBlock.LIT, true).setValue(BloomeryBlock.OPEN, false);
+            level.setBlockAndUpdate(worldPosition, state);
+            return true;
+        }
+        return false;
     }
 
-    //todo
+    public void onRemove()
+    {
+        dumpItems();
+    }
+
     protected void dumpItems()
     {
         assert level != null;
@@ -316,7 +327,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 }
                 else if (cachedRecipe.isValidCatalyst(stack))
                 {
-                    LOGGER.info("trying to add catalyst, max size "+maxCatalyst);
+                    LOGGER.info("trying to add catalyst, max size "+maxCatalyst+" for "+getTotalInput().getAmount()+" input");
                     if (catalystStacks.size() < maxCatalyst)
                     {
                         markForSync(); //markDirty
@@ -377,6 +388,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
             if (heatingRecipe != null)
             {
+                if (inputFluid == null)
+                {
+                    inputFluid = heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid();
+                }
                 if (inputFluid != null)
                 {
                     FluidStack fluidStack = heatingRecipe.getOutputFluid(new ItemStackInventory(stack));
@@ -388,10 +403,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                     {
                         totalInput += fluidStack.getAmount();
                     }
-                }
-                else
-                {
-                    inputFluid = heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid();
                 }
             }
         }
@@ -406,6 +417,30 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         }
     }
 
+    protected ItemStack getTotalCatalyst()
+    {
+        if (catalystStacks.size() == 0)
+        {
+            return ItemStack.EMPTY;
+        }
+
+        int catalystCount = 0;
+        Item catalystItem = catalystStacks.get(0).getItem();
+        for (ItemStack stack : catalystStacks)
+        {
+            if (stack.getItem() == catalystItem)
+            {
+                catalystCount++;
+            }
+            else
+            {
+                throw new IllegalArgumentException("Bloomery had catalyst items of different types! That's not right!");
+            }
+        }
+        return new ItemStack(catalystItem, catalystCount);
+    }
+
+    //todo: remove (debug)
     public String printInventory()
     {
         return "input: "+this.inputStacks+" catalyst: "+this.catalystStacks;

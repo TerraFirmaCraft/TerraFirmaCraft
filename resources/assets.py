@@ -300,7 +300,7 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
-    rm.blockstate('bloom', 'tfc:block/bloom').with_lang(lang('Bloom')).with_block_model()
+    rm.blockstate('bloom', variants=dict((('layers=%d' % i), {'model': 'tfc:block/bloom/bloom_height%d' % (i * 2) if i != 8 else 'tfc:block/bloom/bloom_block'}) for i in range(1, 1 + 8))).with_lang(lang('Bloom'))
     rm.blockstate('molten', variants=dict(
         ('layers=%s,lit=%s' % (i, j), {'model': 'tfc:block/molten/molten%s%s' % (k, l)})
         for i, l in ((1, '_height4'), (2, '_height8'), (3, '_height12'), (4, '_block'))

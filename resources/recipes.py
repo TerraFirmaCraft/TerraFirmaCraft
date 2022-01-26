@@ -411,7 +411,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
     # todo: change time to 15000 once done debugging
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', 'tfc:metal/cast_iron', 100, 'minecraft:charcoal', 4, 500)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', 'tfc:metal/cast_iron', 100, 'minecraft:charcoal', 4, 2000)
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
