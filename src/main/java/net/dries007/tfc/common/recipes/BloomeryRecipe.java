@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;

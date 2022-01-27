@@ -73,12 +73,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 {
                     ItemStack result = bloomery.cachedRecipe.getResult(bloomery.getTotalInput());
                     level.setBlockAndUpdate(bloomery.getInternalBlock(), TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, Math.min(result.getCount(), 8)));
-                    BloomBlockEntity bloom = Helpers.getBlockEntity(level, bloomery.getInternalBlock(), BloomBlockEntity.class);
-                    if (bloom != null)
-                    {
-                        bloom.setBloom(bloomery.cachedRecipe.getResult(bloomery.getTotalInput()));
 
-                    }
+                    level.getBlockEntity(bloomery.getInternalBlock(), TFCBlockEntities.BLOOM.get()).ifPresent(bloom -> {
+                        bloom.setBloom(bloomery.cachedRecipe.getResult(bloomery.getTotalInput()));
+                    });
                 }
 
                 bloomery.inputStacks.clear();
@@ -113,7 +111,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             }
 
             boolean turnOff = false;
-            //LOGGER.info("maxInput is "+bloomery.maxInput);
             while (bloomery.maxInput < bloomery.inputStacks.size())
             {
                 LOGGER.info("too much input! maxInput is "+bloomery.maxInput+" and inputStacks is "+bloomery.inputStacks.size());
@@ -175,7 +172,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         super(TFCBlockEntities.BLOOMERY.get(), pos, state, defaultInventory(0), NAME);
     }
 
-    //todo
     @Override
     public void loadAdditional(CompoundTag nbt)
     {
@@ -188,7 +184,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         super.loadAdditional(nbt);
     }
 
-    //todo
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
@@ -223,15 +218,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         assert level != null;
         if (internalBlock == null)
         {
-            /* todo: figure this one out
-             * 1.12 code suggests the internal block (and external block, below) is *above* the bloomery block
-            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
-            internalBlock = pos.up(OFFSET_INTERNAL.getY())
-                .offset(direction, OFFSET_INTERNAL.getX())
-                .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
-
-             * but i don't see why that would be - perhaps i misunderstand the method
-             */
             Direction direction = level.getBlockState(worldPosition).getValue(BloomeryBlock.FACING);
             internalBlock = worldPosition.relative(direction.getOpposite());
         }
@@ -294,17 +280,14 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             cachedRecipe = getRecipe(inputStacks.get(0));
             if (cachedRecipe == null)
             {
-                LOGGER.info("dumping items from addItemsFromWorld");
                 dumpItems();
             }
         }
-        //todo: check if AABB is correct height; is it still necessary to check EntitySelectors.IS_ALIVE?
         for (ItemEntity entity : level.getEntitiesOfClass(ItemEntity.class, new AABB(getInternalBlock(), getInternalBlock().offset(1, BloomeryBlock.getChimneyLevels(level, getInternalBlock()) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE))
         {
             ItemStack stack = entity.getItem();
             if (cachedRecipe == null)
             {
-                LOGGER.info("Trying to check a recipe for "+stack);
                 cachedRecipe = getRecipe(stack);
             }
             if (cachedRecipe != null)
@@ -327,7 +310,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 }
                 else if (cachedRecipe.isValidCatalyst(stack))
                 {
-                    LOGGER.info("trying to add catalyst, max size "+maxCatalyst+" for "+getTotalInput().getAmount()+" input");
                     if (catalystStacks.size() < maxCatalyst)
                     {
                         markForSync(); //markDirty
@@ -450,16 +432,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     private BloomeryRecipe getRecipe(ItemStack stack)
     {
         assert level != null;
-        BloomeryRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), new BloomeryInventory(stack), level).orElse(null);
-        LOGGER.info("got recipe "+recipe);
-        return recipe;
+        return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), new BloomeryInventory(stack), level).orElse(null);
     }
 
     //todo: not convinced this is necessary
     public class BloomeryInventory implements EmptyInventory
     {
         protected ItemStack inputStack;
-        protected ItemStack catalystStack = ItemStack.EMPTY;
 
         public BloomeryInventory(ItemStack inputStack)
         {

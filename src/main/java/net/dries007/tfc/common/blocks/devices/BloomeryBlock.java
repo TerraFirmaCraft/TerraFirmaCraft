@@ -18,7 +18,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -40,6 +39,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -54,7 +54,6 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    //todo: fix open shapes (i think closed are correct)
     public static final VoxelShape OPEN_NORTH_SHAPE = Shapes.or(
         box(0D, 15D, 0D,16D, 16D, 2D),
         box(0D, 0D, 0D, 16D, 1D, 2D),
@@ -213,11 +212,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     {
         if (!newState.is(TFCBlocks.BLOOMERY.get()))
         {
-            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
-            if (bloomery != null)
-            {
-                bloomery.onRemove();
-            }
+            level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(BloomeryBlockEntity::onRemove);
         }
         super.onRemove(state, level, pos, newState, bool);
     }
@@ -227,47 +222,34 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
-        BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
-        if (bloomery != null)
-        {
+        level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> {
             BlockPos chimneyPos = bloomery.getInternalBlock().above(3);
             double x = chimneyPos.getX() + 0.5;
             double y = chimneyPos.getY() + 0.35;
             double z = chimneyPos.getZ() + 0.5;
 
-//            if (rand.nextInt(5) == 0)
-//            {
-                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
-//            }
-            for (int i = 0; i < 1 + rand.nextInt(3); i++)
+            level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            for (int i = 0; i < 1 + rand.nextInt(1); i++)
             {
                 level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
             }
-            for (int i = 0; i < rand.nextInt(4); i++)
-            {
-                level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
-            }
-            if (rand.nextInt(4) == 1)
-            {
-                level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
-            }
-        }
+            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+        });
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
             Direction facing = state.getValue(FACING);
-            BloomeryBlockEntity bloomery = Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class);
-            if (bloomery != null)
-            {
-                LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, bloomery.getInternalBlock(), facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+state.getValue(LIT));
+
+            BlockState finalState = state;
+            level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> {
+                LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, bloomery.getInternalBlock(), facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+ finalState.getValue(LIT));
                 LOGGER.info("Bloomery inventory has inventory "+bloomery.printInventory());
-            }
+            });
             if (!state.getValue(LIT))
             {
                 state = state.cycle(OPEN);
