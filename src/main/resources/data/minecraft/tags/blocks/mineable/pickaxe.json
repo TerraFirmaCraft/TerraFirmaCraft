@@ -2119,6 +2119,8 @@
     "tfc:alabaster/stained/black_polished_alabaster_wall",
     "tfc:fire_bricks",
     "tfc:quern",
-    "tfc:crucible"
+    "tfc:crucible",
+    "tfc:bloomery",
+    "tfc:bloom"
   ]
 }

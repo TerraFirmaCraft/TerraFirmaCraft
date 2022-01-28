@@ -614,9 +614,6 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
         {
-            /* todo: what's this line about from 1.12?
-               TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, state.getBlock()); // Trigger lit block
-             */
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
             {

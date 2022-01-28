@@ -9,8 +9,6 @@ package net.dries007.tfc.common.recipes;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -30,8 +28,6 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.BloomeryInventory>
 {
-    public static final Logger LOGGER = LogManager.getLogger();
-
     private final ResourceLocation id;
     private final FluidStackIngredient fluidStackIngredient;
     private final ItemStackIngredient itemStackIngredient;

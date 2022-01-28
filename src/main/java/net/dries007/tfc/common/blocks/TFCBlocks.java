@@ -269,9 +269,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), MISC);
     public static final RegistryObject<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15))).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)), MISC);
-    //todo: add bloom to pickaxe harvest json (probably bloomery too actually)
-    public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F).noOcclusion()).blockEntity(TFCBlockEntities.BLOOM)), MISC);
-    public static final RegistryObject<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F).noOcclusion().lightLevel(litBlockEmission(15)))), MISC);
+    public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.0F, 6.0F).noOcclusion()).blockEntity(TFCBlockEntities.BLOOM)), MISC);
+    public static final RegistryObject<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)))), MISC);
 
     // Fluids
 

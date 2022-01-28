@@ -100,7 +100,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
 
     static
     {
-        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION);// todo: && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos); //correct method to check full block?
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION) && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
         Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
         BlockPos origin = BlockPos.ZERO;
@@ -196,10 +196,6 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     public BloomeryBlock(ExtendedProperties properties)
     {
         super(properties);
-        /* todo: deal with these from 1.12
-         * setHarvestLevel("pickaxe", 0); -> requiresCorrectToolForDrops + json?
-         * setHardness(20.0F);
-         */
         registerDefaultState(getStateDefinition().any()
             .setValue(FACING, Direction.NORTH)
             .setValue(LIT, false)
@@ -222,41 +218,19 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
-        level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> {
-            BlockPos chimneyPos = bloomery.getInternalBlock().above(3);
-            double x = chimneyPos.getX() + 0.5;
-            double y = chimneyPos.getY() + 0.35;
-            double z = chimneyPos.getZ() + 0.5;
-
-            level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
-            for (int i = 0; i < 1 + rand.nextInt(1); i++)
-            {
-                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
-            }
-            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
-        });
+        level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
+        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !state.getValue(LIT))
         {
-            Direction facing = state.getValue(FACING);
-
-            BlockState finalState = state;
-            level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> {
-                LOGGER.info("Bloomery being used. Structure formed "+isFormed(level, bloomery.getInternalBlock(), facing)+" with "+ getChimneyLevels(level, Helpers.getBlockEntity(level, pos, BloomeryBlockEntity.class).getInternalBlock())+" levels. Bloomery lit is "+ finalState.getValue(LIT));
-                LOGGER.info("Bloomery inventory has inventory "+bloomery.printInventory());
-            });
-            if (!state.getValue(LIT))
-            {
-                state = state.cycle(OPEN);
-                level.setBlockAndUpdate(pos, state);
-                level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                return InteractionResult.SUCCESS;
-            }
+            state = state.cycle(OPEN);
+            level.setBlockAndUpdate(pos, state);
+            level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
