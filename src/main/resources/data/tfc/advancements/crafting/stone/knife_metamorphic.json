@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stone/knife_head/metamorphic"
+            "items": [
+              "tfc:stone/knife_head/metamorphic"
+            ]
           }
         ]
       }

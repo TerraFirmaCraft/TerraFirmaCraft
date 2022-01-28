@@ -210,11 +210,8 @@ def generate(rm: ResourceManager):
             block.with_block_loot('tfc:groundcover/%s' % misc)
             rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
-    rm.blockstate('peat').with_block_model().with_item_model().with_lang('tfc:peat').with_lang(lang('Peat'))
-    rm.blockstate('aggregate').with_block_model().with_item_model().with_block_loot('tfc:aggregate').with_lang(lang('Aggregate'))
-    rm.blockstate('fire_bricks').with_block_model().with_item_model().with_block_loot('tfc:fire_bricks').with_lang(lang('Fire Bricks'))
-    rm.blockstate('fire_clay_block').with_block_model().with_item_model().with_block_loot('tfc:fire_clay_block').with_lang(lang('Fire Clay Block'))
-    rm.blockstate('thatch').with_block_model().with_item_model().with_block_loot('tfc:thatch').with_lang(lang('Thatch'))
+    for block in SIMPLE_BLOCKS:
+        rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
     rm.blockstate(('alabaster', 'raw', 'alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster').with_lang(lang('Alabaster'))
     rm.blockstate(('alabaster', 'raw', 'alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster_bricks').with_lang(lang('Alabaster Bricks'))
@@ -314,8 +311,8 @@ def generate(rm: ResourceManager):
     rm.item_model('raw_iron_bloom', 'tfc:item/bloom/unrefined').with_lang(lang('Raw Iron Bloom'))
     rm.item_model('refined_iron_bloom', 'tfc:item/bloom/refined').with_lang(lang('Refined Iron Bloom'))
 
-    rm.blockstate('placed_item', 'tfc:block/empty')
-    rm.blockstate('scraping', 'tfc:block/empty')
+    rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
+    rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
 
     # Dirt
@@ -335,7 +332,7 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 
-        rm.block(('grass_path', soil)).with_lang(lang('%s path'))
+        rm.block(('grass_path', soil)).with_lang(lang('%s path', soil))
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
@@ -740,6 +737,9 @@ def generate(rm: ResourceManager):
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
 
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):
+        rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
+
     # Food
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
@@ -1072,7 +1072,7 @@ def generate(rm: ResourceManager):
     water_based_fluid(rm, 'spring_water')
 
     # River water, since it doesn't have a bucket
-    rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
+    rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
     rm.fluid_tag('minecraft:water', 'tfc:river_water')  # Need to use water fluid tag for behavior
     rm.fluid_tag('mixable', 'tfc:river_water')
 
@@ -1117,7 +1117,7 @@ def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifie
 
 
 def water_based_fluid(rm: ResourceManager, name: str):
-    rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
+    rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name))
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
     rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
     rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
@@ -1127,7 +1127,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
         'fluid': 'tfc:%s' % name
     })
     item.with_lang(lang('%s bucket', name))
-    rm.lang('fluid.tfc.%s' % name, lang('%s', name))
+    rm.lang('fluid.tfc.%s' % name, lang(name))
 
 
 def corals(rm: ResourceManager, color: str, dead: bool):

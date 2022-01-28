@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -22,6 +23,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -32,6 +34,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
@@ -46,6 +52,14 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_8;
     public static final EnumProperty<CompostType> TYPE = TFCBlockStateProperties.COMPOST_TYPE;
+
+    private static final VoxelShape[] SHAPES = Util.make(new VoxelShape[9], shapes -> {
+        shapes[0] = Block.box(1D, 1D, 1D, 15D, 16D, 15D);
+        for(int i = 1; i < 9; ++i)
+        {
+            shapes[i] = Shapes.join(Shapes.block(), Block.box(1.0D, Math.max(2, i * 2), 1.0D, 15.0D, 16.0D, 15.0D), BooleanOp.ONLY_FIRST);
+        }
+    });
 
     public TFCComposterBlock(ExtendedProperties properties)
     {
@@ -82,6 +96,13 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
         {
             level.addParticle(particle, x, y, z, 0D, 0D, 0D);
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return SHAPES[state.getValue(STAGE)];
     }
 
     @Override

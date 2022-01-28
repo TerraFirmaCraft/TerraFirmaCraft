@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:damage_inputs_shapeless_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "tfc:wood/log/white_cedar"
+      },
+      {
+        "item": "tfc:wood/log/white_cedar"
+      },
+      {
+        "tag": "tfc:saws"
+      }
+    ],
+    "result": {
+      "item": "tfc:wood/support/white_cedar",
+      "count": 8
+    }
+  }
+}

@@ -237,25 +237,10 @@ public final class BiomeNoise
     /**
      * Adds volcanoes to a base noise height map
      */
-    public static Noise2D addVolcanoes(long seed, Noise2D baseNoise, int frequency, int baseVolcanoHeight, int scaleVolcanoHeight)
+    public static Noise2D addVolcanoes(long seed, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight)
     {
-        final Cellular2D volcanoNoise = VolcanoNoise.cellNoise(seed);
-        final Noise2D volcanoJitterNoise = VolcanoNoise.distanceVariationNoise(seed);
-        final float volcanoChance = 1f / frequency;
-
-        return (x, z) -> {
-            final float value = volcanoNoise.noise(x, z);
-            final float distance = volcanoNoise.f1();
-            final float baseHeight = baseNoise.noise(x, z);
-            final float t = VolcanoNoise.calculateEasing(distance);
-            if (value < volcanoChance && t > 0)
-            {
-                final float th = VolcanoNoise.calculateHeight(distance + volcanoJitterNoise.noise(x, z));
-                final float height = SEA_LEVEL_Y + baseVolcanoHeight + th * scaleVolcanoHeight;
-                return Mth.lerp(t, baseHeight, 0.5f * (height + Math.max(height, baseHeight)));
-            }
-            return baseHeight;
-        };
+        final VolcanoNoise volcanoes = new VolcanoNoise(seed);
+        return (x, z) -> volcanoes.modifyHeight(x, z, baseNoise.noise(x, z), rarity, baseVolcanoHeight, scaleVolcanoHeight);
     }
 
     public static BiomeNoiseSampler undergroundRivers(long seed, Noise2D heightNoise)

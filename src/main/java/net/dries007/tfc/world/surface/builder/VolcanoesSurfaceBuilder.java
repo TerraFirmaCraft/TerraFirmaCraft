@@ -14,7 +14,6 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
-import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -23,18 +22,18 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
 {
     public static SurfaceBuilderFactory create(SurfaceBuilderFactory parent)
     {
-        return (seed) -> new VolcanoesSurfaceBuilder(parent.apply(seed), seed + 71982341L);
+        return seed -> new VolcanoesSurfaceBuilder(parent.apply(seed), seed);
     }
 
     private final SurfaceBuilder parent;
 
     private final Noise2D heightNoise;
-    private final Cellular2D cellNoise;
+    private final VolcanoNoise volcanoNoise;
 
     public VolcanoesSurfaceBuilder(SurfaceBuilder parent, long seed)
     {
         this.parent = parent;
-        this.cellNoise = VolcanoNoise.cellNoise(seed);
+        this.volcanoNoise = new VolcanoNoise(seed);
         this.heightNoise = new OpenSimplex2D(seed + 71829341L).octaves(2).spread(0.1f).scaled(-4, 4);
     }
 
@@ -44,11 +43,8 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
         final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.level(), context.biome()).variants();
         if (variants.isVolcanic())
         {
-            // Sample volcano noise
-            final float value = cellNoise.noise(context.pos().getX(), context.pos().getZ());
-            final float distance = cellNoise.f1();
-            final float easing = VolcanoNoise.calculateEasing(distance);
-            if (value < variants.getVolcanoChance() && easing > 0.6f && startY > variants.getVolcanoBasaltHeight() + heightNoise.noise(context.pos().getX(), context.pos().getZ()))
+            final float easing = volcanoNoise.calculateEasing(context.pos().getX(), context.pos().getZ(), variants.getVolcanoRarity());
+            if (easing > 0.6f && startY > variants.getVolcanoBasaltHeight() + heightNoise.noise(context.pos().getX(), context.pos().getZ()))
             {
                 buildVolcanicSurface(context, startY, endY, easing);
                 return;

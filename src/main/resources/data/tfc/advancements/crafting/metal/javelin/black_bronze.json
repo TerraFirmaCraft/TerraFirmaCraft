@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/javelin_head/black_bronze"
+            "items": [
+              "tfc:metal/javelin_head/black_bronze"
+            ]
           }
         ]
       }

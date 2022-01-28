@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/saw_blade/bismuth_bronze"
+            "items": [
+              "tfc:metal/saw_blade/bismuth_bronze"
+            ]
           }
         ]
       }

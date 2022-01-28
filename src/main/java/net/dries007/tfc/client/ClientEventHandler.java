@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -36,7 +37,10 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.Bootstrap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.FishingRodItem;
@@ -357,8 +361,9 @@ public final class ClientEventHandler
         if (Helpers.detectAssertionsEnabled())
         {
             LOGGER.info("Running Self Test");
-            if (ClientEventHandler.validateModelsAndTranslations()
-                | TFCBlockEntities.validateBlockEntities())
+            if (ClientEventHandler.validateModels() |
+                ClientEventHandler.validateTranslations() |
+                TFCBlockEntities.validateBlockEntities())
             {
                 throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
             }
@@ -366,7 +371,7 @@ public final class ClientEventHandler
     }
 
     @SuppressWarnings("deprecation")
-    private static boolean validateModelsAndTranslations()
+    private static boolean validateModels()
     {
         final BlockModelShaper shaper = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
@@ -374,29 +379,55 @@ public final class ClientEventHandler
 
         final List<Block> missingModelErrors = blocksWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
         final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
-        final List<Item> missingTranslationErrors = itemsWithStackMatching(s -> new TranslatableComponent(s.getDescriptionId()).getString().equals(s.getDescriptionId()));
 
         return logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
-            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e))
-            | logValidationErrors("Items with missing translations:", missingTranslationErrors, e -> LOGGER.error("  {} ({})", e, e.getDescriptionId()));
+            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e));
+    }
+
+    private static boolean validateTranslations()
+    {
+        final Set<String> missingTranslations = Bootstrap.getMissingTranslations();
+        final NonNullList<ItemStack> items = NonNullList.create();
+
+        ForgeRegistries.ITEMS.getValues().forEach(item -> {
+            items.clear();
+            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
+            items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));
+        });
+
+        for (CreativeModeTab tab : CreativeModeTab.TABS)
+        {
+            validateTranslation(missingTranslations, tab.getDisplayName());
+        }
+
+        if (!missingTranslations.isEmpty())
+        {
+            LOGGER.error("Missing translation keys found!");
+            missingTranslations.forEach(LOGGER::error);
+            return true;
+        }
+        return false;
+    }
+
+    private static void validateTranslation(Set<String> missingTranslations, Component component)
+    {
+        if (component instanceof TranslatableComponent translatable)
+        {
+            if (!Language.getInstance().has(translatable.getKey()))
+            {
+                missingTranslations.add(translatable.getKey());
+            }
+        }
+        else
+        {
+            LOGGER.error("Tried to check the translation key of a non-translatable-component, this is almost certainly a bug, {}", component);
+        }
     }
 
     private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)
     {
         return Helpers.streamOurs(ForgeRegistries.BLOCKS)
             .filter(b -> b.getStateDefinition().getPossibleStates().stream().anyMatch(condition))
-            .collect(Collectors.toList());
-    }
-
-    private static List<Item> itemsWithStackMatching(Predicate<ItemStack> condition)
-    {
-        final NonNullList<ItemStack> stacks = NonNullList.create();
-        return Helpers.streamOurs(ForgeRegistries.ITEMS)
-            .filter(i -> {
-                stacks.clear();
-                i.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
-                return stacks.stream().anyMatch(condition);
-            })
             .collect(Collectors.toList());
     }
 

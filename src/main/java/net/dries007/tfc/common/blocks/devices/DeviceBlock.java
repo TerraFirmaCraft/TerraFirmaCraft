@@ -83,7 +83,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
-                stack.addTagElement("BlockEntityTag" /* BlockItem.BLOCK_ENTITY_TAG */, inv.save(new CompoundTag()));
+                inv.saveToItem(stack);
             }
         }
         return stack;

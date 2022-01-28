@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:plant",
+    "#tfc:plants",
     "tfc:food/beet",
     "tfc:food/cabbage",
     "tfc:food/carrot",

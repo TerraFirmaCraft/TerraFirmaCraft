@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/twig/kapok"
+            "items": [
+              "tfc:wood/twig/kapok"
+            ]
           }
         ]
       }

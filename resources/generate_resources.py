@@ -17,21 +17,6 @@ import world_gen
 
 from constants import *
 
-def configured_placement(data):
-    if utils.is_sequence(data):
-        res, cfg = utils.unordered_pair(data, str, dict)
-        assert 'type' not in cfg, 'Type specified twice for placement'
-        return {'type': utils.resource_location(res).join(), **cfg}
-    elif isinstance(data, dict):
-        assert 'type' in data, 'Missing \'type\' in placement'
-        return data
-    elif isinstance(data, str):
-        return {'type': utils.resource_location(data).join()}
-    else:
-        raise ValueError('Unknown object %s at configured_placement' % str(data))
-
-utils.configured_placement = configured_placement
-
 class ModificationLoggingResourceManager(ResourceManager):
 
     def write(self, path_parts: Sequence[str], data_in: Json):

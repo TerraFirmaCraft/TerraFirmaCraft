@@ -14,7 +14,7 @@ public enum PlateBoundaryLayer
 {
     INSTANCE;
 
-    public static final float SHEAR_THRESHOLD = 0.75f;
+    public static final float SHEAR_THRESHOLD = 7.5f;
 
     public static final float HIGH_ELEVATION = 0.7f;
     public static final float MID_ELEVATION = 0.3f;

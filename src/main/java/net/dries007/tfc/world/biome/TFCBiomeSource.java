@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
@@ -143,13 +142,14 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         return getNoiseBiome(quartX, quartZ);
     }
 
+    @Override
     public Biome getNoiseBiome(int quartX, int quartZ)
     {
         final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
 
         final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
         final ChunkData data = chunkDataProvider.get(chunkPos);
-        final BiomeVariants variants = sampleBiome(quartX, quartZ);
+        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
 
         if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
         {
@@ -163,11 +163,18 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         return biomeRegistry.getOrThrow(extension.key());
     }
 
+    @Override
     public Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
     {
-        final BiomeVariants variants = sampleBiome(quartX, quartZ);
+        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
         return biomeRegistry.getOrThrow(extension.key());
+    }
+
+    @Override
+    public BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ)
+    {
+        return biomeLayer.get(quartX, quartZ);
     }
 
     @Override
@@ -226,11 +233,6 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
             }
         }
         return pos;
-    }
-
-    private BiomeVariants sampleBiome(int quartX, int quartZ)
-    {
-        return biomeLayer.get(quartX, quartZ);
     }
 
     private BiomeRainfall calculateRainfall(float rainfall)

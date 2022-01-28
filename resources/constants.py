@@ -445,6 +445,7 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
 }
 
+SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
                 'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
@@ -564,7 +565,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
     'itemGroup.tfc.rock': 'TFC Rock Stuffs',
-    'itemGroup.tfc.metal': 'TFC Metal Stuffs',
+    'itemGroup.tfc.metals': 'TFC Metal Stuffs',
     'itemGroup.tfc.wood': 'TFC Wooden Stuffs',
     'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.devices': 'TFC Devices',
@@ -582,7 +583,6 @@ DEFAULT_LANG = {
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
-    'tfc.tooltip.fuel': 'Fuel Duration: %d Temp: %d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
@@ -674,9 +674,13 @@ DEFAULT_LANG = {
     'tfc.commands.player.query_saturation': 'Saturation is %s / 20',
     'tfc.commands.player.query_water': 'Water is %s / 100',
     'tfc.commands.player.query_nutrition': 'Player nutrition:',
-    'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data.',
+    'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data',
     'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
     'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
+    'tfc.commands.locate.invalid_biome': 'Invalid biome: \"%s\"',
+    'tfc.commands.locate.invalid_biome_source': 'This world does not have a compatible biome source',
+    'tfc.commands.locate.not_found': 'Could not find a biome of type \"%s\" within reasonable distance',
+    'tfc.commands.locate.volcano_not_found': 'Could not find a volcano within reasonable distance',
 
     # Entities
     'entity.tfc.cod': 'Cod',
@@ -693,6 +697,9 @@ DEFAULT_LANG = {
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.falling_block': 'Falling Block',
+    'entity.tfc.fishing_bobber': 'Fishing Bobber',
+    **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums
 
