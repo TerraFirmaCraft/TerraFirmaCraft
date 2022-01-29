@@ -546,7 +546,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
                 }
             }
             // Wild animals disappear after 125% lifespan
-            if (this.getDaysToElderly() > 0 && this.getFamiliarity() < 0.10F &&
+            if (ConfigTFC.Animals.GENERAL.enableOldAge && this.getFamiliarity() < 0.10F &&
                 (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
             {
                 this.setDead();

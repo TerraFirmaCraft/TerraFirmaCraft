@@ -118,7 +118,7 @@ public interface IAnimalTFC extends ICreatureTFC
         long deltaDays = CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay();
         long adulthoodDay = this.getDaysToAdulthood();
         long elderlyDay = this.getDaysToElderly() + this.getDaysToAdulthood();
-        if (ConfigTFC.Animals.GENERAL.enableOldAge && getCreatureType() == CreatureType.LIVESTOCK && this.getDaysToElderly() > 0 && deltaDays > elderlyDay)
+        if (ConfigTFC.Animals.GENERAL.enableOldAge && getCreatureType() == CreatureType.LIVESTOCK && deltaDays > elderlyDay)
         {
             return Age.OLD; // if enabled, only for familiarizable animals
         }
