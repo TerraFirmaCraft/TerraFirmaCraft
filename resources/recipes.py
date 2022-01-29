@@ -410,6 +410,13 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
+    # Loom Recipes
+    
+    loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
+    loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'silk_cloth', 'minecraft:string', 24, 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
+
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
     assert result is not None or copy_input
@@ -525,6 +532,16 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
             'min': p[1],
             'max': p[2]
         } for p in parts]
+    })
+
+
+def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: str, input_count: int, result: utils.Json, steps: int, in_progress_texture: str):
+    return rm.recipe(('loom', name), 'tfc:loom', {
+        'ingredient': utils.ingredient(ingredient),
+        'input_count': input_count,
+        'result': utils.item_stack(result),
+        'steps_required': steps,
+        'in_progress_texture': in_progress_texture
     })
 
 

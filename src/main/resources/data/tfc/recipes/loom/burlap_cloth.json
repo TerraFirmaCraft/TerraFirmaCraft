@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:loom",
+  "ingredient": {
+    "item": "tfc:jute_fiber"
+  },
+  "input_count": 12,
+  "result": {
+    "item": "tfc:burlap_cloth"
+  },
+  "steps_required": 12,
+  "in_progress_texture": "tfc:block/burlap"
+}

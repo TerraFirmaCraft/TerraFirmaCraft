@@ -10,12 +10,9 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCRecipeTypes
 {
@@ -31,6 +28,7 @@ public class TFCRecipeTypes
     public static final Supplier<RecipeType<RockKnappingRecipe>> ROCK_KNAPPING = register("rock_knapping");
     public static final Supplier<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
     public static final Supplier<RecipeType<CastingRecipe>> CASTING = register("casting");
+    public static final Supplier<RecipeType<LoomRecipe>> LOOM = register("loom");
 
     public static void registerRecipeTypes()
     {
@@ -46,6 +44,7 @@ public class TFCRecipeTypes
         ROCK_KNAPPING.get();
         ALLOY.get();
         CASTING.get();
+        LOOM.get();
     }
 
     public static void registerPotRecipeOutputTypes()
