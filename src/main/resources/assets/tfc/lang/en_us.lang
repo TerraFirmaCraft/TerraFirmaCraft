@@ -908,7 +908,6 @@ config.tfc.animals.tooltip=Various animals configuration like gestation periods,
 
 
 ### Config Names
-config.tfc.animals.general=General
 config.tfc.animals.alpaca=Alpaca
 config.tfc.animals.sheep=Sheep
 config.tfc.animals.cow=Cow
@@ -956,7 +955,7 @@ config.tfc.animals.adulthood=Adulthood
 config.tfc.animals.adulthood.tooltip=How many days until this animal is a full grown adult?
 
 config.tfc.animals.elder=Elderly
-config.tfc.animals.elder.tooltip=How many days after becoming an adult until this animal is old?
+config.tfc.animals.elder.tooltip=How many days after becoming an adult until this animal is old? 0 = Disable
 
 config.tfc.animals.gestation=Gestation
 config.tfc.animals.gestation.tooltip=How many days until this animal gives birth?
@@ -990,9 +989,6 @@ config.tfc.animals.food.tooltip=This controls which items are considered food fo
 
 config.tfc.animals.acceptRotten=Accept Rotten Foods
 config.tfc.animals.acceptRotten.tooltip=Does this animal eat rotten foods?
-
-config.tfc.animals.oldAge=Old Age
-config.tfc.animals.oldAge.tooltip=Is livestock allowed to get old?
 
 
 # Misc
