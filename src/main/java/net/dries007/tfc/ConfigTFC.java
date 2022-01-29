@@ -1082,6 +1082,10 @@ public final class ConfigTFC
     @Config.LangKey("config." + MOD_ID + ".animals")
     public static final class Animals
     {
+        @Config.Comment("General")
+        @Config.LangKey("config." + MOD_ID + ".animals.general")
+        public static final GeneralCFG GENERAL = new GeneralCFG();
+
         @Config.Comment("Alpaca")
         @Config.LangKey("config." + MOD_ID + ".animals.alpaca")
         public static final AlpacaCFG ALPACA = new AlpacaCFG();
@@ -1242,6 +1246,13 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".animals.coyote")
         public static final CoyoteCFG COYOTE = new CoyoteCFG();
 
+        public static final class GeneralCFG
+        {
+            @Config.Comment("If false, livestock will never get old.")
+            @Config.LangKey("config." + MOD_ID + ".animals.oldAge")
+            public boolean enableOldAge = true;
+        }
+
         public static final class AlpacaCFG
         {
             @Config.Comment("How many days until this animal is a full grown adult?")
@@ -1249,8 +1260,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 98;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 392;
 
@@ -1287,8 +1298,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 64;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 256;
 
@@ -1325,8 +1336,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
@@ -1363,8 +1374,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
@@ -1401,8 +1412,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 180;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 720;
 
@@ -1439,8 +1450,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 108;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 686;
 
@@ -1477,8 +1488,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 96;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 420;
 
@@ -1515,8 +1526,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 24;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 92;
 
@@ -1548,8 +1559,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 26;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 98;
 
@@ -1581,8 +1592,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 22;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 88;
 
@@ -1614,8 +1625,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 32;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 140;
 
@@ -1647,8 +1658,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 80;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 320;
 
@@ -1680,8 +1691,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
@@ -1713,8 +1724,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 160;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 640;
 
@@ -1746,8 +1757,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
@@ -1779,8 +1790,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
@@ -1812,8 +1823,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
@@ -1843,8 +1854,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 59;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 236;
 
@@ -1882,8 +1893,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 70;
 
-            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
-            @Config.RangeInt(min = 0)
+            @Config.Comment("How many days after becoming an adult until this animal is old?")
+            @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 280;
 
