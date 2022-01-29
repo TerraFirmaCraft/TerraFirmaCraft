@@ -553,7 +553,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                 }
             }
             // Wild animals disappear after 125% lifespan
-            if (ConfigTFC.Animals.GENERAL.enableOldAge && this.getFamiliarity() < 0.10F &&
+            if (this.getDaysToElderly() > 0 && this.getFamiliarity() < 0.10F &&
                 (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
             {
                 this.setDead();

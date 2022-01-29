@@ -32,7 +32,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.IAnimalTFC;
@@ -352,7 +351,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             if (this instanceof ILivestock)
             {
                 // Wild livestock disappear after 125% lifespan
-                if (ConfigTFC.Animals.GENERAL.enableOldAge && this.getFamiliarity() < 0.10F && (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
+                if (this.getDaysToElderly() > 0 && this.getFamiliarity() < 0.10F && (this.getDaysToElderly() + this.getDaysToAdulthood()) * 1.25F <= CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay())
                 {
                     this.setDead();
                 }
