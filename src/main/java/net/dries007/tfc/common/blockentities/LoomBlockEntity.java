@@ -83,7 +83,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     markForBlockUpdate();
                     updateCachedRecipe();
                 }
-                updateCachedRecipe();
                 return InteractionResult.SUCCESS;
             }
             else if (!inventory.getStackInSlot(SLOT_RECIPE).isEmpty()) // we are holding something that can be added to the current loom inventory
