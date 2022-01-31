@@ -1,6 +1,13 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +39,8 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private LoomRecipe recipe = null;
     private long lastPushed = 0L;
-    private boolean needsUpdate = false;
+    private boolean needsProgressUpdate = false;
+    private boolean needsRecipeUpdate;
 
     public LoomBlockEntity(BlockPos pos, BlockState state)
     {
@@ -57,10 +65,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 if (heldItem.isEmpty() && !level.isClientSide)
                 {
-                    ItemStack temp = inventory.getStackInSlot(SLOT_RECIPE).copy();
-                    temp.setCount(1);
-                    ItemHandlerHelper.giveItemToPlayer(player, temp);
-                    inventory.getStackInSlot(SLOT_RECIPE).shrink(1);
+                    ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_RECIPE, 1, false));
                     markForBlockUpdate();
                 }
                 updateCachedRecipe();
@@ -74,10 +79,9 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 if (!level.isClientSide)
                 {
-                    inventory.setStackInSlot(SLOT_RECIPE, heldItem.copy());
-                    inventory.getStackInSlot(SLOT_RECIPE).setCount(1);
-                    heldItem.shrink(1);
+                    inventory.setStackInSlot(SLOT_RECIPE, heldItem.split(1));
                     markForBlockUpdate();
+                    updateCachedRecipe();
                 }
                 updateCachedRecipe();
                 return InteractionResult.SUCCESS;
@@ -96,7 +100,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 }
             }
             // actual pushing function of the loom
-            if (recipe != null && heldItem.isEmpty() && recipe.getInputCount() == inventory.getStackInSlot(SLOT_RECIPE).getCount() && progress < recipe.getStepCount() && !needsUpdate)
+            if (recipe != null && heldItem.isEmpty() && recipe.getInputCount() == inventory.getStackInSlot(SLOT_RECIPE).getCount() && progress < recipe.getStepCount() && !needsProgressUpdate)
             {
                 long time = level.getGameTime() - lastPushed;
                 if (time < 20) // we only let you update once a second
@@ -105,7 +109,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 }
                 level.playSound(null, worldPosition, TFCSounds.LOOM_WEAVE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
                 lastPushed = level.getGameTime();
-                needsUpdate = true;
+                needsProgressUpdate = true;
                 markForSync();
                 return InteractionResult.sidedSuccess(level.isClientSide); // we want to swing the player's arm
             }
@@ -129,14 +133,19 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public static void tick(Level level, BlockPos pos, BlockState state, LoomBlockEntity loom)
     {
         assert level != null;
+        if (loom.needsRecipeUpdate)
+        {
+            loom.updateCachedRecipe();
+            loom.needsRecipeUpdate = false;
+        }
         if (loom.recipe != null)
         {
             LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
-            if (loom.needsUpdate)
+            if (loom.needsProgressUpdate)
             {
                 if (level.getGameTime() - loom.lastPushed >= 20)
                 {
-                    loom.needsUpdate = false;
+                    loom.needsProgressUpdate = false;
                     loom.progress++;
 
                     if (loom.progress == recipe.getStepCount())
@@ -202,4 +211,22 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         return 0;
     }
+
+    @Override
+    public void saveAdditional(CompoundTag tag)
+    {
+        tag.putInt("progress", progress);
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag)
+    {
+        progress = tag.getInt("progress");
+        needsRecipeUpdate = true;
+        //updateCachedRecipe();
+        super.loadAdditional(tag);
+    }
+
+
 }
