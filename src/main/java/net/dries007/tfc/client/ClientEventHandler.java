@@ -340,6 +340,10 @@ public final class ClientEventHandler
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
         TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
+        {
+            event.addSprite(Helpers.identifier("block/burlap"));
+        }
         if (atlas.location().equals(Sheets.CHEST_SHEET))
         {
             Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {
