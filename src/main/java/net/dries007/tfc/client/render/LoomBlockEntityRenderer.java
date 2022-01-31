@@ -29,6 +29,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
     {
 
     }
+
     @Override
     public void render(LoomBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
@@ -71,9 +72,9 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
     private void drawProduct(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, int combinedOverlay, int combinedLight)
     {
-        for (float[] v : getPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, (float)te.getProgress() / 16F))
+        for (float[] v : getPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, (float) te.getProgress() / 16F))
         {
-            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3])), sprite.getU((v[4])), combinedOverlay, combinedLight);
+            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3] * 16D)), sprite.getU((v[4] * 16D)), combinedOverlay, combinedLight);
         }
     }
 
