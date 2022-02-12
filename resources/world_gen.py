@@ -1206,6 +1206,10 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         spawners.update({
             'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
         })
+    if name.find('lake') != -1:
+        spawners.update({
+            'water_creature': [entity for entity in LAKE_CREATURES.values()]
+        })
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LARGE_FEATURES].append('tfc:coral_reef')

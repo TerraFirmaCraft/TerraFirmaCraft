@@ -66,7 +66,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<TFCDolphin>> DOLPHIN = register("dolphin", EntityType.Builder.of(TFCDolphin::new, MobCategory.WATER_CREATURE).sized(0.9F, 0.6F));
     public static final RegistryObject<EntityType<TFCDolphin>> ORCA = register("orca", EntityType.Builder.of(TFCDolphin::new, MobCategory.WATER_CREATURE).sized(0.9F, 0.6F));
-
+    public static final RegistryObject<EntityType<Manatee>> MANATEE = register("manatee", EntityType.Builder.of(Manatee::new, MobCategory.WATER_CREATURE).sized(1.0F, 1.0F));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -92,5 +92,6 @@ public class TFCEntities
         event.put(HORSESHOE_CRAB.get(), AbstractFish.createAttributes().build());
         event.put(DOLPHIN.get(), Dolphin.createAttributes().build());
         event.put(ORCA.get(), Dolphin.createAttributes().build());
+        event.put(MANATEE.get(), Manatee.createAttributes().build());
     }
 }

@@ -214,7 +214,16 @@
     []
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "water_creature": [
+      {
+        "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

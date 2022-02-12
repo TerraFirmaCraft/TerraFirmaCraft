@@ -240,13 +240,14 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.SALMON.get(), SalmonRenderer::new);
         event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
-        event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
-        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
-        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer<>(ctx, new BluegillModel(ClientHelpers.bakeSimple(ctx, "bluegill")), "bluegill", true));
+        event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), ctx -> new SimpleMobRenderer<>(ctx, new JellyfishModel(ClientHelpers.bakeSimple(ctx, "jellyfish")), "jellyfish", true));
+        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(ClientHelpers.bakeSimple(ctx, "lobster")), "lobster"));
+        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer<>(ctx, new IsopodModel(ClientHelpers.bakeSimple(ctx, "isopod")), "isopod"));
+        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer<>(ctx, new HorseshoeCrabModel(ClientHelpers.bakeSimple(ctx, "horseshoe_crab")), "horseshoe_crab"));
         event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
-        event.registerEntityRenderer(TFCEntities.ORCA.get(), OrcaRenderer::new);
+        event.registerEntityRenderer(TFCEntities.ORCA.get(), ctx -> new SimpleMobRenderer<>(ctx, new OrcaModel(ClientHelpers.bakeSimple(ctx, "orca")), "orca"));
+        event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer<>(ctx, new ManateeModel(ClientHelpers.bakeSimple(ctx, "manatee")), "manatee"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -272,6 +273,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

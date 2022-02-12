@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -18,8 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Client side methods for proxy use
@@ -70,5 +70,10 @@ public final class ClientHelpers
     public static ResourceLocation animalTexture(String name)
     {
         return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
+    {
+        return ctx.bakeLayer(ClientHelpers.modelIdentifier(layerName));
     }
 }
