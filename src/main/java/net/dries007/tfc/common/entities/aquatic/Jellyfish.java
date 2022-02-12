@@ -32,6 +32,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -166,5 +167,11 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(TFCFluids.SALT_WATER.getSource());
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 0.0F : super.getBlockSpeedFactor();
     }
 }

@@ -245,6 +245,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
         event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
         event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.ORCA.get(), OrcaRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -269,6 +271,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

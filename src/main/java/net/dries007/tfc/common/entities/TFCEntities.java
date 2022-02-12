@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -25,6 +26,15 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * For reference, each living entity needs:
+ * - A registered entity renderer
+ * - A registered FaunaType for spawn placement
+ * - A spawn egg item (and a bucket item if it's bucketable)
+ * - Entity attributes, set in this class below
+ * - In datagen, a json entry for fauna
+ * - In datagen, an entry in biome spawners
+ */
 @SuppressWarnings("unused")
 public class TFCEntities
 {
@@ -48,9 +58,14 @@ public class TFCEntities
     public static final RegistryObject<EntityType<Bluegill>> BLUEGILL = register("bluegill", EntityType.Builder.of(Bluegill::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<Jellyfish>> JELLYFISH = register("jellyfish", EntityType.Builder.of(Jellyfish::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.5F).clientTrackingRange(4));
 
-    public static final RegistryObject<EntityType<AquaticCritterEntity>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritterEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<AquaticCritterEntity>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritterEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<AquaticCritterEntity>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritterEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+
+    // Water Creatures
+
+    public static final RegistryObject<EntityType<TFCDolphin>> DOLPHIN = register("dolphin", EntityType.Builder.of(TFCDolphin::new, MobCategory.WATER_CREATURE).sized(0.9F, 0.6F));
+    public static final RegistryObject<EntityType<TFCDolphin>> ORCA = register("orca", EntityType.Builder.of(TFCDolphin::new, MobCategory.WATER_CREATURE).sized(0.9F, 0.6F));
 
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
@@ -75,5 +90,7 @@ public class TFCEntities
         event.put(LOBSTER.get(), AbstractFish.createAttributes().build());
         event.put(ISOPOD.get(), AbstractFish.createAttributes().build());
         event.put(HORSESHOE_CRAB.get(), AbstractFish.createAttributes().build());
+        event.put(DOLPHIN.get(), Dolphin.createAttributes().build());
+        event.put(ORCA.get(), Dolphin.createAttributes().build());
     }
 }

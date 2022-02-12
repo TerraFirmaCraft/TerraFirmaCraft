@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.model.HorseshoeCrabModel;
-import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-public class HorseshoeCrabRenderer extends MobRenderer<AquaticCritterEntity, HorseshoeCrabModel>
+public class HorseshoeCrabRenderer extends MobRenderer<AquaticCritter, HorseshoeCrabModel>
 {
     private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("horseshoe_crab");
 
@@ -24,7 +24,7 @@ public class HorseshoeCrabRenderer extends MobRenderer<AquaticCritterEntity, Hor
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AquaticCritterEntity entity)
+    public ResourceLocation getTextureLocation(AquaticCritter entity)
     {
         return LOCATION;
     }

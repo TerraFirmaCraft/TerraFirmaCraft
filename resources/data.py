@@ -183,6 +183,8 @@ def generate(rm: ResourceManager):
 
     for plant in PLANTS.keys():
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+    for plant in UNIQUE_PLANTS:
+        rm.block_tag('plants', 'tfc:plant/%s' % plant)
 
     # Sand
     for color in SAND_BLOCK_TYPES:
@@ -558,8 +560,8 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'pufferfish'), fauna(climate=climate_config(min_temp=10), distance_below_sea_level=3))
     rm.data(('tfc', 'fauna', 'tropical_fish'), fauna(climate=climate_config(min_temp=18), distance_below_sea_level=3))
     rm.data(('tfc', 'fauna', 'jellyfish'), fauna(climate=climate_config(min_temp=18), distance_below_sea_level=3))
-    # rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
-    # rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
+    rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
+    rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
     # rm.data(('tfc', 'fauna', 'manatee'), fauna(distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
     rm.data(('tfc', 'fauna', 'salmon'), fauna(climate=climate_config(min_temp=-5)))
     rm.data(('tfc', 'fauna', 'bluegill'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))

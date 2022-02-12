@@ -514,10 +514,10 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
 }
 
-"""OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
+OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3)
-}"""
+}
 
 LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
     'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),

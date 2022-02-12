@@ -27,9 +27,11 @@ public class Faunas
     public static final FaunaType<Bluegill> BLUEGILL = registerFish(TFCEntities.BLUEGILL);
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
     public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
-    public static final FaunaType<AquaticCritterEntity> LOBSTER = registerFish(TFCEntities.LOBSTER);
-    public static final FaunaType<AquaticCritterEntity> ISOPOD = registerFish(TFCEntities.ISOPOD);
-    public static final FaunaType<AquaticCritterEntity> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
+    public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
+    public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
+    public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
+    public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
 
     public static void registerSpawnPlacements()
     {
@@ -42,6 +44,8 @@ public class Faunas
         registerSpawnPlacement(LOBSTER);
         registerSpawnPlacement(ISOPOD);
         registerSpawnPlacement(HORSESHOE_CRAB);
+        registerSpawnPlacement(DOLPHIN);
+        registerSpawnPlacement(ORCA);
     }
 
     private static <E extends Mob> FaunaType<E> registerFish(RegistryObject<EntityType<E>> entity)

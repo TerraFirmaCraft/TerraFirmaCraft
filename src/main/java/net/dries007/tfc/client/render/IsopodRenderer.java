@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.model.IsopodModel;
-import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-public class IsopodRenderer extends MobRenderer<AquaticCritterEntity, IsopodModel>
+public class IsopodRenderer extends MobRenderer<AquaticCritter, IsopodModel>
 {
     private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("isopod");
 
@@ -24,7 +24,7 @@ public class IsopodRenderer extends MobRenderer<AquaticCritterEntity, IsopodMode
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AquaticCritterEntity entity)
+    public ResourceLocation getTextureLocation(AquaticCritter entity)
     {
         return LOCATION;
     }

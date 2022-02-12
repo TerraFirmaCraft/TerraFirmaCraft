@@ -50,9 +50,9 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(level, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -63,14 +63,14 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             Block block = facingState.getBlock();
             if (block != this && block != topBlock)
             {
-                return topBlock.getStateForPlacement(level).setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+                return topBlock.getStateForPlacement(level).setValue(getFluidProperty(), state.getValue(getFluidProperty()));
             }
         }
         if (this.scheduleFluidTicks)
         {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -99,10 +99,10 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
-        Vec3 vector3d = state.getOffset(worldIn, pos);
+        VoxelShape voxelshape = super.getShape(state, level, pos, context);
+        Vec3 vector3d = state.getOffset(level, pos);
         return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 

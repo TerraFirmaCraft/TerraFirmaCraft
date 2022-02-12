@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.model.LobsterModel;
-import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-public class LobsterRenderer extends MobRenderer<AquaticCritterEntity, LobsterModel>
+public class LobsterRenderer extends MobRenderer<AquaticCritter, LobsterModel>
 {
     private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("lobster");
 
@@ -24,7 +24,7 @@ public class LobsterRenderer extends MobRenderer<AquaticCritterEntity, LobsterMo
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AquaticCritterEntity bluegill)
+    public ResourceLocation getTextureLocation(AquaticCritter bluegill)
     {
         return LOCATION;
     }

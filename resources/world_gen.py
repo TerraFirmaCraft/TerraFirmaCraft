@@ -1199,7 +1199,8 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
         spawners.update({
-            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()]
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
+            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
         })
     if category == 'river':
         spawners.update({
