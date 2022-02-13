@@ -527,11 +527,11 @@ LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
-"""
+
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
-    'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
+    #'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
-}"""
+}
 
 
 # This is here because it's used all over, and it's easier to import with all constants

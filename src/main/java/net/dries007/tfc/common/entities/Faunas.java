@@ -33,6 +33,7 @@ public class Faunas
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
     public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
+    public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
 
     public static void registerSpawnPlacements()
     {
@@ -48,6 +49,12 @@ public class Faunas
         registerSpawnPlacement(DOLPHIN);
         registerSpawnPlacement(ORCA);
         registerSpawnPlacement(MANATEE);
+        registerSpawnPlacement(TURTLE);
+    }
+
+    private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
+    {
+        return register(entity, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
     private static <E extends Mob> FaunaType<E> registerFish(RegistryObject<EntityType<E>> entity)
