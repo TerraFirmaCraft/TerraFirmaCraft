@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.model;
 
 import net.minecraft.client.model.QuadrupedModel;
@@ -36,28 +42,38 @@ public class TFCTurtleModel extends QuadrupedModel<AmphibiousAnimal>
     @Override
     public void setupAnim(AmphibiousAnimal animal, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
-        super.setupAnim(animal, limbSwing, limbSwingAmount, ageInTicks, headYaw, Mth.clamp(headPitch, -45F, 5F));
-        rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F * 0.6F) * 0.5F * limbSwingAmount;
-        leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F * 0.6F + Mth.PI) * 0.5F * limbSwingAmount;
-        rightFrontLeg.zRot = Mth.cos(limbSwing * 0.6662F * 0.6F + Mth.PI) * 0.5F * limbSwingAmount;
-        leftFrontLeg.zRot = Mth.cos(limbSwing * 0.6662F * 0.6F) * 0.5F * limbSwingAmount;
-        rightFrontLeg.xRot = 0.0F;
-        leftFrontLeg.xRot = 0.0F;
-        rightFrontLeg.yRot = 0.0F;
-        leftFrontLeg.yRot = 0.0F;
-        rightHindLeg.yRot = 0.0F;
-        leftHindLeg.yRot = 0.0F;
-        if (!animal.isInWater() && animal.isOnGround())
+        final boolean extraPartsVisible = !animal.isPlayingDead();
+        head.visible = extraPartsVisible;
+        rightFrontLeg.visible = extraPartsVisible;
+        rightHindLeg.visible = extraPartsVisible;
+        leftFrontLeg.visible = extraPartsVisible;
+        leftHindLeg.visible = extraPartsVisible;
+        if (extraPartsVisible)
         {
-            final float scale = 5.0F;
-            rightFrontLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 8.0F * limbSwingAmount;
-            rightFrontLeg.zRot = 0.0F;
-            leftFrontLeg.yRot = Mth.cos(limbSwing * scale) * 8.0F * limbSwingAmount;
-            leftFrontLeg.zRot = 0.0F;
-            rightHindLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 3.0F * limbSwingAmount;
-            rightHindLeg.xRot = 0.0F;
-            leftHindLeg.yRot = Mth.cos(limbSwing * scale) * 3.0F * limbSwingAmount;
-            leftHindLeg.xRot = 0.0F;
+            super.setupAnim(animal, limbSwing, limbSwingAmount, ageInTicks, headYaw, Mth.clamp(headPitch, -45F, 5F));
+
+            rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F * 0.6F) * 0.5F * limbSwingAmount;
+            leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F * 0.6F + Mth.PI) * 0.5F * limbSwingAmount;
+            rightFrontLeg.zRot = Mth.cos(limbSwing * 0.6662F * 0.6F + Mth.PI) * 0.5F * limbSwingAmount;
+            leftFrontLeg.zRot = Mth.cos(limbSwing * 0.6662F * 0.6F) * 0.5F * limbSwingAmount;
+            rightFrontLeg.xRot = 0.0F;
+            leftFrontLeg.xRot = 0.0F;
+            rightFrontLeg.yRot = 0.0F;
+            leftFrontLeg.yRot = 0.0F;
+            rightHindLeg.yRot = 0.0F;
+            leftHindLeg.yRot = 0.0F;
+            if (!animal.isInWater() && animal.isOnGround())
+            {
+                final float scale = 5.0F;
+                rightFrontLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 8.0F * limbSwingAmount;
+                rightFrontLeg.zRot = 0.0F;
+                leftFrontLeg.yRot = Mth.cos(limbSwing * scale) * 8.0F * limbSwingAmount;
+                leftFrontLeg.zRot = 0.0F;
+                rightHindLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 3.0F * limbSwingAmount;
+                rightHindLeg.xRot = 0.0F;
+                leftHindLeg.yRot = Mth.cos(limbSwing * scale) * 3.0F * limbSwingAmount;
+                leftHindLeg.xRot = 0.0F;
+            }
         }
     }
 }

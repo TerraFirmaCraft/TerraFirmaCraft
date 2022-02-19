@@ -114,6 +114,12 @@
   "spawners": {
     "creature": [
       {
+        "type": "tfc:penguin",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
         "type": "tfc:turtle",
         "weight": 1,
         "minCount": 2,

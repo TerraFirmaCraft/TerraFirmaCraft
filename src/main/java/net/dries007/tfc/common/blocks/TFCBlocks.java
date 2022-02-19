@@ -34,6 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.devices.*;
@@ -104,7 +105,7 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), type.createBlockItem())
     );
 
-    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
+    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyColdMobs)), EARTH);
 
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Properties.copy(Blocks.SNOW)).blockEntity(TFCBlockEntities.PILE)), EARTH);
     public static final RegistryObject<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Properties.copy(Blocks.ICE)).blockEntity(TFCBlockEntities.PILE)), EARTH);
@@ -279,19 +280,19 @@ public final class TFCBlocks
 
     public static final RegistryObject<RiverWaterBlock> RIVER_WATER = register("fluid/river_water", () -> new RiverWaterBlock(BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()));
 
-    public static boolean always(BlockState state, BlockGetter world, BlockPos pos)
+    public static boolean always(BlockState state, BlockGetter level, BlockPos pos)
     {
         return true;
     }
 
-    public static boolean never(BlockState state, BlockGetter world, BlockPos pos)
+    public static boolean never(BlockState state, BlockGetter level, BlockPos pos)
     {
         return false;
     }
 
-    public static boolean onlyPolarBears(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
+    public static boolean onlyColdMobs(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> type)
     {
-        return type == EntityType.POLAR_BEAR; // todo: does this need to be expanded?
+        return type.is(TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
     }
 
     private static ToIntFunction<BlockState> litBlockEmission(int lightValue)

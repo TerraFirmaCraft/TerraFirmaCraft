@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.world.InteractionHand;
@@ -54,6 +60,6 @@ public class Manatee extends Cod implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 0.0F : super.getBlockSpeedFactor();
+        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

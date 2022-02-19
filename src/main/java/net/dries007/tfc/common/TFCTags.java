@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -125,6 +123,17 @@ public class TFCTags
         private static Tag.Named<Item> create(String id)
         {
             return ItemTags.createOptional(Helpers.identifier(id));
+        }
+    }
+
+    public static class Entities
+    {
+        public static final Tag.Named<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
+        public static final Tag.Named<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
+
+        private static Tag.Named<EntityType<?>> create(String id)
+        {
+            return EntityTypeTags.createOptional(Helpers.identifier(id));
         }
     }
 }
