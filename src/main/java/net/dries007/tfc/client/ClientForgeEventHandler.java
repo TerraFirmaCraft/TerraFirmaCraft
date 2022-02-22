@@ -34,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -293,20 +294,29 @@ public class ClientForgeEventHandler
         final PoseStack poseStack = event.getPoseStack();
         final Entity entity = camera.getEntity();
         final Level level = entity.level;
-        final BlockHitResult traceResult = event.getTarget();
-        final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
+        final BlockHitResult hit = event.getTarget();
+        final BlockPos pos = hit.getBlockPos();
+        final BlockPos lookingAt = new BlockPos(pos);
 
         //noinspection ConstantConditions
         if (lookingAt != null && entity instanceof Player player)
         {
-            Block blockAt = level.getBlockState(lookingAt).getBlock();
+            BlockState stateAt = level.getBlockState(lookingAt);
+            Block blockAt = stateAt.getBlock();
             //todo: chisel
             if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
-                if (handler.drawHighlight(level, lookingAt, player, traceResult, poseStack, event.getMultiBufferSource(), camera.getPosition()))
+                if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
                 {
                     // Cancel drawing this block's bounding box
+                    event.setCanceled(true);
+                }
+            }
+            if (blockAt instanceof IGhostBlockHandler handler)
+            {
+                if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
+                {
                     event.setCanceled(true);
                 }
             }

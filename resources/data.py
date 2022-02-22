@@ -181,9 +181,8 @@ def generate(rm: ResourceManager):
 
     for wood in WOODS.keys():
         block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
-
-    for plant in PLANTS.keys():
-        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        rm.block_tag('single_block_replaceable', 'tfc:wood/twig/%s' % wood)
+        rm.block_tag('single_block_replaceable', 'tfc:wood/fallen_leaves/%s' % wood)
 
     # Sand
     for color in SAND_BLOCK_TYPES:
@@ -221,15 +220,19 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
+    rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
 
-    for plant, plant_data in PLANTS.items():  # Plants
-        if plant_data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
+    for plant, data in PLANTS.items():  # Plants
+        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        if data.type in ('standard', 'short_grass', 'dry', 'grass_water', 'water'):
+            rm.block_tag('single_block_replaceable', 'tfc:plant/%s' % plant)
+        if data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
-        if plant_data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh'):
+        if data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh', 'creeping'):
             rm.block_tag('can_be_ice_piled', 'tfc:plant/%s' % plant)
 
     # Rocks

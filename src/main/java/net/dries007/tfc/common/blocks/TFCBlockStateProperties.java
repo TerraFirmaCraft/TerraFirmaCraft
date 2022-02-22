@@ -85,6 +85,13 @@ public class TFCBlockStateProperties
     public static final BooleanProperty ITEM_2 = BooleanProperty.create("item_2");
     public static final BooleanProperty ITEM_3 = BooleanProperty.create("item_3");
 
+    // wattle
+    public static final BooleanProperty TOP = BooleanProperty.create("top");
+    public static final BooleanProperty LEFT = BooleanProperty.create("left");
+    public static final BooleanProperty RIGHT = BooleanProperty.create("right");
+    public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
+    public static final EnumProperty<WattleBlock.Type> WATTLE_TYPE = EnumProperty.create("type", WattleBlock.Type.class);
+
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
 

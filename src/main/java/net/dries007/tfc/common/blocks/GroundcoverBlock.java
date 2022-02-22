@@ -71,7 +71,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion(), cover.getShape(), cover.getVanillaItem());
+        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission(), cover.getShape(), cover.getVanillaItem());
     }
 
     public GroundcoverBlock(Properties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
@@ -155,13 +155,6 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return shape;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
-        return Shapes.empty();
     }
 
     @Override

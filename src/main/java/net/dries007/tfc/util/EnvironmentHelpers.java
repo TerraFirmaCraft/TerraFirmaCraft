@@ -27,6 +27,7 @@ import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 
@@ -259,5 +260,26 @@ public final class EnvironmentHelpers
             adjacentPos = posAbove;
         }
         return foundPos;
+    }
+
+    public static boolean isWorldgenReplaceable(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level.getBlockState(pos));
+    }
+
+    public static boolean isWorldgenReplaceable(BlockState state)
+    {
+        return FluidHelpers.isAirOrEmptyFluid(state) || state.is(TFCTags.Blocks.SINGLE_BLOCK_REPLACEABLE);
+    }
+
+    public static boolean canPlaceBushOn(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level, pos) && level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+    }
+
+    public static boolean isOnSturdyFace(WorldGenLevel level, BlockPos pos)
+    {
+        pos = pos.below();
+        return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 }

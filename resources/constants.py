@@ -154,7 +154,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'shield': MetalItem('tool', 400, 'item/handheld', None, False)
 }
 METAL_ITEMS_AND_BLOCKS = {**METAL_ITEMS, **METAL_BLOCKS}
-METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword')
+METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True, 'copper', 'copper'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
@@ -695,6 +695,7 @@ DEFAULT_LANG = {
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
+    'tfc.commands.countblock.done': 'Found %d %s',
     'tfc.commands.player.query_hunger': 'Hunger is %s / 20',
     'tfc.commands.player.query_saturation': 'Saturation is %s / 20',
     'tfc.commands.player.query_water': 'Water is %s / 100',

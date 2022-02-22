@@ -305,8 +305,7 @@ def generate(rm: ResourceManager):
     for meat in MEATS:
         heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item='tfc:food/cooked_%s' % meat)
 
-    for plant in SEAWEED:
-        heat_recipe(rm, plant, 'tfc:plant/%s' % plant, 200, 'tfc:food/dried_seaweed')
+    heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, 'tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, 'tfc:food/dried_kelp')
 
     for ore in ['hematite', 'limonite', 'malachite']:

@@ -75,6 +75,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
@@ -84,6 +85,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;

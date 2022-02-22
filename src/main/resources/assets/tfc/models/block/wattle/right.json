@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "tfc:block/wattle/right",
+    "end": "tfc:block/wattle/end"
+  }
+}
