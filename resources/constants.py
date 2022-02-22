@@ -102,7 +102,9 @@ METALS: Dict[str, Metal] = {
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False),
-    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False)
+    'chain': MetalItem('utility', 100, 'tfc:block/chain', None, False),
+    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False),
+    'trapdoor': MetalItem('utility', 200, 'tfc:block/trapdoor', None, False)
 }
 METAL_ITEMS: Dict[str, MetalItem] = {
     'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots', True),
@@ -307,6 +309,8 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
+SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tannin', 'vinegar')
+
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
     'ash': Wood(696, 1250),
@@ -471,7 +475,7 @@ PLANT_COLORS: Dict[str, List[str]] = {
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
-                'halter', 'jute', 'jute_disc', 'jute_fiber', 'jute_net', 'mortar', 'olive_jute_disc', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
+                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')

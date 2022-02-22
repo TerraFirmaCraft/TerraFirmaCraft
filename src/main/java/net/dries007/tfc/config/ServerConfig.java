@@ -57,6 +57,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
     // Blocks - Sluice
     public final ForgeConfigSpec.IntValue sluiceTicks;
+    // Blocks - Lamp
+    public final ForgeConfigSpec.IntValue lampCapacity;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -78,6 +80,9 @@ public class ServerConfig
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
+    // Items - Wooden Bucket
+    public final ForgeConfigSpec.IntValue woodenBucketCapacity;
+    public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
     public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
@@ -173,6 +178,9 @@ public class ServerConfig
         innerBuilder.pop().push("sluice");
         sluiceTicks = builder.apply("sluiceTicks").comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").defineInRange("sluiceTicks", 100, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("composter");
+        lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
+
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
@@ -199,6 +207,10 @@ public class ServerConfig
 
         jugCapacity = builder.apply("jugCapacity").comment("Tank capacity of a ceramic jug (in mB).").defineInRange("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
         jugBreakChance = builder.apply("jugBreakChance").comment("The chance a jug will break after drinking.").defineInRange("jugBreakChance", 0.02, 0, 1);
+
+        innerBuilder.pop().push("woodenBucket");
+        woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
+        enableSourcesFromWoodenBucket = builder.apply("enableSourcesFromWoodenBucket").comment("Should the wooden bucket place source blocks?").define("enableSourcesFromWoodenBucket", false);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

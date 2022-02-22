@@ -74,6 +74,7 @@ public class TFCTags
         public static final Tag.Named<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final Tag.Named<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final Tag.Named<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final Tag.Named<Block> LAMPS = create("lamps");
 
         private static Tag.Named<Block> create(String id)
         {
@@ -87,6 +88,7 @@ public class TFCTags
         public static final Tag.Named<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final Tag.Named<Fluid> USABLE_IN_JUG = create("usable_in_jug");
+        public static final Tag.Named<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
 
         private static Tag.Named<Fluid> create(String id)
         {

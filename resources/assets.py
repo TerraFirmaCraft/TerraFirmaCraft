@@ -521,14 +521,43 @@ def generate(rm: ResourceManager):
         # Metal Blocks
         for metal_block, metal_block_data in METAL_BLOCKS.items():
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
-                block = rm.blockstate(('metal', '%s' % metal_block, metal))
-                block.with_block_model({
-                    'all': 'tfc:block/metal/%s' % metal,
-                    'particle': 'tfc:block/metal/%s' % metal
-                }, parent=metal_block_data.parent_model)
-                block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
-                block.with_lang(lang('%s %s' % (metal, metal_block)))
-                block.with_item_model()
+                rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal))
+                metal_tex = 'tfc:block/metal/%s' % metal
+                if metal_block == 'lamp':
+                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
+                    rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
+                    rm.item_model(('metal', 'lamp', metal))
+                    rm.blockstate(('metal', metal_block, metal), variants={
+                        'hanging=false,lit=false': {'model': 'tfc:block/metal/lamp/%s_off' % metal},
+                        'hanging=true,lit=false': {'model': 'tfc:block/metal/lamp/%s_hanging_off' % metal},
+                        'hanging=false,lit=true': {'model': 'tfc:block/metal/lamp/%s_on' % metal},
+                        'hanging=true,lit=true': {'model': 'tfc:block/metal/lamp/%s_hanging_on' % metal},
+                    }).with_lang(lang('%s lamp', metal)).with_block_loot({
+                        'name': 'tfc:metal/lamp/%s' % metal,
+                        'functions': [loot_tables.copy_block_entity_nbt()]
+                    }).with_tag('lamps')
+                    rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
+                    rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
+                elif metal_block == 'chain':
+                    rm.block_model(('metal', 'chain', metal), {'all': metal_tex + '_chain', 'particle': metal_tex + '_chain'}, parent='minecraft:block/chain')
+                    rm.blockstate(('metal', 'chain', metal), variants={
+                        'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
+                        'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
+                        'axis=z': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90}
+                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal).with_item_model()
+                elif metal_block == 'trapdoor':
+                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture='tfc:block/metal/%s_trapdoor' % metal).with_lang(lang('%s trapdoor', metal))
+                else:
+                    block = rm.blockstate(('metal', '%s' % metal_block, metal))
+                    block.with_block_model({
+                        'all': 'tfc:block/metal/%s' % metal,
+                        'particle': 'tfc:block/metal/%s' % metal
+                    }, parent=metal_block_data.parent_model)
+                    block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
+                    block.with_lang(lang('%s %s' % (metal, metal_block)))
+                    block.with_item_model()
 
     # Misc Items
     for gem in GEMS:
@@ -597,6 +626,13 @@ def generate(rm: ResourceManager):
             'fluid': 'tfc:item/ceramic/jug_overlay'
         }
     }).with_lang(lang('Ceramic Jug'))
+    rm.custom_item_model('wooden_bucket', 'tfc:contained_fluid', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'base': 'tfc:item/bucket/wooden_bucket_empty',
+            'fluid': 'tfc:item/bucket/wooden_bucket_overlay'
+        }
+    }).with_lang(lang('Wooden Bucket'))
 
     # Small Ceramic Vessels (colored)
     for color in COLORS:
@@ -1155,6 +1191,9 @@ def generate(rm: ResourceManager):
 
     water_based_fluid(rm, 'salt_water')
     water_based_fluid(rm, 'spring_water')
+
+    for fluid in SIMPLE_FLUIDS:
+        water_based_fluid(rm, fluid)
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
