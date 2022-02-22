@@ -615,6 +615,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'dairy': dairy
     })
     rm.item_tag('foods', ingredient)
+    if category in (Category.fruit, Category.vegetable):
+        rm.item_tag('foods/%s' % category.name.lower(), ingredient)
+    if category in (Category.meat, Category.cooked_meat):
+        rm.item_tag('foods/meats')
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):

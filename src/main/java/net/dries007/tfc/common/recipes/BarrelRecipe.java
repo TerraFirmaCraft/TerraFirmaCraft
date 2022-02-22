@@ -29,71 +29,74 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
 
-    public BarrelRecipe(ResourceLocation id, ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid)
+    public BarrelRecipe(ResourceLocation id, Builder builder)
     {
         this.id = id;
-        this.inputItem = inputItem;
-        this.inputFluid = inputFluid;
-        this.outputItem = outputItem;
-        this.outputFluid = outputFluid;
+        this.inputItem = builder.inputItem;
+        this.inputFluid = builder.inputFluid;
+        this.outputItem = builder.outputItem;
+        this.outputFluid = builder.outputFluid;
     }
 
     public void assembleOutputs(BarrelBlockEntity.BarrelInventory inventory)
     {
-        // Remove all inputs
-        final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
-        final FluidStack fluid = inventory.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+        // Require the inventory to be mutable, as we use insert/extract methods, but will expect it to be modifiable despite being sealed.
+        inventory.whileMutable(() -> {
+            // Remove all inputs
+            final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
+            final FluidStack fluid = inventory.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
 
-        // Calculate the multiplier in use for this recipe
-        final int multiplier;
-        if (inputItem.count() == 0)
-        {
-            multiplier = fluid.getAmount() / inputFluid.amount();
-        }
-        else if (inputFluid.amount() == 0)
-        {
-            multiplier = stack.getCount() / inputItem.count();
-        }
-        else
-        {
-            multiplier = Math.min(fluid.getAmount() / inputFluid.amount(), stack.getCount() / inputItem.count());
-        }
-
-        // Output items
-        // All output items, and then remaining input items, get inserted into the output overflow
-        final ItemStack outputItem = this.outputItem.getStack(stack);
-        if (!outputItem.isEmpty())
-        {
-            Helpers.consumeInStackSizeIncrements(outputItem, multiplier * outputItem.getCount(), inventory::insertItemWithOverflow);
-        }
-        final int remainingItemCount = stack.getCount() - multiplier * inputItem.count();
-        if (remainingItemCount > 0)
-        {
-            final ItemStack remainingStack = stack.copy();
-            remainingStack.setCount(remainingItemCount);
-            inventory.insertItemWithOverflow(remainingStack);
-        }
-
-        // Output fluid
-        // If there's no output fluid, keep as much of the input as possible
-        // If there is an output fluid, excess input is voided
-        final FluidStack outputFluid = this.outputFluid.copy();
-        if (outputFluid.isEmpty())
-        {
-            // Try and keep as much of the original input as possible
-            final int retainAmount = fluid.getAmount() - (multiplier * this.inputFluid.amount());
-            if (retainAmount > 0)
+            // Calculate the multiplier in use for this recipe
+            final int multiplier;
+            if (inputItem.count() == 0)
             {
-                final FluidStack retainedFluid = fluid.copy();
-                retainedFluid.setAmount(retainAmount);
-                inventory.fill(retainedFluid, IFluidHandler.FluidAction.EXECUTE);
+                multiplier = fluid.getAmount() / inputFluid.amount();
             }
-        }
-        else
-        {
-            outputFluid.setAmount(Math.min(TFCConfig.SERVER.barrelCapacity.get(), outputFluid.getAmount() * multiplier));
-            inventory.fill(outputFluid, IFluidHandler.FluidAction.EXECUTE);
-        }
+            else if (inputFluid.amount() == 0)
+            {
+                multiplier = stack.getCount() / inputItem.count();
+            }
+            else
+            {
+                multiplier = Math.min(fluid.getAmount() / inputFluid.amount(), stack.getCount() / inputItem.count());
+            }
+
+            // Output items
+            // All output items, and then remaining input items, get inserted into the output overflow
+            final ItemStack outputItem = this.outputItem.getStack(stack);
+            if (!outputItem.isEmpty())
+            {
+                Helpers.consumeInStackSizeIncrements(outputItem, multiplier * outputItem.getCount(), inventory::insertItemWithOverflow);
+            }
+            final int remainingItemCount = stack.getCount() - multiplier * inputItem.count();
+            if (remainingItemCount > 0)
+            {
+                final ItemStack remainingStack = stack.copy();
+                remainingStack.setCount(remainingItemCount);
+                inventory.insertItemWithOverflow(remainingStack);
+            }
+
+            // Output fluid
+            // If there's no output fluid, keep as much of the input as possible
+            // If there is an output fluid, excess input is voided
+            final FluidStack outputFluid = this.outputFluid.copy();
+            if (outputFluid.isEmpty())
+            {
+                // Try and keep as much of the original input as possible
+                final int retainAmount = fluid.getAmount() - (multiplier * this.inputFluid.amount());
+                if (retainAmount > 0)
+                {
+                    final FluidStack retainedFluid = fluid.copy();
+                    retainedFluid.setAmount(retainAmount);
+                    inventory.fill(retainedFluid, IFluidHandler.FluidAction.EXECUTE);
+                }
+            }
+            else
+            {
+                outputFluid.setAmount(Math.min(TFCConfig.SERVER.barrelCapacity.get(), outputFluid.getAmount() * multiplier));
+                inventory.fill(outputFluid, IFluidHandler.FluidAction.EXECUTE);
+            }
+        });
     }
 
     @Override
@@ -128,11 +131,6 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
             final ItemStackProvider outputItem = json.has("output_item") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "output_item")) : ItemStackProvider.empty();
             final FluidStack outputFluid = json.has("output_fluid") ? JsonHelpers.getFluidStack(JsonHelpers.getAsJsonObject(json, "output_fluid")) : FluidStack.EMPTY;
-
-            if (outputItem == ItemStackProvider.empty() && outputFluid.isEmpty())
-            {
-                throw new JsonParseException("Barrel recipe must have at least one of output_item or output_fluid");
-            }
 
             return new Builder(inputItem, inputFluid, outputItem, outputFluid);
         }

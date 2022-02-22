@@ -24,7 +24,8 @@ public class ItemStackModifiers
         register("copy_heat", CopyHeatModifier.INSTANCE);
         register("reset_food", ResetFoodModifier.INSTANCE);
 
-        register("add_trait", AddTraitModifier.Serializer.INSTANCE);
+        register("add_trait", AddRemoveTraitModifier.Serializer.ADD);
+        register("remove_trait", AddRemoveTraitModifier.Serializer.REMOVE);
         register("add_heat", AddHeatModifier.Serializer.INSTANCE);
     }
 

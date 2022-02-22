@@ -39,7 +39,7 @@ def generate(rm: ResourceManager):
                     'functions': [
                         {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '2'})]},
                         {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '3'})]},
-                        explosion_decay()
+                        loot_tables.explosion_decay()
                     ]
                 })
 
@@ -73,7 +73,7 @@ def generate(rm: ResourceManager):
                     rm.block_loot(slab_namespace, {
                         'functions': [
                             {**loot_tables.set_count(2), 'conditions': [block_state_property(slab_namespace, {'type': 'double'})]},
-                            explosion_decay()
+                            loot_tables.explosion_decay()
                         ],
                         'name': slab_namespace
                     })
@@ -94,7 +94,7 @@ def generate(rm: ResourceManager):
                     }))
                 elif block_type == 'gravel':
                     block.with_block_loot(({
-                        'conditions': [silk_touch()],
+                        'conditions': [loot_tables.silk_touch()],
                         'name': 'tfc:rock/gravel/%s' % rock
                     }, {
                         'type': 'minecraft:alternatives',
@@ -410,7 +410,7 @@ def generate(rm: ResourceManager):
     # Loot table for snow blocks and snow piles - override the vanilla one to only return one snowball per layer
     def snow_block_loot_table(block: str):
         rm.block_loot(block, loot_tables.pool(loot_tables.alternatives({
-            'conditions': [silk_touch()],
+            'conditions': [loot_tables.silk_touch()],
             'name': 'minecraft:snow'
         }, 'minecraft:snowball'), conditions=({
             'condition': 'minecraft:entity_properties',
@@ -425,7 +425,7 @@ def generate(rm: ResourceManager):
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
     block.with_block_loot({
         'name': 'minecraft:ice',
-        'conditions': [silk_touch()]
+        'conditions': [loot_tables.silk_touch()]
     })
 
     # Hides
@@ -825,7 +825,7 @@ def generate(rm: ResourceManager):
             rm.blockstate(('plant', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/plant/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
             rm.block_loot(('plant', '%s_sapling' % fruit), {
                 'name': 'tfc:plant/%s_sapling' % fruit,
-                'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), explosion_decay()]
+                'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), loot_tables.explosion_decay()]
             })
             for stage in range(2, 4 + 1):
                 rm.block_model(('plant', '%s_sapling_%d' % (fruit, stage)), parent='tfc:block/plant/cross_%s' % stage, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
@@ -918,7 +918,7 @@ def generate(rm: ResourceManager):
         block.with_tag('minecraft:leaves')
         block.with_block_loot(({
             'name': 'tfc:wood/leaves/%s' % wood,
-            'conditions': [loot_tables.or_condition(match_tag('forge:shears'), silk_touch())]
+            'conditions': [loot_tables.or_condition(match_tag('forge:shears'), loot_tables.silk_touch())]
         }, {
             'name': 'tfc:wood/sapling/%s' % wood,
             'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
@@ -1019,12 +1019,31 @@ def generate(rm: ResourceManager):
             rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
             rm.item_model(('wood', chest, wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent='minecraft:item/chest')
 
+        # Barrels
+        texture = 'tfc:block/wood/planks/%s' % wood
+        textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood, 'hoop': 'tfc:block/barrel_hoop'}
+        block = rm.blockstate(('wood', 'barrel', wood), variants={
+            'sealed=true': {'model': 'tfc:wood/barrel_sealed/%s' % wood},
+            'sealed=false': {'model': 'tfc:wood/barrel/%s' % wood}
+        })
+        block.with_block_model(textures, 'tfc:block/barrel')
+        rm.item_model(('wood', 'barrel', wood), parent='tfc:block/wood/barrel_sealed/%s' % wood, no_textures=True)
+        rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
+        block.with_lang(lang('%s barrel', wood))
+        block.with_tag('tfc:barrels')
+        block.with_block_loot(({
+            'name': 'tfc:wood/barrel/%s' % wood,
+            'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+            'conditions': [loot_tables.block_state_property('tfc:wood/barrel/%s[sealed=true]' % wood)]
+        }, 'tfc:wood/barrel/%s' % wood))
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)
             rm.block_tag('minecraft:fences', fence_namespace)
             rm.block_tag('forge:fences', fence_namespace)
             rm.block_tag('forge:fences/wooden', fence_namespace)
+
         fence_gate_namespace = 'tfc:wood/planks/' + wood + '_fence_gate'
         rm.block_tag('forge:fence_gates/wooden', fence_gate_namespace)
         rm.block_tag('forge:fence_gates', fence_gate_namespace)
@@ -1034,6 +1053,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/' + wood + '_pressure_plate')
         rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slab')
         rm.block_tag('minecraft:wooden_stairs', 'tfc:wood/planks/' + wood + '_stairs')
+
         for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
             if variant != 'log':
                 rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
@@ -1161,31 +1181,6 @@ def block_state_property(block: str, properties: Dict[str, str]) -> Dict[str, An
         'condition': 'minecraft:block_state_property',
         'block': block,
         'properties': dict((k, str(v)) for k, v in properties.items())
-    }
-
-
-def explosion_decay() -> Dict[str, Any]:
-    return {
-        'function': 'minecraft:explosion_decay'
-    }
-
-
-def condition_alternatives(*terms) -> Dict[str, Any]:
-    return {
-        'condition': 'minecraft:alternative',
-        'terms': utils.loot_condition_list(terms)
-    }
-
-
-def silk_touch() -> Dict[str, Any]:
-    return {
-        'condition': 'minecraft:match_tool',
-        'predicate': {
-            'enchantments': [{
-                'enchantment': 'minecraft:silk_touch',
-                'levels': {'min': 1}
-            }]
-        }
     }
 
 

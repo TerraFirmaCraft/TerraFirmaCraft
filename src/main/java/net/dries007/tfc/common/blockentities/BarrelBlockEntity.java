@@ -2,6 +2,7 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.*;
-import org.jetbrains.annotations.NotNull;
 
 public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockEntity.BarrelInventory> implements ICalendarTickable
 {
@@ -127,7 +127,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return BarrelContainer.create(this, player.getInventory(), containerId);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -274,28 +274,39 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory
     {
+        private final BarrelBlockEntity barrel;
         private final InventoryItemHandler inventory;
         private final List<ItemStack> excess;
         private final FluidTank tank;
+        private boolean mutable; // If the inventory is pretending to be mutable, despite the barrel being sealed and preventing extractions / insertions
 
         BarrelInventory(InventoryBlockEntity<?> entity)
         {
+            barrel = (BarrelBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
             excess = new ArrayList<>();
             tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> TFCTags.Fluids.USABLE_IN_BARREL.contains(stack.getFluid()));
         }
 
+        public void whileMutable(Runnable action)
+        {
+            try
+            {
+                mutable = true;
+                action.run();
+            }
+            finally
+            {
+                mutable = false;
+            }
+        }
+
         public void insertItemWithOverflow(ItemStack stack)
         {
-            final ItemStack currentStack = inventory.getStackInSlot(SLOT_ITEM);
-            if (currentStack.isEmpty())
+            final ItemStack remainder = inventory.insertItem(SLOT_ITEM, stack, false);
+            if (!remainder.isEmpty())
             {
-                inventory.setStackInSlot(SLOT_ITEM, stack);
-            }
-            else
-            {
-                // Add to excess
-                excess.add(stack);
+                excess.add(remainder);
             }
         }
 
@@ -312,20 +323,54 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
 
         @Override
+        public int fill(FluidStack resource, FluidAction action)
+        {
+            return canModify() ? tank.fill(resource, action) : 0;
+        }
+
+        @Nonnull
+        @Override
+        public FluidStack drain(FluidStack resource, FluidAction action)
+        {
+            return canModify() ? tank.drain(resource, action) : FluidStack.EMPTY;
+        }
+
+        @Nonnull
+        @Override
+        public FluidStack drain(int maxDrain, FluidAction action)
+        {
+            return canModify() ? tank.drain(maxDrain, action) : FluidStack.EMPTY;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+        {
+            return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        }
+
+        @Override
         public CompoundTag serializeNBT()
         {
             final CompoundTag nbt = new CompoundTag();
             nbt.put("inventory", inventory.serializeNBT());
             nbt.put("tank", tank.writeToNBT(new CompoundTag()));
 
-            excess.clear();
-            if (nbt.contains("excess"))
+            if (!excess.isEmpty())
             {
-                final ListTag excessNbt = nbt.getList("excess", Tag.TAG_COMPOUND);
-                for (int i = 0; i < excessNbt.size(); i++)
+                final ListTag excessNbt = new ListTag();
+                for (ItemStack stack : excess)
                 {
-                    excess.add(ItemStack.of(excessNbt.getCompound(i)));
+                    excessNbt.add(stack.save(new CompoundTag()));
                 }
+                nbt.put("excess", excessNbt);
             }
 
             return nbt;
@@ -337,15 +382,20 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             inventory.deserializeNBT(nbt.getCompound("inventory"));
             tank.readFromNBT(nbt.getCompound("tank"));
 
-            if (!excess.isEmpty())
+            excess.clear();
+            if (nbt.contains("excess"))
             {
-                final ListTag excessNbt = new ListTag();
-                for (ItemStack stack : excess)
+                final ListTag excessNbt = nbt.getList("excess", Tag.TAG_COMPOUND);
+                for (int i = 0; i < excessNbt.size(); i++)
                 {
-                    excessNbt.add(stack.save(new CompoundTag()));
+                    excess.add(ItemStack.of(excessNbt.getCompound(i)));
                 }
-                nbt.put("excess", excessNbt);
             }
+        }
+
+        private boolean canModify()
+        {
+            return mutable || !barrel.getBlockState().getValue(BarrelBlock.SEALED);
         }
     }
 }

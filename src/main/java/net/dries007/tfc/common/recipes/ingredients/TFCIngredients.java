@@ -17,10 +17,11 @@ public final class TFCIngredients
     public static void registerIngredientTypes()
     {
         register("not_rotten", NotRottenIngredient.Serializer.INSTANCE);
+        register("has_trait", HasTraitIngredient.Serializer.INSTANCE);
     }
 
-    private static <T extends Ingredient> IIngredientSerializer<T> register(String name, IIngredientSerializer<T> serializer)
+    private static <T extends Ingredient> void register(String name, IIngredientSerializer<T> serializer)
     {
-        return CraftingHelper.register(Helpers.identifier(name), serializer);
+        CraftingHelper.register(Helpers.identifier(name), serializer);
     }
 }

@@ -3,24 +3,18 @@ package net.dries007.tfc.common.recipes;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import org.jetbrains.annotations.Nullable;
 
 public class InstantBarrelRecipe extends BarrelRecipe
 {
-    public InstantBarrelRecipe(ResourceLocation id, ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid)
+    public InstantBarrelRecipe(ResourceLocation id, Builder builder)
     {
-        super(id, inputItem, inputFluid, outputItem, outputFluid);
+        super(id, builder);
     }
 
     @Override
@@ -45,22 +39,24 @@ public class InstantBarrelRecipe extends BarrelRecipe
     public static class Serializer extends RecipeSerializerImpl<InstantBarrelRecipe>
     {
         @Override
-        public InstantBarrelRecipe fromJson(ResourceLocation recipeId_, JsonObject serializedRecipe_)
+        public InstantBarrelRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            return null;
+            final Builder builder = Builder.fromJson(json);
+            return new InstantBarrelRecipe(recipeId, builder);
         }
 
         @Nullable
         @Override
-        public InstantBarrelRecipe fromNetwork(ResourceLocation recipeId_, FriendlyByteBuf buffer_)
+        public InstantBarrelRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            return null;
+            final Builder builder = Builder.fromNetwork(buffer);
+            return new InstantBarrelRecipe(recipeId, builder);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer_, InstantBarrelRecipe recipe_)
+        public void toNetwork(FriendlyByteBuf buffer, InstantBarrelRecipe recipe)
         {
-
+            Builder.toNetwork(recipe, buffer);
         }
     }
 }

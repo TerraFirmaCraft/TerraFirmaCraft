@@ -610,6 +610,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
     'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
+    'tfc.tooltip.contents': 'Contents:',
     'tfc.tooltip.propick.found_very_large': 'Found a very large sample of',
     'tfc.tooltip.propick.found_large': 'Found a large sample of',
     'tfc.tooltip.propick.found_medium': 'Found a medium sample of',

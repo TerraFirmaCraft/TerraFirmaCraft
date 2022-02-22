@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "sealed=true": {
+      "model": "tfc:wood/barrel_sealed/rosewood"
+    },
+    "sealed=false": {
+      "model": "tfc:wood/barrel/rosewood"
+    }
+  }
+}

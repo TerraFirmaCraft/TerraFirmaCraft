@@ -251,16 +251,16 @@ def generate(rm: ResourceManager):
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
             temp = METALS[ore_data.metal].melt_temperature
-            heat_recipe(rm, ('ore', 'small_%s' % ore), 'tfc:ore/small_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 10)
-            heat_recipe(rm, ('ore', 'poor_%s' % ore), 'tfc:ore/poor_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 15)
-            heat_recipe(rm, ('ore', 'normal_%s' % ore), 'tfc:ore/normal_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 25)
-            heat_recipe(rm, ('ore', 'rich_%s' % ore), 'tfc:ore/rich_%s' % ore, temp, None, 'tfc:metal/%s' % ore_data.metal, 35)
+            heat_recipe(rm, ('ore', 'small_%s' % ore), 'tfc:ore/small_%s' % ore, temp, None, '%d tfc:metal/%s' % (10, ore_data.metal))
+            heat_recipe(rm, ('ore', 'poor_%s' % ore), 'tfc:ore/poor_%s' % ore, temp, None, '%d tfc:metal/%s' % (15, ore_data.metal))
+            heat_recipe(rm, ('ore', 'normal_%s' % ore), 'tfc:ore/normal_%s' % ore, temp, None, '%d tfc:metal/%s' % (25, ore_data.metal))
+            heat_recipe(rm, ('ore', 'rich_%s' % ore), 'tfc:ore/rich_%s' % ore, temp, None, '%d tfc:metal/%s' % (35, ore_data.metal))
 
     for metal, metal_data in METALS.items():
         melt_metal = metal if metal_data.melt_metal is None else metal_data.melt_metal
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type == 'all' or item_data.type in metal_data.types:
-                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, 'tfc:metal/%s' % melt_metal, item_data.smelt_amount)
+                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
@@ -325,15 +325,15 @@ def generate(rm: ResourceManager):
     # todo: actual pot recipes
     rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
         'ingredients': [utils.ingredient('minecraft:gunpowder')],
-        'fluid_ingredient': fluid_stack_ingredient('tfc:salt_water', 1000),
+        'fluid_ingredient': fluid_stack_ingredient('1000 tfc:salt_water'),
         'duration': 200,
         'temperature': 300,
-        'fluid_output': fluid_stack('minecraft:water', 1000)
+        'fluid_output': fluid_stack('1000 minecraft:water')
     })
 
     rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
         'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
-        'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
+        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
         'duration': 200,
         'temperature': 300
     })
@@ -410,6 +410,40 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_steel', 'weak_steel', ('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25))
     alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+
+    # Barrel Recipes
+    for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
+        barrel_sealed_recipe(rm, '%s_soaked_hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='tfc:%s_soaked_hide' % size)
+        barrel_sealed_recipe(rm, '%s_prepared_hide' % size, 8000, 'tfc:%s_scraped_hide' % size, '%d minecraft:water' % amount, output_item='tfc:%s_prepared_hide' % size)
+        barrel_sealed_recipe(rm, '%s_leather' % size, 8000, 'tfc:%s_prepared_hide' % size, '%d tfc:tannin' % amount, output_item='%d minecraft:leather' % output)
+
+    barrel_sealed_recipe(rm, 'tannin', 8000, '#tfc:tannin_logs', '1000 minecraft:water', output_fluid='1000 tfc:tannin')
+    barrel_sealed_recipe(rm, 'jute_fiber', 8000, 'tfc:jute', '200 minecraft:water', output_item='tfc:jute_fiber')
+    barrel_sealed_recipe(rm, 'sugar', 8000, 'tfc:food/sugarcane', '600 minecraft:water', output_item='minecraft:sugar')
+    barrel_sealed_recipe(rm, 'glue', 8000, 'tfc:limewater', 'minecraft:bone_meal', output_item='tfc:glue')
+
+    barrel_sealed_recipe(rm, 'beer', 72000, 'tfc:food/barley_flour', '500 minecraft:water', output_fluid='500 tfc:beer')
+    barrel_sealed_recipe(rm, 'cider', 72000, '#tfc:food/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
+    barrel_sealed_recipe(rm, 'rum', 72000, 'minecraft:sugar', '500 minecraft:water', output_fluid='500 tfc:rum')
+    barrel_sealed_recipe(rm, 'sake', 72000, 'tfc:food/rice_flour', '500 minecraft:water', output_fluid='500 tfc:sake')
+    barrel_sealed_recipe(rm, 'vodka', 72000, 'tfc:food/potato', '500 minecraft:water', output_fluid='500 tfc:vodka')
+    barrel_sealed_recipe(rm, 'whiskey', 72000, 'tfc:food/wheat_flour', '500 minecraft:water', output_fluid='500 tfc:whiskey')
+    barrel_sealed_recipe(rm, 'corn_whiskey', 72000, 'tfc:food/corn_flour', '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
+    barrel_sealed_recipe(rm, 'rye_whiskey', 72000, 'tfc:food/rye_flour', '500 minecraft:water', output_fluid='500 tfc:rye_whiskey')
+
+    barrel_sealed_recipe(rm, 'vinegar', 8000, 'tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
+
+    barrel_sealed_recipe(rm, 'pickling', 4000, not_rotten(has_trait(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats'], 'brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
+    barrel_sealed_recipe(rm, 'brined', 4000, not_rotten(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'preserved_in_vinegar', -1, not_rotten(has_trait(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
+
+    barrel_sealed_recipe(rm, 'mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
+
+    # todo: #tfc:tannin_logs
+    # todo: #tfc:food/apples
+    # todo: #tfc:alcohols
+
+
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
@@ -498,9 +532,9 @@ def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.R
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None, amount: int = 1000) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[utils.Json] = None, result_fluid: Optional[str] = None) -> RecipeContext:
     result_item = None if result_item is None else utils.item_stack(result_item)
-    result_fluid = None if result_fluid is None else fluid_stack(result_fluid, amount)
+    result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
         'ingredient': utils.ingredient(ingredient),
         'result_item': result_item,
@@ -512,7 +546,7 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingre
 def casting_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, mold: str, metal: str, amount: int, break_chance: float):
     rm.recipe(('casting', name_parts), 'tfc:casting', {
         'mold': {'item': 'tfc:ceramic/%s_mold' % mold},
-        'fluid': fluid_stack_ingredient('tfc:metal/%s' % metal, amount),
+        'fluid': fluid_stack_ingredient('%d tfc:metal/%s' % (amount, metal)),
         'result': utils.item_stack('tfc:metal/%s/%s' % (mold, metal)),
         'break_chance': break_chance
     })
@@ -529,38 +563,77 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
     })
 
 
-def fluid_stack(fluid: str, amount: int) -> Json:
+def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None):
+    rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
+        'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
+        'input_fluid': fluid_stack_ingredient(input_fluid) if input_item is not None else None,
+        'output_item': item_stack_provider(output_item) if input_item is not None else None,
+        'output_fluid': fluid_stack(output_fluid) if input_item is not None else None,
+        'duration': duration,
+        'on_seal': on_seal,
+        'on_unseal': on_unseal
+    })
+
+
+def fluid_stack(data_in: Json) -> Json:
+    if isinstance(data_in, dict):
+        return data_in
+    fluid, tag, amount, _ = utils.parse_item_stack(data_in, False)
+    assert not tag, 'fluid_stack() cannot be a tag'
     return {
         'fluid': fluid,
         'amount': amount
     }
 
 
-def fluid_stack_ingredient(fluid: Json, amount: int) -> Json:
-    return {
-        'fluid': fluid_ingredient(fluid),
-        'amount': amount
-    }
+def fluid_stack_ingredient(data_in: Json) -> Json:
+    if isinstance(data_in, dict):
+        return {
+            'ingredient': fluid_ingredient(data_in['ingredient']),
+            'amount': data_in['amount']
+        }
+    if pair := utils.maybe_unordered_pair(data_in, int, object):
+        amount, fluid = pair
+        return {'ingredient': fluid_ingredient(fluid), 'amount': amount}
+    fluid, tag, amount, _ = utils.parse_item_stack(data_in, False)
+    if tag:
+        return {'ingredient': {'tag': fluid}, 'amount': amount}
+    else:
+        return {'ingredient': fluid, 'amount': amount}
 
 
 def fluid_ingredient(data_in: Json) -> Json:
-    if isinstance(data_in, str):
-        if data_in[0:4] == '#':
-            return {'tag': data_in[4:]}
-        elif data_in[0] == '#':
-            return {'tag': data_in[1:]}
-        else:
-            return data_in  # raw strings are accepted as fluids
+    if isinstance(data_in, dict):
+        return data_in
     elif isinstance(data_in, Sequence):
         return [*utils.flatten_list([fluid_ingredient(e) for e in data_in])]
-    elif isinstance(data_in, dict):
-        if 'tag' in data_in:
-            return {'tag': data_in['tag']}
-        if 'fluid' in data_in:
-            return data_in['fluid']
-        raise ValueError('fluid_ingredient must have fluid or tag entries.')
+    else:
+        fluid, tag, amount, _ = utils.parse_item_stack(data_in, False)
+        if tag:
+            return {'tag': fluid}
+        else:
+            return fluid
 
-def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None) -> Json:
+
+def item_stack_ingredient(data_in: Json):
+    if isinstance(data_in, dict):
+        return {
+            'ingredient': utils.ingredient(data_in['ingredient']),
+            'count': data_in['count']
+        }
+    if pair := utils.maybe_unordered_pair(data_in, int, object):
+        count, item = pair
+        return {'ingredient': fluid_ingredient(item), 'count': count}
+    item, tag, count, _ = utils.parse_item_stack(data_in, False)
+    if tag:
+        return {'ingredient': {'tag': item}, 'count': count}
+    else:
+        return {'ingredient': {'item': item}, 'count': count}
+
+
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None) -> Json:
+    if isinstance(data_in, dict):
+        return data_in
     stack = utils.item_stack(data_in) if data_in is not None else None
     modifiers = [k for k, v in (
         ('tfc:copy_input', copy_input),
@@ -568,7 +641,8 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         ('tfc:copy_food', copy_food),
         ('tfc:reset_food', reset_food),
         ({'type': 'tfc:add_head', 'temperature': add_heat}, add_heat is not None),
-        ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None)
+        ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
+        ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None)
     ) if v]
     if modifiers:
         return {
@@ -576,3 +650,16 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
             'apply': modifiers
         }
     return stack
+
+def not_rotten(ingredient: Json) -> Json:
+    return {
+        'type': 'tfc:not_rotten',
+        'ingredient': utils.ingredient(ingredient)
+    }
+
+def has_trait(ingredient: Json, trait: str) -> Json:
+    return {
+        'type': 'tfc:has_trait',
+        'trait': trait,
+        'ingredient': utils.ingredient(ingredient)
+    }
