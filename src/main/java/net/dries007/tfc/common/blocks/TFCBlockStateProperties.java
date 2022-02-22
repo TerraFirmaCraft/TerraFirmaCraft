@@ -74,6 +74,7 @@ public class TFCBlockStateProperties
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
+    public static final BooleanProperty UPPER = BooleanProperty.create("upper");
     public static final BooleanProperty STICK = BooleanProperty.create("stick");
     public static final BooleanProperty MATURE = BooleanProperty.create("mature");
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");

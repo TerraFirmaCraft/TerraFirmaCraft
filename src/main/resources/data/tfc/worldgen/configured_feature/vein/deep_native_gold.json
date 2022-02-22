@@ -14,20 +14,20 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
             "weight": 10,
-            "block": "tfc:ore/poor_native_gold/andesite"
+            "block": "tfc:ore/poor_native_gold/rhyolite"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/normal_native_gold/andesite"
+            "block": "tfc:ore/normal_native_gold/rhyolite"
           },
           {
             "weight": 60,
-            "block": "tfc:ore/rich_native_gold/andesite"
+            "block": "tfc:ore/rich_native_gold/rhyolite"
           }
         ]
       },
@@ -52,6 +52,25 @@
       },
       {
         "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_native_gold/andesite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_native_gold/andesite"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_native_gold/andesite"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
         "with": [
@@ -71,20 +90,20 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
             "weight": 10,
-            "block": "tfc:ore/poor_native_gold/rhyolite"
+            "block": "tfc:ore/poor_native_gold/granite"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/normal_native_gold/rhyolite"
+            "block": "tfc:ore/normal_native_gold/granite"
           },
           {
             "weight": 60,
-            "block": "tfc:ore/rich_native_gold/rhyolite"
+            "block": "tfc:ore/rich_native_gold/granite"
           }
         ]
       },
@@ -123,25 +142,6 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_native_gold/gabbro"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/granite"
-        ],
-        "with": [
-          {
-            "weight": 10,
-            "block": "tfc:ore/poor_native_gold/granite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_native_gold/granite"
-          },
-          {
-            "weight": 60,
-            "block": "tfc:ore/rich_native_gold/granite"
           }
         ]
       }

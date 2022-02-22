@@ -114,6 +114,8 @@ public final class TFCItems
     // Decorations
 
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", DECORATIONS);
+    public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
+    public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
 
     // Misc
 
@@ -155,12 +157,13 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
-    public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
-    public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill", MISC);
+
+    public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties().tab(MISC)));
+    public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().tab(MISC).stacksTo(1)));
 
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);
     public static final RegistryObject<Item> PUFFERFISH_EGG = registerSpawnEgg(TFCEntities.PUFFERFISH, 16167425, 3654642);
@@ -174,6 +177,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_BRICK = register("ceramic/unfired_brick", MISC);
     public static final RegistryObject<Item> UNFIRED_CRUCIBLE = register("ceramic/unfired_crucible", MISC);
     public static final RegistryObject<Item> UNFIRED_FLOWER_POT = register("ceramic/unfired_flower_pot", MISC);
+    public static final RegistryObject<Item> UNFIRED_PAN = register("ceramic/unfired_pan", MISC);
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl", MISC);
     public static final RegistryObject<Item> BOWL = register("ceramic/bowl", MISC);

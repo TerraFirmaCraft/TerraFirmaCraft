@@ -129,6 +129,9 @@ public final class TFCBlocks
     public static final Map<Ore, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, type ->
         register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion()), TFCItemGroup.ORES)
     );
+    public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock -> Helpers.mapOfKeys(OreDeposit.class, ore ->
+            register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f)), TFCItemGroup.ORES)
+    ));
 
     // Rock Stuff
 
@@ -265,8 +268,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_TORCH = register("dead_torch", () -> new DeadTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
     public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
 
-    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), MISC);
-    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), MISC);
+    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), DECORATIONS);
+    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), DECORATIONS);
 
     // Fluids
 

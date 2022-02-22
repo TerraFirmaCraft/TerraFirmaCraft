@@ -1,0 +1,73 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "tfc:ore/small_cassiterite",
+              "conditions": [
+                {
+                  "condition": "tfc:is_panned"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.5
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:rock/loose/marble",
+              "conditions": [
+                {
+                  "condition": "tfc:is_panned"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.5
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:gem/lapis_lazuli",
+              "conditions": [
+                {
+                  "condition": "tfc:is_panned"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.04
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:deposit/cassiterite/marble",
+              "conditions": [
+                {
+                  "condition": "minecraft:inverted",
+                  "term": {
+                    "condition": "tfc:is_panned"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

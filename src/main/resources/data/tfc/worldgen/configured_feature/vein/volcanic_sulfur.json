@@ -14,11 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/andesite"
+            "block": "tfc:ore/sulfur/rhyolite"
           }
         ]
       },
@@ -34,6 +34,16 @@
       },
       {
         "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/andesite"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
         "with": [
@@ -44,11 +54,11 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/rhyolite"
+            "block": "tfc:ore/sulfur/granite"
           }
         ]
       },
@@ -69,16 +79,6 @@
         "with": [
           {
             "block": "tfc:ore/sulfur/gabbro"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/granite"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/sulfur/granite"
           }
         ]
       }

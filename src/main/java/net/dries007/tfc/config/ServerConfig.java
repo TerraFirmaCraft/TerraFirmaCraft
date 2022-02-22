@@ -55,6 +55,8 @@ public class ServerConfig
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
+    // Blocks - Sluice
+    public final ForgeConfigSpec.IntValue sluiceTicks;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -167,6 +169,9 @@ public class ServerConfig
         innerBuilder.pop().push("composter");
         composterTicks = builder.apply("composterTicks").comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").defineInRange("composterTicks", 288000, 20, Integer.MAX_VALUE);
         composterRainfallCheck = builder.apply("composterRainfallCheck").comment("Should the composter work less efficiently at high or low rainfalls?").define("composterRainfallCheck", true);
+
+        innerBuilder.pop().push("sluice");
+        sluiceTicks = builder.apply("sluiceTicks").comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").defineInRange("sluiceTicks", 100, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

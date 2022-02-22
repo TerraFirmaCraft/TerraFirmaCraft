@@ -78,6 +78,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
+    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HC)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
@@ -254,6 +255,10 @@ def generate(rm: ResourceManager):
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
 
+        for ore in ORE_DEPOSITS:
+            block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_tag('can_be_panned', 'tfc:deposit/%s/%s' % (ore, rock))
+
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
@@ -308,6 +313,7 @@ def generate(rm: ResourceManager):
         *['tfc:sand/%s' % sand for sand in SAND_BLOCK_TYPES],
         'tfc:snow_pile',
         *['tfc:rock/gravel/%s' % rock for rock in ROCKS.keys()],
+        *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()],
         'tfc:aggregate',
         'tfc:fire_clay_block',
         'tfc:charcoal_pile',
@@ -335,7 +341,7 @@ def generate(rm: ResourceManager):
         'tfc:crucible'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support') for wood in WOODS.keys()],
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],
         *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench') for wood in WOODS.keys()],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
@@ -406,10 +412,10 @@ def generate(rm: ResourceManager):
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
     item_size(rm, 'plants', '#tfc:plants', Size.tiny, Weight.very_light)
     item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
+    item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
-    # item_size(rm, 'sluice', 'tfc:sluice', Size.very_large, Weight.very_heavy)
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
 
     # Food

@@ -26,8 +26,10 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
@@ -55,6 +57,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.items.EmptyPanItem;
+import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -90,6 +94,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
+        bus.addListener(ClientForgeEventHandler::onHandRender);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -321,6 +326,25 @@ public class ClientForgeEventHandler
             // let's just do this the same way MC does because the FogDensityEvent is crap
             RenderSystem.setShaderFogStart(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
             RenderSystem.setShaderFogEnd(density);
+        }
+    }
+
+    public static void onHandRender(RenderHandEvent event)
+    {
+        ItemStack stack = event.getItemStack();
+        final Item item = stack.getItem();
+        if (item instanceof PanItem || item instanceof EmptyPanItem)
+        {
+            if (event.getHand() == InteractionHand.OFF_HAND) // handled by main hand
+            {
+                event.setCanceled(true);
+                return;
+            }
+            PoseStack poseStack = event.getPoseStack();
+            poseStack.pushPose();
+            ClientHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
+            poseStack.popPose();
+            event.setCanceled(true);
         }
     }
 }

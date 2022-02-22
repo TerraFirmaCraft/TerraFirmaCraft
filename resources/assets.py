@@ -489,6 +489,44 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
+    rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
+
+    stages = [
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 0}, 'model': 'tfc:item/pan/native_copper/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 1}, 'model': 'tfc:item/pan/native_silver/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 2}, 'model': 'tfc:item/pan/native_gold/result'},
+        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 3}, 'model': 'tfc:item/pan/cassiterite/result'}
+    ]
+    for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
+        ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
+        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/' + metal}, parent='tfc:item/pan/result')
+        for rock_id, rock in enumerate(ROCKS.keys()):
+            rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
+            rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
+            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.4, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_half' % (ore, rock)})
+            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.7, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_full' % (ore, rock)})
+            block = rm.blockstate(('deposit', ore, rock)).with_lang(lang('%s %s Deposit', rock, ore)).with_item_model()
+            block.with_block_model({
+                'all': 'tfc:block/rock/gravel/%s' % rock,
+                'particle': 'tfc:block/rock/gravel/%s' % rock,
+                'overlay': 'tfc:block/deposit/%s' % ore
+            }, parent='tfc:block/ore')
+            rare = DEPOSIT_RARES[rock]
+            block.with_block_loot(({
+               'name': 'tfc:ore/small_%s' % ore,
+               'conditions': ['tfc:is_panned', condition_chance(0.5)],  # 50% chance
+            }, {
+               'name': 'tfc:rock/loose/%s' % rock,
+               'conditions': ['tfc:is_panned', condition_chance(0.5)],  # 25% chance
+            }, {
+               'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
+               'conditions': ['tfc:is_panned', condition_chance(0.04)],  # 1% chance
+            }, {
+               'name': 'tfc:deposit/%s/%s' % (ore, rock),
+               'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
+            }))
+    item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items
         rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
@@ -1015,9 +1053,15 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'support', wood), no_textures=True, parent='tfc:block/wood/support/%s_inventory' % wood).with_lang(lang('%s Support', wood))
 
         for chest in ('chest', 'trapped_chest'):
-            rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest)).with_tag('minecraft:mineable/axe').with_tag('minecraft:features_cannot_replace').with_tag('forge:chests/wooden').with_tag('minecraft:lava_pool_stone_cannot_replace')
+            rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest)).with_tag('minecraft:features_cannot_replace').with_tag('forge:chests/wooden').with_tag('minecraft:lava_pool_stone_cannot_replace')
             rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
             rm.item_model(('wood', chest, wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent='minecraft:item/chest')
+
+        rm.block_model('wood/sluice/%s_upper' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_upper')
+        rm.block_model('wood/sluice/%s_lower' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_lower')
+        block = rm.blockstate(('wood', 'sluice', wood), variants={**four_rotations('tfc:block/wood/sluice/%s_upper' % wood, (90, 0, 180, 270), suffix=',upper=true'), **four_rotations('tfc:block/wood/sluice/%s_lower' % wood, (90, 0, 180, 270), suffix=',upper=false')}).with_lang(lang('%s sluice', wood)).with_tag('tfc:sluices')
+        block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [block_state_property('tfc:wood/sluice/%s' % wood, {'upper': 'true'})]})
+        rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):

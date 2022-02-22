@@ -14,21 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/opal/chert"
+            "block": "tfc:ore/opal/shale"
           }
         ]
       },
@@ -39,6 +29,16 @@
         "with": [
           {
             "block": "tfc:ore/opal/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/opal/limestone"
           }
         ]
       },
@@ -64,31 +64,31 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/limestone"
+            "block": "tfc:ore/opal/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/shale"
+            "block": "tfc:ore/opal/chalk"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/andesite"
+            "block": "tfc:ore/opal/rhyolite"
           }
         ]
       },
@@ -104,21 +104,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/dacite"
+          "tfc:rock/raw/andesite"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/dacite"
+            "block": "tfc:ore/opal/andesite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/dacite"
         ],
         "with": [
           {
-            "block": "tfc:ore/opal/rhyolite"
+            "block": "tfc:ore/opal/dacite"
           }
         ]
       }
