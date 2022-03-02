@@ -59,10 +59,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.GlintParticleProvider;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -250,6 +247,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer<>(ctx, new ManateeModel(ClientHelpers.bakeSimple(ctx, "manatee")), "manatee"));
         event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCTurtleModel(ClientHelpers.bakeSimple(ctx, "turtle")), "turtle"));
         event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -278,6 +276,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -346,7 +345,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
-
+        particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

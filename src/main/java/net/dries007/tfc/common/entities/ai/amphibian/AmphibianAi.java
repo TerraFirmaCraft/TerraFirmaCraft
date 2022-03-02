@@ -39,8 +39,8 @@ public class AmphibianAi
     public static final ImmutableList<? extends SensorType<? extends Sensor<? super LivingEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     public static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
         MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.LOOK_TARGET,
-        MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, BrainObjects.TRAVEL_POS.get(), BrainObjects.NEXT_TRAVEL_TIME.get(),
-        MemoryModuleType.PLAY_DEAD_TICKS, MemoryModuleType.HURT_BY_ENTITY
+        MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH,
+        MemoryModuleType.PLAY_DEAD_TICKS, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HOME
     );
 
     public static Brain<?> makeBrain(Brain<AmphibiousAnimal> brain)
@@ -48,13 +48,11 @@ public class AmphibianAi
         initCoreActivity(brain);
         initIdleActivity(brain);
         initPlayDeadActivity(brain);
-        initTravelActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
 
-        brain.setMemory(BrainObjects.NEXT_TRAVEL_TIME.get(), Calendars.SERVER.getTicks());
         return brain;
     }
 
@@ -88,11 +86,11 @@ public class AmphibianAi
                         Pair.of(new RandomStroll(0.15F, false), 2),
                         Pair.of(new SetWalkTargetFromLookTarget(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
                         Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 3),
-                        Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 3)
+                        Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 3),
+                        Pair.of(new RunIf<>(AmphibianAi::isDayTime, new StrollToPoi(MemoryModuleType.HOME, 0.3F, 5, 100)), 3),
+                        Pair.of(new RunIf<>(entity -> !isDayTime(entity), new StrollAroundPoi(MemoryModuleType.HOME, 0.3F, 50)), 3)
                     )
-            )),
-            Pair.of(3, new RunSometimes<>(new RunIf<>(AmphibianTravelBehavior::canGoAway, new RunOnceBehavior<>(AmphibianTravelBehavior::doGoAway)), UniformInt.of(300, 600))),
-            Pair.of(4, new RunSometimes<>(new RunIf<>(AmphibianTravelBehavior::canGoHome, new RunOnceBehavior<>(AmphibianTravelBehavior::goHome)), UniformInt.of(300, 600)))
+            ))
         ));
     }
 
@@ -108,23 +106,19 @@ public class AmphibianAi
             ImmutableSet.of(MemoryModuleType.PLAY_DEAD_TICKS));
     }
 
-    public static void initTravelActivity(Brain<AmphibiousAnimal> brain)
-    {
-        brain.addActivityAndRemoveMemoriesWhenStopped(BrainObjects.TRAVEL.get(),
-            ImmutableList.of(Pair.of(0, new AmphibianTravelBehavior())),
-            ImmutableSet.of(Pair.of(BrainObjects.TRAVEL_POS.get(), MemoryStatus.VALUE_PRESENT)),
-            ImmutableSet.of(BrainObjects.TRAVEL_POS.get())
-        );
-    }
-
     public static void updateActivity(AmphibiousAnimal animal)
     {
         Brain<AmphibiousAnimal> brain = animal.getBrain();
         Activity current = brain.getActiveNonCoreActivity().orElse(null);
         if (current != Activity.PLAY_DEAD)
         {
-            brain.setActiveActivityToFirstValid(ImmutableList.of(Activity.PLAY_DEAD, BrainObjects.TRAVEL.get(), Activity.IDLE));
+            brain.setActiveActivityToFirstValid(ImmutableList.of(Activity.PLAY_DEAD, Activity.IDLE));
         }
+    }
+
+    private static boolean isDayTime(Entity animal)
+    {
+        return animal.level.getDayTime() < 12000;
     }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)

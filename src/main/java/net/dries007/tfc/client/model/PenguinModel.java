@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.client.model;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -36,6 +39,25 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
+    public static final Animation WALK = new Animation.Builder(1.0F)
+        .bone("core", new Animation.Bone.Builder(Easing.EASE_IN_OUT_CUBIC).rotation(0F, 0F, 0F, 15F).rotation(0.5F, 0F, 0F, -15F).rotation(1.0F, 0F, 0F, 15F).build())
+        .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.33F, 0F, 0F, -15F).rotation(0.66F, 0F, 0F, 15F).noRotation(1.0F).build())
+        .bone("leftFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 45F, 0F, 0F).noRotation(1.0F).build())
+        .bone("rightFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, -45F, 0F, 0F).noRotation(1.0F).build())
+        .bone("leftWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 25F, 0F, 0F).noRotation(1.0F).build())
+        .bone("rightWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 25F, 0F, 0F).noRotation(1.0F).build())
+        .build();
+
+    public static final Animation SWIM = new Animation.Builder(0.5F)
+        .bone("leftFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 45F, 0F, 0F).noRotation(1.0F).build())
+        .bone("rightFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, -45F, 0F, 0F).noRotation(1.0F).build())
+        .bone("leftWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 0F, 0F, -25F).noRotation(1.0F).build())
+        .bone("rightWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 0F, 0F, 25F).noRotation(1.0F).build())
+        .build();
+
+    public final Map<String, ModelPart> parts;
+    public final Map<ModelPart, PartPose> defaults;
+
     private final ModelPart core;
     private final ModelPart head;
     private final ModelPart rightWing;
@@ -51,19 +73,38 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
         rightFoot = core.getChild("rightfoot");
         leftWing = core.getChild("leftwing");
         rightWing = core.getChild("rightwing");
+
+        parts = new ImmutableMap.Builder<String, ModelPart>().put("core", core).put("head", head).put("leftFoot", leftFoot).put("rightFoot", rightFoot).put("leftWing", leftWing).put("rightWing", rightWing).build();
+        defaults = Animation.initDefaults(parts);
     }
 
     @Override
     public void setupAnim(AmphibiousAnimal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
-        float swing = Mth.cos((entity.isInWater() ? 1.2F : 1.0F) * limbSwing * 0.6662F + 0.01F) * 1.4F * limbSwingAmount;
-        head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
-        head.yRot = netHeadYaw * Mth.PI / 180F;
-        rightWing.zRot = swing;
-        leftWing.zRot = -swing;
-        leftFoot.xRot = 0.5F * swing;
-        rightFoot.xRot = -0.5F * swing;
-        core.zRot = entity.isInWater() ? 0.0F : 0.3F * Mth.triangleWave(limbSwing, 2.0F);
+        defaults.forEach(ModelPart::loadPose);
+        if (entity.isPlayingDead())
+        {
+            core.xRot = -90F / 180F * Mth.PI;
+        }
+        else
+        {
+            if (entity.getDeltaMovement().lengthSqr() > 0f)
+            {
+                final float adjustedAgeInTicks = ageInTicks + limbSwingAmount * 2F;
+                if (entity.isInWater())
+                {
+                    SWIM.tick(parts, adjustedAgeInTicks);
+                }
+                else
+                {
+                    WALK.tick(parts, adjustedAgeInTicks);
+                }
+            }
+
+            head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
+            head.yRot = netHeadYaw * Mth.PI / 180F;
+        }
+
     }
 
     @Override

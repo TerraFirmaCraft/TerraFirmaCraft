@@ -14,6 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
@@ -72,6 +74,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::new, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -100,5 +103,6 @@ public class TFCEntities
         event.put(MANATEE.get(), Manatee.createAttributes().build());
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
+        event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
     }
 }

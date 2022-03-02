@@ -71,7 +71,6 @@ public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
-
     public static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
@@ -104,6 +103,7 @@ public final class TerraFirmaCraft
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         BrainObjects.ACTIVITIES.register(bus);
         BrainObjects.MEMORY_TYPES.register(bus);
+        BrainObjects.SCHEDULES.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();

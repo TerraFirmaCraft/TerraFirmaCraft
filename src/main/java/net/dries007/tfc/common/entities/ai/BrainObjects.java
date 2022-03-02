@@ -7,11 +7,12 @@
 package net.dries007.tfc.common.entities.ai;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.entity.schedule.Schedule;
+import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -23,15 +24,17 @@ public class BrainObjects
 {
     public static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, TerraFirmaCraft.MOD_ID);
     public static final DeferredRegister<MemoryModuleType<?>> MEMORY_TYPES = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, TerraFirmaCraft.MOD_ID);
 
-    public static final RegistryObject<Activity> TRAVEL = registerActivity("travel");
+    public static final Activity HUNT = registerActivity("hunt");
 
-    public static final RegistryObject<MemoryModuleType<BlockPos>> TRAVEL_POS = registerMemory("travel_pos", BlockPos.CODEC);
-    public static final RegistryObject<MemoryModuleType<Long>> NEXT_TRAVEL_TIME = registerMemory("next_travel_time", Codec.LONG);
+    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", newSchedule().changeActivityAt(0, HUNT).changeActivityAt(11000, Activity.REST)::build);
 
-    public static RegistryObject<Activity> registerActivity(String name)
+    public static Activity registerActivity(String name)
     {
-        return ACTIVITIES.register(name, () -> new Activity(name));
+        Activity activity = new Activity(name);
+        ACTIVITIES.register(name, () -> activity);
+        return activity;
     }
 
     public static <T> RegistryObject<MemoryModuleType<T>> registerMemory(String name)
@@ -42,5 +45,15 @@ public class BrainObjects
     public static <T> RegistryObject<MemoryModuleType<T>> registerMemory(String name, Codec<T> codec)
     {
         return MEMORY_TYPES.register(name, () -> new MemoryModuleType<>(Optional.of(codec)));
+    }
+
+    public static ScheduleBuilder newSchedule()
+    {
+        return new ScheduleBuilder(new Schedule());
+    }
+
+    public static RegistryObject<Schedule> registerSchedule(String name, Supplier<Schedule> supplier)
+    {
+        return SCHEDULES.register(name, supplier);
     }
 }
