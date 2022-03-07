@@ -81,20 +81,20 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(level, currentPos))
+        if (!state.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            if (stateIn.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
+            if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
     }
 
@@ -114,28 +114,23 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos blockpos = pos.below();
-        return mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
+        return mayPlaceOn(level.getBlockState(blockpos), level, blockpos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(PICKLES))
-        {
-            case 1:
-            default:
-                return ONE_AABB;
-            case 2:
-                return TWO_AABB;
-            case 3:
-                return THREE_AABB;
-            case 4:
-                return FOUR_AABB;
-        }
+        return switch (state.getValue(PICKLES))
+            {
+                case 2 -> TWO_AABB;
+                case 3 -> THREE_AABB;
+                case 4 -> FOUR_AABB;
+                default -> ONE_AABB;
+            };
     }
 
     @Override
@@ -144,8 +139,8 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
         return FLUID;
     }
 
-    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isFaceSturdy(worldIn, pos, Direction.UP);
+        return !state.getCollisionShape(level, pos).getFaceShape(Direction.UP).isEmpty() || state.isFaceSturdy(level, pos, Direction.UP);
     }
 }

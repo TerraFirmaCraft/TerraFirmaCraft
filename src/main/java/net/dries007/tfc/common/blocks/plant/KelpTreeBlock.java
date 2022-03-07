@@ -58,9 +58,9 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
     }
 
     @Override
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player)
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
-        updateFluid(worldIn, state, pos);
+        updateFluid(level, state, pos);
     }
 
     @Override
@@ -118,16 +118,16 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
      */
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = level.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (TFCTags.Blocks.KELP_BRANCH.contains(worldIn.getBlockState(relativePos).getBlock()))
+            if (TFCTags.Blocks.KELP_BRANCH.contains(level.getBlockState(relativePos).getBlock()))
             {
 
-                Block below = worldIn.getBlockState(relativePos.below()).getBlock();
+                Block below = level.getBlockState(relativePos.below()).getBlock();
                 if (TFCTags.Blocks.KELP_BRANCH.contains(below) || TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(below))
                 {
                     return true;
@@ -140,11 +140,11 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos))
+        if (!state.canSurvive(level, pos))
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 

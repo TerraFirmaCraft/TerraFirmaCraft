@@ -75,19 +75,19 @@ public abstract class CreepingPlantBlock extends PlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        stateIn = stateIn.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
-        return isEmpty(stateIn) ? Blocks.AIR.defaultBlockState() : stateIn;
+        state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
+        return isEmpty(state) ? Blocks.AIR.defaultBlockState() : state;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (worldIn.getBlockState(mutablePos.setWithOffset(pos, direction)).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
+            if (level.getBlockState(mutablePos.setWithOffset(pos, direction)).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -97,16 +97,16 @@ public abstract class CreepingPlantBlock extends PlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!canSurvive(state, level, pos))
         {
-            worldIn.destroyBlock(pos, false);
+            level.destroyBlock(pos, false);
         }
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shapeCache.get(state);
     }
@@ -124,14 +124,14 @@ public abstract class CreepingPlantBlock extends PlantBlock
         super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
     }
 
-    private BlockState updateStateFromSides(LevelAccessor world, BlockPos pos, BlockState state)
+    private BlockState updateStateFromSides(LevelAccessor level, BlockPos pos, BlockState state)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean hasEarth = false;
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = world.getBlockState(mutablePos).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
+            boolean ground = level.getBlockState(mutablePos).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;

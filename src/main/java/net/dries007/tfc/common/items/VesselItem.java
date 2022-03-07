@@ -32,6 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -190,7 +191,7 @@ public class VesselItem extends Item
                 text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                 switch (mode())
                 {
-                    case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
+                    case INVENTORY -> ClientHelpers.addInventoryTooltipInfo(inventory, text);
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(alloy.getResult().getDisplayName()
                             .append(" ")

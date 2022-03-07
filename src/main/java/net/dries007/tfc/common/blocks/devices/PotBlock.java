@@ -73,7 +73,8 @@ public class PotBlock extends FirepitBlock
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         super.animateTick(state, level, pos, rand);
-        level.getBlockEntity(pos, TFCBlockEntities.POT.get()).filter(PotBlockEntity::isBoiling).ifPresent(pot -> {
+        level.getBlockEntity(pos, TFCBlockEntities.POT.get()).ifPresent(pot -> {
+            if (!pot.shouldRenderAsBoiling()) return;
             double x = pos.getX() + 0.5;
             double y = pos.getY();
             double z = pos.getZ() + 0.5;

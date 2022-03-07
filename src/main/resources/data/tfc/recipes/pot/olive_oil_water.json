@@ -19,7 +19,7 @@
     "fluid": "minecraft:water",
     "amount": 1000
   },
-  "duration": 200,
+  "duration": 4000,
   "temperature": 300,
   "fluid_output": {
     "fluid": "tfc:olive_oil_water",
