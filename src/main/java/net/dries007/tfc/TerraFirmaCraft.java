@@ -23,6 +23,7 @@ import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
@@ -101,6 +102,7 @@ public final class TerraFirmaCraft
         TFCCarvers.CARVERS.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
+        TFCEffects.EFFECTS.register(bus);
         BrainObjects.ACTIVITIES.register(bus);
         BrainObjects.MEMORY_TYPES.register(bus);
         BrainObjects.SCHEDULES.register(bus);

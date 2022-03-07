@@ -13,18 +13,21 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
 
 public class Predator extends PathfinderMob
@@ -38,11 +41,18 @@ public class Predator extends PathfinderMob
 
     private static final int ATTACK_ANIMATION_LENGTH = 20;
 
+    public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
 
-    public Predator(EntityType<? extends PathfinderMob> type, Level level)
+    public static Predator createDiurnal(EntityType<? extends Predator> type, Level level)
+    {
+        return new Predator(type, level, true);
+    }
+
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal)
     {
         super(type, level);
+        this.diurnal = diurnal;
         getNavigation().setCanFloat(true);
     }
 
@@ -102,6 +112,12 @@ public class Predator extends PathfinderMob
         attackAnimationRemainingTicks = ATTACK_ANIMATION_LENGTH;
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
+
+        if (target instanceof Player player)
+        {
+            pinPlayer(player);
+        }
+
         return hurt;
     }
 
@@ -159,5 +175,16 @@ public class Predator extends PathfinderMob
     public SoundEvent getAttackSound()
     {
         return SoundEvents.POLAR_BEAR_WARNING;
+    }
+
+    private void pinPlayer(Player player)
+    {
+        if (distanceToSqr(player) < 6D)
+        {
+            if (!player.level.isClientSide)
+            {
+                player.addEffect(new MobEffectInstance(TFCEffects.PINNED.get(), 35, 0, false, false));
+            }
+        }
     }
 }

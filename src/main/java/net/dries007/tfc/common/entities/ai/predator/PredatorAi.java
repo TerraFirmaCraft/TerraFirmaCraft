@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.entities.ai.BrainObjects;
 import net.dries007.tfc.common.entities.predator.Predator;
 
@@ -38,7 +37,7 @@ public class PredatorAi
         initRestActivity(brain);
         initFightActivity(brain);
 
-        brain.setSchedule(BrainObjects.DIURNAL.get());
+        brain.setSchedule(predator.diurnal ? BrainObjects.DIURNAL.get() : BrainObjects.NOCTURNAL.get());
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(BrainObjects.HUNT);
         brain.setActiveActivityIfPossible(BrainObjects.HUNT);
@@ -51,9 +50,17 @@ public class PredatorAi
     {
         Brain<Predator> brain = predator.getBrain();
         Optional<Activity> current = brain.getActiveNonCoreActivity();
-        if (current.isPresent() && current.get() == BrainObjects.HUNT)
+        if (current.isPresent())
         {
-            brain.getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(entity -> brain.setActiveActivityIfPossible(Activity.FIGHT));
+            Activity active = current.get();
+            if (active == BrainObjects.HUNT)
+            {
+                brain.getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(entity -> brain.setActiveActivityIfPossible(Activity.FIGHT));
+            }
+            else if (active == Activity.FIGHT && brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty())
+            {
+                brain.setActiveActivityIfPossible(BrainObjects.HUNT);
+            }
         }
     }
 

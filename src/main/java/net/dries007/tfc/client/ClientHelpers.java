@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.client.model.Animation;
+import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -74,6 +76,11 @@ public final class ClientHelpers
 
     public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
     {
-        return ctx.bakeLayer(ClientHelpers.modelIdentifier(layerName));
+        return ctx.bakeLayer(modelIdentifier(layerName));
+    }
+
+    public static Animation.Bone.Builder newBone()
+    {
+        return new Animation.Bone.Builder(Easing.LINEAR);
     }
 }

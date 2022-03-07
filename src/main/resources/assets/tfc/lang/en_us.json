@@ -14,6 +14,7 @@
   "tfc.tile_entity.charcoal_forge": "Forge",
   "tfc.tile_entity.crucible": "Crucible",
   "item.tfc.handstone": "Handstone",
+  "effect.tfc.pinned": "Pinned",
   "itemGroup.tfc.earth": "TFC Earth",
   "itemGroup.tfc.ores": "TFC Ores",
   "itemGroup.tfc.rock": "TFC Rock Stuffs",

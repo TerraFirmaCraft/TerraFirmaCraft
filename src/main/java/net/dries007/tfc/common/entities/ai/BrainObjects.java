@@ -29,10 +29,11 @@ public class BrainObjects
     public static final Activity HUNT = registerActivity("hunt");
 
     public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", newSchedule().changeActivityAt(0, HUNT).changeActivityAt(11000, Activity.REST)::build);
+    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT)::build);
 
     public static Activity registerActivity(String name)
     {
-        Activity activity = new Activity(name);
+        Activity activity = new Activity(name); // avoids referencing the registry object before needed
         ACTIVITIES.register(name, () -> activity);
         return activity;
     }
