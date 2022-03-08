@@ -27,7 +27,6 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 {
     public LoomBlockEntityRenderer(BlockEntityRendererProvider.Context context)
     {
-
     }
 
     @Override
@@ -70,16 +69,18 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         }
     }
 
+
     private void drawProduct(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, int combinedOverlay, int combinedLight)
     {
-        for (float[] v : getPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, (float) te.getProgress() / 16F))
+        for (float[] v : getPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, te.getProgress() / (float) te.getMaxProgress()))
         {
-            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3] * 16D)), sprite.getU((v[4] * 16D)), combinedOverlay, combinedLight);
+            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3] * 16D)), sprite.getV((v[4] * 16D)), combinedOverlay, combinedLight);
         }
     }
 
     private void drawMaterial(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, float tileZ, int combinedOverlay, int combinedLight)
     {
+
         final int maxPieces = te.getMaxInputCount();
         final float Z1 = te.currentBoolean() ? tileZ : 0;
         final float Z2 = te.currentBoolean() ? 0 : tileZ;
