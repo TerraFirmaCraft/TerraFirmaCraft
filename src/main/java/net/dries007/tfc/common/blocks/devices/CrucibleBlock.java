@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -108,8 +107,8 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
             tooltip.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-            ClientHelpers.addInventoryTooltipInfo(inventory, tooltip);
-            ClientHelpers.addFluidStackTooltipInfo(alloy.getResultAsFluidStack(), tooltip);
+            Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            Helpers.addFluidStackTooltipInfo(alloy.getResultAsFluidStack(), tooltip);
         }
     }
 }

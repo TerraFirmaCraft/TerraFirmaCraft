@@ -16,11 +16,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -884,6 +886,46 @@ public final class Helpers
             }
         }
         return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Adds a tooltip based on an inventory, listing out the items inside.
+     * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
+     */
+    public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
+    {
+        int maximumItems = 0, totalItems = 0;
+        for (ItemStack stack : iterate(inventory))
+        {
+            if (!stack.isEmpty())
+            {
+                ++totalItems;
+                if (maximumItems <= 4)
+                {
+                    ++maximumItems;
+                    tooltips.add(stack.getHoverName().copy()
+                        .append(" x")
+                        .append(String.valueOf(stack.getCount())));
+                }
+            }
+        }
+
+        if (totalItems - maximumItems > 0)
+        {
+            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+        }
+    }
+
+    /**
+     * Adds a tooltip based on a single fluid stack
+     */
+    public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
+    {
+        if (!fluid.isEmpty())
+        {
+            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+                .append(fluid.getDisplayName()));
+        }
     }
 
     /**

@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -49,7 +48,7 @@ public class LampBlockItem extends BlockItem
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
     {
         FluidTank tank = getTankInfo(stack);
-        if (!tank.isEmpty()) ClientHelpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+        if (!tank.isEmpty()) Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
     }
 
     private FluidTank getTankInfo(ItemStack stack)
