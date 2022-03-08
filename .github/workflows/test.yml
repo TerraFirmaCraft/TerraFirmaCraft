@@ -20,16 +20,9 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
     - name: Build, Test, Check Licenses
-      run: ./gradlew build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
       env:
         VERSION: indev-test
