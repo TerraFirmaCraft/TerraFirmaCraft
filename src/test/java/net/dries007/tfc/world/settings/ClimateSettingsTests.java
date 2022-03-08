@@ -14,12 +14,10 @@ import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled
 public class ClimateSettingsTests
 {
     @BeforeAll

@@ -9,14 +9,12 @@ package net.dries007.tfc.world.river;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.TypedArea;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 public class WatershedTests
 {
     @Test

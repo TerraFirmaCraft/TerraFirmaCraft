@@ -22,13 +22,11 @@ import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.TestHelper.boostrap;
 import static net.dries007.tfc.TestHelper.seed;
 
-@Disabled
 public class RockLayerSettingsTests
 {
     @BeforeAll

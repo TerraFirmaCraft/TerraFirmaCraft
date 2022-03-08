@@ -16,13 +16,11 @@ import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.TestHelper.boostrap;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 public class LayerFrameworkTests
 {
     @BeforeAll
