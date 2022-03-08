@@ -172,6 +172,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
     }
 
+    /**
+     * The amount of info pots actually sync to clients is low. So checking output, cached recipe, etc. won't work.
+     */
+    public boolean shouldRenderAsBoiling()
+    {
+        return boilingTicks > 0;
+    }
+
     public InteractionResult interactWithOutput(Player player, ItemStack stack)
     {
         if (output != null)

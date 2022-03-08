@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestBase;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.Plate;
@@ -30,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import static net.dries007.tfc.TestHelper.*;
 
 @Disabled
-public class RiverVisualizations
+public class RiverVisualizations extends TestBase
 {
     @Test
     public void testBisectingRiverFractal()

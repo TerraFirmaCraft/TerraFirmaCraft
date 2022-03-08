@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;

@@ -61,9 +61,9 @@ public class CoralWallFanBlock extends TFCCoralPlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState mirror(BlockState state, Mirror mirrorIn)
+    public BlockState mirror(BlockState state, Mirror mirror)
     {
-        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Nullable
@@ -75,7 +75,7 @@ public class CoralWallFanBlock extends TFCCoralPlantBlock
         {
             return null;
         }
-        LevelReader world = context.getLevel();
+        LevelReader level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Direction[] directions = context.getNearestLookingDirections();
 
@@ -84,7 +84,7 @@ public class CoralWallFanBlock extends TFCCoralPlantBlock
             if (d.getAxis().isHorizontal())
             {
                 state = state.setValue(FACING, d.getOpposite());
-                if (state.canSurvive(world, pos))
+                if (state.canSurvive(level, pos))
                 {
                     return state;
                 }
@@ -100,27 +100,27 @@ public class CoralWallFanBlock extends TFCCoralPlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+        if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {
             level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
         }
 
-        return facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : stateIn;
+        return facing.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : state;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         Direction direction = state.getValue(FACING);
         BlockPos blockpos = pos.relative(direction.getOpposite());
-        BlockState blockstate = worldIn.getBlockState(blockpos);
-        return blockstate.isFaceSturdy(worldIn, blockpos, direction);
+        BlockState blockstate = level.getBlockState(blockpos);
+        return blockstate.isFaceSturdy(level, blockpos, direction);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES.get(state.getValue(FACING));
     }

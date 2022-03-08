@@ -73,13 +73,13 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+        if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {
             level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
         }
-        return facing == Direction.DOWN && !this.canSurvive(stateIn, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+        return facing == Direction.DOWN && !this.canSurvive(state, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -91,22 +91,22 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos posBelow = pos.below();
-        return worldIn.getBlockState(posBelow).isFaceSturdy(worldIn, posBelow, Direction.UP);
+        return level.getBlockState(posBelow).isFaceSturdy(level, posBelow, Direction.UP);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shape;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
     {
         entityIn.hurt(DamageSource.CACTUS, 1.0F);
     }
@@ -131,7 +131,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     /**
      * {@link net.minecraft.world.level.block.BaseCoralPlantTypeBlock#scanForWater(BlockState, BlockGetter, BlockPos)}
      */
-    protected boolean scanForWater(BlockState state, BlockGetter worldIn, BlockPos pos)
+    protected boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos)
     {
         if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
         {
@@ -141,7 +141,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
         {
             for (Direction direction : Direction.values())
             {
-                if (worldIn.getFluidState(pos.relative(direction)).is(FluidTags.WATER))
+                if (level.getFluidState(pos.relative(direction)).is(FluidTags.WATER))
                 {
                     return true;
                 }

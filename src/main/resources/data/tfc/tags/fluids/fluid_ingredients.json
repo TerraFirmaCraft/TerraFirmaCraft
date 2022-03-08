@@ -5,6 +5,14 @@
     "minecraft:water",
     "tfc:salt_water",
     "tfc:spring_water",
-    "tfc:olive_oil_water"
+    "tfc:brine",
+    "tfc:curdled_milk",
+    "tfc:limewater",
+    "tfc:lye",
+    "tfc:milk_vinegar",
+    "tfc:olive_oil",
+    "tfc:olive_oil_water",
+    "tfc:tannin",
+    "tfc:vinegar"
   ]
 }

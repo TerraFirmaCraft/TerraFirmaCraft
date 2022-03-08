@@ -378,7 +378,8 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', 'tfc:olive_oil_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
+    rm.fluid_tag('fluid_ingredients', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
     rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 

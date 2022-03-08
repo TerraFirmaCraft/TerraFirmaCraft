@@ -331,7 +331,7 @@ def generate(rm: ResourceManager):
     rm.recipe(('pot', 'olive_oil_water'), 'tfc:pot_fluid', {
         'ingredients': [paste, paste, paste, paste],
         'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
-        'duration': 200,
+        'duration': 4000,
         'temperature': 300,
         'fluid_output': fluid_stack('tfc:olive_oil_water', 1000)
     })
