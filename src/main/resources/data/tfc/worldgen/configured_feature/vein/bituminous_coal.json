@@ -14,21 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:ore/bituminous_coal/shale"
           }
         ]
       },
@@ -39,6 +29,16 @@
         "with": [
           {
             "block": "tfc:ore/bituminous_coal/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/bituminous_coal/limestone"
           }
         ]
       },
@@ -64,21 +64,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:ore/bituminous_coal/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:ore/bituminous_coal/chalk"
           }
         ]
       }

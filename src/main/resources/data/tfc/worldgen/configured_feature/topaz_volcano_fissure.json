@@ -10,11 +10,11 @@
       "blocks": [
         {
           "replace": [
-            "tfc:rock/raw/andesite"
+            "tfc:rock/raw/rhyolite"
           ],
           "with": [
             {
-              "block": "tfc:ore/topaz/andesite"
+              "block": "tfc:ore/topaz/rhyolite"
             }
           ]
         },
@@ -30,6 +30,16 @@
         },
         {
           "replace": [
+            "tfc:rock/raw/andesite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/topaz/andesite"
+            }
+          ]
+        },
+        {
+          "replace": [
             "tfc:rock/raw/dacite"
           ],
           "with": [
@@ -40,11 +50,11 @@
         },
         {
           "replace": [
-            "tfc:rock/raw/rhyolite"
+            "tfc:rock/raw/granite"
           ],
           "with": [
             {
-              "block": "tfc:ore/topaz/rhyolite"
+              "block": "tfc:ore/topaz/granite"
             }
           ]
         },
@@ -70,11 +80,41 @@
         },
         {
           "replace": [
-            "tfc:rock/raw/granite"
+            "tfc:rock/raw/quartzite"
           ],
           "with": [
             {
-              "block": "tfc:ore/topaz/granite"
+              "block": "tfc:ore/topaz/quartzite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/slate"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/topaz/slate"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/phyllite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/topaz/phyllite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/schist"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/topaz/schist"
             }
           ]
         },
@@ -95,46 +135,6 @@
           "with": [
             {
               "block": "tfc:ore/topaz/marble"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/phyllite"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/topaz/phyllite"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/quartzite"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/topaz/quartzite"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/schist"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/topaz/schist"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/slate"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/topaz/slate"
             }
           ]
         }

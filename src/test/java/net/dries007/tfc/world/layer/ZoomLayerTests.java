@@ -8,6 +8,7 @@ package net.dries007.tfc.world.layer;
 
 import java.util.Random;
 
+import net.dries007.tfc.TestBase;
 import net.dries007.tfc.world.layer.framework.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ZoomLayerTests
+public class ZoomLayerTests extends TestBase
 {
     @Test
     public void testZoomLayerMode()

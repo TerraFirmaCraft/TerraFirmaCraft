@@ -41,9 +41,9 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState blockstate = worldIn.getBlockState(pos.below());
+        BlockState blockstate = level.getBlockState(pos.below());
         if (state.getValue(PART) == Part.LOWER)
         {
             return blockstate.is(BlockTags.SAND);
@@ -59,7 +59,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.block();
     }
@@ -72,8 +72,8 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        entity.hurt(DamageSource.CACTUS, 1.0F);
     }
 }

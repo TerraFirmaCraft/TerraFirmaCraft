@@ -79,7 +79,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         final boolean rotten = isRotten();
         final BlockPos pos = getBlockPos();
         if (player.blockPosition().equals(pos)) return InteractionResult.FAIL;
-            if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
+        if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
         {
             if (brown == 4 && green == 4 && isReady()) Helpers.spawnItem(level, pos.above(), new ItemStack(rotten ? TFCItems.ROTTEN_COMPOST.get() : TFCItems.COMPOST.get()));
             reset();

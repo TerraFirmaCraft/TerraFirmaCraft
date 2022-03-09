@@ -1,8 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/metal/lamp/wrought_iron"
+    "hanging=false,lit=false": {
+      "model": "tfc:block/metal/lamp/wrought_iron_off"
+    },
+    "hanging=true,lit=false": {
+      "model": "tfc:block/metal/lamp/wrought_iron_hanging_off"
+    },
+    "hanging=false,lit=true": {
+      "model": "tfc:block/metal/lamp/wrought_iron_on"
+    },
+    "hanging=true,lit=true": {
+      "model": "tfc:block/metal/lamp/wrought_iron_hanging_on"
     }
   }
 }

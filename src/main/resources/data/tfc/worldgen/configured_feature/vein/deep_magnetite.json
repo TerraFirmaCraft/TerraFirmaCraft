@@ -14,39 +14,20 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
             "weight": 10,
-            "block": "tfc:ore/poor_magnetite/chalk"
+            "block": "tfc:ore/poor_magnetite/shale"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/normal_magnetite/chalk"
+            "block": "tfc:ore/normal_magnetite/shale"
           },
           {
             "weight": 60,
-            "block": "tfc:ore/rich_magnetite/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "weight": 10,
-            "block": "tfc:ore/poor_magnetite/chert"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_magnetite/chert"
-          },
-          {
-            "weight": 60,
-            "block": "tfc:ore/rich_magnetite/chert"
+            "block": "tfc:ore/rich_magnetite/shale"
           }
         ]
       },
@@ -66,6 +47,25 @@
           {
             "weight": 60,
             "block": "tfc:ore/rich_magnetite/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_magnetite/limestone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_magnetite/limestone"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_magnetite/limestone"
           }
         ]
       },
@@ -109,39 +109,39 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
             "weight": 10,
-            "block": "tfc:ore/poor_magnetite/limestone"
+            "block": "tfc:ore/poor_magnetite/chert"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/normal_magnetite/limestone"
+            "block": "tfc:ore/normal_magnetite/chert"
           },
           {
             "weight": 60,
-            "block": "tfc:ore/rich_magnetite/limestone"
+            "block": "tfc:ore/rich_magnetite/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
             "weight": 10,
-            "block": "tfc:ore/poor_magnetite/shale"
+            "block": "tfc:ore/poor_magnetite/chalk"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/normal_magnetite/shale"
+            "block": "tfc:ore/normal_magnetite/chalk"
           },
           {
             "weight": 60,
-            "block": "tfc:ore/rich_magnetite/shale"
+            "block": "tfc:ore/rich_magnetite/chalk"
           }
         ]
       }

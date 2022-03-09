@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/ore",
+  "textures": {
+    "all": "tfc:block/rock/gravel/schist",
+    "particle": "tfc:block/rock/gravel/schist",
+    "overlay": "tfc:block/deposit/native_gold"
+  }
+}

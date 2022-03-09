@@ -206,25 +206,25 @@ public final class InteractionManager
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
-                final Level world = context.getLevel();
+                final Level level = context.getLevel();
                 final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
-                final BlockState stateClicked = world.getBlockState(posClicked);
+                final BlockState stateClicked = level.getBlockState(posClicked);
                 final BlockPos relativePos = posClicked.relative(direction);
 
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
                 {
-                    return world.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
+                    return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
                         .map(cap -> {
                             ItemStack insertStack = stack.copy();
                             insertStack = Helpers.insertAllSlots(cap, insertStack);
                             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
-                                if (!world.isClientSide())
+                                if (!level.isClientSide())
                                 {
-                                    Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                    Helpers.playSound(level, relativePos, SoundEvents.WOOD_PLACE);
                                     stack.setCount(insertStack.getCount());
                                 }
                                 return InteractionResult.SUCCESS;
@@ -239,14 +239,14 @@ public final class InteractionManager
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
-                else
+                else if (!level.getBlockState(relativePos.below()).isAir())
                 {
                     // Trying to place a log pile.
                     final ItemStack insertStack = stack.copy();
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        world.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
+                        level.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
                             .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
                             .ifPresent(cap -> {
                                 insertStack.setCount(1);

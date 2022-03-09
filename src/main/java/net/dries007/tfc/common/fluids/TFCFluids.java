@@ -105,6 +105,19 @@ public final class TFCFluids
 
     public static final RegistryObject<RiverWaterFluid> RIVER_WATER = register("river_water", RiverWaterFluid::new);
 
+    public static final Map<SimpleFluid, FluidPair<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
+        fluid.getId(),
+        "flowing_" + fluid.getId(),
+        properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.SIMPLE_FLUID_BUCKETS.get(fluid)),
+        FluidAttributes.builder(WATER_STILL, WATER_FLOW)
+            .translationKey("fluid.tfc." + fluid.getId())
+            .color(fluid.getColor())
+            .overlay(WATER_OVERLAY)
+            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        MixingFluid.Source::new,
+        MixingFluid.Flowing::new
+    ));
+
     /**
      * Registration helper for fluids and this stupid API
      *
