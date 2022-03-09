@@ -3,7 +3,7 @@
 
 from enum import Enum, auto
 
-from mcresources import ResourceManager, utils
+from mcresources import ResourceManager, utils, loot_tables
 from recipes import fluid_ingredient
 from constants import *
 
@@ -157,6 +157,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
+    rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -583,9 +584,11 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'bluegill'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
+    rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
 
-    # Lamp Fuel - burn rate = ticks / mB. 8000 ticks ~ 83 days ~ the 1.12 length of olive oil burning
+    # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
+    rm.data(('tfc', 'lamp_fuels', 'tallow'), lamp_fuel('tfc:tallow', 1800))
     rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
 
     rm.entity_loot('cod', 'tfc:food/cod')
@@ -593,6 +596,15 @@ def generate(rm: ResourceManager):
     rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
     rm.entity_loot('salmon', 'tfc:food/salmon')
     rm.entity_loot('pufferfish', 'minecraft:pufferfish')
+    rm.entity_loot('isopod', 'tfc:shell')
+    rm.entity_loot('lobster', 'tfc:shell')
+    rm.entity_loot('horseshoe_crab', 'tfc:shell')
+    rm.entity_loot('orca', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
+    rm.entity_loot('dolphin', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
+    rm.entity_loot('manatee', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
+    rm.entity_loot('penguin', {'name': 'minecraft:feather', 'functions': loot_tables.random_chance(0.8)}, {'name': 'tfc:small_raw_hide', 'functions': loot_tables.random_chance(0.3)})
+    rm.entity_loot('turtle', 'minecraft:scute')
+    rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {

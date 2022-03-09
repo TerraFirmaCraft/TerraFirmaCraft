@@ -336,6 +336,15 @@ def generate(rm: ResourceManager):
         'fluid_output': fluid_stack('tfc:olive_oil_water', 1000)
     })
 
+    blubber = utils.ingredient('blubber')
+    rm.recipe(('pot', 'tallow'), 'tfc:pot_fluid', {
+        'ingredients': [blubber, blubber, blubber, blubber],
+        'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
+        'duration': 8000,
+        'temperature': 600,
+        'fluid_output': fluid_stack('tfc:tallow', 1000)
+    })
+
     rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
         'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
         'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),

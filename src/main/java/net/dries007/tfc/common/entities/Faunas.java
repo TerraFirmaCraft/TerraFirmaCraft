@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
@@ -35,6 +36,7 @@ public class Faunas
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
     public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
+    public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
 
     public static void registerSpawnPlacements()
     {
@@ -52,6 +54,7 @@ public class Faunas
         registerSpawnPlacement(MANATEE);
         registerSpawnPlacement(TURTLE);
         registerSpawnPlacement(PENGUIN);
+        registerSpawnPlacement(POLAR_BEAR);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
