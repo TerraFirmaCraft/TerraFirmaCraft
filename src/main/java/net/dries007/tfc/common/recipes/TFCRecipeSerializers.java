@@ -51,9 +51,6 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<CastingCraftingRecipe.Serializer> CASTING_CRAFTING = register("casting_crafting", CastingCraftingRecipe.Serializer::new);
 
-    // Other
-    public static final RegistryObject<NoopRecipe.Serializer> NOOP = register("noop", NoopRecipe.Serializer::new);
-
     private static <S extends RecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {
         return RECIPE_SERIALIZERS.register(name, factory);

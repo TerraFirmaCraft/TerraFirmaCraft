@@ -40,7 +40,7 @@ import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
-import net.dries007.tfc.common.entities.ai.BrainObjects;
+import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
@@ -104,9 +104,9 @@ public final class TerraFirmaCraft
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
-        BrainObjects.ACTIVITIES.register(bus);
-        BrainObjects.MEMORY_TYPES.register(bus);
-        BrainObjects.SCHEDULES.register(bus);
+        TFCBrain.ACTIVITIES.register(bus);
+        TFCBrain.MEMORY_TYPES.register(bus);
+        TFCBrain.SCHEDULES.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();

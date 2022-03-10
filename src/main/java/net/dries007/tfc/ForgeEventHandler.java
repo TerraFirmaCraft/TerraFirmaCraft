@@ -99,10 +99,7 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
-import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -642,16 +639,6 @@ public final class ForgeEventHandler
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
-
-        // todo: PotionExpiryEvent is not called on the client due to bad design. So we have to fake it here. Needs a forge PR
-        if (level.isClientSide)
-        {
-            final MobEffectInstance effect = player.getEffect(TFCEffects.PINNED.get());
-            if (effect != null && effect.getDuration() <= 1)
-            {
-                player.setForcedPose(null);
-            }
-        }
     }
 
     public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
@@ -664,10 +651,14 @@ public final class ForgeEventHandler
 
     public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
     {
-        MobEffectInstance instance = event.getPotionEffect();
-        if (instance != null && instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        final MobEffectInstance instance = event.getPotionEffect();
+        if (instance != null)
         {
-            player.setForcedPose(null);
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            {
+                player.setForcedPose(null);
+            }
         }
     }
 

@@ -26,9 +26,7 @@ import net.minecraft.world.level.Level;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.ai.BrainObjects;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
-import net.dries007.tfc.util.calendar.Calendars;
 
 /**
  * Reference implementation of {@link Brain} based on Axolotls.

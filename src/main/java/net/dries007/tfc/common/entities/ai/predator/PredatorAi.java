@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
-import net.dries007.tfc.common.entities.ai.BrainObjects;
+import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class PredatorAi
@@ -43,10 +43,10 @@ public class PredatorAi
         initRestActivity(brain);
         initFightActivity(brain);
 
-        brain.setSchedule(predator.diurnal ? BrainObjects.DIURNAL.get() : BrainObjects.NOCTURNAL.get());
+        brain.setSchedule(predator.diurnal ? TFCBrain.DIURNAL.get() : TFCBrain.NOCTURNAL.get());
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-        brain.setDefaultActivity(BrainObjects.HUNT);
-        brain.setActiveActivityIfPossible(BrainObjects.HUNT);
+        brain.setDefaultActivity(TFCBrain.HUNT.get());
+        brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
         brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
 
         return brain;
@@ -59,13 +59,13 @@ public class PredatorAi
         if (current.isPresent())
         {
             Activity active = current.get();
-            if (active == BrainObjects.HUNT)
+            if (active == TFCBrain.HUNT.get())
             {
                 brain.getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(entity -> brain.setActiveActivityIfPossible(Activity.FIGHT));
             }
             else if (active == Activity.FIGHT && brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty())
             {
-                brain.setActiveActivityIfPossible(BrainObjects.HUNT);
+                brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
             }
         }
     }
@@ -80,7 +80,7 @@ public class PredatorAi
 
     public static void initHuntActivity(Brain<Predator> brain)
     {
-        brain.addActivity(BrainObjects.HUNT, 10, ImmutableList.of(
+        brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
             new BecomePassiveIfMemoryPresent(MemoryModuleType.NEAREST_REPELLENT, 200),
             SetWalkTargetAwayFrom.pos(MemoryModuleType.NEAREST_REPELLENT, 1.0F, 8, true),
             new StartAttacking<>(PredatorAi::getAttackTarget),

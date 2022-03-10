@@ -20,22 +20,20 @@ import net.minecraftforge.registries.RegistryObject;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.TerraFirmaCraft;
 
-public class BrainObjects
+public class TFCBrain
 {
     public static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, TerraFirmaCraft.MOD_ID);
     public static final DeferredRegister<MemoryModuleType<?>> MEMORY_TYPES = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, TerraFirmaCraft.MOD_ID);
     public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, TerraFirmaCraft.MOD_ID);
 
-    public static final Activity HUNT = registerActivity("hunt");
+    public static final RegistryObject<Activity> HUNT = registerActivity("hunt");
 
-    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", newSchedule().changeActivityAt(0, HUNT).changeActivityAt(11000, Activity.REST)::build);
-    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT)::build);
+    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", () -> newSchedule().changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build());
+    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", () -> newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build());
 
-    public static Activity registerActivity(String name)
+    public static RegistryObject<Activity> registerActivity(String name)
     {
-        Activity activity = new Activity(name); // avoids referencing the registry object before needed
-        ACTIVITIES.register(name, () -> activity);
-        return activity;
+        return ACTIVITIES.register(name, () -> new Activity(name));
     }
 
     public static <T> RegistryObject<MemoryModuleType<T>> registerMemory(String name)

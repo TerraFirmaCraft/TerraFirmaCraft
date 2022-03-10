@@ -429,7 +429,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
 def disable_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
-    rm.recipe(name_parts, 'tfc:noop', {})
+    rm.recipe(name_parts, 'forge:conditional', {'recipes': []})
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
