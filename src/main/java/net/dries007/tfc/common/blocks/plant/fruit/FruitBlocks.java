@@ -133,7 +133,7 @@ public final class FruitBlocks
 
         public Block createGrowingBranch()
         {
-            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this));
+            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
         }
     }
 }

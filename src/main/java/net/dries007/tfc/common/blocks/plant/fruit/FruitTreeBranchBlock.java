@@ -51,14 +51,14 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
     }
 
-    public BlockState getStateForPlacement(BlockGetter world, BlockPos pos)
+    public BlockState getStateForPlacement(BlockGetter level, BlockPos pos)
     {
-        Block downBlock = world.getBlockState(pos.below()).getBlock();
-        Block upBlock = world.getBlockState(pos.above()).getBlock();
-        Block northBlock = world.getBlockState(pos.north()).getBlock();
-        Block eastBlock = world.getBlockState(pos.east()).getBlock();
-        Block southBlock = world.getBlockState(pos.south()).getBlock();
-        Block westBlock = world.getBlockState(pos.west()).getBlock();
+        Block downBlock = level.getBlockState(pos.below()).getBlock();
+        Block upBlock = level.getBlockState(pos.above()).getBlock();
+        Block northBlock = level.getBlockState(pos.north()).getBlock();
+        Block eastBlock = level.getBlockState(pos.east()).getBlock();
+        Block southBlock = level.getBlockState(pos.south()).getBlock();
+        Block westBlock = level.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
             .setValue(DOWN, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(downBlock) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(downBlock))
             .setValue(UP, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(upBlock) || TFCTags.Blocks.FRUIT_TREE_SAPLING.contains(upBlock))
@@ -70,31 +70,31 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(level, currentPos))
+        if (!state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
-            return stateIn;
+            return state;
         }
         else
         {
             boolean flag = facingState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || (facing == Direction.UP && facingState.is(TFCTags.Blocks.FRUIT_TREE_SAPLING)));
-            return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
+            return state.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = level.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(worldIn.getBlockState(relativePos).getBlock()))
+            if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(level.getBlockState(relativePos).getBlock()))
             {
-                Block below = worldIn.getBlockState(relativePos.below()).getBlock();
+                Block below = level.getBlockState(relativePos.below()).getBlock();
                 if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(below) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(below))
                 {
                     return true;
@@ -107,11 +107,11 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
+        if (!state.canSurvive(level, pos) && !level.isClientSide())
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 

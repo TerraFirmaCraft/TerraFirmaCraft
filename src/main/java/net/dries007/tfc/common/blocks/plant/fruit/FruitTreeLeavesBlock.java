@@ -52,12 +52,13 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.block();
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(level, pos, FruitTreeLeavesBlockEntity.class);
@@ -83,23 +84,6 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         super.randomTick(state, level, pos, random);
     }
 
-    @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
-    {
-        // todo: remove this override
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
-        {
-            Helpers.slowEntityInBlock(entity, 0.2f, 5);
-        }
-    }
-
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
-    {
-        if (te.getDeath() > 10)
-        {
-            te.setGrowing(false);
-        }
-    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
@@ -127,29 +111,29 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return isValid(worldIn, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
+        return isValid(level, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!isValid(worldIn, pos, state))
+        if (!isValid(level, pos, state))
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 
-    private boolean isValid(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    private boolean isValid(LevelAccessor level, BlockPos pos, BlockState state)
     {
         if (state.getValue(PERSISTENT))
         {
@@ -159,7 +143,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         for (Direction direction : Helpers.DIRECTIONS)
         {
             mutablePos.set(pos).move(direction);
-            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            if (level.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
             {
                 return true;
             }

@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -64,9 +65,8 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         if (!level.isClientSide() && handIn == InteractionHand.MAIN_HAND && saplings < 4)
         {
             ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
-            //ItemStack off = player.getItemInHand(Hand.OFF_HAND);
-            //todo: require knife in offhand
-            if (defaultBlockState().getBlock().asItem() == held.getItem() && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
+            ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
+            if (defaultBlockState().getBlock().asItem() == held.getItem() && off.is(TFCTags.Items.KNIVES) && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
                 if (saplings > 2 && level.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
                     return InteractionResult.FAIL;
@@ -105,11 +105,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                 {
                     boolean onBranch = level.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-                    TickCounterBlockEntity newTE = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
-                    if (newTE != null)
-                    {
-                        newTE.resetCounter();
-                    }
+                    Helpers.resetCounter(level, pos);
                 }
             }
         }

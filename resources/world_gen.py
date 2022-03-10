@@ -673,7 +673,7 @@ def generate(rm: ResourceManager):
         if fruit == 'banana':
             feature = 'tfc:bananas'
             state = 'tfc:plant/banana_plant'
-        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, decorate_heightmap('world_surface_wg'), decorate_square(), ('tfc:climate', config), decorate_chance(200))
+        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, decorate_heightmap('world_surface_wg'), decorate_square(), ('tfc:climate', config), decorate_chance(20))
 
     configured_placed_feature(rm, 'bamboo', 'minecraft:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
