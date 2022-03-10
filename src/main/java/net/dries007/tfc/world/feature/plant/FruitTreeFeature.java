@@ -63,7 +63,6 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
                 setBlock(level, mutablePos, branch);
                 level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
                 level.scheduleTick(mutablePos, branch.getBlock(), 1);
-                TerraFirmaCraft.LOGGER.info("Fruit Tree: /tp @s " + pos.getX() + " ~ " + pos.getZ());
                 return true;
             }
         }

@@ -123,7 +123,7 @@ public final class FruitBlocks
 
         public Block createLeaves()
         {
-            return new FruitTreeLeavesBlock(ExtendedProperties.of(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCBlockEntities.FRUIT_TREE).flammable(90, 60), TFCItems.FOOD.get(product), stages);
+            return new FruitTreeLeavesBlock(ExtendedProperties.of(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCBlockEntities.BERRY_BUSH).flammable(90, 60), TFCItems.FOOD.get(product), stages, ClimateRanges.FRUIT_TREES.get(this));
         }
 
         public Block createBranch()

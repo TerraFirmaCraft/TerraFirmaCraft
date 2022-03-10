@@ -12,8 +12,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,24 +28,24 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blockentities.FruitTreeLeavesBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
-public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock
+public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    private final Supplier<ClimateRange> climateRange;
+    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
     {
         super(properties, productItem, stages);
 
+        this.climateRange = climateRange;
         registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
     }
 
@@ -58,50 +56,15 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void onUpdate(Level level, BlockPos pos, BlockState state)
     {
-        FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(level, pos, FruitTreeLeavesBlockEntity.class);
-        if (te == null) return;
 
-        Lifecycle old = state.getValue(LIFECYCLE); // have to put this in random tick to capture the old state
-        if (old == Lifecycle.FLOWERING || old == Lifecycle.FRUITING)
-        {
-            if (!te.isOnYear() && te.isGrowing() && old == Lifecycle.FLOWERING && super.updateLifecycle(te) == Lifecycle.FRUITING)
-            {
-                te.addDeath();
-                int probability = Mth.clamp(te.getDeath(), 2, 10);
-                if (random.nextInt(probability) == 0)
-                {
-                    te.setOnYear(true);
-                }
-            }
-        }
-        else
-        {
-            te.setOnYear(false); // reset when we're not in season
-        }
-        super.randomTick(state, level, pos, random);
     }
-
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(PERSISTENT);
-    }
-
-    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
-    {
-        Lifecycle lifecycle = super.updateLifecycle(te);
-
-        FruitTreeLeavesBlockEntity fruityTE = (FruitTreeLeavesBlockEntity) te;
-        if (lifecycle == Lifecycle.FRUITING && !fruityTE.isOnYear())
-        {
-            lifecycle = Lifecycle.HEALTHY;
-        }
-        return lifecycle;
+        super.createBlockStateDefinition(builder.add(PERSISTENT));
     }
 
     @Override
@@ -121,6 +84,13 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return 0.2F;
     }
 
     @Override

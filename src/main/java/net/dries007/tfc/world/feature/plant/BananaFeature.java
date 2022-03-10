@@ -52,7 +52,6 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
         {
             if (level.canSeeSky(mutablePos))
             {
-                TerraFirmaCraft.LOGGER.info("New banana at " + mutablePos.immutable());
                 for (int stage = 0; stage <= 2; stage++)
                 {
                     final int height = Mth.nextInt(random, 2, 3);

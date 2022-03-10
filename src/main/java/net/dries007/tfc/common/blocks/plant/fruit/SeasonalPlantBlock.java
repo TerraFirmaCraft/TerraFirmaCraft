@@ -153,7 +153,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
     }
@@ -184,31 +184,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIFECYCLE, STAGE);
-    }
-
-    /**
-     * Queries the lifecycle based on the data, but catches certain conditions that would
-     */
-    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
-    {
-        Lifecycle cycle = lifecycle[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
-
-        if ((cycle == Lifecycle.HEALTHY || cycle == Lifecycle.FLOWERING) && te.isGrowing())
-        {
-            te.setHarvested(false); // prepare to make fruit
-        }
-        if (cycle == Lifecycle.FRUITING || cycle == Lifecycle.FLOWERING)
-        {
-            if (te.isHarvested())
-            {
-                cycle = Lifecycle.DORMANT; // turn dormant after harvesting
-            }
-            else if (!te.isGrowing())
-            {
-                cycle = Lifecycle.HEALTHY; // if it can't grow, we prevent it from flowering or fruiting
-            }
-        }
-        return cycle;
     }
 
     protected ItemStack getProductItem(Random random)
